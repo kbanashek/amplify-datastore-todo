@@ -1,5 +1,5 @@
 // Import synchronous Amplify initialization first, before any other imports
-import { AMPLIFY_INITIALIZED } from '../src/amplify-init-sync';
+import '../src/amplify-init-sync';
 
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
@@ -20,7 +20,7 @@ export default function RootLayout() {
   // Verify Amplify is initialized at the root level
   useEffect(() => {
     // Amplify is already initialized by importing amplify-init-sync
-    console.log('Root layout mounted, Amplify already initialized:', AMPLIFY_INITIALIZED);
+
   }, []);
 
   if (!loaded) {

@@ -60,7 +60,7 @@ export const useAmplifyState = (): AmplifyState => {
           );
           break;
         case DataStoreEventType.ConflictDetected:
-          console.log("Conflict detected:", data);
+
           // Increment conflict count when a conflict is detected
           setConflictCount((prevCount) => prevCount + 1);
           break;

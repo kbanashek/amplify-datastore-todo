@@ -10,10 +10,21 @@ interface TodoItemProps {
 }
 
 const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete, isOnline }) => {
-  // Determine sync status icon color
+  // Determine sync status icon color based on network status and sync state
   const getSyncStatusColor = () => {
-    if (!isOnline) return '#ff6b6b'; // Red when offline
-    return todo._synced ? '#1dd1a1' : '#feca57'; // Green if synced, yellow if pending
+
+    
+    // If we're offline, we need to determine if this todo was created locally
+    // and hasn't been synced yet
+    if (!isOnline) {
+      // If the todo has _synced explicitly set to false, it was created offline
+      if ((todo as any)._synced === false) {
+        return '#ff6b6b'; // RED for unsynced todos when offline
+      }
+    }
+    
+    // Otherwise show green for synced items
+    return '#1dd1a1'; // GREEN for synced todos
   };
 
   return (
@@ -129,9 +140,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   syncIcon: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
   },
   header: {
     flexDirection: 'row',

@@ -5,6 +5,6 @@ import awsconfig from './aws-exports';
 import 'expo-router/entry';
 
 // Configure Amplify immediately
-console.log('Entry point: Initializing Amplify before Expo Router loads...');
+
 Amplify.configure(awsconfig);
-console.log('Entry point: Amplify initialized successfully');
+

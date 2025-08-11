@@ -9,7 +9,7 @@ export default function HomeScreen() {
   // App initialization
   useEffect(() => {
     // Any app initialization can go here
-    console.log('Todo app initialized');
+
   }, []);
 
   return (

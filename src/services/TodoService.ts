@@ -20,10 +20,7 @@ export class TodoService {
         operation,
         attempts,
       }) => {
-        console.log(`Conflict detected for model ${modelConstructor.name}`);
-        console.log(`Local model: `, localModel);
-        console.log(`Remote model: `, remoteModel);
-        console.log(`Operation: ${operation}, Attempts: ${attempts}`);
+
 
         // For Todo model conflicts
         if (modelConstructor.name === "Todo") {
@@ -48,18 +45,18 @@ export class TodoService {
           if (operation === OpType.DELETE) {
             // If remote is already deleted, use that version
             if (remoteModel._deleted) {
-              console.log('Remote already deleted, using remote model');
+
               return remoteModel;
             }
             
             // If local model is incomplete, use remote with _deleted flag
             if (!localModel.name && !localModel.description) {
-              console.log('Local model incomplete, using remote model with delete flag');
+
               return { ...remoteModel, _deleted: true };
             }
             
             // Otherwise use local delete
-            console.log('Using local delete');
+
             return localModel;
           }
         }
@@ -69,7 +66,7 @@ export class TodoService {
       },
     });
 
-    console.log("DataStore configured with custom conflict resolution");
+
   }
 
   /**
