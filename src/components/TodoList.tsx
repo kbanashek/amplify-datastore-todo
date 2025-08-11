@@ -31,7 +31,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete }) => {
 };
 
 export const TodoList: React.FC = () => {
-  // Use the custom hook to handle todo list logic
+
   const {
     todos,
     loading,

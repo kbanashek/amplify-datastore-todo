@@ -1,75 +1,96 @@
-import { useState, useEffect } from 'react';
-import { Hub } from '@aws-amplify/core';
-import { DataStore } from '@aws-amplify/datastore';
-import NetInfo from '@react-native-community/netinfo';
-import { configureAmplify } from '../amplify-config';
+import { useState, useEffect } from "react";
+import { Hub } from "@aws-amplify/core";
+import { DataStore } from "@aws-amplify/datastore";
+import NetInfo from "@react-native-community/netinfo";
+import { configureAmplify } from "../amplify-config";
+import { TodoService } from "../services/TodoService";
 
-// Define enums instead of string literals
-export enum SyncState {
-  NotStarted = 'NotStarted',
-  Syncing = 'Syncing',
-  Synced = 'Synced',
-  Error = 'Error'
+// Define enums for network and sync states
+export enum NetworkStatus {
+  Online = "ONLINE",
+  Offline = "OFFLINE",
 }
 
-export enum NetworkStatus {
-  Online = 'Online',
-  Offline = 'Offline'
+export enum SyncState {
+  NotSynced = "NOT_SYNCED",
+  Syncing = "SYNCING",
+  Synced = "SYNCED",
+  Error = "ERROR",
 }
 
 // Define DataStore event types
 export enum DataStoreEventType {
-  NetworkStatus = 'networkStatus',
-  SyncQueriesStarted = 'syncQueriesStarted',
-  SyncQueriesReady = 'syncQueriesReady',
-  SyncQueriesError = 'syncQueriesError'
+  NetworkStatus = "networkStatus",
+  SyncQueriesStarted = "syncQueriesStarted",
+  SyncQueriesReady = "syncQueriesReady",
+  SyncQueriesError = "syncQueriesError",
+  OutboxStatus = "outboxStatus",
+  ConflictDetected = "conflictDetected",
 }
 
-export interface AmplifyStateResult {
-  syncState: SyncState;
+export interface AmplifyState {
+  isReady: boolean;
   networkStatus: NetworkStatus;
-  isOnline: boolean;
-  isSynced: boolean;
-  isSyncing: boolean;
-  hasError: boolean;
+  syncState: SyncState;
+  conflictCount: number;
 }
 
-export const useAmplifyState = (): AmplifyStateResult => {
-  const [syncState, setSyncState] = useState<SyncState>(SyncState.NotStarted);
-  const [networkStatus, setNetworkStatus] = useState<NetworkStatus>(NetworkStatus.Online);
+export const useAmplifyState = (): AmplifyState => {
+  const [isReady, setIsReady] = useState<boolean>(false);
+  const [networkStatus, setNetworkStatus] = useState<NetworkStatus>(
+    NetworkStatus.Online
+  );
+  const [syncState, setSyncState] = useState<SyncState>(SyncState.NotSynced);
+  const [conflictCount, setConflictCount] = useState<number>(0);
 
   useEffect(() => {
-    // Initialize Amplify if not already initialized
     configureAmplify();
-    
+    // Configure custom conflict resolution strategy
+    TodoService.configureConflictResolution();
+    DataStore.start();
+
     // Subscribe to DataStore events
-    const hubListener = Hub.listen('datastore', async (hubData: any) => {
+    const hubListener = Hub.listen("datastore", async (hubData: any) => {
       const { event, data } = hubData.payload;
-      
-      if (event === DataStoreEventType.NetworkStatus) {
-        setNetworkStatus(data.active ? NetworkStatus.Online : NetworkStatus.Offline);
-      }
-      
-      if (event === DataStoreEventType.SyncQueriesStarted) {
-        setSyncState(SyncState.Syncing);
-      } else if (event === DataStoreEventType.SyncQueriesReady) {
-        setSyncState(SyncState.Synced);
-      } else if (event === DataStoreEventType.SyncQueriesError) {
-        setSyncState(SyncState.Error);
+
+      switch (event) {
+        case DataStoreEventType.NetworkStatus:
+          setNetworkStatus(
+            data.active ? NetworkStatus.Online : NetworkStatus.Offline
+          );
+          break;
+        case DataStoreEventType.ConflictDetected:
+          console.log("Conflict detected:", data);
+          // Increment conflict count when a conflict is detected
+          setConflictCount((prevCount) => prevCount + 1);
+          break;
+        case DataStoreEventType.SyncQueriesStarted:
+          setSyncState(SyncState.Syncing);
+          break;
+        case DataStoreEventType.SyncQueriesReady:
+          setSyncState(SyncState.Synced);
+          setIsReady(true);
+          break;
+        case DataStoreEventType.SyncQueriesError:
+          setSyncState(SyncState.Error);
+          break;
+        default:
+          break;
       }
     });
 
-    // Check initial network status using NetInfo
-    NetInfo.fetch().then(state => {
-      setNetworkStatus(state.isConnected ? NetworkStatus.Online : NetworkStatus.Offline);
-    });
-    
-    // Subscribe to network status changes
-    const unsubscribeNetInfo = NetInfo.addEventListener(state => {
-      setNetworkStatus(state.isConnected ? NetworkStatus.Online : NetworkStatus.Offline);
+    NetInfo.fetch().then((state) => {
+      setNetworkStatus(
+        state.isConnected ? NetworkStatus.Online : NetworkStatus.Offline
+      );
     });
 
-    // Start DataStore
+    const unsubscribeNetInfo = NetInfo.addEventListener((state) => {
+      setNetworkStatus(
+        state.isConnected ? NetworkStatus.Online : NetworkStatus.Offline
+      );
+    });
+
     DataStore.start();
 
     return () => {
@@ -79,11 +100,9 @@ export const useAmplifyState = (): AmplifyStateResult => {
   }, []);
 
   return {
-    syncState,
+    isReady,
     networkStatus,
-    isOnline: networkStatus === NetworkStatus.Online,
-    isSynced: syncState === SyncState.Synced,
-    isSyncing: syncState === SyncState.Syncing,
-    hasError: syncState === SyncState.Error,
+    syncState,
+    conflictCount,
   };
 };

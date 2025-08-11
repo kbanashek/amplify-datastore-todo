@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
-import { TodoService } from '../services/TodoService';
-import { Todo } from '../../models';
-import { useAmplify } from '../contexts/AmplifyContext';
+import { useState, useEffect } from "react";
+import { TodoService } from "../services/TodoService";
+import { Todo } from "../../models";
+import { useAmplify } from "../contexts/AmplifyContext";
+import { NetworkStatus } from "./useAmplifyState";
 
 interface UseTodoListReturn {
   todos: Todo[];
@@ -18,8 +19,11 @@ export const useTodoList = (): UseTodoListReturn => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isSynced, setIsSynced] = useState<boolean>(false);
-  const { isOnline } = useAmplify();
-  const [subscription, setSubscription] = useState<{ unsubscribe: () => void } | null>(null);
+  const { networkStatus } = useAmplify();
+  const isOnline = networkStatus === NetworkStatus.Online;
+  const [subscription, setSubscription] = useState<{
+    unsubscribe: () => void;
+  } | null>(null);
 
   const initTodos = async (): Promise<void> => {
     try {
@@ -32,11 +36,11 @@ export const useTodoList = (): UseTodoListReturn => {
         setIsSynced(synced);
         setLoading(false);
       });
-      
+
       setSubscription(sub);
     } catch (err) {
-      console.error('Error initializing todos:', err);
-      setError('Failed to load todos. Please try again.');
+      console.error("Error initializing todos:", err);
+      setError("Failed to load todos. Please try again.");
       setLoading(false);
     }
   };
@@ -50,7 +54,7 @@ export const useTodoList = (): UseTodoListReturn => {
         subscription.unsubscribe();
       }
     };
-    // We're intentionally only running this effect once on mount
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -59,8 +63,8 @@ export const useTodoList = (): UseTodoListReturn => {
       await TodoService.deleteTodo(id);
       // The subscription will automatically update the UI
     } catch (err) {
-      console.error('Error deleting todo:', err);
-      setError('Failed to delete todo. Please try again.');
+      console.error("Error deleting todo:", err);
+      setError("Failed to delete todo. Please try again.");
     }
   };
 
@@ -81,6 +85,6 @@ export const useTodoList = (): UseTodoListReturn => {
     isSynced,
     isOnline,
     handleDeleteTodo,
-    retryLoading
+    retryLoading,
   };
 };
