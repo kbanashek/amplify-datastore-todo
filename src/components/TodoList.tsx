@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { Todo } from '../../models';
 import { useTodoList } from '../hooks/useTodoList';
 
@@ -54,6 +54,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete, isOnline }) => {
 };
 
 export const TodoList: React.FC = () => {
+  const [isClearing, setIsClearing] = useState(false);
 
   const {
     todos,
@@ -62,7 +63,8 @@ export const TodoList: React.FC = () => {
     isSynced,
     isOnline,
     handleDeleteTodo,
-    retryLoading
+    retryLoading,
+    clearDataStore
   } = useTodoList();
 
   if (loading) {
@@ -88,6 +90,31 @@ export const TodoList: React.FC = () => {
     );
   }
 
+  const handleClearDataStore = () => {
+    Alert.alert(
+      "Clear DataStore",
+      "This will clear all local data and sync from the server. Are you sure?",
+      [
+        { text: "Cancel", style: "cancel" },
+        { 
+          text: "Clear", 
+          style: "destructive",
+          onPress: async () => {
+            setIsClearing(true);
+            try {
+              await clearDataStore();
+            } catch (error) {
+              console.error("Error clearing DataStore:", error);
+              Alert.alert("Error", "Failed to clear DataStore");
+            } finally {
+              setIsClearing(false);
+            }
+          }
+        }
+      ]
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -108,6 +135,16 @@ export const TodoList: React.FC = () => {
           </Text>
         </View>
       </View>
+      
+      <TouchableOpacity 
+        style={styles.clearButton}
+        onPress={handleClearDataStore}
+        disabled={isClearing || loading}
+      >
+        <Text style={styles.clearButtonText}>
+          {isClearing ? "Clearing..." : "Clear DataStore"}
+        </Text>
+      </TouchableOpacity>
 
       {todos.length === 0 ? (
         <View style={styles.emptyContainer}>
@@ -134,6 +171,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f6fa',
+  },
+  clearButton: {
+    backgroundColor: '#e74c3c',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    marginHorizontal: 16,
+    marginTop: 8,
+    borderRadius: 4,
+    alignItems: 'center',
+  },
+  clearButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 14,
   },
   syncIconContainer: {
     justifyContent: 'center',

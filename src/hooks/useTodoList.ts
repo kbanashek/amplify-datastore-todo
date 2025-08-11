@@ -12,6 +12,7 @@ interface UseTodoListReturn {
   isOnline: boolean;
   handleDeleteTodo: (id: string) => Promise<void>;
   retryLoading: () => void;
+  clearDataStore: () => Promise<void>;
 }
 
 export const useTodoList = (): UseTodoListReturn => {
@@ -78,6 +79,28 @@ export const useTodoList = (): UseTodoListReturn => {
     initTodos();
   };
 
+  const clearDataStore = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Unsubscribe from current subscription
+      if (subscription) {
+        subscription.unsubscribe();
+      }
+      
+      // Clear the DataStore
+      await TodoService.clearDataStore();
+      
+      // Reinitialize todos after clearing
+      initTodos();
+    } catch (err) {
+      console.error("Error clearing DataStore:", err);
+      setError("Failed to clear DataStore. Please try again.");
+      setLoading(false);
+    }
+  };
+
   return {
     todos,
     loading,
@@ -86,5 +109,6 @@ export const useTodoList = (): UseTodoListReturn => {
     isOnline,
     handleDeleteTodo,
     retryLoading,
+    clearDataStore,
   };
 };

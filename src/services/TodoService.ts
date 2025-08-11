@@ -209,4 +209,18 @@ export class TodoService {
       }
     };
   }
+
+  /**
+   * Clear the DataStore completely
+   * This will remove all local data and trigger a fresh sync from the server
+   * @returns {Promise<void>}
+   */
+  static async clearDataStore(): Promise<void> {
+    try {
+      await DataStore.clear();
+    } catch (error) {
+      console.error("Error clearing DataStore:", error);
+      throw error;
+    }
+  }
 }
