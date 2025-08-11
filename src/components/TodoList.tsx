@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { TodoService } from '../services/TodoService';
 import { Todo } from '../../models';
-import { useAmplify } from '../contexts/AmplifyContext';
+import { useTodoList } from '../hooks/useTodoList';
 
 interface TodoItemProps {
   todo: Todo;
@@ -32,52 +31,16 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete }) => {
 };
 
 export const TodoList: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isSynced, setIsSynced] = useState<boolean>(false);
-  const { isOnline } = useAmplify();
-
-  useEffect(() => {
-    let subscription: { unsubscribe: () => void } | null = null;
-
-    const initTodos = async (): Promise<void> => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        // Subscribe to changes in todos
-        subscription = TodoService.subscribeTodos((items, synced) => {
-          setTodos(items);
-          setIsSynced(synced);
-          setLoading(false);
-        });
-      } catch (err) {
-        console.error('Error initializing todos:', err);
-        setError('Failed to load todos. Please try again.');
-        setLoading(false);
-      }
-    };
-
-    initTodos();
-
-    // Cleanup subscription on unmount
-    return () => {
-      if (subscription) {
-        subscription.unsubscribe();
-      }
-    };
-  }, []);
-
-  const handleDeleteTodo = async (id: string): Promise<void> => {
-    try {
-      await TodoService.deleteTodo(id);
-      // The subscription will automatically update the UI
-    } catch (err) {
-      console.error('Error deleting todo:', err);
-      setError('Failed to delete todo. Please try again.');
-    }
-  };
+  // Use the custom hook to handle todo list logic
+  const {
+    todos,
+    loading,
+    error,
+    isSynced,
+    isOnline,
+    handleDeleteTodo,
+    retryLoading
+  } = useTodoList();
 
   if (loading) {
     return (
@@ -94,11 +57,7 @@ export const TodoList: React.FC = () => {
         <Text style={styles.errorText}>{error}</Text>
         <TouchableOpacity
           style={styles.retryButton}
-          onPress={() => {
-            setLoading(true);
-            setError(null);
-            // The effect will re-run and try to fetch todos again
-          }}
+          onPress={retryLoading}
         >
           <Text style={styles.retryButtonText}>Retry</Text>
         </TouchableOpacity>

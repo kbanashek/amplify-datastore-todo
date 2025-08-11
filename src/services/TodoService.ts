@@ -1,25 +1,24 @@
 import { DataStore } from '@aws-amplify/datastore';
-// Make sure we're importing the Todo model from the correct location
+// Import the Todo model from the generated models
 import { Todo } from '../../models';
+// Import the generated types from API.ts
+import { CreateTodoInput, UpdateTodoInput } from '../API';
 
-interface TodoUpdateData {
-  name?: string;
-  description?: string;
-}
+// Use the generated UpdateTodoInput type instead of creating our own interface
+type TodoUpdateData = Omit<UpdateTodoInput, 'id' | '_version'>;
 
 export class TodoService {
   /**
    * Create a new Todo item
-   * @param {string} name - The name of the todo item
-   * @param {string} description - The description of the todo item
+   * @param {CreateTodoInput} input - The input data for creating a todo
    * @returns {Promise<Todo>} - The created todo item
    */
-  static async createTodo(name: string, description: string): Promise<Todo> {
+  static async createTodo(input: CreateTodoInput): Promise<Todo> {
     try {
       const todo = await DataStore.save(
         new Todo({
-          name,
-          description
+          name: input.name,
+          description: input.description ?? ''
         })
       );
       return todo;
@@ -58,8 +57,17 @@ export class TodoService {
       
       const updated = await DataStore.save(
         Todo.copyOf(original, updated => {
-          if (data.name !== undefined) updated.name = data.name;
-          if (data.description !== undefined) updated.description = data.description;
+          // Handle name update with proper type checking
+          if (data.name !== undefined && data.name !== null) {
+            updated.name = data.name;
+          }
+          
+          // Handle description update with proper type checking
+          if (data.description !== undefined) {
+            // description can be null in the API type, but our model requires a string
+            // if null is provided, we'll use an empty string
+            updated.description = data.description ?? '';
+          }
         })
       );
       

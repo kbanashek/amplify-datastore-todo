@@ -1,45 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { TodoService } from '../services/TodoService';
 import { Todo } from '../../models';
+import { useTodoForm } from '../hooks/useTodoForm';
 
 interface TodoFormProps {
   onTodoCreated?: (todo: Todo) => void;
 }
 
 export const TodoForm: React.FC<TodoFormProps> = ({ onTodoCreated }) => {
-  const [name, setName] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleSubmit = async (): Promise<void> => {
-    if (!name.trim()) {
-      setError('Todo name is required');
-      return;
-    }
-
-    try {
-      setIsSubmitting(true);
-      setError(null);
-      
-      const newTodo = await TodoService.createTodo(name.trim(), description.trim());
-      
-      // Clear form
-      setName('');
-      setDescription('');
-      
-      // Notify parent component
-      if (onTodoCreated) {
-        onTodoCreated(newTodo);
-      }
-    } catch (err) {
-      setError('Failed to create todo. Please try again.');
-      console.error('Error creating todo:', err);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  // Use the custom hook to handle form logic
+  const {
+    name,
+    setName,
+    description,
+    setDescription,
+    isSubmitting,
+    error,
+    handleSubmit
+  } = useTodoForm(onTodoCreated);
 
   return (
     <View style={styles.container}>
