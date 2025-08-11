@@ -169,9 +169,47 @@ export class TodoService {
   static subscribeTodos(callback: (items: Todo[], isSynced: boolean) => void): {
     unsubscribe: () => void;
   } {
-    return DataStore.observeQuery(Todo).subscribe((snapshot) => {
-      const { items, isSynced } = snapshot;
-      callback(items, isSynced);
+    // Track which items have been synced
+    let syncedItemIds = new Set<string>();
+    
+    // Subscribe to sync events to track individual item sync status
+    const syncSubscription = DataStore.observe(Todo).subscribe(msg => {
+      if (msg.opType === OpType.INSERT || msg.opType === OpType.UPDATE) {
+        // When an item is synced from the server, add it to our synced items set
+        if (msg.element && msg.element.id) {
+          syncedItemIds.add(msg.element.id);
+        }
+      }
     });
+    
+    // Subscribe to query results
+    const querySubscription = DataStore.observeQuery(Todo).subscribe((snapshot) => {
+      const { items, isSynced } = snapshot;
+      
+      // If fully synced, mark all items as synced
+      if (isSynced) {
+        items.forEach(item => {
+          if (item.id) {
+            syncedItemIds.add(item.id);
+          }
+        });
+      }
+      
+      // Enhance items with sync status
+      const enhancedItems = items.map(item => {
+        // Add a non-persistent property to track sync status
+        (item as any)._synced = syncedItemIds.has(item.id);
+        return item;
+      });
+      
+      callback(enhancedItems, isSynced);
+    });
+    
+    return {
+      unsubscribe: () => {
+        querySubscription.unsubscribe();
+        syncSubscription.unsubscribe();
+      }
+    };
   }
 }

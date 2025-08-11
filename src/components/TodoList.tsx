@@ -4,13 +4,25 @@ import { Todo } from '../../models';
 import { useTodoList } from '../hooks/useTodoList';
 
 interface TodoItemProps {
-  todo: Todo;
+  todo: Todo & { _synced?: boolean };
   onDelete: (id: string) => void;
+  isOnline: boolean;
 }
 
-const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete }) => {
+const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete, isOnline }) => {
+  // Determine sync status icon color
+  const getSyncStatusColor = () => {
+    if (!isOnline) return '#ff6b6b'; // Red when offline
+    return todo._synced ? '#1dd1a1' : '#feca57'; // Green if synced, yellow if pending
+  };
+
   return (
     <View style={styles.todoItem}>
+      <View style={styles.syncIconContainer}>
+        <View 
+          style={[styles.syncIcon, { backgroundColor: getSyncStatusColor() }]} 
+        />
+      </View>
       <View style={styles.todoContent}>
         <Text style={styles.todoTitle}>{todo.name}</Text>
         {todo.description && (
@@ -97,7 +109,7 @@ export const TodoList: React.FC = () => {
             data={todos}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <TodoItem todo={item} onDelete={handleDeleteTodo} />
+              <TodoItem todo={item} onDelete={handleDeleteTodo} isOnline={isOnline} />
             )}
             contentContainerStyle={styles.listContent}
           />
@@ -111,6 +123,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f6fa',
+  },
+  syncIconContainer: {
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  syncIcon: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
   },
   header: {
     flexDirection: 'row',
