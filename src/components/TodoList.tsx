@@ -91,14 +91,17 @@ export const TodoList: React.FC = () => {
           <Text style={styles.emptyText}>No todos yet. Create one!</Text>
         </View>
       ) : (
-        <FlatList
-          data={todos}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <TodoItem todo={item} onDelete={handleDeleteTodo} />
-          )}
-          contentContainerStyle={styles.listContent}
-        />
+        // Using FlatList directly without wrapping it in a ScrollView
+        <View style={{flex: 1}}>
+          <FlatList
+            data={todos}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <TodoItem todo={item} onDelete={handleDeleteTodo} />
+            )}
+            contentContainerStyle={styles.listContent}
+          />
+        </View>
       )}
     </View>
   );

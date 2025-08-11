@@ -44,8 +44,22 @@ export class TodoService {
             return resolvedModel;
           }
 
-          // For delete operations, always accept local delete
+          // For delete operations, handle carefully
           if (operation === OpType.DELETE) {
+            // If remote is already deleted, use that version
+            if (remoteModel._deleted) {
+              console.log('Remote already deleted, using remote model');
+              return remoteModel;
+            }
+            
+            // If local model is incomplete, use remote with _deleted flag
+            if (!localModel.name && !localModel.description) {
+              console.log('Local model incomplete, using remote model with delete flag');
+              return { ...remoteModel, _deleted: true };
+            }
+            
+            // Otherwise use local delete
+            console.log('Using local delete');
             return localModel;
           }
         }

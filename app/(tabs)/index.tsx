@@ -1,10 +1,9 @@
-import { StyleSheet, SafeAreaView, ScrollView, View } from 'react-native';
+import { StyleSheet, SafeAreaView, View } from 'react-native';
 import { useEffect } from 'react';
 
 import { TodoForm } from '../../src/components/TodoForm';
 import { TodoList } from '../../src/components/TodoList';
 import { NetworkStatusIndicator } from '../../src/components/NetworkStatusIndicator';
-import { AmplifyProvider } from '../../src/contexts/AmplifyContext';
 
 export default function HomeScreen() {
   // App initialization
@@ -14,17 +13,18 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <AmplifyProvider>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <NetworkStatusIndicator />
-        </View>
-        <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
-          <TodoForm />
-          <TodoList />
-        </ScrollView>
-      </SafeAreaView>
-    </AmplifyProvider>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <NetworkStatusIndicator />
+      </View>
+      <View style={styles.content}>
+        <TodoForm />
+      </View>
+      {/* TodoList has its own scrolling via FlatList */}
+      <View style={styles.listContainer}>
+        <TodoList />
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -40,10 +40,11 @@ const styles = StyleSheet.create({
     borderBottomColor: '#dfe4ea',
     alignItems: 'flex-end',
   },
-  scrollView: {
-    flex: 1,
-  },
   content: {
     padding: 16,
+  },
+  listContainer: {
+    flex: 1,
+    marginTop: 8,
   },
 });
