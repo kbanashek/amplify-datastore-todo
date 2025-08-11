@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-lxtodoapp-dev-22aa5-authRole",
+      "UnauthRoleArn": "arn:aws:iam::377973420769:role/amplify-lxtodoapp-dev-22aa5-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::377973420769:role/amplify-lxtodoapp-dev-22aa5-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-lxtodoapp-dev-22aa5-deployment",
+      "UnauthRoleName": "amplify-lxtodoapp-dev-22aa5-unauthRole",
+      "StackName": "amplify-lxtodoapp-dev-22aa5",
+      "StackId": "arn:aws:cloudformation:us-east-1:377973420769:stack/amplify-lxtodoapp-dev-22aa5/c34e0890-7467-11f0-ad59-0e9e2ddb4515",
+      "AmplifyAppId": "d19l3dxjz56ge3"
+    }
+  }
+}
