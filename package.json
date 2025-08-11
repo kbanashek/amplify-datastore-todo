@@ -1,6 +1,6 @@
 {
   "name": "amplify-datastore-todo",
-  "main": "expo-router/entry",
+  "main": "./entry.js",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
