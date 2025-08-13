@@ -2,6 +2,10 @@
 
 A React Native Todo application built with Expo and AWS Amplify that demonstrates online/offline synchronization capabilities using DataStore with SQLite as the storage adapter. Perfect for building resilient apps that work anywhere! 🚀
 
+![Todo App Screenshot](./assets/images/todo-app-screenshot.png)
+
+*The Todo app running on iOS devices showing the create todo form and todo list with online/offline sync capabilities*
+
 ## ✅ Features
 
 - 📝 Create and manage todos with real-time updates
