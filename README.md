@@ -1,19 +1,23 @@
-# ✨ Amplify DataStore Todo App ✨
+# ✨ LX App Sync POC - Amplify DataStore Task Management App ✨
 
-A React Native Todo application built with Expo and AWS Amplify that demonstrates online/offline synchronization capabilities using DataStore with SQLite as the storage adapter. Perfect for building resilient apps that work anywhere! 🚀
+A React Native application built with Expo and AWS Amplify that demonstrates online/offline synchronization capabilities using DataStore with SQLite as the storage adapter. This POC showcases task management, dynamic question rendering, and data point recording for health assessment workflows. Perfect for building resilient apps that work anywhere! 🚀
 
-![Todo App Screenshot](./assets/images/todo-app-screenshot.png)
+![App Screenshot](./assets/images/todo-app-screenshot.png)
 
-*The Todo app running on iOS devices showing the create todo form and todo list with online/offline sync capabilities*
+*The app running on iOS devices showing task management, question forms, and online/offline sync capabilities*
 
 ## ✅ Features
 
-- 📝 Create and manage todos with real-time updates
-- 🔄 Offline-first architecture with seamless synchronization
-- 📶 Visual indicators for network and sync status
-- 🛡️ TypeScript implementation for type safety
-- ☁️ AWS AppSync backend integration
-- 🔍 Smart conflict resolution for data consistency
+- 📋 **Task Management**: Create, view, and manage tasks with due dates and status tracking
+- 📝 **Dynamic Question Forms**: Multi-page questionnaires with various question types (text, single/multi-select, numeric scale, date)
+- 📊 **Data Point Recording**: Automatic recording of answers as DataPointInstance records for analytics
+- 🔄 **Offline-First Architecture**: Seamless synchronization with AWS AppSync
+- 📶 **Visual Indicators**: Network and sync status indicators
+- 🎨 **Component Architecture**: Clean separation of logic (hooks) and presentation (components)
+- 🛡️ **TypeScript**: Full type safety throughout the application
+- ☁️ **AWS AppSync Backend**: GraphQL API with real-time subscriptions
+- 🔍 **Smart Conflict Resolution**: Custom conflict resolution for data consistency
+- 📱 **Multi-Screen Activities**: Support for introduction, question pages, review, and completion screens
 
 ## 💻 Prerequisites
 
@@ -63,39 +67,100 @@ In the output, you'll find options to open the app in a:
 /amplify-datastore-todo
 ├── app/                    # Expo Router app directory
 │   ├── (tabs)/            # Tab-based navigation
-│   │   └── index.tsx      # Main screen with TodoForm and TodoList
+│   │   ├── index.tsx      # Main tasks screen with task creation
+│   │   ├── dashboard-sim.tsx  # Dashboard view (read-only)
+│   │   ├── questions.tsx  # Dynamic question rendering screen
+│   │   └── seed-screen.tsx  # Data seeding interface
 │   └── _layout.tsx        # App layout configuration
 ├── models/                # Amplify generated models
+├── scripts/               # Utility scripts
+│   ├── seed-question-data.ts  # Seed script for activities and tasks
+│   └── version-bump.sh   # Version bumping automation
 ├── src/
 │   ├── amplify-config.ts  # Amplify configuration
 │   ├── API.ts            # Generated TypeScript types from GraphQL schema
 │   ├── components/        # UI components
 │   │   ├── NetworkStatusIndicator.tsx
-│   │   ├── TodoForm.tsx
-│   │   └── TodoList.tsx
+│   │   ├── TasksGroupedView.tsx  # Task list grouped by date/time
+│   │   ├── TaskCard.tsx  # Individual task card component
+│   │   └── questions/     # Question rendering components
+│   │       ├── QuestionRenderer.tsx
+│   │       ├── TextQuestion.tsx
+│   │       ├── SingleSelectQuestion.tsx
+│   │       ├── MultiSelectQuestion.tsx
+│   │       ├── NumberQuestion.tsx
+│   │       ├── DateQuestion.tsx
+│   │       ├── IntroductionScreen.tsx
+│   │       ├── CompletionScreen.tsx
+│   │       ├── ReviewScreen.tsx
+│   │       ├── NavigationButtons.tsx
+│   │       └── ProgressIndicator.tsx
 │   ├── contexts/
 │   │   └── AmplifyContext.tsx  # Amplify context provider
 │   ├── graphql/          # Generated GraphQL operations
 │   │   ├── mutations.ts  # GraphQL mutation operations
 │   │   ├── queries.ts    # GraphQL query operations
 │   │   └── subscriptions.ts # GraphQL subscription operations
-│   ├── hooks/            # Custom React hooks
+│   ├── hooks/            # Custom React hooks (business logic)
 │   │   ├── useAmplifyState.ts # Amplify state management
 │   │   ├── useNetworkStatus.ts # Network status logic
-│   │   ├── useTodoForm.ts # Todo form logic
-│   │   └── useTodoList.ts # Todo list logic
-│   └── services/
-│       └── TodoService.ts  # Todo CRUD operations
+│   │   ├── useTaskForm.ts # Task form logic
+│   │   ├── useTaskList.ts # Task list logic
+│   │   ├── useGroupedTasks.ts # Task grouping logic
+│   │   └── useQuestionsScreen.ts # Questions screen logic
+│   ├── services/         # Data services
+│   │   ├── TaskService.ts  # Task CRUD operations
+│   │   ├── ActivityService.ts  # Activity operations
+│   │   ├── TaskAnswerService.ts  # Task answer operations
+│   │   ├── DataPointService.ts  # Data point operations
+│   │   └── ConflictResolution.ts  # Centralized conflict resolution
+│   ├── types/            # TypeScript type definitions
+│   │   ├── ActivityConfig.ts  # Activity JSON structure types
+│   │   └── Task.ts  # Task type definitions
+│   └── utils/            # Utility functions
+│       └── activityParser.ts  # Activity JSON parser
 └── aws-exports.js         # AWS configuration (generated by Amplify CLI)
 ```
 
+## 📱 Key Features
+
+### Task Management
+- Create tasks with due dates and times
+- Tasks grouped by day and time
+- Status tracking (OPEN, STARTED, INPROGRESS, COMPLETED)
+- Task type icons for visual identification
+- BEGIN/RESUME buttons based on task status
+
+### Dynamic Question Rendering
+- Multi-page questionnaires with introduction, question pages, review, and completion screens
+- Support for various question types:
+  - Text input (single-line and multi-line)
+  - Single select (radio buttons)
+  - Multi-select (checkboxes)
+  - Numeric scale (slider)
+  - Date picker
+- Form validation with required field checking
+- Progress indicators for multi-page activities
+- Answer persistence and restoration
+
+### Data Point Recording
+- Automatic creation of `DataPointInstance` records when answers are submitted
+- Links answers to activities and questions for analytics
+- Synchronized with AWS AppSync for cloud storage
+
+### Component Architecture
+- **Hooks contain all business logic**: State management, side effects, API calls
+- **Components are presentation-only**: Render UI and handle user interactions
+- **Small, focused components**: Each component has a single responsibility
+- **Reusable sub-components**: Shared UI elements across screens
+
 ## 📱 Testing Offline Functionality
 
-1. 🔍 Create a few todos while online
+1. 🔍 Create a few tasks while online
 2. ✈️ Turn off your device's network connection (airplane mode or disable Wi-Fi/cellular)
-3. 📝 Create more todos while offline
+3. 📝 Create more tasks and answer questions while offline
 4. 📶 Turn your network connection back on
-5. ✨ Watch as the sync indicator changes and your offline todos sync with the backend
+5. ✨ Watch as the sync indicator changes and your offline data syncs with the backend
 
 ## 🔧 Troubleshooting
 
@@ -112,6 +177,49 @@ In the output, you'll find options to open the app in a:
 - ⚠️ If you encounter "Amplify has not been configured" warnings, check that Amplify is initialized before any component tries to use it (see our custom entry.js approach)
 
 ## 👏 Implementation Highlights
+
+### 🏗️ Component Architecture Pattern
+
+This app follows a strict separation of concerns:
+
+**Hooks (`src/hooks/`)**: Contain all business logic
+- State management (`useState`, `useReducer`)
+- Side effects (`useEffect`, subscriptions)
+- API calls and data operations
+- Event handlers with logic
+- Validation and data transformation
+
+**Components (`src/components/`, `app/`)**: Handle presentation only
+- Render UI based on props
+- Handle user interactions (pass to hooks)
+- Compose smaller sub-components
+- No business logic in components
+
+**Example Pattern:**
+```typescript
+// ❌ Bad: Large component with all logic
+export default function MyComponent() {
+  const [state, setState] = useState(...);
+  useEffect(() => { ... }, []);
+  const handleSubmit = async () => { ... };
+  // 500+ lines of logic and JSX
+}
+
+// ✅ Good: Hook contains logic, component renders
+// src/hooks/useMyComponent.ts
+export const useMyComponent = () => {
+  const [state, setState] = useState(...);
+  useEffect(() => { ... }, []);
+  const handleSubmit = async () => { ... };
+  return { state, handleSubmit, ... };
+};
+
+// app/(tabs)/my-component.tsx
+export default function MyComponent() {
+  const { state, handleSubmit } = useMyComponent();
+  return <View>...</View>;
+}
+```
 
 ### 💡 Custom Amplify Initialization
 
@@ -288,7 +396,7 @@ DataStore is Amplify's solution for offline-first data management:
 - **Conflict Resolution**: Manages conflicts between local and remote changes
 - **Real-time Updates**: Subscribes to changes and updates the UI
 
-In our app, `TodoService.ts` uses DataStore for all data operations, enabling offline functionality.
+In our app, services like `TaskService.ts`, `ActivityService.ts`, and `TaskAnswerService.ts` use DataStore for all data operations, enabling offline functionality.
 
 #### How They Work Together
 
@@ -454,6 +562,43 @@ To implement this, you would:
 - **Pinpoint**: For analytics and push notifications
 - **API Gateway**: For REST APIs if needed alongside GraphQL
 
+## 🔄 Version Management
+
+This project uses semantic versioning with automated version bumping:
+
+```bash
+# Use the Cursor command
+/version-bump.cursor
+
+# Or run directly
+.cursor/commands/version-bump.sh [patch|minor|major] "Commit message"
+```
+
+The version bump script:
+- Detects current version from branch name
+- Validates commit message is meaningful
+- Creates new version branch
+- Commits all changes
+- Pushes to origin
+
+## 📊 Data Models
+
+### Core Models
+- **Task**: Represents user tasks with due dates, status, and activity links
+- **Activity**: Defines questionnaire structure with JSON configuration
+- **Question**: Individual questions within activities
+- **TaskAnswer**: Stores user answers to questions
+- **DataPointInstance**: Records data points for analytics and reporting
+
+### Data Flow
+1. User creates/views tasks
+2. User clicks task to start questionnaire
+3. System loads Activity configuration
+4. User answers questions across multiple screens
+5. Answers saved as TaskAnswer records
+6. DataPointInstance records created for analytics
+7. Task status updated (OPEN → STARTED → INPROGRESS → COMPLETED)
+
 ## Learn More
 
 - [AWS Amplify Documentation](https://docs.amplify.aws/)
@@ -461,3 +606,4 @@ To implement this, you would:
 - [DataStore Documentation](https://docs.amplify.aws/lib/datastore/getting-started/q/platform/js/)
 - [AppSync Documentation](https://docs.aws.amazon.com/appsync/)
 - [Expo Documentation](https://docs.expo.dev/)
+- [React Native Documentation](https://reactnative.dev/)
