@@ -59,3 +59,20 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+# Temporary/experimental policy files (keep only minimal-policy-final.json)
+minimal-policy-*.json
+!minimal-policy-final.json
+
+# Temporary documentation
+*-PERMISSIONS.md
+TEMPORARY-*.md
+
+# One-time troubleshooting scripts
+fix-*.sh
+fresh-*.sh
+reset-*.sh
+setup-new-*.sh
+
+# Duplicate generated directories
+src/models/

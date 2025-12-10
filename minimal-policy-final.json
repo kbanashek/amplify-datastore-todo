@@ -1,0 +1,87 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CF",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:ListStackResources",
+        "cloudformation:DescribeStacks",
+        "cloudformation:DescribeStackResources",
+        "cloudformation:GetTemplate",
+        "cloudformation:ListStacks",
+        "cloudformation:CreateStack",
+        "cloudformation:UpdateStack",
+        "cloudformation:DeleteStack",
+        "cloudformation:ContinueUpdateRollback"
+      ],
+      "Resource": [
+        "arn:aws:cloudformation:us-east-1:377973420769:stack/amplify-lxtodoapp-dev-*/*",
+        "arn:aws:cloudformation:us-east-1:377973420769:stack/amplify-lxtodoapp-dev-*"
+      ]
+    },
+    {
+      "Sid": "S3",
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:PutObject", "s3:ListBucket"],
+      "Resource": [
+        "arn:aws:s3:::amplify-lxtodoapp-dev-*-deployment",
+        "arn:aws:s3:::amplify-lxtodoapp-dev-*-deployment/*"
+      ]
+    },
+    {
+      "Sid": "IAM",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:DeleteRole",
+        "iam:GetRole",
+        "iam:ListRoles",
+        "iam:AttachRolePolicy",
+        "iam:DetachRolePolicy",
+        "iam:PutRolePolicy",
+        "iam:DeleteRolePolicy",
+        "iam:GetRolePolicy",
+        "iam:ListRolePolicies",
+        "iam:ListAttachedRolePolicies",
+        "iam:PassRole",
+        "iam:TagRole",
+        "iam:UntagRole",
+        "iam:ListRoleTags"
+      ],
+      "Resource": [
+        "arn:aws:iam::377973420769:role/*IAM*",
+        "arn:aws:iam::377973420769:role/amplify-*"
+      ]
+    },
+    {
+      "Sid": "AS",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:CreateGraphqlApi",
+        "appsync:UpdateGraphqlApi",
+        "appsync:GetGraphqlApi",
+        "appsync:ListGraphqlApis",
+        "appsync:StartSchemaCreation",
+        "appsync:GetSchemaCreationStatus",
+        "appsync:CreateDataSource",
+        "appsync:UpdateDataSource",
+        "appsync:DeleteDataSource",
+        "appsync:GetDataSource",
+        "appsync:ListDataSources"
+      ],
+      "Resource": ["arn:aws:appsync:us-east-1:377973420769:apis/*"]
+    },
+    {
+      "Sid": "DDB",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:CreateTable",
+        "dynamodb:UpdateTable",
+        "dynamodb:DescribeTable",
+        "dynamodb:ListTables"
+      ],
+      "Resource": ["arn:aws:dynamodb:us-east-1:377973420769:table/*"]
+    }
+  ]
+}

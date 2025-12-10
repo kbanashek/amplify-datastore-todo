@@ -1,0 +1,146 @@
+import { IconSymbol } from "@/components/ui/IconSymbol";
+import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
+import React, { useState } from "react";
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { NavigationMenu } from "../../src/components/NavigationMenu";
+import { NetworkStatusIndicator } from "../../src/components/NetworkStatusIndicator";
+import { TasksGroupedView } from "../../src/components/TasksGroupedView";
+import { useGroupedTasks } from "../../src/hooks/useGroupedTasks";
+import { useTaskList } from "../../src/hooks/useTaskList";
+import { useRouter } from "expo-router";
+
+export default function DashboardSimScreen() {
+  const { tasks, loading, error, handleDeleteTask } = useTaskList();
+  const groupedTasks = useGroupedTasks(tasks);
+  const [showMenu, setShowMenu] = useState(false);
+  const colorScheme = useColorScheme();
+  const colors = Colors[colorScheme ?? "light"];
+  const insets = useSafeAreaInsets();
+  const router = useRouter();
+
+  const handleTaskPress = (task: any) => {
+    console.log("📋 [DashboardSim] Task pressed", {
+      taskId: task.id,
+      taskTitle: task.title,
+      entityId: task.entityId,
+      activityIndex: task.activityIndex,
+      status: task.status,
+      taskType: task.taskType,
+      hasEntityId: !!task.entityId,
+    });
+
+    if (!task.entityId) {
+      console.warn("⚠️ [DashboardSim] Task missing entityId, cannot navigate to questions", {
+        taskId: task.id,
+        taskTitle: task.title,
+      });
+      Alert.alert(
+        "No Questions Available",
+        "This task does not have an associated activity. Tasks need an entityId that links to an Activity to display questions.\n\nPlease use the seed data feature or create a task with a valid Activity reference.",
+        [{ text: "OK", style: "default" }]
+      );
+      return;
+    }
+
+    console.log("🧭 [DashboardSim] Navigating to questions screen", {
+      taskId: task.id,
+      entityId: task.entityId,
+    });
+
+    router.push({
+      pathname: "/(tabs)/questions",
+      params: { taskId: task.id, entityId: task.entityId },
+    });
+  };
+
+  return (
+    <View style={[styles.container, { paddingTop: insets.top }]}>
+      <View style={styles.header}>
+        <View style={styles.headerTop}>
+          <Text style={styles.headerTitle}>Dashboard SIM</Text>
+          <TouchableOpacity
+            onPress={() => {
+              console.log("[DashboardSim] Menu button pressed");
+              setShowMenu(true);
+            }}
+            style={styles.menuButton}
+          >
+            <IconSymbol
+              name="line.3.horizontal"
+              size={24}
+              color={colors.text}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.headerBottom}>
+          <NetworkStatusIndicator />
+        </View>
+      </View>
+
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+      >
+        <TasksGroupedView
+          groupedTasks={groupedTasks}
+          loading={loading}
+          error={error}
+          onTaskPress={handleTaskPress}
+          onDelete={handleDeleteTask}
+        />
+      </ScrollView>
+
+      <NavigationMenu visible={showMenu} onClose={() => setShowMenu(false)} />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f5f6fa",
+  },
+  header: {
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: "#fff",
+    borderBottomWidth: 1,
+    borderBottomColor: "#dfe4ea",
+  },
+  headerTop: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#2f3542",
+    flex: 1,
+  },
+  headerBottom: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  menuButton: {
+    padding: 4,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    padding: 20,
+    paddingBottom: 24,
+  },
+});
+

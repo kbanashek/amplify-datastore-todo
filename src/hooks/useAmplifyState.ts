@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
 import { Hub } from "@aws-amplify/core";
 import { DataStore } from "@aws-amplify/datastore";
 import NetInfo from "@react-native-community/netinfo";
+import { useEffect, useState } from "react";
 import { configureAmplify } from "../amplify-config";
-import { TodoService } from "../services/TodoService";
+import { ConflictResolution } from "../services/ConflictResolution";
 
 // Define enums for network and sync states
 export enum NetworkStatus {
@@ -44,58 +44,86 @@ export const useAmplifyState = (): AmplifyState => {
   const [conflictCount, setConflictCount] = useState<number>(0);
 
   useEffect(() => {
-    configureAmplify();
-    // Configure custom conflict resolution strategy
-    TodoService.configureConflictResolution();
-    DataStore.start();
+    let isMounted = true;
+    let hubListener: any = null;
+    let unsubscribeNetInfo: (() => void) | null = null;
 
-    // Subscribe to DataStore events
-    const hubListener = Hub.listen("datastore", async (hubData: any) => {
-      const { event, data } = hubData.payload;
+    const initializeDataStore = async () => {
+      try {
+        configureAmplify();
+        // Configure unified conflict resolution strategy for all models
+        ConflictResolution.configure();
 
-      switch (event) {
-        case DataStoreEventType.NetworkStatus:
-          setNetworkStatus(
-            data.active ? NetworkStatus.Online : NetworkStatus.Offline
-          );
-          break;
-        case DataStoreEventType.ConflictDetected:
+        // Start DataStore with sync enabled
+        await DataStore.start();
 
-          // Increment conflict count when a conflict is detected
-          setConflictCount((prevCount) => prevCount + 1);
-          break;
-        case DataStoreEventType.SyncQueriesStarted:
-          setSyncState(SyncState.Syncing);
-          break;
-        case DataStoreEventType.SyncQueriesReady:
-          setSyncState(SyncState.Synced);
-          setIsReady(true);
-          break;
-        case DataStoreEventType.SyncQueriesError:
+        if (!isMounted) return;
+
+        // Subscribe to DataStore events
+        hubListener = Hub.listen("datastore", async (hubData: any) => {
+          if (!isMounted) return;
+
+          const { event, data } = hubData.payload;
+
+          switch (event) {
+            case DataStoreEventType.NetworkStatus:
+              setNetworkStatus(
+                data.active ? NetworkStatus.Online : NetworkStatus.Offline
+              );
+              break;
+            case DataStoreEventType.ConflictDetected:
+              // Increment conflict count when a conflict is detected
+              setConflictCount((prevCount) => prevCount + 1);
+              break;
+            case DataStoreEventType.SyncQueriesStarted:
+              setSyncState(SyncState.Syncing);
+              break;
+            case DataStoreEventType.SyncQueriesReady:
+              setSyncState(SyncState.Synced);
+              setIsReady(true);
+              break;
+            case DataStoreEventType.SyncQueriesError:
+              setSyncState(SyncState.Error);
+              break;
+            default:
+              break;
+          }
+        });
+
+        // Initialize network status
+        NetInfo.fetch().then((state) => {
+          if (isMounted) {
+            setNetworkStatus(
+              state.isConnected ? NetworkStatus.Online : NetworkStatus.Offline
+            );
+          }
+        });
+
+        unsubscribeNetInfo = NetInfo.addEventListener((state) => {
+          if (isMounted) {
+            setNetworkStatus(
+              state.isConnected ? NetworkStatus.Online : NetworkStatus.Offline
+            );
+          }
+        });
+      } catch (error) {
+        console.error("Error initializing DataStore:", error);
+        if (isMounted) {
           setSyncState(SyncState.Error);
-          break;
-        default:
-          break;
+        }
       }
-    });
+    };
 
-    NetInfo.fetch().then((state) => {
-      setNetworkStatus(
-        state.isConnected ? NetworkStatus.Online : NetworkStatus.Offline
-      );
-    });
-
-    const unsubscribeNetInfo = NetInfo.addEventListener((state) => {
-      setNetworkStatus(
-        state.isConnected ? NetworkStatus.Online : NetworkStatus.Offline
-      );
-    });
-
-    DataStore.start();
+    initializeDataStore();
 
     return () => {
-      hubListener();
-      unsubscribeNetInfo();
+      isMounted = false;
+      if (hubListener) {
+        hubListener();
+      }
+      if (unsubscribeNetInfo) {
+        unsubscribeNetInfo();
+      }
     };
   }, []);
 

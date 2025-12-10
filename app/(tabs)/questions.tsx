@@ -1,0 +1,220 @@
+import { useBottomTabOverflow } from "@/components/ui/TabBarBackground";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { NetworkStatusIndicator } from "../../src/components/NetworkStatusIndicator";
+import { CompletionScreen } from "../../src/components/questions/CompletionScreen";
+import { ErrorState } from "../../src/components/questions/ErrorState";
+import { IntroductionScreen } from "../../src/components/questions/IntroductionScreen";
+import { LoadingState } from "../../src/components/questions/LoadingState";
+import { NavigationButtons } from "../../src/components/questions/NavigationButtons";
+import { ProgressIndicator } from "../../src/components/questions/ProgressIndicator";
+import { QuestionScreenContent } from "../../src/components/questions/QuestionScreenContent";
+import { ReviewScreenContainer } from "../../src/components/questions/ReviewScreenContainer";
+import { useQuestionsScreen } from "../../src/hooks/useQuestionsScreen";
+
+export default function QuestionsScreen() {
+  const insets = useSafeAreaInsets();
+  const tabBarHeight = useBottomTabOverflow();
+
+  const {
+    // State
+    loading,
+    error,
+    activityData,
+    activityConfig,
+    answers,
+    errors,
+    isSubmitting,
+    currentScreenIndex,
+    showIntroduction,
+    showReview,
+    showCompletion,
+    currentScreenValid,
+    taskId,
+
+    // Actions
+    handleAnswerChange,
+    handleSubmit,
+    handleNext,
+    handlePrevious,
+    handleBegin,
+    handleBackToQuestions,
+    handleReviewSubmit,
+    handleCompletionDone,
+    handleBack,
+  } = useQuestionsScreen();
+
+  // Loading state
+  if (loading) {
+    return <LoadingState taskId={taskId} topInset={insets.top} />;
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <ErrorState
+        error={error}
+        taskId={taskId}
+        topInset={insets.top}
+        onBack={handleBack}
+      />
+    );
+  }
+
+  // Empty state
+  if (!activityData || activityData.screens.length === 0) {
+    return (
+      <View style={[styles.container, { paddingTop: insets.top }]}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Questions</Text>
+          <NetworkStatusIndicator />
+        </View>
+        <View style={styles.centerContainer}>
+          <Text style={styles.emptyText}>No questions available</Text>
+          <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+            <Text style={styles.backButtonText}>Go Back</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+
+  return (
+    <View style={[styles.container, { paddingTop: insets.top }]}>
+      <View style={styles.header}>
+        <View style={styles.headerTop}>
+          <Text style={styles.headerTitle}>
+            {taskId ? "Answer Questions" : "Questions"}
+          </Text>
+          {taskId && !showIntroduction && !showCompletion && (
+            <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+              <Text style={styles.backButtonText}>Back</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+        <View style={styles.headerBottom}>
+          <NetworkStatusIndicator />
+        </View>
+      </View>
+
+      {/* Introduction Screen */}
+      {showIntroduction && activityConfig && (
+        <IntroductionScreen
+          activityConfig={activityConfig}
+          onBegin={handleBegin}
+        />
+      )}
+
+      {/* Review Screen */}
+      {showReview && !showIntroduction && !showCompletion && activityData && (
+        <ReviewScreenContainer
+          activityData={activityData}
+          answers={answers}
+          isSubmitting={isSubmitting}
+          onBackToQuestions={handleBackToQuestions}
+          onSubmit={handleSubmit}
+        />
+      )}
+
+      {/* Completion Screen */}
+      {showCompletion && activityConfig && (
+        <CompletionScreen
+          activityConfig={activityConfig}
+          onDone={handleCompletionDone}
+        />
+      )}
+
+      {/* Question Screens (Multi-page) */}
+      {!showIntroduction &&
+        !showReview &&
+        !showCompletion &&
+        activityData &&
+        activityData.screens.length > 0 && (
+          <View style={{ flex: 1, position: "relative" }}>
+            {/* Progress Indicator */}
+            <ProgressIndicator
+              currentPage={currentScreenIndex + 1}
+              totalPages={activityData.screens.length}
+            />
+
+            {/* Question Content */}
+            <QuestionScreenContent
+              activityData={activityData}
+              currentScreenIndex={currentScreenIndex}
+              answers={answers}
+              errors={errors}
+              onAnswerChange={handleAnswerChange}
+              bottomInset={insets.bottom}
+            />
+
+            {/* Navigation Buttons */}
+            <NavigationButtons
+              currentScreenIndex={currentScreenIndex}
+              totalScreens={activityData.screens.length}
+              currentScreenValid={currentScreenValid}
+              activityConfig={activityConfig}
+              onPrevious={handlePrevious}
+              onNext={handleNext}
+              onReviewOrSubmit={handleReviewSubmit}
+              tabBarHeight={tabBarHeight}
+              bottomInset={insets.bottom}
+            />
+          </View>
+        )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f5f6fa",
+  },
+  header: {
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: "#fff",
+    borderBottomWidth: 1,
+    borderBottomColor: "#dfe4ea",
+  },
+  headerTop: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#2f3542",
+    flex: 1,
+  },
+  headerBottom: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  centerContainer: {
+    flex: 1,
+    padding: 32,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  emptyText: {
+    color: "#747d8c",
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 16,
+  },
+  backButton: {
+    backgroundColor: "#ecf0f1",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  backButtonText: {
+    color: "#57606f",
+    fontSize: 14,
+    fontWeight: "600",
+  },
+});

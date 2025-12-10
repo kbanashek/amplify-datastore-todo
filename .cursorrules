@@ -1,0 +1,98 @@
+# Cursor Rules for Amplify DataStore Todo App
+
+## Version Control
+
+### Commit Messages
+
+- **ALWAYS** provide meaningful commit messages when using version-bump command
+- Commit messages are **REQUIRED** and must be descriptive
+- Good examples:
+  - "Add task grouping by date and time with icons"
+  - "Fix DataStore sync issue for questions"
+  - "Update task card UI to match design specifications"
+- Bad examples (will be rejected):
+  - "update"
+  - "changes"
+  - "fix"
+  - Empty or whitespace-only messages
+
+### Version Bumping
+
+- Use semantic versioning (major.minor.patch)
+- Always provide a meaningful commit message when bumping versions
+- The version-bump script will validate that commit messages are descriptive
+
+## Code Style
+
+### TypeScript/React Native
+
+- Use TypeScript for type safety
+- Prefer functional components with hooks
+- Use meaningful variable and function names
+- Add comments for complex logic
+
+### Component Architecture
+
+- **ALWAYS** separate component logic from presentation
+- **Components should be small and focused** - if a component exceeds ~200 lines, break it down into smaller sub-components
+- **All business logic, state management, and side effects should live in custom hooks** - components should only handle rendering and user interactions
+- **Pattern to follow:**
+  - Create a custom hook (e.g., `useComponentName`) that contains:
+    - All state (`useState`, `useReducer`)
+    - All side effects (`useEffect`, subscriptions)
+    - All business logic (validation, data transformation, API calls)
+    - All event handlers that contain logic
+  - The component should only:
+    - Call the hook to get state and handlers
+    - Render UI using smaller sub-components
+    - Pass props to sub-components
+- **Example structure:**
+
+  ```
+  // ❌ Bad: Large component with all logic
+  export default function MyComponent() {
+    const [state, setState] = useState(...);
+    useEffect(() => { ... }, []);
+    const handleSubmit = async () => { ... };
+    // 500+ lines of logic and JSX
+  }
+
+  // ✅ Good: Hook contains logic, component renders
+  // src/hooks/useMyComponent.ts
+  export const useMyComponent = () => {
+    const [state, setState] = useState(...);
+    useEffect(() => { ... }, []);
+    const handleSubmit = async () => { ... };
+    return { state, handleSubmit, ... };
+  };
+
+  // app/(tabs)/my-component.tsx
+  export default function MyComponent() {
+    const { state, handleSubmit } = useMyComponent();
+    return <View>...</View>;
+  }
+  ```
+
+- **Sub-components should be created when:**
+  - A section of JSX is reusable
+  - A section has its own distinct purpose (e.g., header, footer, form section)
+  - A section is complex enough to warrant its own file
+- **File organization:**
+  - Hooks: `src/hooks/use*.ts`
+  - Sub-components: `src/components/[category]/*.tsx` (grouped by feature/category)
+  - Main components: `app/**/*.tsx`
+
+### AWS Amplify DataStore
+
+- All data models should use DataStore for persistence and sync
+- Use DataStore subscriptions for real-time updates
+- Handle conflict resolution in centralized ConflictResolution service
+
+## UI/UX
+
+### Task Display
+
+- Tasks should be grouped by day, then by time
+- Use distinct icons for different task types
+- Show "BEGIN" for new tasks, "RESUME" for started tasks
+- Match design specifications exactly
