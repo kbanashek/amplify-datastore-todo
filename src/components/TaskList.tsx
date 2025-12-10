@@ -8,17 +8,11 @@ import {
   View,
 } from "react-native";
 import { useTaskList } from "../hooks/useTaskList";
-import { Task, TaskStatus } from "../types/Task";
+import { Task, TaskFilters } from "../types/Task";
 import { TaskCard } from "./TaskCard";
 
 interface TaskListProps {
-  filters?: {
-    status?: TaskStatus[];
-    taskType?: string[];
-    dateFrom?: Date;
-    dateTo?: Date;
-    searchText?: string;
-  };
+  filters?: TaskFilters;
   onTaskPress?: (task: Task) => void;
 }
 
@@ -340,7 +334,6 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
             {
               section: info.section.title,
               highlight: info.section.highlight,
-              index: info.section.index,
             }
           );
           return renderSectionHeader(info);

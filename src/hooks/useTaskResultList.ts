@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { TaskResultService } from "../services/TaskResultService";
 import { TaskResult } from "../types/TaskResult";
 
@@ -14,15 +14,17 @@ export const useTaskResultList = (): UseTaskResultListReturn => {
   const [taskResults, setTaskResults] = useState<TaskResult[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [subscription, setSubscription] = useState<(() => void) | null>(null);
-
   useEffect(() => {
     const sub = TaskResultService.subscribeTaskResults((items, isSynced) => {
       setTaskResults(items);
       setLoading(false);
-      console.log('[useTaskResultList] TaskResults updated:', items.length, 'synced:', isSynced);
+      console.log(
+        "[useTaskResultList] TaskResults updated:",
+        items.length,
+        "synced:",
+        isSynced
+      );
     });
-    setSubscription(sub);
 
     return () => {
       if (sub) {
@@ -61,4 +63,3 @@ export const useTaskResultList = (): UseTaskResultListReturn => {
     refreshTaskResults,
   };
 };
-

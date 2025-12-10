@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { QuestionService } from "../services/QuestionService";
 import { Question } from "../types/Question";
 
@@ -14,15 +14,17 @@ export const useQuestionList = (): UseQuestionListReturn => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [subscription, setSubscription] = useState<(() => void) | null>(null);
-
   useEffect(() => {
     const sub = QuestionService.subscribeQuestions((items, isSynced) => {
       setQuestions(items);
       setLoading(false);
-      console.log('[useQuestionList] Questions updated:', items.length, 'synced:', isSynced);
+      console.log(
+        "[useQuestionList] Questions updated:",
+        items.length,
+        "synced:",
+        isSynced
+      );
     });
-    setSubscription(sub);
 
     return () => {
       if (sub) {
@@ -61,4 +63,3 @@ export const useQuestionList = (): UseQuestionListReturn => {
     refreshQuestions,
   };
 };
-

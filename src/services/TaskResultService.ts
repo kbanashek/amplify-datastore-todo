@@ -1,6 +1,10 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
+// @ts-ignore - TaskResult is exported from models/index.js at runtime
 import { TaskResult } from "../../models";
-import { CreateTaskResultInput, UpdateTaskResultInput } from "../types/TaskResult";
+import {
+  CreateTaskResultInput,
+  UpdateTaskResultInput,
+} from "../types/TaskResult";
 
 type TaskResultUpdateData = Omit<UpdateTaskResultInput, "id" | "_version">;
 
@@ -30,16 +34,24 @@ export class TaskResultService {
     });
   }
 
-  static async createTaskResult(input: CreateTaskResultInput): Promise<TaskResult> {
+  static async createTaskResult(
+    input: CreateTaskResultInput
+  ): Promise<TaskResult> {
     try {
-      console.log('[TaskResultService] Creating task result with DataStore:', input);
+      console.log(
+        "[TaskResultService] Creating task result with DataStore:",
+        input
+      );
       const result = await DataStore.save(
         new TaskResult({
           ...input,
         })
       );
-      
-      console.log('[TaskResultService] TaskResult created successfully:', result.id);
+
+      console.log(
+        "[TaskResultService] TaskResult created successfully:",
+        result.id
+      );
       return result;
     } catch (error) {
       console.error("Error creating task result:", error);
@@ -65,7 +77,10 @@ export class TaskResultService {
     }
   }
 
-  static async updateTaskResult(id: string, data: TaskResultUpdateData): Promise<TaskResult> {
+  static async updateTaskResult(
+    id: string,
+    data: TaskResultUpdateData
+  ): Promise<TaskResult> {
     try {
       const original = await DataStore.query(TaskResult, id);
       if (!original) {
@@ -73,7 +88,7 @@ export class TaskResultService {
       }
 
       const updated = await DataStore.save(
-        TaskResult.copyOf(original, (updated) => {
+        TaskResult.copyOf(original, (updated: TaskResult) => {
           Object.assign(updated, data);
         })
       );
@@ -99,28 +114,34 @@ export class TaskResultService {
     }
   }
 
-  static subscribeTaskResults(callback: (items: TaskResult[], isSynced: boolean) => void): {
+  static subscribeTaskResults(
+    callback: (items: TaskResult[], isSynced: boolean) => void
+  ): {
     unsubscribe: () => void;
   } {
-    console.log('[TaskResultService] Setting up DataStore subscription for TaskResult');
-    
-    const querySubscription = DataStore.observeQuery(TaskResult).subscribe((snapshot) => {
-      const { items, isSynced } = snapshot;
-      
-      console.log('[TaskResultService] DataStore subscription update:', {
-        itemCount: items.length,
-        isSynced,
-        itemIds: items.map(i => i.id)
-      });
-      
-      callback(items, isSynced);
-    });
-    
+    console.log(
+      "[TaskResultService] Setting up DataStore subscription for TaskResult"
+    );
+
+    const querySubscription = DataStore.observeQuery(TaskResult).subscribe(
+      (snapshot) => {
+        const { items, isSynced } = snapshot;
+
+        console.log("[TaskResultService] DataStore subscription update:", {
+          itemCount: items.length,
+          isSynced,
+          itemIds: items.map((i) => i.id),
+        });
+
+        callback(items, isSynced);
+      }
+    );
+
     return {
       unsubscribe: () => {
-        console.log('[TaskResultService] Unsubscribing from DataStore');
+        console.log("[TaskResultService] Unsubscribing from DataStore");
         querySubscription.unsubscribe();
-      }
+      },
     };
   }
 

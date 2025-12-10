@@ -1,9 +1,18 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
+// @ts-ignore - DataPoint and DataPointInstance are exported from models/index.js at runtime
 import { DataPoint, DataPointInstance } from "../../models";
-import { CreateDataPointInput, CreateDataPointInstanceInput, UpdateDataPointInput, UpdateDataPointInstanceInput } from "../types/DataPoint";
+import {
+  CreateDataPointInput,
+  CreateDataPointInstanceInput,
+  UpdateDataPointInput,
+  UpdateDataPointInstanceInput,
+} from "../types/DataPoint";
 
 type DataPointUpdateData = Omit<UpdateDataPointInput, "id" | "_version">;
-type DataPointInstanceUpdateData = Omit<UpdateDataPointInstanceInput, "id" | "_version">;
+type DataPointInstanceUpdateData = Omit<
+  UpdateDataPointInstanceInput,
+  "id" | "_version"
+>;
 
 export class DataPointService {
   static configureConflictResolution() {
@@ -33,16 +42,24 @@ export class DataPointService {
   }
 
   // DataPoint methods
-  static async createDataPoint(input: CreateDataPointInput): Promise<DataPoint> {
+  static async createDataPoint(
+    input: CreateDataPointInput
+  ): Promise<DataPoint> {
     try {
-      console.log('[DataPointService] Creating data point with DataStore:', input);
+      console.log(
+        "[DataPointService] Creating data point with DataStore:",
+        input
+      );
       const dataPoint = await DataStore.save(
         new DataPoint({
           ...input,
         })
       );
-      
-      console.log('[DataPointService] DataPoint created successfully:', dataPoint.id);
+
+      console.log(
+        "[DataPointService] DataPoint created successfully:",
+        dataPoint.id
+      );
       return dataPoint;
     } catch (error) {
       console.error("Error creating data point:", error);
@@ -68,7 +85,10 @@ export class DataPointService {
     }
   }
 
-  static async updateDataPoint(id: string, data: DataPointUpdateData): Promise<DataPoint> {
+  static async updateDataPoint(
+    id: string,
+    data: DataPointUpdateData
+  ): Promise<DataPoint> {
     try {
       const original = await DataStore.query(DataPoint, id);
       if (!original) {
@@ -76,7 +96,7 @@ export class DataPointService {
       }
 
       const updated = await DataStore.save(
-        DataPoint.copyOf(original, (updated) => {
+        DataPoint.copyOf(original, (updated: DataPoint) => {
           Object.assign(updated, data);
         })
       );
@@ -102,42 +122,56 @@ export class DataPointService {
     }
   }
 
-  static subscribeDataPoints(callback: (items: DataPoint[], isSynced: boolean) => void): {
+  static subscribeDataPoints(
+    callback: (items: DataPoint[], isSynced: boolean) => void
+  ): {
     unsubscribe: () => void;
   } {
-    console.log('[DataPointService] Setting up DataStore subscription for DataPoint');
-    
-    const querySubscription = DataStore.observeQuery(DataPoint).subscribe((snapshot) => {
-      const { items, isSynced } = snapshot;
-      
-      console.log('[DataPointService] DataStore subscription update:', {
-        itemCount: items.length,
-        isSynced,
-        itemIds: items.map(i => i.id)
-      });
-      
-      callback(items, isSynced);
-    });
-    
+    console.log(
+      "[DataPointService] Setting up DataStore subscription for DataPoint"
+    );
+
+    const querySubscription = DataStore.observeQuery(DataPoint).subscribe(
+      (snapshot) => {
+        const { items, isSynced } = snapshot;
+
+        console.log("[DataPointService] DataStore subscription update:", {
+          itemCount: items.length,
+          isSynced,
+          itemIds: items.map((i) => i.id),
+        });
+
+        callback(items, isSynced);
+      }
+    );
+
     return {
       unsubscribe: () => {
-        console.log('[DataPointService] Unsubscribing from DataStore');
+        console.log("[DataPointService] Unsubscribing from DataStore");
         querySubscription.unsubscribe();
-      }
+      },
     };
   }
 
   // DataPointInstance methods
-  static async createDataPointInstance(input: CreateDataPointInstanceInput): Promise<DataPointInstance> {
+  static async createDataPointInstance(
+    input: CreateDataPointInstanceInput
+  ): Promise<DataPointInstance> {
     try {
-      console.log('[DataPointService] Creating data point instance with DataStore:', input);
+      console.log(
+        "[DataPointService] Creating data point instance with DataStore:",
+        input
+      );
       const instance = await DataStore.save(
         new DataPointInstance({
           ...input,
         })
       );
-      
-      console.log('[DataPointService] DataPointInstance created successfully:', instance.id);
+
+      console.log(
+        "[DataPointService] DataPointInstance created successfully:",
+        instance.id
+      );
       return instance;
     } catch (error) {
       console.error("Error creating data point instance:", error);
@@ -154,7 +188,9 @@ export class DataPointService {
     }
   }
 
-  static async getDataPointInstance(id: string): Promise<DataPointInstance | null> {
+  static async getDataPointInstance(
+    id: string
+  ): Promise<DataPointInstance | null> {
     try {
       return await DataStore.query(DataPointInstance, id);
     } catch (error) {
@@ -163,7 +199,10 @@ export class DataPointService {
     }
   }
 
-  static async updateDataPointInstance(id: string, data: DataPointInstanceUpdateData): Promise<DataPointInstance> {
+  static async updateDataPointInstance(
+    id: string,
+    data: DataPointInstanceUpdateData
+  ): Promise<DataPointInstance> {
     try {
       const original = await DataStore.query(DataPointInstance, id);
       if (!original) {
@@ -171,7 +210,7 @@ export class DataPointService {
       }
 
       const updated = await DataStore.save(
-        DataPointInstance.copyOf(original, (updated) => {
+        DataPointInstance.copyOf(original, (updated: DataPointInstance) => {
           Object.assign(updated, data);
         })
       );
@@ -197,28 +236,34 @@ export class DataPointService {
     }
   }
 
-  static subscribeDataPointInstances(callback: (items: DataPointInstance[], isSynced: boolean) => void): {
+  static subscribeDataPointInstances(
+    callback: (items: DataPointInstance[], isSynced: boolean) => void
+  ): {
     unsubscribe: () => void;
   } {
-    console.log('[DataPointService] Setting up DataStore subscription for DataPointInstance');
-    
-    const querySubscription = DataStore.observeQuery(DataPointInstance).subscribe((snapshot) => {
+    console.log(
+      "[DataPointService] Setting up DataStore subscription for DataPointInstance"
+    );
+
+    const querySubscription = DataStore.observeQuery(
+      DataPointInstance
+    ).subscribe((snapshot) => {
       const { items, isSynced } = snapshot;
-      
-      console.log('[DataPointService] DataStore subscription update:', {
+
+      console.log("[DataPointService] DataStore subscription update:", {
         itemCount: items.length,
         isSynced,
-        itemIds: items.map(i => i.id)
+        itemIds: items.map((i) => i.id),
       });
-      
+
       callback(items, isSynced);
     });
-    
+
     return {
       unsubscribe: () => {
-        console.log('[DataPointService] Unsubscribing from DataStore');
+        console.log("[DataPointService] Unsubscribing from DataStore");
         querySubscription.unsubscribe();
-      }
+      },
     };
   }
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { DataPointService } from "../services/DataPointService";
 import { DataPoint, DataPointInstance } from "../types/DataPoint";
 
@@ -17,19 +17,28 @@ export const useDataPointList = (): UseDataPointListReturn => {
   const [instances, setInstances] = useState<DataPointInstance[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [subscriptions, setSubscriptions] = useState<Array<() => void>>([]);
-
   useEffect(() => {
     const sub1 = DataPointService.subscribeDataPoints((items, isSynced) => {
       setDataPoints(items);
       setLoading(false);
-      console.log('[useDataPointList] DataPoints updated:', items.length, 'synced:', isSynced);
+      console.log(
+        "[useDataPointList] DataPoints updated:",
+        items.length,
+        "synced:",
+        isSynced
+      );
     });
-    const sub2 = DataPointService.subscribeDataPointInstances((items, isSynced) => {
-      setInstances(items);
-      console.log('[useDataPointList] DataPointInstances updated:', items.length, 'synced:', isSynced);
-    });
-    setSubscriptions([sub1, sub2]);
+    const sub2 = DataPointService.subscribeDataPointInstances(
+      (items, isSynced) => {
+        setInstances(items);
+        console.log(
+          "[useDataPointList] DataPointInstances updated:",
+          items.length,
+          "synced:",
+          isSynced
+        );
+      }
+    );
 
     return () => {
       sub1.unsubscribe();
@@ -82,4 +91,3 @@ export const useDataPointList = (): UseDataPointListReturn => {
     refreshDataPoints,
   };
 };
-

@@ -1,6 +1,10 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
+// @ts-ignore - TaskHistory is exported from models/index.js at runtime
 import { TaskHistory } from "../../models";
-import { CreateTaskHistoryInput, UpdateTaskHistoryInput } from "../types/TaskHistory";
+import {
+  CreateTaskHistoryInput,
+  UpdateTaskHistoryInput,
+} from "../types/TaskHistory";
 
 type TaskHistoryUpdateData = Omit<UpdateTaskHistoryInput, "id" | "_version">;
 
@@ -30,16 +34,24 @@ export class TaskHistoryService {
     });
   }
 
-  static async createTaskHistory(input: CreateTaskHistoryInput): Promise<TaskHistory> {
+  static async createTaskHistory(
+    input: CreateTaskHistoryInput
+  ): Promise<TaskHistory> {
     try {
-      console.log('[TaskHistoryService] Creating task history with DataStore:', input);
+      console.log(
+        "[TaskHistoryService] Creating task history with DataStore:",
+        input
+      );
       const history = await DataStore.save(
         new TaskHistory({
           ...input,
         })
       );
-      
-      console.log('[TaskHistoryService] TaskHistory created successfully:', history.id);
+
+      console.log(
+        "[TaskHistoryService] TaskHistory created successfully:",
+        history.id
+      );
       return history;
     } catch (error) {
       console.error("Error creating task history:", error);
@@ -65,7 +77,10 @@ export class TaskHistoryService {
     }
   }
 
-  static async updateTaskHistory(id: string, data: TaskHistoryUpdateData): Promise<TaskHistory> {
+  static async updateTaskHistory(
+    id: string,
+    data: TaskHistoryUpdateData
+  ): Promise<TaskHistory> {
     try {
       const original = await DataStore.query(TaskHistory, id);
       if (!original) {
@@ -73,7 +88,7 @@ export class TaskHistoryService {
       }
 
       const updated = await DataStore.save(
-        TaskHistory.copyOf(original, (updated) => {
+        TaskHistory.copyOf(original, (updated: TaskHistory) => {
           Object.assign(updated, data);
         })
       );
@@ -99,28 +114,34 @@ export class TaskHistoryService {
     }
   }
 
-  static subscribeTaskHistories(callback: (items: TaskHistory[], isSynced: boolean) => void): {
+  static subscribeTaskHistories(
+    callback: (items: TaskHistory[], isSynced: boolean) => void
+  ): {
     unsubscribe: () => void;
   } {
-    console.log('[TaskHistoryService] Setting up DataStore subscription for TaskHistory');
-    
-    const querySubscription = DataStore.observeQuery(TaskHistory).subscribe((snapshot) => {
-      const { items, isSynced } = snapshot;
-      
-      console.log('[TaskHistoryService] DataStore subscription update:', {
-        itemCount: items.length,
-        isSynced,
-        itemIds: items.map(i => i.id)
-      });
-      
-      callback(items, isSynced);
-    });
-    
+    console.log(
+      "[TaskHistoryService] Setting up DataStore subscription for TaskHistory"
+    );
+
+    const querySubscription = DataStore.observeQuery(TaskHistory).subscribe(
+      (snapshot) => {
+        const { items, isSynced } = snapshot;
+
+        console.log("[TaskHistoryService] DataStore subscription update:", {
+          itemCount: items.length,
+          isSynced,
+          itemIds: items.map((i) => i.id),
+        });
+
+        callback(items, isSynced);
+      }
+    );
+
     return {
       unsubscribe: () => {
-        console.log('[TaskHistoryService] Unsubscribing from DataStore');
+        console.log("[TaskHistoryService] Unsubscribing from DataStore");
         querySubscription.unsubscribe();
-      }
+      },
     };
   }
 

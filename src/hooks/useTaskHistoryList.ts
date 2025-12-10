@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { TaskHistoryService } from "../services/TaskHistoryService";
 import { TaskHistory } from "../types/TaskHistory";
 
@@ -14,15 +14,17 @@ export const useTaskHistoryList = (): UseTaskHistoryListReturn => {
   const [taskHistories, setTaskHistories] = useState<TaskHistory[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [subscription, setSubscription] = useState<(() => void) | null>(null);
-
   useEffect(() => {
     const sub = TaskHistoryService.subscribeTaskHistories((items, isSynced) => {
       setTaskHistories(items);
       setLoading(false);
-      console.log('[useTaskHistoryList] TaskHistories updated:', items.length, 'synced:', isSynced);
+      console.log(
+        "[useTaskHistoryList] TaskHistories updated:",
+        items.length,
+        "synced:",
+        isSynced
+      );
     });
-    setSubscription(sub);
 
     return () => {
       if (sub) {
@@ -61,4 +63,3 @@ export const useTaskHistoryList = (): UseTaskHistoryListReturn => {
     refreshTaskHistories,
   };
 };
-

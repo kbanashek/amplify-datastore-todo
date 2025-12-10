@@ -526,7 +526,7 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
   }, [activityData, currentScreenIndex, answers]);
 
   // Validate all answers (for final submission)
-  const validateAnswers = (): boolean => {
+  const validateAnswers = useCallback((): boolean => {
     console.log("✔️ [useQuestionsScreen] validateAnswers called", {
       answersCount: Object.keys(answers).length,
       activityDataScreens: activityData?.screens.length || 0,
@@ -609,7 +609,7 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
       });
     }
     return isValid;
-  };
+  }, [activityData, answers]);
 
   // Submit answers
   const handleSubmit = useCallback(async () => {
@@ -621,9 +621,7 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
     });
 
     if (!validateAnswers()) {
-      console.warn("⚠️ [useQuestionsScreen] Validation failed, cannot submit", {
-        errors: errors,
-      });
+      console.warn("⚠️ [useQuestionsScreen] Validation failed, cannot submit");
       Alert.alert(
         "Validation Error",
         "Please fix the errors before submitting."
@@ -1069,7 +1067,15 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
         isSubmitting: false,
       });
     }
-  }, [taskId, entityId, answers, activityData, activityConfig, router]);
+  }, [
+    taskId,
+    entityId,
+    answers,
+    activityData,
+    activityConfig,
+    router,
+    validateAnswers,
+  ]);
 
   // Navigation handlers
   const handleNext = useCallback(() => {
@@ -1086,7 +1092,7 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
         "Please answer all required questions before continuing."
       );
     }
-  }, [currentScreenIndex, activityData, answers, validateCurrentScreen]);
+  }, [currentScreenIndex, validateCurrentScreen]);
 
   const handleReviewOrSubmit = useCallback(() => {
     if (validateCurrentScreen()) {
