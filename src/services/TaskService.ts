@@ -238,6 +238,34 @@ export class TaskService {
   }
 
   /**
+   * Delete all tasks from DataStore
+   * @returns {Promise<number>} - Number of tasks deleted
+   */
+  static async deleteAllTasks(): Promise<number> {
+    try {
+      console.log("[TaskService] Deleting all tasks...");
+      const allTasks = await DataStore.query(Task);
+      console.log(`[TaskService] Found ${allTasks.length} tasks to delete`);
+
+      let deletedCount = 0;
+      for (const task of allTasks) {
+        try {
+          await DataStore.delete(task);
+          deletedCount++;
+        } catch (error) {
+          console.error(`[TaskService] Error deleting task ${task.id}:`, error);
+        }
+      }
+
+      console.log(`[TaskService] Successfully deleted ${deletedCount} tasks`);
+      return deletedCount;
+    } catch (error) {
+      console.error("Error deleting all tasks:", error);
+      throw error;
+    }
+  }
+
+  /**
    * Clear the DataStore completely
    * This will remove all local data and trigger a fresh sync from the server
    * @returns {Promise<void>}

@@ -1,17 +1,17 @@
-import React from 'react';
+import { IconSymbol } from "@/components/ui/IconSymbol";
+import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
+import { useRouter } from "expo-router";
+import React from "react";
 import {
   Modal,
+  Pressable,
+  ScrollView,
   StyleSheet,
-  View,
   Text,
   TouchableOpacity,
-  ScrollView,
-  Pressable,
-} from 'react-native';
-import { useRouter } from 'expo-router';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+  View,
+} from "react-native";
 
 interface MenuItem {
   name: string;
@@ -22,40 +22,46 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   {
-    name: 'Activities',
-    route: '/(tabs)/activities',
-    icon: 'doc.text.fill',
-    description: 'Manage activities',
+    name: "Activities",
+    route: "/(tabs)/activities",
+    icon: "doc.text.fill",
+    description: "Manage activities",
   },
   {
-    name: 'Data Points',
-    route: '/(tabs)/datapoints',
-    icon: 'chart.bar.fill',
-    description: 'View data points',
+    name: "Data Points",
+    route: "/(tabs)/datapoints",
+    icon: "chart.bar.fill",
+    description: "View data points",
   },
   {
-    name: 'Questions',
-    route: '/(tabs)/questions',
-    icon: 'questionmark.circle.fill',
-    description: 'Manage questions',
+    name: "Questions",
+    route: "/(tabs)/questions",
+    icon: "questionmark.circle.fill",
+    description: "Manage questions",
   },
   {
-    name: 'Task Answers',
-    route: '/(tabs)/task-answers',
-    icon: 'text.bubble.fill',
-    description: 'View task answers',
+    name: "Task Answers",
+    route: "/(tabs)/task-answers",
+    icon: "text.bubble.fill",
+    description: "View task answers",
   },
   {
-    name: 'Task Results',
-    route: '/(tabs)/task-results',
-    icon: 'list.bullet.rectangle.portrait.fill',
-    description: 'View task results',
+    name: "Task Results",
+    route: "/(tabs)/task-results",
+    icon: "list.bullet.rectangle.portrait.fill",
+    description: "View task results",
   },
   {
-    name: 'Task History',
-    route: '/(tabs)/task-history',
-    icon: 'clock.fill',
-    description: 'View task history',
+    name: "Task History",
+    route: "/(tabs)/task-history",
+    icon: "clock.fill",
+    description: "View task history",
+  },
+  {
+    name: "Seed Data",
+    route: "/(tabs)/seed-screen",
+    icon: "doc.text.fill",
+    description: "Seed Activities and Tasks for testing",
   },
 ];
 
@@ -70,17 +76,22 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
 }) => {
   const router = useRouter();
   const colorScheme = useColorScheme();
-  const colors = Colors[colorScheme ?? 'light'];
+  const colors = Colors[colorScheme ?? "light"];
 
-  console.log('[NavigationMenu] Rendering, visible:', visible, 'items:', menuItems.length);
+  console.log(
+    "[NavigationMenu] Rendering, visible:",
+    visible,
+    "items:",
+    menuItems.length
+  );
 
   const handleNavigate = (route: string) => {
-    console.log('[NavigationMenu] Navigating to:', route);
+    console.log("[NavigationMenu] Navigating to:", route);
     try {
       router.push(route as any);
       onClose();
     } catch (error) {
-      console.error('[NavigationMenu] Navigation error:', error);
+      console.error("[NavigationMenu] Navigation error:", error);
     }
   };
 
@@ -92,13 +103,13 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
       onRequestClose={onClose}
     >
       <View style={styles.overlayContainer}>
-        <Pressable 
-          style={styles.overlay} 
+        <Pressable
+          style={styles.overlay}
           onPress={onClose}
           android_disableSound={true}
         />
-        <Pressable 
-          style={styles.menuContainer} 
+        <Pressable
+          style={styles.menuContainer}
           onPress={(e) => {
             e.stopPropagation();
           }}
@@ -106,22 +117,32 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
           <View style={styles.header}>
             <Text style={styles.headerTitle}>Navigation</Text>
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <IconSymbol name="xmark.circle.fill" size={28} color={colors.text} />
+              <IconSymbol
+                name="xmark.circle.fill"
+                size={28}
+                color={colors.text}
+              />
             </TouchableOpacity>
           </View>
 
-          <ScrollView 
-            style={styles.menuList} 
+          <ScrollView
+            style={styles.menuList}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.menuListContent}
           >
             {menuItems.length === 0 ? (
               <View style={styles.emptyState}>
-                <Text style={styles.emptyStateText}>No navigation options available</Text>
+                <Text style={styles.emptyStateText}>
+                  No navigation options available
+                </Text>
               </View>
             ) : (
               menuItems.map((item, index) => {
-                console.log('[NavigationMenu] Rendering item', index, item.name);
+                console.log(
+                  "[NavigationMenu] Rendering item",
+                  index,
+                  item.name
+                );
                 return (
                   <TouchableOpacity
                     key={item.route}
@@ -137,11 +158,18 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
                       />
                     </View>
                     <View style={styles.menuItemContent}>
-                      <Text style={[styles.menuItemTitle, { color: colors.text }]}>
+                      <Text
+                        style={[styles.menuItemTitle, { color: colors.text }]}
+                      >
                         {item.name}
                       </Text>
                       {item.description && (
-                        <Text style={[styles.menuItemDescription, { color: colors.tabIconDefault }]}>
+                        <Text
+                          style={[
+                            styles.menuItemDescription,
+                            { color: colors.tabIconDefault },
+                          ]}
+                        >
                           {item.description}
                         </Text>
                       )}
@@ -165,40 +193,40 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
 const styles = StyleSheet.create({
   overlayContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   menuContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    maxHeight: '80%',
+    maxHeight: "80%",
     minHeight: 300,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.25,
     shadowRadius: 10,
     elevation: 10,
     // Ensure menu container blocks touches
-    pointerEvents: 'auto',
-    flexDirection: 'column',
+    pointerEvents: "auto",
+    flexDirection: "column",
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: "#e0e0e0",
     flexShrink: 0,
   },
   headerTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#2f3542',
+    fontWeight: "bold",
+    color: "#2f3542",
   },
   closeButton: {
     padding: 4,
@@ -212,26 +240,26 @@ const styles = StyleSheet.create({
   },
   emptyState: {
     padding: 40,
-    alignItems: 'center',
+    alignItems: "center",
   },
   emptyStateText: {
     fontSize: 16,
-    color: '#747d8c',
+    color: "#747d8c",
   },
   menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: "#f0f0f0",
   },
   menuItemIcon: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#f5f6fa',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#f5f6fa",
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 12,
   },
   menuItemContent: {
@@ -239,11 +267,10 @@ const styles = StyleSheet.create({
   },
   menuItemTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 2,
   },
   menuItemDescription: {
     fontSize: 13,
   },
 });
-

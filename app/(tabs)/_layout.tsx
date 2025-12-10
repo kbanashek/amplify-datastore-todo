@@ -33,6 +33,13 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="checkmark.circle.fill" color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="dashboard-sim"
+        options={{
+          title: 'Dashboard',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="chart.bar.fill" color={color} />,
+        }}
+      />
       {/* Hide other screens from tab bar - accessible via menu */}
       <Tabs.Screen
         name="activities"
@@ -68,6 +75,12 @@ export default function TabLayout() {
         name="task-history"
         options={{
           href: null, // Hide from tab bar
+        }}
+      />
+      <Tabs.Screen
+        name="seed-screen"
+        options={{
+          href: null, // Hide from tab bar - accessible via menu or direct navigation
         }}
       />
     </Tabs>

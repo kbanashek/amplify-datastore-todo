@@ -66,28 +66,85 @@ export const TaskCard: React.FC<TaskCardProps> = ({
 
   const icon = getTaskIcon(task);
 
+  // Get status display info
+  const getStatusInfo = (status: TaskStatus) => {
+    switch (status) {
+      case TaskStatus.COMPLETED:
+        return { label: "COMPLETED", color: "#27ae60", bgColor: "#d5f4e6" };
+      case TaskStatus.INPROGRESS:
+        return { label: "IN PROGRESS", color: "#f39c12", bgColor: "#fef5e7" };
+      case TaskStatus.STARTED:
+        return { label: "STARTED", color: "#3498db", bgColor: "#ebf5fb" };
+      default:
+        return null;
+    }
+  };
+
+  const statusInfo = getStatusInfo(task.status);
+
   const handleBeginPress = async () => {
+    console.log("▶️ [TaskCard] BEGIN button pressed", {
+      taskId: task.id,
+      taskTitle: task.title,
+      currentStatus: task.status,
+      entityId: task.entityId,
+    });
+
     try {
       // If task is not started, update status to STARTED
       if (
         task.status !== TaskStatus.STARTED &&
         task.status !== TaskStatus.INPROGRESS
       ) {
+        console.log("🔄 [TaskCard] Updating task status to STARTED", {
+          taskId: task.id,
+          previousStatus: task.status,
+        });
         await TaskService.updateTask(task.id, {
           status: TaskStatus.STARTED,
         });
+        console.log("✅ [TaskCard] Task status updated successfully", {
+          taskId: task.id,
+          newStatus: TaskStatus.STARTED,
+        });
+      } else {
+        console.log(
+          "ℹ️ [TaskCard] Task already started/in progress, skipping status update",
+          {
+            taskId: task.id,
+            status: task.status,
+          }
+        );
       }
       // Call the onPress callback if provided
+      console.log("🧭 [TaskCard] Calling onPress callback", {
+        taskId: task.id,
+        hasCallback: !!onPress,
+      });
       onPress?.(task);
     } catch (error) {
-      console.error("Error updating task status:", error);
+      console.error("❌ [TaskCard] Error updating task status:", {
+        taskId: task.id,
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+      });
     }
+  };
+
+  const handleCardPress = () => {
+    console.log("👆 [TaskCard] Card pressed", {
+      taskId: task.id,
+      taskTitle: task.title,
+      entityId: task.entityId,
+      hasCallback: !!onPress,
+    });
+    onPress?.(task);
   };
 
   return (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => onPress?.(task)}
+      onPress={handleCardPress}
       activeOpacity={0.7}
     >
       <View style={styles.cardContent}>
@@ -102,9 +159,25 @@ export const TaskCard: React.FC<TaskCardProps> = ({
                 color={icon.color}
               />
             </View>
-            <Text style={styles.title} numberOfLines={2}>
-              {task.title || "Untitled Task"}
-            </Text>
+            <View style={styles.titleContainer}>
+              <Text style={styles.title} numberOfLines={2}>
+                {task.title || "Untitled Task"}
+              </Text>
+              {statusInfo && (
+                <View
+                  style={[
+                    styles.statusBadge,
+                    { backgroundColor: statusInfo.bgColor },
+                  ]}
+                >
+                  <Text
+                    style={[styles.statusText, { color: statusInfo.color }]}
+                  >
+                    {statusInfo.label}
+                  </Text>
+                </View>
+              )}
+            </View>
           </View>
         </View>
 
@@ -124,7 +197,13 @@ export const TaskCard: React.FC<TaskCardProps> = ({
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.arrowButton}
-              onPress={() => onPress?.(task)}
+              onPress={() => {
+                console.log("➡️ [TaskCard] Arrow button pressed", {
+                  taskId: task.id,
+                  taskTitle: task.title,
+                });
+                onPress?.(task);
+              }}
               activeOpacity={0.7}
             >
               <IconSymbol name="chevron.right" size={20} color="#57606f" />
@@ -170,12 +249,28 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexShrink: 0,
   },
+  titleContainer: {
+    flex: 1,
+    flexDirection: "column",
+    gap: 8,
+  },
   title: {
     fontSize: 20,
     fontWeight: "bold",
     color: "#1a1a1a",
     lineHeight: 26,
-    flex: 1,
+  },
+  statusBadge: {
+    alignSelf: "flex-start",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+  },
+  statusText: {
+    fontSize: 11,
+    fontWeight: "600",
+    letterSpacing: 0.5,
+    textTransform: "uppercase",
   },
   actionRow: {
     flexDirection: "row",

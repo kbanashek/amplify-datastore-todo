@@ -32,6 +32,34 @@ IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION_NUM"
 BUMP_TYPE=${1:-patch}
 COMMIT_MSG=${2:-""}
 
+# Validate commit message is provided and meaningful
+if [ -z "$COMMIT_MSG" ]; then
+    echo "❌ Commit message is required!"
+    echo ""
+    echo "Usage:"
+    echo "  ./scripts/version-bump.sh [major|minor|patch] \"[meaningful commit message]\""
+    echo ""
+    echo "Examples:"
+    echo "  ./scripts/version-bump.sh patch \"Fix task sync issue with DataStore\""
+    echo "  ./scripts/version-bump.sh minor \"Add task grouping by date and time\""
+    echo "  ./scripts/version-bump.sh major \"Refactor task service architecture\""
+    echo ""
+    echo "⚠️  Commit messages should be descriptive and explain what changed."
+    exit 1
+fi
+
+# Validate commit message is meaningful (not just whitespace or generic)
+if [ -z "$(echo "$COMMIT_MSG" | tr -d '[:space:]')" ]; then
+    echo "❌ Commit message cannot be empty or just whitespace!"
+    exit 1
+fi
+
+if [ "$(echo "$COMMIT_MSG" | tr '[:upper:]' '[:lower:]')" = "update" ] || [ "$(echo "$COMMIT_MSG" | tr '[:upper:]' '[:lower:]')" = "changes" ]; then
+    echo "❌ Commit message must be more descriptive than just 'update' or 'changes'"
+    echo "   Please provide a meaningful description of what changed."
+    exit 1
+fi
+
 case $BUMP_TYPE in
     major)
         MAJOR=$((MAJOR + 1))
@@ -74,16 +102,14 @@ fi
 echo "🌿 Creating branch: $NEW_BRANCH"
 git checkout -b "$NEW_BRANCH"
 
-# Commit if there are changes or message provided
-if [ -n "$COMMIT_MSG" ] || ! git diff-index --quiet HEAD --; then
-    if [ -z "$COMMIT_MSG" ]; then
-        COMMIT_MSG="$NEW_VERSION: Update"
-    else
-        COMMIT_MSG="$NEW_VERSION: $COMMIT_MSG"
-    fi
-    
+# Commit if there are changes
+if ! git diff-index --quiet HEAD --; then
+    COMMIT_MSG="$NEW_VERSION: $COMMIT_MSG"
     echo "💾 Committing changes..."
+    echo "   Message: $COMMIT_MSG"
     git commit -m "$COMMIT_MSG" || echo "⚠️  No changes to commit"
+else
+    echo "⚠️  No changes to commit"
 fi
 
 # Push branch

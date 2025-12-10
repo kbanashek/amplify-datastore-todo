@@ -1,6 +1,10 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
+// @ts-ignore - TaskAnswer is exported from models/index.js at runtime
 import { TaskAnswer } from "../../models";
-import { CreateTaskAnswerInput, UpdateTaskAnswerInput } from "../types/TaskAnswer";
+import {
+  CreateTaskAnswerInput,
+  UpdateTaskAnswerInput,
+} from "../types/TaskAnswer";
 
 type TaskAnswerUpdateData = Omit<UpdateTaskAnswerInput, "id" | "_version">;
 
@@ -30,19 +34,47 @@ export class TaskAnswerService {
     });
   }
 
-  static async createTaskAnswer(input: CreateTaskAnswerInput): Promise<TaskAnswer> {
+  static async createTaskAnswer(
+    input: CreateTaskAnswerInput
+  ): Promise<TaskAnswer> {
     try {
-      console.log('[TaskAnswerService] Creating task answer with DataStore:', input);
+      console.log(
+        "💾 [TaskAnswerService] Creating task answer with DataStore:",
+        {
+          pk: input.pk,
+          sk: input.sk,
+          taskInstanceId: input.taskInstanceId,
+          activityId: input.activityId,
+          questionId: input.questionId,
+          answerLength: input.answer?.length || 0,
+          answerPreview: input.answer?.substring(0, 50) || "null",
+        }
+      );
+
       const answer = await DataStore.save(
         new TaskAnswer({
           ...input,
         })
       );
-      
-      console.log('[TaskAnswerService] TaskAnswer created successfully:', answer.id);
+
+      console.log("✅ [TaskAnswerService] TaskAnswer created successfully:", {
+        id: answer.id,
+        pk: answer.pk,
+        questionId: answer.questionId,
+        taskInstanceId: answer.taskInstanceId,
+        hasAnswer: !!answer.answer,
+      });
       return answer;
     } catch (error) {
-      console.error("Error creating task answer:", error);
+      console.error("❌ [TaskAnswerService] Error creating task answer:", {
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+        input: {
+          pk: input.pk,
+          questionId: input.questionId,
+          taskInstanceId: input.taskInstanceId,
+        },
+      });
       throw error;
     }
   }
@@ -65,22 +97,46 @@ export class TaskAnswerService {
     }
   }
 
-  static async updateTaskAnswer(id: string, data: TaskAnswerUpdateData): Promise<TaskAnswer> {
+  static async updateTaskAnswer(
+    id: string,
+    data: TaskAnswerUpdateData
+  ): Promise<TaskAnswer> {
     try {
+      console.log("🔄 [TaskAnswerService] Updating task answer:", {
+        id,
+        answerLength: data.answer?.length || 0,
+        answerPreview: data.answer?.substring(0, 50) || "null",
+      });
+
       const original = await DataStore.query(TaskAnswer, id);
       if (!original) {
+        console.error(
+          "❌ [TaskAnswerService] TaskAnswer not found for update:",
+          { id }
+        );
         throw new Error(`TaskAnswer with id ${id} not found`);
       }
 
       const updated = await DataStore.save(
-        TaskAnswer.copyOf(original, (updated) => {
+        TaskAnswer.copyOf(original, (updated: any) => {
           Object.assign(updated, data);
         })
       );
 
+      console.log("✅ [TaskAnswerService] TaskAnswer updated successfully:", {
+        id: updated.id,
+        questionId: updated.questionId,
+        taskInstanceId: updated.taskInstanceId,
+        hasAnswer: !!updated.answer,
+      });
+
       return updated;
     } catch (error) {
-      console.error("Error updating task answer:", error);
+      console.error("❌ [TaskAnswerService] Error updating task answer:", {
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+        id,
+      });
       throw error;
     }
   }
@@ -99,28 +155,34 @@ export class TaskAnswerService {
     }
   }
 
-  static subscribeTaskAnswers(callback: (items: TaskAnswer[], isSynced: boolean) => void): {
+  static subscribeTaskAnswers(
+    callback: (items: TaskAnswer[], isSynced: boolean) => void
+  ): {
     unsubscribe: () => void;
   } {
-    console.log('[TaskAnswerService] Setting up DataStore subscription for TaskAnswer');
-    
-    const querySubscription = DataStore.observeQuery(TaskAnswer).subscribe((snapshot) => {
-      const { items, isSynced } = snapshot;
-      
-      console.log('[TaskAnswerService] DataStore subscription update:', {
-        itemCount: items.length,
-        isSynced,
-        itemIds: items.map(i => i.id)
-      });
-      
-      callback(items, isSynced);
-    });
-    
+    console.log(
+      "[TaskAnswerService] Setting up DataStore subscription for TaskAnswer"
+    );
+
+    const querySubscription = DataStore.observeQuery(TaskAnswer).subscribe(
+      (snapshot) => {
+        const { items, isSynced } = snapshot;
+
+        console.log("[TaskAnswerService] DataStore subscription update:", {
+          itemCount: items.length,
+          isSynced,
+          itemIds: items.map((i) => i.id),
+        });
+
+        callback(items, isSynced);
+      }
+    );
+
     return {
       unsubscribe: () => {
-        console.log('[TaskAnswerService] Unsubscribing from DataStore');
+        console.log("[TaskAnswerService] Unsubscribing from DataStore");
         querySubscription.unsubscribe();
-      }
+      },
     };
   }
 

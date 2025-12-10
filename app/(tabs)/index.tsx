@@ -1,9 +1,11 @@
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,7 +16,8 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NavigationMenu } from "../../src/components/NavigationMenu";
 import { NetworkStatusIndicator } from "../../src/components/NetworkStatusIndicator";
-import { TaskCard } from "../../src/components/TaskCard";
+import { TasksGroupedView } from "../../src/components/TasksGroupedView";
+import { useGroupedTasks } from "../../src/hooks/useGroupedTasks";
 import { useTaskForm } from "../../src/hooks/useTaskForm";
 import { useTaskList } from "../../src/hooks/useTaskList";
 import { TaskStatus, TaskType } from "../../src/types/Task";
@@ -26,211 +29,45 @@ export default function TasksScreen() {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? "light"];
   const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   // Group tasks by day, then by time (or no time)
-  const groupedTasks = React.useMemo(() => {
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const groupedTasks = useGroupedTasks(tasks);
 
-    // Include all tasks (no filtering by expiration time - show all tasks)
-    // Tasks are grouped by their due date, so past tasks will still appear
-    const allTasks = tasks.filter((task) => {
-      // Include tasks without expire time
-      if (!task.expireTimeInMillSec) return true;
+  const handleTaskPress = (task: any) => {
+    console.log("📋 [TasksScreen] Task pressed", {
+      taskId: task.id,
+      taskTitle: task.title,
+      entityId: task.entityId,
+      hasEntityId: !!task.entityId,
+    });
 
-      // Include tasks that are due today or in the future (by date, not exact time)
-      const taskDate = new Date(task.expireTimeInMillSec);
-      const taskDay = new Date(
-        taskDate.getFullYear(),
-        taskDate.getMonth(),
-        taskDate.getDate()
+    if (!task.entityId) {
+      console.warn(
+        "⚠️ [TasksScreen] Task missing entityId, cannot navigate to questions",
+        {
+          taskId: task.id,
+          taskTitle: task.title,
+        }
       );
-
-      // Show tasks from today onwards (don't filter out past times on today)
-      return taskDay >= today;
-    });
-
-    // Separate tasks with and without due times
-    const tasksWithTime = allTasks.filter((task) => task.expireTimeInMillSec);
-    const tasksWithoutTime = allTasks.filter(
-      (task) => !task.expireTimeInMillSec
-    );
-
-    // Group by day (date only, no time)
-    const byDay: { [dayKey: string]: typeof tasks } = {};
-    tasksWithTime.forEach((task) => {
-      if (!task.expireTimeInMillSec) return;
-      const taskDate = new Date(task.expireTimeInMillSec);
-      const dayKey = `${taskDate.getFullYear()}-${taskDate.getMonth()}-${taskDate.getDate()}`;
-      if (!byDay[dayKey]) {
-        byDay[dayKey] = [];
-      }
-      byDay[dayKey].push(task);
-    });
-
-    // Add tasks without time to "Today"
-    if (tasksWithoutTime.length > 0) {
-      const today = new Date();
-      const todayKey = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
-      if (!byDay[todayKey]) {
-        byDay[todayKey] = [];
-      }
-      byDay[todayKey].unshift(...tasksWithoutTime);
+      Alert.alert(
+        "No Questions Available",
+        "This task does not have an associated activity. Tasks need an entityId that links to an Activity to display questions.\n\nPlease use the seed data feature or create a task with a valid Activity reference.",
+        [{ text: "OK", style: "default" }]
+      );
+      return;
     }
 
-    // Process each day
-    const result: {
-      dayLabel: string;
-      dayDate: string;
-      tasksWithoutTime: typeof tasks;
-      timeGroups: { time: string; tasks: typeof tasks }[];
-    }[] = [];
-
-    // Sort days: Today first, then Tomorrow, then by date
-    const sortedDayKeys = Object.keys(byDay).sort((a, b) => {
-      const dayA = byDay[a];
-      const dayB = byDay[b];
-
-      // Get dates for comparison
-      let dateA: Date, dateB: Date;
-      const withTimeA = dayA.filter((task) => task.expireTimeInMillSec);
-      const withTimeB = dayB.filter((task) => task.expireTimeInMillSec);
-
-      if (withTimeA.length > 0) {
-        dateA = new Date(withTimeA[0].expireTimeInMillSec!);
-      } else {
-        dateA = new Date();
-      }
-
-      if (withTimeB.length > 0) {
-        dateB = new Date(withTimeB[0].expireTimeInMillSec!);
-      } else {
-        dateB = new Date();
-      }
-
-      const today = new Date();
-      const todayStart = new Date(
-        today.getFullYear(),
-        today.getMonth(),
-        today.getDate()
-      );
-      const dayAStart = new Date(
-        dateA.getFullYear(),
-        dateA.getMonth(),
-        dateA.getDate()
-      );
-      const dayBStart = new Date(
-        dateB.getFullYear(),
-        dateB.getMonth(),
-        dateB.getDate()
-      );
-
-      const diffA = Math.floor(
-        (dayAStart.getTime() - todayStart.getTime()) / (1000 * 60 * 60 * 24)
-      );
-      const diffB = Math.floor(
-        (dayBStart.getTime() - todayStart.getTime()) / (1000 * 60 * 60 * 24)
-      );
-
-      // Today always first
-      if (diffA === 0) return -1;
-      if (diffB === 0) return 1;
-
-      // Tomorrow second
-      if (diffA === 1) return -1;
-      if (diffB === 1) return 1;
-
-      // Then sort by date
-      return diffA - diffB;
+    console.log("🧭 [TasksScreen] Navigating to questions screen", {
+      taskId: task.id,
+      entityId: task.entityId,
     });
 
-    sortedDayKeys.forEach((dayKey) => {
-      const dayTasks = byDay[dayKey];
-
-      // Separate tasks with and without time for this day
-      const withTime = dayTasks.filter((task) => task.expireTimeInMillSec);
-      const withoutTime = dayTasks.filter((task) => !task.expireTimeInMillSec);
-
-      // Get date from first task with time, or use today for tasks without time
-      let firstTaskDate: Date;
-      if (withTime.length > 0) {
-        firstTaskDate = new Date(withTime[0].expireTimeInMillSec!);
-      } else {
-        firstTaskDate = new Date();
-      }
-
-      const now = new Date();
-      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      const taskDay = new Date(
-        firstTaskDate.getFullYear(),
-        firstTaskDate.getMonth(),
-        firstTaskDate.getDate()
-      );
-      const diffDays = Math.floor(
-        (taskDay.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
-      );
-
-      // Format date for display
-      const dayDate = firstTaskDate.toLocaleDateString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-      });
-
-      // Use "Today" or "Tomorrow" for labels, actual date for others
-      let dayLabel: string;
-      if (diffDays === 0) {
-        dayLabel = "Today";
-      } else if (diffDays === 1) {
-        dayLabel = "Tomorrow";
-      } else {
-        dayLabel = dayDate; // Use actual date for future dates
-      }
-
-      // Group by time within the day
-      const byTime: { [timeKey: string]: typeof tasks } = {};
-      withTime.forEach((task) => {
-        if (!task.expireTimeInMillSec) return;
-        const taskDate = new Date(task.expireTimeInMillSec);
-        const hours = taskDate.getHours();
-        const minutes = taskDate.getMinutes();
-        const timeKey = `${hours.toString().padStart(2, "0")}:${minutes
-          .toString()
-          .padStart(2, "0")}`;
-        if (!byTime[timeKey]) {
-          byTime[timeKey] = [];
-        }
-        byTime[timeKey].push(task);
-      });
-
-      // Sort time groups and format time
-      const timeGroups = Object.keys(byTime)
-        .sort()
-        .map((timeKey) => {
-          const [hours, minutes] = timeKey.split(":").map(Number);
-          const timeDate = new Date();
-          timeDate.setHours(hours, minutes);
-          const timeStr = timeDate.toLocaleTimeString("en-US", {
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true,
-          });
-          return {
-            time: timeStr,
-            tasks: byTime[timeKey],
-          };
-        });
-
-      result.push({
-        dayLabel,
-        dayDate,
-        tasksWithoutTime: withoutTime,
-        timeGroups,
-      });
+    router.push({
+      pathname: "/(tabs)/questions",
+      params: { taskId: task.id, entityId: task.entityId },
     });
-
-    return result;
-  }, [tasks]);
+  };
 
   const {
     title,
@@ -413,62 +250,13 @@ export default function TasksScreen() {
         </View>
 
         {/* TASKS GROUPED BY DAY AND TIME */}
-        {groupedTasks.length > 0 ? (
-          <View style={styles.tasksSection}>
-            {groupedTasks.map((dayGroup) => (
-              <View key={dayGroup.dayLabel} style={styles.dayGroup}>
-                <View style={styles.dayHeader}>
-                  <Text style={styles.dayLabel}>{dayGroup.dayLabel}</Text>
-                  {/* Only show date next to "Today" or "Tomorrow" */}
-                  {(dayGroup.dayLabel === "Today" ||
-                    dayGroup.dayLabel === "Tomorrow") && (
-                    <Text style={styles.dayDate}>{dayGroup.dayDate}</Text>
-                  )}
-                </View>
-                {/* Tasks without due time (simple cards) */}
-                {dayGroup.tasksWithoutTime.map((task) => (
-                  <TaskCard
-                    key={task.id}
-                    task={task}
-                    simple={true}
-                    onDelete={handleDeleteTask}
-                  />
-                ))}
-                {/* Tasks grouped by time */}
-                {dayGroup.timeGroups.map((timeGroup) => (
-                  <View key={timeGroup.time} style={styles.timeGroup}>
-                    <Text style={styles.dueByHeader}>
-                      DUE BY {timeGroup.time}
-                    </Text>
-                    {timeGroup.tasks.map((task) => (
-                      <TaskCard
-                        key={task.id}
-                        task={task}
-                        simple={false}
-                        onDelete={handleDeleteTask}
-                      />
-                    ))}
-                  </View>
-                ))}
-              </View>
-            ))}
-          </View>
-        ) : loading ? (
-          <View style={styles.centerContainer}>
-            <ActivityIndicator size="large" color="#3498db" />
-            <Text style={styles.loadingText}>Loading tasks...</Text>
-          </View>
-        ) : error ? (
-          <View style={styles.centerContainer}>
-            <Text style={styles.errorText}>{error}</Text>
-          </View>
-        ) : (
-          <View style={styles.centerContainer}>
-            <Text style={styles.emptyText}>
-              No tasks yet. Create one above!
-            </Text>
-          </View>
-        )}
+        <TasksGroupedView
+          groupedTasks={groupedTasks}
+          loading={loading}
+          error={error}
+          onTaskPress={handleTaskPress}
+          onDelete={handleDeleteTask}
+        />
       </ScrollView>
 
       <NavigationMenu visible={showMenu} onClose={() => setShowMenu(false)} />
@@ -615,34 +403,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-  listSection: {
-    marginTop: 8,
-  },
-  listTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#2f3542",
-    marginBottom: 16,
-  },
-  centerContainer: {
-    padding: 32,
-    alignItems: "center",
-  },
-  loadingText: {
-    marginTop: 12,
-    color: "#57606f",
-    fontSize: 14,
-  },
-  errorText: {
-    color: "#e74c3c",
-    fontSize: 14,
-    textAlign: "center",
-  },
-  emptyText: {
-    color: "#747d8c",
-    fontSize: 16,
-    textAlign: "center",
-  },
   label: {
     fontSize: 14,
     fontWeight: "600",
@@ -676,5 +436,11 @@ const styles = StyleSheet.create({
   radioButtonTextSelected: {
     color: "#fff",
     fontWeight: "600",
+  },
+  errorText: {
+    color: "#e74c3c",
+    fontSize: 14,
+    textAlign: "center",
+    marginBottom: 12,
   },
 });

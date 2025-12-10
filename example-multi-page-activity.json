@@ -1,0 +1,604 @@
+{
+  "pk": "Study.example-study-id",
+  "sk": "Activity#Activity.example-activity-id",
+  "version": 1,
+  "name": "Multi-Page Health Questionnaire",
+  "title": "Health Assessment",
+  "titleI18nKey": "health_assessment_title_key",
+  "description": "Please complete all pages of this health assessment",
+  "descriptionI18nKey": "health_assessment_description_key",
+  "type": "QUESTIONNAIRE",
+  "isDeleted": 0,
+  "fontFamily": "Arial",
+  "fontWeight": "normal",
+  "fontColor": "#000000",
+  "fontSize": "16",
+  "activityType": "EPRO",
+  "layoutType": "MOBILE",
+  "resumable": true,
+  "activityGroups": [
+    {
+      "id": "group-health-assessment",
+      "questions": [
+        {
+          "id": "Question.page1-name",
+          "type": "text",
+          "text": "<p>What is your full name?</p>",
+          "i18nKey": "question_name_key",
+          "friendlyName": "Full Name",
+          "dataPointKey": "patient.name",
+          "required": true,
+          "validations": [
+            {
+              "name": "required",
+              "type": "required",
+              "value": null,
+              "text": "Name is required",
+              "i18nKey": "name_required_key",
+              "warningOnly": false
+            }
+          ],
+          "choices": [],
+          "dataMappers": []
+        },
+        {
+          "id": "Question.page1-age",
+          "type": "numericScale",
+          "text": "<p>What is your age?</p>",
+          "i18nKey": "question_age_key",
+          "friendlyName": "Age",
+          "dataPointKey": "patient.age",
+          "required": true,
+          "validations": [
+            {
+              "name": "min",
+              "type": "min",
+              "value": "18",
+              "text": "Age must be at least 18",
+              "i18nKey": "age_min_key",
+              "warningOnly": false
+            },
+            {
+              "name": "max",
+              "type": "max",
+              "value": "120",
+              "text": "Age must be less than 120",
+              "i18nKey": "age_max_key",
+              "warningOnly": false
+            }
+          ],
+          "choices": [],
+          "dataMappers": []
+        },
+        {
+          "id": "Question.page2-symptoms",
+          "type": "multiselect",
+          "text": "<p>Which symptoms are you currently experiencing? (Select all that apply)</p>",
+          "i18nKey": "question_symptoms_key",
+          "friendlyName": "Current Symptoms",
+          "dataPointKey": "patient.symptoms",
+          "required": false,
+          "validations": [],
+          "choices": [
+            {
+              "id": "Choice.headache",
+              "order": 1,
+              "text": "Headache",
+              "i18nKey": "choice_headache_key",
+              "value": "headache",
+              "imageS3Key": null
+            },
+            {
+              "id": "Choice.fever",
+              "order": 2,
+              "text": "Fever",
+              "i18nKey": "choice_fever_key",
+              "value": "fever",
+              "imageS3Key": null
+            },
+            {
+              "id": "Choice.cough",
+              "order": 3,
+              "text": "Cough",
+              "i18nKey": "choice_cough_key",
+              "value": "cough",
+              "imageS3Key": null
+            },
+            {
+              "id": "Choice.fatigue",
+              "order": 4,
+              "text": "Fatigue",
+              "i18nKey": "choice_fatigue_key",
+              "value": "fatigue",
+              "imageS3Key": null
+            }
+          ],
+          "dataMappers": []
+        },
+        {
+          "id": "Question.page2-pain-level",
+          "type": "horizontalvas",
+          "text": "<p>On a scale of 0 to 10, how would you rate your current pain level?</p>",
+          "i18nKey": "question_pain_level_key",
+          "friendlyName": "Pain Level",
+          "dataPointKey": "patient.painLevel",
+          "required": true,
+          "validations": [],
+          "choices": [],
+          "dataMappers": []
+        },
+        {
+          "id": "Question.page3-medications",
+          "type": "text",
+          "text": "<p>List any medications you are currently taking:</p>",
+          "i18nKey": "question_medications_key",
+          "friendlyName": "Current Medications",
+          "dataPointKey": "patient.medications",
+          "required": false,
+          "validations": [],
+          "choices": [],
+          "dataMappers": []
+        },
+        {
+          "id": "Question.page3-allergies",
+          "type": "multiselect",
+          "text": "<p>Do you have any allergies? (Select all that apply)</p>",
+          "i18nKey": "question_allergies_key",
+          "friendlyName": "Allergies",
+          "dataPointKey": "patient.allergies",
+          "required": false,
+          "validations": [],
+          "choices": [
+            {
+              "id": "Choice.allergy-none",
+              "order": 1,
+              "text": "No known allergies",
+              "i18nKey": "choice_no_allergies_key",
+              "value": "none",
+              "imageS3Key": null
+            },
+            {
+              "id": "Choice.allergy-penicillin",
+              "order": 2,
+              "text": "Penicillin",
+              "i18nKey": "choice_penicillin_key",
+              "value": "penicillin",
+              "imageS3Key": null
+            },
+            {
+              "id": "Choice.allergy-latex",
+              "order": 3,
+              "text": "Latex",
+              "i18nKey": "choice_latex_key",
+              "value": "latex",
+              "imageS3Key": null
+            },
+            {
+              "id": "Choice.allergy-other",
+              "order": 4,
+              "text": "Other",
+              "i18nKey": "choice_other_allergy_key",
+              "value": "other",
+              "imageS3Key": null
+            }
+          ],
+          "dataMappers": []
+        },
+        {
+          "id": "Question.page4-vitals",
+          "type": "bloodPressure",
+          "text": "<p>Please enter your blood pressure reading:</p>",
+          "i18nKey": "question_blood_pressure_key",
+          "friendlyName": "Blood Pressure",
+          "dataPointKey": "patient.bloodPressure",
+          "required": false,
+          "validations": [],
+          "choices": [],
+          "dataMappers": []
+        },
+        {
+          "id": "Question.page4-weight",
+          "type": "weight",
+          "text": "<p>What is your current weight?</p>",
+          "i18nKey": "question_weight_key",
+          "friendlyName": "Weight",
+          "dataPointKey": "patient.weight",
+          "required": false,
+          "validations": [],
+          "choices": [],
+          "dataMappers": []
+        }
+      ]
+    }
+  ],
+  "layouts": [
+    {
+      "id": "layout-mobile",
+      "type": "MOBILE",
+      "useGesture": null,
+      "pageButtons": null,
+      "titleAlignment": "center",
+      "viewportWidth": 360,
+      "screens": [
+        {
+          "id": "screen-page-1",
+          "name": "Personal Information",
+          "order": 1,
+          "text": "Personal Information",
+          "i18nKey": "screen_personal_info_key",
+          "displayProperties": [
+            {
+              "key": "paddingTop",
+              "value": "20"
+            },
+            {
+              "key": "paddingBottom",
+              "value": "20"
+            },
+            {
+              "key": "paddingLeft",
+              "value": "15"
+            },
+            {
+              "key": "paddingRight",
+              "value": "15"
+            }
+          ],
+          "elements": [
+            {
+              "id": "Question.page1-name",
+              "order": 1,
+              "type": null,
+              "displayProperties": [
+                {
+                  "key": "fieldType",
+                  "value": "\"text\""
+                },
+                {
+                  "key": "width",
+                  "value": "\"100%\""
+                },
+                {
+                  "key": "marginTop",
+                  "value": "10"
+                },
+                {
+                  "key": "marginBottom",
+                  "value": "10"
+                },
+                {
+                  "key": "paddingLeft",
+                  "value": "0"
+                },
+                {
+                  "key": "paddingRight",
+                  "value": "0"
+                },
+                {
+                  "key": "fontSize",
+                  "value": "16"
+                },
+                {
+                  "key": "fontFamily",
+                  "value": "Arial"
+                }
+              ]
+            },
+            {
+              "id": "Question.page1-age",
+              "order": 2,
+              "type": null,
+              "displayProperties": [
+                {
+                  "key": "fieldType",
+                  "value": "\"numericScale\""
+                },
+                {
+                  "key": "width",
+                  "value": "\"100%\""
+                },
+                {
+                  "key": "marginTop",
+                  "value": "10"
+                },
+                {
+                  "key": "marginBottom",
+                  "value": "10"
+                },
+                {
+                  "key": "scaleMin",
+                  "value": "0"
+                },
+                {
+                  "key": "scaleMax",
+                  "value": "120"
+                },
+                {
+                  "key": "scaleIncrements",
+                  "value": "1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "screen-page-2",
+          "name": "Symptoms Assessment",
+          "order": 2,
+          "text": "Symptoms Assessment",
+          "i18nKey": "screen_symptoms_key",
+          "displayProperties": [
+            {
+              "key": "paddingTop",
+              "value": "20"
+            },
+            {
+              "key": "paddingBottom",
+              "value": "20"
+            },
+            {
+              "key": "paddingLeft",
+              "value": "15"
+            },
+            {
+              "key": "paddingRight",
+              "value": "15"
+            }
+          ],
+          "elements": [
+            {
+              "id": "Question.page2-symptoms",
+              "order": 1,
+              "type": null,
+              "displayProperties": [
+                {
+                  "key": "fieldType",
+                  "value": "\"multiselect\""
+                },
+                {
+                  "key": "width",
+                  "value": "\"100%\""
+                },
+                {
+                  "key": "marginTop",
+                  "value": "10"
+                },
+                {
+                  "key": "marginBottom",
+                  "value": "10"
+                },
+                {
+                  "key": "optionPlacement",
+                  "value": "\"below\""
+                }
+              ]
+            },
+            {
+              "id": "Question.page2-pain-level",
+              "order": 2,
+              "type": null,
+              "displayProperties": [
+                {
+                  "key": "fieldType",
+                  "value": "\"horizontalvas\""
+                },
+                {
+                  "key": "width",
+                  "value": "\"100%\""
+                },
+                {
+                  "key": "marginTop",
+                  "value": "20"
+                },
+                {
+                  "key": "marginBottom",
+                  "value": "10"
+                },
+                {
+                  "key": "scaleMin",
+                  "value": "0"
+                },
+                {
+                  "key": "scaleMax",
+                  "value": "10"
+                },
+                {
+                  "key": "lowerRangei18nKey",
+                  "value": "pain_scale_low_key"
+                },
+                {
+                  "key": "upperRangei18nKey",
+                  "value": "pain_scale_high_key"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "screen-page-3",
+          "name": "Medical History",
+          "order": 3,
+          "text": "Medical History",
+          "i18nKey": "screen_medical_history_key",
+          "displayProperties": [
+            {
+              "key": "paddingTop",
+              "value": "20"
+            },
+            {
+              "key": "paddingBottom",
+              "value": "20"
+            },
+            {
+              "key": "paddingLeft",
+              "value": "15"
+            },
+            {
+              "key": "paddingRight",
+              "value": "15"
+            }
+          ],
+          "elements": [
+            {
+              "id": "Question.page3-medications",
+              "order": 1,
+              "type": null,
+              "displayProperties": [
+                {
+                  "key": "fieldType",
+                  "value": "\"text\""
+                },
+                {
+                  "key": "width",
+                  "value": "\"100%\""
+                },
+                {
+                  "key": "marginTop",
+                  "value": "10"
+                },
+                {
+                  "key": "marginBottom",
+                  "value": "10"
+                }
+              ]
+            },
+            {
+              "id": "Question.page3-allergies",
+              "order": 2,
+              "type": null,
+              "displayProperties": [
+                {
+                  "key": "fieldType",
+                  "value": "\"multiselect\""
+                },
+                {
+                  "key": "width",
+                  "value": "\"100%\""
+                },
+                {
+                  "key": "marginTop",
+                  "value": "10"
+                },
+                {
+                  "key": "marginBottom",
+                  "value": "10"
+                },
+                {
+                  "key": "optionPlacement",
+                  "value": "\"below\""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "screen-page-4",
+          "name": "Vitals & Documentation",
+          "order": 4,
+          "text": "Vitals & Documentation",
+          "i18nKey": "screen_vitals_key",
+          "displayProperties": [
+            {
+              "key": "paddingTop",
+              "value": "20"
+            },
+            {
+              "key": "paddingBottom",
+              "value": "20"
+            },
+            {
+              "key": "paddingLeft",
+              "value": "15"
+            },
+            {
+              "key": "paddingRight",
+              "value": "15"
+            }
+          ],
+          "elements": [
+            {
+              "id": "Question.page4-vitals",
+              "order": 1,
+              "type": null,
+              "displayProperties": [
+                {
+                  "key": "fieldType",
+                  "value": "\"bloodpressure\""
+                },
+                {
+                  "key": "width",
+                  "value": "\"100%\""
+                },
+                {
+                  "key": "marginTop",
+                  "value": "10"
+                },
+                {
+                  "key": "marginBottom",
+                  "value": "10"
+                },
+                {
+                  "key": "uniti18nKey",
+                  "value": "unit_mmhg_key"
+                }
+              ]
+            },
+            {
+              "id": "Question.page4-weight",
+              "order": 2,
+              "type": null,
+              "displayProperties": [
+                {
+                  "key": "fieldType",
+                  "value": "\"weight\""
+                },
+                {
+                  "key": "width",
+                  "value": "\"100%\""
+                },
+                {
+                  "key": "marginTop",
+                  "value": "10"
+                },
+                {
+                  "key": "marginBottom",
+                  "value": "10"
+                },
+                {
+                  "key": "uniti18nKey",
+                  "value": "unit_lbs_key"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "introductionScreen": {
+    "showScreen": true,
+    "title": "Welcome to the Health Assessment",
+    "titleI18nKey": "intro_title_key",
+    "description": "This assessment will take approximately 5 minutes to complete. Please answer all questions to the best of your ability.",
+    "descriptionI18nKey": "intro_description_key",
+    "buttonText": "Begin Assessment",
+    "buttonTextI18nKey": "begin_button_key"
+  },
+  "summaryScreen": {
+    "showScreen": true,
+    "title": "Review Your Answers",
+    "titleI18nKey": "summary_title_key",
+    "description": "Please review your answers before submitting.",
+    "descriptionI18nKey": "summary_description_key"
+  },
+  "completionScreen": {
+    "showScreen": true,
+    "title": "Thank You!",
+    "titleI18nKey": "completion_title_key",
+    "description": "Your assessment has been submitted successfully.",
+    "descriptionI18nKey": "completion_description_key"
+  },
+  "calculatedValues": [],
+  "crossForms": []
+}
+
