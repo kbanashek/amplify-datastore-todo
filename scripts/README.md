@@ -136,6 +136,46 @@ If you have stuck CloudFormation stacks, use `fix-stack.sh` to clean them up bef
 
 ---
 
+## Version Management
+
+### `version-bump.sh`
+
+Automatically creates a new version branch, commits changes, and pushes to remote.
+
+**Usage:**
+```bash
+# Patch version (0.0.1 -> 0.0.2) - bug fixes, small changes
+./scripts/version-bump.sh patch "Fix sync issue"
+
+# Minor version (0.0.1 -> 0.1.0) - new features, non-breaking changes
+./scripts/version-bump.sh minor "Add new sync feature"
+
+# Major version (0.0.1 -> 1.0.0) - breaking changes
+./scripts/version-bump.sh major "Refactor API"
+```
+
+**What it does:**
+1. Detects current version from branch name (e.g., `v0.0.1`)
+2. Increments version based on type (major/minor/patch)
+3. Creates new branch (e.g., `v0.0.2`)
+4. Stages all changes
+5. Commits with versioned message
+6. Pushes to origin
+
+**Examples:**
+```bash
+# Quick patch bump
+./scripts/version-bump.sh patch
+
+# Minor with custom message
+./scripts/version-bump.sh minor "Add question sync support"
+
+# Major with breaking changes
+./scripts/version-bump.sh major "Refactor DataStore services"
+```
+
+---
+
 ## For New Developers
 
 **First time setup:**
