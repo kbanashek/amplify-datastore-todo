@@ -1,9 +1,9 @@
 import { renderHook, waitFor } from "@testing-library/react-native";
 import { createMockTask } from "../../__tests__/__mocks__/DataStore.mock";
-import { TaskService } from "../../services/TaskService";
-import { useTaskList } from "../useTaskList";
 import { useAmplify } from "../../contexts/AmplifyContext";
+import { TaskService } from "../../services/TaskService";
 import { NetworkStatus } from "../useAmplifyState";
+import { useTaskList } from "../useTaskList";
 
 // Setup mocks after imports
 (useAmplify as jest.Mock).mockReturnValue({
