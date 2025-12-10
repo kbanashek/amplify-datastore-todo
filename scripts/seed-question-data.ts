@@ -472,24 +472,26 @@ export async function createTasksForActivities(activities: any[]) {
       const taskType = taskTypes[i % taskTypes.length];
       const taskTimestamp = Date.now() + (dayOffset * 1000) + i;
       
-      // Determine if this task should have questions (60% chance)
-      const hasQuestions = Math.random() < 0.6 && activities.length > 0;
-      const activity = hasQuestions 
-        ? activities[Math.floor(Math.random() * activities.length)]
-        : null;
+      // Only create tasks with questions - always link to an activity
+      if (activities.length === 0) {
+        log('Skipping task creation - no activities available', {
+          dayOffset,
+          taskIndex: i,
+        });
+        continue;
+      }
 
-      const taskTitle = activity
-        ? `${activity.title || activity.name} - Day ${dayOffset + 1}`
-        : dayOffset === 0
-        ? `Daily Check-in - ${time.hour}:${time.minute.toString().padStart(2, '0')}`
-        : `Task ${i + 1} - ${taskDate.toLocaleDateString('en-US', { weekday: 'short' })}`;
+      // Select an activity for this task
+      const activity = activities[Math.floor(Math.random() * activities.length)];
 
-      log('Creating task', {
+      const taskTitle = `${activity.title || activity.name} - Day ${dayOffset + 1}`;
+
+      log('Creating task with questions', {
         dayOffset,
         taskIndex: i,
         taskType,
-        hasQuestions,
-        activityTitle: activity?.title || activity?.name || 'none',
+        activityTitle: activity.title || activity.name,
+        activityPk: activity.pk,
         expireTime: new Date(expireTime).toISOString(),
       });
 
@@ -497,15 +499,13 @@ export async function createTasksForActivities(activities: any[]) {
         pk: `TASK-${dayOffset}-${i}-${taskTimestamp}`,
         sk: `SK-${taskTimestamp}`,
         title: taskTitle,
-        description: activity
-          ? activity.description || `Complete ${activity.title || activity.name}`
-          : `Task scheduled for ${taskDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}`,
+        description: activity.description || `Complete ${activity.title || activity.name}`,
         taskType: taskType,
         status: TaskStatus.OPEN,
         startTimeInMillSec: now,
         expireTimeInMillSec: expireTime,
-        entityId: activity ? activity.pk : null, // Link to activity if available
-        activityIndex: activity ? 0 : null,
+        entityId: activity.pk, // Always link to activity
+        activityIndex: 0,
         showBeforeStart: true,
         allowEarlyCompletion: true,
         allowLateCompletion: true,
@@ -529,8 +529,8 @@ export async function createTasksForActivities(activities: any[]) {
   log('All tasks created', {
     tasksCount: tasks.length,
     tasksWithQuestions: tasks.filter((t) => t.entityId).length,
-    tasksWithoutQuestions: tasks.filter((t) => !t.entityId).length,
     taskIds: tasks.map((t) => t.id),
+    allTasksHaveQuestions: tasks.every((t) => t.entityId),
   });
 
   return tasks;
