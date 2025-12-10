@@ -1,5 +1,4 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
-// @ts-ignore - Model will be generated after schema update
 import { TaskHistory } from "../../models";
 import { CreateTaskHistoryInput, UpdateTaskHistoryInput } from "../types/TaskHistory";
 

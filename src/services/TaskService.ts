@@ -1,6 +1,12 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
 import { Task } from "../../models";
-import { CreateTaskInput, UpdateTaskInput, TaskFilters, TaskType, TaskStatus } from "../types/Task";
+import {
+  CreateTaskInput,
+  TaskFilters,
+  TaskStatus,
+  TaskType,
+  UpdateTaskInput,
+} from "../types/Task";
 
 type TaskUpdateData = Omit<UpdateTaskInput, "id" | "_version">;
 
@@ -26,12 +32,18 @@ export class TaskService {
               ...remoteModel, // Start with remote model as base
               status: localModel.status || remoteModel.status, // Prefer local status
               // For timing, prefer remote if it's more recent
-              startTimeInMillSec: remoteModel.startTimeInMillSec || localModel.startTimeInMillSec,
-              expireTimeInMillSec: remoteModel.expireTimeInMillSec || localModel.expireTimeInMillSec,
-              endTimeInMillSec: remoteModel.endTimeInMillSec || localModel.endTimeInMillSec,
+              startTimeInMillSec:
+                remoteModel.startTimeInMillSec || localModel.startTimeInMillSec,
+              expireTimeInMillSec:
+                remoteModel.expireTimeInMillSec ||
+                localModel.expireTimeInMillSec,
+              endTimeInMillSec:
+                remoteModel.endTimeInMillSec || localModel.endTimeInMillSec,
               // For activity responses, prefer local if it exists
-              activityAnswer: localModel.activityAnswer || remoteModel.activityAnswer,
-              activityResponse: localModel.activityResponse || remoteModel.activityResponse,
+              activityAnswer:
+                localModel.activityAnswer || remoteModel.activityAnswer,
+              activityResponse:
+                localModel.activityResponse || remoteModel.activityResponse,
             };
 
             return resolvedModel;
@@ -43,12 +55,12 @@ export class TaskService {
             if (remoteModel._deleted) {
               return remoteModel;
             }
-            
+
             // If local model is incomplete, use remote with _deleted flag
             if (!localModel.title && !localModel.description) {
               return { ...remoteModel, _deleted: true };
             }
-            
+
             // Otherwise use local delete
             return localModel;
           }
@@ -67,14 +79,14 @@ export class TaskService {
    */
   static async createTask(input: CreateTaskInput): Promise<Task> {
     try {
-      console.log('[TaskService] Creating task with DataStore:', input);
+      console.log("[TaskService] Creating task with DataStore:", input);
       const task = await DataStore.save(
         new Task({
           ...input,
         })
       );
-      
-      console.log('[TaskService] Task created successfully:', task.id);
+
+      console.log("[TaskService] Task created successfully:", task.id);
       return task;
     } catch (error) {
       console.error("Error creating task:", error);
@@ -90,27 +102,33 @@ export class TaskService {
   static async getTasks(filters?: TaskFilters): Promise<Task[]> {
     try {
       let tasks = await DataStore.query(Task);
-      
+
       // Apply filters
       if (filters) {
         if (filters.status && filters.status.length > 0) {
-          tasks = tasks.filter(task => filters.status!.includes(task.status as TaskStatus));
-        }
-        
-        if (filters.taskType && filters.taskType.length > 0) {
-          tasks = tasks.filter(task => filters.taskType!.includes(task.taskType as TaskType));
-        }
-        
-        if (filters.searchText) {
-          const searchLower = filters.searchText.toLowerCase();
-          tasks = tasks.filter(task =>
-            task.title?.toLowerCase().includes(searchLower) ||
-            (task.description && task.description.toLowerCase().includes(searchLower))
+          tasks = tasks.filter((task) =>
+            filters.status!.includes(task.status as TaskStatus)
           );
         }
-        
+
+        if (filters.taskType && filters.taskType.length > 0) {
+          tasks = tasks.filter((task) =>
+            filters.taskType!.includes(task.taskType as TaskType)
+          );
+        }
+
+        if (filters.searchText) {
+          const searchLower = filters.searchText.toLowerCase();
+          tasks = tasks.filter(
+            (task) =>
+              task.title?.toLowerCase().includes(searchLower) ||
+              (task.description &&
+                task.description.toLowerCase().includes(searchLower))
+          );
+        }
+
         if (filters.dateFrom || filters.dateTo) {
-          tasks = tasks.filter(task => {
+          tasks = tasks.filter((task) => {
             if (!task.startTimeInMillSec) return false;
             const taskDate = new Date(task.startTimeInMillSec);
             if (filters.dateFrom && taskDate < filters.dateFrom) return false;
@@ -119,7 +137,7 @@ export class TaskService {
           });
         }
       }
-      
+
       return tasks;
     } catch (error) {
       console.error("Error fetching tasks:", error);
@@ -134,7 +152,8 @@ export class TaskService {
    */
   static async getTaskById(id: string): Promise<Task | null> {
     try {
-      return await DataStore.query(Task, id);
+      const task = await DataStore.query(Task, id);
+      return task || null;
     } catch (error) {
       console.error("Error fetching task:", error);
       throw error;
@@ -194,25 +213,27 @@ export class TaskService {
   static subscribeTasks(callback: (items: Task[], isSynced: boolean) => void): {
     unsubscribe: () => void;
   } {
-    console.log('[TaskService] Setting up DataStore subscription for Task');
-    
-    const querySubscription = DataStore.observeQuery(Task).subscribe((snapshot) => {
-      const { items, isSynced } = snapshot;
-      
-      console.log('[TaskService] DataStore subscription update:', {
-        itemCount: items.length,
-        isSynced,
-        itemIds: items.map(i => i.id)
-      });
-      
-      callback(items, isSynced);
-    });
-    
+    console.log("[TaskService] Setting up DataStore subscription for Task");
+
+    const querySubscription = DataStore.observeQuery(Task).subscribe(
+      (snapshot) => {
+        const { items, isSynced } = snapshot;
+
+        console.log("[TaskService] DataStore subscription update:", {
+          itemCount: items.length,
+          isSynced,
+          itemIds: items.map((i) => i.id),
+        });
+
+        callback(items, isSynced);
+      }
+    );
+
     return {
       unsubscribe: () => {
-        console.log('[TaskService] Unsubscribing from DataStore');
+        console.log("[TaskService] Unsubscribing from DataStore");
         querySubscription.unsubscribe();
-      }
+      },
     };
   }
 
@@ -230,4 +251,3 @@ export class TaskService {
     }
   }
 }
-

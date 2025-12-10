@@ -1,5 +1,4 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
-// @ts-ignore - Models will be generated after schema update
 import { DataPoint, DataPointInstance } from "../../models";
 import { CreateDataPointInput, CreateDataPointInstanceInput, UpdateDataPointInput, UpdateDataPointInstanceInput } from "../types/DataPoint";
 

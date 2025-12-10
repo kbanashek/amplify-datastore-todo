@@ -24,9 +24,17 @@ const MAPPING = {
   'doc.text.fill': 'description',
   'chart.bar.fill': 'bar-chart',
   'questionmark.circle.fill': 'help',
+  'questionmark.circle': 'help-outline',
   'text.bubble.fill': 'chat-bubble',
   'list.bullet.rectangle.portrait.fill': 'list',
+  'list.clipboard': 'assignment',
   'clock.fill': 'schedule',
+  'clock': 'schedule',
+  'pills': 'medication',
+  'bell': 'notifications',
+  'calendar': 'calendar-today',
+  'repeat': 'repeat',
+  'doc.text': 'description',
 } as IconMapping;
 
 /**

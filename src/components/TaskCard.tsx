@@ -1,61 +1,59 @@
+import { IconSymbol } from "@/components/ui/IconSymbol";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { TaskService } from "../services/TaskService";
 import { Task, TaskStatus, TaskType } from "../types/Task";
 
 interface TaskCardProps {
   task: Task;
   onPress?: (task: Task) => void;
   onDelete?: (id: string) => void;
+  simple?: boolean; // If true, show simple card without BEGIN button
 }
 
-const getStatusColor = (status: TaskStatus): string => {
-  switch (status) {
-    case TaskStatus.OPEN:
-      return "#95a5a6";
-    case TaskStatus.VISIBLE:
-      return "#3498db";
-    case TaskStatus.STARTED:
-      return "#f39c12";
-    case TaskStatus.INPROGRESS:
-      return "#9b59b6";
-    case TaskStatus.COMPLETED:
-      return "#27ae60";
-    case TaskStatus.EXPIRED:
-      return "#e74c3c";
-    case TaskStatus.RECALLED:
-      return "#34495e";
-    default:
-      return "#95a5a6";
-  }
-};
+// Get icon name and color based on task type and title
+const getTaskIcon = (task: Task): { name: string; color: string } => {
+  const title = (task.title || "").toLowerCase();
 
-const getTaskTypeLabel = (type: TaskType): string => {
-  switch (type) {
+  // Check for specific keywords in title
+  if (title.includes("medication") || title.includes("diary")) {
+    return { name: "pills", color: "#3498db" };
+  }
+  if (title.includes("survey") || title.includes("health")) {
+    return { name: "questionmark.circle", color: "#3498db" };
+  }
+  if (title.includes("quality") || title.includes("life")) {
+    return { name: "list.clipboard", color: "#3498db" };
+  }
+  if (title.includes("recall") || title.includes("recognition")) {
+    return { name: "bell", color: "#f39c12" };
+  }
+  if (
+    title.includes("symptom") ||
+    title.includes("pain") ||
+    title.includes("neuropathic")
+  ) {
+    return { name: "questionmark.circle", color: "#3498db" };
+  }
+
+  // Default based on task type
+  switch (task.taskType) {
     case TaskType.SCHEDULED:
-      return "SCHEDULED";
+      return { name: "calendar", color: "#3498db" };
     case TaskType.TIMED:
-      return "TIMED";
+      return { name: "clock", color: "#3498db" };
     case TaskType.EPISODIC:
-      return "EPISODIC";
+      return { name: "repeat", color: "#3498db" };
     default:
-      return "UNKNOWN";
+      return { name: "doc.text", color: "#3498db" };
   }
-};
-
-const formatDate = (timestamp?: number | null): string => {
-  if (!timestamp) return "No date";
-  const date = new Date(timestamp);
-  return (
-    date.toLocaleDateString() +
-    " " +
-    date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-  );
 };
 
 export const TaskCard: React.FC<TaskCardProps> = ({
   task,
   onPress,
   onDelete,
+  simple = false,
 }) => {
   console.log("[TaskCard] RENDER:", {
     id: task.id,
@@ -63,9 +61,28 @@ export const TaskCard: React.FC<TaskCardProps> = ({
     hasTitle: !!task.title,
     titleLength: task.title?.length || 0,
     status: task.status,
+    simple,
   });
 
-  const statusColor = getStatusColor(task.status);
+  const icon = getTaskIcon(task);
+
+  const handleBeginPress = async () => {
+    try {
+      // If task is not started, update status to STARTED
+      if (
+        task.status !== TaskStatus.STARTED &&
+        task.status !== TaskStatus.INPROGRESS
+      ) {
+        await TaskService.updateTask(task.id, {
+          status: TaskStatus.STARTED,
+        });
+      }
+      // Call the onPress callback if provided
+      onPress?.(task);
+    } catch (error) {
+      console.error("Error updating task status:", error);
+    }
+  };
 
   return (
     <TouchableOpacity
@@ -73,84 +90,48 @@ export const TaskCard: React.FC<TaskCardProps> = ({
       onPress={() => onPress?.(task)}
       activeOpacity={0.7}
     >
-      <View style={styles.header}>
-        <View style={styles.titleRow}>
-          <View style={styles.titleContainer}>
-            <Text
-              style={styles.title}
-              numberOfLines={3}
-              onLayout={(e) => {
-                console.log("[TaskCard] Title layout:", {
-                  id: task.id,
-                  width: e.nativeEvent.layout.width,
-                  height: e.nativeEvent.layout.height,
-                  title: task.title,
-                });
-              }}
-            >
+      <View style={styles.cardContent}>
+        <View
+          style={[styles.titleSection, simple && styles.titleSectionSimple]}
+        >
+          <View style={styles.titleRow}>
+            <View style={styles.iconContainer}>
+              <IconSymbol
+                name={icon.name as any}
+                size={24}
+                color={icon.color}
+              />
+            </View>
+            <Text style={styles.title} numberOfLines={2}>
               {task.title || "Untitled Task"}
             </Text>
-            {task.description && (
-              <Text style={styles.description} numberOfLines={2}>
-                {task.description}
+          </View>
+        </View>
+
+        {!simple && (
+          <View style={styles.actionRow}>
+            <TouchableOpacity
+              style={styles.beginButton}
+              onPress={handleBeginPress}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.beginButtonText}>
+                {task.status === TaskStatus.STARTED ||
+                task.status === TaskStatus.INPROGRESS
+                  ? "RESUME"
+                  : "BEGIN"}
               </Text>
-            )}
-          </View>
-          <View style={[styles.statusBadge, { backgroundColor: statusColor }]}>
-            <Text style={styles.statusText}>{task.status}</Text>
-          </View>
-        </View>
-        <View style={styles.metaRow}>
-          <View style={styles.typeBadge}>
-            <Text style={styles.typeText}>
-              {getTaskTypeLabel(task.taskType)}
-            </Text>
-          </View>
-          {task.pk && (
-            <Text style={styles.pkText} numberOfLines={1}>
-              {task.pk}
-            </Text>
-          )}
-        </View>
-      </View>
-
-      <View style={styles.details}>
-        {task.startTimeInMillSec && (
-          <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Start:</Text>
-            <Text style={styles.detailValue}>
-              {formatDate(task.startTimeInMillSec)}
-            </Text>
-          </View>
-        )}
-
-        {task.expireTimeInMillSec && (
-          <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Expires:</Text>
-            <Text style={styles.detailValue}>
-              {formatDate(task.expireTimeInMillSec)}
-            </Text>
-          </View>
-        )}
-
-        {task.pk && (
-          <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>PK:</Text>
-            <Text style={styles.detailValue} numberOfLines={1}>
-              {task.pk}
-            </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.arrowButton}
+              onPress={() => onPress?.(task)}
+              activeOpacity={0.7}
+            >
+              <IconSymbol name="chevron.right" size={20} color="#57606f" />
+            </TouchableOpacity>
           </View>
         )}
       </View>
-
-      {onDelete && (
-        <TouchableOpacity
-          style={styles.deleteButton}
-          onPress={() => onDelete(task.id)}
-        >
-          <Text style={styles.deleteButtonText}>Delete</Text>
-        </TouchableOpacity>
-      )}
     </TouchableOpacity>
   );
 };
@@ -159,97 +140,70 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
     borderRadius: 8,
-    padding: 16,
     marginBottom: 12,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
+    overflow: "hidden",
   },
-  header: {
-    marginBottom: 8,
+  cardContent: {
+    padding: 16,
+  },
+  titleSection: {
+    marginBottom: 16,
+  },
+  titleSectionSimple: {
+    marginBottom: 0,
   },
   titleRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "flex-start",
-    marginBottom: 4,
+    gap: 12,
   },
-  titleContainer: {
-    flex: 1,
-    marginRight: 8,
+  iconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
   },
   title: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "bold",
     color: "#1a1a1a",
-    marginBottom: 6,
-    lineHeight: 28,
+    lineHeight: 26,
+    flex: 1,
   },
-  statusBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-  },
-  statusText: {
-    color: "#fff",
-    fontSize: 10,
-    fontWeight: "bold",
-  },
-  typeBadge: {
-    alignSelf: "flex-start",
-    backgroundColor: "#ecf0f1",
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
-    marginTop: 4,
-  },
-  typeText: {
-    color: "#7f8c8d",
-    fontSize: 10,
-    fontWeight: "600",
-  },
-  description: {
-    fontSize: 14,
-    color: "#57606f",
-    marginTop: 4,
-  },
-  metaRow: {
+  actionRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 8,
-    gap: 8,
+    justifyContent: "space-between",
   },
-  pkText: {
-    fontSize: 11,
-    color: "#95a5a6",
-    fontFamily: "monospace",
-    flex: 1,
+  beginButton: {
+    backgroundColor: "#3498db",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 6,
+    minWidth: 100,
+    alignItems: "center",
   },
-  details: {
-    marginTop: 8,
-    paddingTop: 8,
-    borderTopWidth: 1,
-    borderTopColor: "#dfe4ea",
+  beginButtonText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "bold",
+    letterSpacing: 0.5,
   },
-  detailRow: {
-    flexDirection: "row",
-    marginBottom: 4,
-  },
-  detailLabel: {
-    fontSize: 12,
-    color: "#747d8c",
-    fontWeight: "600",
-    width: 70,
-  },
-  detailValue: {
-    fontSize: 12,
-    color: "#2f3542",
-    flex: 1,
+  arrowButton: {
+    padding: 8,
+    marginLeft: 8,
   },
   deleteButton: {
-    marginTop: 12,
+    marginTop: 8,
+    marginHorizontal: 16,
+    marginBottom: 12,
     padding: 8,
     backgroundColor: "#e74c3c",
     borderRadius: 4,

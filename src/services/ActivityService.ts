@@ -1,5 +1,4 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
-// @ts-ignore - Model will be generated after schema update
 import { Activity } from "../../models";
 import { CreateActivityInput, UpdateActivityInput } from "../types/Activity";
 

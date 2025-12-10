@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { Task } from "../../models";
 import { TaskService } from "../services/TaskService";
-import { Task, CreateTaskInput, TaskType, TaskStatus } from "../types/Task";
+import { CreateTaskInput, TaskStatus, TaskType } from "../types/Task";
 
 interface UseTaskFormReturn {
   title: string;
@@ -15,6 +16,10 @@ interface UseTaskFormReturn {
   setPk: (pk: string) => void;
   sk: string;
   setSk: (sk: string) => void;
+  dueDate: string;
+  setDueDate: (date: string) => void;
+  dueTime: string;
+  setDueTime: (time: string) => void;
   isSubmitting: boolean;
   error: string | null;
   handleSubmit: () => Promise<Task | null>;
@@ -22,17 +27,61 @@ interface UseTaskFormReturn {
 }
 
 interface UseTaskFormProps {
-  onTaskCreated?: (task: Task) => void;
+  onTaskCreated?: (task: any) => void;
   initialTask?: Task;
 }
 
-export const useTaskForm = ({ onTaskCreated, initialTask }: UseTaskFormProps = {}): UseTaskFormReturn => {
+// Helper to format date as YYYY-MM-DD
+const formatDateForInput = (timestamp?: number | null): string => {
+  if (!timestamp) {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow.toISOString().split("T")[0];
+  }
+  return new Date(timestamp).toISOString().split("T")[0];
+};
+
+// Helper to format time as HH:MM
+const formatTimeForInput = (timestamp?: number | null): string => {
+  if (!timestamp) {
+    return "11:45"; // Default time
+  }
+  const date = new Date(timestamp);
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  return `${hours}:${minutes}`;
+};
+
+// Helper to combine date and time into timestamp
+const combineDateAndTime = (dateStr: string, timeStr: string): number => {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const [hours, minutes] = timeStr.split(":").map(Number);
+  const date = new Date(year, month - 1, day, hours, minutes);
+  return date.getTime();
+};
+
+export const useTaskForm = ({
+  onTaskCreated,
+  initialTask,
+}: UseTaskFormProps = {}): UseTaskFormReturn => {
   const [title, setTitle] = useState<string>(initialTask?.title || "");
-  const [description, setDescription] = useState<string>(initialTask?.description || "");
-  const [taskType, setTaskType] = useState<TaskType>(initialTask?.taskType || TaskType.SCHEDULED);
-  const [status, setStatus] = useState<TaskStatus>(initialTask?.status || TaskStatus.OPEN);
+  const [description, setDescription] = useState<string>(
+    initialTask?.description || ""
+  );
+  const [taskType, setTaskType] = useState<TaskType>(
+    (initialTask?.taskType as TaskType) || TaskType.SCHEDULED
+  );
+  const [status, setStatus] = useState<TaskStatus>(
+    (initialTask?.status as TaskStatus) || TaskStatus.OPEN
+  );
   const [pk, setPk] = useState<string>(initialTask?.pk || `TASK-${Date.now()}`);
   const [sk, setSk] = useState<string>(initialTask?.sk || `SK-${Date.now()}`);
+  const [dueDate, setDueDate] = useState<string>(
+    formatDateForInput(initialTask?.expireTimeInMillSec)
+  );
+  const [dueTime, setDueTime] = useState<string>(
+    formatTimeForInput(initialTask?.expireTimeInMillSec)
+  );
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -56,6 +105,9 @@ export const useTaskForm = ({ onTaskCreated, initialTask }: UseTaskFormProps = {
     setError(null);
 
     try {
+      // Calculate expireTimeInMillSec from date and time inputs
+      const expireTimeInMillSec = combineDateAndTime(dueDate, dueTime);
+
       const input: CreateTaskInput = {
         pk: pk.trim(),
         sk: sk.trim(),
@@ -65,7 +117,7 @@ export const useTaskForm = ({ onTaskCreated, initialTask }: UseTaskFormProps = {
         status,
         // Set default values for required fields
         startTimeInMillSec: initialTask?.startTimeInMillSec || Date.now(),
-        expireTimeInMillSec: initialTask?.expireTimeInMillSec || Date.now() + (24 * 60 * 60 * 1000), // 24 hours from now
+        expireTimeInMillSec: expireTimeInMillSec,
       };
 
       const task = await TaskService.createTask(input);
@@ -79,7 +131,8 @@ export const useTaskForm = ({ onTaskCreated, initialTask }: UseTaskFormProps = {
 
       return task;
     } catch (err: any) {
-      const errorMessage = err?.message || "Failed to create task. Please try again.";
+      const errorMessage =
+        err?.message || "Failed to create task. Please try again.";
       setError(errorMessage);
       console.error("Error creating task:", err);
       return null;
@@ -95,6 +148,8 @@ export const useTaskForm = ({ onTaskCreated, initialTask }: UseTaskFormProps = {
     setStatus(TaskStatus.OPEN);
     setPk(`TASK-${Date.now()}`);
     setSk(`SK-${Date.now()}`);
+    setDueDate(formatDateForInput(null));
+    setDueTime(formatTimeForInput(null));
     setError(null);
   };
 
@@ -111,10 +166,13 @@ export const useTaskForm = ({ onTaskCreated, initialTask }: UseTaskFormProps = {
     setPk,
     sk,
     setSk,
+    dueDate,
+    setDueDate,
+    dueTime,
+    setDueTime,
     isSubmitting,
     error,
     handleSubmit,
     reset,
   };
 };
-
