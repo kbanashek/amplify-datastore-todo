@@ -3,7 +3,8 @@ import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Activi
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDataPointList } from '../../src/hooks/useDataPointList';
 import { DataPointService } from '../../src/services/DataPointService';
-import { NetworkStatusIndicator } from '../../src/components/NetworkStatusIndicator';
+import { GlobalHeader } from '../../src/components/GlobalHeader';
+import { TranslatedText } from '../../src/components/TranslatedText';
 
 export default function DataPointsScreen() {
   const { dataPoints, instances, loading, error, handleDeleteDataPoint, handleDeleteInstance } = useDataPointList();
@@ -39,10 +40,7 @@ export default function DataPointsScreen() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Data Points</Text>
-        <NetworkStatusIndicator />
-      </View>
+      <GlobalHeader title="Data Points" />
 
       <ScrollView 
         style={styles.scrollView}
@@ -56,11 +54,11 @@ export default function DataPointsScreen() {
               style={styles.createButton}
               onPress={() => setShowForm(true)}
             >
-              <Text style={styles.createButtonText}>+ Create New Data Point</Text>
+              <TranslatedText text="+ Create New Data Point" style={styles.createButtonText} />
             </TouchableOpacity>
           ) : (
             <View style={styles.formContainer}>
-              <Text style={styles.formTitle}>Create Data Point</Text>
+              <TranslatedText text="Create Data Point" style={styles.formTitle} />
               
               <TextInput
                 style={styles.input}
@@ -96,7 +94,7 @@ export default function DataPointsScreen() {
                   }}
                   disabled={isSubmitting}
                 >
-                  <Text style={styles.cancelButtonText}>Cancel</Text>
+                  <TranslatedText text="Cancel" style={styles.cancelButtonText} />
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -107,7 +105,7 @@ export default function DataPointsScreen() {
                   {isSubmitting ? (
                     <ActivityIndicator size="small" color="#fff" />
                   ) : (
-                    <Text style={styles.submitButtonText}>Create</Text>
+                    <TranslatedText text="Create" style={styles.submitButtonText} />
                   )}
                 </TouchableOpacity>
               </View>
@@ -117,12 +115,12 @@ export default function DataPointsScreen() {
 
         {/* DATA POINTS LIST */}
         <View style={styles.listSection}>
-          <Text style={styles.listTitle}>Data Points ({dataPoints.length})</Text>
+          <TranslatedText text={`Data Points (${dataPoints.length})`} style={styles.listTitle} />
           
           {loading && dataPoints.length === 0 ? (
             <View style={styles.centerContainer}>
               <ActivityIndicator size="large" color="#3498db" />
-              <Text style={styles.loadingText}>Loading data points...</Text>
+              <TranslatedText text="Loading data points..." style={styles.loadingText} />
             </View>
           ) : error ? (
             <View style={styles.centerContainer}>
@@ -130,7 +128,7 @@ export default function DataPointsScreen() {
             </View>
           ) : dataPoints.length === 0 ? (
             <View style={styles.centerContainer}>
-              <Text style={styles.emptyText}>No data points yet. Create one above!</Text>
+              <TranslatedText text="No data points yet. Create one above!" style={styles.emptyText} />
             </View>
           ) : (
             dataPoints.map((dp) => (
@@ -141,7 +139,7 @@ export default function DataPointsScreen() {
                     onPress={() => handleDeleteDataPoint(dp.id)}
                     style={styles.deleteButton}
                   >
-                    <Text style={styles.deleteButtonText}>Delete</Text>
+                    <TranslatedText text="Delete" style={styles.deleteButtonText} />
                   </TouchableOpacity>
                 </View>
                 <Text style={styles.cardMeta}>PK: {dp.pk}</Text>
@@ -155,7 +153,7 @@ export default function DataPointsScreen() {
         {/* INSTANCES LIST */}
         {instances.length > 0 && (
           <View style={styles.listSection}>
-            <Text style={styles.listTitle}>Instances ({instances.length})</Text>
+            <TranslatedText text={`Instances (${instances.length})`} style={styles.listTitle} />
             {instances.map((instance) => (
               <View key={instance.id} style={styles.card}>
                 <View style={styles.cardHeader}>
@@ -164,7 +162,7 @@ export default function DataPointsScreen() {
                     onPress={() => handleDeleteInstance(instance.id)}
                     style={styles.deleteButton}
                   >
-                    <Text style={styles.deleteButtonText}>Delete</Text>
+                    <TranslatedText text="Delete" style={styles.deleteButtonText} />
                   </TouchableOpacity>
                 </View>
                 <Text style={styles.cardMeta}>PK: {instance.pk}</Text>

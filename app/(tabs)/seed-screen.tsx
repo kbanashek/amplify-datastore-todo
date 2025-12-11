@@ -18,6 +18,8 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { seedQuestionData } from '../../scripts/seed-question-data';
 import { TaskService } from '../../src/services/TaskService';
+import { GlobalHeader } from '../../src/components/GlobalHeader';
+import { TranslatedText } from '../../src/components/TranslatedText';
 
 export default function SeedScreen() {
   const [isSeeding, setIsSeeding] = useState(false);
@@ -106,27 +108,25 @@ export default function SeedScreen() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Seed Question Data</Text>
-      </View>
+      <GlobalHeader title="Seed Question Data" />
 
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>What this does:</Text>
-          <Text style={styles.sectionText}>
-            Creates sample Activities with question structures and Tasks that reference them.
-            This allows you to test the question rendering functionality.
-          </Text>
+          <TranslatedText text="What this does:" style={styles.sectionTitle} />
+          <TranslatedText 
+            text="Creates sample Activities with question structures and Tasks that reference them. This allows you to test the question rendering functionality."
+            style={styles.sectionText}
+          />
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Will create:</Text>
-          <Text style={styles.listItem}>• 3 Activities with different question types</Text>
-          <Text style={styles.listItem}>• Tasks for today + 5 days (6 days total)</Text>
-          <Text style={styles.listItem}>• Mix of task types (SCHEDULED, TIMED, EPISODIC)</Text>
-          <Text style={styles.listItem}>• ~60% of tasks have questions (linked to activities)</Text>
-          <Text style={styles.listItem}>• ~40% are simple tasks (no questions)</Text>
-          <Text style={styles.listItem}>• Tasks spread throughout the day (8 AM - 8 PM)</Text>
+          <TranslatedText text="Will create:" style={styles.sectionTitle} />
+          <TranslatedText text="• 3 Activities with different question types" style={styles.listItem} />
+          <TranslatedText text="• Tasks for today + 5 days (6 days total)" style={styles.listItem} />
+          <TranslatedText text="• Mix of task types (SCHEDULED, TIMED, EPISODIC)" style={styles.listItem} />
+          <TranslatedText text="• ~60% of tasks have questions (linked to activities)" style={styles.listItem} />
+          <TranslatedText text="• ~40% are simple tasks (no questions)" style={styles.listItem} />
+          <TranslatedText text="• Tasks spread throughout the day (8 AM - 8 PM)" style={styles.listItem} />
         </View>
 
         <TouchableOpacity
@@ -137,7 +137,7 @@ export default function SeedScreen() {
           {isClearing ? (
             <ActivityIndicator size="small" color="#fff" />
           ) : (
-            <Text style={styles.clearButtonText}>🗑️ Clear All Tasks</Text>
+            <TranslatedText text="🗑️ Clear All Tasks" style={styles.clearButtonText} />
           )}
         </TouchableOpacity>
 
@@ -149,7 +149,7 @@ export default function SeedScreen() {
           {isSeeding ? (
             <ActivityIndicator size="small" color="#fff" />
           ) : (
-            <Text style={styles.seedButtonText}>🌱 Seed Data</Text>
+            <TranslatedText text="🌱 Seed Data" style={styles.seedButtonText} />
           )}
         </TouchableOpacity>
 

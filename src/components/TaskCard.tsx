@@ -1,8 +1,11 @@
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { TaskService } from "../services/TaskService";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { useTaskUpdate } from "../hooks/useTaskUpdate";
 import { Task, TaskStatus, TaskType } from "../types/Task";
+import { TranslatedText } from "./TranslatedText";
+import { useRTL } from "../hooks/useRTL";
+import { useTranslation } from "../contexts/TranslationContext";
 
 interface TaskCardProps {
   task: Task;
@@ -64,7 +67,10 @@ export const TaskCard: React.FC<TaskCardProps> = ({
     simple,
   });
 
+  const { updateTask } = useTaskUpdate();
   const icon = getTaskIcon(task);
+  const { rtlStyle } = useRTL();
+  const { isRTL } = useTranslation();
 
   // Get status display info
   const getStatusInfo = (status: TaskStatus) => {
@@ -100,7 +106,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
           taskId: task.id,
           previousStatus: task.status,
         });
-        await TaskService.updateTask(task.id, {
+        await updateTask(task.id, {
           status: TaskStatus.STARTED,
         });
         console.log("✅ [TaskCard] Task status updated successfully", {
@@ -151,7 +157,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
         <View
           style={[styles.titleSection, simple && styles.titleSectionSimple]}
         >
-          <View style={styles.titleRow}>
+          <View style={[styles.titleRow, rtlStyle(styles.titleRow)]}>
             <View style={styles.iconContainer}>
               <IconSymbol
                 name={icon.name as any}
@@ -160,9 +166,11 @@ export const TaskCard: React.FC<TaskCardProps> = ({
               />
             </View>
             <View style={styles.titleContainer}>
-              <Text style={styles.title} numberOfLines={2}>
-                {task.title || "Untitled Task"}
-              </Text>
+              <TranslatedText
+                text={task.title || "Untitled Task"}
+                style={styles.title}
+                numberOfLines={2}
+              />
               {statusInfo && (
                 <View
                   style={[
@@ -170,11 +178,10 @@ export const TaskCard: React.FC<TaskCardProps> = ({
                     { backgroundColor: statusInfo.bgColor },
                   ]}
                 >
-                  <Text
+                  <TranslatedText
+                    text={statusInfo.label}
                     style={[styles.statusText, { color: statusInfo.color }]}
-                  >
-                    {statusInfo.label}
-                  </Text>
+                  />
                 </View>
               )}
             </View>
@@ -182,18 +189,21 @@ export const TaskCard: React.FC<TaskCardProps> = ({
         </View>
 
         {!simple && (
-          <View style={styles.actionRow}>
+          <View style={[styles.actionRow, rtlStyle(styles.actionRow)]}>
             <TouchableOpacity
               style={styles.beginButton}
               onPress={handleBeginPress}
               activeOpacity={0.8}
             >
-              <Text style={styles.beginButtonText}>
-                {task.status === TaskStatus.STARTED ||
-                task.status === TaskStatus.INPROGRESS
-                  ? "RESUME"
-                  : "BEGIN"}
-              </Text>
+              <TranslatedText
+                text={
+                  task.status === TaskStatus.STARTED ||
+                  task.status === TaskStatus.INPROGRESS
+                    ? "RESUME"
+                    : "BEGIN"
+                }
+                style={styles.beginButtonText}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.arrowButton}
@@ -206,7 +216,11 @@ export const TaskCard: React.FC<TaskCardProps> = ({
               }}
               activeOpacity={0.7}
             >
-              <IconSymbol name="chevron.right" size={20} color="#57606f" />
+              <IconSymbol 
+                name={isRTL ? "chevron.left" : "chevron.right"} 
+                size={20} 
+                color="#57606f" 
+              />
             </TouchableOpacity>
           </View>
         )}

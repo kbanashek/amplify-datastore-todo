@@ -14,4 +14,19 @@ module.exports = {
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/$1",
   },
+  coverageReporters: [
+    "text",
+    "text-summary",
+    "html",
+    "lcov",
+  ],
+  coverageThreshold: {
+    global: {
+      branches: 0,
+      functions: 0,
+      lines: 0,
+      statements: 0,
+    },
+  },
+  coverageDirectory: "coverage",
 };

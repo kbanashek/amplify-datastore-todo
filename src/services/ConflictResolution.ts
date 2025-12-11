@@ -2,7 +2,7 @@ import { DataStore, OpType } from "@aws-amplify/datastore";
 
 /**
  * Unified conflict resolution strategy for all DataStore models
- * This handles conflicts for Task, Todo, Question, Activity, DataPoint, 
+ * This handles conflicts for Task, Question, Activity, DataPoint, 
  * DataPointInstance, TaskAnswer, TaskResult, and TaskHistory
  */
 export class ConflictResolution {
@@ -50,8 +50,6 @@ export class ConflictResolution {
           
           if (modelName === "Task") {
             isIncomplete = !localModel.title && !localModel.description;
-          } else if (modelName === "Todo") {
-            isIncomplete = !localModel.name;
           } else if (modelName === "Question") {
             isIncomplete = !localModel.question && !localModel.questionId;
           } else if (modelName === "Activity") {

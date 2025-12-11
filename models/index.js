@@ -18,10 +18,9 @@ const TaskStatus = {
   "RECALLED": "RECALLED"
 };
 
-const { Todo, Task, Question, Activity, DataPoint, DataPointInstance, TaskAnswer, TaskResult, TaskHistory } = initSchema(schema);
+const { Task, Question, Activity, DataPoint, DataPointInstance, TaskAnswer, TaskResult, TaskHistory } = initSchema(schema);
 
 export {
-  Todo,
   Task,
   Question,
   Activity,

@@ -17,3 +17,5 @@ COMMIT_MSG=${2:-""}
 # Run the version bump script
 exec "$VERSION_SCRIPT" "$BUMP_TYPE" "$COMMIT_MSG"
 
+
+

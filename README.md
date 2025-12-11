@@ -4,7 +4,7 @@ A React Native application built with Expo and AWS Amplify that demonstrates onl
 
 ![App Screenshot](./assets/images/todo-app-screenshot.png)
 
-*The app running on iOS devices showing task management, question forms, and online/offline sync capabilities*
+_The app running on iOS devices showing task management, question forms, and online/offline sync capabilities_
 
 ## ✅ Features
 
@@ -18,6 +18,8 @@ A React Native application built with Expo and AWS Amplify that demonstrates onl
 - ☁️ **AWS AppSync Backend**: GraphQL API with real-time subscriptions
 - 🔍 **Smart Conflict Resolution**: Custom conflict resolution for data consistency
 - 📱 **Multi-Screen Activities**: Support for introduction, question pages, review, and completion screens
+- 🌍 **Multi-Language Support**: Real-time translation using AWS Translate with 20+ supported languages
+- 🔄 **RTL Language Support**: Automatic Right-to-Left layout for Arabic, Hebrew, Urdu, Persian, and Yiddish
 
 ## 💻 Prerequisites
 
@@ -61,6 +63,7 @@ In the output, you'll find options to open the app in a:
 - [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
 - [Expo Go](https://expo.dev/go) on your physical device
+
 ## Project Structure
 
 ```
@@ -105,13 +108,24 @@ In the output, you'll find options to open the app in a:
 │   │   ├── useAmplifyState.ts # Amplify state management
 │   │   ├── useNetworkStatus.ts # Network status logic
 │   │   ├── useTaskForm.ts # Task form logic
-│   │   ├── useTaskList.ts # Task list logic
+│   │   ├── useTaskList.ts # Task list logic (reactive subscription)
+│   │   ├── useTaskUpdate.ts # Reactive task updates
 │   │   ├── useGroupedTasks.ts # Task grouping logic
+│   │   ├── useActivity.ts # Single activity fetching (reactive)
+│   │   ├── useActivityList.ts # Activity list (reactive subscription)
+│   │   ├── useTaskAnswer.ts # Task answer management (reactive)
+│   │   ├── useTaskAnswerList.ts # Task answer list (reactive subscription)
+│   │   ├── useDataPointInstance.ts # Data point instance management (reactive)
+│   │   ├── useDataPointList.ts # Data point list (reactive subscription)
+│   │   ├── useQuestionList.ts # Question list (reactive subscription)
 │   │   └── useQuestionsScreen.ts # Questions screen logic
-│   ├── services/         # Data services
+│   ├── services/         # Data services (data access layer)
 │   │   ├── TaskService.ts  # Task CRUD operations
 │   │   ├── ActivityService.ts  # Activity operations
+│   │   ├── QuestionService.ts  # Question operations
 │   │   ├── TaskAnswerService.ts  # Task answer operations
+│   │   ├── TaskResultService.ts  # Task result operations
+│   │   ├── TaskHistoryService.ts  # Task history operations
 │   │   ├── DataPointService.ts  # Data point operations
 │   │   └── ConflictResolution.ts  # Centralized conflict resolution
 │   ├── types/            # TypeScript type definitions
@@ -125,6 +139,7 @@ In the output, you'll find options to open the app in a:
 ## 📱 Key Features
 
 ### Task Management
+
 - Create tasks with due dates and times
 - Tasks grouped by day and time
 - Status tracking (OPEN, STARTED, INPROGRESS, COMPLETED)
@@ -132,6 +147,7 @@ In the output, you'll find options to open the app in a:
 - BEGIN/RESUME buttons based on task status
 
 ### Dynamic Question Rendering
+
 - Multi-page questionnaires with introduction, question pages, review, and completion screens
 - Support for various question types:
   - Text input (single-line and multi-line)
@@ -144,15 +160,19 @@ In the output, you'll find options to open the app in a:
 - Answer persistence and restoration
 
 ### Data Point Recording
+
 - Automatic creation of `DataPointInstance` records when answers are submitted
 - Links answers to activities and questions for analytics
 - Synchronized with AWS AppSync for cloud storage
 
 ### Component Architecture
+
 - **Hooks contain all business logic**: State management, side effects, API calls
+- **Reactive data management**: Hooks subscribe to DataStore changes for real-time updates
 - **Components are presentation-only**: Render UI and handle user interactions
 - **Small, focused components**: Each component has a single responsibility
 - **Reusable sub-components**: Shared UI elements across screens
+- **Service layer**: Services provide data access, hooks provide reactive state management
 
 ## 📱 Testing Offline Functionality
 
@@ -165,6 +185,7 @@ In the output, you'll find options to open the app in a:
 ## 🔧 Troubleshooting
 
 - 🗑️ If you encounter issues with DataStore synchronization, try clearing the local database:
+
   ```javascript
   // In your app code, add this for testing:
   await DataStore.clear();
@@ -183,19 +204,30 @@ In the output, you'll find options to open the app in a:
 This app follows a strict separation of concerns:
 
 **Hooks (`src/hooks/`)**: Contain all business logic
+
 - State management (`useState`, `useReducer`)
 - Side effects (`useEffect`, subscriptions)
+- Reactive data subscriptions (DataStore observeQuery)
 - API calls and data operations
 - Event handlers with logic
 - Validation and data transformation
 
+**Reactive Hooks Pattern:**
+
+- **List hooks** (e.g., `useTaskList`, `useActivityList`): Subscribe to all records, provide filtering
+- **Single item hooks** (e.g., `useActivity`): Subscribe to a specific record by ID
+- **Mutation hooks** (e.g., `useTaskUpdate`, `useTaskAnswer`): Provide create/update operations with reactive updates
+- **Composite hooks** (e.g., `useQuestionsScreen`): Combine multiple hooks for complex workflows
+
 **Components (`src/components/`, `app/`)**: Handle presentation only
+
 - Render UI based on props
 - Handle user interactions (pass to hooks)
 - Compose smaller sub-components
 - No business logic in components
 
 **Example Pattern:**
+
 ```typescript
 // ❌ Bad: Large component with all logic
 export default function MyComponent() {
@@ -221,20 +253,48 @@ export default function MyComponent() {
 }
 ```
 
+**Reactive Data Pattern:**
+
+```typescript
+// ✅ Good: Use hooks for reactive data, not direct service calls
+// src/hooks/useTaskUpdate.ts
+export const useTaskUpdate = () => {
+  const [isUpdating, setIsUpdating] = useState(false);
+  const updateTask = useCallback(async (id, data) => {
+    setIsUpdating(true);
+    try {
+      await TaskService.updateTask(id, data);
+      // Subscription automatically updates UI
+    } finally {
+      setIsUpdating(false);
+    }
+  }, []);
+  return { updateTask, isUpdating };
+};
+
+// ❌ Bad: Direct service calls in components
+export default function TaskCard({ task }) {
+  const handleUpdate = async () => {
+    await TaskService.updateTask(task.id, { status: "STARTED" });
+    // No reactive updates, need manual refresh
+  };
+}
+```
+
 ### 💡 Custom Amplify Initialization
 
 This app uses a custom entry point to ensure Amplify is properly configured before any component tries to use it:
 
 ```javascript
 // entry.js - Custom entry point for the app
-import { Amplify } from 'aws-amplify';
-import awsconfig from './aws-exports';
-import 'expo-router/entry';
+import { Amplify } from "aws-amplify";
+import awsconfig from "./aws-exports";
+import "expo-router/entry";
 
 // Configure Amplify immediately
-console.log('Entry point: Initializing Amplify before Expo Router loads...');
+console.log("Entry point: Initializing Amplify before Expo Router loads...");
 Amplify.configure(awsconfig);
-console.log('Entry point: Amplify initialized successfully');
+console.log("Entry point: Amplify initialized successfully");
 ```
 
 This approach solves the common "Amplify has not been configured" warning in Expo Router apps by ensuring Amplify is initialized before any other code runs.
@@ -254,37 +314,44 @@ The app implements a sophisticated conflict resolution strategy for DataStore:
 ```typescript
 // Custom conflict handler for DataStore
 DataStore.configure({
-  conflictHandler: async ({ modelConstructor, localModel, remoteModel, operation }) => {
-    console.log('Conflict detected for model', modelConstructor.name);
-    console.log('Local model: ', localModel);
-    console.log('Remote model: ', remoteModel);
-    console.log('Operation:', operation, 'Attempts:', attempts);
-    
+  conflictHandler: async ({
+    modelConstructor,
+    localModel,
+    remoteModel,
+    operation,
+  }) => {
+    console.log("Conflict detected for model", modelConstructor.name);
+    console.log("Local model: ", localModel);
+    console.log("Remote model: ", remoteModel);
+    console.log("Operation:", operation, "Attempts:", attempts);
+
     // Special handling for DELETE operations
     if (operation === OpType.DELETE) {
       // If remote is already deleted, use it
       if (remoteModel?._deleted) {
-        console.log('Remote already deleted, using remote model');
+        console.log("Remote already deleted, using remote model");
         return remoteModel;
       }
-      
+
       // If local model is incomplete but remote exists, use remote with delete flag
       if (!localModel?.name && remoteModel) {
-        console.log('Local model incomplete, using remote model with delete flag');
+        console.log(
+          "Local model incomplete, using remote model with delete flag"
+        );
         return {
           ...remoteModel,
-          _deleted: true
+          _deleted: true,
         };
       }
-      
+
       // Otherwise use local delete
-      console.log('Using local delete');
+      console.log("Using local delete");
       return localModel;
     }
-    
+
     // For other operations, merge changes
     return remoteModel;
-  }
+  },
 });
 ```
 
@@ -297,15 +364,16 @@ This project uses AWS Amplify's codegen feature to automatically generate TypeSc
 ### 📁 Generated Files
 
 - **`src/API.ts`**: 📝 Contains TypeScript interfaces for all GraphQL types, including:
-  - Model interfaces (Todo)
-  - Input types (CreateTodoInput, UpdateTodoInput, DeleteTodoInput)
+
+  - Model interfaces (Task, Activity, Question, TaskAnswer, etc.)
+  - Input types (CreateTaskInput, UpdateTaskInput, etc.)
   - Query/Mutation response types
   - Enums and scalars
 
 - **`src/graphql/`**: 📚 Contains GraphQL operation strings:
-  - `queries.ts`: GraphQL query operations (getTodo, listTodos)
-  - `mutations.ts`: GraphQL mutation operations (createTodo, updateTodo, deleteTodo)
-  - `subscriptions.ts`: GraphQL subscription operations (onCreateTodo, onUpdateTodo, onDeleteTodo)
+  - `queries.ts`: GraphQL query operations (getTask, listTasks, etc.)
+  - `mutations.ts`: GraphQL mutation operations (createTask, updateTask, deleteTask, etc.)
+  - `subscriptions.ts`: GraphQL subscription operations (onCreateTask, onUpdateTask, onDeleteTask, etc.)
 
 ### ✨ Benefits
 
@@ -328,39 +396,49 @@ This application uses several AWS technologies working together to provide a sea
 
 ### Architecture Diagram
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                      React Native App                           │
-│                                                                 │
-│  ┌───────────────┐    ┌───────────────┐    ┌───────────────┐    │
-│  │  Components   │    │    Hooks      │    │   Contexts    │    │
-│  └───────┬───────┘    └───────┬───────┘    └───────┬───────┘    │
-│          │                    │                    │            │
-│          └────────────┬───────┴────────────┬──────┘            │
-│                       │                    │                    │
-│               ┌───────▼───────┐    ┌──────▼───────┐            │
-│               │  TodoService  │    │AmplifyContext│            │
-│               └───────┬───────┘    └──────┬───────┘            │
-│                       │                    │                    │
-└───────────────────────┼────────────────────┼────────────────────┘
-                        │                    │
-                ┌───────▼────────────────────▼───────┐
-                │           DataStore                │
-                │  ┌─────────────┐  ┌────────────┐  │
-                │  │Local Storage│  │ Sync Engine│  │
-                │  │  (SQLite)   │  │            │  │
-                │  └─────────────┘  └──────┬─────┘  │
-                └────────────────────────────┼───────┘
-                                             │
-                                    ┌────────▼────────┐
-                                    │  AWS AppSync     │
-                                    │  (GraphQL API)   │
-                                    └────────┬─────────┘
-                                             │
-                                    ┌────────▼────────┐
-                                    │  DynamoDB        │
-                                    │  (Database)      │
-                                    └─────────────────┘
+```mermaid
+graph TB
+    subgraph App["React Native App"]
+        Components["Components<br/>(UI Layer)"]
+        Hooks["Hooks<br/>(Business Logic)"]
+        Contexts["Contexts<br/>(State Management)"]
+
+        Components --> Hooks
+        Hooks --> Contexts
+        Hooks --> Services
+        Contexts --> Services
+    end
+
+    subgraph Services["Services Layer"]
+        TaskService["TaskService"]
+        ActivityService["ActivityService"]
+        OtherServices["Other Services..."]
+    end
+
+    subgraph DataStore["DataStore"]
+        LocalStorage["Local Storage<br/>(SQLite)"]
+        SyncEngine["Sync Engine"]
+    end
+
+    subgraph AWS["AWS Cloud"]
+        AppSync["AWS AppSync<br/>(GraphQL API)"]
+        DynamoDB["DynamoDB<br/>(Database)"]
+    end
+
+    Services --> DataStore
+    DataStore --> LocalStorage
+    DataStore --> SyncEngine
+    SyncEngine --> AppSync
+    AppSync --> DynamoDB
+    AppSync -.->|"Real-time Updates"| SyncEngine
+    SyncEngine -.->|"Subscription Updates"| DataStore
+    DataStore -.->|"Reactive Updates"| Hooks
+    Hooks -.->|"UI Updates"| Components
+
+    style App fill:#e1f5ff
+    style Services fill:#fff4e1
+    style DataStore fill:#e8f5e9
+    style AWS fill:#fce4ec
 ```
 
 ### Key AWS Technologies
@@ -400,44 +478,100 @@ In our app, services like `TaskService.ts`, `ActivityService.ts`, and `TaskAnswe
 
 #### How They Work Together
 
+```mermaid
+flowchart LR
+    A[User Interaction] --> B[React Components]
+    B --> C[Reactive Hooks]
+    C --> D[Services]
+    D --> E[DataStore]
+    E --> F[Local SQLite]
+    E --> G[Sync Engine]
+    G --> H[AppSync]
+    H --> I[DynamoDB]
+    H -.->|Subscriptions| G
+    G -.->|Updates| E
+    E -.->|Reactive Updates| C
+    C -.->|State Changes| B
+    B -.->|UI Updates| A
+
+    style A fill:#e1f5ff
+    style B fill:#fff4e1
+    style C fill:#e8f5e9
+    style D fill:#f3e5f5
+    style E fill:#fce4ec
+    style F fill:#fff9c4
+    style G fill:#e0f2f1
+    style H fill:#fff3e0
+    style I fill:#f1f8e9
+```
+
+**Detailed Flow:**
+
 1. **User Interaction**: User interacts with React components
 2. **Component Logic**: Components use hooks for business logic
-3. **Data Operations**: Hooks call TodoService methods
-4. **Local Storage**: DataStore saves changes to local SQLite database
-5. **Background Sync**: When online, DataStore syncs with AppSync
-6. **Cloud Storage**: AppSync persists data to DynamoDB
-7. **Real-time Updates**: Changes from other devices come back through subscriptions
+3. **Reactive Hooks**: Hooks subscribe to DataStore changes for real-time updates
+4. **Data Operations**: Hooks call service methods (e.g., TaskService, ActivityService, TaskAnswerService)
+5. **Local Storage**: DataStore saves changes to local SQLite database
+6. **Background Sync**: When online, DataStore syncs with AppSync
+7. **Cloud Storage**: AppSync persists data to DynamoDB
+8. **Real-time Updates**: Changes from other devices come back through subscriptions
+9. **Automatic UI Updates**: Hooks receive subscription updates and trigger component re-renders
 
 #### DataStore Conflict Resolution
 
 This app implements a custom conflict resolution strategy for handling synchronization conflicts between local and remote changes:
 
 ```typescript
-// Custom conflict handler in TodoService.ts
+// Custom conflict handler in ConflictResolution.ts
 DataStore.configure({
-  conflictHandler: async ({ modelConstructor, localModel, remoteModel, operation }) => {
-    // For Todo model conflicts during updates
-    if (modelConstructor.name === "Todo" && operation === OpType.UPDATE) {
-      // Custom merge strategy: take local name, but remote description if it exists
+  conflictHandler: async ({
+    modelConstructor,
+    localModel,
+    remoteModel,
+    operation,
+  }) => {
+    const modelName = modelConstructor.name;
+
+    // For Task model conflicts during updates
+    if (modelName === "Task" && operation === OpType.UPDATE) {
+      // Prefer local status changes, but remote timing updates
       const resolvedModel = {
-        ...remoteModel,                // Start with remote model as base
-        name: localModel.name,        // Always prefer local name changes
-        description: remoteModel.description !== localModel.description && 
-                    remoteModel.description ? 
-                    remoteModel.description : 
-                    localModel.description
+        ...remoteModel, // Start with remote model as base
+        status: localModel.status || remoteModel.status, // Prefer local status
+        startTimeInMillSec:
+          remoteModel.startTimeInMillSec || localModel.startTimeInMillSec,
+        expireTimeInMillSec:
+          remoteModel.expireTimeInMillSec || localModel.expireTimeInMillSec,
+        activityAnswer: localModel.activityAnswer || remoteModel.activityAnswer,
       };
       return resolvedModel;
     }
-    
-    // For delete operations, always accept local delete
+
+    // For delete operations, handle incomplete local models
     if (operation === OpType.DELETE) {
+      if (remoteModel._deleted) {
+        return remoteModel;
+      }
+      // If local model is incomplete, use remote with delete flag
+      let isIncomplete = false;
+      if (modelName === "Task") {
+        isIncomplete = !localModel.title && !localModel.description;
+      } else if (modelName === "Question") {
+        isIncomplete = !localModel.question && !localModel.questionId;
+      } else if (modelName === "Activity") {
+        isIncomplete = !localModel.name && !localModel.title;
+      } else {
+        isIncomplete = !localModel.pk && !localModel.sk;
+      }
+      if (isIncomplete) {
+        return { ...remoteModel, _deleted: true };
+      }
       return localModel;
     }
-    
+
     // Default to remote model for other cases
     return remoteModel;
-  }
+  },
 });
 ```
 
@@ -445,20 +579,29 @@ DataStore.configure({
 
 1. **Detection**: DataStore detects when the same record has been modified both locally and remotely
 2. **Custom Logic**: Our conflict handler applies specific merge rules:
-   - For updates to Todo items:
-     - Always keep the local name changes
-     - Use remote description if it exists and differs from local
-   - For deletions: Always accept local deletions
-   - For other cases: Default to remote changes
+   - For Task updates:
+     - Prefer local status changes
+     - Prefer remote timing updates (startTimeInMillSec, expireTimeInMillSec)
+     - Prefer local activityAnswer if it exists
+   - For deletions: Handle incomplete local models gracefully
+   - For other models: Default to remote changes
 3. **Tracking**: The app tracks conflict occurrences via the `conflictCount` in `useAmplifyState`
 4. **Logging**: All conflicts are logged to the console with details for debugging
 
 ### Other AWS Services Used
 
-- **DynamoDB**: NoSQL database that stores the Todo data
+- **DynamoDB**: NoSQL database that stores Task, Activity, Question, TaskAnswer, and other data
 - **IAM**: Manages permissions and access control
 - **CloudFormation**: Provisions and manages AWS resources (used by Amplify CLI)
 - **Lambda Functions**: While not directly visible in our code, AppSync can use Lambda functions for resolvers
+
+#### DynamoDB Table Naming Convention
+
+AWS Amplify DataStore creates DynamoDB tables with a specific naming pattern: `{ModelName}-{AppSyncAPIId}-{Environment}` (e.g., `Task-yvqxlqmf2ndqjnb2oytn22mgei-dev`).
+
+This convention ensures uniqueness across Amplify apps, supports multi-environment deployments, and follows AWS standards. The AppSync API ID is stored in `amplify/backend/amplify-meta.json`.
+
+📖 **For detailed information**, see [AWS Technical Details](DOCS/aws-technical-details.md#dynamodb-table-naming-convention).
 
 #### AppSync Resolvers and Lambda
 
@@ -488,8 +631,8 @@ Here's how you could integrate Amazon Cognito for authentication (this code is f
 // src/auth-config.ts
 // NOTE: This is an example and is NOT currently implemented
 
-import { Amplify, Auth } from 'aws-amplify';
-import awsconfig from '../aws-exports';
+import { Amplify, Auth } from "aws-amplify";
+import awsconfig from "../aws-exports";
 
 // Configure Amplify with authentication
 export const configureAmplifyWithAuth = () => {
@@ -497,14 +640,14 @@ export const configureAmplifyWithAuth = () => {
   const authConfig = {
     ...awsconfig,
     oauth: {
-      domain: 'your-cognito-domain.auth.region.amazoncognito.com',
-      scope: ['email', 'profile', 'openid'],
-      redirectSignIn: 'myapp://callback/',
-      redirectSignOut: 'myapp://signout/',
-      responseType: 'code'
-    }
+      domain: "your-cognito-domain.auth.region.amazoncognito.com",
+      scope: ["email", "profile", "openid"],
+      redirectSignIn: "myapp://callback/",
+      redirectSignOut: "myapp://signout/",
+      responseType: "code",
+    },
   };
-  
+
   Amplify.configure(authConfig);
 };
 
@@ -512,7 +655,7 @@ export const configureAmplifyWithAuth = () => {
 export const useAuth = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     // Check current auth state
     const checkUser = async () => {
@@ -525,25 +668,25 @@ export const useAuth = () => {
         setLoading(false);
       }
     };
-    
+
     checkUser();
-    
+
     // Listen for auth events
-    const listener = Hub.listen('auth', ({ payload }) => {
+    const listener = Hub.listen("auth", ({ payload }) => {
       const { event } = payload;
-      if (event === 'signIn') {
+      if (event === "signIn") {
         checkUser();
-      } else if (event === 'signOut') {
+      } else if (event === "signOut") {
         setUser(null);
       }
     });
-    
-    return () => Hub.remove('auth', listener);
+
+    return () => Hub.remove("auth", listener);
   }, []);
-  
+
   const signIn = () => Auth.federatedSignIn();
   const signOut = () => Auth.signOut();
-  
+
   return { user, loading, signIn, signOut };
 };
 ```
@@ -557,10 +700,40 @@ To implement this, you would:
 
 #### Other Potential AWS Integrations
 
-- **S3**: For file storage (e.g., attaching images to todos)
+- **S3**: For file storage (e.g., attaching images to tasks or activities)
 - **CloudWatch**: For monitoring and logging
 - **Pinpoint**: For analytics and push notifications
 - **API Gateway**: For REST APIs if needed alongside GraphQL
+
+## 🧪 Testing
+
+This project includes comprehensive unit tests for hooks and services:
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage
+npm run test:coverage
+
+# Generate HTML coverage report
+npm run test:coverage:html
+```
+
+### Test Coverage
+
+- **Services**: Full CRUD and subscription tests for all services
+- **Hooks**: Tests for state management, subscriptions, and business logic
+- **Components**: Tests for rendering and user interactions
+
+### Test Structure
+
+- Service tests: `src/services/__tests__/`
+- Hook tests: `src/hooks/__tests__/`
+- Component tests: `src/components/__tests__/`
 
 ## 🔄 Version Management
 
@@ -575,6 +748,7 @@ This project uses semantic versioning with automated version bumping:
 ```
 
 The version bump script:
+
 - Detects current version from branch name
 - Validates commit message is meaningful
 - Creates new version branch
@@ -584,20 +758,117 @@ The version bump script:
 ## 📊 Data Models
 
 ### Core Models
+
 - **Task**: Represents user tasks with due dates, status, and activity links
 - **Activity**: Defines questionnaire structure with JSON configuration
 - **Question**: Individual questions within activities
 - **TaskAnswer**: Stores user answers to questions
+- **TaskResult**: Records task completion results
+- **TaskHistory**: Tracks task status changes and history
+- **DataPoint**: Defines data point schemas
 - **DataPointInstance**: Records data points for analytics and reporting
 
 ### Data Flow
-1. User creates/views tasks
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Component
+    participant Hook as Reactive Hook
+    participant Service
+    participant DataStore
+    participant AppSync
+    participant DynamoDB
+
+    User->>Component: Interacts with UI
+    Component->>Hook: Calls hook function
+    Hook->>Service: Executes data operation
+    Service->>DataStore: Saves to local SQLite
+    DataStore->>AppSync: Syncs when online
+    AppSync->>DynamoDB: Persists to cloud
+
+    Note over DataStore: Subscription active
+    DataStore-->>Hook: Notifies of changes
+    Hook-->>Component: Updates state
+    Component-->>User: UI reflects changes
+
+    Note over AppSync,DynamoDB: Real-time updates from other devices
+    AppSync-->>DataStore: Pushes remote changes
+    DataStore-->>Hook: Notifies via subscription
+    Hook-->>Component: Updates state
+    Component-->>User: UI updates automatically
+```
+
+**Step-by-step flow:**
+
+1. User creates/views tasks (via `useTaskList` hook - reactive)
 2. User clicks task to start questionnaire
-3. System loads Activity configuration
+3. System loads Activity configuration (via `useActivity` hook - reactive)
 4. User answers questions across multiple screens
-5. Answers saved as TaskAnswer records
-6. DataPointInstance records created for analytics
-7. Task status updated (OPEN → STARTED → INPROGRESS → COMPLETED)
+5. Answers saved as TaskAnswer records (via `useTaskAnswer` hook - reactive)
+6. DataPointInstance records created for analytics (via `useDataPointInstance` hook - reactive)
+7. Task status updated via `useTaskUpdate` hook (OPEN → STARTED → INPROGRESS → COMPLETED)
+
+### Reactive Data Management
+
+All data operations use reactive hooks that subscribe to DataStore changes:
+
+- **List Hooks**: `useTaskList`, `useActivityList`, `useTaskAnswerList`, `useDataPointList`, `useQuestionList`
+
+  - Subscribe to all records of a type
+  - Automatically update when data changes
+  - Provide filtering and search capabilities
+
+- **Single Item Hooks**: `useActivity`
+
+  - Subscribe to a specific record by ID
+  - Automatically update when that record changes
+
+- **Mutation Hooks**: `useTaskUpdate`, `useTaskAnswer`, `useDataPointInstance`
+
+  - Provide create/update operations
+  - Changes automatically propagate via subscriptions
+  - Include loading and error states
+
+- **Composite Hooks**: `useQuestionsScreen`
+  - Combine multiple hooks for complex workflows
+  - Coordinate data from multiple sources
+  - Manage complex state interactions
+
+## 🌍 Translation & RTL Support
+
+The app includes comprehensive internationalization support:
+
+- **20+ Languages**: Support for major languages including English, Spanish, French, German, Arabic, Hebrew, and more
+- **Real-Time Translation**: Uses AWS Translate to translate all user-facing text
+- **RTL Support**: Automatic Right-to-Left layout for RTL languages (Arabic, Hebrew, Urdu, Persian, Yiddish)
+- **Language Persistence**: Selected language preference is saved and restored on app reload
+- **Caching**: Translations are cached locally to minimize API calls and improve performance
+
+### Using Translation
+
+All user-facing text is automatically translated based on the selected language. Components use the `TranslatedText` component or `useTranslatedText` hook:
+
+```typescript
+import { TranslatedText } from "../components/TranslatedText";
+import { useTranslatedText } from "../hooks/useTranslatedText";
+
+// Component approach
+<TranslatedText text="Hello World" style={styles.text} />
+
+// Hook approach
+const { translatedText } = useTranslatedText("Hello World");
+```
+
+### RTL Support
+
+RTL languages automatically:
+- Flip layout direction (margins, padding, borders)
+- Adjust text alignment
+- Reverse icon directions (e.g., chevron arrows)
+- Update flex layouts
+
+For detailed RTL implementation guide, see [RTL Support Documentation](DOCS/rtl-support.md).
 
 ## Learn More
 

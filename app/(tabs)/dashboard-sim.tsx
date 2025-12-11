@@ -1,22 +1,14 @@
-import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import {
-  Alert,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { GlobalHeader } from "../../src/components/GlobalHeader";
 import { NavigationMenu } from "../../src/components/NavigationMenu";
-import { NetworkStatusIndicator } from "../../src/components/NetworkStatusIndicator";
 import { TasksGroupedView } from "../../src/components/TasksGroupedView";
 import { useGroupedTasks } from "../../src/hooks/useGroupedTasks";
 import { useTaskList } from "../../src/hooks/useTaskList";
-import { useRouter } from "expo-router";
 
 export default function DashboardSimScreen() {
   const { tasks, loading, error, handleDeleteTask } = useTaskList();
@@ -39,10 +31,13 @@ export default function DashboardSimScreen() {
     });
 
     if (!task.entityId) {
-      console.warn("⚠️ [DashboardSim] Task missing entityId, cannot navigate to questions", {
-        taskId: task.id,
-        taskTitle: task.title,
-      });
+      console.warn(
+        "⚠️ [DashboardSim] Task missing entityId, cannot navigate to questions",
+        {
+          taskId: task.id,
+          taskTitle: task.title,
+        }
+      );
       Alert.alert(
         "No Questions Available",
         "This task does not have an associated activity. Tasks need an entityId that links to an Activity to display questions.\n\nPlease use the seed data feature or create a task with a valid Activity reference.",
@@ -64,27 +59,14 @@ export default function DashboardSimScreen() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}>
-        <View style={styles.headerTop}>
-          <Text style={styles.headerTitle}>Dashboard SIM</Text>
-          <TouchableOpacity
-            onPress={() => {
-              console.log("[DashboardSim] Menu button pressed");
-              setShowMenu(true);
-            }}
-            style={styles.menuButton}
-          >
-            <IconSymbol
-              name="line.3.horizontal"
-              size={24}
-              color={colors.text}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.headerBottom}>
-          <NetworkStatusIndicator />
-        </View>
-      </View>
+      <GlobalHeader
+        title="Dashboard SIM"
+        showMenuButton={true}
+        onMenuPress={() => {
+          console.log("[DashboardSim] Menu button pressed");
+          setShowMenu(true);
+        }}
+      />
 
       <ScrollView
         style={styles.scrollView}
@@ -143,4 +125,3 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
   },
 });
-

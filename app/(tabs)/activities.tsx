@@ -4,7 +4,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Activity } from '../../src/types/Activity';
 import { useActivityList } from '../../src/hooks/useActivityList';
 import { ActivityService } from '../../src/services/ActivityService';
-import { NetworkStatusIndicator } from '../../src/components/NetworkStatusIndicator';
+import { GlobalHeader } from '../../src/components/GlobalHeader';
+import { TranslatedText } from '../../src/components/TranslatedText';
 
 export default function ActivitiesScreen() {
   const { activities, loading, error, handleDeleteActivity } = useActivityList();
@@ -46,10 +47,7 @@ export default function ActivitiesScreen() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Activities</Text>
-        <NetworkStatusIndicator />
-      </View>
+      <GlobalHeader title="Activities" />
 
       <ScrollView 
         style={styles.scrollView}
@@ -63,11 +61,11 @@ export default function ActivitiesScreen() {
               style={styles.createButton}
               onPress={() => setShowForm(true)}
             >
-              <Text style={styles.createButtonText}>+ Create New Activity</Text>
+              <TranslatedText text="+ Create New Activity" style={styles.createButtonText} />
             </TouchableOpacity>
           ) : (
             <View style={styles.formContainer}>
-              <Text style={styles.formTitle}>Create Activity</Text>
+              <TranslatedText text="Create Activity" style={styles.formTitle} />
               
               <TextInput
                 style={styles.input}
@@ -123,7 +121,7 @@ export default function ActivitiesScreen() {
                   }}
                   disabled={isSubmitting}
                 >
-                  <Text style={styles.cancelButtonText}>Cancel</Text>
+                  <TranslatedText text="Cancel" style={styles.cancelButtonText} />
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -134,7 +132,7 @@ export default function ActivitiesScreen() {
                   {isSubmitting ? (
                     <ActivityIndicator size="small" color="#fff" />
                   ) : (
-                    <Text style={styles.submitButtonText}>Create</Text>
+                    <TranslatedText text="Create" style={styles.submitButtonText} />
                   )}
                 </TouchableOpacity>
               </View>
@@ -144,12 +142,12 @@ export default function ActivitiesScreen() {
 
         {/* LIST SECTION */}
         <View style={styles.listSection}>
-          <Text style={styles.listTitle}>Your Activities ({activities.length})</Text>
+          <TranslatedText text={`Your Activities (${activities.length})`} style={styles.listTitle} />
           
           {loading && activities.length === 0 ? (
             <View style={styles.centerContainer}>
               <ActivityIndicator size="large" color="#3498db" />
-              <Text style={styles.loadingText}>Loading activities...</Text>
+              <TranslatedText text="Loading activities..." style={styles.loadingText} />
             </View>
           ) : error ? (
             <View style={styles.centerContainer}>
@@ -157,7 +155,7 @@ export default function ActivitiesScreen() {
             </View>
           ) : activities.length === 0 ? (
             <View style={styles.centerContainer}>
-              <Text style={styles.emptyText}>No activities yet. Create one above!</Text>
+              <TranslatedText text="No activities yet. Create one above!" style={styles.emptyText} />
             </View>
           ) : (
             activities.map((activity) => (
@@ -168,7 +166,7 @@ export default function ActivitiesScreen() {
                     onPress={() => handleDeleteActivity(activity.id)}
                     style={styles.deleteButton}
                   >
-                    <Text style={styles.deleteButtonText}>Delete</Text>
+                    <TranslatedText text="Delete" style={styles.deleteButtonText} />
                   </TouchableOpacity>
                 </View>
                 {activity.description && (

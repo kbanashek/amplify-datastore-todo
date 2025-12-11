@@ -76,3 +76,14 @@ setup-new-*.sh
 
 # Duplicate generated directories
 src/models/
+
+# Test coverage reports (generated files)
+coverage/
+*.lcov
+
+# Compiled TypeScript scripts (generated from .ts files)
+scripts/*.js
+!scripts/ts-loader.mjs
+
+# AWS credentials (sensitive - never commit!)
+src/config/aws-credentials.json

@@ -5,11 +5,34 @@
 import React from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { ParsedScreen, ParsedElement } from "../../types/ActivityConfig";
+import { useTranslatedText } from "../../hooks/useTranslatedText";
 
 interface ReviewScreenProps {
   screens: ParsedScreen[];
   answers: Record<string, any>;
 }
+
+// Component for individual question review item with translation
+const QuestionReviewItem: React.FC<{
+  questionText: string;
+  answer: string;
+  hasAnswer: boolean;
+}> = ({ questionText, answer, hasAnswer }) => {
+  const { translatedText } = useTranslatedText(questionText);
+  return (
+    <View style={styles.questionItem}>
+      <Text style={styles.questionText}>{translatedText}</Text>
+      <Text
+        style={[
+          styles.answerText,
+          !hasAnswer && styles.answerTextEmpty,
+        ]}
+      >
+        {answer}
+      </Text>
+    </View>
+  );
+};
 
 export const ReviewScreen: React.FC<ReviewScreenProps> = ({
   screens,
@@ -68,22 +91,17 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
           <Text style={styles.screenTitle}>{screen.name || `Page ${screen.order}`}</Text>
           {screen.elements.map((element) => {
             const answer = answers[element.question.id];
-            const questionText = element.question.text
+            const originalQuestionText = element.question.text
               .replace(/<[^>]*>/g, "")
               .trim();
 
             return (
-              <View key={element.id} style={styles.questionItem}>
-                <Text style={styles.questionText}>{questionText}</Text>
-                <Text
-                  style={[
-                    styles.answerText,
-                    !answer && styles.answerTextEmpty,
-                  ]}
-                >
-                  {formatAnswer(element, answer)}
-                </Text>
-              </View>
+              <QuestionReviewItem
+                key={element.id}
+                questionText={originalQuestionText}
+                answer={formatAnswer(element, answer)}
+                hasAnswer={!!answer}
+              />
             );
           })}
         </View>
@@ -155,4 +173,5 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
   },
 });
+
 

@@ -2,6 +2,7 @@ import React from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { Task } from "../types/Task";
 import { TaskCard } from "./TaskCard";
+import { TranslatedText } from "./TranslatedText";
 
 interface GroupedTask {
   dayLabel: string;
@@ -25,11 +26,12 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
   onTaskPress,
   onDelete,
 }) => {
+
   if (loading) {
     return (
       <View style={styles.centerContainer}>
         <ActivityIndicator size="large" color="#3498db" />
-        <Text style={styles.loadingText}>Loading tasks...</Text>
+        <TranslatedText text="Loading tasks..." style={styles.loadingText} />
       </View>
     );
   }
@@ -45,7 +47,7 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
   if (groupedTasks.length === 0) {
     return (
       <View style={styles.centerContainer}>
-        <Text style={styles.emptyText}>No tasks available.</Text>
+        <TranslatedText text="No tasks available." style={styles.emptyText} />
       </View>
     );
   }
@@ -55,7 +57,10 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
       {groupedTasks.map((dayGroup) => (
         <View key={dayGroup.dayLabel} style={styles.dayGroup}>
           <View style={styles.dayHeader}>
-            <Text style={styles.dayLabel}>{dayGroup.dayLabel}</Text>
+            <TranslatedText 
+              text={dayGroup.dayLabel} 
+              style={styles.dayLabel}
+            />
             {/* Only show date next to "Today" or "Tomorrow" */}
             {(dayGroup.dayLabel === "Today" ||
               dayGroup.dayLabel === "Tomorrow") && (
@@ -75,7 +80,10 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
           {/* Tasks grouped by time */}
           {dayGroup.timeGroups.map((timeGroup) => (
             <View key={timeGroup.time} style={styles.timeGroup}>
-              <Text style={styles.dueByHeader}>DUE BY {timeGroup.time}</Text>
+              <TranslatedText 
+                text={`DUE BY ${timeGroup.time}`}
+                style={styles.dueByHeader}
+              />
               {timeGroup.tasks.map((task) => (
                 <TaskCard
                   key={task.id}

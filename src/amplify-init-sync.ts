@@ -1,6 +1,8 @@
 /**
  * This file provides synchronous Amplify initialization
  * It must be imported before any other imports that might use Amplify
+ * 
+ * NOTE: Polyfills (like structuredClone) should be imported BEFORE this file
  */
 import { Amplify } from 'aws-amplify';
 import awsconfig from '../aws-exports';

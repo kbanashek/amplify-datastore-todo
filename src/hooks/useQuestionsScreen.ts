@@ -1,10 +1,6 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Alert } from "react-native";
-import { ActivityService } from "../services/ActivityService";
-import { DataPointService } from "../services/DataPointService";
-import { TaskAnswerService } from "../services/TaskAnswerService";
-import { TaskService } from "../services/TaskService";
 import {
   ActivityConfig,
   ParsedElement,
@@ -16,6 +12,10 @@ import {
   ParsedActivityData,
   parseActivityConfig,
 } from "../utils/activityParser";
+import { useActivity } from "./useActivity";
+import { useDataPointInstance } from "./useDataPointInstance";
+import { useTaskAnswer } from "./useTaskAnswer";
+import { useTaskUpdate } from "./useTaskUpdate";
 
 export interface UseQuestionsScreenReturn {
   // State
@@ -61,6 +61,28 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
     hasEntityId: !!entityId,
   });
 
+  // Use hooks for reactive data management
+  const {
+    activity,
+    loading: activityLoading,
+    error: activityError,
+  } = useActivity(entityId || null);
+  const {
+    taskAnswers,
+    getAnswersByTaskId,
+    getAnswerByQuestionId,
+    createTaskAnswer,
+    updateTaskAnswer,
+  } = useTaskAnswer();
+  const {
+    instances,
+    getInstancesByActivityId,
+    getInstanceByQuestionId,
+    createDataPointInstance,
+    updateDataPointInstance,
+  } = useDataPointInstance();
+  const { updateTask } = useTaskUpdate();
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activityData, setActivityData] = useState<ParsedActivityData | null>(
@@ -79,9 +101,13 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
   const [showReview, setShowReview] = useState(false);
   const [showCompletion, setShowCompletion] = useState(false);
 
-  // Fetch Activity and parse questions
+  // Fetch Activity and parse questions (activity is now reactive via hook)
   useEffect(() => {
     const fetchActivity = async () => {
+      // Wait for activity to load
+      if (activityLoading) {
+        return;
+      }
       console.log("🔍 [useQuestionsScreen] fetchActivity started", {
         entityId,
         taskId,
@@ -105,14 +131,16 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
         setLoading(true);
         setError(null);
 
-        // Fetch Activity by entityId (which is the Activity pk)
-        const activities = await ActivityService.getActivities();
-        const activity = activities.find(
-          (a) => a.pk === entityId || a.id === entityId
-        );
-
+        // Activity is now provided by useActivity hook
         if (!activity) {
-          setError(`Activity not found: ${entityId}`);
+          if (activityError) {
+            setError(activityError);
+          } else if (activityLoading) {
+            // Still loading, wait
+            return;
+          } else {
+            setError(`Activity not found: ${entityId}`);
+          }
           setLoading(false);
           return;
         }
@@ -160,34 +188,8 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
           }
         }
 
-        // Check if they're stored as separate fields
-        if (activity.introductionScreen) {
-          try {
-            activityConfig.introductionScreen = JSON.parse(
-              activity.introductionScreen
-            );
-          } catch (e) {
-            console.error("Error parsing introductionScreen:", e);
-          }
-        }
-
-        if (activity.summaryScreen) {
-          try {
-            activityConfig.summaryScreen = JSON.parse(activity.summaryScreen);
-          } catch (e) {
-            console.error("Error parsing summaryScreen:", e);
-          }
-        }
-
-        if (activity.completionScreen) {
-          try {
-            activityConfig.completionScreen = JSON.parse(
-              activity.completionScreen
-            );
-          } catch (e) {
-            console.error("Error parsing completionScreen:", e);
-          }
-        }
+        // introductionScreen, summaryScreen, and completionScreen are already parsed from layouts above
+        // They're stored in the layouts JSON string, not as separate fields
 
         // Load existing answers from TaskAnswer
         const existingAnswers: Record<string, any> = {};
@@ -195,13 +197,10 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
           console.log("💾 [useQuestionsScreen] Loading existing answers", {
             taskId,
           });
-          const taskAnswers = await TaskAnswerService.getTaskAnswers();
+          const taskAnswersForTask = getAnswersByTaskId(taskId);
           console.log("📦 [useQuestionsScreen] TaskAnswers fetched", {
             totalAnswers: taskAnswers.length,
           });
-          const taskAnswersForTask = taskAnswers.filter(
-            (ta) => ta.taskInstanceId === taskId
-          );
           console.log("📋 [useQuestionsScreen] TaskAnswers for task", {
             taskId,
             count: taskAnswersForTask.length,
@@ -262,7 +261,7 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
 
     fetchActivity();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [entityId, taskId]);
+  }, [entityId, taskId, activity, activityLoading, activityError]);
 
   // Handle answer change
   const handleAnswerChange = useCallback((questionId: string, answer: any) => {
@@ -649,23 +648,20 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
         entityId,
       });
 
-      // Get all existing answers and data point instances once (more efficient)
-      const existingAnswers = await TaskAnswerService.getTaskAnswers();
-      const existingDataPointInstances =
-        await DataPointService.getDataPointInstances();
+      // Get all existing answers and data point instances (now reactive via hooks)
+      const existingAnswersForTask = taskId ? getAnswersByTaskId(taskId) : [];
+      const existingDataPointInstances = entityId
+        ? getInstancesByActivityId(entityId)
+        : [];
       console.log("📦 [useQuestionsScreen] Loaded existing TaskAnswers", {
-        totalExisting: existingAnswers.length,
-        forThisTask: existingAnswers.filter(
-          (ta) => ta.taskInstanceId === taskId
-        ).length,
+        totalExisting: taskAnswers.length,
+        forThisTask: existingAnswersForTask.length,
       });
       console.log(
         "📦 [useQuestionsScreen] Loaded existing DataPointInstances",
         {
-          totalExisting: existingDataPointInstances.length,
-          forThisActivity: existingDataPointInstances.filter(
-            (dpi) => dpi.activityId === entityId
-          ).length,
+          totalExisting: instances.length,
+          forThisActivity: existingDataPointInstances.length,
         }
       );
 
@@ -703,10 +699,10 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
           const pk = `TASK-ANSWER-${taskId}-${questionId}`;
           const sk = `SK-${Date.now()}-${questionId}`;
 
-          // Find existing answer for this question
-          const existing = existingAnswers.find(
-            (ta) => ta.taskInstanceId === taskId && ta.questionId === questionId
-          );
+          // Find existing answer for this question (using hook)
+          const existing = taskId
+            ? getAnswerByQuestionId(taskId, questionId)
+            : undefined;
 
           if (existing) {
             console.log(
@@ -718,29 +714,27 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
                 newAnswer: answerString.substring(0, 50),
               }
             );
-            const updated = await TaskAnswerService.updateTaskAnswer(
-              existing.id,
-              {
-                answer: answerString,
-              }
-            );
-            console.log(
-              "✅ [useQuestionsScreen] TaskAnswer updated successfully",
-              {
-                taskAnswerId: updated.id,
-                questionId,
-              }
-            );
-            savedAnswers.push(questionId);
+            const updated = await updateTaskAnswer(existing.id, {
+              answer: answerString,
+            });
+            if (updated) {
+              console.log(
+                "✅ [useQuestionsScreen] TaskAnswer updated successfully",
+                {
+                  taskAnswerId: updated.id,
+                  questionId,
+                }
+              );
+              savedAnswers.push(questionId);
+            }
 
-            // Create or update DataPointInstance
+            // Create or update DataPointInstance (using hook)
             try {
               const dataPointPk = `DATAPOINT-${entityId}-${questionId}`;
               const dataPointSk = `SK-${Date.now()}-${questionId}`;
-              const existingDataPoint = existingDataPointInstances.find(
-                (dpi) =>
-                  dpi.activityId === entityId && dpi.questionId === questionId
-              );
+              const existingDataPoint = entityId
+                ? getInstanceByQuestionId(entityId, questionId)
+                : undefined;
 
               if (existingDataPoint) {
                 console.log(
@@ -751,12 +745,9 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
                     activityId: entityId,
                   }
                 );
-                await DataPointService.updateDataPointInstance(
-                  existingDataPoint.id,
-                  {
-                    answers: answerString,
-                  }
-                );
+                await updateDataPointInstance(existingDataPoint.id, {
+                  answers: answerString,
+                });
                 console.log(
                   "✅ [useQuestionsScreen] DataPointInstance updated successfully",
                   {
@@ -775,7 +766,7 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
                     dataPointKey: questionId,
                   }
                 );
-                await DataPointService.createDataPointInstance({
+                await createDataPointInstance({
                   pk: dataPointPk,
                   sk: dataPointSk,
                   dataPointKey: questionId,
@@ -791,7 +782,7 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
                   }
                 );
               }
-            } catch (dataPointError: any) {
+            } catch (dataPointError: unknown) {
               console.error(
                 "❌ [useQuestionsScreen] Error saving DataPointInstance",
                 {
@@ -817,7 +808,7 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
               taskId,
               entityId,
             });
-            const created = await TaskAnswerService.createTaskAnswer({
+            const created = await createTaskAnswer({
               pk,
               sk,
               taskInstanceId: taskId,
@@ -825,24 +816,25 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
               questionId,
               answer: answerString,
             });
-            console.log(
-              "✅ [useQuestionsScreen] TaskAnswer created successfully",
-              {
-                taskAnswerId: created.id,
-                questionId,
-                pk: created.pk,
-              }
-            );
-            savedAnswers.push(questionId);
+            if (created) {
+              console.log(
+                "✅ [useQuestionsScreen] TaskAnswer created successfully",
+                {
+                  taskAnswerId: created.id,
+                  questionId,
+                  pk: created.pk,
+                }
+              );
+              savedAnswers.push(questionId);
+            }
 
-            // Create or update DataPointInstance
+            // Create or update DataPointInstance (using hook)
             try {
               const dataPointPk = `DATAPOINT-${entityId}-${questionId}`;
               const dataPointSk = `SK-${Date.now()}-${questionId}`;
-              const existingDataPoint = existingDataPointInstances.find(
-                (dpi) =>
-                  dpi.activityId === entityId && dpi.questionId === questionId
-              );
+              const existingDataPoint = entityId
+                ? getInstanceByQuestionId(entityId, questionId)
+                : undefined;
 
               if (existingDataPoint) {
                 console.log(
@@ -853,12 +845,9 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
                     activityId: entityId,
                   }
                 );
-                await DataPointService.updateDataPointInstance(
-                  existingDataPoint.id,
-                  {
-                    answers: answerString,
-                  }
-                );
+                await updateDataPointInstance(existingDataPoint.id, {
+                  answers: answerString,
+                });
                 console.log(
                   "✅ [useQuestionsScreen] DataPointInstance updated successfully",
                   {
@@ -877,7 +866,7 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
                     dataPointKey: questionId,
                   }
                 );
-                await DataPointService.createDataPointInstance({
+                await createDataPointInstance({
                   pk: dataPointPk,
                   sk: dataPointSk,
                   dataPointKey: questionId,
@@ -893,7 +882,7 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
                   }
                 );
               }
-            } catch (dataPointError: any) {
+            } catch (dataPointError: unknown) {
               console.error(
                 "❌ [useQuestionsScreen] Error saving DataPointInstance",
                 {
@@ -967,7 +956,7 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
               answeredQuestions,
             }
           );
-          await TaskService.updateTask(taskId, {
+          await updateTask(taskId, {
             status: TaskStatus.COMPLETED,
           });
           console.log(
@@ -986,7 +975,7 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
               answeredQuestions,
             }
           );
-          await TaskService.updateTask(taskId, {
+          await updateTask(taskId, {
             status: TaskStatus.INPROGRESS,
           });
           console.log(
@@ -1075,6 +1064,17 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
     activityConfig,
     router,
     validateAnswers,
+    getAnswersByTaskId,
+    getInstancesByActivityId,
+    getAnswerByQuestionId,
+    getInstanceByQuestionId,
+    createTaskAnswer,
+    updateTaskAnswer,
+    createDataPointInstance,
+    updateDataPointInstance,
+    updateTask,
+    taskAnswers.length,
+    instances.length,
   ]);
 
   // Navigation handlers

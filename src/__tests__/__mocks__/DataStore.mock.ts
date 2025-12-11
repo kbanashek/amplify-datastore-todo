@@ -66,3 +66,24 @@ export const createMockTaskAnswer = (overrides: Partial<any> = {}): any => ({
   ...overrides,
 });
 
+export const createMockTaskHistory = (overrides: Partial<any> = {}): any => ({
+  id: 'test-history-id',
+  pk: 'test-pk',
+  sk: 'test-sk',
+  taskInstanceId: 'test-task-instance-id',
+  status: 'OPEN',
+  timestamp: new Date().toISOString(),
+  action: 'CREATED',
+  ...overrides,
+});
+
+export const createMockTaskResult = (overrides: Partial<any> = {}): any => ({
+  id: 'test-result-id',
+  pk: 'test-pk',
+  sk: 'test-sk',
+  taskInstanceId: 'test-task-instance-id',
+  status: 'OPEN',
+  startedAt: new Date().toISOString(),
+  ...overrides,
+});
+

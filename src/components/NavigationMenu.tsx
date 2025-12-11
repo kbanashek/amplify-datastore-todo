@@ -22,6 +22,12 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   {
+    name: "Tasks",
+    route: "/(tabs)",
+    icon: "checkmark.circle.fill",
+    description: "View and manage tasks",
+  },
+  {
     name: "Activities",
     route: "/(tabs)/activities",
     icon: "doc.text.fill",

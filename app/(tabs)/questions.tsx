@@ -1,21 +1,19 @@
-import { useBottomTabOverflow } from "@/components/ui/TabBarBackground";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { NetworkStatusIndicator } from "../../src/components/NetworkStatusIndicator";
+import { GlobalHeader } from "../../src/components/GlobalHeader";
 import { CompletionScreen } from "../../src/components/questions/CompletionScreen";
 import { ErrorState } from "../../src/components/questions/ErrorState";
 import { IntroductionScreen } from "../../src/components/questions/IntroductionScreen";
 import { LoadingState } from "../../src/components/questions/LoadingState";
-import { NavigationButtons } from "../../src/components/questions/NavigationButtons";
 import { ProgressIndicator } from "../../src/components/questions/ProgressIndicator";
 import { QuestionScreenContent } from "../../src/components/questions/QuestionScreenContent";
 import { ReviewScreenContainer } from "../../src/components/questions/ReviewScreenContainer";
 import { useQuestionsScreen } from "../../src/hooks/useQuestionsScreen";
+import { useTranslatedText } from "../../src/hooks/useTranslatedText";
 
 export default function QuestionsScreen() {
   const insets = useSafeAreaInsets();
-  const tabBarHeight = useBottomTabOverflow();
 
   const {
     // State
@@ -45,6 +43,11 @@ export default function QuestionsScreen() {
     handleBack,
   } = useQuestionsScreen();
 
+  // Hooks must be called before early returns
+  const { translatedText: headerTitle } = useTranslatedText(
+    taskId ? "Answer Questions" : "Questions"
+  );
+
   // Loading state
   if (loading) {
     return <LoadingState taskId={taskId} topInset={insets.top} />;
@@ -66,10 +69,11 @@ export default function QuestionsScreen() {
   if (!activityData || activityData.screens.length === 0) {
     return (
       <View style={[styles.container, { paddingTop: insets.top }]}>
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Questions</Text>
-          <NetworkStatusIndicator />
-        </View>
+        <GlobalHeader
+          title={headerTitle}
+          showBackButton={!!taskId}
+          onBackPress={handleBack}
+        />
         <View style={styles.centerContainer}>
           <Text style={styles.emptyText}>No questions available</Text>
           <TouchableOpacity style={styles.backButton} onPress={handleBack}>
@@ -82,21 +86,11 @@ export default function QuestionsScreen() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}>
-        <View style={styles.headerTop}>
-          <Text style={styles.headerTitle}>
-            {taskId ? "Answer Questions" : "Questions"}
-          </Text>
-          {taskId && !showIntroduction && !showCompletion && (
-            <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-              <Text style={styles.backButtonText}>Back</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-        <View style={styles.headerBottom}>
-          <NetworkStatusIndicator />
-        </View>
-      </View>
+      <GlobalHeader
+        title={headerTitle}
+        showBackButton={!!(taskId && !showIntroduction && !showCompletion)}
+        onBackPress={handleBack}
+      />
 
       {/* Introduction Screen */}
       {showIntroduction && activityConfig && (
@@ -131,14 +125,14 @@ export default function QuestionsScreen() {
         !showCompletion &&
         activityData &&
         activityData.screens.length > 0 && (
-          <View style={{ flex: 1, position: "relative" }}>
+          <View style={styles.questionContainer}>
             {/* Progress Indicator */}
             <ProgressIndicator
               currentPage={currentScreenIndex + 1}
               totalPages={activityData.screens.length}
             />
 
-            {/* Question Content */}
+            {/* Question Content - Scrollable with integrated navigation buttons */}
             <QuestionScreenContent
               activityData={activityData}
               currentScreenIndex={currentScreenIndex}
@@ -146,19 +140,14 @@ export default function QuestionsScreen() {
               errors={errors}
               onAnswerChange={handleAnswerChange}
               bottomInset={insets.bottom}
-            />
-
-            {/* Navigation Buttons */}
-            <NavigationButtons
-              currentScreenIndex={currentScreenIndex}
-              totalScreens={activityData.screens.length}
               currentScreenValid={currentScreenValid}
-              activityConfig={activityConfig}
+              isLastScreen={
+                currentScreenIndex === activityData.screens.length - 1
+              }
               onPrevious={handlePrevious}
               onNext={handleNext}
               onReviewOrSubmit={handleReviewSubmit}
-              tabBarHeight={tabBarHeight}
-              bottomInset={insets.bottom}
+              activityConfig={activityConfig}
             />
           </View>
         )}
@@ -170,6 +159,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f5f6fa",
+  },
+  questionContainer: {
+    flex: 1,
+    flexDirection: "column",
   },
   header: {
     paddingHorizontal: 20,

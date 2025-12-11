@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Question } from "../../types/ActivityConfig";
+import { useTranslation } from "../../contexts/TranslationContext";
 
 interface MultiSelectQuestionProps {
   question: Question;
@@ -17,7 +18,31 @@ export const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
   displayProperties,
   errors,
 }) => {
+  const { translate, currentLanguage } = useTranslation();
   const choices = question.choices || [];
+  const [translatedChoices, setTranslatedChoices] = useState<
+    Array<{ id: string; text: string; value: string; translatedText?: string }>
+  >(choices);
+
+  // Translate choices when language changes
+  useEffect(() => {
+    const translateChoices = async () => {
+      if (currentLanguage === "en") {
+        setTranslatedChoices(choices);
+        return;
+      }
+
+      const translated = await Promise.all(
+        choices.map(async (choice) => {
+          const translatedText = await translate(choice.text);
+          return { ...choice, translatedText };
+        })
+      );
+      setTranslatedChoices(translated);
+    };
+
+    translateChoices();
+  }, [choices, currentLanguage, translate]);
 
   const handleToggle = (choiceValue: string) => {
     const currentValue = Array.isArray(value) ? value : [];
@@ -56,9 +81,10 @@ export const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
 
   return (
     <View style={styles.container}>
-      {choices.map((choice) => {
+      {translatedChoices.map((choice) => {
         const choiceValue = choice.value || choice.id;
         const isSelected = Array.isArray(value) && value.includes(choiceValue);
+        const displayText = choice.translatedText || choice.text;
         return (
           <TouchableOpacity
             key={choice.id}
@@ -86,7 +112,7 @@ export const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
                   isSelected && styles.optionTextSelected,
                 ]}
               >
-                {choice.text}
+                {displayText}
               </Text>
             </View>
           </TouchableOpacity>

@@ -1,3 +1,6 @@
+// Import polyfills FIRST, before any other imports
+import '../src/polyfills/structuredClone';
+
 // Import synchronous Amplify initialization first, before any other imports
 import '../src/amplify-init-sync';
 
@@ -11,6 +14,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { AmplifyProvider } from '../src/contexts/AmplifyContext';
+import { TranslationProvider } from '../src/contexts/TranslationContext';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -33,11 +37,13 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <AmplifyProvider>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-          <StatusBar style="auto" />
+          <TranslationProvider>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+            <StatusBar style="auto" />
+          </TranslationProvider>
         </AmplifyProvider>
       </ThemeProvider>
     </SafeAreaProvider>

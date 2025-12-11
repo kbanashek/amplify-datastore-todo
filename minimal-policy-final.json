@@ -82,6 +82,16 @@
         "dynamodb:ListTables"
       ],
       "Resource": ["arn:aws:dynamodb:us-east-1:377973420769:table/*"]
+    },
+    {
+      "Sid": "Translate",
+      "Effect": "Allow",
+      "Action": [
+        "translate:TranslateText",
+        "translate:ListLanguages",
+        "translate:DescribeTextTranslationJob"
+      ],
+      "Resource": "*"
     }
   ]
 }

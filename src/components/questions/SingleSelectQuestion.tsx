@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Question } from "../../types/ActivityConfig";
+import { useTranslation } from "../../contexts/TranslationContext";
 
 interface SingleSelectQuestionProps {
   question: Question;
@@ -17,8 +18,32 @@ export const SingleSelectQuestion: React.FC<SingleSelectQuestionProps> = ({
   displayProperties,
   errors,
 }) => {
+  const { translate, currentLanguage } = useTranslation();
   const choices = question.choices || [];
   const optionPlacement = displayProperties.optionPlacement || "below";
+  const [translatedChoices, setTranslatedChoices] = useState<
+    Array<{ id: string; text: string; value: string; translatedText?: string }>
+  >(choices);
+
+  // Translate choices when language changes
+  useEffect(() => {
+    const translateChoices = async () => {
+      if (currentLanguage === "en") {
+        setTranslatedChoices(choices);
+        return;
+      }
+
+      const translated = await Promise.all(
+        choices.map(async (choice) => {
+          const translatedText = await translate(choice.text);
+          return { ...choice, translatedText };
+        })
+      );
+      setTranslatedChoices(translated);
+    };
+
+    translateChoices();
+  }, [choices, currentLanguage, translate]);
 
   const handleSelect = (choiceValue: string) => {
     console.log("🔘 [SingleSelectQuestion] Option selected", {
@@ -32,8 +57,9 @@ export const SingleSelectQuestion: React.FC<SingleSelectQuestionProps> = ({
 
   return (
     <View style={styles.container}>
-      {choices.map((choice) => {
+      {translatedChoices.map((choice) => {
         const isSelected = value === choice.value || value === choice.id;
+        const displayText = choice.translatedText || choice.text;
         return (
           <TouchableOpacity
             key={choice.id}
@@ -59,7 +85,7 @@ export const SingleSelectQuestion: React.FC<SingleSelectQuestionProps> = ({
                   isSelected && styles.optionTextSelected,
                 ]}
               >
-                {choice.text}
+                {displayText}
               </Text>
             </View>
           </TouchableOpacity>

@@ -80,7 +80,6 @@ const createModelClass = (name: string) => {
 };
 
 jest.mock('./models', () => ({
-  Todo: createModelClass('Todo'),
   Task: createModelClass('Task'),
   Question: createModelClass('Question'),
   Activity: createModelClass('Activity'),

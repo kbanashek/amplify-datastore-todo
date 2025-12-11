@@ -29,8 +29,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tasks',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="checkmark.circle.fill" color={color} />,
+          href: null, // Hide from tab bar - accessible via menu
         }}
       />
       <Tabs.Screen

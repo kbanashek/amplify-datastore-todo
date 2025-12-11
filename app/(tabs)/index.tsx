@@ -15,8 +15,10 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NavigationMenu } from "../../src/components/NavigationMenu";
-import { NetworkStatusIndicator } from "../../src/components/NetworkStatusIndicator";
 import { TasksGroupedView } from "../../src/components/TasksGroupedView";
+import { GlobalHeader } from "../../src/components/GlobalHeader";
+import { TranslatedText } from "../../src/components/TranslatedText";
+import { useTranslatedText } from "../../src/hooks/useTranslatedText";
 import { useGroupedTasks } from "../../src/hooks/useGroupedTasks";
 import { useTaskForm } from "../../src/hooks/useTaskForm";
 import { useTaskList } from "../../src/hooks/useTaskList";
@@ -93,26 +95,15 @@ export default function TasksScreen() {
     },
   });
 
+  const { translatedText: headerTitle } = useTranslatedText("LX App Sync POC");
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}>
-        <View style={styles.headerTop}>
-          <Text style={styles.headerTitle}>LX App Sync POC</Text>
-          <TouchableOpacity
-            onPress={() => setShowMenu(true)}
-            style={styles.menuButton}
-          >
-            <IconSymbol
-              name="line.3.horizontal"
-              size={24}
-              color={colors.text}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.headerBottom}>
-          <NetworkStatusIndicator />
-        </View>
-      </View>
+      <GlobalHeader
+        title={headerTitle}
+        showMenuButton={true}
+        onMenuPress={() => setShowMenu(true)}
+      />
 
       <ScrollView
         style={styles.scrollView}
@@ -130,7 +121,7 @@ export default function TasksScreen() {
             </TouchableOpacity>
           ) : (
             <View style={styles.formContainer}>
-              <Text style={styles.formTitle}>Create Task</Text>
+              <TranslatedText text="Create Task" style={styles.formTitle} />
 
               {formError && <Text style={styles.errorText}>{formError}</Text>}
 
@@ -153,7 +144,7 @@ export default function TasksScreen() {
                 numberOfLines={3}
               />
 
-              <Text style={styles.label}>Task Type *</Text>
+              <TranslatedText text="Task Type *" style={styles.label} />
               <View style={styles.radioGroup}>
                 {Object.values(TaskType).map((type) => (
                   <TouchableOpacity
@@ -177,7 +168,7 @@ export default function TasksScreen() {
                 ))}
               </View>
 
-              <Text style={styles.label}>Status *</Text>
+              <TranslatedText text="Status *" style={styles.label} />
               <View style={styles.radioGroup}>
                 {Object.values(TaskStatus).map((stat) => (
                   <TouchableOpacity
@@ -201,7 +192,7 @@ export default function TasksScreen() {
                 ))}
               </View>
 
-              <Text style={styles.label}>Due Date *</Text>
+              <TranslatedText text="Due Date *" style={styles.label} />
               <TextInput
                 style={styles.input}
                 placeholder="YYYY-MM-DD"
@@ -211,7 +202,7 @@ export default function TasksScreen() {
                 keyboardType="default"
               />
 
-              <Text style={styles.label}>Due Time *</Text>
+              <TranslatedText text="Due Time *" style={styles.label} />
               <TextInput
                 style={styles.input}
                 placeholder="HH:MM (24-hour format)"
@@ -230,7 +221,7 @@ export default function TasksScreen() {
                   }}
                   disabled={isSubmitting}
                 >
-                  <Text style={styles.cancelButtonText}>Cancel</Text>
+                  <TranslatedText text="Cancel" style={styles.cancelButtonText} />
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -241,7 +232,7 @@ export default function TasksScreen() {
                   {isSubmitting ? (
                     <ActivityIndicator size="small" color="#fff" />
                   ) : (
-                    <Text style={styles.submitButtonText}>Create</Text>
+                    <TranslatedText text="Create" style={styles.submitButtonText} />
                   )}
                 </TouchableOpacity>
               </View>
@@ -275,25 +266,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderBottomWidth: 1,
     borderBottomColor: "#dfe4ea",
-  },
-  headerTop: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 12,
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#2f3542",
-    flex: 1,
-  },
-  headerBottom: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  menuButton: {
-    padding: 4,
   },
   scrollView: {
     flex: 1,

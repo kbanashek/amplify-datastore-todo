@@ -3,7 +3,8 @@ import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, Activi
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTaskHistoryList } from '../../src/hooks/useTaskHistoryList';
 import { TaskHistoryService } from '../../src/services/TaskHistoryService';
-import { NetworkStatusIndicator } from '../../src/components/NetworkStatusIndicator';
+import { GlobalHeader } from '../../src/components/GlobalHeader';
+import { TranslatedText } from '../../src/components/TranslatedText';
 
 export default function TaskHistoryScreen() {
   const { taskHistories, loading, error, handleDeleteTaskHistory } = useTaskHistoryList();
@@ -52,10 +53,7 @@ export default function TaskHistoryScreen() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Task History</Text>
-        <NetworkStatusIndicator />
-      </View>
+      <GlobalHeader title="Task History" />
 
       <ScrollView 
         style={styles.scrollView}
@@ -68,11 +66,11 @@ export default function TaskHistoryScreen() {
               style={styles.createButton}
               onPress={() => setShowForm(true)}
             >
-              <Text style={styles.createButtonText}>+ Create New History Entry</Text>
+              <TranslatedText text="+ Create New History Entry" style={styles.createButtonText} />
             </TouchableOpacity>
           ) : (
             <View style={styles.formContainer}>
-              <Text style={styles.formTitle}>Create Task History</Text>
+              <TranslatedText text="Create Task History" style={styles.formTitle} />
               
               <TextInput
                 style={styles.input}
@@ -146,7 +144,7 @@ export default function TaskHistoryScreen() {
                   }}
                   disabled={isSubmitting}
                 >
-                  <Text style={styles.cancelButtonText}>Cancel</Text>
+                  <TranslatedText text="Cancel" style={styles.cancelButtonText} />
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -157,7 +155,7 @@ export default function TaskHistoryScreen() {
                   {isSubmitting ? (
                     <ActivityIndicator size="small" color="#fff" />
                   ) : (
-                    <Text style={styles.submitButtonText}>Create</Text>
+                    <TranslatedText text="Create" style={styles.submitButtonText} />
                   )}
                 </TouchableOpacity>
               </View>
@@ -166,12 +164,12 @@ export default function TaskHistoryScreen() {
         </View>
 
         <View style={styles.listSection}>
-          <Text style={styles.listTitle}>Task History ({taskHistories.length})</Text>
+          <TranslatedText text={`Task History (${taskHistories.length})`} style={styles.listTitle} />
           
           {loading && taskHistories.length === 0 ? (
             <View style={styles.centerContainer}>
               <ActivityIndicator size="large" color="#3498db" />
-              <Text style={styles.loadingText}>Loading task history...</Text>
+              <TranslatedText text="Loading task history..." style={styles.loadingText} />
             </View>
           ) : error ? (
             <View style={styles.centerContainer}>
@@ -179,7 +177,7 @@ export default function TaskHistoryScreen() {
             </View>
           ) : taskHistories.length === 0 ? (
             <View style={styles.centerContainer}>
-              <Text style={styles.emptyText}>No task history yet. Create one above!</Text>
+              <TranslatedText text="No task history yet. Create one above!" style={styles.emptyText} />
             </View>
           ) : (
             taskHistories.map((th) => (
@@ -197,7 +195,7 @@ export default function TaskHistoryScreen() {
                     onPress={() => handleDeleteTaskHistory(th.id)}
                     style={styles.deleteButton}
                   >
-                    <Text style={styles.deleteButtonText}>Delete</Text>
+                    <TranslatedText text="Delete" style={styles.deleteButtonText} />
                   </TouchableOpacity>
                 </View>
                 {th.action && <Text style={styles.cardMeta}>Action: {th.action}</Text>}

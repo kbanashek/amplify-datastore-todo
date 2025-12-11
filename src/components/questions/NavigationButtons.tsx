@@ -1,6 +1,8 @@
 import React from "react";
 import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { ActivityConfig } from "../../types/ActivityConfig";
+import { useRTL } from "../../hooks/useRTL";
+import { TranslatedText } from "../TranslatedText";
 
 interface NavigationButtonsProps {
   currentScreenIndex: number;
@@ -25,6 +27,7 @@ export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
   tabBarHeight,
   bottomInset,
 }) => {
+  const { rtlStyle } = useRTL();
   const isLastScreen = currentScreenIndex === totalScreens - 1;
   const buttonText = activityConfig?.summaryScreen?.showScreen
     ? "Review"
@@ -34,18 +37,16 @@ export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
     <View
       style={[
         styles.navigationContainer,
+        rtlStyle(styles.navigationContainer),
         {
-          bottom:
-            Platform.OS === "ios"
-              ? Math.max(tabBarHeight || 60, 60)
-              : 0,
           paddingBottom: Math.max(bottomInset, 20),
+          marginBottom: Platform.OS === "ios" ? Math.max(tabBarHeight || 60, 60) : 0,
         },
       ]}
     >
       {currentScreenIndex > 0 && (
         <TouchableOpacity style={styles.navButton} onPress={onPrevious}>
-          <Text style={styles.navButtonText}>Previous</Text>
+          <TranslatedText text="Previous" style={styles.navButtonText} />
         </TouchableOpacity>
       )}
 
@@ -62,23 +63,23 @@ export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
           onPress={onReviewOrSubmit}
           disabled={!currentScreenValid}
         >
-          <Text
+          <TranslatedText
+            text={buttonText}
             style={[
               styles.navButtonText,
               currentScreenValid ? { color: "#fff" } : undefined,
             ]}
-          >
-            {buttonText}
-          </Text>
+          />
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
           style={[styles.navButton, styles.nextButton]}
           onPress={onNext}
         >
-          <Text style={[styles.navButtonText, styles.nextButtonText]}>
-            Next
-          </Text>
+          <TranslatedText
+            text="Next"
+            style={[styles.navButtonText, styles.nextButtonText]}
+          />
         </TouchableOpacity>
       )}
     </View>
@@ -87,13 +88,8 @@ export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
 
 const styles = StyleSheet.create({
   navigationContainer: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
     flexDirection: "row",
     padding: 20,
-    paddingBottom: 20,
     backgroundColor: "#fff",
     borderTopWidth: 1,
     borderTopColor: "#dfe4ea",
@@ -103,7 +99,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 10,
-    zIndex: 1000,
     minHeight: 70,
   },
   navButton: {

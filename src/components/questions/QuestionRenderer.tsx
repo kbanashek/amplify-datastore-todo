@@ -1,11 +1,12 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { useTranslatedText } from "../../hooks/useTranslatedText";
 import { ParsedElement } from "../../types/ActivityConfig";
-import { TextQuestion } from "./TextQuestion";
-import { SingleSelectQuestion } from "./SingleSelectQuestion";
+import { DateQuestion } from "./DateQuestion";
 import { MultiSelectQuestion } from "./MultiSelectQuestion";
 import { NumberQuestion } from "./NumberQuestion";
-import { DateQuestion } from "./DateQuestion";
+import { SingleSelectQuestion } from "./SingleSelectQuestion";
+import { TextQuestion } from "./TextQuestion";
 
 interface QuestionRendererProps {
   element: ParsedElement;
@@ -24,9 +25,10 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
   // Keep original case for type checking, but also have lowercase for switch
   const questionType = question.type || "";
   const questionTypeLower = questionType.toLowerCase();
-  
+
   // Use currentAnswer if available (from state), otherwise fall back to patientAnswer (initial)
-  const answerValue = currentAnswer !== undefined ? currentAnswer : patientAnswer;
+  const answerValue =
+    currentAnswer !== undefined ? currentAnswer : patientAnswer;
 
   console.log("❓ [QuestionRenderer] Rendering question", {
     questionId: question.id,
@@ -34,7 +36,10 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
     friendlyName: question.friendlyName,
     hasPatientAnswer: patientAnswer !== null && patientAnswer !== undefined,
     hasCurrentAnswer: currentAnswer !== undefined,
-    answerValue: typeof answerValue === "string" ? answerValue.substring(0, 30) : answerValue,
+    answerValue:
+      typeof answerValue === "string"
+        ? answerValue.substring(0, 30)
+        : answerValue,
     hasErrors: errors[question.id]?.length > 0,
   });
 
@@ -57,25 +62,59 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
     ? parseInt(displayProperties.paddingRight, 10)
     : 0;
 
-  const containerStyle = {
-    width: width === "100%" ? "100%" : width,
+  // Build container style with proper typing
+  const containerStyle: {
+    width?: number | "100%";
+    marginLeft: number;
+    marginRight: number;
+    paddingLeft: number;
+    paddingRight: number;
+  } = {
+    ...(width === "100%"
+      ? { width: "100%" as const }
+      : width
+      ? { width: parseFloat(width) || undefined }
+      : {}),
     marginLeft,
     marginRight,
     paddingLeft,
     paddingRight,
   };
 
-  // Render question text (strip HTML tags for now, can use react-native-render-html later)
-  const questionText = question.text
+  // Get original question text (strip HTML tags)
+  const originalQuestionText = question.text
     ? question.text.replace(/<[^>]*>/g, "").trim()
     : question.friendlyName || "";
+
+  console.log("❓ [QuestionRenderer] Preparing question text for translation", {
+    questionId: question.id,
+    originalText: originalQuestionText.substring(0, 50),
+    originalLength: originalQuestionText.length,
+    hasText: !!question.text,
+    hasFriendlyName: !!question.friendlyName,
+  });
+
+  // Translate question text
+  const { translatedText: questionText, isTranslating: isTranslatingQuestion } =
+    useTranslatedText(originalQuestionText);
+
+  console.log("❓ [QuestionRenderer] Translation result", {
+    questionId: question.id,
+    original: originalQuestionText.substring(0, 50),
+    translated: questionText?.substring(0, 50) || "(empty)",
+    isTranslating: isTranslatingQuestion,
+    changed: questionText !== originalQuestionText,
+  });
 
   const questionErrors = errors[question.id] || [];
 
   // Render based on question type
   const renderQuestion = () => {
     // Check for numericScale first (case-sensitive check)
-    if (questionType === "numericScale" || questionTypeLower === "numericscale") {
+    if (
+      questionType === "numericScale" ||
+      questionTypeLower === "numericscale"
+    ) {
       return (
         <NumberQuestion
           question={question}
@@ -88,7 +127,10 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
     }
 
     // Check for other types that need special handling
-    if (questionType === "horizontalvas" || questionTypeLower === "horizontalvas") {
+    if (
+      questionType === "horizontalvas" ||
+      questionTypeLower === "horizontalvas"
+    ) {
       // Horizontal VAS scale - treat as numeric scale
       return (
         <NumberQuestion
@@ -101,7 +143,10 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
       );
     }
 
-    if (questionType === "bloodPressure" || questionTypeLower === "bloodpressure") {
+    if (
+      questionType === "bloodPressure" ||
+      questionTypeLower === "bloodpressure"
+    ) {
       // Blood pressure - treat as number input
       return (
         <NumberQuestion
@@ -281,4 +326,3 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
 });
-

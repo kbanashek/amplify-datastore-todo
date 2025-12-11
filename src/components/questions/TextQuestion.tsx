@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { Question } from "../../types/ActivityConfig";
+import { useTranslation } from "../../contexts/TranslationContext";
 
 interface TextQuestionProps {
   question: Question;
@@ -17,6 +18,7 @@ export const TextQuestion: React.FC<TextQuestionProps> = ({
   displayProperties,
   errors,
 }) => {
+  const { isRTL } = useTranslation();
   const isMultiline = question.type === "textarea-field";
   const placeholder = question.friendlyName || "Enter your answer";
 
@@ -38,6 +40,7 @@ export const TextQuestion: React.FC<TextQuestionProps> = ({
           styles.input,
           isMultiline && styles.textArea,
           errors.length > 0 && styles.inputError,
+          isRTL && { textAlign: "right" },
         ]}
         value={value}
         onChangeText={handleChange}
