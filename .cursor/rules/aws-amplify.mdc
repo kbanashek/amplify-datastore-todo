@@ -1,7 +1,7 @@
 ---
 description: AWS Amplify DataStore conventions and patterns
 alwaysApply: true
-globs: ['src/services/**/*', 'src/**/*datastore*', 'src/**/*amplify*']
+globs: ["src/services/**/*", "src/**/*datastore*", "src/**/*amplify*"]
 ---
 
 # AWS Amplify DataStore
