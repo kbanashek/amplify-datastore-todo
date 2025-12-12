@@ -76,3 +76,7 @@ setup-new-*.sh
 
 # Duplicate generated directories
 src/models/
+
+# AWS credentials (should never be committed)
+src/config/aws-credentials.json
+**/aws-credentials.json
