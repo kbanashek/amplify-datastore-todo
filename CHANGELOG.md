@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2025-12-12
+
+### Added
+- Coordinated appointment and task seeding system (`scripts/seed-coordinated-data.ts`)
+- Task-appointment relationship linking via `anchors` field with `eventId` references
+- Pre-visit, visit-day, and post-visit task categories linked to appointments
+- Anchor-based task scheduling with `anchorDayOffset` support
+- Comprehensive rule engine implementation plan in `DOCS/todos.md`
+- Testing guide for coordinated seeding (`DOCS/testing-coordinated-seeding.md`)
+- Current rule logic documentation (`DOCS/current-rule-logic.md`)
+
+### Changed
+- Updated seed screen to support coordinated seeding with new button and result display
+- Enhanced seed screen text to explain dynamic appointment creation
+- Improved TypeScript configuration to support dynamic imports (`module: esnext`)
+
+### Fixed
+- Fixed TypeScript module configuration for dynamic imports
+- Fixed markdown linting issues in documentation files
+
 ## [0.1.1] - 2025-01-13
 
 ### Added

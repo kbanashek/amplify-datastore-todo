@@ -87,15 +87,21 @@ function createAppointment(
 
 /**
  * Generate appointments for multiple days
+ * 
+ * IMPORTANT: This function creates appointments dynamically based on the current date.
+ * Each time it's called, it uses the current date/time, so appointments will always
+ * be created for "today" relative to when the seed function is executed.
  */
 function generateAppointments(): Appointment[] {
   const appointments: Appointment[] = [];
+  // Get current date - this is dynamic and will be different each time the function runs
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   
   console.log('[SeedAppointmentScript] Generating appointments', {
     today: today.toISOString(),
     todayDateString: today.toDateString(),
+    note: 'Appointments are created dynamically for the current date',
   });
   
   // Today's appointments - create with explicit today date

@@ -155,28 +155,31 @@ export class AppointmentService {
       const filtered = allAppointments.filter((appointment) => {
         const startDate = new Date(appointment.startAt);
 
-        // Normalize both dates to just the date part (ignore time) for comparison
-        const appointmentDate = new Date(
-          startDate.getFullYear(),
-          startDate.getMonth(),
-          startDate.getDate()
-        );
-        const todayDate = new Date(
-          todayStart.getFullYear(),
-          todayStart.getMonth(),
-          todayStart.getDate()
-        );
+        // Get the date parts in local timezone for both dates
+        const appointmentYear = startDate.getFullYear();
+        const appointmentMonth = startDate.getMonth();
+        const appointmentDay = startDate.getDate();
 
-        // Check if the appointment date matches today's date
-        const isToday = appointmentDate.getTime() === todayDate.getTime();
+        const todayYear = todayStart.getFullYear();
+        const todayMonth = todayStart.getMonth();
+        const todayDay = todayStart.getDate();
+
+        // Compare date parts directly (year, month, day)
+        const isToday =
+          appointmentYear === todayYear &&
+          appointmentMonth === todayMonth &&
+          appointmentDay === todayDay;
 
         console.log("[AppointmentService] Filtering appointment", {
           title: appointment.title,
           startAt: appointment.startAt,
-          startDate: startDate.toISOString(),
-          appointmentDate: appointmentDate.toISOString(),
-          todayDate: todayDate.toISOString(),
+          startDateLocal: `${appointmentYear}-${
+            appointmentMonth + 1
+          }-${appointmentDay}`,
+          todayLocal: `${todayYear}-${todayMonth + 1}-${todayDay}`,
           isToday,
+          startDateUTC: startDate.toISOString(),
+          todayStartUTC: todayStart.toISOString(),
         });
 
         return isToday;
@@ -186,19 +189,55 @@ export class AppointmentService {
         totalAppointments: allAppointments.length,
         todayAppointments: filtered.length,
         todayStart: todayStart.toISOString(),
-        filteredAppointments: filtered.map((apt) => ({
-          title: apt.title,
-          startAt: apt.startAt,
-          date: new Date(apt.startAt).toDateString(),
-        })),
-        allAppointments: allAppointments.slice(0, 5).map((apt) => ({
-          title: apt.title,
-          startAt: apt.startAt,
-          date: new Date(apt.startAt).toDateString(),
-          dateTime: new Date(apt.startAt).getTime(),
-          todayStartTime: todayStart.getTime(),
-        })),
+        todayStartLocal: `${todayStart.getFullYear()}-${
+          todayStart.getMonth() + 1
+        }-${todayStart.getDate()}`,
+        filteredAppointments: filtered.map((apt) => {
+          const aptDate = new Date(apt.startAt);
+          return {
+            title: apt.title,
+            startAt: apt.startAt,
+            dateLocal: `${aptDate.getFullYear()}-${
+              aptDate.getMonth() + 1
+            }-${aptDate.getDate()}`,
+            dateUTC: aptDate.toISOString(),
+          };
+        }),
+        allAppointments: allAppointments.slice(0, 5).map((apt) => {
+          const aptDate = new Date(apt.startAt);
+          return {
+            title: apt.title,
+            startAt: apt.startAt,
+            dateLocal: `${aptDate.getFullYear()}-${
+              aptDate.getMonth() + 1
+            }-${aptDate.getDate()}`,
+            dateUTC: aptDate.toISOString(),
+          };
+        }),
       });
+
+      // If no appointments match today but we have appointments, log a warning
+      if (filtered.length === 0 && allAppointments.length > 0) {
+        console.warn(
+          "[AppointmentService] No appointments matched today filter!",
+          {
+            totalAppointments: allAppointments.length,
+            todayStartLocal: `${todayStart.getFullYear()}-${
+              todayStart.getMonth() + 1
+            }-${todayStart.getDate()}`,
+            sampleAppointmentDates: allAppointments.slice(0, 3).map((apt) => {
+              const aptDate = new Date(apt.startAt);
+              return {
+                title: apt.title,
+                dateLocal: `${aptDate.getFullYear()}-${
+                  aptDate.getMonth() + 1
+                }-${aptDate.getDate()}`,
+                dateUTC: aptDate.toISOString(),
+              };
+            }),
+          }
+        );
+      }
 
       return filtered;
     } catch (error) {

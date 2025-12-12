@@ -137,14 +137,17 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
             )}
             
             {/* Appointments for Today - show first */}
-            {showAppointments && (() => {
-              console.log(`[TasksGroupedView] Rendering ${todayAppointments.length} appointments for Today`);
-              return (
-                <View style={styles.appointmentsContainer}>
-                  {todayAppointments.map((appointment) => {
-                    console.log(`[TasksGroupedView] Rendering appointment: ${appointment.title}`, {
+            {showAppointments ? (
+              <View style={styles.appointmentsContainer}>
+                {console.log(`[TasksGroupedView] RENDERING APPOINTMENTS: ${todayAppointments.length} appointments for Today`)}
+                {todayAppointments.length === 0 ? (
+                  <Text style={styles.errorText}>No appointments to display (array is empty)</Text>
+                ) : (
+                  todayAppointments.map((appointment) => {
+                    console.log(`[TasksGroupedView] Rendering appointment card: ${appointment.title}`, {
                       appointmentId: appointment.appointmentId,
                       startAt: appointment.startAt,
+                      hasOnPress: !!onAppointmentPress,
                     });
                     return (
                       <AppointmentCard
@@ -154,10 +157,15 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
                         timezoneId={appointmentTimezoneId}
                       />
                     );
-                  })}
-                </View>
-              );
-            })()}
+                  })
+                )}
+              </View>
+            ) : (
+              console.log(`[TasksGroupedView] NOT RENDERING APPOINTMENTS - showAppointments=false`, {
+                isToday,
+                todayAppointmentsCount: todayAppointments.length,
+              }) || null
+            )}
 
             {/* Tasks without due time (simple cards) */}
             {dayGroup.tasksWithoutTime.map((task) => (

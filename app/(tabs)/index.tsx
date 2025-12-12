@@ -48,6 +48,7 @@ export default function DashboardScreen() {
       result: result.map((apt) => ({
         title: apt.title,
         startAt: apt.startAt,
+        date: new Date(apt.startAt).toDateString(),
       })),
     });
 

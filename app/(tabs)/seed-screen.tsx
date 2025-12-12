@@ -17,6 +17,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { seedAppointmentData } from "../../scripts/seed-appointment-data";
+import { seedCoordinatedData } from "../../scripts/seed-coordinated-data";
 import { seedQuestionData } from "../../scripts/seed-question-data";
 import { GlobalHeader } from "../../src/components/GlobalHeader";
 import { TranslatedText } from "../../src/components/TranslatedText";
@@ -26,10 +27,12 @@ import { TaskService } from "../../src/services/TaskService";
 export default function SeedScreen() {
   const [isSeeding, setIsSeeding] = useState(false);
   const [isSeedingAppointments, setIsSeedingAppointments] = useState(false);
+  const [isSeedingCoordinated, setIsSeedingCoordinated] = useState(false);
   const [isClearing, setIsClearing] = useState(false);
   const [isClearingAppointments, setIsClearingAppointments] = useState(false);
   const [seedResult, setSeedResult] = useState<any>(null);
   const [appointmentSeedResult, setAppointmentSeedResult] = useState<any>(null);
+  const [coordinatedSeedResult, setCoordinatedSeedResult] = useState<any>(null);
   const insets = useSafeAreaInsets();
 
   const handleClearAll = async () => {
@@ -224,9 +227,52 @@ export default function SeedScreen() {
     }
   };
 
+  const handleSeedCoordinated = async () => {
+    console.log("🌱 [SeedScreen] Coordinated Seed button pressed");
+    setIsSeedingCoordinated(true);
+    setCoordinatedSeedResult(null);
+
+    try {
+      console.log("🌱 [SeedScreen] Starting coordinated seed process...");
+      const result = await seedCoordinatedData();
+
+      console.log(
+        "✅ [SeedScreen] Coordinated seed process completed successfully",
+        {
+          appointmentsCount: result.summary.appointmentsCount,
+          tasksCount: result.summary.tasksCount,
+          linkedTasksCount: result.summary.linkedTasksCount,
+          standaloneTasksCount: result.summary.standaloneTasksCount,
+          activitiesCount: result.summary.activitiesCount,
+          relationshipsCount: result.relationships.length,
+        }
+      );
+
+      setCoordinatedSeedResult(result);
+
+      Alert.alert(
+        "Success",
+        `Seeded ${result.summary.appointmentsCount} appointments and ${result.summary.tasksCount} tasks!\n\n` +
+          `• ${result.summary.linkedTasksCount} tasks linked to appointments\n` +
+          `• ${result.summary.standaloneTasksCount} standalone tasks\n` +
+          `• ${result.summary.activitiesCount} activities\n` +
+          `• ${result.relationships.length} appointment-task relationships\n\n` +
+          `Tasks are scheduled relative to appointment dates and can move with visit rescheduling.`
+      );
+    } catch (error: any) {
+      console.error("❌ [SeedScreen] Coordinated seed error:", {
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+      });
+      Alert.alert("Error", error?.message || "Failed to seed coordinated data");
+    } finally {
+      setIsSeedingCoordinated(false);
+    }
+  };
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <GlobalHeader title="Seed Question Data" />
+      <GlobalHeader title="Seed Data" />
 
       <ScrollView
         style={styles.scrollView}
@@ -235,7 +281,7 @@ export default function SeedScreen() {
         <View style={styles.section}>
           <TranslatedText text="What this does:" style={styles.sectionTitle} />
           <TranslatedText
-            text="Creates sample Activities with question structures and Tasks that reference them. This allows you to test the question rendering functionality."
+            text="Creates sample Activities with question structures and Tasks that reference them. This allows you to test the question rendering functionality. You can also seed appointments for testing the appointment display on the dashboard."
             style={styles.sectionText}
           />
         </View>
@@ -295,11 +341,14 @@ export default function SeedScreen() {
           )}
         </TouchableOpacity>
 
-        {/* Appointments Section */}
+        {/* Coordinated Seeding Section */}
         <View style={styles.section}>
-          <TranslatedText text="Appointments:" style={styles.sectionTitle} />
           <TranslatedText
-            text="Creates sample appointments (TELEVISIT and ONSITE) for today, tomorrow, and next week."
+            text="Appointments & Tasks Together:"
+            style={styles.sectionTitle}
+          />
+          <TranslatedText
+            text="Creates appointments and tasks together with relationships. Tasks are linked to appointments via eventId in the anchors field, scheduled relative to appointment dates, and can move with visit rescheduling. This prepares for visit-based task rescheduling functionality."
             style={styles.sectionText}
           />
         </View>
@@ -307,7 +356,68 @@ export default function SeedScreen() {
         <View style={styles.section}>
           <TranslatedText text="Will create:" style={styles.sectionTitle} />
           <TranslatedText
-            text="• Appointments for today"
+            text="• Activities (Health Survey, Pain Assessment, etc.)"
+            style={styles.listItem}
+          />
+          <TranslatedText
+            text="• Appointments for today, tomorrow, and next week"
+            style={styles.listItem}
+          />
+          <TranslatedText
+            text="• Tasks linked to appointments (pre-visit, visit-day, post-visit)"
+            style={styles.listItem}
+          />
+          <TranslatedText
+            text="• Standalone tasks (not linked to appointments)"
+            style={styles.listItem}
+          />
+          <TranslatedText
+            text="• Tasks scheduled relative to appointment dates using anchorDayOffset"
+            style={styles.listItem}
+          />
+          <TranslatedText
+            text="• Appointment-task relationships tracked for future rescheduling"
+            style={styles.listItem}
+          />
+        </View>
+
+        <TouchableOpacity
+          style={[
+            styles.coordinatedSeedButton,
+            isSeedingCoordinated && styles.seedButtonDisabled,
+          ]}
+          onPress={handleSeedCoordinated}
+          disabled={
+            isSeedingCoordinated ||
+            isSeeding ||
+            isSeedingAppointments ||
+            isClearing ||
+            isClearingAppointments
+          }
+        >
+          {isSeedingCoordinated ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <TranslatedText
+              text="🌱 Seed Appointments & Tasks Together"
+              style={styles.seedButtonText}
+            />
+          )}
+        </TouchableOpacity>
+
+        {/* Appointments Section */}
+        <View style={styles.section}>
+          <TranslatedText text="Appointments:" style={styles.sectionTitle} />
+          <TranslatedText
+            text="Creates sample appointments (TELEVISIT and ONSITE) dynamically for today's date, tomorrow, and next week. Appointments are always created relative to the current date when you seed them, so they will appear on the dashboard for the correct day."
+            style={styles.sectionText}
+          />
+        </View>
+
+        <View style={styles.section}>
+          <TranslatedText text="Will create:" style={styles.sectionTitle} />
+          <TranslatedText
+            text="• Appointments for today (created dynamically based on current date)"
             style={styles.listItem}
           />
           <TranslatedText
@@ -324,6 +434,10 @@ export default function SeedScreen() {
           />
           <TranslatedText
             text="• Various statuses (SCHEDULED, COMPLETED, CANCELLED)"
+            style={styles.listItem}
+          />
+          <TranslatedText
+            text="• Times throughout the day (9 AM, 2 PM, 4:30 PM for today)"
             style={styles.listItem}
           />
         </View>
@@ -423,6 +537,42 @@ export default function SeedScreen() {
             </View>
           </View>
         )}
+
+        {coordinatedSeedResult && (
+          <View style={styles.resultSection}>
+            <Text style={styles.resultTitle}>Coordinated Seed Results:</Text>
+            <Text style={styles.resultText}>
+              Appointments: {coordinatedSeedResult.summary.appointmentsCount}
+            </Text>
+            <Text style={styles.resultText}>
+              Total Tasks: {coordinatedSeedResult.summary.tasksCount}
+            </Text>
+            <Text style={styles.resultText}>
+              Linked Tasks: {coordinatedSeedResult.summary.linkedTasksCount}
+            </Text>
+            <Text style={styles.resultText}>
+              Standalone Tasks:{" "}
+              {coordinatedSeedResult.summary.standaloneTasksCount}
+            </Text>
+            <Text style={styles.resultText}>
+              Activities: {coordinatedSeedResult.summary.activitiesCount}
+            </Text>
+            <Text style={styles.resultText}>
+              Relationships: {coordinatedSeedResult.relationships.length}
+            </Text>
+            <View style={styles.resultDetails}>
+              <Text style={styles.resultSubtitle}>Relationships:</Text>
+              {coordinatedSeedResult.relationships.map(
+                (rel: any, index: number) => (
+                  <Text key={rel.appointmentId} style={styles.resultItem}>
+                    {index + 1}. Appointment: {rel.appointmentId} (EventID:{" "}
+                    {rel.eventId}) - {rel.linkedTaskIds.length} linked tasks
+                  </Text>
+                )
+              )}
+            </View>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -497,6 +647,14 @@ const styles = StyleSheet.create({
   },
   appointmentSeedButton: {
     backgroundColor: "#9b59b6",
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: "center",
+    marginBottom: 24,
+  },
+  coordinatedSeedButton: {
+    backgroundColor: "#27ae60",
     paddingVertical: 16,
     paddingHorizontal: 20,
     borderRadius: 8,
