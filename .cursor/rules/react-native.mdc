@@ -1,0 +1,22 @@
+---
+description: React Native and TypeScript component patterns
+alwaysApply: true
+globs: ['**/*.tsx', 'app/**/*.tsx', 'src/components/**/*.tsx']
+---
+
+# TypeScript/React Native
+
+- Use TypeScript for type safety
+- Prefer functional components with hooks
+- Use meaningful variable and function names
+- Add comments for complex logic
+- **Type all component props** with interfaces
+  - ✅ Good: `interface ButtonProps { label: string; onPress: () => void; disabled?: boolean; }`
+- **Use React.FC or explicit function signatures** for components
+  - ✅ Good: `const Button: React.FC<ButtonProps> = ({ label, onPress }) => { ... }`
+  - ✅ Good: `function Button({ label, onPress }: ButtonProps) { ... }`
+- **Type event handlers properly**
+  - ✅ Good: `const handlePress = (event: GestureResponderEvent): void => { ... }`
+- **Use proper types for hooks**
+  - ✅ Good: `const [count, setCount] = useState<number>(0);`
+  - ✅ Good: `const data = useMemo<ProcessedData>(() => process(rawData), [rawData]);`

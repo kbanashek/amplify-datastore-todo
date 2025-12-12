@@ -1,0 +1,14 @@
+---
+description: UI/UX design patterns and conventions
+alwaysApply: true
+globs: ['src/components/**/*', 'app/**/*.tsx']
+---
+
+# UI/UX
+
+## Task Display
+
+- Tasks should be grouped by day, then by time
+- Use distinct icons for different task types
+- Show "BEGIN" for new tasks, "RESUME" for started tasks
+- Match design specifications exactly

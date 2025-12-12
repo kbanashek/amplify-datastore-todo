@@ -1,0 +1,11 @@
+---
+description: AWS Amplify DataStore conventions and patterns
+alwaysApply: true
+globs: ['src/services/**/*', 'src/**/*datastore*', 'src/**/*amplify*']
+---
+
+# AWS Amplify DataStore
+
+- All data models should use DataStore for persistence and sync
+- Use DataStore subscriptions for real-time updates
+- Handle conflict resolution in centralized ConflictResolution service
