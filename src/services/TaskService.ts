@@ -168,20 +168,28 @@ export class TaskService {
    */
   static async updateTask(id: string, data: TaskUpdateData): Promise<Task> {
     try {
+      console.log("[TaskService] updateTask called:", { id, data });
       const original = await DataStore.query(Task, id);
       if (!original) {
         throw new Error(`Task with id ${id} not found`);
       }
 
+      console.log("[TaskService] Original task status:", original.status);
       const updated = await DataStore.save(
         Task.copyOf(original, (updated) => {
           Object.assign(updated, data);
         })
       );
 
+      console.log("[TaskService] Task updated successfully:", {
+        id: updated.id,
+        status: updated.status,
+        title: updated.title,
+      });
+
       return updated;
     } catch (error) {
-      console.error("Error updating task:", error);
+      console.error("[TaskService] Error updating task:", error);
       throw error;
     }
   }
@@ -223,6 +231,7 @@ export class TaskService {
           itemCount: items.length,
           isSynced,
           itemIds: items.map((i) => i.id),
+          itemStatuses: items.map((i) => ({ id: i.id, status: i.status, title: i.title })),
         });
 
         callback(items, isSynced);
@@ -235,6 +244,27 @@ export class TaskService {
         querySubscription.unsubscribe();
       },
     };
+  }
+
+  /**
+   * Delete all Tasks
+   * @returns {Promise<number>} - The number of tasks deleted
+   */
+  static async deleteAllTasks(): Promise<number> {
+    try {
+      const tasks = await DataStore.query(Task);
+      let deletedCount = 0;
+      
+      for (const task of tasks) {
+        await DataStore.delete(task);
+        deletedCount++;
+      }
+      
+      return deletedCount;
+    } catch (error) {
+      console.error("Error deleting all tasks:", error);
+      throw error;
+    }
   }
 
   /**

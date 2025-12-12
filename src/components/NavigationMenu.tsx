@@ -57,6 +57,12 @@ const menuItems: MenuItem[] = [
     icon: 'clock.fill',
     description: 'View task history',
   },
+  {
+    name: 'Seed Data',
+    route: '/(tabs)/seed-screen',
+    icon: 'leaf.fill',
+    description: 'Seed Activities and Tasks for testing',
+  },
 ];
 
 interface NavigationMenuProps {

@@ -11,6 +11,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { AmplifyProvider } from '../src/contexts/AmplifyContext';
+import { TranslationProvider } from '../src/contexts/TranslationContext';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -32,13 +33,15 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <AmplifyProvider>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-          <StatusBar style="auto" />
-        </AmplifyProvider>
+        <TranslationProvider>
+          <AmplifyProvider>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+            <StatusBar style="auto" />
+          </AmplifyProvider>
+        </TranslationProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );

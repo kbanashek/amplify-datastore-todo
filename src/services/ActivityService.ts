@@ -1,4 +1,5 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
+// @ts-ignore - Activity is exported from models/index.js at runtime
 import { Activity } from "../../models";
 import { CreateActivityInput, UpdateActivityInput } from "../types/Activity";
 
@@ -35,14 +36,17 @@ export class ActivityService {
 
   static async createActivity(input: CreateActivityInput): Promise<Activity> {
     try {
-      console.log('[ActivityService] Creating activity with DataStore:', input);
+      console.log("[ActivityService] Creating activity with DataStore:", input);
       const activity = await DataStore.save(
         new Activity({
           ...input,
         })
       );
-      
-      console.log('[ActivityService] Activity created successfully:', activity.id);
+
+      console.log(
+        "[ActivityService] Activity created successfully:",
+        activity.id
+      );
       return activity;
     } catch (error) {
       console.error("Error creating activity:", error);
@@ -68,7 +72,10 @@ export class ActivityService {
     }
   }
 
-  static async updateActivity(id: string, data: ActivityUpdateData): Promise<Activity> {
+  static async updateActivity(
+    id: string,
+    data: ActivityUpdateData
+  ): Promise<Activity> {
     try {
       const original = await DataStore.query(Activity, id);
       if (!original) {
@@ -102,28 +109,34 @@ export class ActivityService {
     }
   }
 
-  static subscribeActivities(callback: (items: Activity[], isSynced: boolean) => void): {
+  static subscribeActivities(
+    callback: (items: Activity[], isSynced: boolean) => void
+  ): {
     unsubscribe: () => void;
   } {
-    console.log('[ActivityService] Setting up DataStore subscription for Activity');
-    
-    const querySubscription = DataStore.observeQuery(Activity).subscribe((snapshot) => {
-      const { items, isSynced } = snapshot;
-      
-      console.log('[ActivityService] DataStore subscription update:', {
-        itemCount: items.length,
-        isSynced,
-        itemIds: items.map(i => i.id)
-      });
-      
-      callback(items, isSynced);
-    });
-    
+    console.log(
+      "[ActivityService] Setting up DataStore subscription for Activity"
+    );
+
+    const querySubscription = DataStore.observeQuery(Activity).subscribe(
+      (snapshot) => {
+        const { items, isSynced } = snapshot;
+
+        console.log("[ActivityService] DataStore subscription update:", {
+          itemCount: items.length,
+          isSynced,
+          itemIds: items.map((i) => i.id),
+        });
+
+        callback(items, isSynced);
+      }
+    );
+
     return {
       unsubscribe: () => {
-        console.log('[ActivityService] Unsubscribing from DataStore');
+        console.log("[ActivityService] Unsubscribing from DataStore");
         querySubscription.unsubscribe();
-      }
+      },
     };
   }
 

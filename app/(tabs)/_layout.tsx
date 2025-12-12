@@ -70,6 +70,12 @@ export default function TabLayout() {
           href: null, // Hide from tab bar
         }}
       />
+      <Tabs.Screen
+        name="appointment-details"
+        options={{
+          href: null, // Hide from tab bar
+        }}
+      />
     </Tabs>
   );
 }

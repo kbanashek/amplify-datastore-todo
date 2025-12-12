@@ -1,0 +1,52 @@
+{
+  "clinicPatientAppointments": {
+    "clinicAppointments": {
+      "items": [
+        {
+          "telehealthMeetingId": "meeting-123-456",
+          "appointmentType": "TELEVISIT",
+          "title": "Follow-up Consultation",
+          "siteId": "Site.UUID-12345",
+          "data": "{}",
+          "isDeleted": 0,
+          "patientId": "Patient.UUID-67890",
+          "status": "SCHEDULED",
+          "description": "Regular follow-up appointment with doctor",
+          "startAt": "2025-12-11T14:00:00.000Z",
+          "endAt": "2025-12-11T15:00:00.000Z",
+          "instructions": "Please prepare your questions in advance",
+          "appointmentId": "Appointment.UUID-abc123",
+          "eventId": "Event.UUID-def456",
+          "createdAt": "2025-12-01T10:00:00.000Z",
+          "updatedAt": "2025-12-01T10:00:00.000Z",
+          "version": 1,
+          "rescheduled": 0,
+          "__typename": "SubjectStudyInstanceAppointment"
+        },
+        {
+          "telehealthMeetingId": null,
+          "appointmentType": "ONSITE",
+          "title": "Lab Work Appointment",
+          "siteId": "Site.UUID-12345",
+          "data": "{}",
+          "isDeleted": 0,
+          "patientId": "Patient.UUID-67890",
+          "status": "SCHEDULED",
+          "description": "Blood work and lab tests",
+          "startAt": "2025-12-11T10:00:00.000Z",
+          "endAt": "2025-12-11T10:30:00.000Z",
+          "instructions": "Please fast for 12 hours before the appointment",
+          "appointmentId": "Appointment.UUID-xyz789",
+          "eventId": "Event.UUID-ghi012",
+          "createdAt": "2025-12-01T09:00:00.000Z",
+          "updatedAt": "2025-12-01T09:00:00.000Z",
+          "version": 1,
+          "rescheduled": 0,
+          "__typename": "SubjectStudyInstanceAppointment"
+        }
+      ]
+    }
+  },
+  "siteTimezoneId": "America/New_York"
+}
+

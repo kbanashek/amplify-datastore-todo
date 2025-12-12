@@ -13,7 +13,7 @@ export const configureAmplify = (): void => {
         // Enable real-time subscriptions for cross-device updates
         fullSyncInterval: 0, // Disable periodic full sync, rely on real-time updates
       },
-    });
+    } as any);
 
     // Note: We're not explicitly setting SQLiteAdapter here because
     // Amplify will use the appropriate adapter based on the platform

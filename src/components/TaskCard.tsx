@@ -61,6 +61,10 @@ export const TaskCard: React.FC<TaskCardProps> = ({
     hasTitle: !!task.title,
     titleLength: task.title?.length || 0,
     status: task.status,
+    statusString: TaskStatus[task.status as keyof typeof TaskStatus],
+    isStarted: task.status === TaskStatus.STARTED,
+    isInProgress: task.status === TaskStatus.INPROGRESS,
+    isCompleted: task.status === TaskStatus.COMPLETED,
     simple,
   });
 
@@ -68,27 +72,38 @@ export const TaskCard: React.FC<TaskCardProps> = ({
 
   const handleBeginPress = async () => {
     try {
+      console.log("[TaskCard] BEGIN pressed, current status:", task.status);
       // If task is not started, update status to STARTED
       if (
         task.status !== TaskStatus.STARTED &&
         task.status !== TaskStatus.INPROGRESS
       ) {
-        await TaskService.updateTask(task.id, {
+        console.log("[TaskCard] Updating task status to STARTED");
+        const updated = await TaskService.updateTask(task.id, {
           status: TaskStatus.STARTED,
         });
+        console.log("[TaskCard] Task updated, new status:", updated?.status);
       }
       // Call the onPress callback if provided
       onPress?.(task);
     } catch (error) {
-      console.error("Error updating task status:", error);
+      console.error("[TaskCard] Error updating task status:", error);
     }
   };
 
+  const isCompleted = task.status === TaskStatus.COMPLETED;
+  const isDisabled = isCompleted;
+
   return (
     <TouchableOpacity
-      style={styles.card}
-      onPress={() => onPress?.(task)}
-      activeOpacity={0.7}
+      style={[styles.card, isDisabled && styles.cardDisabled]}
+      onPress={() => {
+        if (!isDisabled) {
+          onPress?.(task);
+        }
+      }}
+      activeOpacity={isDisabled ? 1 : 0.7}
+      disabled={isDisabled}
     >
       <View style={styles.cardContent}>
         <View
@@ -110,25 +125,33 @@ export const TaskCard: React.FC<TaskCardProps> = ({
 
         {!simple && (
           <View style={styles.actionRow}>
-            <TouchableOpacity
-              style={styles.beginButton}
-              onPress={handleBeginPress}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.beginButtonText}>
-                {task.status === TaskStatus.STARTED ||
-                task.status === TaskStatus.INPROGRESS
-                  ? "RESUME"
-                  : "BEGIN"}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.arrowButton}
-              onPress={() => onPress?.(task)}
-              activeOpacity={0.7}
-            >
-              <IconSymbol name="chevron.right" size={20} color="#57606f" />
-            </TouchableOpacity>
+            {!isCompleted ? (
+              <>
+                <TouchableOpacity
+                  style={styles.beginButton}
+                  onPress={handleBeginPress}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.beginButtonText}>
+                    {task.status === TaskStatus.STARTED ||
+                    task.status === TaskStatus.INPROGRESS
+                      ? "RESUME"
+                      : "BEGIN"}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.arrowButton}
+                  onPress={() => onPress?.(task)}
+                  activeOpacity={0.7}
+                >
+                  <IconSymbol name="chevron.right" size={20} color="#57606f" />
+                </TouchableOpacity>
+              </>
+            ) : (
+              <View style={styles.completedBadge}>
+                <Text style={styles.completedText}>COMPLETED</Text>
+              </View>
+            )}
           </View>
         )}
       </View>
@@ -213,5 +236,22 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 14,
+  },
+  cardDisabled: {
+    opacity: 0.6,
+  },
+  completedBadge: {
+    backgroundColor: "#27ae60",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 6,
+    minWidth: 100,
+    alignItems: "center",
+  },
+  completedText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "bold",
+    letterSpacing: 0.5,
   },
 });

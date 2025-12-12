@@ -1,0 +1,254 @@
+# Cursor Rules for Amplify DataStore Todo App
+
+## Version Control
+
+### Commit Messages
+
+- **ALWAYS** provide meaningful commit messages when using version-bump command
+- Commit messages are **REQUIRED** and must be descriptive
+- Good examples:
+  - "Add task grouping by date and time with icons"
+  - "Fix DataStore sync issue for questions"
+  - "Update task card UI to match design specifications"
+- Bad examples (will be rejected):
+  - "update"
+  - "changes"
+  - "fix"
+  - Empty or whitespace-only messages
+
+### Version Bumping
+
+- Use semantic versioning (major.minor.patch)
+- Always provide a meaningful commit message when bumping versions
+- The version-bump script will validate that commit messages are descriptive
+
+## Code Style
+
+### TypeScript Best Practices
+
+- **ALWAYS use TypeScript** - Never use JavaScript (.js) files. All new files must be `.ts` or `.tsx`
+- **NEVER use `any` type** - Use proper types, `unknown`, or generics instead
+  - ❌ Bad: `function process(data: any) { ... }`
+  - ✅ Good: `function process<T>(data: T): T { ... }`
+  - ✅ Good: `function process(data: unknown): ProcessedData { ... }`
+- **Use explicit return types** for functions, especially public APIs
+  - ✅ Good: `function calculateTotal(items: Item[]): number { ... }`
+  - ✅ Good: `const getItems = (): Promise<Item[]> => { ... }`
+- **Prefer interfaces over type aliases** for object shapes (interfaces are extendable)
+  - ✅ Good: `interface User { id: string; name: string; }`
+  - Use type aliases for unions, intersections, or computed types
+- **Use strict null checks** - Always handle `null` and `undefined` explicitly
+  - ✅ Good: `const name: string | undefined = user?.name;`
+  - ✅ Good: `if (value !== null && value !== undefined) { ... }`
+- **Avoid type assertions (`as`)** - Prefer type guards or proper type narrowing
+  - ❌ Bad: `const value = data as string;`
+  - ✅ Good: `if (typeof data === 'string') { const value = data; ... }`
+- **Use readonly for immutable data**
+  - ✅ Good: `interface Config { readonly apiKey: string; readonly timeout: number; }`
+- **Prefer const assertions** for literal types
+  - ✅ Good: `const statuses = ['active', 'inactive'] as const;`
+- **Use enums or const objects** instead of magic strings
+  - ✅ Good: `enum TaskStatus { OPEN = 'OPEN', COMPLETED = 'COMPLETED' }`
+  - ✅ Good: `const TaskStatus = { OPEN: 'OPEN', COMPLETED: 'COMPLETED' } as const;`
+- **Type all function parameters and return values**
+  - ❌ Bad: `function process(data) { return data.value; }`
+  - ✅ Good: `function process(data: InputData): OutputData { return data.value; }`
+- **Use generics for reusable code** instead of `any`
+  - ✅ Good: `function identity<T>(value: T): T { return value; }`
+- **Prefer optional chaining and nullish coalescing**
+  - ✅ Good: `const name = user?.profile?.name ?? 'Unknown';`
+- **Use discriminated unions** for type-safe state management
+  - ✅ Good: `type State = { status: 'loading' } | { status: 'success'; data: Data } | { status: 'error'; error: Error };`
+- **Avoid `@ts-ignore` and `@ts-expect-error`** - Fix the underlying type issues instead
+- **Use utility types** (`Partial`, `Pick`, `Omit`, `Record`, etc.) when appropriate
+  - ✅ Good: `type UserUpdate = Partial<Pick<User, 'name' | 'email'>>;`
+- **Export types and interfaces** that are used across modules
+  - ✅ Good: `export interface User { id: string; name: string; }`
+- **Use JSDoc comments** for complex types and public APIs
+  - ✅ Good: `/** Processes user data and returns formatted result */ function processUser(user: User): ProcessedUser { ... }`
+
+### TypeScript/React Native
+
+- Use TypeScript for type safety
+- Prefer functional components with hooks
+- Use meaningful variable and function names
+- Add comments for complex logic
+- **Type all component props** with interfaces
+  - ✅ Good: `interface ButtonProps { label: string; onPress: () => void; disabled?: boolean; }`
+- **Use React.FC or explicit function signatures** for components
+  - ✅ Good: `const Button: React.FC<ButtonProps> = ({ label, onPress }) => { ... }`
+  - ✅ Good: `function Button({ label, onPress }: ButtonProps) { ... }`
+- **Type event handlers properly**
+  - ✅ Good: `const handlePress = (event: GestureResponderEvent): void => { ... }`
+- **Use proper types for hooks**
+  - ✅ Good: `const [count, setCount] = useState<number>(0);`
+  - ✅ Good: `const data = useMemo<ProcessedData>(() => process(rawData), [rawData]);`
+
+### Component Architecture
+
+- **ALWAYS** separate component logic from presentation
+- **Components should be small and focused** - if a component exceeds ~200 lines, break it down into smaller sub-components
+- **All business logic, state management, and side effects should live in custom hooks** - components should only handle rendering and user interactions
+- **Pattern to follow:**
+  - Create a custom hook (e.g., `useComponentName`) that contains:
+    - All state (`useState`, `useReducer`)
+    - All side effects (`useEffect`, subscriptions)
+    - All business logic (validation, data transformation, API calls)
+    - All event handlers that contain logic
+  - The component should only:
+    - Call the hook to get state and handlers
+    - Render UI using smaller sub-components
+    - Pass props to sub-components
+- **Example structure:**
+
+  ```typescript
+  // ❌ Bad: Large component with all logic
+  export default function MyComponent() {
+    const [state, setState] = useState(...);
+    useEffect(() => { ... }, []);
+    const handleSubmit = async () => { ... };
+    // 500+ lines of logic and JSX
+  }
+
+  // ✅ Good: Hook contains logic, component renders
+  // src/hooks/useMyComponent.ts
+  export const useMyComponent = () => {
+    const [state, setState] = useState(...);
+    useEffect(() => { ... }, []);
+    const handleSubmit = async () => { ... };
+    return { state, handleSubmit, ... };
+  };
+
+  // app/(tabs)/my-component.tsx
+  export default function MyComponent() {
+    const { state, handleSubmit } = useMyComponent();
+    return <View>...</View>;
+  }
+  ```
+
+- **Sub-components should be created when:**
+  - A section of JSX is reusable
+  - A section has its own distinct purpose (e.g., header, footer, form section)
+  - A section is complex enough to warrant its own file
+- **File organization:**
+  - Hooks: `src/hooks/use*.ts`
+  - Sub-components: `src/components/[category]/*.tsx` (grouped by feature/category)
+  - Main components: `app/**/*.tsx`
+
+### AWS Amplify DataStore
+
+- All data models should use DataStore for persistence and sync
+- Use DataStore subscriptions for real-time updates
+- Handle conflict resolution in centralized ConflictResolution service
+
+## Testing
+
+### Unit Testing Requirements
+
+- **ALWAYS create unit tests** for any new hooks, services, and components
+- **Test files must be created alongside the source files** - not as an afterthought
+- **Test file naming convention:**
+  - Hooks: `src/hooks/__tests__/useHookName.test.ts`
+  - Services: `src/services/__tests__/ServiceName.test.ts`
+  - Components: `src/components/__tests__/ComponentName.test.tsx` or `src/components/[category]/__tests__/ComponentName.test.tsx`
+- **Test coverage requirements:**
+  - **Hooks**: Test all return values, state changes, side effects, and edge cases
+  - **Services**: Test all public methods, error handling, and data transformations
+  - **Components**: Test rendering, user interactions, props handling, and conditional rendering
+- **Testing patterns:**
+  - Use Jest and React Testing Library for all tests
+  - Mock external dependencies (DataStore, APIs, AsyncStorage, etc.)
+  - Test user interactions (clicks, input changes, form submissions)
+  - Test error states and loading states
+  - Test edge cases (empty data, null values, invalid inputs)
+- **When creating new code:**
+  1. Create the hook/service/component
+  2. **Immediately create the corresponding test file**
+  3. Write tests covering the main functionality
+  4. Ensure tests pass before considering the feature complete
+- **Examples:**
+  - ✅ Good: Create `src/hooks/useAppointmentList.ts` → Create `src/hooks/__tests__/useAppointmentList.test.ts` immediately
+  - ✅ Good: Create `src/services/AppointmentService.ts` → Create `src/services/__tests__/AppointmentService.test.ts` immediately
+  - ✅ Good: Create `src/components/AppointmentCard.tsx` → Create `src/components/__tests__/AppointmentCard.test.tsx` immediately
+  - ❌ Bad: Create hook/service/component without corresponding test file
+  - ❌ Bad: "I'll add tests later" - tests must be created with the code
+- **Test structure:**
+  - Use `describe` blocks to group related tests
+  - Use descriptive test names that explain what is being tested
+  - Follow Arrange-Act-Assert pattern
+  - Clean up after tests (clear mocks, reset state, etc.)
+- **Required test scenarios:**
+  - **Hooks**: Initial state, state updates, side effects, cleanup, error handling
+  - **Services**: Method calls, return values, error cases, edge cases (empty arrays, null values)
+  - **Components**: Rendering with props, user interactions, conditional rendering, error states, loading states
+
+### Project Todos
+
+- **ALWAYS use `DOCS/todos.md` for tracking todos and future work**
+- When identifying work that needs to be done:
+  - Add it to `DOCS/todos.md` with a clear description
+  - Group related todos under descriptive headings
+  - Mark completed items with `[x]` instead of deleting them
+  - Include file paths, code references, or context when relevant
+- **Do NOT** create separate todo files or track todos in code comments
+- **Do NOT** use TODO comments in code for tracking work - use `DOCS/todos.md` instead
+- Format: `- [ ] Description of task` for incomplete, `- [x] Description` for complete
+
+## UI/UX
+
+### Task Display
+
+- Tasks should be grouped by day, then by time
+- Use distinct icons for different task types
+- Show "BEGIN" for new tasks, "RESUME" for started tasks
+- Match design specifications exactly
+
+## Documentation
+
+### Technical Documentation
+
+- **ALWAYS create detailed technical documentation in `DOCS/` directory** for:
+  - AWS service configurations and conventions
+  - Complex technical concepts that need deep explanation
+  - Architecture decisions and patterns
+  - Integration details and troubleshooting guides
+  - Any content that would make the README too long or cluttered
+- **Keep README concise** - Provide brief summaries in README and link to detailed docs in `DOCS/`
+- **File naming**: Use descriptive, kebab-case names (e.g., `aws-technical-details.md`, `architecture-decisions.md`)
+- **Structure**: Include a table of contents for longer documents
+- **Cross-references**: Link from README to detailed docs using markdown links: `[Link Text](DOCS/filename.md#section)`
+- **Examples**:
+  - ✅ Good: Brief summary in README → "📖 **For detailed information**, see [AWS Technical Details](DOCS/aws-technical-details.md#section)"
+  - ❌ Bad: 50+ lines of detailed technical content directly in README
+  - ✅ Good: `DOCS/aws-technical-details.md` with comprehensive AWS information
+  - ❌ Bad: All documentation crammed into README.md
+
+### Diagrams
+
+- **ALWAYS use Mermaid diagrams** for architecture, data flow, and system diagrams in documentation
+- **NEVER use ASCII art** for diagrams (no box-drawing characters like ┌, │, └, ├, etc.)
+- Mermaid diagrams are:
+  - More maintainable and readable
+  - Render properly in GitHub, GitLab, and most markdown viewers
+  - Easier to update and modify
+  - Support interactive features in some viewers
+- Use appropriate Mermaid diagram types:
+  - `graph` or `flowchart` for architecture and data flow diagrams
+  - `sequenceDiagram` for interaction sequences
+  - `classDiagram` for class relationships
+  - `stateDiagram` for state machines
+  - `erDiagram` for database schemas
+- Include styling for better visual clarity:
+
+  ```mermaid
+  graph TB
+      A[Component] --> B[Service]
+      style A fill:#e1f5ff
+      style B fill:#fff4e1
+  ```
+
+- Examples:
+  - ✅ Good: Mermaid flowchart showing component relationships
+  - ❌ Bad: ASCII art with box-drawing characters
+  - ✅ Good: Mermaid sequence diagram for API interactions
+  - ❌ Bad: ASCII art showing request/response flow

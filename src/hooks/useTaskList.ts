@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { TaskService } from "../services/TaskService";
-import { Task, TaskFilters } from "../types/Task";
+import { Task, TaskFilters, TaskStatus } from "../types/Task";
 import { useAmplify } from "../contexts/AmplifyContext";
 import { NetworkStatus } from "./useAmplifyState";
 
@@ -38,7 +38,15 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
         console.log('[useTaskList] SUBSCRIPTION CALLBACK FIRED');
         console.log('[useTaskList] Items count:', items.length);
         console.log('[useTaskList] Synced:', synced);
-        console.log('[useTaskList] Items:', items.map(t => ({ id: t.id, title: t.title, status: t.status })));
+        console.log('[useTaskList] Items:', items.map(t => ({ 
+          id: t.id, 
+          title: t.title, 
+          status: t.status,
+          statusString: t.status,
+          isStarted: t.status === TaskStatus.STARTED,
+          isInProgress: t.status === TaskStatus.INPROGRESS,
+          isCompleted: t.status === TaskStatus.COMPLETED,
+        })));
         console.log('========================================');
         // Apply filters if provided
         let filteredItems = items;
