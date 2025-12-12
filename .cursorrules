@@ -22,6 +22,24 @@
 - Always provide a meaningful commit message when bumping versions
 - The version-bump script will validate that commit messages are descriptive
 
+### Push Update Workflow
+
+- **When asked to "push update" or similar**, follow this workflow:
+  1. Create a new feature branch (e.g., `feature/description-of-changes`)
+  2. Fix any lint issues in modified files
+  3. Bump the patch version in `package.json` (e.g., `0.1.1` → `0.1.2`)
+  4. Update `CHANGELOG.md` with:
+     - New version number and current date (format: `YYYY-MM-DD`)
+     - Added/Changed/Fixed sections as appropriate
+     - Descriptive entries for all changes
+  5. Stage all changes (`git add -A`)
+  6. Commit with a meaningful message describing all changes
+  7. Push the branch to remote (`git push -u origin <branch-name>`)
+  8. Add any requested cursor rules to `.cursorrules` if specified
+- **Always verify lint issues are resolved** before committing
+- **Always use the current date** when updating CHANGELOG.md
+- **Commit messages must be descriptive** - summarize all changes in the commit
+
 ## Code Style
 
 ### TypeScript Best Practices
