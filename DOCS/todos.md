@@ -12,6 +12,8 @@
 - **Unit tests are currently DISABLED in CI** due to CodeArtifact authentication issues
 - CI currently runs lint and format checks only
 - Tests requiring AWS services (TranslationService, DataStore, Amplify) cannot run without credentials
+- Tests that require AWS credentials are currently skipped in CI
+- Tests requiring AWS services (TranslationService, DataStore, Amplify) are excluded from CI runs
 
 **What Needs to be Done:**
 
@@ -19,6 +21,7 @@
 - [ ] Set up AWS CodeArtifact authentication in GitHub Actions
 - [ ] Fix npm install to work with or without CodeArtifact credentials
 - [ ] Re-enable unit tests in CI once authentication is configured
+- [ ] Enable full test suite in CI once credentials are configured
 - [ ] Consider using AWS IAM roles for GitHub Actions instead of access keys
 - [ ] Add integration tests that can run with mocked AWS services
 
@@ -44,6 +47,8 @@
 - [ ] Add additional seed translation pairs (e.g. `memory.en-fr.json`, `memory.en-de.json`)
 - [ ] Add a small debug/admin screen to inspect translation memory + clear/export it
 - [ ] Consider replacing AWS Translate with a fully offline dictionary-based system for stable UI strings
+- CI runs lint, format checks, and non-AWS-dependent unit tests
+- Full test suite should be run locally before merging PRs
 
 ## Task/Activities Rule Engine Implementation
 
