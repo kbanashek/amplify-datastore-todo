@@ -1,0 +1,11 @@
+node_modules/
+coverage/
+.expo/
+dist/
+build/
+*.log
+package-lock.json
+yarn.lock
+aws-exports.js
+amplify/
+

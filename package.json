@@ -1,14 +1,21 @@
 {
   "name": "amplify-datastore-todo",
   "main": "./entry.js",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "check:circular": "madge --circular --extensions ts,tsx,js,jsx src app",
+    "prepare": "husky install || true"
   },
   "dependencies": {
     "@aws-amplify/core": "^6.13.1",
@@ -16,9 +23,12 @@
     "@aws-amplify/datastore-storage-adapter": "^2.1.88",
     "@aws-amplify/react-native": "^1.1.10",
     "@aws-amplify/ui-react-native": "^2.5.3",
+    "@aws-sdk/client-translate": "^3.700.0",
     "@expo/vector-icons": "^14.1.0",
     "@react-native-async-storage/async-storage": "^2.2.0",
+    "@react-native-community/datetimepicker": "^8.2.0",
     "@react-native-community/netinfo": "^11.4.1",
+    "@react-native-community/slider": "^4.5.2",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",
     "@react-navigation/native": "^7.1.6",
@@ -54,6 +64,9 @@
     "@types/react": "~19.0.10",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~9.2.0",
+    "husky": "^9.1.7",
+    "madge": "^7.0.0",
+    "prettier": "^3.7.4",
     "typescript": "~5.8.3"
   },
   "private": true

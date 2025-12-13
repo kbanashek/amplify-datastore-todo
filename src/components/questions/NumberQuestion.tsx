@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, TextInput, View, Text, TouchableOpacity } from "react-native";
 import Slider from "@react-native-community/slider";
 import { Question } from "../../types/ActivityConfig";
+import { useTranslatedText } from "../../hooks/useTranslatedText";
 
 interface NumberQuestionProps {
   question: Question;
@@ -19,7 +20,8 @@ export const NumberQuestion: React.FC<NumberQuestionProps> = ({
   errors,
 }) => {
   const unit = displayProperties.uniti18nKey || "";
-  const placeholder = question.friendlyName || "Enter a number";
+  const placeholderText = question.friendlyName || "Enter a number";
+  const { translatedText: placeholder } = useTranslatedText(placeholderText);
 
   // Handle numeric scale (1-10, etc.)
   const validations = question.validations || [];

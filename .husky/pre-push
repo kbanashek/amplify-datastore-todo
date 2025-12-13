@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Running lint..."
+npm run lint || {
+  echo "❌ Lint failed. Please fix linting errors before pushing."
+  exit 1
+}
+
+echo "✅ Lint passed!"
+
+echo "💅 Running format check..."
+npm run format:check || {
+  echo "❌ Format check failed. Please run 'npm run format' to fix formatting."
+  exit 1
+}
+
+echo "✅ Format check passed!"
+
+echo "🔄 Checking for circular dependencies..."
+npm run check:circular || {
+  echo "❌ Circular dependencies detected. Please fix them before pushing."
+  echo "💡 Run 'npm run check:circular' to see the circular dependency graph."
+  exit 1
+}
+
+echo "✅ No circular dependencies found!"
+echo "✅ All pre-push checks passed!"
+
