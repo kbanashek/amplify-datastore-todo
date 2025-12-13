@@ -13,6 +13,38 @@
 
 ---
 
+## 🛠️ Tech Stack
+
+### Frontend
+
+- **React Native** - Cross-platform mobile framework
+- **Expo** - Development platform and tooling
+- **TypeScript** - Type-safe JavaScript
+- **Expo Router** - File-based routing system
+
+### Backend & Cloud
+
+- **AWS Amplify** - Backend framework and CLI
+- **AWS AppSync** - Managed GraphQL API
+- **AWS DataStore** - Offline-first data synchronization
+- **DynamoDB** - NoSQL database
+- **GraphQL** - API query language
+
+### Development Tools
+
+- **Jest** - Testing framework
+- **React Testing Library** - Component testing utilities
+- **ESLint** - Code linting
+- **Prettier** - Code formatting
+
+### Data & Storage
+
+- **SQLite** - Local database (via DataStore)
+- **AsyncStorage** - Local key-value storage
+- **DataStore Sync Engine** - Automatic data synchronization
+
+---
+
 ## ✨ Features
 
 ### 🎯 Core Functionality
