@@ -17,38 +17,38 @@
 
 ### 🎨 Frontend
 
-| Technology | Purpose | Why We Use It |
-|------------|---------|---------------|
-| **⚛️ React Native** | Cross-platform mobile framework | Write once, run on iOS and Android |
-| **🚀 Expo** | Development platform and tooling | Fast development, over-the-air updates, managed workflow |
-| **📘 TypeScript** | Type-safe JavaScript | Catch errors at compile-time, better IDE support |
-| **🧭 Expo Router** | File-based routing system | Intuitive navigation, type-safe routes |
+| Technology          | Purpose                          | Why We Use It                                            |
+| ------------------- | -------------------------------- | -------------------------------------------------------- |
+| **⚛️ React Native** | Cross-platform mobile framework  | Write once, run on iOS and Android                       |
+| **🚀 Expo**         | Development platform and tooling | Fast development, over-the-air updates, managed workflow |
+| **📘 TypeScript**   | Type-safe JavaScript             | Catch errors at compile-time, better IDE support         |
+| **🧭 Expo Router**  | File-based routing system        | Intuitive navigation, type-safe routes                   |
 
 ### ☁️ Backend & Cloud
 
-| Technology | Purpose | Why We Use It |
-|------------|---------|---------------|
-| **🔧 AWS Amplify** | Backend framework and CLI | Rapid backend setup, integrated services |
-| **📡 AWS AppSync** | Managed GraphQL API | Real-time subscriptions, automatic scaling |
+| Technology           | Purpose                            | Why We Use It                                |
+| -------------------- | ---------------------------------- | -------------------------------------------- |
+| **🔧 AWS Amplify**   | Backend framework and CLI          | Rapid backend setup, integrated services     |
+| **📡 AWS AppSync**   | Managed GraphQL API                | Real-time subscriptions, automatic scaling   |
 | **💾 AWS DataStore** | Offline-first data synchronization | Works offline, automatic conflict resolution |
-| **🗄️ DynamoDB** | NoSQL database | Serverless, auto-scaling, low latency |
-| **🔍 GraphQL** | API query language | Flexible queries, type-safe, single endpoint |
+| **🗄️ DynamoDB**      | NoSQL database                     | Serverless, auto-scaling, low latency        |
+| **🔍 GraphQL**       | API query language                 | Flexible queries, type-safe, single endpoint |
 
 ### 🛠️ Development Tools
 
-| Technology | Purpose | Why We Use It |
-|------------|---------|---------------|
-| **✅ Jest** | Testing framework | Fast, comprehensive, great React Native support |
-| **🧪 React Testing Library** | Component testing utilities | Test user behavior, not implementation |
-| **🔍 ESLint** | Code linting | Catch bugs early, enforce code quality |
-| **💅 Prettier** | Code formatting | Consistent code style, zero configuration |
+| Technology                   | Purpose                     | Why We Use It                                   |
+| ---------------------------- | --------------------------- | ----------------------------------------------- |
+| **✅ Jest**                  | Testing framework           | Fast, comprehensive, great React Native support |
+| **🧪 React Testing Library** | Component testing utilities | Test user behavior, not implementation          |
+| **🔍 ESLint**                | Code linting                | Catch bugs early, enforce code quality          |
+| **💅 Prettier**              | Code formatting             | Consistent code style, zero configuration       |
 
 ### 💾 Data & Storage
 
-| Technology | Purpose | Why We Use It |
-|------------|---------|---------------|
-| **📱 SQLite** | Local database (via DataStore) | Fast, reliable, perfect for offline-first |
-| **🔑 AsyncStorage** | Local key-value storage | Simple persistence for app settings and cache |
+| Technology                   | Purpose                        | Why We Use It                                        |
+| ---------------------------- | ------------------------------ | ---------------------------------------------------- |
+| **📱 SQLite**                | Local database (via DataStore) | Fast, reliable, perfect for offline-first            |
+| **🔑 AsyncStorage**          | Local key-value storage        | Simple persistence for app settings and cache        |
 | **🔄 DataStore Sync Engine** | Automatic data synchronization | Seamless cloud sync, handles conflicts intelligently |
 
 ---
@@ -149,7 +149,6 @@ flowchart TD
    ```
 
    In the output, you'll find options to open the app in:
-
    - 📱 [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
    - 🍎 [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
    - 📲 [Expo Go](https://expo.dev/go) on your physical device

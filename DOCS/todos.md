@@ -1,8 +1,47 @@
 # Project Todos
 
+## CI/CD and Testing
+
+### AWS Credentials in CI/CD
+
+**Status:** ⚠️ Partial Implementation
+
+**Current State:**
+
+- GitHub Actions workflow configured for PR tests
+- **Unit tests are currently DISABLED in CI** due to CodeArtifact authentication issues
+- CI currently runs lint and format checks only
+- Tests requiring AWS services (TranslationService, DataStore, Amplify) cannot run without credentials
+
+**What Needs to be Done:**
+
+- [ ] Configure GitHub Secrets for AWS credentials (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`)
+- [ ] Set up AWS CodeArtifact authentication in GitHub Actions
+- [ ] Fix npm install to work with or without CodeArtifact credentials
+- [ ] Re-enable unit tests in CI once authentication is configured
+- [ ] Consider using AWS IAM roles for GitHub Actions instead of access keys
+- [ ] Add integration tests that can run with mocked AWS services
+
+**Test Files Currently Skipped in CI:**
+
+- Tests that use `TranslationService` (requires AWS Translate)
+- Tests that use `DataStore` directly (requires AWS Amplify configuration)
+- Tests that require Amplify initialization
+- **ALL unit tests are currently disabled** until CodeArtifact authentication is fixed
+
+**Workaround:**
+
+- Tests are run locally where AWS credentials are available
+- CI runs lint and format checks only
+- Full test suite should be run locally before merging PRs
+- Unit tests are disabled in CI until CodeArtifact authentication is properly configured
+
+## Task/Activities Rule Engine Implementation
+
 ## Task/Activities Rule Engine Implementation
 
 ### Overview
+
 Create a comprehensive rule engine system to evaluate and enforce task/activity rules, process actions, and handle rule-based workflows. This will bring the rule fields from "stored but not enforced" to "fully functional rule system".
 
 ### Architecture Plan
@@ -291,14 +330,17 @@ class RuleEngine {
   // Validation
   static validateCompletion(task: Task, currentTime: number): ValidationResult;
   static validateVisibility(task: Task, currentTime: number): VisibilityResult;
-  
+
   // Evaluation
   static evaluateRules(task: Task, facts: RuleFacts): EvaluationResult;
   static evaluateTrigger(trigger: string, task: Task, context: any): boolean;
-  
+
   // Actions
-  static processActions(actions: TaskAction[], context: ActionContext): Promise<ActionResult[]>;
-  
+  static processActions(
+    actions: TaskAction[],
+    context: ActionContext
+  ): Promise<ActionResult[]>;
+
   // Rescheduling
   static rescheduleTasksForAppointment(appointment: Appointment): Promise<void>;
 }
@@ -330,7 +372,7 @@ class RuleEngine {
 **Example Integration:**
 
 ```typescript
-import { Engine } from 'json-rules-engine';
+import { Engine } from "json-rules-engine";
 
 // Initialize engine for task rules
 const engine = new Engine();
@@ -340,31 +382,31 @@ engine.addRule({
   conditions: {
     all: [
       {
-        fact: 'task.status',
-        operator: 'equal',
-        value: 'COMPLETED'
+        fact: "task.status",
+        operator: "equal",
+        value: "COMPLETED",
       },
       {
-        fact: 'answer.value',
-        operator: 'greaterThan',
-        value: 5
-      }
-    ]
+        fact: "answer.value",
+        operator: "greaterThan",
+        value: 5,
+      },
+    ],
   },
   event: {
-    type: 'TRIGGER_ACTION',
+    type: "TRIGGER_ACTION",
     params: {
-      actionType: 'START_TIMED_TASK',
-      taskDefId: 'some-task-id'
-    }
-  }
+      actionType: "START_TIMED_TASK",
+      taskDefId: "some-task-id",
+    },
+  },
 });
 
 // Evaluate with facts
 const facts = {
-  'task.status': task.status,
-  'answer.value': answerValue,
-  currentTime: Date.now()
+  "task.status": task.status,
+  "answer.value": answerValue,
+  currentTime: Date.now(),
 };
 
 const { events } = await engine.run(facts);
@@ -426,4 +468,3 @@ src/
 - Rule debugging tools
 - Rule performance monitoring
 - Rule analytics and reporting
-

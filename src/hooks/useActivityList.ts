@@ -20,7 +20,12 @@ export const useActivityList = (): UseActivityListReturn => {
     const sub = ActivityService.subscribeActivities((items, isSynced) => {
       setActivities(items);
       setLoading(false);
-      console.log('[useActivityList] Activities updated:', items.length, 'synced:', isSynced);
+      console.log(
+        "[useActivityList] Activities updated:",
+        items.length,
+        "synced:",
+        isSynced
+      );
     });
     setSubscription(sub);
 
@@ -61,4 +66,3 @@ export const useActivityList = (): UseActivityListReturn => {
     refreshActivities,
   };
 };
-

@@ -1,6 +1,16 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { TaskStatus, TaskType, TaskFilters as TaskFiltersType } from '../types/Task';
+import React from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+import {
+  TaskStatus,
+  TaskType,
+  TaskFilters as TaskFiltersType,
+} from "../types/Task";
 
 interface TaskFiltersProps {
   filters: TaskFiltersType;
@@ -19,7 +29,6 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
   onClearFilters,
   hasActiveFilters,
 }) => {
-
   const toggleStatus = (status: TaskStatus) => {
     const current = filters.status || [];
     if (current.includes(status)) {
@@ -52,7 +61,7 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
       <TextInput
         style={styles.searchInput}
         placeholder="Search tasks..."
-        value={filters.searchText || ''}
+        value={filters.searchText || ""}
         onChangeText={onSearchTextChange}
         autoCapitalize="none"
         autoCorrect={false}
@@ -60,7 +69,7 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
 
       <Text style={styles.sectionTitle}>Status</Text>
       <View style={styles.filterRow}>
-        {Object.values(TaskStatus).map((status) => {
+        {Object.values(TaskStatus).map(status => {
           const isSelected = filters.status?.includes(status);
           return (
             <TouchableOpacity
@@ -86,7 +95,7 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
 
       <Text style={styles.sectionTitle}>Task Type</Text>
       <View style={styles.filterRow}>
-        {Object.values(TaskType).map((type) => {
+        {Object.values(TaskType).map(type => {
           const isSelected = filters.taskType?.includes(type);
           return (
             <TouchableOpacity
@@ -115,41 +124,41 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 8,
     padding: 16,
     marginBottom: 16,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 16,
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#2f3542',
+    fontWeight: "bold",
+    color: "#2f3542",
   },
   clearButton: {
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 4,
-    backgroundColor: '#e74c3c',
+    backgroundColor: "#e74c3c",
   },
   clearButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   searchInput: {
     borderWidth: 1,
-    borderColor: '#dfe4ea',
+    borderColor: "#dfe4ea",
     borderRadius: 4,
     padding: 12,
     marginBottom: 16,
@@ -157,14 +166,14 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#2f3542',
+    fontWeight: "600",
+    color: "#2f3542",
     marginBottom: 8,
     marginTop: 8,
   },
   filterRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     marginBottom: 8,
     gap: 8,
   },
@@ -173,22 +182,21 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#dfe4ea',
-    backgroundColor: '#f8f9fa',
+    borderColor: "#dfe4ea",
+    backgroundColor: "#f8f9fa",
     marginRight: 8,
     marginBottom: 8,
   },
   filterChipSelected: {
-    backgroundColor: '#3498db',
-    borderColor: '#3498db',
+    backgroundColor: "#3498db",
+    borderColor: "#3498db",
   },
   filterChipText: {
     fontSize: 12,
-    color: '#57606f',
-    fontWeight: '600',
+    color: "#57606f",
+    fontWeight: "600",
   },
   filterChipTextSelected: {
-    color: '#fff',
+    color: "#fff",
   },
 });
-

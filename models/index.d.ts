@@ -1,11 +1,16 @@
-import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
+import {
+  ModelInit,
+  MutableModel,
+  __modelMeta__,
+  ManagedIdentifier,
+} from "@aws-amplify/datastore";
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled } from "@aws-amplify/datastore";
 
 export enum TaskType {
   SCHEDULED = "SCHEDULED",
   TIMED = "TIMED",
-  EPISODIC = "EPISODIC"
+  EPISODIC = "EPISODIC",
 }
 
 export enum TaskStatus {
@@ -15,45 +20,48 @@ export enum TaskStatus {
   INPROGRESS = "INPROGRESS",
   COMPLETED = "COMPLETED",
   EXPIRED = "EXPIRED",
-  RECALLED = "RECALLED"
+  RECALLED = "RECALLED",
 }
-
-
 
 type EagerTodo = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Todo, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<Todo, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly name: string;
   readonly description?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyTodo = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Todo, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<Todo, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly name: string;
   readonly description?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type Todo = LazyLoading extends LazyLoadingDisabled ? EagerTodo : LazyTodo
+export declare type Todo = LazyLoading extends LazyLoadingDisabled
+  ? EagerTodo
+  : LazyTodo;
 
 export declare const Todo: (new (init: ModelInit<Todo>) => Todo) & {
-  copyOf(source: Todo, mutator: (draft: MutableModel<Todo>) => MutableModel<Todo> | void): Todo;
-}
+  copyOf(
+    source: Todo,
+    mutator: (draft: MutableModel<Todo>) => MutableModel<Todo> | void
+  ): Todo;
+};
 
 type EagerTask = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Task, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<Task, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly pk: string;
@@ -94,12 +102,12 @@ type EagerTask = {
   readonly studyStatus?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
 type LazyTask = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Task, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
+    identifier: ManagedIdentifier<Task, "id">;
+    readOnlyFields: "createdAt" | "updatedAt";
   };
   readonly id: string;
   readonly pk: string;
@@ -140,10 +148,15 @@ type LazyTask = {
   readonly studyStatus?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-}
+};
 
-export declare type Task = LazyLoading extends LazyLoadingDisabled ? EagerTask : LazyTask
+export declare type Task = LazyLoading extends LazyLoadingDisabled
+  ? EagerTask
+  : LazyTask;
 
 export declare const Task: (new (init: ModelInit<Task>) => Task) & {
-  copyOf(source: Task, mutator: (draft: MutableModel<Task>) => MutableModel<Task> | void): Task;
-}
+  copyOf(
+    source: Task,
+    mutator: (draft: MutableModel<Task>) => MutableModel<Task> | void
+  ): Task;
+};

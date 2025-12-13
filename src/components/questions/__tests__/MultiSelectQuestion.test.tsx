@@ -222,6 +222,3 @@ describe("MultiSelectQuestion", () => {
     expect(getByText("✓")).toBeTruthy();
   });
 });
-
-
-

@@ -13,10 +13,7 @@ jest.mock("@react-native-community/slider", () => {
         <Text testID="slider-value">{value}</Text>
         <Text testID="slider-min">{minimumValue}</Text>
         <Text testID="slider-max">{maximumValue}</Text>
-        <Text
-          testID="slider-change"
-          onPress={() => onValueChange(value + 1)}
-        >
+        <Text testID="slider-change" onPress={() => onValueChange(value + 1)}>
           Change
         </Text>
       </View>
@@ -325,4 +322,3 @@ describe("NumberQuestion", () => {
     expect(getByTestId("slider")).toBeTruthy();
   });
 });
-

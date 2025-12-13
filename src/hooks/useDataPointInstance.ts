@@ -1,16 +1,28 @@
-import { useState, useCallback, useEffect } from 'react';
-import { DataPointService } from '../services/DataPointService';
-import { DataPointInstance, CreateDataPointInstanceInput, UpdateDataPointInstanceInput } from '../types/DataPoint';
+import { useState, useCallback, useEffect } from "react";
+import { DataPointService } from "../services/DataPointService";
+import {
+  DataPointInstance,
+  CreateDataPointInstanceInput,
+  UpdateDataPointInstanceInput,
+} from "../types/DataPoint";
 
 interface UseDataPointInstanceReturn {
   // Get instances by activityId
   getInstancesByActivityId: (activityId: string) => DataPointInstance[];
   // Get instance by questionId for a specific activity
-  getInstanceByQuestionId: (activityId: string, questionId: string) => DataPointInstance | undefined;
+  getInstanceByQuestionId: (
+    activityId: string,
+    questionId: string
+  ) => DataPointInstance | undefined;
   // Create a new data point instance
-  createDataPointInstance: (input: CreateDataPointInstanceInput) => Promise<DataPointInstance | null>;
+  createDataPointInstance: (
+    input: CreateDataPointInstanceInput
+  ) => Promise<DataPointInstance | null>;
   // Update an existing data point instance
-  updateDataPointInstance: (id: string, data: Omit<UpdateDataPointInstanceInput, 'id' | '_version'>) => Promise<DataPointInstance | null>;
+  updateDataPointInstance: (
+    id: string,
+    data: Omit<UpdateDataPointInstanceInput, "id" | "_version">
+  ) => Promise<DataPointInstance | null>;
   // Get all instances (reactive)
   instances: DataPointInstance[];
   loading: boolean;
@@ -32,11 +44,18 @@ export const useDataPointInstance = (): UseDataPointInstanceReturn => {
 
   // Subscribe to data point instance changes
   useEffect(() => {
-    const sub = DataPointService.subscribeDataPointInstances((items, isSynced) => {
-      setInstances(items);
-      setLoading(false);
-      console.log('[useDataPointInstance] DataPointInstances updated:', items.length, 'synced:', isSynced);
-    });
+    const sub = DataPointService.subscribeDataPointInstances(
+      (items, isSynced) => {
+        setInstances(items);
+        setLoading(false);
+        console.log(
+          "[useDataPointInstance] DataPointInstances updated:",
+          items.length,
+          "synced:",
+          isSynced
+        );
+      }
+    );
 
     return () => {
       if (sub) {
@@ -47,7 +66,7 @@ export const useDataPointInstance = (): UseDataPointInstanceReturn => {
 
   const getInstancesByActivityId = useCallback(
     (activityId: string): DataPointInstance[] => {
-      return instances.filter((instance) => instance.activityId === activityId);
+      return instances.filter(instance => instance.activityId === activityId);
     },
     [instances]
   );
@@ -55,26 +74,42 @@ export const useDataPointInstance = (): UseDataPointInstanceReturn => {
   const getInstanceByQuestionId = useCallback(
     (activityId: string, questionId: string): DataPointInstance | undefined => {
       return instances.find(
-        (instance) => instance.activityId === activityId && instance.questionId === questionId
+        instance =>
+          instance.activityId === activityId &&
+          instance.questionId === questionId
       );
     },
     [instances]
   );
 
   const createDataPointInstance = useCallback(
-    async (input: CreateDataPointInstanceInput): Promise<DataPointInstance | null> => {
+    async (
+      input: CreateDataPointInstanceInput
+    ): Promise<DataPointInstance | null> => {
       setIsCreating(true);
       setError(null);
 
       try {
-        console.log('[useDataPointInstance] Creating data point instance', input);
+        console.log(
+          "[useDataPointInstance] Creating data point instance",
+          input
+        );
         const created = await DataPointService.createDataPointInstance(input);
-        console.log('[useDataPointInstance] Data point instance created successfully', created);
+        console.log(
+          "[useDataPointInstance] Data point instance created successfully",
+          created
+        );
         // The subscription will automatically update instances
         return created;
       } catch (err: unknown) {
-        const errorMessage = err instanceof Error ? err.message : 'Failed to create data point instance';
-        console.error('[useDataPointInstance] Error creating data point instance:', err);
+        const errorMessage =
+          err instanceof Error
+            ? err.message
+            : "Failed to create data point instance";
+        console.error(
+          "[useDataPointInstance] Error creating data point instance:",
+          err
+        );
         setError(errorMessage);
         return null;
       } finally {
@@ -87,20 +122,35 @@ export const useDataPointInstance = (): UseDataPointInstanceReturn => {
   const updateDataPointInstance = useCallback(
     async (
       id: string,
-      data: Omit<UpdateDataPointInstanceInput, 'id' | '_version'>
+      data: Omit<UpdateDataPointInstanceInput, "id" | "_version">
     ): Promise<DataPointInstance | null> => {
       setIsUpdating(true);
       setError(null);
 
       try {
-        console.log('[useDataPointInstance] Updating data point instance', { id, data });
-        const updated = await DataPointService.updateDataPointInstance(id, data);
-        console.log('[useDataPointInstance] Data point instance updated successfully', updated);
+        console.log("[useDataPointInstance] Updating data point instance", {
+          id,
+          data,
+        });
+        const updated = await DataPointService.updateDataPointInstance(
+          id,
+          data
+        );
+        console.log(
+          "[useDataPointInstance] Data point instance updated successfully",
+          updated
+        );
         // The subscription will automatically update instances
         return updated;
       } catch (err: unknown) {
-        const errorMessage = err instanceof Error ? err.message : 'Failed to update data point instance';
-        console.error('[useDataPointInstance] Error updating data point instance:', err);
+        const errorMessage =
+          err instanceof Error
+            ? err.message
+            : "Failed to update data point instance";
+        console.error(
+          "[useDataPointInstance] Error updating data point instance:",
+          err
+        );
         setError(errorMessage);
         return null;
       } finally {
@@ -122,6 +172,3 @@ export const useDataPointInstance = (): UseDataPointInstanceReturn => {
     isUpdating,
   };
 };
-
-
-

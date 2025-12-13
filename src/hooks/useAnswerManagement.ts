@@ -31,7 +31,7 @@ export const useAnswerManagement = ({
   const handleAnswerChange = useCallback(
     (questionId: string, answer: any) => {
       // Update answer state
-      setAnswers((prev) => ({
+      setAnswers(prev => ({
         ...prev,
         [questionId]: answer,
       }));
@@ -44,7 +44,7 @@ export const useAnswerManagement = ({
       ) {
         const currentScreen = activityData.screens[currentScreenIndex];
         const element = currentScreen.elements.find(
-          (el) => el.question.id === questionId
+          el => el.question.id === questionId
         );
 
         if (element) {
@@ -56,7 +56,7 @@ export const useAnswerManagement = ({
           );
 
           // Update errors for this question
-          setErrors((prev) => {
+          setErrors(prev => {
             const newErrors = { ...prev };
             if (questionErrors.length > 0) {
               newErrors[questionId] = questionErrors;

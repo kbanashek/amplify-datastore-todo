@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { TodoService } from '../services/TodoService';
-import { Todo } from '../../models';
-import { CreateTodoInput } from '../API';
+import { useState } from "react";
+import { TodoService } from "../services/TodoService";
+import { Todo } from "../../models";
+import { CreateTodoInput } from "../API";
 
 interface UseTodoFormReturn {
   name: string;
@@ -13,42 +13,44 @@ interface UseTodoFormReturn {
   handleSubmit: () => Promise<void>;
 }
 
-export const useTodoForm = (onTodoCreated?: (todo: Todo) => void): UseTodoFormReturn => {
-  const [name, setName] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
+export const useTodoForm = (
+  onTodoCreated?: (todo: Todo) => void
+): UseTodoFormReturn => {
+  const [name, setName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (): Promise<void> => {
     if (!name.trim()) {
-      setError('Todo name is required');
+      setError("Todo name is required");
       return;
     }
 
     try {
       setIsSubmitting(true);
       setError(null);
-      
+
       // Use the generated CreateTodoInput type
       const input: CreateTodoInput = {
         name: name.trim(),
-        description: description.trim() || null // Handle empty string as null
+        description: description.trim() || null, // Handle empty string as null
       };
-      
+
       // Pass the input object directly to createTodo
       const newTodo = await TodoService.createTodo(input);
-      
+
       // Clear form
-      setName('');
-      setDescription('');
-      
+      setName("");
+      setDescription("");
+
       // Notify parent component
       if (onTodoCreated) {
         onTodoCreated(newTodo);
       }
     } catch (err) {
-      setError('Failed to create todo. Please try again.');
-      console.error('Error creating todo:', err);
+      setError("Failed to create todo. Please try again.");
+      console.error("Error creating todo:", err);
     } finally {
       setIsSubmitting(false);
     }
@@ -61,6 +63,6 @@ export const useTodoForm = (onTodoCreated?: (todo: Todo) => void): UseTodoFormRe
     setDescription,
     isSubmitting,
     error,
-    handleSubmit
+    handleSubmit,
   };
 };

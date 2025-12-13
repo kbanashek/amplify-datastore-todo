@@ -73,7 +73,7 @@ export const useAmplifyState = (): AmplifyState => {
               break;
             case DataStoreEventType.ConflictDetected:
               // Increment conflict count when a conflict is detected
-              setConflictCount((prevCount) => prevCount + 1);
+              setConflictCount(prevCount => prevCount + 1);
               break;
             case DataStoreEventType.SyncQueriesStarted:
               setSyncState(SyncState.Syncing);
@@ -91,7 +91,7 @@ export const useAmplifyState = (): AmplifyState => {
         });
 
         // Initialize network status
-        NetInfo.fetch().then((state) => {
+        NetInfo.fetch().then(state => {
           if (isMounted) {
             setNetworkStatus(
               state.isConnected ? NetworkStatus.Online : NetworkStatus.Offline
@@ -99,7 +99,7 @@ export const useAmplifyState = (): AmplifyState => {
           }
         });
 
-        unsubscribeNetInfo = NetInfo.addEventListener((state) => {
+        unsubscribeNetInfo = NetInfo.addEventListener(state => {
           if (isMounted) {
             setNetworkStatus(
               state.isConnected ? NetworkStatus.Online : NetworkStatus.Offline

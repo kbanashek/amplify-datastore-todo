@@ -37,7 +37,7 @@ export default function DashboardScreen() {
   const todayAppointments = useMemo(() => {
     // Since appointments are already filtered to todayOnly, we can use them directly
     // But also check the grouped structure as a fallback
-    const fromGroup = groupedAppointments.find((g) => g.dateLabel === "Today");
+    const fromGroup = groupedAppointments.find(g => g.dateLabel === "Today");
     const result = fromGroup?.appointments || appointments;
 
     console.log("[Dashboard] Computing todayAppointments", {
@@ -45,7 +45,7 @@ export default function DashboardScreen() {
       groupedAppointmentsCount: groupedAppointments.length,
       fromGroupCount: fromGroup?.appointments.length || 0,
       resultCount: result.length,
-      result: result.map((apt) => ({
+      result: result.map(apt => ({
         title: apt.title,
         startAt: apt.startAt,
         date: new Date(apt.startAt).toDateString(),
@@ -69,13 +69,13 @@ export default function DashboardScreen() {
                 .length,
           }
         : null,
-      appointments: appointments.map((apt) => ({
+      appointments: appointments.map(apt => ({
         title: apt.title,
         startAt: apt.startAt,
         type: apt.appointmentType,
         date: new Date(apt.startAt).toDateString(),
       })),
-      groupedAppointments: groupedAppointments.map((g) => ({
+      groupedAppointments: groupedAppointments.map(g => ({
         dateLabel: g.dateLabel,
         date: g.date,
         count: g.appointments.length,

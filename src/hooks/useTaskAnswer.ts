@@ -1,16 +1,28 @@
-import { useState, useCallback, useEffect } from 'react';
-import { TaskAnswerService } from '../services/TaskAnswerService';
-import { TaskAnswer, CreateTaskAnswerInput, UpdateTaskAnswerInput } from '../types/TaskAnswer';
+import { useState, useCallback, useEffect } from "react";
+import { TaskAnswerService } from "../services/TaskAnswerService";
+import {
+  TaskAnswer,
+  CreateTaskAnswerInput,
+  UpdateTaskAnswerInput,
+} from "../types/TaskAnswer";
 
 interface UseTaskAnswerReturn {
   // Get answers by taskId
   getAnswersByTaskId: (taskId: string) => TaskAnswer[];
   // Get answer by questionId for a specific task
-  getAnswerByQuestionId: (taskId: string, questionId: string) => TaskAnswer | undefined;
+  getAnswerByQuestionId: (
+    taskId: string,
+    questionId: string
+  ) => TaskAnswer | undefined;
   // Create a new task answer
-  createTaskAnswer: (input: CreateTaskAnswerInput) => Promise<TaskAnswer | null>;
+  createTaskAnswer: (
+    input: CreateTaskAnswerInput
+  ) => Promise<TaskAnswer | null>;
   // Update an existing task answer
-  updateTaskAnswer: (id: string, data: Omit<UpdateTaskAnswerInput, 'id' | '_version'>) => Promise<TaskAnswer | null>;
+  updateTaskAnswer: (
+    id: string,
+    data: Omit<UpdateTaskAnswerInput, "id" | "_version">
+  ) => Promise<TaskAnswer | null>;
   // Get all answers (reactive)
   taskAnswers: TaskAnswer[];
   loading: boolean;
@@ -35,7 +47,12 @@ export const useTaskAnswer = (): UseTaskAnswerReturn => {
     const sub = TaskAnswerService.subscribeTaskAnswers((items, isSynced) => {
       setTaskAnswers(items);
       setLoading(false);
-      console.log('[useTaskAnswer] TaskAnswers updated:', items.length, 'synced:', isSynced);
+      console.log(
+        "[useTaskAnswer] TaskAnswers updated:",
+        items.length,
+        "synced:",
+        isSynced
+      );
     });
 
     return () => {
@@ -47,7 +64,7 @@ export const useTaskAnswer = (): UseTaskAnswerReturn => {
 
   const getAnswersByTaskId = useCallback(
     (taskId: string): TaskAnswer[] => {
-      return taskAnswers.filter((answer) => answer.taskInstanceId === taskId);
+      return taskAnswers.filter(answer => answer.taskInstanceId === taskId);
     },
     [taskAnswers]
   );
@@ -55,7 +72,8 @@ export const useTaskAnswer = (): UseTaskAnswerReturn => {
   const getAnswerByQuestionId = useCallback(
     (taskId: string, questionId: string): TaskAnswer | undefined => {
       return taskAnswers.find(
-        (answer) => answer.taskInstanceId === taskId && answer.questionId === questionId
+        answer =>
+          answer.taskInstanceId === taskId && answer.questionId === questionId
       );
     },
     [taskAnswers]
@@ -67,14 +85,18 @@ export const useTaskAnswer = (): UseTaskAnswerReturn => {
       setError(null);
 
       try {
-        console.log('[useTaskAnswer] Creating task answer', input);
+        console.log("[useTaskAnswer] Creating task answer", input);
         const created = await TaskAnswerService.createTaskAnswer(input);
-        console.log('[useTaskAnswer] Task answer created successfully', created);
+        console.log(
+          "[useTaskAnswer] Task answer created successfully",
+          created
+        );
         // The subscription will automatically update taskAnswers
         return created;
       } catch (err: unknown) {
-        const errorMessage = err instanceof Error ? err.message : 'Failed to create task answer';
-        console.error('[useTaskAnswer] Error creating task answer:', err);
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to create task answer";
+        console.error("[useTaskAnswer] Error creating task answer:", err);
         setError(errorMessage);
         return null;
       } finally {
@@ -87,20 +109,24 @@ export const useTaskAnswer = (): UseTaskAnswerReturn => {
   const updateTaskAnswer = useCallback(
     async (
       id: string,
-      data: Omit<UpdateTaskAnswerInput, 'id' | '_version'>
+      data: Omit<UpdateTaskAnswerInput, "id" | "_version">
     ): Promise<TaskAnswer | null> => {
       setIsUpdating(true);
       setError(null);
 
       try {
-        console.log('[useTaskAnswer] Updating task answer', { id, data });
+        console.log("[useTaskAnswer] Updating task answer", { id, data });
         const updated = await TaskAnswerService.updateTaskAnswer(id, data);
-        console.log('[useTaskAnswer] Task answer updated successfully', updated);
+        console.log(
+          "[useTaskAnswer] Task answer updated successfully",
+          updated
+        );
         // The subscription will automatically update taskAnswers
         return updated;
       } catch (err: unknown) {
-        const errorMessage = err instanceof Error ? err.message : 'Failed to update task answer';
-        console.error('[useTaskAnswer] Error updating task answer:', err);
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to update task answer";
+        console.error("[useTaskAnswer] Error updating task answer:", err);
         setError(errorMessage);
         return null;
       } finally {
@@ -122,4 +148,3 @@ export const useTaskAnswer = (): UseTaskAnswerReturn => {
     isUpdating,
   };
 };
-

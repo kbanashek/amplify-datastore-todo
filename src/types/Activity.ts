@@ -87,4 +87,3 @@ export interface UpdateActivityInput {
   externalContent?: string | null;
   calculatedValues?: string | null;
 }
-

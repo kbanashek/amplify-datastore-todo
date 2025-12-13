@@ -80,23 +80,29 @@ amplify-datastore-todo/
 ## Key Directories
 
 ### `app/`
+
 Expo Router app directory containing all screen components and navigation configuration.
 
 ### `src/components/`
+
 UI components organized by feature. Question components are in `questions/` subdirectory.
 
 ### `src/hooks/`
+
 Custom React hooks containing all business logic, state management, and side effects.
 
 ### `src/services/`
+
 Data services that handle all DataStore operations, API calls, and data transformations.
 
 ### `src/types/`
+
 TypeScript type definitions for all domain models and interfaces.
 
 ### `scripts/`
+
 Seed data scripts for generating test data during development.
 
 ### `DOCS/`
-Comprehensive documentation covering architecture, development guidelines, and implementation status.
 
+Comprehensive documentation covering architecture, development guidelines, and implementation status.

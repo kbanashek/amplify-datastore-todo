@@ -106,13 +106,13 @@ export class TaskService {
       // Apply filters
       if (filters) {
         if (filters.status && filters.status.length > 0) {
-          tasks = tasks.filter((task) =>
+          tasks = tasks.filter(task =>
             filters.status!.includes(task.status as TaskStatus)
           );
         }
 
         if (filters.taskType && filters.taskType.length > 0) {
-          tasks = tasks.filter((task) =>
+          tasks = tasks.filter(task =>
             filters.taskType!.includes(task.taskType as TaskType)
           );
         }
@@ -120,7 +120,7 @@ export class TaskService {
         if (filters.searchText) {
           const searchLower = filters.searchText.toLowerCase();
           tasks = tasks.filter(
-            (task) =>
+            task =>
               task.title?.toLowerCase().includes(searchLower) ||
               (task.description &&
                 task.description.toLowerCase().includes(searchLower))
@@ -128,7 +128,7 @@ export class TaskService {
         }
 
         if (filters.dateFrom || filters.dateTo) {
-          tasks = tasks.filter((task) => {
+          tasks = tasks.filter(task => {
             if (!task.startTimeInMillSec) return false;
             const taskDate = new Date(task.startTimeInMillSec);
             if (filters.dateFrom && taskDate < filters.dateFrom) return false;
@@ -176,7 +176,7 @@ export class TaskService {
 
       console.log("[TaskService] Original task status:", original.status);
       const updated = await DataStore.save(
-        Task.copyOf(original, (updated) => {
+        Task.copyOf(original, updated => {
           Object.assign(updated, data);
         })
       );
@@ -224,14 +224,18 @@ export class TaskService {
     console.log("[TaskService] Setting up DataStore subscription for Task");
 
     const querySubscription = DataStore.observeQuery(Task).subscribe(
-      (snapshot) => {
+      snapshot => {
         const { items, isSynced } = snapshot;
 
         console.log("[TaskService] DataStore subscription update:", {
           itemCount: items.length,
           isSynced,
-          itemIds: items.map((i) => i.id),
-          itemStatuses: items.map((i) => ({ id: i.id, status: i.status, title: i.title })),
+          itemIds: items.map(i => i.id),
+          itemStatuses: items.map(i => ({
+            id: i.id,
+            status: i.status,
+            title: i.title,
+          })),
         });
 
         callback(items, isSynced);
@@ -254,12 +258,12 @@ export class TaskService {
     try {
       const tasks = await DataStore.query(Task);
       let deletedCount = 0;
-      
+
       for (const task of tasks) {
         await DataStore.delete(task);
         deletedCount++;
       }
-      
+
       return deletedCount;
     } catch (error) {
       console.error("Error deleting all tasks:", error);

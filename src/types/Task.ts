@@ -2,19 +2,19 @@
 // These will be replaced by generated types once schema is deployed
 
 export enum TaskType {
-  SCHEDULED = 'SCHEDULED',
-  TIMED = 'TIMED',
-  EPISODIC = 'EPISODIC',
+  SCHEDULED = "SCHEDULED",
+  TIMED = "TIMED",
+  EPISODIC = "EPISODIC",
 }
 
 export enum TaskStatus {
-  OPEN = 'OPEN',
-  VISIBLE = 'VISIBLE',
-  STARTED = 'STARTED',
-  INPROGRESS = 'INPROGRESS',
-  COMPLETED = 'COMPLETED',
-  EXPIRED = 'EXPIRED',
-  RECALLED = 'RECALLED',
+  OPEN = "OPEN",
+  VISIBLE = "VISIBLE",
+  STARTED = "STARTED",
+  INPROGRESS = "INPROGRESS",
+  COMPLETED = "COMPLETED",
+  EXPIRED = "EXPIRED",
+  RECALLED = "RECALLED",
 }
 
 export interface Task {
@@ -23,11 +23,11 @@ export interface Task {
   pk: string;
   sk: string;
   taskInstanceId?: string | null;
-  
+
   // Content
   title: string;
   description?: string | null;
-  
+
   // Timing
   startTime?: string | null;
   startTimeInMillSec?: number | null;
@@ -36,47 +36,47 @@ export interface Task {
   endTime?: string | null;
   dayOffset?: number | null;
   endDayOffset?: number | null;
-  
+
   // Task Type
   taskType: TaskType;
-  
+
   // Status
   status: TaskStatus;
-  
+
   // Completion Rules
   showBeforeStart?: boolean | null;
   allowEarlyCompletion?: boolean | null;
   allowLateCompletion?: boolean | null;
   allowLateEdits?: boolean | null;
-  
+
   // Anchors & Actions (stored as JSON strings)
   anchors?: string | null;
   anchorDayOffset?: number | null;
   actions?: string | null;
-  
+
   // Activity Reference
   entityId?: string | null;
   activityIndex?: number | null;
   activityAnswer?: string | null;
   activityResponse?: string | null;
-  
+
   // Sync State
   syncState?: number | null;
   syncStateTaskAnswer?: number | null;
   syncStateTaskResult?: number | null;
   syncStatus?: string | null;
-  
+
   // Relationships
   hashKey?: string | null;
   occurrenceHashKey?: string | null;
   occurrenceParentHashKey?: string | null;
   parentTaskInstanceId?: string | null;
   tciSk?: string | null;
-  
+
   // Study Information
   studyVersion?: string | null;
   studyStatus?: string | null;
-  
+
   // DataStore fields
   createdAt?: string | null;
   updatedAt?: string | null;
@@ -172,5 +172,3 @@ export interface TaskFilters {
   dateTo?: Date;
   searchText?: string;
 }
-
-

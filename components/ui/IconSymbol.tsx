@@ -1,11 +1,14 @@
 // Fallback for using MaterialIcons on Android and web.
 
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { SymbolWeight, SymbolViewProps } from 'expo-symbols';
-import { ComponentProps } from 'react';
-import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { SymbolWeight, SymbolViewProps } from "expo-symbols";
+import { ComponentProps } from "react";
+import { OpaqueColorValue, type StyleProp, type TextStyle } from "react-native";
 
-type IconMapping = Record<SymbolViewProps['name'], ComponentProps<typeof MaterialIcons>['name']>;
+type IconMapping = Record<
+  SymbolViewProps["name"],
+  ComponentProps<typeof MaterialIcons>["name"]
+>;
 type IconSymbolName = keyof typeof MAPPING;
 
 /**
@@ -14,27 +17,27 @@ type IconSymbolName = keyof typeof MAPPING;
  * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
  */
 const MAPPING = {
-  'house.fill': 'home',
-  'paperplane.fill': 'send',
-  'chevron.left.forwardslash.chevron.right': 'code',
-  'chevron.right': 'chevron-right',
-  'line.3.horizontal': 'menu',
-  'xmark.circle.fill': 'cancel',
-  'checkmark.circle.fill': 'check-circle',
-  'doc.text.fill': 'description',
-  'chart.bar.fill': 'bar-chart',
-  'questionmark.circle.fill': 'help',
-  'questionmark.circle': 'help-outline',
-  'text.bubble.fill': 'chat-bubble',
-  'list.bullet.rectangle.portrait.fill': 'list',
-  'list.clipboard': 'assignment',
-  'clock.fill': 'schedule',
-  'clock': 'schedule',
-  'pills': 'medication',
-  'bell': 'notifications',
-  'calendar': 'calendar-today',
-  'repeat': 'repeat',
-  'doc.text': 'description',
+  "house.fill": "home",
+  "paperplane.fill": "send",
+  "chevron.left.forwardslash.chevron.right": "code",
+  "chevron.right": "chevron-right",
+  "line.3.horizontal": "menu",
+  "xmark.circle.fill": "cancel",
+  "checkmark.circle.fill": "check-circle",
+  "doc.text.fill": "description",
+  "chart.bar.fill": "bar-chart",
+  "questionmark.circle.fill": "help",
+  "questionmark.circle": "help-outline",
+  "text.bubble.fill": "chat-bubble",
+  "list.bullet.rectangle.portrait.fill": "list",
+  "list.clipboard": "assignment",
+  "clock.fill": "schedule",
+  clock: "schedule",
+  pills: "medication",
+  bell: "notifications",
+  calendar: "calendar-today",
+  repeat: "repeat",
+  "doc.text": "description",
 } as IconMapping;
 
 /**
@@ -54,5 +57,12 @@ export function IconSymbol({
   style?: StyleProp<TextStyle>;
   weight?: SymbolWeight;
 }) {
-  return <MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />;
+  return (
+    <MaterialIcons
+      color={color}
+      size={size}
+      name={MAPPING[name]}
+      style={style}
+    />
+  );
 }

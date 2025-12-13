@@ -46,7 +46,7 @@ export const validateQuestionAnswer = (
       (Array.isArray(answer) && answer.length === 0))
   ) {
     const errorMsg =
-      question.validations?.find((v) => v.type === "required")?.text ||
+      question.validations?.find(v => v.type === "required")?.text ||
       "This field is required.";
     errors.push(errorMsg);
   }
@@ -187,7 +187,7 @@ export const validateScreen = (
 ): Record<string, string[]> => {
   const errors: Record<string, string[]> = {};
 
-  screen.elements.forEach((element) => {
+  screen.elements.forEach(element => {
     const question = element.question;
     const answer = answers[question.id];
     const questionErrors = validateQuestionAnswer(question, answer, answers);
@@ -210,7 +210,7 @@ export const validateAllScreens = (
 ): Record<string, string[]> => {
   const errors: Record<string, string[]> = {};
 
-  screens.forEach((screen) => {
+  screens.forEach(screen => {
     const screenErrors = validateScreen(screen, answers);
     Object.assign(errors, screenErrors);
   });
@@ -228,4 +228,3 @@ export const isScreenValid = (
   const errors = validateScreen(screen, answers);
   return Object.keys(errors).length === 0;
 };
-

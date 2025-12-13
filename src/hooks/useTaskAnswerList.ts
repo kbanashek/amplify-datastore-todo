@@ -20,7 +20,12 @@ export const useTaskAnswerList = (): UseTaskAnswerListReturn => {
     const sub = TaskAnswerService.subscribeTaskAnswers((items, isSynced) => {
       setTaskAnswers(items);
       setLoading(false);
-      console.log('[useTaskAnswerList] TaskAnswers updated:', items.length, 'synced:', isSynced);
+      console.log(
+        "[useTaskAnswerList] TaskAnswers updated:",
+        items.length,
+        "synced:",
+        isSynced
+      );
     });
     setSubscription(sub);
 
@@ -61,4 +66,3 @@ export const useTaskAnswerList = (): UseTaskAnswerListReturn => {
     refreshTaskAnswers,
   };
 };
-

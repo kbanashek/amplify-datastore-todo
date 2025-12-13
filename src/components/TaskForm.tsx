@@ -72,7 +72,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
 
       <Text style={styles.label}>Task Type *</Text>
       <View style={styles.radioGroup}>
-        {Object.values(TaskType).map((type) => (
+        {Object.values(TaskType).map(type => (
           <TouchableOpacity
             key={type}
             style={[
@@ -96,7 +96,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
 
       <Text style={styles.label}>Status *</Text>
       <View style={styles.radioGroup}>
-        {Object.values(TaskStatus).map((stat) => (
+        {Object.values(TaskStatus).map(stat => (
           <TouchableOpacity
             key={stat}
             style={[
@@ -263,4 +263,3 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 });
-

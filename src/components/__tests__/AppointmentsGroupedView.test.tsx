@@ -1,7 +1,12 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
 import { AppointmentsGroupedView } from "../AppointmentsGroupedView";
-import { GroupedAppointment, Appointment, AppointmentType, AppointmentStatus } from "../../types/Appointment";
+import {
+  GroupedAppointment,
+  Appointment,
+  AppointmentType,
+  AppointmentStatus,
+} from "../../types/Appointment";
 import { AppointmentCard } from "../AppointmentCard";
 
 // Mock AppointmentCard
@@ -67,15 +72,12 @@ describe("AppointmentsGroupedView", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockTranslateText.mockImplementation((text) => text);
+    mockTranslateText.mockImplementation(text => text);
   });
 
   it("renders loading state", () => {
     const { getByText } = render(
-      <AppointmentsGroupedView
-        groupedAppointments={[]}
-        loading={true}
-      />
+      <AppointmentsGroupedView groupedAppointments={[]} loading={true} />
     );
 
     expect(getByText("Loading appointments...")).toBeTruthy();
@@ -97,10 +99,7 @@ describe("AppointmentsGroupedView", () => {
 
   it("renders empty state when no appointments", () => {
     const { getByText } = render(
-      <AppointmentsGroupedView
-        groupedAppointments={[]}
-        loading={false}
-      />
+      <AppointmentsGroupedView groupedAppointments={[]} loading={false} />
     );
 
     expect(getByText("No appointments scheduled")).toBeTruthy();
@@ -201,4 +200,3 @@ describe("AppointmentsGroupedView", () => {
     expect(getByText(/December/)).toBeTruthy();
   });
 });
-

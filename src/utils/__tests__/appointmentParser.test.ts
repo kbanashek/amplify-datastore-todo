@@ -3,8 +3,14 @@ import {
   formatDateLabel,
   formatTime,
   groupAppointmentsByDate,
+  getTimezoneAbbreviation,
 } from "../appointmentParser";
-import { AppointmentData, Appointment, AppointmentType, AppointmentStatus } from "../../types/Appointment";
+import {
+  AppointmentData,
+  Appointment,
+  AppointmentType,
+  AppointmentStatus,
+} from "../../types/Appointment";
 
 describe("appointmentParser", () => {
   const mockAppointmentData: AppointmentData = {
@@ -72,7 +78,9 @@ describe("appointmentParser", () => {
       const result = parseAppointmentData(mockAppointmentData);
 
       expect(result).toHaveLength(1);
-      expect(result.find((a) => a.appointmentId === "Appointment.UUID-xyz789")).toBeUndefined();
+      expect(
+        result.find(a => a.appointmentId === "Appointment.UUID-xyz789")
+      ).toBeUndefined();
     });
 
     it("should return empty array when data is null", () => {
@@ -177,7 +185,8 @@ describe("appointmentParser", () => {
   describe("groupAppointmentsByDate", () => {
     const mockAppointments: Appointment[] = [
       {
-        ...mockAppointmentData.clinicPatientAppointments.clinicAppointments.items[0],
+        ...mockAppointmentData.clinicPatientAppointments.clinicAppointments
+          .items[0],
         isDeleted: 0,
       } as Appointment,
       {
@@ -202,7 +211,8 @@ describe("appointmentParser", () => {
         __typename: "SubjectStudyInstanceAppointment",
       },
       {
-        ...mockAppointmentData.clinicPatientAppointments.clinicAppointments.items[0],
+        ...mockAppointmentData.clinicPatientAppointments.clinicAppointments
+          .items[0],
         appointmentId: "Appointment.UUID-def456",
         startAt: "2025-12-12T16:00:00.000Z", // Same date, different time
       } as Appointment,
@@ -219,7 +229,9 @@ describe("appointmentParser", () => {
     it("should sort appointments within each group by start time", () => {
       const result = groupAppointmentsByDate(mockAppointments);
 
-      const day1Appointments = result.find((g) => g.date === "2025-12-12")?.appointments;
+      const day1Appointments = result.find(
+        g => g.date === "2025-12-12"
+      )?.appointments;
       expect(day1Appointments).toHaveLength(2);
       // First appointment should be earlier
       expect(new Date(day1Appointments![0].startAt).getTime()).toBeLessThan(
@@ -248,12 +260,41 @@ describe("appointmentParser", () => {
     });
 
     it("should use timezoneId when provided", () => {
-      const result = groupAppointmentsByDate(mockAppointments, "America/New_York");
+      const result = groupAppointmentsByDate(
+        mockAppointments,
+        "America/New_York"
+      );
 
       expect(result).toHaveLength(2);
       // Timezone is used internally for date calculations
       expect(result[0].date).toBeDefined();
     });
   });
-});
 
+  describe("getTimezoneAbbreviation", () => {
+    it("should extract abbreviation from valid timezone ID", () => {
+      expect(getTimezoneAbbreviation("America/New_York")).toBe("NYO");
+      expect(getTimezoneAbbreviation("Europe/London")).toBe("LON");
+      expect(getTimezoneAbbreviation("Asia/Tokyo")).toBe("TOK");
+    });
+
+    it("should return empty string for null or undefined", () => {
+      expect(getTimezoneAbbreviation(null)).toBe("");
+      expect(getTimezoneAbbreviation(undefined)).toBe("");
+    });
+
+    it("should return empty string for timezone ID without slash", () => {
+      expect(getTimezoneAbbreviation("UTC")).toBe("");
+      expect(getTimezoneAbbreviation("EST")).toBe("");
+    });
+
+    it("should handle timezone IDs with multiple slashes", () => {
+      expect(getTimezoneAbbreviation("America/New_York/Zone")).toBe("ZON");
+    });
+
+    it("should handle short timezone segments", () => {
+      expect(getTimezoneAbbreviation("America/LA")).toBe("LA");
+      expect(getTimezoneAbbreviation("US/CA")).toBe("CA");
+    });
+  });
+});

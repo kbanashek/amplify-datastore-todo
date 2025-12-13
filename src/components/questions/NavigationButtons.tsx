@@ -1,5 +1,11 @@
 import React from "react";
-import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { ActivityConfig } from "../../types/ActivityConfig";
 import { useRTL } from "../../hooks/useRTL";
 import { TranslatedText } from "../TranslatedText";
@@ -40,7 +46,8 @@ export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
         rtlStyle(styles.navigationContainer),
         {
           paddingBottom: Math.max(bottomInset, 20),
-          marginBottom: Platform.OS === "ios" ? Math.max(tabBarHeight || 60, 60) : 0,
+          marginBottom:
+            Platform.OS === "ios" ? Math.max(tabBarHeight || 60, 60) : 0,
         },
       ]}
     >
@@ -126,4 +133,3 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
 });
-

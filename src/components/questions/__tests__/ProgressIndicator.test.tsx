@@ -43,6 +43,3 @@ describe("ProgressIndicator", () => {
     expect(getByText("Page 1 of 1")).toBeTruthy();
   });
 });
-
-
-

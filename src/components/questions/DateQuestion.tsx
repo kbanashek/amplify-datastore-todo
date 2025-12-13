@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View, Platform } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Platform,
+} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Question } from "../../types/ActivityConfig";
 
@@ -86,10 +92,7 @@ export const DateQuestion: React.FC<DateQuestionProps> = ({
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={[
-          styles.dateButton,
-          errors.length > 0 && styles.dateButtonError,
-        ]}
+        style={[styles.dateButton, errors.length > 0 && styles.dateButtonError]}
         onPress={() => {
           console.log("📅 [DateQuestion] Date button pressed", {
             questionId: question.id,
@@ -109,8 +112,8 @@ export const DateQuestion: React.FC<DateQuestionProps> = ({
             questionType.includes("time") && !questionType.includes("date")
               ? "time"
               : questionType.includes("date-time")
-              ? "datetime"
-              : "date"
+                ? "datetime"
+                : "date"
           }
           display={Platform.OS === "ios" ? "spinner" : "default"}
           onChange={handleDateChange}
@@ -174,4 +177,3 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
-

@@ -20,8 +20,6 @@ export class TodoService {
         operation,
         attempts,
       }) => {
-
-
         // For Todo model conflicts
         if (modelConstructor.name === "Todo") {
           // For update operations
@@ -45,16 +43,14 @@ export class TodoService {
           if (operation === OpType.DELETE) {
             // If remote is already deleted, use that version
             if (remoteModel._deleted) {
-
               return remoteModel;
             }
-            
+
             // If local model is incomplete, use remote with _deleted flag
             if (!localModel.name && !localModel.description) {
-
               return { ...remoteModel, _deleted: true };
             }
-            
+
             // Otherwise use local delete
 
             return localModel;
@@ -65,8 +61,6 @@ export class TodoService {
         return remoteModel;
       },
     });
-
-
   }
 
   /**
@@ -117,7 +111,7 @@ export class TodoService {
       }
 
       const updated = await DataStore.save(
-        Todo.copyOf(original, (updated) => {
+        Todo.copyOf(original, updated => {
           // Handle name update with proper type checking
           if (data.name !== undefined && data.name !== null) {
             updated.name = data.name;
@@ -168,7 +162,7 @@ export class TodoService {
   } {
     // Track which items have been synced
     let syncedItemIds = new Set<string>();
-    
+
     // Subscribe to sync events to track individual item sync status
     const syncSubscription = DataStore.observe(Todo).subscribe(msg => {
       if (msg.opType === OpType.INSERT || msg.opType === OpType.UPDATE) {
@@ -178,35 +172,37 @@ export class TodoService {
         }
       }
     });
-    
+
     // Subscribe to query results
-    const querySubscription = DataStore.observeQuery(Todo).subscribe((snapshot) => {
-      const { items, isSynced } = snapshot;
-      
-      // If fully synced, mark all items as synced
-      if (isSynced) {
-        items.forEach(item => {
-          if (item.id) {
-            syncedItemIds.add(item.id);
-          }
+    const querySubscription = DataStore.observeQuery(Todo).subscribe(
+      snapshot => {
+        const { items, isSynced } = snapshot;
+
+        // If fully synced, mark all items as synced
+        if (isSynced) {
+          items.forEach(item => {
+            if (item.id) {
+              syncedItemIds.add(item.id);
+            }
+          });
+        }
+
+        // Enhance items with sync status
+        const enhancedItems = items.map(item => {
+          // Add a non-persistent property to track sync status
+          (item as any)._synced = syncedItemIds.has(item.id);
+          return item;
         });
+
+        callback(enhancedItems, isSynced);
       }
-      
-      // Enhance items with sync status
-      const enhancedItems = items.map(item => {
-        // Add a non-persistent property to track sync status
-        (item as any)._synced = syncedItemIds.has(item.id);
-        return item;
-      });
-      
-      callback(enhancedItems, isSynced);
-    });
-    
+    );
+
     return {
       unsubscribe: () => {
         querySubscription.unsubscribe();
         syncSubscription.unsubscribe();
-      }
+      },
     };
   }
 

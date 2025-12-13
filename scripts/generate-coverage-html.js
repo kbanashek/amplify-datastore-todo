@@ -4,256 +4,274 @@
  * Generates an interactive HTML coverage report with expand/collapse functionality
  * Reads from coverage-summary.json and creates a single-page interactive report
  */
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
+var __createBinding =
+  (this && this.__createBinding) ||
+  (Object.create
+    ? function (o, m, k, k2) {
+        if (k2 === undefined) k2 = k;
+        var desc = Object.getOwnPropertyDescriptor(m, k);
+        if (
+          !desc ||
+          ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)
+        ) {
+          desc = {
+            enumerable: true,
+            get: function () {
+              return m[k];
+            },
+          };
+        }
+        Object.defineProperty(o, k2, desc);
+      }
+    : function (o, m, k, k2) {
+        if (k2 === undefined) k2 = k;
+        o[k2] = m[k];
+      });
+var __setModuleDefault =
+  (this && this.__setModuleDefault) ||
+  (Object.create
+    ? function (o, v) {
+        Object.defineProperty(o, "default", { enumerable: true, value: v });
+      }
+    : function (o, v) {
+        o["default"] = v;
+      });
+var __importStar =
+  (this && this.__importStar) ||
+  (function () {
+    var ownKeys = function (o) {
+      ownKeys =
+        Object.getOwnPropertyNames ||
+        function (o) {
+          var ar = [];
+          for (var k in o)
+            if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+          return ar;
         };
-        return ownKeys(o);
+      return ownKeys(o);
     };
     return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
+      if (mod && mod.__esModule) return mod;
+      var result = {};
+      if (mod != null)
+        for (var k = ownKeys(mod), i = 0; i < k.length; i++)
+          if (k[i] !== "default") __createBinding(result, mod, k[i]);
+      __setModuleDefault(result, mod);
+      return result;
     };
-})();
+  })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateHTML = generateHTML;
 exports.buildFileTree = buildFileTree;
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 function getColorClass(percentage) {
-    if (percentage >= 80)
-        return 'high';
-    if (percentage >= 50)
-        return 'medium';
-    if (percentage > 0)
-        return 'low';
-    return 'none';
+  if (percentage >= 80) return "high";
+  if (percentage >= 50) return "medium";
+  if (percentage > 0) return "low";
+  return "none";
 }
 function aggregateCoverage(children) {
-    let totalStatements = 0;
-    let coveredStatements = 0;
-    let totalBranches = 0;
-    let coveredBranches = 0;
-    let totalFunctions = 0;
-    let coveredFunctions = 0;
-    let totalLines = 0;
-    let coveredLines = 0;
-    children.forEach(child => {
-        const coverage = child.coverage || child.aggregatedCoverage;
-        if (coverage) {
-            totalStatements += coverage.statements.total;
-            coveredStatements += coverage.statements.covered;
-            totalBranches += coverage.branches.total;
-            coveredBranches += coverage.branches.covered;
-            totalFunctions += coverage.functions.total;
-            coveredFunctions += coverage.functions.covered;
-            totalLines += coverage.lines.total;
-            coveredLines += coverage.lines.covered;
-        }
-    });
-    return {
-        statements: {
-            total: totalStatements,
-            covered: coveredStatements,
-            skipped: 0,
-            pct: totalStatements > 0 ? (coveredStatements / totalStatements) * 100 : 0,
-        },
-        branches: {
-            total: totalBranches,
-            covered: coveredBranches,
-            skipped: 0,
-            pct: totalBranches > 0 ? (coveredBranches / totalBranches) * 100 : 0,
-        },
-        functions: {
-            total: totalFunctions,
-            covered: coveredFunctions,
-            skipped: 0,
-            pct: totalFunctions > 0 ? (coveredFunctions / totalFunctions) * 100 : 0,
-        },
-        lines: {
-            total: totalLines,
-            covered: coveredLines,
-            skipped: 0,
-            pct: totalLines > 0 ? (coveredLines / totalLines) * 100 : 0,
-        },
-    };
+  let totalStatements = 0;
+  let coveredStatements = 0;
+  let totalBranches = 0;
+  let coveredBranches = 0;
+  let totalFunctions = 0;
+  let coveredFunctions = 0;
+  let totalLines = 0;
+  let coveredLines = 0;
+  children.forEach(child => {
+    const coverage = child.coverage || child.aggregatedCoverage;
+    if (coverage) {
+      totalStatements += coverage.statements.total;
+      coveredStatements += coverage.statements.covered;
+      totalBranches += coverage.branches.total;
+      coveredBranches += coverage.branches.covered;
+      totalFunctions += coverage.functions.total;
+      coveredFunctions += coverage.functions.covered;
+      totalLines += coverage.lines.total;
+      coveredLines += coverage.lines.covered;
+    }
+  });
+  return {
+    statements: {
+      total: totalStatements,
+      covered: coveredStatements,
+      skipped: 0,
+      pct:
+        totalStatements > 0 ? (coveredStatements / totalStatements) * 100 : 0,
+    },
+    branches: {
+      total: totalBranches,
+      covered: coveredBranches,
+      skipped: 0,
+      pct: totalBranches > 0 ? (coveredBranches / totalBranches) * 100 : 0,
+    },
+    functions: {
+      total: totalFunctions,
+      covered: coveredFunctions,
+      skipped: 0,
+      pct: totalFunctions > 0 ? (coveredFunctions / totalFunctions) * 100 : 0,
+    },
+    lines: {
+      total: totalLines,
+      covered: coveredLines,
+      skipped: 0,
+      pct: totalLines > 0 ? (coveredLines / totalLines) * 100 : 0,
+    },
+  };
 }
 function buildFileTree(coverageData, rootPath) {
-    const root = {
-        name: 'src',
-        path: rootPath,
-        isDirectory: true,
-        children: [],
-    };
-    const cwd = process.cwd();
-    Object.keys(coverageData).forEach(filePath => {
-        if (filePath === 'total')
-            return;
-        const fileData = coverageData[filePath];
-        const relativePath = filePath.replace(cwd + '/', '').replace(cwd, '');
-        const parts = relativePath.split('/').filter(p => p);
-        // Skip if path doesn't start with 'src'
-        if (parts[0] !== 'src')
-            return;
-        // Remove 'src' from parts since root is already 'src'
-        const pathParts = parts.slice(1);
-        let current = root;
-        let currentPath = rootPath;
-        pathParts.forEach((part, index) => {
-            const isLast = index === pathParts.length - 1;
-            currentPath = path.join(currentPath, part);
-            let child = current.children.find(c => c.name === part);
-            if (!child) {
-                child = {
-                    name: part,
-                    path: currentPath,
-                    isDirectory: !isLast,
-                    children: [],
-                };
-                if (isLast) {
-                    child.coverage = fileData;
-                }
-                current.children.push(child);
-            }
-            else if (isLast) {
-                // If child exists and this is the last part, update coverage
-                child.coverage = fileData;
-            }
-            current = child;
-        });
-    });
-    // Calculate aggregated coverage for all directories (bottom-up)
-    function calculateAggregatedCoverage(node) {
-        // First, process all children
-        node.children.forEach(child => {
-            if (child.isDirectory) {
-                calculateAggregatedCoverage(child);
-            }
-        });
-        // Then calculate aggregated coverage for this directory
-        if (node.isDirectory && node.children.length > 0) {
-            node.aggregatedCoverage = aggregateCoverage(node.children);
+  const root = {
+    name: "src",
+    path: rootPath,
+    isDirectory: true,
+    children: [],
+  };
+  const cwd = process.cwd();
+  Object.keys(coverageData).forEach(filePath => {
+    if (filePath === "total") return;
+    const fileData = coverageData[filePath];
+    const relativePath = filePath.replace(cwd + "/", "").replace(cwd, "");
+    const parts = relativePath.split("/").filter(p => p);
+    // Skip if path doesn't start with 'src'
+    if (parts[0] !== "src") return;
+    // Remove 'src' from parts since root is already 'src'
+    const pathParts = parts.slice(1);
+    let current = root;
+    let currentPath = rootPath;
+    pathParts.forEach((part, index) => {
+      const isLast = index === pathParts.length - 1;
+      currentPath = path.join(currentPath, part);
+      let child = current.children.find(c => c.name === part);
+      if (!child) {
+        child = {
+          name: part,
+          path: currentPath,
+          isDirectory: !isLast,
+          children: [],
+        };
+        if (isLast) {
+          child.coverage = fileData;
         }
+        current.children.push(child);
+      } else if (isLast) {
+        // If child exists and this is the last part, update coverage
+        child.coverage = fileData;
+      }
+      current = child;
+    });
+  });
+  // Calculate aggregated coverage for all directories (bottom-up)
+  function calculateAggregatedCoverage(node) {
+    // First, process all children
+    node.children.forEach(child => {
+      if (child.isDirectory) {
+        calculateAggregatedCoverage(child);
+      }
+    });
+    // Then calculate aggregated coverage for this directory
+    if (node.isDirectory && node.children.length > 0) {
+      node.aggregatedCoverage = aggregateCoverage(node.children);
     }
-    calculateAggregatedCoverage(root);
-    // Sort children: directories first, then files
-    function sortNode(node) {
-        node.children.sort((a, b) => {
-            if (a.isDirectory !== b.isDirectory) {
-                return a.isDirectory ? -1 : 1;
-            }
-            return a.name.localeCompare(b.name);
-        });
-        node.children.forEach(child => {
-            if (child.isDirectory) {
-                sortNode(child);
-            }
-        });
-    }
-    sortNode(root);
-    return root;
+  }
+  calculateAggregatedCoverage(root);
+  // Sort children: directories first, then files
+  function sortNode(node) {
+    node.children.sort((a, b) => {
+      if (a.isDirectory !== b.isDirectory) {
+        return a.isDirectory ? -1 : 1;
+      }
+      return a.name.localeCompare(b.name);
+    });
+    node.children.forEach(child => {
+      if (child.isDirectory) {
+        sortNode(child);
+      }
+    });
+  }
+  sortNode(root);
+  return root;
 }
 function renderNode(node, level = 0) {
-    const indent = '  '.repeat(level);
-    const hasChildren = node.children.length > 0;
-    const isExpanded = level < 2; // Auto-expand first 2 levels
-    let html = '';
-    if (node.isDirectory) {
-        const id = `dir-${node.path.replace(/[^a-zA-Z0-9]/g, '-')}`;
-        const expandedClass = isExpanded ? 'expanded' : '';
-        const icon = hasChildren ? (isExpanded ? '📂' : '📁') : '📁';
-        // Use aggregated coverage for directories
-        const coverage = node.aggregatedCoverage;
-        const stmtsPct = coverage?.statements.pct || 0;
-        const branchPct = coverage?.branches.pct || 0;
-        const funcsPct = coverage?.functions.pct || 0;
-        const linesPct = coverage?.lines.pct || 0;
-        const avgPct = coverage ? (stmtsPct + branchPct + funcsPct + linesPct) / 4 : 0;
-        const colorClass = getColorClass(avgPct);
-        html += `${indent}<div class="directory ${expandedClass} ${colorClass}">\n`;
-        html += `${indent}  <div class="dir-header" onclick="toggleDirectory('${id}')">\n`;
-        html += `${indent}    <span class="toggle-icon">${isExpanded ? '▼' : '▶'}</span>\n`;
-        html += `${indent}    <span class="dir-icon">${icon}</span>\n`;
-        html += `${indent}    <span class="dir-name">${node.name}</span>\n`;
-        if (coverage) {
-            html += `${indent}    <div class="coverage-bars">\n`;
-            html += `${indent}      <div class="coverage-bar" title="Statements: ${stmtsPct.toFixed(2)}%">\n`;
-            html += `${indent}        <div class="bar-fill" style="width: ${stmtsPct}%; background-color: ${getColorClass(stmtsPct) === 'high' ? '#27ae60' : getColorClass(stmtsPct) === 'medium' ? '#f39c12' : '#e74c3c'};"></div>\n`;
-            html += `${indent}        <span class="bar-label">${stmtsPct.toFixed(1)}%</span>\n`;
-            html += `${indent}      </div>\n`;
-            html += `${indent}    </div>\n`;
-            html += `${indent}    <div class="coverage-details">\n`;
-            html += `${indent}      <span class="coverage-stat">S: ${stmtsPct.toFixed(1)}%</span>\n`;
-            html += `${indent}      <span class="coverage-stat">B: ${branchPct.toFixed(1)}%</span>\n`;
-            html += `${indent}      <span class="coverage-stat">F: ${funcsPct.toFixed(1)}%</span>\n`;
-            html += `${indent}      <span class="coverage-stat">L: ${linesPct.toFixed(1)}%</span>\n`;
-            html += `${indent}    </div>\n`;
-        }
-        html += `${indent}  </div>\n`;
-        html += `${indent}  <div class="dir-content" id="${id}" style="display: ${isExpanded ? 'block' : 'none'}">\n`;
-        node.children.forEach(child => {
-            html += renderNode(child, level + 1);
-        });
-        html += `${indent}  </div>\n`;
-        html += `${indent}</div>\n`;
+  const indent = "  ".repeat(level);
+  const hasChildren = node.children.length > 0;
+  const isExpanded = level < 2; // Auto-expand first 2 levels
+  let html = "";
+  if (node.isDirectory) {
+    const id = `dir-${node.path.replace(/[^a-zA-Z0-9]/g, "-")}`;
+    const expandedClass = isExpanded ? "expanded" : "";
+    const icon = hasChildren ? (isExpanded ? "📂" : "📁") : "📁";
+    // Use aggregated coverage for directories
+    const coverage = node.aggregatedCoverage;
+    const stmtsPct = coverage?.statements.pct || 0;
+    const branchPct = coverage?.branches.pct || 0;
+    const funcsPct = coverage?.functions.pct || 0;
+    const linesPct = coverage?.lines.pct || 0;
+    const avgPct = coverage
+      ? (stmtsPct + branchPct + funcsPct + linesPct) / 4
+      : 0;
+    const colorClass = getColorClass(avgPct);
+    html += `${indent}<div class="directory ${expandedClass} ${colorClass}">\n`;
+    html += `${indent}  <div class="dir-header" onclick="toggleDirectory('${id}')">\n`;
+    html += `${indent}    <span class="toggle-icon">${isExpanded ? "▼" : "▶"}</span>\n`;
+    html += `${indent}    <span class="dir-icon">${icon}</span>\n`;
+    html += `${indent}    <span class="dir-name">${node.name}</span>\n`;
+    if (coverage) {
+      html += `${indent}    <div class="coverage-bars">\n`;
+      html += `${indent}      <div class="coverage-bar" title="Statements: ${stmtsPct.toFixed(2)}%">\n`;
+      html += `${indent}        <div class="bar-fill" style="width: ${stmtsPct}%; background-color: ${getColorClass(stmtsPct) === "high" ? "#27ae60" : getColorClass(stmtsPct) === "medium" ? "#f39c12" : "#e74c3c"};"></div>\n`;
+      html += `${indent}        <span class="bar-label">${stmtsPct.toFixed(1)}%</span>\n`;
+      html += `${indent}      </div>\n`;
+      html += `${indent}    </div>\n`;
+      html += `${indent}    <div class="coverage-details">\n`;
+      html += `${indent}      <span class="coverage-stat">S: ${stmtsPct.toFixed(1)}%</span>\n`;
+      html += `${indent}      <span class="coverage-stat">B: ${branchPct.toFixed(1)}%</span>\n`;
+      html += `${indent}      <span class="coverage-stat">F: ${funcsPct.toFixed(1)}%</span>\n`;
+      html += `${indent}      <span class="coverage-stat">L: ${linesPct.toFixed(1)}%</span>\n`;
+      html += `${indent}    </div>\n`;
     }
-    else {
-        const coverage = node.coverage;
-        if (!coverage)
-            return '';
-        const stmtsPct = coverage.statements.pct;
-        const branchPct = coverage.branches.pct;
-        const funcsPct = coverage.functions.pct;
-        const linesPct = coverage.lines.pct;
-        const avgPct = (stmtsPct + branchPct + funcsPct + linesPct) / 4;
-        const colorClass = getColorClass(avgPct);
-        html += `${indent}<div class="file ${colorClass}">\n`;
-        html += `${indent}  <div class="file-header">\n`;
-        html += `${indent}    <span class="file-icon">📄</span>\n`;
-        html += `${indent}    <span class="file-name">${node.name}</span>\n`;
-        html += `${indent}    <div class="coverage-bars">\n`;
-        html += `${indent}      <div class="coverage-bar" title="Statements: ${stmtsPct.toFixed(2)}%">\n`;
-        html += `${indent}        <div class="bar-fill" style="width: ${stmtsPct}%; background-color: ${getColorClass(stmtsPct) === 'high' ? '#27ae60' : getColorClass(stmtsPct) === 'medium' ? '#f39c12' : '#e74c3c'};"></div>\n`;
-        html += `${indent}        <span class="bar-label">${stmtsPct.toFixed(1)}%</span>\n`;
-        html += `${indent}      </div>\n`;
-        html += `${indent}    </div>\n`;
-        html += `${indent}    <div class="coverage-details">\n`;
-        html += `${indent}      <span class="coverage-stat">S: ${stmtsPct.toFixed(1)}%</span>\n`;
-        html += `${indent}      <span class="coverage-stat">B: ${branchPct.toFixed(1)}%</span>\n`;
-        html += `${indent}      <span class="coverage-stat">F: ${funcsPct.toFixed(1)}%</span>\n`;
-        html += `${indent}      <span class="coverage-stat">L: ${linesPct.toFixed(1)}%</span>\n`;
-        html += `${indent}    </div>\n`;
-        html += `${indent}  </div>\n`;
-        html += `${indent}</div>\n`;
-    }
-    return html;
+    html += `${indent}  </div>\n`;
+    html += `${indent}  <div class="dir-content" id="${id}" style="display: ${isExpanded ? "block" : "none"}">\n`;
+    node.children.forEach(child => {
+      html += renderNode(child, level + 1);
+    });
+    html += `${indent}  </div>\n`;
+    html += `${indent}</div>\n`;
+  } else {
+    const coverage = node.coverage;
+    if (!coverage) return "";
+    const stmtsPct = coverage.statements.pct;
+    const branchPct = coverage.branches.pct;
+    const funcsPct = coverage.functions.pct;
+    const linesPct = coverage.lines.pct;
+    const avgPct = (stmtsPct + branchPct + funcsPct + linesPct) / 4;
+    const colorClass = getColorClass(avgPct);
+    html += `${indent}<div class="file ${colorClass}">\n`;
+    html += `${indent}  <div class="file-header">\n`;
+    html += `${indent}    <span class="file-icon">📄</span>\n`;
+    html += `${indent}    <span class="file-name">${node.name}</span>\n`;
+    html += `${indent}    <div class="coverage-bars">\n`;
+    html += `${indent}      <div class="coverage-bar" title="Statements: ${stmtsPct.toFixed(2)}%">\n`;
+    html += `${indent}        <div class="bar-fill" style="width: ${stmtsPct}%; background-color: ${getColorClass(stmtsPct) === "high" ? "#27ae60" : getColorClass(stmtsPct) === "medium" ? "#f39c12" : "#e74c3c"};"></div>\n`;
+    html += `${indent}        <span class="bar-label">${stmtsPct.toFixed(1)}%</span>\n`;
+    html += `${indent}      </div>\n`;
+    html += `${indent}    </div>\n`;
+    html += `${indent}    <div class="coverage-details">\n`;
+    html += `${indent}      <span class="coverage-stat">S: ${stmtsPct.toFixed(1)}%</span>\n`;
+    html += `${indent}      <span class="coverage-stat">B: ${branchPct.toFixed(1)}%</span>\n`;
+    html += `${indent}      <span class="coverage-stat">F: ${funcsPct.toFixed(1)}%</span>\n`;
+    html += `${indent}      <span class="coverage-stat">L: ${linesPct.toFixed(1)}%</span>\n`;
+    html += `${indent}    </div>\n`;
+    html += `${indent}  </div>\n`;
+    html += `${indent}</div>\n`;
+  }
+  return html;
 }
 function generateHTML(coverageData) {
-    const summary = coverageData.total;
-    const fileTree = buildFileTree(coverageData, 'src');
-    return `<!DOCTYPE html>
+  const summary = coverageData.total;
+  const fileTree = buildFileTree(coverageData, "src");
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -522,23 +540,30 @@ function generateHTML(coverageData) {
 }
 // Main execution
 if (require.main === module) {
-    const coveragePath = path.join(process.cwd(), 'coverage', 'coverage-summary.json');
-    const outputPath = path.join(process.cwd(), 'coverage', 'coverage-interactive.html');
-    if (!fs.existsSync(coveragePath)) {
-        console.error('Coverage summary not found. Run: npm test -- --coverage');
-        process.exit(1);
-    }
-    try {
-        const fileContent = fs.readFileSync(coveragePath, 'utf8');
-        const coverageData = JSON.parse(fileContent);
-        const html = generateHTML(coverageData);
-        fs.writeFileSync(outputPath, html, 'utf8');
-        console.log(`✅ Interactive coverage report generated: ${outputPath}`);
-        console.log(`   Open in browser: open ${outputPath}`);
-    }
-    catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        console.error(`Error generating report: ${errorMessage}`);
-        process.exit(1);
-    }
+  const coveragePath = path.join(
+    process.cwd(),
+    "coverage",
+    "coverage-summary.json"
+  );
+  const outputPath = path.join(
+    process.cwd(),
+    "coverage",
+    "coverage-interactive.html"
+  );
+  if (!fs.existsSync(coveragePath)) {
+    console.error("Coverage summary not found. Run: npm test -- --coverage");
+    process.exit(1);
+  }
+  try {
+    const fileContent = fs.readFileSync(coveragePath, "utf8");
+    const coverageData = JSON.parse(fileContent);
+    const html = generateHTML(coverageData);
+    fs.writeFileSync(outputPath, html, "utf8");
+    console.log(`✅ Interactive coverage report generated: ${outputPath}`);
+    console.log(`   Open in browser: open ${outputPath}`);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error(`Error generating report: ${errorMessage}`);
+    process.exit(1);
+  }
 }

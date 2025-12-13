@@ -151,4 +151,3 @@ ComponentName/
 ├── index.ts                   # Barrel export
 └── README.md                  # Component documentation
 ```
-

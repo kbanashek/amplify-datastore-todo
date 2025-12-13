@@ -1,7 +1,11 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import { AppointmentCard } from "../AppointmentCard";
-import { Appointment, AppointmentType, AppointmentStatus } from "../../types/Appointment";
+import {
+  Appointment,
+  AppointmentType,
+  AppointmentStatus,
+} from "../../types/Appointment";
 
 // Mock IconSymbol
 jest.mock("@/components/ui/IconSymbol", () => ({
@@ -65,7 +69,7 @@ describe("AppointmentCard", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockTranslateText.mockImplementation((text) => text);
+    mockTranslateText.mockImplementation(text => text);
   });
 
   it("renders appointment title correctly", () => {
@@ -124,7 +128,7 @@ describe("AppointmentCard", () => {
   });
 
   it("displays translated appointment type label for telehealth", () => {
-    mockTranslateText.mockImplementation((text) => {
+    mockTranslateText.mockImplementation(text => {
       if (text === "Telehealth") return "Telehealth";
       if (text === "starts at") return "starts at";
       return text;
@@ -138,7 +142,7 @@ describe("AppointmentCard", () => {
   });
 
   it("displays translated appointment type label for onsite", () => {
-    mockTranslateText.mockImplementation((text) => {
+    mockTranslateText.mockImplementation(text => {
       if (text === "Onsite Visit") return "Onsite Visit";
       if (text === "starts at") return "starts at";
       return text;
@@ -187,4 +191,3 @@ describe("AppointmentCard", () => {
     expect(getByTestId("icon-chevron.left")).toBeTruthy();
   });
 });
-

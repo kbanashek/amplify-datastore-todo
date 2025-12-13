@@ -11,6 +11,7 @@ This directory contains utility scripts for managing the Amplify backend setup a
 **What it does:**
 
 **Fresh Mode (--fresh, default):**
+
 1. Backs up existing GraphQL schema
 2. Cleans up all old Amplify files and directories
 3. Initializes Amplify (Gen 1)
@@ -19,6 +20,7 @@ This directory contains utility scripts for managing the Amplify backend setup a
 6. Optionally pushes to AWS
 
 **Refresh Mode (--refresh):**
+
 1. Backs up existing GraphQL schema
 2. Pulls existing backend configuration from AWS
 3. Keeps local files (no cleanup)
@@ -61,6 +63,7 @@ export AMPLIFY_PROJECT_NAME=LXTodoApp # Project name
 **What you'll need to do manually:**
 
 During `amplify init`:
+
 - Choose **"y" (yes)** for Amplify Gen 1
 - Enter project name (or press Enter for default)
 - Enter environment name (or press Enter for default)
@@ -69,6 +72,7 @@ During `amplify init`:
 - Choose AWS profile: **amplify-user**
 
 During `amplify add api`:
+
 - Choose service: **GraphQL**
 - Enable conflict detection: **Yes**
 - Resolution strategy: **Auto Merge** (or your preference)
@@ -90,6 +94,7 @@ During `amplify add api`:
 Fixes stuck CloudFormation stacks by deleting failed nested stacks and continuing rollback.
 
 **Usage:**
+
 ```bash
 ./fix-stack.sh
 ```
@@ -99,6 +104,7 @@ Fixes stuck CloudFormation stacks by deleting failed nested stacks and continuin
 Removes all Amplify files for a complete fresh start (doesn't automate init).
 
 **Usage:**
+
 ```bash
 ./fresh-start.sh
 ```
@@ -117,6 +123,7 @@ If you get permission errors during `amplify push`, update your IAM policy:
 4. **Important:** Inline policies have a 2048 non-whitespace character limit
 
 The compact policy includes all required permissions:
+
 - CloudFormation (stack operations)
 - S3 (deployment bucket)
 - IAM (role management including TagRole)
@@ -126,6 +133,7 @@ The compact policy includes all required permissions:
 ### Schema Not Found
 
 If the script can't find your schema, it will create a backup location. Make sure your schema is at:
+
 - `amplify/backend/api/[api-name]/schema.graphql`
 
 Or manually restore from `/tmp/schema-backup-*.graphql`
@@ -143,6 +151,7 @@ If you have stuck CloudFormation stacks, use `fix-stack.sh` to clean them up bef
 Automatically creates a new version branch, commits changes, and pushes to remote.
 
 **Usage:**
+
 ```bash
 # Patch version (0.0.1 -> 0.0.2) - bug fixes, small changes
 ./scripts/version-bump.sh patch "Fix sync issue"
@@ -155,6 +164,7 @@ Automatically creates a new version branch, commits changes, and pushes to remot
 ```
 
 **What it does:**
+
 1. Detects current version from branch name (e.g., `v0.0.1`)
 2. Increments version based on type (major/minor/patch)
 3. Creates new branch (e.g., `v0.0.2`)
@@ -163,6 +173,7 @@ Automatically creates a new version branch, commits changes, and pushes to remot
 6. Pushes to origin
 
 **Examples:**
+
 ```bash
 # Quick patch bump
 ./scripts/version-bump.sh patch
@@ -193,4 +204,3 @@ Automatically creates a new version branch, commits changes, and pushes to remot
 - Push changes: `AWS_PROFILE=amplify-user amplify push --yes`
 - Update `aws-exports.js` if API key changes
 - Generate models: `npx amplify codegen models`
-

@@ -56,4 +56,3 @@
 - Commit with meaningful messages
 - Follow semantic versioning for releases
 - See `.cursor/rules/version-control.mdc` for detailed guidelines
-

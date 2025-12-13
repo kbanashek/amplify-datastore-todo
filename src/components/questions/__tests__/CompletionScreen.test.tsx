@@ -17,10 +17,7 @@ describe("CompletionScreen", () => {
     };
 
     const { getByText } = render(
-      <CompletionScreen
-        activityConfig={activityConfig}
-        onDone={mockOnDone}
-      />
+      <CompletionScreen activityConfig={activityConfig} onDone={mockOnDone} />
     );
 
     expect(getByText("Thank You!")).toBeTruthy();
@@ -41,10 +38,7 @@ describe("CompletionScreen", () => {
     };
 
     const { getByText } = render(
-      <CompletionScreen
-        activityConfig={activityConfig}
-        onDone={mockOnDone}
-      />
+      <CompletionScreen activityConfig={activityConfig} onDone={mockOnDone} />
     );
 
     expect(getByText("Assessment Complete!")).toBeTruthy();
@@ -58,16 +52,10 @@ describe("CompletionScreen", () => {
     };
 
     const { getByText } = render(
-      <CompletionScreen
-        activityConfig={activityConfig}
-        onDone={mockOnDone}
-      />
+      <CompletionScreen activityConfig={activityConfig} onDone={mockOnDone} />
     );
 
     fireEvent.press(getByText("Done"));
     expect(mockOnDone).toHaveBeenCalledTimes(1);
   });
 });
-
-
-

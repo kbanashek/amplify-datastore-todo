@@ -53,4 +53,3 @@ export interface GroupedAppointment {
   dateLabel: string; // "Today", "Tomorrow", "Dec 12, 2025"
   appointments: Appointment[];
 }
-

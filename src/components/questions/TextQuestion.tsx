@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { Question } from "../../types/ActivityConfig";
 import { useTranslation } from "../../contexts/TranslationContext";
+import { useTranslatedText } from "../../hooks/useTranslatedText";
 
 interface TextQuestionProps {
   question: Question;
@@ -20,7 +21,8 @@ export const TextQuestion: React.FC<TextQuestionProps> = ({
 }) => {
   const { isRTL } = useTranslation();
   const isMultiline = question.type === "textarea-field";
-  const placeholder = question.friendlyName || "Enter your answer";
+  const placeholderText = question.friendlyName || "Enter your answer";
+  const { translatedText: placeholder } = useTranslatedText(placeholderText);
 
   const handleChange = (text: string) => {
     console.log("✏️ [TextQuestion] Value changed", {
@@ -75,4 +77,3 @@ const styles = StyleSheet.create({
     borderColor: "#e74c3c",
   },
 });
-

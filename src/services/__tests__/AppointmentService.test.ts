@@ -68,7 +68,9 @@ describe("AppointmentService", () => {
   describe("loadAppointments", () => {
     it("should load appointment data successfully", async () => {
       // Mock the JSON import by spying on loadAppointments and returning mock data
-      jest.spyOn(AppointmentService, "loadAppointments").mockResolvedValue(mockAppointmentData);
+      jest
+        .spyOn(AppointmentService, "loadAppointments")
+        .mockResolvedValue(mockAppointmentData);
 
       const result = await AppointmentService.loadAppointments();
 
@@ -94,7 +96,9 @@ describe("AppointmentService", () => {
         },
       ];
 
-      jest.spyOn(AppointmentService, "loadAppointments").mockResolvedValue(mockAppointmentData);
+      jest
+        .spyOn(AppointmentService, "loadAppointments")
+        .mockResolvedValue(mockAppointmentData);
       (parseAppointmentData as jest.Mock).mockReturnValue(mockAppointments);
 
       const result = await AppointmentService.getAppointments();
@@ -105,7 +109,9 @@ describe("AppointmentService", () => {
 
     it("should return empty array when data is null", async () => {
       // Mock loadAppointments to return null
-      jest.spyOn(AppointmentService, "loadAppointments").mockResolvedValue(null);
+      jest
+        .spyOn(AppointmentService, "loadAppointments")
+        .mockResolvedValue(null);
 
       const result = await AppointmentService.getAppointments();
 
@@ -113,7 +119,9 @@ describe("AppointmentService", () => {
     });
 
     it("should throw error on parse failure", async () => {
-      jest.spyOn(AppointmentService, "loadAppointments").mockResolvedValue(mockAppointmentData);
+      jest
+        .spyOn(AppointmentService, "loadAppointments")
+        .mockResolvedValue(mockAppointmentData);
       (parseAppointmentData as jest.Mock).mockImplementation(() => {
         throw new Error("Parse failed");
       });
@@ -126,7 +134,9 @@ describe("AppointmentService", () => {
 
   describe("getAppointmentData", () => {
     it("should return full appointment data with timezone", async () => {
-      jest.spyOn(AppointmentService, "loadAppointments").mockResolvedValue(mockAppointmentData);
+      jest
+        .spyOn(AppointmentService, "loadAppointments")
+        .mockResolvedValue(mockAppointmentData);
 
       const result = await AppointmentService.getAppointmentData();
 
@@ -138,7 +148,9 @@ describe("AppointmentService", () => {
     });
 
     it("should return null when data cannot be loaded", async () => {
-      jest.spyOn(AppointmentService, "loadAppointments").mockResolvedValue(null);
+      jest
+        .spyOn(AppointmentService, "loadAppointments")
+        .mockResolvedValue(null);
 
       const result = await AppointmentService.getAppointmentData();
 
@@ -146,4 +158,3 @@ describe("AppointmentService", () => {
     });
   });
 });
-

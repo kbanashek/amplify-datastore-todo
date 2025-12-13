@@ -7,17 +7,17 @@ export interface Question {
   questionText?: string | null;
   questionEnText?: string | null;
   friendlyName: string;
-  
+
   // Answer (stored as JSON string)
   answer?: string | null;
-  
+
   // Type & Control
   controlType: string;
   type?: string | null;
-  
+
   // Validation (stored as JSON string)
   validations?: string | null;
-  
+
   // Choice Questions
   codedSelection?: number | string | null;
   answerId?: string | null;
@@ -25,17 +25,17 @@ export interface Question {
   answerEnText?: string | null;
   answerCodedValue?: string | null;
   answersImages?: string | null;
-  
+
   // Display
   value?: string | null;
   codedValue?: number | null;
   imageS3Key?: string | null;
   multiSelectOverride?: string | null;
-  
+
   // Metadata
   version: number;
   index: number;
-  
+
   // DataStore fields
   createdAt?: string | null;
   updatedAt?: string | null;
@@ -93,5 +93,3 @@ export interface UpdateQuestionInput {
   version?: number | null;
   index?: number | null;
 }
-
-

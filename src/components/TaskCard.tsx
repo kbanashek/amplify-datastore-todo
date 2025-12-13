@@ -75,8 +75,11 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   );
 
   // Translate button text
-  const isStarted = task.status === TaskStatus.STARTED || task.status === TaskStatus.INPROGRESS;
-  const { translatedText: beginButtonText } = useTranslatedText(isStarted ? "RESUME" : "BEGIN");
+  const isStarted =
+    task.status === TaskStatus.STARTED || task.status === TaskStatus.INPROGRESS;
+  const { translatedText: beginButtonText } = useTranslatedText(
+    isStarted ? "RESUME" : "BEGIN"
+  );
   const { translatedText: completedText } = useTranslatedText("COMPLETED");
   const { translatedText: untitledText } = useTranslatedText("Untitled Task");
 
@@ -144,9 +147,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
                   onPress={handleBeginPress}
                   activeOpacity={0.8}
                 >
-                  <Text style={styles.beginButtonText}>
-                    {beginButtonText}
-                  </Text>
+                  <Text style={styles.beginButtonText}>{beginButtonText}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.arrowButton}

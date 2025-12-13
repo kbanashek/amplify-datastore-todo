@@ -20,27 +20,27 @@ export const useTaskFilters = (): UseTaskFiltersReturn => {
 
   const filters: TaskFilters = useMemo(() => {
     const f: TaskFilters = {};
-    
+
     if (statusFilter.length > 0) {
       f.status = statusFilter;
     }
-    
+
     if (taskTypeFilter.length > 0) {
       f.taskType = taskTypeFilter;
     }
-    
+
     if (dateFrom) {
       f.dateFrom = dateFrom;
     }
-    
+
     if (dateTo) {
       f.dateTo = dateTo;
     }
-    
+
     if (searchText.trim()) {
       f.searchText = searchText.trim();
     }
-    
+
     return f;
   }, [statusFilter, taskTypeFilter, dateFrom, dateTo, searchText]);
 
@@ -77,5 +77,3 @@ export const useTaskFilters = (): UseTaskFiltersReturn => {
     hasActiveFilters,
   };
 };
-
-

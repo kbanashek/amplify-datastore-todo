@@ -50,4 +50,3 @@ To pull the latest backend configuration:
 ```bash
 amplify pull --appId d19l3dxjz56ge3 --envName dev
 ```
-

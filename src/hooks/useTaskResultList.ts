@@ -20,7 +20,12 @@ export const useTaskResultList = (): UseTaskResultListReturn => {
     const sub = TaskResultService.subscribeTaskResults((items, isSynced) => {
       setTaskResults(items);
       setLoading(false);
-      console.log('[useTaskResultList] TaskResults updated:', items.length, 'synced:', isSynced);
+      console.log(
+        "[useTaskResultList] TaskResults updated:",
+        items.length,
+        "synced:",
+        isSynced
+      );
     });
     setSubscription(sub);
 
@@ -61,4 +66,3 @@ export const useTaskResultList = (): UseTaskResultListReturn => {
     refreshTaskResults,
   };
 };
-

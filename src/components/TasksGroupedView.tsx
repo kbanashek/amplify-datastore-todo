@@ -55,7 +55,7 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
   }
 
   // Show appointments for today even if there are no tasks
-  const hasTodayGroup = groupedTasks.some((g) => g.dayLabel === "Today");
+  const hasTodayGroup = groupedTasks.some(g => g.dayLabel === "Today");
   const shouldShowAppointments = todayAppointments.length > 0;
 
   console.log("[TasksGroupedView] Rendering", {
@@ -63,7 +63,7 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
     hasTodayGroup,
     todayAppointmentsCount: todayAppointments.length,
     shouldShowAppointments,
-    dayLabels: groupedTasks.map((g) => g.dayLabel),
+    dayLabels: groupedTasks.map(g => g.dayLabel),
   });
 
   if (groupedTasks.length === 0 && !shouldShowAppointments) {
@@ -90,7 +90,7 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
             </Text>
           </View>
           <View style={styles.appointmentsContainer}>
-            {todayAppointments.map((appointment) => (
+            {todayAppointments.map(appointment => (
               <AppointmentCard
                 key={appointment.appointmentId}
                 appointment={appointment}
@@ -102,22 +102,25 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
         </View>
       )}
 
-      {groupedTasks.map((dayGroup) => {
+      {groupedTasks.map(dayGroup => {
         const isToday = dayGroup.dayLabel === "Today";
         const showAppointments = isToday && todayAppointments.length > 0;
 
-        console.log(`[TasksGroupedView] Rendering dayGroup: ${dayGroup.dayLabel}`, {
-          isToday,
-          todayAppointmentsCount: todayAppointments.length,
-          showAppointments,
-          hasOnAppointmentPress: !!onAppointmentPress,
-          hasTimezone: !!appointmentTimezoneId,
-          todayAppointments: todayAppointments.map((apt) => ({
-            id: apt.appointmentId,
-            title: apt.title,
-            startAt: apt.startAt,
-          })),
-        });
+        console.log(
+          `[TasksGroupedView] Rendering dayGroup: ${dayGroup.dayLabel}`,
+          {
+            isToday,
+            todayAppointmentsCount: todayAppointments.length,
+            showAppointments,
+            hasOnAppointmentPress: !!onAppointmentPress,
+            hasTimezone: !!appointmentTimezoneId,
+            todayAppointments: todayAppointments.map(apt => ({
+              id: apt.appointmentId,
+              title: apt.title,
+              startAt: apt.startAt,
+            })),
+          }
+        );
 
         return (
           <View key={dayGroup.dayLabel} style={styles.dayGroup}>
@@ -135,20 +138,27 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
                 )}
               </View>
             )}
-            
+
             {/* Appointments for Today - show first */}
             {showAppointments ? (
               <View style={styles.appointmentsContainer}>
-                {console.log(`[TasksGroupedView] RENDERING APPOINTMENTS: ${todayAppointments.length} appointments for Today`)}
+                {console.log(
+                  `[TasksGroupedView] RENDERING APPOINTMENTS: ${todayAppointments.length} appointments for Today`
+                )}
                 {todayAppointments.length === 0 ? (
-                  <Text style={styles.errorText}>No appointments to display (array is empty)</Text>
+                  <Text style={styles.errorText}>
+                    No appointments to display (array is empty)
+                  </Text>
                 ) : (
-                  todayAppointments.map((appointment) => {
-                    console.log(`[TasksGroupedView] Rendering appointment card: ${appointment.title}`, {
-                      appointmentId: appointment.appointmentId,
-                      startAt: appointment.startAt,
-                      hasOnPress: !!onAppointmentPress,
-                    });
+                  todayAppointments.map(appointment => {
+                    console.log(
+                      `[TasksGroupedView] Rendering appointment card: ${appointment.title}`,
+                      {
+                        appointmentId: appointment.appointmentId,
+                        startAt: appointment.startAt,
+                        hasOnPress: !!onAppointmentPress,
+                      }
+                    );
                     return (
                       <AppointmentCard
                         key={appointment.appointmentId}
@@ -161,14 +171,17 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
                 )}
               </View>
             ) : (
-              console.log(`[TasksGroupedView] NOT RENDERING APPOINTMENTS - showAppointments=false`, {
-                isToday,
-                todayAppointmentsCount: todayAppointments.length,
-              }) || null
+              console.log(
+                `[TasksGroupedView] NOT RENDERING APPOINTMENTS - showAppointments=false`,
+                {
+                  isToday,
+                  todayAppointmentsCount: todayAppointments.length,
+                }
+              ) || null
             )}
 
             {/* Tasks without due time (simple cards) */}
-            {dayGroup.tasksWithoutTime.map((task) => (
+            {dayGroup.tasksWithoutTime.map(task => (
               <TaskCard
                 key={task.id}
                 task={task}
@@ -178,13 +191,13 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
               />
             ))}
             {/* Tasks grouped by time */}
-            {dayGroup.timeGroups.map((timeGroup) => (
+            {dayGroup.timeGroups.map(timeGroup => (
               <View key={timeGroup.time} style={styles.timeGroup}>
                 <TranslatedText
                   text={`DUE BY ${timeGroup.time}`}
                   style={styles.dueByHeader}
                 />
-                {timeGroup.tasks.map((task) => (
+                {timeGroup.tasks.map(task => (
                   <TaskCard
                     key={task.id}
                     task={task}

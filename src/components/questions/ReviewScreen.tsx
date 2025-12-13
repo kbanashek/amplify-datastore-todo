@@ -40,7 +40,7 @@ const ScreenSection: React.FC<{
   return (
     <View style={styles.screenSection}>
       <Text style={styles.screenTitle}>{translatedScreenTitle}</Text>
-      {screen.elements.map((element) => {
+      {screen.elements.map(element => {
         const answer = answers[element.question.id];
         const originalQuestionText = element.question.text
           .replace(/<[^>]*>/g, "")
@@ -144,9 +144,9 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
       if (answer.length === 0) return notAnsweredText;
       // Find choice texts
       const choiceTexts = answer
-        .map((val) => {
+        .map(val => {
           const choice = question.choices?.find(
-            (c) => c.value === val || c.id === val
+            c => c.value === val || c.id === val
           );
           return choice?.text || val;
         })
@@ -156,7 +156,7 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
 
     if (question.type === "singleselect") {
       const choice = question.choices?.find(
-        (c) => c.value === answer || c.id === answer
+        c => c.value === answer || c.id === answer
       );
       return choice?.text || String(answer);
     }
@@ -182,7 +182,7 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
         <Text style={styles.subtitle}>{reviewSubtitle}</Text>
       </View>
 
-      {screens.map((screen) => {
+      {screens.map(screen => {
         const screenTitle = screen.name || `Page ${screen.order}`;
         return (
           <ScreenSection

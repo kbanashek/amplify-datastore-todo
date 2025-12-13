@@ -1,4 +1,4 @@
-import { DataStore, OpType } from '@aws-amplify/datastore';
+import { DataStore, OpType } from "@aws-amplify/datastore";
 
 // Mock DataStore for testing
 export const mockDataStore = {
@@ -12,9 +12,12 @@ export const mockDataStore = {
   configure: jest.fn(),
 };
 
-export const createMockSubscription = (items: any[] = [], isSynced: boolean = true) => {
+export const createMockSubscription = (
+  items: any[] = [],
+  isSynced: boolean = true
+) => {
   return {
-    subscribe: jest.fn((callback) => {
+    subscribe: jest.fn(callback => {
       // Immediately call callback with mock data
       callback({ items, isSynced });
       return {
@@ -25,65 +28,64 @@ export const createMockSubscription = (items: any[] = [], isSynced: boolean = tr
 };
 
 export const createMockTask = (overrides: Partial<any> = {}): any => ({
-  id: 'test-task-id',
-  pk: 'test-pk',
-  sk: 'test-sk',
-  title: 'Test Task',
-  description: 'Test Description',
-  status: 'OPEN',
-  taskType: 'SCHEDULED',
+  id: "test-task-id",
+  pk: "test-pk",
+  sk: "test-sk",
+  title: "Test Task",
+  description: "Test Description",
+  status: "OPEN",
+  taskType: "SCHEDULED",
   startTimeInMillSec: Date.now(),
   expireTimeInMillSec: Date.now() + 86400000,
   ...overrides,
 });
 
 export const createMockActivity = (overrides: Partial<any> = {}): any => ({
-  id: 'test-activity-id',
-  pk: 'test-pk',
-  sk: 'test-sk',
-  name: 'Test Activity',
+  id: "test-activity-id",
+  pk: "test-pk",
+  sk: "test-sk",
+  name: "Test Activity",
   layouts: JSON.stringify({ activityGroups: [], layouts: [] }),
   ...overrides,
 });
 
 export const createMockQuestion = (overrides: Partial<any> = {}): any => ({
-  id: 'test-question-id',
-  pk: 'test-pk',
-  sk: 'test-sk',
-  text: 'Test Question',
-  type: 'text',
+  id: "test-question-id",
+  pk: "test-pk",
+  sk: "test-sk",
+  text: "Test Question",
+  type: "text",
   required: false,
   ...overrides,
 });
 
 export const createMockTaskAnswer = (overrides: Partial<any> = {}): any => ({
-  id: 'test-answer-id',
-  pk: 'test-pk',
-  sk: 'test-sk',
-  taskId: 'test-task-id',
-  questionId: 'test-question-id',
-  answer: 'Test Answer',
+  id: "test-answer-id",
+  pk: "test-pk",
+  sk: "test-sk",
+  taskId: "test-task-id",
+  questionId: "test-question-id",
+  answer: "Test Answer",
   ...overrides,
 });
 
 export const createMockTaskHistory = (overrides: Partial<any> = {}): any => ({
-  id: 'test-history-id',
-  pk: 'test-pk',
-  sk: 'test-sk',
-  taskInstanceId: 'test-task-instance-id',
-  status: 'OPEN',
+  id: "test-history-id",
+  pk: "test-pk",
+  sk: "test-sk",
+  taskInstanceId: "test-task-instance-id",
+  status: "OPEN",
   timestamp: new Date().toISOString(),
-  action: 'CREATED',
+  action: "CREATED",
   ...overrides,
 });
 
 export const createMockTaskResult = (overrides: Partial<any> = {}): any => ({
-  id: 'test-result-id',
-  pk: 'test-pk',
-  sk: 'test-sk',
-  taskInstanceId: 'test-task-instance-id',
-  status: 'OPEN',
+  id: "test-result-id",
+  pk: "test-pk",
+  sk: "test-sk",
+  taskInstanceId: "test-task-instance-id",
+  status: "OPEN",
   startedAt: new Date().toISOString(),
   ...overrides,
 });
-

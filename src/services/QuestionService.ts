@@ -41,14 +41,17 @@ export class QuestionService {
    */
   static async createQuestion(input: CreateQuestionInput): Promise<Question> {
     try {
-      console.log('[QuestionService] Creating question with DataStore:', input);
+      console.log("[QuestionService] Creating question with DataStore:", input);
       const question = await DataStore.save(
         new Question({
           ...input,
         })
       );
-      
-      console.log('[QuestionService] Question created successfully:', question.id);
+
+      console.log(
+        "[QuestionService] Question created successfully:",
+        question.id
+      );
       return question;
     } catch (error) {
       console.error("Error creating question:", error);
@@ -83,7 +86,10 @@ export class QuestionService {
   /**
    * Update a Question
    */
-  static async updateQuestion(id: string, data: QuestionUpdateData): Promise<Question> {
+  static async updateQuestion(
+    id: string,
+    data: QuestionUpdateData
+  ): Promise<Question> {
     try {
       const original = await DataStore.query(Question, id);
       if (!original) {
@@ -91,7 +97,7 @@ export class QuestionService {
       }
 
       const updated = await DataStore.save(
-        Question.copyOf(original, (updated) => {
+        Question.copyOf(original, updated => {
           Object.assign(updated, data);
         })
       );
@@ -123,28 +129,34 @@ export class QuestionService {
   /**
    * Subscribe to changes in Question items
    */
-  static subscribeQuestions(callback: (items: Question[], isSynced: boolean) => void): {
+  static subscribeQuestions(
+    callback: (items: Question[], isSynced: boolean) => void
+  ): {
     unsubscribe: () => void;
   } {
-    console.log('[QuestionService] Setting up DataStore subscription for Question');
-    
-    const querySubscription = DataStore.observeQuery(Question).subscribe((snapshot) => {
-      const { items, isSynced } = snapshot;
-      
-      console.log('[QuestionService] DataStore subscription update:', {
-        itemCount: items.length,
-        isSynced,
-        itemIds: items.map(i => i.id)
-      });
-      
-      callback(items, isSynced);
-    });
-    
+    console.log(
+      "[QuestionService] Setting up DataStore subscription for Question"
+    );
+
+    const querySubscription = DataStore.observeQuery(Question).subscribe(
+      snapshot => {
+        const { items, isSynced } = snapshot;
+
+        console.log("[QuestionService] DataStore subscription update:", {
+          itemCount: items.length,
+          isSynced,
+          itemIds: items.map(i => i.id),
+        });
+
+        callback(items, isSynced);
+      }
+    );
+
     return {
       unsubscribe: () => {
-        console.log('[QuestionService] Unsubscribing from DataStore');
+        console.log("[QuestionService] Unsubscribing from DataStore");
         querySubscription.unsubscribe();
-      }
+      },
     };
   }
 

@@ -9,7 +9,10 @@ jest.mock("../TaskCard", () => ({
   TaskCard: ({ task, onPress, onDelete, simple }: any) => {
     const { View, Text, TouchableOpacity } = require("react-native");
     return (
-      <TouchableOpacity testID={`task-card-${task.id}`} onPress={() => onPress?.(task)}>
+      <TouchableOpacity
+        testID={`task-card-${task.id}`}
+        onPress={() => onPress?.(task)}
+      >
         <Text>{task.title}</Text>
         {simple && <Text testID="simple-card">Simple</Text>}
       </TouchableOpacity>
@@ -314,4 +317,3 @@ describe("TasksGroupedView", () => {
     // (it's already in the dayLabel)
   });
 });
-

@@ -75,4 +75,3 @@ See [testing-coordinated-seeding.md](testing-coordinated-seeding.md) for detaile
 4. Ensure tests pass before considering the feature complete
 
 📖 See `.cursor/rules/testing.mdc` for detailed guidelines.
-

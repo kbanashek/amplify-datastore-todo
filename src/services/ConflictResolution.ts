@@ -2,7 +2,7 @@ import { DataStore, OpType } from "@aws-amplify/datastore";
 
 /**
  * Unified conflict resolution strategy for all DataStore models
- * This handles conflicts for Task, Todo, Question, Activity, DataPoint, 
+ * This handles conflicts for Task, Todo, Question, Activity, DataPoint,
  * DataPointInstance, TaskAnswer, TaskResult, and TaskHistory
  */
 export class ConflictResolution {
@@ -16,7 +16,9 @@ export class ConflictResolution {
         attempts,
       }) => {
         const modelName = modelConstructor.name;
-        console.log(`[ConflictResolution] Handling conflict for ${modelName}, operation: ${operation}, attempts: ${attempts}`);
+        console.log(
+          `[ConflictResolution] Handling conflict for ${modelName}, operation: ${operation}, attempts: ${attempts}`
+        );
 
         // Task model has special handling for UPDATE operations
         if (modelName === "Task") {
@@ -26,12 +28,18 @@ export class ConflictResolution {
               ...remoteModel, // Start with remote model as base
               status: localModel.status || remoteModel.status, // Prefer local status
               // For timing, prefer remote if it's more recent
-              startTimeInMillSec: remoteModel.startTimeInMillSec || localModel.startTimeInMillSec,
-              expireTimeInMillSec: remoteModel.expireTimeInMillSec || localModel.expireTimeInMillSec,
-              endTimeInMillSec: remoteModel.endTimeInMillSec || localModel.endTimeInMillSec,
+              startTimeInMillSec:
+                remoteModel.startTimeInMillSec || localModel.startTimeInMillSec,
+              expireTimeInMillSec:
+                remoteModel.expireTimeInMillSec ||
+                localModel.expireTimeInMillSec,
+              endTimeInMillSec:
+                remoteModel.endTimeInMillSec || localModel.endTimeInMillSec,
               // For activity responses, prefer local if it exists
-              activityAnswer: localModel.activityAnswer || remoteModel.activityAnswer,
-              activityResponse: localModel.activityResponse || remoteModel.activityResponse,
+              activityAnswer:
+                localModel.activityAnswer || remoteModel.activityAnswer,
+              activityResponse:
+                localModel.activityResponse || remoteModel.activityResponse,
             };
             return resolvedModel;
           }
@@ -43,11 +51,11 @@ export class ConflictResolution {
           if (remoteModel._deleted) {
             return remoteModel;
           }
-          
+
           // If local model is incomplete, use remote with _deleted flag
           // Check for different identifying fields based on model type
           let isIncomplete = false;
-          
+
           if (modelName === "Task") {
             isIncomplete = !localModel.title && !localModel.description;
           } else if (modelName === "Todo") {
@@ -61,11 +69,11 @@ export class ConflictResolution {
             // Check if pk and sk are missing
             isIncomplete = !localModel.pk && !localModel.sk;
           }
-          
+
           if (isIncomplete) {
             return { ...remoteModel, _deleted: true };
           }
-          
+
           // Otherwise use local delete
           return localModel;
         }
@@ -76,4 +84,3 @@ export class ConflictResolution {
     });
   }
 }
-

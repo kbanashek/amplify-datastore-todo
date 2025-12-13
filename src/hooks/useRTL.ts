@@ -13,56 +13,69 @@ export function useRTL() {
    * Create RTL-aware style that flips left/right properties
    */
   const rtlStyle = useMemo(
-    () => (style: ViewStyle | TextStyle): ViewStyle | TextStyle => {
-      if (!isRTL) {
-        return style;
-      }
+    () =>
+      (style: ViewStyle | TextStyle): ViewStyle | TextStyle => {
+        if (!isRTL) {
+          return style;
+        }
 
-      const flipped: ViewStyle | TextStyle = { ...style };
+        const flipped: ViewStyle | TextStyle = { ...style };
 
-      // Flip margin
-      if (style.marginLeft !== undefined || style.marginRight !== undefined) {
-        const temp = flipped.marginLeft;
-        flipped.marginLeft = flipped.marginRight;
-        flipped.marginRight = temp;
-      }
+        // Flip margin
+        if (style.marginLeft !== undefined || style.marginRight !== undefined) {
+          const temp = flipped.marginLeft;
+          flipped.marginLeft = flipped.marginRight;
+          flipped.marginRight = temp;
+        }
 
-      // Flip padding
-      if (style.paddingLeft !== undefined || style.paddingRight !== undefined) {
-        const temp = flipped.paddingLeft;
-        flipped.paddingLeft = flipped.paddingRight;
-        flipped.paddingRight = temp;
-      }
+        // Flip padding
+        if (
+          style.paddingLeft !== undefined ||
+          style.paddingRight !== undefined
+        ) {
+          const temp = flipped.paddingLeft;
+          flipped.paddingLeft = flipped.paddingRight;
+          flipped.paddingRight = temp;
+        }
 
-      // Flip border
-      if (style.borderLeftWidth !== undefined || style.borderRightWidth !== undefined) {
-        const temp = flipped.borderLeftWidth;
-        flipped.borderLeftWidth = flipped.borderRightWidth;
-        flipped.borderRightWidth = temp;
-      }
+        // Flip border
+        if (
+          style.borderLeftWidth !== undefined ||
+          style.borderRightWidth !== undefined
+        ) {
+          const temp = flipped.borderLeftWidth;
+          flipped.borderLeftWidth = flipped.borderRightWidth;
+          flipped.borderRightWidth = temp;
+        }
 
-      // Flip border radius
-      if (style.borderTopLeftRadius !== undefined || style.borderTopRightRadius !== undefined) {
-        const temp = flipped.borderTopLeftRadius;
-        flipped.borderTopLeftRadius = flipped.borderTopRightRadius;
-        flipped.borderTopRightRadius = temp;
-      }
+        // Flip border radius
+        if (
+          style.borderTopLeftRadius !== undefined ||
+          style.borderTopRightRadius !== undefined
+        ) {
+          const temp = flipped.borderTopLeftRadius;
+          flipped.borderTopLeftRadius = flipped.borderTopRightRadius;
+          flipped.borderTopRightRadius = temp;
+        }
 
-      if (style.borderBottomLeftRadius !== undefined || style.borderBottomRightRadius !== undefined) {
-        const temp = flipped.borderBottomLeftRadius;
-        flipped.borderBottomLeftRadius = flipped.borderBottomRightRadius;
-        flipped.borderBottomRightRadius = temp;
-      }
+        if (
+          style.borderBottomLeftRadius !== undefined ||
+          style.borderBottomRightRadius !== undefined
+        ) {
+          const temp = flipped.borderBottomLeftRadius;
+          flipped.borderBottomLeftRadius = flipped.borderBottomRightRadius;
+          flipped.borderBottomRightRadius = temp;
+        }
 
-      // Flip text align
-      if (style.textAlign === "left") {
-        flipped.textAlign = "right";
-      } else if (style.textAlign === "right") {
-        flipped.textAlign = "left";
-      }
+        // Flip text align
+        if (style.textAlign === "left") {
+          flipped.textAlign = "right";
+        } else if (style.textAlign === "right") {
+          flipped.textAlign = "left";
+        }
 
-      return flipped;
-    },
+        return flipped;
+      },
     [isRTL]
   );
 
@@ -70,19 +83,18 @@ export function useRTL() {
    * Create RTL-aware stylesheet
    */
   const createRTLStyles = useMemo(
-    () => <T extends Record<string, ViewStyle | TextStyle>>(
-      styles: T
-    ): T => {
-      if (!isRTL) {
-        return styles;
-      }
+    () =>
+      <T extends Record<string, ViewStyle | TextStyle>>(styles: T): T => {
+        if (!isRTL) {
+          return styles;
+        }
 
-      const rtlStyles = {} as T;
-      for (const key in styles) {
-        rtlStyles[key] = rtlStyle(styles[key]) as T[typeof key];
-      }
-      return rtlStyles;
-    },
+        const rtlStyles = {} as T;
+        for (const key in styles) {
+          rtlStyles[key] = rtlStyle(styles[key]) as T[typeof key];
+        }
+        return rtlStyles;
+      },
     [isRTL, rtlStyle]
   );
 
@@ -92,4 +104,3 @@ export function useRTL() {
     createRTLStyles,
   };
 }
-
