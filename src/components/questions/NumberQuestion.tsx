@@ -30,19 +30,28 @@ export const NumberQuestion: React.FC<NumberQuestionProps> = ({
   const min = minValidation?.value ? parseInt(minValidation.value, 10) : undefined;
   const max = maxValidation?.value ? parseInt(maxValidation.value, 10) : undefined;
 
-  // If it's a numeric scale, render as slider
-  if ((question.type === "numericScale" || question.type?.toLowerCase() === "numericscale") && min !== undefined && max !== undefined) {
-    const currentValue = value ? (typeof value === "string" ? parseInt(value, 10) : value) : min;
-    const initialValue = !isNaN(currentValue) && currentValue >= min && currentValue <= max ? currentValue : min;
-    const [sliderValue, setSliderValue] = useState<number>(initialValue);
+  // Check if this is a numeric scale slider
+  const isNumericScale = (question.type === "numericScale" || question.type?.toLowerCase() === "numericscale") && min !== undefined && max !== undefined;
+  
+  // Calculate initial slider value (hooks must be called unconditionally)
+  const currentValue = isNumericScale && value ? (typeof value === "string" ? parseInt(value, 10) : value) : (min ?? 0);
+  const initialValue = isNumericScale && !isNaN(currentValue) && currentValue >= min! && currentValue <= max! ? currentValue : (min ?? 0);
+  
+  // Hooks must be called unconditionally - always call them
+  const [sliderValue, setSliderValue] = useState<number>(initialValue);
 
-    // Sync slider value with prop value
-    useEffect(() => {
+  // Sync slider value with prop value (only update if it's a numeric scale)
+  useEffect(() => {
+    if (isNumericScale && min !== undefined && max !== undefined) {
       const newValue = value ? (typeof value === "string" ? parseInt(value, 10) : value) : min;
       if (!isNaN(newValue) && newValue >= min && newValue <= max) {
         setSliderValue(newValue);
       }
-    }, [value, min, max]);
+    }
+  }, [value, min, max, isNumericScale]);
+
+  // If it's a numeric scale, render as slider
+  if (isNumericScale) {
 
     return (
       <View style={styles.container}>

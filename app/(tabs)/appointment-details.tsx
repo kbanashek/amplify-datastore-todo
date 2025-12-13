@@ -60,6 +60,11 @@ export default function AppointmentDetailsScreen() {
     "No appointment data available"
   );
 
+  // Call hook before early return - use fallback if appointment is null
+  const { translatedText: appointmentTitle } = useTranslatedText(
+    appointment?.title || ""
+  );
+
   if (!appointment) {
     return (
       <View style={[styles.container, { paddingTop: insets.top }]}>
@@ -124,10 +129,6 @@ export default function AppointmentDetailsScreen() {
         return AppColors.mediumDarkGray;
     }
   };
-
-  const { translatedText: appointmentTitle } = useTranslatedText(
-    appointment.title
-  );
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
