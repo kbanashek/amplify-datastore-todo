@@ -30,18 +30,26 @@ jobs:
           aws-region: us-east-1
         continue-on-error: true
 
-      - name: Authenticate npm to CodeArtifact
-        if: env.AWS_ACCESS_KEY_ID != ''
+      - name: Authenticate npm to CodeArtifact (if credentials available)
+        id: codeartifact-auth
         run: |
-          CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token \
-            --domain clinicalink \
-            --domain-owner 404833863218 \
-            --region us-east-1 \
-            --query authorizationToken \
-            --output text 2>/dev/null || echo "")
-          if [ -n "$CODEARTIFACT_AUTH_TOKEN" ]; then
-            echo "//clinicalink-404833863218.d.codeartifact.us-east-1.amazonaws.com/npm/orion-be-utils/:_authToken=$CODEARTIFACT_AUTH_TOKEN" >> ~/.npmrc
-            echo "@orion-be-utils:registry=https://clinicalink-404833863218.d.codeartifact.us-east-1.amazonaws.com/npm/orion-be-utils/" >> ~/.npmrc
+          if [ -n "${{ secrets.AWS_ACCESS_KEY_ID }}" ] && [ -n "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ]; then
+            echo "Attempting CodeArtifact authentication..."
+            CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token \
+              --domain clinicalink \
+              --domain-owner 404833863218 \
+              --region us-east-1 \
+              --query authorizationToken \
+              --output text 2>/dev/null || echo "")
+            if [ -n "$CODEARTIFACT_AUTH_TOKEN" ]; then
+              echo "//clinicalink-404833863218.d.codeartifact.us-east-1.amazonaws.com/npm/orion-be-utils/:_authToken=$CODEARTIFACT_AUTH_TOKEN" >> ~/.npmrc
+              echo "@orion-be-utils:registry=https://clinicalink-404833863218.d.codeartifact.us-east-1.amazonaws.com/npm/orion-be-utils/" >> ~/.npmrc
+              echo "CodeArtifact authentication successful"
+            else
+              echo "CodeArtifact authentication failed, will use public npm registry"
+            fi
+          else
+            echo "No AWS credentials provided, skipping CodeArtifact authentication"
           fi
         continue-on-error: true
         env:
@@ -49,7 +57,12 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps || npm install --legacy-peer-deps
+        run: |
+          # Remove any CodeArtifact registry config if authentication failed
+          if ! grep -q "codeartifact" ~/.npmrc 2>/dev/null; then
+            echo "Using public npm registry only"
+          fi
+          npm ci --legacy-peer-deps || npm install --legacy-peer-deps
         continue-on-error: false
 
       - name: Run linter
