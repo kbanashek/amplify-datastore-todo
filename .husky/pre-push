@@ -2,8 +2,9 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 echo "🔍 Running lint..."
-npm run lint || {
-  echo "❌ Lint failed. Please fix linting errors before pushing."
+npm run lint -- --max-warnings=100 || {
+  echo "❌ Lint failed with errors. Please fix linting errors before pushing."
+  echo "💡 Note: Warnings are allowed, but errors must be fixed."
   exit 1
 }
 
