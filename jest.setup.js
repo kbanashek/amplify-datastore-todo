@@ -24,7 +24,7 @@ jest.mock('./src/contexts/AmplifyContext', () => ({
     isOnline: true,
     isSynced: true,
   }),
-  AmplifyProvider: ({ children }: any) => children,
+  AmplifyProvider: ({ children }) => children,
 }));
 
 jest.mock('@aws-amplify/datastore', () => {
