@@ -138,7 +138,7 @@ export const TasksView: React.FC<TasksViewProps> = ({ filters, onTaskPress }) =>
         return (
           <View style={styles.todaySection}>
             <View style={styles.todaySectionHeader}>
-              <Text style={styles.todaySectionTitle}>📅 TODAY'S TASKS</Text>
+              <Text style={styles.todaySectionTitle}>📅 TODAY&apos;S TASKS</Text>
               <View style={styles.todaySectionBadge}>
                 <Text style={styles.todaySectionCount}>{todayTasks.length}</Text>
               </View>
