@@ -2,11 +2,15 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 echo "🚀 Pre-push hook: Running tests..."
-npm test -- --passWithNoTests --watchAll=false || {
-  echo "❌ Tests failed. Please fix failing tests before pushing."
-  exit 1
-}
+if command -v jest >/dev/null 2>&1 || npm list jest >/dev/null 2>&1; then
+  npm test -- --passWithNoTests --watchAll=false || {
+    echo "❌ Tests failed. Please fix failing tests before pushing."
+    exit 1
+  }
+  echo "✅ All tests passed!"
+else
+  echo "⚠️  Jest not found, skipping tests. Tests will run in CI/CD."
+fi
 
-echo "✅ All tests passed!"
 echo "✅ Pre-push checks passed!"
 
