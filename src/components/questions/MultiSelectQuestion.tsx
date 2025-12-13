@@ -20,15 +20,14 @@ export const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
 }) => {
   const { translate, currentLanguage } = useTranslation();
   const choices = question.choices || [];
-  const [translatedChoices, setTranslatedChoices] =
-    useState<
-      Array<{
-        id: string;
-        text: string;
-        value: string;
-        translatedText?: string;
-      }>
-    >(choices);
+  const [translatedChoices, setTranslatedChoices] = useState<
+    Array<{
+      id: string;
+      text: string;
+      value: string;
+      translatedText?: string;
+    }>
+  >(choices);
 
   // Translate choices when language changes
   useEffect(() => {

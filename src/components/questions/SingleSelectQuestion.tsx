@@ -21,15 +21,14 @@ export const SingleSelectQuestion: React.FC<SingleSelectQuestionProps> = ({
   const { translate, currentLanguage } = useTranslation();
   const choices = question.choices || [];
   const optionPlacement = displayProperties.optionPlacement || "below";
-  const [translatedChoices, setTranslatedChoices] =
-    useState<
-      Array<{
-        id: string;
-        text: string;
-        value: string;
-        translatedText?: string;
-      }>
-    >(choices);
+  const [translatedChoices, setTranslatedChoices] = useState<
+    Array<{
+      id: string;
+      text: string;
+      value: string;
+      translatedText?: string;
+    }>
+  >(choices);
 
   // Translate choices when language changes
   useEffect(() => {
