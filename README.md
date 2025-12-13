@@ -15,33 +15,41 @@
 
 ## 🛠️ Tech Stack
 
-### Frontend
+### 🎨 Frontend
 
-- **React Native** - Cross-platform mobile framework
-- **Expo** - Development platform and tooling
-- **TypeScript** - Type-safe JavaScript
-- **Expo Router** - File-based routing system
+| Technology | Purpose | Why We Use It |
+|------------|---------|---------------|
+| **⚛️ React Native** | Cross-platform mobile framework | Write once, run on iOS and Android |
+| **🚀 Expo** | Development platform and tooling | Fast development, over-the-air updates, managed workflow |
+| **📘 TypeScript** | Type-safe JavaScript | Catch errors at compile-time, better IDE support |
+| **🧭 Expo Router** | File-based routing system | Intuitive navigation, type-safe routes |
 
-### Backend & Cloud
+### ☁️ Backend & Cloud
 
-- **AWS Amplify** - Backend framework and CLI
-- **AWS AppSync** - Managed GraphQL API
-- **AWS DataStore** - Offline-first data synchronization
-- **DynamoDB** - NoSQL database
-- **GraphQL** - API query language
+| Technology | Purpose | Why We Use It |
+|------------|---------|---------------|
+| **🔧 AWS Amplify** | Backend framework and CLI | Rapid backend setup, integrated services |
+| **📡 AWS AppSync** | Managed GraphQL API | Real-time subscriptions, automatic scaling |
+| **💾 AWS DataStore** | Offline-first data synchronization | Works offline, automatic conflict resolution |
+| **🗄️ DynamoDB** | NoSQL database | Serverless, auto-scaling, low latency |
+| **🔍 GraphQL** | API query language | Flexible queries, type-safe, single endpoint |
 
-### Development Tools
+### 🛠️ Development Tools
 
-- **Jest** - Testing framework
-- **React Testing Library** - Component testing utilities
-- **ESLint** - Code linting
-- **Prettier** - Code formatting
+| Technology | Purpose | Why We Use It |
+|------------|---------|---------------|
+| **✅ Jest** | Testing framework | Fast, comprehensive, great React Native support |
+| **🧪 React Testing Library** | Component testing utilities | Test user behavior, not implementation |
+| **🔍 ESLint** | Code linting | Catch bugs early, enforce code quality |
+| **💅 Prettier** | Code formatting | Consistent code style, zero configuration |
 
-### Data & Storage
+### 💾 Data & Storage
 
-- **SQLite** - Local database (via DataStore)
-- **AsyncStorage** - Local key-value storage
-- **DataStore Sync Engine** - Automatic data synchronization
+| Technology | Purpose | Why We Use It |
+|------------|---------|---------------|
+| **📱 SQLite** | Local database (via DataStore) | Fast, reliable, perfect for offline-first |
+| **🔑 AsyncStorage** | Local key-value storage | Simple persistence for app settings and cache |
+| **🔄 DataStore Sync Engine** | Automatic data synchronization | Seamless cloud sync, handles conflicts intelligently |
 
 ---
 
