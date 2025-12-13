@@ -3,6 +3,7 @@
 ## Task/Activities Rule Engine Implementation
 
 ### Overview
+
 Create a comprehensive rule engine system to evaluate and enforce task/activity rules, process actions, and handle rule-based workflows. This will bring the rule fields from "stored but not enforced" to "fully functional rule system".
 
 ### Architecture Plan
@@ -291,14 +292,17 @@ class RuleEngine {
   // Validation
   static validateCompletion(task: Task, currentTime: number): ValidationResult;
   static validateVisibility(task: Task, currentTime: number): VisibilityResult;
-  
+
   // Evaluation
   static evaluateRules(task: Task, facts: RuleFacts): EvaluationResult;
   static evaluateTrigger(trigger: string, task: Task, context: any): boolean;
-  
+
   // Actions
-  static processActions(actions: TaskAction[], context: ActionContext): Promise<ActionResult[]>;
-  
+  static processActions(
+    actions: TaskAction[],
+    context: ActionContext
+  ): Promise<ActionResult[]>;
+
   // Rescheduling
   static rescheduleTasksForAppointment(appointment: Appointment): Promise<void>;
 }
@@ -330,7 +334,7 @@ class RuleEngine {
 **Example Integration:**
 
 ```typescript
-import { Engine } from 'json-rules-engine';
+import { Engine } from "json-rules-engine";
 
 // Initialize engine for task rules
 const engine = new Engine();
@@ -340,31 +344,31 @@ engine.addRule({
   conditions: {
     all: [
       {
-        fact: 'task.status',
-        operator: 'equal',
-        value: 'COMPLETED'
+        fact: "task.status",
+        operator: "equal",
+        value: "COMPLETED",
       },
       {
-        fact: 'answer.value',
-        operator: 'greaterThan',
-        value: 5
-      }
-    ]
+        fact: "answer.value",
+        operator: "greaterThan",
+        value: 5,
+      },
+    ],
   },
   event: {
-    type: 'TRIGGER_ACTION',
+    type: "TRIGGER_ACTION",
     params: {
-      actionType: 'START_TIMED_TASK',
-      taskDefId: 'some-task-id'
-    }
-  }
+      actionType: "START_TIMED_TASK",
+      taskDefId: "some-task-id",
+    },
+  },
 });
 
 // Evaluate with facts
 const facts = {
-  'task.status': task.status,
-  'answer.value': answerValue,
-  currentTime: Date.now()
+  "task.status": task.status,
+  "answer.value": answerValue,
+  currentTime: Date.now(),
 };
 
 const { events } = await engine.run(facts);
@@ -426,4 +430,3 @@ src/
 - Rule debugging tools
 - Rule performance monitoring
 - Rule analytics and reporting
-

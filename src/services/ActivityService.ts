@@ -83,7 +83,7 @@ export class ActivityService {
       }
 
       const updated = await DataStore.save(
-        Activity.copyOf(original, (updated) => {
+        Activity.copyOf(original, updated => {
           Object.assign(updated, data);
         })
       );
@@ -119,13 +119,13 @@ export class ActivityService {
     );
 
     const querySubscription = DataStore.observeQuery(Activity).subscribe(
-      (snapshot) => {
+      snapshot => {
         const { items, isSynced } = snapshot;
 
         console.log("[ActivityService] DataStore subscription update:", {
           itemCount: items.length,
           isSynced,
-          itemIds: items.map((i) => i.id),
+          itemIds: items.map(i => i.id),
         });
 
         callback(items, isSynced);

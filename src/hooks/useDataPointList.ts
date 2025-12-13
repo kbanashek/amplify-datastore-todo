@@ -23,12 +23,24 @@ export const useDataPointList = (): UseDataPointListReturn => {
     const sub1 = DataPointService.subscribeDataPoints((items, isSynced) => {
       setDataPoints(items);
       setLoading(false);
-      console.log('[useDataPointList] DataPoints updated:', items.length, 'synced:', isSynced);
+      console.log(
+        "[useDataPointList] DataPoints updated:",
+        items.length,
+        "synced:",
+        isSynced
+      );
     });
-    const sub2 = DataPointService.subscribeDataPointInstances((items, isSynced) => {
-      setInstances(items);
-      console.log('[useDataPointList] DataPointInstances updated:', items.length, 'synced:', isSynced);
-    });
+    const sub2 = DataPointService.subscribeDataPointInstances(
+      (items, isSynced) => {
+        setInstances(items);
+        console.log(
+          "[useDataPointList] DataPointInstances updated:",
+          items.length,
+          "synced:",
+          isSynced
+        );
+      }
+    );
     setSubscriptions([sub1, sub2]);
 
     return () => {
@@ -82,4 +94,3 @@ export const useDataPointList = (): UseDataPointListReturn => {
     refreshDataPoints,
   };
 };
-

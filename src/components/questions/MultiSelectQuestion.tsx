@@ -20,9 +20,15 @@ export const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
 }) => {
   const { translate, currentLanguage } = useTranslation();
   const choices = question.choices || [];
-  const [translatedChoices, setTranslatedChoices] = useState<
-    Array<{ id: string; text: string; value: string; translatedText?: string }>
-  >(choices);
+  const [translatedChoices, setTranslatedChoices] =
+    useState<
+      Array<{
+        id: string;
+        text: string;
+        value: string;
+        translatedText?: string;
+      }>
+    >(choices);
 
   // Translate choices when language changes
   useEffect(() => {
@@ -33,7 +39,7 @@ export const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
       }
 
       const translated = await Promise.all(
-        choices.map(async (choice) => {
+        choices.map(async choice => {
           const translatedText = await translate(choice.text);
           return { ...choice, translatedText };
         })
@@ -47,8 +53,10 @@ export const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
   const handleToggle = (choiceValue: string) => {
     const currentValue = Array.isArray(value) ? value : [];
     const isSelected = currentValue.includes(choiceValue);
-    const choiceText = choices.find((c) => c.value === choiceValue || c.id === choiceValue)?.text;
-    
+    const choiceText = choices.find(
+      c => c.value === choiceValue || c.id === choiceValue
+    )?.text;
+
     console.log("☑️ [MultiSelectQuestion] Toggling option", {
       questionId: question.id,
       choiceValue,
@@ -59,7 +67,7 @@ export const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
     });
 
     if (isSelected) {
-      const newValue = currentValue.filter((v) => v !== choiceValue);
+      const newValue = currentValue.filter(v => v !== choiceValue);
       console.log("➖ [MultiSelectQuestion] Option deselected", {
         questionId: question.id,
         deselected: choiceText,
@@ -81,7 +89,7 @@ export const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
 
   return (
     <View style={styles.container}>
-      {translatedChoices.map((choice) => {
+      {translatedChoices.map(choice => {
         const choiceValue = choice.value || choice.id;
         const isSelected = Array.isArray(value) && value.includes(choiceValue);
         const displayText = choice.translatedText || choice.text;
@@ -97,14 +105,9 @@ export const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
           >
             <View style={styles.optionContent}>
               <View
-                style={[
-                  styles.checkbox,
-                  isSelected && styles.checkboxSelected,
-                ]}
+                style={[styles.checkbox, isSelected && styles.checkboxSelected]}
               >
-                {isSelected && (
-                  <Text style={styles.checkmark}>✓</Text>
-                )}
+                {isSelected && <Text style={styles.checkmark}>✓</Text>}
               </View>
               <Text
                 style={[
@@ -185,4 +188,3 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
   },
 });
-

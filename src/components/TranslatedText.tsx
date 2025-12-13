@@ -23,13 +23,7 @@ export const TranslatedText: React.FC<TranslatedTextProps> = ({
   const { isRTL } = useTranslation();
 
   return (
-    <Text
-      style={[
-        style,
-        isRTL && { textAlign: "right" },
-      ]}
-      {...props}
-    >
+    <Text style={[style, isRTL && { textAlign: "right" }]} {...props}>
       {translatedText}
     </Text>
   );

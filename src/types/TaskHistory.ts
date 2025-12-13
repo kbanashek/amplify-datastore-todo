@@ -9,7 +9,7 @@ export interface TaskHistory {
   action?: string | null;
   details?: string | null; // JSON string
   hashKey?: string | null;
-  
+
   // DataStore fields
   createdAt?: string | null;
   updatedAt?: string | null;
@@ -40,5 +40,3 @@ export interface UpdateTaskHistoryInput {
   details?: string | null;
   hashKey?: string | null;
 }
-
-

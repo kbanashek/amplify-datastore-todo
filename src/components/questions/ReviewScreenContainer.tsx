@@ -25,8 +25,8 @@ export const ReviewScreenContainer: React.FC<ReviewScreenContainerProps> = ({
 }) => {
   return (
     <View style={styles.reviewContainer}>
-      <ReviewScreen 
-        screens={activityData.screens} 
+      <ReviewScreen
+        screens={activityData.screens}
         answers={answers}
         onEditQuestion={onEditQuestion}
         onSubmit={onSubmit}
@@ -44,6 +44,3 @@ const styles = StyleSheet.create({
     backgroundColor: AppColors.white,
   },
 });
-
-
-

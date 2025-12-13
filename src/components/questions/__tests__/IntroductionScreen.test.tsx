@@ -95,6 +95,3 @@ describe("IntroductionScreen", () => {
     expect(getByText("Begin")).toBeTruthy();
   });
 });
-
-
-

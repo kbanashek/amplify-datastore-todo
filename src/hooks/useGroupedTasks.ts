@@ -15,7 +15,7 @@ export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
 
     // Include all tasks, but handle COMPLETED and INPROGRESS tasks differently
     // COMPLETED and INPROGRESS tasks should always be shown regardless of date
-    const allTasks = tasks.filter((task) => {
+    const allTasks = tasks.filter(task => {
       // Always show COMPLETED and INPROGRESS tasks
       if (
         task.status === TaskStatus.COMPLETED ||
@@ -40,10 +40,8 @@ export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
     });
 
     // Separate tasks with and without due times
-    const tasksWithTime = allTasks.filter((task) => task.expireTimeInMillSec);
-    const tasksWithoutTime = allTasks.filter(
-      (task) => !task.expireTimeInMillSec
-    );
+    const tasksWithTime = allTasks.filter(task => task.expireTimeInMillSec);
+    const tasksWithoutTime = allTasks.filter(task => !task.expireTimeInMillSec);
 
     // Helper function to create consistent dayKey in YYYY-MM-DD format
     const createDayKey = (date: Date): string => {
@@ -55,7 +53,7 @@ export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
 
     // Group by day (date only, no time)
     const byDay: { [dayKey: string]: Task[] } = {};
-    tasksWithTime.forEach((task) => {
+    tasksWithTime.forEach(task => {
       if (!task.expireTimeInMillSec) return;
       const taskDate = new Date(task.expireTimeInMillSec);
       const dayKey = createDayKey(taskDate);
@@ -85,8 +83,8 @@ export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
 
       // Get dates for comparison
       let dateA: Date, dateB: Date;
-      const withTimeA = dayA.filter((task) => task.expireTimeInMillSec);
-      const withTimeB = dayB.filter((task) => task.expireTimeInMillSec);
+      const withTimeA = dayA.filter(task => task.expireTimeInMillSec);
+      const withTimeB = dayB.filter(task => task.expireTimeInMillSec);
 
       if (withTimeA.length > 0) {
         dateA = new Date(withTimeA[0].expireTimeInMillSec!);
@@ -136,12 +134,12 @@ export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
       return diffA - diffB;
     });
 
-    sortedDayKeys.forEach((dayKey) => {
+    sortedDayKeys.forEach(dayKey => {
       const dayTasks = byDay[dayKey];
 
       // Separate tasks with and without time for this day
-      const withTime = dayTasks.filter((task) => task.expireTimeInMillSec);
-      const withoutTime = dayTasks.filter((task) => !task.expireTimeInMillSec);
+      const withTime = dayTasks.filter(task => task.expireTimeInMillSec);
+      const withoutTime = dayTasks.filter(task => !task.expireTimeInMillSec);
 
       // Get date from first task with time, or use today for tasks without time
       let firstTaskDate: Date;
@@ -181,7 +179,7 @@ export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
 
       // Group by time within the day
       const byTime: { [timeKey: string]: Task[] } = {};
-      withTime.forEach((task) => {
+      withTime.forEach(task => {
         if (!task.expireTimeInMillSec) return;
         const taskDate = new Date(task.expireTimeInMillSec);
         const hours = taskDate.getHours();
@@ -198,7 +196,7 @@ export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
       // Sort time groups and format time
       const timeGroups = Object.keys(byTime)
         .sort()
-        .map((timeKey) => {
+        .map(timeKey => {
           const [hours, minutes] = timeKey.split(":").map(Number);
           const timeDate = new Date();
           timeDate.setHours(hours, minutes);
@@ -224,4 +222,3 @@ export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
     return result;
   }, [tasks]);
 };
-

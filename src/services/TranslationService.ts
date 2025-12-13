@@ -1,7 +1,10 @@
 // Import polyfill FIRST before AWS SDK
 import "../polyfills/structuredClone";
 
-import { TranslateClient, TranslateTextCommand } from "@aws-sdk/client-translate";
+import {
+  TranslateClient,
+  TranslateTextCommand,
+} from "@aws-sdk/client-translate";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Try to load credentials from config file (created by load-aws-credentials script)
@@ -69,7 +72,7 @@ export function isRTL(languageCode: LanguageCode): boolean {
   return (RTL_LANGUAGES as readonly string[]).includes(languageCode);
 }
 
-export type LanguageCode = typeof SUPPORTED_LANGUAGES[number]["code"];
+export type LanguageCode = (typeof SUPPORTED_LANGUAGES)[number]["code"];
 
 const DEFAULT_SOURCE_LANGUAGE: LanguageCode = "en";
 const CACHE_PREFIX = "translation_cache:";
@@ -140,7 +143,7 @@ export class TranslationService {
    * 2. Environment variables (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
    * 3. AWS credentials file (~/.aws/credentials) - if available
    * 4. IAM role (if running on EC2/Lambda)
-   * 
+   *
    * To use AWS profiles, run:
    *   tsx scripts/load-aws-credentials.ts <profile-name> --config
    */
@@ -165,7 +168,9 @@ export class TranslationService {
         process.env.AWS_SECRET_ACCESS_KEY
       ) {
         // Priority 2: Use environment variables
-        console.log("[TranslationService] Using credentials from environment variables");
+        console.log(
+          "[TranslationService] Using credentials from environment variables"
+        );
         config.credentials = {
           accessKeyId: process.env.AWS_ACCESS_KEY_ID,
           secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -183,7 +188,10 @@ export class TranslationService {
 
       this.client = new TranslateClient(config);
     } catch (error) {
-      console.error("[TranslationService] Error initializing Translate client:", error);
+      console.error(
+        "[TranslationService] Error initializing Translate client:",
+        error
+      );
       this.client = null;
     }
   }
@@ -197,7 +205,8 @@ export class TranslationService {
     targetLanguage: LanguageCode
   ): string {
     // Use first 100 chars + hash for key (to avoid extremely long keys)
-    const textKey = text.length > 100 ? text.substring(0, 100) + simpleHash(text) : text;
+    const textKey =
+      text.length > 100 ? text.substring(0, 100) + simpleHash(text) : text;
     const textHash = simpleHash(textKey);
     return `${CACHE_PREFIX}${sourceLanguage}:${targetLanguage}:${textHash}`;
   }
@@ -279,11 +288,16 @@ export class TranslationService {
     sourceLanguage: LanguageCode = DEFAULT_SOURCE_LANGUAGE
   ): Promise<string> {
     // Return original text if no translation needed
-    if (sourceLanguage === targetLanguage || !text || text.trim().length === 0) {
+    if (
+      sourceLanguage === targetLanguage ||
+      !text ||
+      text.trim().length === 0
+    ) {
       console.log("📝 [TranslationService] Skipping translation", {
         sourceLanguage,
         targetLanguage,
-        reason: sourceLanguage === targetLanguage ? "same language" : "empty text",
+        reason:
+          sourceLanguage === targetLanguage ? "same language" : "empty text",
       });
       return text;
     }
@@ -296,7 +310,11 @@ export class TranslationService {
     });
 
     // Check cache first
-    const cached = await this.getCachedTranslation(text, sourceLanguage, targetLanguage);
+    const cached = await this.getCachedTranslation(
+      text,
+      sourceLanguage,
+      targetLanguage
+    );
     if (cached) {
       console.log("📝 [TranslationService] Using cached translation", {
         text: text.substring(0, 50),
@@ -318,8 +336,12 @@ export class TranslationService {
     }
 
     // Create new request promise
-    const translationPromise = this.performTranslation(text, sourceLanguage, targetLanguage);
-    
+    const translationPromise = this.performTranslation(
+      text,
+      sourceLanguage,
+      targetLanguage
+    );
+
     // Store pending request
     pendingRequests.set(requestKey, {
       promise: translationPromise,
@@ -348,7 +370,9 @@ export class TranslationService {
   ): Promise<string> {
     // Safety check: client should be initialized before calling this method
     if (!this.client) {
-      console.warn("[TranslationService] Client not initialized in performTranslation, returning original text");
+      console.warn(
+        "[TranslationService] Client not initialized in performTranslation, returning original text"
+      );
       return text;
     }
 
@@ -363,7 +387,7 @@ export class TranslationService {
       // AWS Translate has a limit of 10,000 bytes per request
       // Split long text into chunks if needed
       const maxBytes = 10000;
-      
+
       // Calculate UTF-8 byte length (React Native compatible)
       let textBytes: number;
       try {
@@ -383,8 +407,15 @@ export class TranslationService {
 
       if (textBytes > maxBytes) {
         // Truncate to fit within limit (approximate)
-        const truncated = cleanText.substring(0, Math.floor((maxBytes / textBytes) * cleanText.length));
-        return await this.translateText(truncated, targetLanguage, sourceLanguage);
+        const truncated = cleanText.substring(
+          0,
+          Math.floor((maxBytes / textBytes) * cleanText.length)
+        );
+        return await this.translateText(
+          truncated,
+          targetLanguage,
+          sourceLanguage
+        );
       }
 
       const command = new TranslateTextCommand({
@@ -399,7 +430,12 @@ export class TranslationService {
         const translatedText = response.TranslatedText;
 
         // Cache the translation
-        await this.cacheTranslation(text, sourceLanguage, targetLanguage, translatedText);
+        await this.cacheTranslation(
+          text,
+          sourceLanguage,
+          targetLanguage,
+          translatedText
+        );
 
         return translatedText;
       } else {
@@ -409,27 +445,29 @@ export class TranslationService {
       const errorMessage = error?.message || String(error);
       const errorStack = error?.stack;
       const errorName = error?.name;
-      
+
       // Check if it's a clock skew error
-      const isClockSkewError = errorMessage.includes("Signature not yet current") ||
-                               errorMessage.includes("InvalidSignatureException") ||
-                               errorName === "InvalidSignatureException";
-      
+      const isClockSkewError =
+        errorMessage.includes("Signature not yet current") ||
+        errorMessage.includes("InvalidSignatureException") ||
+        errorName === "InvalidSignatureException";
+
       // Provide specific guidance for clock skew
       if (isClockSkewError) {
-        console.error(
-          "📝 [TranslationService] ❌ Clock Skew Error Detected!",
-          {
-            issue: "Device clock is out of sync with AWS servers",
-            solution: "Sync your device's date/time with network time",
-            details: "AWS requires requests to be within 15 minutes of server time. Your device appears to be ahead by several days.",
-            quickFix: "Check device settings → Date & Time → Set Automatically",
-          }
-        );
+        console.error("📝 [TranslationService] ❌ Clock Skew Error Detected!", {
+          issue: "Device clock is out of sync with AWS servers",
+          solution: "Sync your device's date/time with network time",
+          details:
+            "AWS requires requests to be within 15 minutes of server time. Your device appears to be ahead by several days.",
+          quickFix: "Check device settings → Date & Time → Set Automatically",
+        });
       }
-      
+
       // Provide helpful error message for missing credentials
-      if (errorMessage.includes("Credential") || errorMessage.includes("credentials")) {
+      if (
+        errorMessage.includes("Credential") ||
+        errorMessage.includes("credentials")
+      ) {
         console.warn(
           "📝 [TranslationService] AWS credentials not found. Translation disabled.",
           {
@@ -437,7 +475,7 @@ export class TranslationService {
           }
         );
       }
-      
+
       // Return original text on error
       return text;
     }
@@ -461,7 +499,11 @@ export class TranslationService {
 
     for (let i = 0; i < texts.length; i++) {
       const text = texts[i];
-      const cached = await this.getCachedTranslation(text, sourceLanguage, targetLanguage);
+      const cached = await this.getCachedTranslation(
+        text,
+        sourceLanguage,
+        targetLanguage
+      );
       if (cached) {
         results[i] = cached;
       } else {
@@ -472,9 +514,11 @@ export class TranslationService {
 
     // Translate remaining texts in parallel (with deduplication)
     const translationPromises = textsToTranslate.map(({ index, text }) =>
-      this.translateText(text, targetLanguage, sourceLanguage).then((translated) => {
-        results[index] = translated;
-      })
+      this.translateText(text, targetLanguage, sourceLanguage).then(
+        translated => {
+          results[index] = translated;
+        }
+      )
     );
 
     await Promise.all(translationPromises);
@@ -488,9 +532,11 @@ export class TranslationService {
   async clearCache(): Promise<void> {
     try {
       const keys = await AsyncStorage.getAllKeys();
-      const cacheKeys = keys.filter((key) => key.startsWith(CACHE_PREFIX));
+      const cacheKeys = keys.filter(key => key.startsWith(CACHE_PREFIX));
       await AsyncStorage.multiRemove(cacheKeys);
-      console.log(`[TranslationService] Cleared ${cacheKeys.length} cached translations`);
+      console.log(
+        `[TranslationService] Cleared ${cacheKeys.length} cached translations`
+      );
     } catch (error) {
       console.error("[TranslationService] Error clearing cache:", error);
     }

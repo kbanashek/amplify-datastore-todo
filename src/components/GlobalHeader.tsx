@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from "react-native";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -36,16 +42,18 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
         <Text style={[styles.headerTitle, isRTL && { textAlign: "right" }]}>
           {translatedTitle}
         </Text>
-        <View style={[styles.headerActions, rtlStyle(styles.headerActions) as ViewStyle]}>
+        <View
+          style={[
+            styles.headerActions,
+            rtlStyle(styles.headerActions) as ViewStyle,
+          ]}
+        >
           {rightAction}
           {showBackButton && onBackPress && (
             <BackButton onPress={onBackPress} />
           )}
           {showMenuButton && onMenuPress && (
-            <TouchableOpacity
-              onPress={onMenuPress}
-              style={styles.menuButton}
-            >
+            <TouchableOpacity onPress={onMenuPress} style={styles.menuButton}>
               <IconSymbol
                 name="line.3.horizontal"
                 size={24}
@@ -55,7 +63,12 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
           )}
         </View>
       </View>
-      <View style={[styles.headerBottom, rtlStyle(styles.headerBottom) as ViewStyle]}>
+      <View
+        style={[
+          styles.headerBottom,
+          rtlStyle(styles.headerBottom) as ViewStyle,
+        ]}
+      >
         <NetworkStatusIndicator />
         <LanguageSelector />
       </View>
@@ -118,4 +131,3 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
-

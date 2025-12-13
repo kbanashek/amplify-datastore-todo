@@ -1,9 +1,12 @@
-import { useState, useCallback } from 'react';
-import { TaskService } from '../services/TaskService';
-import { Task, UpdateTaskInput } from '../types/Task';
+import { useState, useCallback } from "react";
+import { TaskService } from "../services/TaskService";
+import { Task, UpdateTaskInput } from "../types/Task";
 
 interface UseTaskUpdateReturn {
-  updateTask: (id: string, data: Omit<UpdateTaskInput, 'id' | '_version'>) => Promise<Task | null>;
+  updateTask: (
+    id: string,
+    data: Omit<UpdateTaskInput, "id" | "_version">
+  ) => Promise<Task | null>;
   isUpdating: boolean;
   error: string | null;
 }
@@ -17,18 +20,25 @@ export const useTaskUpdate = (): UseTaskUpdateReturn => {
   const [error, setError] = useState<string | null>(null);
 
   const updateTask = useCallback(
-    async (id: string, data: Omit<UpdateTaskInput, 'id' | '_version'>): Promise<Task | null> => {
+    async (
+      id: string,
+      data: Omit<UpdateTaskInput, "id" | "_version">
+    ): Promise<Task | null> => {
       setIsUpdating(true);
       setError(null);
 
       try {
-        console.log('[useTaskUpdate] Updating task', { id, data });
+        console.log("[useTaskUpdate] Updating task", { id, data });
         const updated = await TaskService.updateTask(id, data);
-        console.log('[useTaskUpdate] Task updated successfully', { id, updated });
+        console.log("[useTaskUpdate] Task updated successfully", {
+          id,
+          updated,
+        });
         return updated;
       } catch (err: unknown) {
-        const errorMessage = err instanceof Error ? err.message : 'Failed to update task';
-        console.error('[useTaskUpdate] Error updating task:', err);
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to update task";
+        console.error("[useTaskUpdate] Error updating task:", err);
         setError(errorMessage);
         return null;
       } finally {
@@ -44,6 +54,3 @@ export const useTaskUpdate = (): UseTaskUpdateReturn => {
     error,
   };
 };
-
-
-

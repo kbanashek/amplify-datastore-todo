@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, ScrollView, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTaskResultList } from '../../src/hooks/useTaskResultList';
-import { TaskResultService } from '../../src/services/TaskResultService';
-import { NetworkStatusIndicator } from '../../src/components/NetworkStatusIndicator';
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTaskResultList } from "../../src/hooks/useTaskResultList";
+import { TaskResultService } from "../../src/services/TaskResultService";
+import { NetworkStatusIndicator } from "../../src/components/NetworkStatusIndicator";
 
 export default function TaskResultsScreen() {
-  const { taskResults, loading, error, handleDeleteTaskResult } = useTaskResultList();
+  const { taskResults, loading, error, handleDeleteTaskResult } =
+    useTaskResultList();
   const [showForm, setShowForm] = useState(false);
-  const [taskInstanceId, setTaskInstanceId] = useState('');
-  const [status, setStatus] = useState('COMPLETED');
-  const [startedAt, setStartedAt] = useState('');
-  const [completedAt, setCompletedAt] = useState('');
+  const [taskInstanceId, setTaskInstanceId] = useState("");
+  const [status, setStatus] = useState("COMPLETED");
+  const [startedAt, setStartedAt] = useState("");
+  const [completedAt, setCompletedAt] = useState("");
   const [pk, setPk] = useState(`TASKRESULT-${Date.now()}`);
   const [sk, setSk] = useState(`SK-${Date.now()}`);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,15 +41,15 @@ export default function TaskResultsScreen() {
         startedAt: startedAt.trim() || null,
         completedAt: completedAt.trim() || null,
       });
-      setTaskInstanceId('');
-      setStatus('COMPLETED');
-      setStartedAt('');
-      setCompletedAt('');
+      setTaskInstanceId("");
+      setStatus("COMPLETED");
+      setStartedAt("");
+      setCompletedAt("");
       setPk(`TASKRESULT-${Date.now()}`);
       setSk(`SK-${Date.now()}`);
       setShowForm(false);
     } catch (err) {
-      console.error('Error creating task result:', err);
+      console.error("Error creating task result:", err);
     } finally {
       setIsSubmitting(false);
     }
@@ -53,7 +62,7 @@ export default function TaskResultsScreen() {
         <NetworkStatusIndicator />
       </View>
 
-      <ScrollView 
+      <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
@@ -64,12 +73,14 @@ export default function TaskResultsScreen() {
               style={styles.createButton}
               onPress={() => setShowForm(true)}
             >
-              <Text style={styles.createButtonText}>+ Create New Task Result</Text>
+              <Text style={styles.createButtonText}>
+                + Create New Task Result
+              </Text>
             </TouchableOpacity>
           ) : (
             <View style={styles.formContainer}>
               <Text style={styles.formTitle}>Create Task Result</Text>
-              
+
               <TextInput
                 style={styles.input}
                 placeholder="Task Instance ID (optional)"
@@ -124,10 +135,10 @@ export default function TaskResultsScreen() {
                   style={[styles.button, styles.cancelButton]}
                   onPress={() => {
                     setShowForm(false);
-                    setTaskInstanceId('');
-                    setStatus('COMPLETED');
-                    setStartedAt('');
-                    setCompletedAt('');
+                    setTaskInstanceId("");
+                    setStatus("COMPLETED");
+                    setStartedAt("");
+                    setCompletedAt("");
                   }}
                   disabled={isSubmitting}
                 >
@@ -151,8 +162,10 @@ export default function TaskResultsScreen() {
         </View>
 
         <View style={styles.listSection}>
-          <Text style={styles.listTitle}>Task Results ({taskResults.length})</Text>
-          
+          <Text style={styles.listTitle}>
+            Task Results ({taskResults.length})
+          </Text>
+
           {loading && taskResults.length === 0 ? (
             <View style={styles.centerContainer}>
               <ActivityIndicator size="large" color="#3498db" />
@@ -164,18 +177,25 @@ export default function TaskResultsScreen() {
             </View>
           ) : taskResults.length === 0 ? (
             <View style={styles.centerContainer}>
-              <Text style={styles.emptyText}>No task results yet. Create one above!</Text>
+              <Text style={styles.emptyText}>
+                No task results yet. Create one above!
+              </Text>
             </View>
           ) : (
-            taskResults.map((tr) => (
+            taskResults.map(tr => (
               <View key={tr.id} style={styles.card}>
                 <View style={styles.cardHeader}>
                   <View>
                     <Text style={styles.cardTitle}>
-                      {tr.taskInstanceId || 'Task Result'}
+                      {tr.taskInstanceId || "Task Result"}
                     </Text>
                     {tr.status && (
-                      <Text style={[styles.statusBadge, { backgroundColor: getStatusColor(tr.status) }]}>
+                      <Text
+                        style={[
+                          styles.statusBadge,
+                          { backgroundColor: getStatusColor(tr.status) },
+                        ]}
+                      >
                         {tr.status}
                       </Text>
                     )}
@@ -187,8 +207,14 @@ export default function TaskResultsScreen() {
                     <Text style={styles.deleteButtonText}>Delete</Text>
                   </TouchableOpacity>
                 </View>
-                {tr.startedAt && <Text style={styles.cardMeta}>Started: {tr.startedAt}</Text>}
-                {tr.completedAt && <Text style={styles.cardMeta}>Completed: {tr.completedAt}</Text>}
+                {tr.startedAt && (
+                  <Text style={styles.cardMeta}>Started: {tr.startedAt}</Text>
+                )}
+                {tr.completedAt && (
+                  <Text style={styles.cardMeta}>
+                    Completed: {tr.completedAt}
+                  </Text>
+                )}
                 <Text style={styles.cardMeta}>PK: {tr.pk}</Text>
                 <Text style={styles.cardMeta}>SK: {tr.sk}</Text>
               </View>
@@ -202,31 +228,35 @@ export default function TaskResultsScreen() {
 
 const getStatusColor = (status: string): string => {
   switch (status?.toUpperCase()) {
-    case 'COMPLETED': return '#27ae60';
-    case 'STARTED': return '#f39c12';
-    case 'INPROGRESS': return '#9b59b6';
-    default: return '#95a5a6';
+    case "COMPLETED":
+      return "#27ae60";
+    case "STARTED":
+      return "#f39c12";
+    case "INPROGRESS":
+      return "#9b59b6";
+    default:
+      return "#95a5a6";
   }
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f6fa',
+    backgroundColor: "#f5f6fa",
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: '#dfe4ea',
+    borderBottomColor: "#dfe4ea",
   },
   headerTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#2f3542',
+    fontWeight: "bold",
+    color: "#2f3542",
   },
   scrollView: {
     flex: 1,
@@ -238,41 +268,41 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   createButton: {
-    backgroundColor: '#3498db',
+    backgroundColor: "#3498db",
     padding: 16,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   createButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   formContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 16,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#dfe4ea',
+    borderColor: "#dfe4ea",
   },
   formTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#2f3542',
+    fontWeight: "bold",
+    color: "#2f3542",
     marginBottom: 16,
   },
   input: {
-    backgroundColor: '#f8f9fa',
+    backgroundColor: "#f8f9fa",
     borderWidth: 1,
-    borderColor: '#dfe4ea',
+    borderColor: "#dfe4ea",
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
     marginBottom: 12,
-    color: '#2f3542',
+    color: "#2f3542",
   },
   buttonRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 12,
     marginTop: 8,
   },
@@ -280,77 +310,77 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 12,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   cancelButton: {
-    backgroundColor: '#ecf0f1',
+    backgroundColor: "#ecf0f1",
   },
   cancelButtonText: {
-    color: '#57606f',
+    color: "#57606f",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   submitButton: {
-    backgroundColor: '#3498db',
+    backgroundColor: "#3498db",
   },
   submitButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   listSection: {
     marginTop: 8,
   },
   listTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#2f3542',
+    fontWeight: "bold",
+    color: "#2f3542",
     marginBottom: 16,
   },
   centerContainer: {
     padding: 32,
-    alignItems: 'center',
+    alignItems: "center",
   },
   loadingText: {
     marginTop: 12,
-    color: '#57606f',
+    color: "#57606f",
     fontSize: 14,
   },
   errorText: {
-    color: '#e74c3c',
+    color: "#e74c3c",
     fontSize: 14,
-    textAlign: 'center',
+    textAlign: "center",
   },
   emptyText: {
-    color: '#747d8c',
+    color: "#747d8c",
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 8,
     padding: 16,
     marginBottom: 12,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
   },
   cardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
     marginBottom: 8,
   },
   cardTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#2f3542',
+    fontWeight: "bold",
+    color: "#2f3542",
     marginBottom: 4,
   },
   statusBadge: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 4,
@@ -358,20 +388,19 @@ const styles = StyleSheet.create({
   },
   cardMeta: {
     fontSize: 12,
-    color: '#95a5a6',
-    fontFamily: 'monospace',
+    color: "#95a5a6",
+    fontFamily: "monospace",
     marginTop: 4,
   },
   deleteButton: {
-    backgroundColor: '#e74c3c',
+    backgroundColor: "#e74c3c",
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 4,
   },
   deleteButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 12,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
-

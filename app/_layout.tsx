@@ -1,28 +1,31 @@
 // Import synchronous Amplify initialization first, before any other imports
-import '../src/amplify-init-sync';
+import "../src/amplify-init-sync";
 
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-import { useEffect } from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import "react-native-reanimated";
+import { useEffect } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { AmplifyProvider } from '../src/contexts/AmplifyContext';
-import { TranslationProvider } from '../src/contexts/TranslationContext';
+import { useColorScheme } from "@/hooks/useColorScheme";
+import { AmplifyProvider } from "../src/contexts/AmplifyContext";
+import { TranslationProvider } from "../src/contexts/TranslationContext";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
-  
+
   // Verify Amplify is initialized at the root level
   useEffect(() => {
     // Amplify is already initialized by importing amplify-init-sync
-
   }, []);
 
   if (!loaded) {
@@ -32,7 +35,7 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <TranslationProvider>
           <AmplifyProvider>
             <Stack>

@@ -20,7 +20,12 @@ export const useQuestionList = (): UseQuestionListReturn => {
     const sub = QuestionService.subscribeQuestions((items, isSynced) => {
       setQuestions(items);
       setLoading(false);
-      console.log('[useQuestionList] Questions updated:', items.length, 'synced:', isSynced);
+      console.log(
+        "[useQuestionList] Questions updated:",
+        items.length,
+        "synced:",
+        isSynced
+      );
     });
     setSubscription(sub);
 
@@ -61,4 +66,3 @@ export const useQuestionList = (): UseQuestionListReturn => {
     refreshQuestions,
   };
 };
-

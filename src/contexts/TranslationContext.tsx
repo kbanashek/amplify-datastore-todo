@@ -52,7 +52,9 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
   region,
 }) => {
   // Initialize with null to indicate loading state
-  const [currentLanguage, setCurrentLanguage] = useState<LanguageCode | null>(null);
+  const [currentLanguage, setCurrentLanguage] = useState<LanguageCode | null>(
+    null
+  );
   const [isTranslating, setIsTranslating] = useState(false);
   const translationService = getTranslationService(region);
 
@@ -67,11 +69,11 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
         console.log("🌍 [TranslationProvider] Loaded from AsyncStorage:", {
           saved,
           isValid:
-            saved && SUPPORTED_LANGUAGES.some((lang) => lang.code === saved),
+            saved && SUPPORTED_LANGUAGES.some(lang => lang.code === saved),
         });
 
         let languageToUse: LanguageCode;
-        if (saved && SUPPORTED_LANGUAGES.some((lang) => lang.code === saved)) {
+        if (saved && SUPPORTED_LANGUAGES.some(lang => lang.code === saved)) {
           console.log(
             "🌍 [TranslationProvider] Setting language to saved preference:",
             saved
@@ -84,7 +86,7 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
           );
           languageToUse = defaultLanguage;
         }
-        
+
         // Set the language (this will trigger RTL update and context update)
         setCurrentLanguage(languageToUse);
       } catch (error) {
@@ -109,7 +111,7 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
   // Update I18nManager when language changes to enable/disable RTL
   useEffect(() => {
     if (currentLanguage === null) return; // Don't update RTL while loading
-    
+
     const shouldBeRTL = isRTLanguage(currentLanguage);
     if (I18nManager.isRTL !== shouldBeRTL) {
       I18nManager.forceRTL(shouldBeRTL);
@@ -173,7 +175,10 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
         console.log("🔤 [TranslationProvider] Skipping translation", {
           targetLanguage,
           sourceLanguage,
-          reason: targetLanguage === sourceLanguage ? "same language" : "target language is English",
+          reason:
+            targetLanguage === sourceLanguage
+              ? "same language"
+              : "target language is English",
         });
         return text;
       }

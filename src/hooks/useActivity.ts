@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
-import { ActivityService } from '../services/ActivityService';
-import { Activity } from '../types/Activity';
+import { useState, useEffect, useCallback } from "react";
+import { ActivityService } from "../services/ActivityService";
+import { Activity } from "../types/Activity";
 
 interface UseActivityReturn {
   activity: Activity | null;
@@ -29,20 +29,26 @@ export const useActivity = (activityId: string | null): UseActivityReturn => {
       setLoading(true);
       setError(null);
 
-      console.log('[useActivity] Fetching activity', { activityId });
+      console.log("[useActivity] Fetching activity", { activityId });
       const activities = await ActivityService.getActivities();
-      const found = activities.find((a) => a.pk === activityId || a.id === activityId);
+      const found = activities.find(
+        a => a.pk === activityId || a.id === activityId
+      );
 
       if (!found) {
         setError(`Activity not found: ${activityId}`);
         setActivity(null);
       } else {
         setActivity(found);
-        console.log('[useActivity] Activity fetched successfully', { id: found.id, name: found.name });
+        console.log("[useActivity] Activity fetched successfully", {
+          id: found.id,
+          name: found.name,
+        });
       }
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch activity';
-      console.error('[useActivity] Error fetching activity:', err);
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to fetch activity";
+      console.error("[useActivity] Error fetching activity:", err);
       setError(errorMessage);
       setActivity(null);
     } finally {
@@ -57,11 +63,14 @@ export const useActivity = (activityId: string | null): UseActivityReturn => {
     const sub = ActivityService.subscribeActivities((items, isSynced) => {
       if (!activityId) return;
 
-      const found = items.find((a) => a.pk === activityId || a.id === activityId);
+      const found = items.find(a => a.pk === activityId || a.id === activityId);
       if (found) {
         setActivity(found);
         setLoading(false);
-        console.log('[useActivity] Activity updated via subscription', { id: found.id, name: found.name });
+        console.log("[useActivity] Activity updated via subscription", {
+          id: found.id,
+          name: found.name,
+        });
       }
     });
 
@@ -83,6 +92,3 @@ export const useActivity = (activityId: string | null): UseActivityReturn => {
     refresh,
   };
 };
-
-
-

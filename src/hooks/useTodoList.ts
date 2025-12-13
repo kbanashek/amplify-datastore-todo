@@ -83,15 +83,15 @@ export const useTodoList = (): UseTodoListReturn => {
     try {
       setLoading(true);
       setError(null);
-      
+
       // Unsubscribe from current subscription
       if (subscription) {
         subscription.unsubscribe();
       }
-      
+
       // Clear the DataStore
       await TodoService.clearDataStore();
-      
+
       // Reinitialize todos after clearing
       initTodos();
     } catch (err) {

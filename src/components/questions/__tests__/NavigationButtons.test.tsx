@@ -194,4 +194,3 @@ describe("NavigationButtons", () => {
     expect(mockOnReviewOrSubmit).toHaveBeenCalledTimes(1);
   });
 });
-

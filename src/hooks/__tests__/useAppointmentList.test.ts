@@ -115,13 +115,17 @@ describe("useAppointmentList", () => {
       expect(result.current.loading).toBe(false);
     });
 
-    expect(result.current.error).toBe("Failed to load appointments. Please try again.");
+    expect(result.current.error).toBe(
+      "Failed to load appointments. Please try again."
+    );
     expect(result.current.appointments).toEqual([]);
     expect(result.current.appointmentData).toBeNull();
   });
 
   it("should handle null appointment data", async () => {
-    (AppointmentService.getAppointmentData as jest.Mock).mockResolvedValue(null);
+    (AppointmentService.getAppointmentData as jest.Mock).mockResolvedValue(
+      null
+    );
 
     const { result } = renderHook(() => useAppointmentList());
 
@@ -163,4 +167,3 @@ describe("useAppointmentList", () => {
     expect(AppointmentService.getAppointments).toHaveBeenCalled();
   });
 });
-

@@ -54,7 +54,8 @@ export const useQuestionNavigation = ({
   const router = useRouter();
 
   // Translate validation messages
-  const { translatedText: validationErrorTitle } = useTranslatedText("Validation Error");
+  const { translatedText: validationErrorTitle } =
+    useTranslatedText("Validation Error");
   const { translatedText: validationErrorMessage } = useTranslatedText(
     "Please answer all required questions before continuing."
   );
@@ -73,7 +74,7 @@ export const useQuestionNavigation = ({
 
     // Normal flow: validate before proceeding
     if (validateCurrentScreen()) {
-      setCurrentScreenIndex((prev) => prev + 1);
+      setCurrentScreenIndex(prev => prev + 1);
       setErrors({});
     } else {
       Alert.alert(validationErrorTitle, validationErrorMessage);
@@ -128,7 +129,7 @@ export const useQuestionNavigation = ({
       setErrors({});
       return;
     }
-    setCurrentScreenIndex((prev) => prev - 1);
+    setCurrentScreenIndex(prev => prev - 1);
     setErrors({});
   }, [
     currentScreenIndex,

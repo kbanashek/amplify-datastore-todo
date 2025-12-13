@@ -64,7 +64,7 @@ export const AppointmentsGroupedView: React.FC<
 
   return (
     <View style={styles.container}>
-      {groupedAppointments.map((group) => (
+      {groupedAppointments.map(group => (
         <View key={group.date} style={styles.dayGroup}>
           {/* Date Header - only show if not hidden */}
           {!hideDateHeader && (
@@ -83,7 +83,7 @@ export const AppointmentsGroupedView: React.FC<
           )}
 
           {/* Appointments */}
-          {group.appointments.map((appointment) => (
+          {group.appointments.map(appointment => (
             <AppointmentCard
               key={appointment.appointmentId}
               appointment={appointment}

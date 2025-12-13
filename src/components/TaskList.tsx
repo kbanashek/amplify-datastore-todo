@@ -40,7 +40,7 @@ const groupTasksByDate = (tasks: Task[]): GroupedTasks => {
     past: [],
   };
 
-  tasks.forEach((task) => {
+  tasks.forEach(task => {
     // If no startTimeInMillSec, put in upcoming
     if (!task.startTimeInMillSec) {
       console.log(
@@ -189,7 +189,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
       return (
         <View
           style={styles.todaySectionHeader}
-          onLayout={(e) => {
+          onLayout={e => {
             console.log("[TaskList] Today section header LAYOUT:", {
               width: e.nativeEvent.layout.width,
               height: e.nativeEvent.layout.height,
@@ -201,7 +201,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
           <View style={styles.todaySectionContent}>
             <Text
               style={styles.todaySectionTitle}
-              onLayout={(e) => {
+              onLayout={e => {
                 console.log("[TaskList] Today section title LAYOUT:", {
                   width: e.nativeEvent.layout.width,
                   height: e.nativeEvent.layout.height,
@@ -300,7 +300,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
           sections={fallbackSections}
           renderItem={renderTask}
           renderSectionHeader={renderSectionHeader}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id}
           contentContainerStyle={styles.listContent}
         />
       </View>
@@ -315,7 +315,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
   console.log("[TaskList] RENDERING MAIN SECTIONLIST");
   console.log(
     "[TaskList] Sections to render:",
-    sections.map((s) => ({
+    sections.map(s => ({
       title: s.title,
       count: s.data.length,
       highlight: s.highlight,
@@ -334,7 +334,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
       <SectionList
         sections={sections}
         renderItem={renderTask}
-        renderSectionHeader={(info) => {
+        renderSectionHeader={info => {
           console.log(
             "[TaskList] SectionList renderSectionHeader called with:",
             {
@@ -345,7 +345,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
           );
           return renderSectionHeader(info);
         }}
-        keyExtractor={(item) => {
+        keyExtractor={item => {
           console.log("[TaskList] keyExtractor called for:", item.id);
           return item.id;
         }}
@@ -361,7 +361,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
         SectionSeparatorComponent={() => <View style={{ height: 8 }} />}
         ListHeaderComponent={null}
         stickySectionHeadersEnabled={false}
-        onViewableItemsChanged={(info) => {
+        onViewableItemsChanged={info => {
           console.log(
             "[TaskList] Viewable items changed:",
             info.viewableItems.length
