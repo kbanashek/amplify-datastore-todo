@@ -8,10 +8,16 @@ import { NumberQuestion } from "./NumberQuestion";
 import { SingleSelectQuestion } from "./SingleSelectQuestion";
 import { TextQuestion } from "./TextQuestion";
 
-// Component to translate error messages
-const ErrorText: React.FC<{ error: string }> = ({ error }) => {
-  const { translatedText } = useTranslatedText(error);
-  return <Text style={styles.errorText}>{translatedText}</Text>;
+// Component to render a single error message (extracted to avoid hooks in map)
+// This must be a separate component because hooks cannot be called inside loops
+// All validation messages are automatically translated
+const ErrorMessage: React.FC<{ error: string }> = ({ error }) => {
+  const { translatedText: translatedError } = useTranslatedText(error);
+  return (
+    <View style={styles.errorMessageContainer}>
+      <Text style={styles.errorText}>{translatedError}</Text>
+    </View>
+  );
 };
 
 interface QuestionRendererProps {
@@ -79,8 +85,8 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
     ...(width === "100%"
       ? { width: "100%" as const }
       : width
-      ? { width: parseFloat(width) || undefined }
-      : {}),
+        ? { width: parseFloat(width) || undefined }
+        : {}),
     marginLeft,
     marginRight,
     paddingLeft,
@@ -125,7 +131,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
         <NumberQuestion
           question={question}
           value={answerValue !== undefined ? answerValue : ""}
-          onChange={(value) => onAnswerChange(question.id, value)}
+          onChange={value => onAnswerChange(question.id, value)}
           displayProperties={displayProperties}
           errors={questionErrors}
         />
@@ -142,7 +148,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
         <NumberQuestion
           question={question}
           value={answerValue !== undefined ? answerValue : ""}
-          onChange={(value) => onAnswerChange(question.id, value)}
+          onChange={value => onAnswerChange(question.id, value)}
           displayProperties={displayProperties}
           errors={questionErrors}
         />
@@ -158,7 +164,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
         <NumberQuestion
           question={question}
           value={answerValue !== undefined ? answerValue : ""}
-          onChange={(value) => onAnswerChange(question.id, value)}
+          onChange={value => onAnswerChange(question.id, value)}
           displayProperties={displayProperties}
           errors={questionErrors}
         />
@@ -171,7 +177,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
         <NumberQuestion
           question={question}
           value={answerValue !== undefined ? answerValue : ""}
-          onChange={(value) => onAnswerChange(question.id, value)}
+          onChange={value => onAnswerChange(question.id, value)}
           displayProperties={displayProperties}
           errors={questionErrors}
         />
@@ -187,7 +193,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
           <TextQuestion
             question={question}
             value={answerValue || ""}
-            onChange={(value) => onAnswerChange(question.id, value)}
+            onChange={value => onAnswerChange(question.id, value)}
             displayProperties={displayProperties}
             errors={questionErrors}
           />
@@ -201,7 +207,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
           <SingleSelectQuestion
             question={question}
             value={answerValue !== undefined ? answerValue : null}
-            onChange={(value) => onAnswerChange(question.id, value)}
+            onChange={value => onAnswerChange(question.id, value)}
             displayProperties={displayProperties}
             errors={questionErrors}
           />
@@ -214,7 +220,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
           <MultiSelectQuestion
             question={question}
             value={Array.isArray(answerValue) ? answerValue : []}
-            onChange={(value) => onAnswerChange(question.id, value)}
+            onChange={value => onAnswerChange(question.id, value)}
             displayProperties={displayProperties}
             errors={questionErrors}
           />
@@ -226,7 +232,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
           <NumberQuestion
             question={question}
             value={answerValue !== undefined ? answerValue : ""}
-            onChange={(value) => onAnswerChange(question.id, value)}
+            onChange={value => onAnswerChange(question.id, value)}
             displayProperties={displayProperties}
             errors={questionErrors}
           />
@@ -241,7 +247,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
           <DateQuestion
             question={question}
             value={answerValue !== undefined ? answerValue : null}
-            onChange={(value) => onAnswerChange(question.id, value)}
+            onChange={value => onAnswerChange(question.id, value)}
             displayProperties={displayProperties}
             errors={questionErrors}
           />
@@ -279,14 +285,9 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
       {renderQuestion()}
       {questionErrors.length > 0 && (
         <View style={styles.errorsContainer}>
-          {questionErrors.map((error, index) => {
-            const { translatedText: translatedError } = useTranslatedText(error);
-            return (
-              <Text key={index} style={styles.errorText}>
-                {translatedError}
-              </Text>
-            );
-          })}
+          {questionErrors.map((error, index) => (
+            <ErrorMessage key={index} error={error} />
+          ))}
         </View>
       )}
     </View>
@@ -331,11 +332,14 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 4,
   },
+  errorMessageContainer: {
+    marginTop: 4,
+    marginBottom: 4,
+  },
   errorText: {
     fontSize: 14,
     color: "#e74c3c",
-    marginTop: 4,
-    marginBottom: 4,
     fontWeight: "500",
+    lineHeight: 20,
   },
 });

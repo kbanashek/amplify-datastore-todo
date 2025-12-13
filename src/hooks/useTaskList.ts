@@ -34,64 +34,73 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
 
       // Subscribe to changes in tasks
       const sub = TaskService.subscribeTasks((items, synced) => {
-        console.log('========================================');
-        console.log('[useTaskList] SUBSCRIPTION CALLBACK FIRED');
-        console.log('[useTaskList] Items count:', items.length);
-        console.log('[useTaskList] Synced:', synced);
-        console.log('[useTaskList] Items:', items.map(t => ({ 
-          id: t.id, 
-          title: t.title, 
-          status: t.status,
-          statusString: t.status,
-          isStarted: t.status === TaskStatus.STARTED,
-          isInProgress: t.status === TaskStatus.INPROGRESS,
-          isCompleted: t.status === TaskStatus.COMPLETED,
-        })));
-        console.log('========================================');
+        console.log("========================================");
+        console.log("[useTaskList] SUBSCRIPTION CALLBACK FIRED");
+        console.log("[useTaskList] Items count:", items.length);
+        console.log("[useTaskList] Synced:", synced);
+        console.log(
+          "[useTaskList] Items:",
+          items.map(t => ({
+            id: t.id,
+            title: t.title,
+            status: t.status,
+            statusString: t.status,
+            isStarted: t.status === TaskStatus.STARTED,
+            isInProgress: t.status === TaskStatus.INPROGRESS,
+            isCompleted: t.status === TaskStatus.COMPLETED,
+          }))
+        );
+        console.log("========================================");
         // Apply filters if provided
         let filteredItems = items;
-        
+
         if (filters) {
           if (filters.status && filters.status.length > 0) {
-            filteredItems = filteredItems.filter(task => 
+            filteredItems = filteredItems.filter(task =>
               filters.status!.includes(task.status)
             );
           }
-          
+
           if (filters.taskType && filters.taskType.length > 0) {
-            filteredItems = filteredItems.filter(task => 
+            filteredItems = filteredItems.filter(task =>
               filters.taskType!.includes(task.taskType)
             );
           }
-          
+
           if (filters.searchText) {
             const searchLower = filters.searchText.toLowerCase();
-            filteredItems = filteredItems.filter(task =>
-              task.title.toLowerCase().includes(searchLower) ||
-              (task.description && task.description.toLowerCase().includes(searchLower))
+            filteredItems = filteredItems.filter(
+              task =>
+                task.title.toLowerCase().includes(searchLower) ||
+                (task.description &&
+                  task.description.toLowerCase().includes(searchLower))
             );
           }
-          
+
           if (filters.dateFrom || filters.dateTo) {
             filteredItems = filteredItems.filter(task => {
               if (!task.startTimeInMillSec) return false;
-              
+
               const taskDate = new Date(task.startTimeInMillSec);
-              
+
               if (filters.dateFrom && taskDate < filters.dateFrom) {
                 return false;
               }
-              
+
               if (filters.dateTo && taskDate > filters.dateTo) {
                 return false;
               }
-              
+
               return true;
             });
           }
         }
-        
-        console.log('[useTaskList] Setting tasks:', filteredItems.length, 'after filtering');
+
+        console.log(
+          "[useTaskList] Setting tasks:",
+          filteredItems.length,
+          "after filtering"
+        );
         setTasks(filteredItems);
         setIsSynced(synced);
         setLoading(false);
@@ -155,13 +164,13 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
     try {
       setLoading(true);
       setError(null);
-      
+
       if (subscription) {
         subscription.unsubscribe();
       }
-      
+
       await TaskService.clearDataStore();
-      
+
       initTasks();
     } catch (err) {
       console.error("Error clearing DataStore:", err);
@@ -182,4 +191,3 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
     refreshTasks,
   };
 };
-

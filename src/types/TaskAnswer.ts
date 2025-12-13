@@ -9,7 +9,7 @@ export interface TaskAnswer {
   hashKey?: string | null;
   syncState?: number | null;
   syncStatus?: string | null;
-  
+
   // DataStore fields
   createdAt?: string | null;
   updatedAt?: string | null;
@@ -38,5 +38,3 @@ export interface UpdateTaskAnswerInput {
   syncState?: number | null;
   syncStatus?: string | null;
 }
-
-

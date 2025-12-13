@@ -1,5 +1,11 @@
 import React from "react";
-import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useRTL } from "../../hooks/useRTL";
 import { AppColors } from "../../constants/AppColors";
 import { Shadows, TextStyles } from "../../constants/AppStyles";
@@ -77,7 +83,8 @@ export const QuestionScreenContent: React.FC<QuestionScreenContentProps> = ({
 
   // Build button container style using display properties and RTL
   const buttonContainerStyle = rtlStyle({
-    width: buttonWidth === "100%" ? "100%" : parseFloat(buttonWidth) || undefined,
+    width:
+      buttonWidth === "100%" ? "100%" : parseFloat(buttonWidth) || undefined,
     marginLeft: buttonMarginLeft,
     marginRight: buttonMarginRight,
     paddingLeft: buttonPaddingLeft,
@@ -97,7 +104,7 @@ export const QuestionScreenContent: React.FC<QuestionScreenContentProps> = ({
       style={styles.scrollView}
       contentContainerStyle={[
         styles.scrollContent,
-        { 
+        {
           // Ensure button is always visible with generous bottom padding
           // Account for tab bar (60px) + safe area + extra spacing (40px)
           paddingBottom: Math.max(bottomInset + 100, 140),
@@ -106,7 +113,7 @@ export const QuestionScreenContent: React.FC<QuestionScreenContentProps> = ({
       keyboardShouldPersistTaps="handled"
       showsVerticalScrollIndicator={true}
     >
-      {currentScreen.elements.map((element) => {
+      {currentScreen.elements.map(element => {
         console.log("📄 [QuestionScreenContent] Rendering element", {
           elementId: element.id,
           questionId: element.question.id,
@@ -141,7 +148,7 @@ export const QuestionScreenContent: React.FC<QuestionScreenContentProps> = ({
             style={[
               styles.navButton,
               styles.submitButton,
-              (currentScreenValid || cameFromReview)
+              currentScreenValid || cameFromReview
                 ? styles.submitButtonEnabled
                 : styles.submitButtonDisabled,
             ]}

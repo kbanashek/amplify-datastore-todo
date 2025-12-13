@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, TextInput, View, Text, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  View,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import Slider from "@react-native-community/slider";
 import { Question } from "../../types/ActivityConfig";
+import { useTranslatedText } from "../../hooks/useTranslatedText";
 
 interface NumberQuestionProps {
   question: Question;
@@ -19,29 +26,61 @@ export const NumberQuestion: React.FC<NumberQuestionProps> = ({
   errors,
 }) => {
   const unit = displayProperties.uniti18nKey || "";
-  const placeholder = question.friendlyName || "Enter a number";
+  const placeholderText = question.friendlyName || "Enter a number";
+  const { translatedText: placeholder } = useTranslatedText(placeholderText);
 
   // Handle numeric scale (1-10, etc.)
   const validations = question.validations || [];
-  const minValidation = validations.find((v) => v.type === "min");
-  const maxValidation = validations.find((v) => v.type === "max");
-  const min = minValidation?.value ? parseInt(minValidation.value, 10) : undefined;
-  const max = maxValidation?.value ? parseInt(maxValidation.value, 10) : undefined;
+  const minValidation = validations.find(v => v.type === "min");
+  const maxValidation = validations.find(v => v.type === "max");
+  const min = minValidation?.value
+    ? parseInt(minValidation.value, 10)
+    : undefined;
+  const max = maxValidation?.value
+    ? parseInt(maxValidation.value, 10)
+    : undefined;
 
-  // If it's a numeric scale, render as slider
-  if ((question.type === "numericScale" || question.type?.toLowerCase() === "numericscale") && min !== undefined && max !== undefined) {
-    const currentValue = value ? (typeof value === "string" ? parseInt(value, 10) : value) : min;
-    const initialValue = !isNaN(currentValue) && currentValue >= min && currentValue <= max ? currentValue : min;
-    const [sliderValue, setSliderValue] = useState<number>(initialValue);
+  // Check if this is a numeric scale slider
+  const isNumericScale =
+    (question.type === "numericScale" ||
+      question.type?.toLowerCase() === "numericscale") &&
+    min !== undefined &&
+    max !== undefined;
 
-    // Sync slider value with prop value
-    useEffect(() => {
-      const newValue = value ? (typeof value === "string" ? parseInt(value, 10) : value) : min;
+  // Calculate initial slider value (hooks must be called unconditionally)
+  const currentValue =
+    isNumericScale && value
+      ? typeof value === "string"
+        ? parseInt(value, 10)
+        : value
+      : (min ?? 0);
+  const initialValue =
+    isNumericScale &&
+    !isNaN(currentValue) &&
+    currentValue >= min! &&
+    currentValue <= max!
+      ? currentValue
+      : (min ?? 0);
+
+  // Hooks must be called unconditionally - always call them
+  const [sliderValue, setSliderValue] = useState<number>(initialValue);
+
+  // Sync slider value with prop value (only update if it's a numeric scale)
+  useEffect(() => {
+    if (isNumericScale && min !== undefined && max !== undefined) {
+      const newValue = value
+        ? typeof value === "string"
+          ? parseInt(value, 10)
+          : value
+        : min;
       if (!isNaN(newValue) && newValue >= min && newValue <= max) {
         setSliderValue(newValue);
       }
-    }, [value, min, max]);
+    }
+  }, [value, min, max, isNumericScale]);
 
+  // If it's a numeric scale, render as slider
+  if (isNumericScale) {
     return (
       <View style={styles.container}>
         <View style={styles.sliderContainer}>
@@ -56,7 +95,7 @@ export const NumberQuestion: React.FC<NumberQuestionProps> = ({
             maximumValue={max}
             step={1}
             value={sliderValue}
-            onValueChange={(newValue) => {
+            onValueChange={newValue => {
               const intValue = Math.round(newValue);
               setSliderValue(intValue);
               console.log("🔢 [NumberQuestion] Slider value changed", {
@@ -81,12 +120,9 @@ export const NumberQuestion: React.FC<NumberQuestionProps> = ({
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         <TextInput
-          style={[
-            styles.input,
-            errors.length > 0 && styles.inputError,
-          ]}
+          style={[styles.input, errors.length > 0 && styles.inputError]}
           value={value?.toString() || ""}
-          onChangeText={(text) => {
+          onChangeText={text => {
             const numericValue = !isNaN(Number(text)) ? Number(text) : null;
             console.log("🔢 [NumberQuestion] Value changed", {
               questionId: question.id,
@@ -158,4 +194,3 @@ const styles = StyleSheet.create({
     height: 40,
   },
 });
-

@@ -5,7 +5,7 @@ export interface DataPoint {
   dataPointKey?: string | null;
   type?: string | null;
   anchors?: string | null; // JSON string of DataPointAnchor[]
-  
+
   // DataStore fields
   createdAt?: string | null;
   updatedAt?: string | null;
@@ -32,7 +32,7 @@ export interface DataPointInstance {
   eventTime?: string | null;
   questionId?: string | null;
   answers?: string | null; // JSON string of StudyAnswer[]
-  
+
   // DataStore fields
   createdAt?: string | null;
   updatedAt?: string | null;
@@ -92,5 +92,3 @@ export interface UpdateDataPointInstanceInput {
   questionId?: string | null;
   answers?: string | null;
 }
-
-

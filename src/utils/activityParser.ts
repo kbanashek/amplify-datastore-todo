@@ -28,9 +28,9 @@ export function parseActivityConfig(
   // Extract questions from activityGroups for reference
   const questionMap = new Map<string, Question>();
   if (activityConfig.activityGroups) {
-    activityConfig.activityGroups.forEach((group) => {
+    activityConfig.activityGroups.forEach(group => {
       if (group.questions) {
-        group.questions.forEach((question) => {
+        group.questions.forEach(question => {
           questionMap.set(question.id, question);
         });
         allQuestions.push(...group.questions);
@@ -108,7 +108,10 @@ export function parseActivityConfig(
 
             screens.push({
               id: screen.id || `screen-${screens.length}`,
-              name: screen.name || screen.text || `Page ${screen.order || screens.length + 1}`,
+              name:
+                screen.name ||
+                screen.text ||
+                `Page ${screen.order || screens.length + 1}`,
               order: screen.order || screens.length,
               elements: parsedElements,
               displayProperties: screenDisplayProperties,
@@ -180,7 +183,10 @@ export function parseActivityConfig(
 
         screens.push({
           id: screen.id || `screen-${screens.length}`,
-          name: screen.name || screen.text || `Page ${screen.order || screens.length + 1}`,
+          name:
+            screen.name ||
+            screen.text ||
+            `Page ${screen.order || screens.length + 1}`,
           order: screen.order || screens.length,
           elements: parsedElements,
           displayProperties: screenDisplayProperties,
@@ -208,4 +214,3 @@ export function getDisplayProperty(
 ): string {
   return displayProperties[key] || defaultValue;
 }
-

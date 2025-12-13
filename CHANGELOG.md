@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.6] - 2025-12-13
+
+### Added
+
+- Husky pre-push hooks for code quality checks
+- Pre-push hook runs lint, format check, and circular dependency detection
+- GitHub Actions workflow for running unit tests on pull requests
+- Prettier configuration for consistent code formatting
+- Circular dependency detection using madge
+- Enhanced error message rendering with translation support for validation messages
+- Translation support for input placeholders in TextQuestion and NumberQuestion components
+
+### Changed
+
+- Fixed React Hooks violation by extracting ErrorMessage component from map loop
+- Improved error message styling and visibility
+
 ## [0.1.5] - 2025-12-13
 
 ### Changed

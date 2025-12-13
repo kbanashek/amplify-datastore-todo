@@ -49,15 +49,22 @@ export default function AppointmentDetailsScreen() {
   const { translatedText: startTimeLabel } = useTranslatedText("Start Time");
   const { translatedText: endTimeLabel } = useTranslatedText("End Time");
   const { translatedText: descriptionLabel } = useTranslatedText("Description");
-  const { translatedText: instructionsLabel } = useTranslatedText("Instructions");
+  const { translatedText: instructionsLabel } =
+    useTranslatedText("Instructions");
   const { translatedText: telehealthLabel } = useTranslatedText("Telehealth");
-  const { translatedText: onsiteVisitLabel } = useTranslatedText("Onsite Visit");
+  const { translatedText: onsiteVisitLabel } =
+    useTranslatedText("Onsite Visit");
   const { translatedText: scheduledLabel } = useTranslatedText("Scheduled");
   const { translatedText: cancelledLabel } = useTranslatedText("Cancelled");
   const { translatedText: completedLabel } = useTranslatedText("Completed");
   const { translatedText: inProgressLabel } = useTranslatedText("In Progress");
   const { translatedText: noAppointmentText } = useTranslatedText(
     "No appointment data available"
+  );
+
+  // Call hook before early return - use fallback if appointment is null
+  const { translatedText: appointmentTitle } = useTranslatedText(
+    appointment?.title || ""
   );
 
   if (!appointment) {
@@ -81,7 +88,8 @@ export default function AppointmentDetailsScreen() {
     );
   }
 
-  const isTelehealth = appointment.appointmentType === AppointmentType.TELEVISIT;
+  const isTelehealth =
+    appointment.appointmentType === AppointmentType.TELEVISIT;
   const startTime = new Date(appointment.startAt);
   const endTime = new Date(appointment.endAt);
   const timezoneId = params.timezoneId as string | undefined;
@@ -125,10 +133,6 @@ export default function AppointmentDetailsScreen() {
     }
   };
 
-  const { translatedText: appointmentTitle } = useTranslatedText(
-    appointment.title
-  );
-
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <GlobalHeader
@@ -142,7 +146,9 @@ export default function AppointmentDetailsScreen() {
         contentContainerStyle={styles.scrollContent}
       >
         {/* Icon and Title Section */}
-        <View style={[styles.headerSection, rtlStyle(styles.headerSection) as any]}>
+        <View
+          style={[styles.headerSection, rtlStyle(styles.headerSection) as any]}
+        >
           <View style={styles.iconContainer}>
             <IconSymbol
               name={isTelehealth ? "video.fill" : "building.2.fill"}
@@ -350,4 +356,3 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
 });
-

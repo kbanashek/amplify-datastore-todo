@@ -84,7 +84,7 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
     fetchTask();
 
     // Subscribe to task updates for real-time status changes
-    const subscription = DataStore.observe(DataStoreTask).subscribe((msg) => {
+    const subscription = DataStore.observe(DataStoreTask).subscribe(msg => {
       if (msg.element.id === taskId) {
         console.log("[useQuestionsScreen] Task updated via subscription:", {
           id: msg.element.id,

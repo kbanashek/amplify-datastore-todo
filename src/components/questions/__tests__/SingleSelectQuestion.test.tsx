@@ -191,6 +191,3 @@ describe("SingleSelectQuestion", () => {
     expect(option1).toBeTruthy();
   });
 });
-
-
-

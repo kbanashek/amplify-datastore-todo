@@ -1,4 +1,8 @@
-import { Appointment, AppointmentData, GroupedAppointment } from "../types/Appointment";
+import {
+  Appointment,
+  AppointmentData,
+  GroupedAppointment,
+} from "../types/Appointment";
 
 /**
  * Parse appointment data from JSON structure
@@ -12,7 +16,7 @@ export function parseAppointmentData(data: AppointmentData): Appointment[] {
   }
 
   return data.clinicPatientAppointments.clinicAppointments.items.filter(
-    (appointment) => appointment.isDeleted === 0
+    appointment => appointment.isDeleted === 0
   );
 }
 
@@ -20,13 +24,21 @@ export function parseAppointmentData(data: AppointmentData): Appointment[] {
  * Format date to display label
  */
 export function formatDateLabel(date: Date, today: Date = new Date()): string {
-  const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const todayStart = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate()
+  );
   const tomorrowStart = new Date(todayStart);
   tomorrowStart.setDate(tomorrowStart.getDate() + 1);
   const dayAfterStart = new Date(tomorrowStart);
   dayAfterStart.setDate(dayAfterStart.getDate() + 1);
 
-  const dateStart = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const dateStart = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  );
 
   if (dateStart.getTime() === todayStart.getTime()) {
     return "Today";
@@ -55,7 +67,7 @@ export function formatTime(date: Date, timezoneId?: string): string {
     minute: "2-digit",
     hour12: true,
   });
-  
+
   // Convert "PM" to "p. m." and "AM" to "a. m."
   return timeString.replace(/\s(AM|PM)/i, (match, period) => {
     const lower = period.toLowerCase();
@@ -91,19 +103,19 @@ export function groupAppointmentsByDate(
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const todayEnd = new Date(todayStart);
   todayEnd.setDate(todayEnd.getDate() + 1);
-  
+
   const grouped = new Map<string, Appointment[]>();
 
   // Filter for today if requested
   const filteredAppointments = todayOnly
-    ? appointments.filter((appointment) => {
+    ? appointments.filter(appointment => {
         const startDate = new Date(appointment.startAt);
         return startDate >= todayStart && startDate < todayEnd;
       })
     : appointments;
 
   // Group by date (YYYY-MM-DD)
-  filteredAppointments.forEach((appointment) => {
+  filteredAppointments.forEach(appointment => {
     const startDate = new Date(appointment.startAt);
     const dateKey = startDate.toISOString().split("T")[0]; // YYYY-MM-DD
 
@@ -133,4 +145,3 @@ export function groupAppointmentsByDate(
 
   return groupedArray;
 }
-

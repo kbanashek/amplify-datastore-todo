@@ -1,6 +1,9 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
 import { TaskAnswer } from "../../models";
-import { CreateTaskAnswerInput, UpdateTaskAnswerInput } from "../types/TaskAnswer";
+import {
+  CreateTaskAnswerInput,
+  UpdateTaskAnswerInput,
+} from "../types/TaskAnswer";
 
 type TaskAnswerUpdateData = Omit<UpdateTaskAnswerInput, "id" | "_version">;
 
@@ -30,16 +33,24 @@ export class TaskAnswerService {
     });
   }
 
-  static async createTaskAnswer(input: CreateTaskAnswerInput): Promise<TaskAnswer> {
+  static async createTaskAnswer(
+    input: CreateTaskAnswerInput
+  ): Promise<TaskAnswer> {
     try {
-      console.log('[TaskAnswerService] Creating task answer with DataStore:', input);
+      console.log(
+        "[TaskAnswerService] Creating task answer with DataStore:",
+        input
+      );
       const answer = await DataStore.save(
         new TaskAnswer({
           ...input,
         })
       );
-      
-      console.log('[TaskAnswerService] TaskAnswer created successfully:', answer.id);
+
+      console.log(
+        "[TaskAnswerService] TaskAnswer created successfully:",
+        answer.id
+      );
       return answer;
     } catch (error) {
       console.error("Error creating task answer:", error);
@@ -65,7 +76,10 @@ export class TaskAnswerService {
     }
   }
 
-  static async updateTaskAnswer(id: string, data: TaskAnswerUpdateData): Promise<TaskAnswer> {
+  static async updateTaskAnswer(
+    id: string,
+    data: TaskAnswerUpdateData
+  ): Promise<TaskAnswer> {
     try {
       const original = await DataStore.query(TaskAnswer, id);
       if (!original) {
@@ -73,7 +87,7 @@ export class TaskAnswerService {
       }
 
       const updated = await DataStore.save(
-        TaskAnswer.copyOf(original, (updated) => {
+        TaskAnswer.copyOf(original, updated => {
           Object.assign(updated, data);
         })
       );
@@ -99,28 +113,34 @@ export class TaskAnswerService {
     }
   }
 
-  static subscribeTaskAnswers(callback: (items: TaskAnswer[], isSynced: boolean) => void): {
+  static subscribeTaskAnswers(
+    callback: (items: TaskAnswer[], isSynced: boolean) => void
+  ): {
     unsubscribe: () => void;
   } {
-    console.log('[TaskAnswerService] Setting up DataStore subscription for TaskAnswer');
-    
-    const querySubscription = DataStore.observeQuery(TaskAnswer).subscribe((snapshot) => {
-      const { items, isSynced } = snapshot;
-      
-      console.log('[TaskAnswerService] DataStore subscription update:', {
-        itemCount: items.length,
-        isSynced,
-        itemIds: items.map(i => i.id)
-      });
-      
-      callback(items, isSynced);
-    });
-    
+    console.log(
+      "[TaskAnswerService] Setting up DataStore subscription for TaskAnswer"
+    );
+
+    const querySubscription = DataStore.observeQuery(TaskAnswer).subscribe(
+      snapshot => {
+        const { items, isSynced } = snapshot;
+
+        console.log("[TaskAnswerService] DataStore subscription update:", {
+          itemCount: items.length,
+          isSynced,
+          itemIds: items.map(i => i.id),
+        });
+
+        callback(items, isSynced);
+      }
+    );
+
     return {
       unsubscribe: () => {
-        console.log('[TaskAnswerService] Unsubscribing from DataStore');
+        console.log("[TaskAnswerService] Unsubscribing from DataStore");
         querySubscription.unsubscribe();
-      }
+      },
     };
   }
 

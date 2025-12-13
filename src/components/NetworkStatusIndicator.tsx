@@ -1,11 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { useNetworkStatus } from '../hooks/useNetworkStatus';
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
+import { useNetworkStatus } from "../hooks/useNetworkStatus";
 
 export const NetworkStatusIndicator: React.FC = () => {
   // Use the custom hook to get network status information
   const { statusColor, statusText } = useNetworkStatus();
-  
+
   return (
     <View style={styles.container}>
       <View style={[styles.indicator, { backgroundColor: statusColor }]} />
@@ -16,11 +16,11 @@ export const NetworkStatusIndicator: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 8,
     paddingHorizontal: 16,
-    backgroundColor: '#f5f6fa',
+    backgroundColor: "#f5f6fa",
     borderRadius: 20,
   },
   indicator: {
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
-    fontWeight: '500',
-    color: '#2f3542',
+    fontWeight: "500",
+    color: "#2f3542",
   },
 });

@@ -542,7 +542,8 @@ export const deleteDataPoint = /* GraphQL */ `mutation DeleteDataPoint(
   APITypes.DeleteDataPointMutationVariables,
   APITypes.DeleteDataPointMutation
 >;
-export const createDataPointInstance = /* GraphQL */ `mutation CreateDataPointInstance(
+export const createDataPointInstance =
+  /* GraphQL */ `mutation CreateDataPointInstance(
   $input: CreateDataPointInstanceInput!
   $condition: ModelDataPointInstanceConditionInput
 ) {
@@ -573,10 +574,11 @@ export const createDataPointInstance = /* GraphQL */ `mutation CreateDataPointIn
   }
 }
 ` as GeneratedMutation<
-  APITypes.CreateDataPointInstanceMutationVariables,
-  APITypes.CreateDataPointInstanceMutation
->;
-export const updateDataPointInstance = /* GraphQL */ `mutation UpdateDataPointInstance(
+    APITypes.CreateDataPointInstanceMutationVariables,
+    APITypes.CreateDataPointInstanceMutation
+  >;
+export const updateDataPointInstance =
+  /* GraphQL */ `mutation UpdateDataPointInstance(
   $input: UpdateDataPointInstanceInput!
   $condition: ModelDataPointInstanceConditionInput
 ) {
@@ -607,10 +609,11 @@ export const updateDataPointInstance = /* GraphQL */ `mutation UpdateDataPointIn
   }
 }
 ` as GeneratedMutation<
-  APITypes.UpdateDataPointInstanceMutationVariables,
-  APITypes.UpdateDataPointInstanceMutation
->;
-export const deleteDataPointInstance = /* GraphQL */ `mutation DeleteDataPointInstance(
+    APITypes.UpdateDataPointInstanceMutationVariables,
+    APITypes.UpdateDataPointInstanceMutation
+  >;
+export const deleteDataPointInstance =
+  /* GraphQL */ `mutation DeleteDataPointInstance(
   $input: DeleteDataPointInstanceInput!
   $condition: ModelDataPointInstanceConditionInput
 ) {
@@ -641,9 +644,9 @@ export const deleteDataPointInstance = /* GraphQL */ `mutation DeleteDataPointIn
   }
 }
 ` as GeneratedMutation<
-  APITypes.DeleteDataPointInstanceMutationVariables,
-  APITypes.DeleteDataPointInstanceMutation
->;
+    APITypes.DeleteDataPointInstanceMutationVariables,
+    APITypes.DeleteDataPointInstanceMutation
+  >;
 export const createTaskAnswer = /* GraphQL */ `mutation CreateTaskAnswer(
   $input: CreateTaskAnswerInput!
   $condition: ModelTaskAnswerConditionInput

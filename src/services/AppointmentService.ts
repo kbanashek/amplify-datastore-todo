@@ -79,7 +79,7 @@ export class AppointmentService {
         siteTimezoneId: data.siteTimezoneId,
         sampleItems: data.clinicPatientAppointments.clinicAppointments.items
           .slice(0, 2)
-          .map((apt) => ({
+          .map(apt => ({
             title: apt.title,
             startAt: apt.startAt,
             appointmentId: apt.appointmentId,
@@ -152,7 +152,7 @@ export class AppointmentService {
         totalAppointments: allAppointments.length,
       });
 
-      const filtered = allAppointments.filter((appointment) => {
+      const filtered = allAppointments.filter(appointment => {
         const startDate = new Date(appointment.startAt);
 
         // Get the date parts in local timezone for both dates
@@ -192,7 +192,7 @@ export class AppointmentService {
         todayStartLocal: `${todayStart.getFullYear()}-${
           todayStart.getMonth() + 1
         }-${todayStart.getDate()}`,
-        filteredAppointments: filtered.map((apt) => {
+        filteredAppointments: filtered.map(apt => {
           const aptDate = new Date(apt.startAt);
           return {
             title: apt.title,
@@ -203,7 +203,7 @@ export class AppointmentService {
             dateUTC: aptDate.toISOString(),
           };
         }),
-        allAppointments: allAppointments.slice(0, 5).map((apt) => {
+        allAppointments: allAppointments.slice(0, 5).map(apt => {
           const aptDate = new Date(apt.startAt);
           return {
             title: apt.title,
@@ -225,7 +225,7 @@ export class AppointmentService {
             todayStartLocal: `${todayStart.getFullYear()}-${
               todayStart.getMonth() + 1
             }-${todayStart.getDate()}`,
-            sampleAppointmentDates: allAppointments.slice(0, 3).map((apt) => {
+            sampleAppointmentDates: allAppointments.slice(0, 3).map(apt => {
               const aptDate = new Date(apt.startAt);
               return {
                 title: apt.title,

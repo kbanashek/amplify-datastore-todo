@@ -119,4 +119,3 @@ export interface ParsedScreen {
   elements: ParsedElement[];
   displayProperties?: Record<string, string>;
 }
-

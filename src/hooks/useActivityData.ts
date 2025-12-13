@@ -121,7 +121,7 @@ export const useActivityData = ({
         const existingAnswers: Record<string, any> = {};
         if (taskId) {
           const taskAnswersForTask = getAnswersByTaskId(taskId);
-          taskAnswersForTask.forEach((ta) => {
+          taskAnswersForTask.forEach(ta => {
             if (ta.questionId && ta.answer) {
               try {
                 existingAnswers[ta.questionId] = JSON.parse(ta.answer);

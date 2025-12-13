@@ -20,7 +20,12 @@ export const useTaskHistoryList = (): UseTaskHistoryListReturn => {
     const sub = TaskHistoryService.subscribeTaskHistories((items, isSynced) => {
       setTaskHistories(items);
       setLoading(false);
-      console.log('[useTaskHistoryList] TaskHistories updated:', items.length, 'synced:', isSynced);
+      console.log(
+        "[useTaskHistoryList] TaskHistories updated:",
+        items.length,
+        "synced:",
+        isSynced
+      );
     });
     setSubscription(sub);
 
@@ -61,4 +66,3 @@ export const useTaskHistoryList = (): UseTaskHistoryListReturn => {
     refreshTaskHistories,
   };
 };
-

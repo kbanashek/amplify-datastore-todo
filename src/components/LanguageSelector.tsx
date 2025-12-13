@@ -9,19 +9,26 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useTranslation } from "../contexts/TranslationContext";
-import { LanguageCode, SUPPORTED_LANGUAGES } from "../services/TranslationService";
+import {
+  LanguageCode,
+  SUPPORTED_LANGUAGES,
+} from "../services/TranslationService";
 
 interface LanguageSelectorProps {
   style?: object;
 }
 
-export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ style }) => {
-  const { currentLanguage, setLanguage, supportedLanguages, isTranslating } = useTranslation();
+export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
+  style,
+}) => {
+  const { currentLanguage, setLanguage, supportedLanguages, isTranslating } =
+    useTranslation();
   const [modalVisible, setModalVisible] = useState(false);
   const [changingLanguage, setChangingLanguage] = useState(false);
 
   const currentLanguageName =
-    supportedLanguages.find((lang) => lang.code === currentLanguage)?.name || "English";
+    supportedLanguages.find(lang => lang.code === currentLanguage)?.name ||
+    "English";
 
   const handleLanguageSelect = async (languageCode: LanguageCode) => {
     console.log("🌐 [LanguageSelector] Language selected", {
@@ -31,7 +38,9 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ style }) => 
     });
 
     if (languageCode === currentLanguage) {
-      console.log("🌐 [LanguageSelector] Same language selected, closing modal");
+      console.log(
+        "🌐 [LanguageSelector] Same language selected, closing modal"
+      );
       setModalVisible(false);
       return;
     }
@@ -95,12 +104,15 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ style }) => 
 
             <FlatList
               data={supportedLanguages}
-              keyExtractor={(item) => item.code}
+              keyExtractor={item => item.code}
               renderItem={({ item }) => {
                 const isSelected = item.code === currentLanguage;
                 return (
                   <TouchableOpacity
-                    style={[styles.languageItem, isSelected && styles.languageItemSelected]}
+                    style={[
+                      styles.languageItem,
+                      isSelected && styles.languageItemSelected,
+                    ]}
                     onPress={() => handleLanguageSelect(item.code)}
                     disabled={changingLanguage}
                   >
@@ -202,4 +214,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-

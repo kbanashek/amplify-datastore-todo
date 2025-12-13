@@ -160,6 +160,3 @@ describe("TextQuestion", () => {
     expect(input.props.textAlignVertical).toBe("center");
   });
 });
-
-
-

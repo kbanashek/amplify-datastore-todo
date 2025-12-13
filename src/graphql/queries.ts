@@ -599,7 +599,8 @@ export const syncDataPoints = /* GraphQL */ `query SyncDataPoints(
   APITypes.SyncDataPointsQueryVariables,
   APITypes.SyncDataPointsQuery
 >;
-export const getDataPointInstance = /* GraphQL */ `query GetDataPointInstance($id: ID!) {
+export const getDataPointInstance =
+  /* GraphQL */ `query GetDataPointInstance($id: ID!) {
   getDataPointInstance(id: $id) {
     id
     pk
@@ -627,10 +628,11 @@ export const getDataPointInstance = /* GraphQL */ `query GetDataPointInstance($i
   }
 }
 ` as GeneratedQuery<
-  APITypes.GetDataPointInstanceQueryVariables,
-  APITypes.GetDataPointInstanceQuery
->;
-export const listDataPointInstances = /* GraphQL */ `query ListDataPointInstances(
+    APITypes.GetDataPointInstanceQueryVariables,
+    APITypes.GetDataPointInstanceQuery
+  >;
+export const listDataPointInstances =
+  /* GraphQL */ `query ListDataPointInstances(
   $filter: ModelDataPointInstanceFilterInput
   $limit: Int
   $nextToken: String
@@ -671,10 +673,11 @@ export const listDataPointInstances = /* GraphQL */ `query ListDataPointInstance
   }
 }
 ` as GeneratedQuery<
-  APITypes.ListDataPointInstancesQueryVariables,
-  APITypes.ListDataPointInstancesQuery
->;
-export const syncDataPointInstances = /* GraphQL */ `query SyncDataPointInstances(
+    APITypes.ListDataPointInstancesQueryVariables,
+    APITypes.ListDataPointInstancesQuery
+  >;
+export const syncDataPointInstances =
+  /* GraphQL */ `query SyncDataPointInstances(
   $filter: ModelDataPointInstanceFilterInput
   $limit: Int
   $nextToken: String
@@ -717,9 +720,9 @@ export const syncDataPointInstances = /* GraphQL */ `query SyncDataPointInstance
   }
 }
 ` as GeneratedQuery<
-  APITypes.SyncDataPointInstancesQueryVariables,
-  APITypes.SyncDataPointInstancesQuery
->;
+    APITypes.SyncDataPointInstancesQueryVariables,
+    APITypes.SyncDataPointInstancesQuery
+  >;
 export const getTaskAnswer = /* GraphQL */ `query GetTaskAnswer($id: ID!) {
   getTaskAnswer(id: $id) {
     id

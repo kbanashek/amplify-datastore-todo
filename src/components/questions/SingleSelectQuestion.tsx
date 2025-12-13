@@ -22,7 +22,12 @@ export const SingleSelectQuestion: React.FC<SingleSelectQuestionProps> = ({
   const choices = question.choices || [];
   const optionPlacement = displayProperties.optionPlacement || "below";
   const [translatedChoices, setTranslatedChoices] = useState<
-    Array<{ id: string; text: string; value: string; translatedText?: string }>
+    Array<{
+      id: string;
+      text: string;
+      value: string;
+      translatedText?: string;
+    }>
   >(choices);
 
   // Translate choices when language changes
@@ -34,7 +39,7 @@ export const SingleSelectQuestion: React.FC<SingleSelectQuestionProps> = ({
       }
 
       const translated = await Promise.all(
-        choices.map(async (choice) => {
+        choices.map(async choice => {
           const translatedText = await translate(choice.text);
           return { ...choice, translatedText };
         })
@@ -50,14 +55,16 @@ export const SingleSelectQuestion: React.FC<SingleSelectQuestionProps> = ({
       questionId: question.id,
       choiceValue,
       totalChoices: choices.length,
-      selectedText: choices.find((c) => c.value === choiceValue || c.id === choiceValue)?.text,
+      selectedText: choices.find(
+        c => c.value === choiceValue || c.id === choiceValue
+      )?.text,
     });
     onChange(choiceValue);
   };
 
   return (
     <View style={styles.container}>
-      {translatedChoices.map((choice) => {
+      {translatedChoices.map(choice => {
         const isSelected = value === choice.value || value === choice.id;
         const displayText = choice.translatedText || choice.text;
         return (
@@ -158,4 +165,3 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
   },
 });
-
