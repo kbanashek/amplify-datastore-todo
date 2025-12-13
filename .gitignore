@@ -80,3 +80,6 @@ src/models/
 # AWS credentials (should never be committed)
 src/config/aws-credentials.json
 **/aws-credentials.json
+
+# Test coverage reports (generated locally)
+coverage/
