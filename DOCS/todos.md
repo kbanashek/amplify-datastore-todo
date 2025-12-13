@@ -9,14 +9,16 @@
 **Current State:**
 
 - GitHub Actions workflow configured for PR tests
-- Tests that require AWS credentials are currently skipped in CI
-- Tests requiring AWS services (TranslationService, DataStore, Amplify) are excluded from CI runs
+- **Unit tests are currently DISABLED in CI** due to CodeArtifact authentication issues
+- CI currently runs lint and format checks only
+- Tests requiring AWS services (TranslationService, DataStore, Amplify) cannot run without credentials
 
 **What Needs to be Done:**
 
 - [ ] Configure GitHub Secrets for AWS credentials (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`)
 - [ ] Set up AWS CodeArtifact authentication in GitHub Actions
-- [ ] Enable full test suite in CI once credentials are configured
+- [ ] Fix npm install to work with or without CodeArtifact credentials
+- [ ] Re-enable unit tests in CI once authentication is configured
 - [ ] Consider using AWS IAM roles for GitHub Actions instead of access keys
 - [ ] Add integration tests that can run with mocked AWS services
 
@@ -25,12 +27,14 @@
 - Tests that use `TranslationService` (requires AWS Translate)
 - Tests that use `DataStore` directly (requires AWS Amplify configuration)
 - Tests that require Amplify initialization
+- **ALL unit tests are currently disabled** until CodeArtifact authentication is fixed
 
 **Workaround:**
 
 - Tests are run locally where AWS credentials are available
-- CI runs lint, format checks, and non-AWS-dependent unit tests
+- CI runs lint and format checks only
 - Full test suite should be run locally before merging PRs
+- Unit tests are disabled in CI until CodeArtifact authentication is properly configured
 
 ## Task/Activities Rule Engine Implementation
 
