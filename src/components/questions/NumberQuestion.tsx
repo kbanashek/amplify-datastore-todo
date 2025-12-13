@@ -9,6 +9,7 @@ import {
 import Slider from "@react-native-community/slider";
 import { Question } from "../../types/ActivityConfig";
 import { useTranslatedText } from "../../hooks/useTranslatedText";
+import { getUnitDisplayLabel } from "../../utils/unitLabel";
 
 interface NumberQuestionProps {
   question: Question;
@@ -25,9 +26,11 @@ export const NumberQuestion: React.FC<NumberQuestionProps> = ({
   displayProperties,
   errors,
 }) => {
-  const unit = displayProperties.uniti18nKey || "";
+  const unitRaw = displayProperties.uniti18nKey || "";
+  const unitBaseLabel = getUnitDisplayLabel(unitRaw);
   const placeholderText = question.friendlyName || "Enter a number";
   const { translatedText: placeholder } = useTranslatedText(placeholderText);
+  const { translatedText: unitLabel } = useTranslatedText(unitBaseLabel);
 
   // Handle numeric scale (1-10, etc.)
   const validations = question.validations || [];
@@ -110,7 +113,7 @@ export const NumberQuestion: React.FC<NumberQuestionProps> = ({
             thumbTintColor="#3498db"
           />
         </View>
-        {unit && <Text style={styles.unitText}>{unit}</Text>}
+        {unitLabel && <Text style={styles.unitText}>{unitLabel}</Text>}
       </View>
     );
   }
@@ -135,7 +138,7 @@ export const NumberQuestion: React.FC<NumberQuestionProps> = ({
           placeholder={placeholder}
           keyboardType="numeric"
         />
-        {unit && <Text style={styles.unitText}>{unit}</Text>}
+        {unitLabel && <Text style={styles.unitText}>{unitLabel}</Text>}
       </View>
     </View>
   );

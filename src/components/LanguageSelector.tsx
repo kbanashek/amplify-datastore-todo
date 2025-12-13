@@ -12,7 +12,7 @@ import { useTranslation } from "../contexts/TranslationContext";
 import {
   LanguageCode,
   SUPPORTED_LANGUAGES,
-} from "../services/TranslationService";
+} from "../services/translationTypes";
 
 interface LanguageSelectorProps {
   style?: object;

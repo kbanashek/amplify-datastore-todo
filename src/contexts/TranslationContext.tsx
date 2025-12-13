@@ -9,12 +9,14 @@ import React, {
 } from "react";
 import { I18nManager } from "react-native";
 import {
-  LanguageCode,
-  SUPPORTED_LANGUAGES,
   TranslationService,
   getTranslationService,
-  isRTL as isRTLanguage,
 } from "../services/TranslationService";
+import {
+  LanguageCode,
+  SUPPORTED_LANGUAGES,
+  isRTL as isRTLanguage,
+} from "../services/translationTypes";
 
 const LANGUAGE_PREFERENCE_KEY = "user_language_preference";
 const DEFAULT_LANGUAGE: LanguageCode = "en";

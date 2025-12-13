@@ -6,6 +6,9 @@ import {
   TranslateTextCommand,
 } from "@aws-sdk/client-translate";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TranslationMemoryService } from "./TranslationMemoryService";
+import { simpleHash } from "../utils/simpleHash";
+import type { LanguageCode } from "./translationTypes";
 
 // Try to load credentials from config file (created by load-aws-credentials script)
 let awsCredentials: {
@@ -23,56 +26,6 @@ try {
   // Config file doesn't exist, will use environment variables or default provider
   awsCredentials = null;
 }
-
-// Simple hash function for cache keys (since React Native doesn't have Node.js crypto)
-function simpleHash(str: string): string {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash = hash & hash; // Convert to 32-bit integer
-  }
-  return Math.abs(hash).toString(36);
-}
-
-// RTL (Right-to-Left) languages
-export const RTL_LANGUAGES = ["ar", "he", "ur", "fa", "yi"] as const;
-
-// AWS Translate supported languages (common ones)
-export const SUPPORTED_LANGUAGES = [
-  { code: "en", name: "English" },
-  { code: "es", name: "Spanish" },
-  { code: "fr", name: "French" },
-  { code: "de", name: "German" },
-  { code: "it", name: "Italian" },
-  { code: "pt", name: "Portuguese" },
-  { code: "zh", name: "Chinese (Simplified)" },
-  { code: "ja", name: "Japanese" },
-  { code: "ko", name: "Korean" },
-  { code: "ar", name: "Arabic" },
-  { code: "he", name: "Hebrew" },
-  { code: "ur", name: "Urdu" },
-  { code: "fa", name: "Persian (Farsi)" },
-  { code: "hi", name: "Hindi" },
-  { code: "ru", name: "Russian" },
-  { code: "nl", name: "Dutch" },
-  { code: "pl", name: "Polish" },
-  { code: "tr", name: "Turkish" },
-  { code: "sv", name: "Swedish" },
-  { code: "da", name: "Danish" },
-  { code: "fi", name: "Finnish" },
-  { code: "no", name: "Norwegian" },
-  { code: "vi", name: "Vietnamese" },
-] as const;
-
-/**
- * Check if a language code is RTL (Right-to-Left)
- */
-export function isRTL(languageCode: LanguageCode): boolean {
-  return (RTL_LANGUAGES as readonly string[]).includes(languageCode);
-}
-
-export type LanguageCode = (typeof SUPPORTED_LANGUAGES)[number]["code"];
 
 const DEFAULT_SOURCE_LANGUAGE: LanguageCode = "en";
 const CACHE_PREFIX = "translation_cache:";
@@ -302,6 +255,16 @@ export class TranslationService {
       return text;
     }
 
+    // Check long-lived translation memory first (offline-capable)
+    const memoryHit = await TranslationMemoryService.getTranslation(
+      text,
+      sourceLanguage,
+      targetLanguage
+    );
+    if (memoryHit) {
+      return memoryHit;
+    }
+
     console.log("📝 [TranslationService] translateText called", {
       text: text.substring(0, 50),
       sourceLanguage,
@@ -435,6 +398,14 @@ export class TranslationService {
           sourceLanguage,
           targetLanguage,
           translatedText
+        );
+
+        // Persist to translation memory for future offline use
+        await TranslationMemoryService.storeTranslation(
+          text,
+          translatedText,
+          sourceLanguage,
+          targetLanguage
         );
 
         return translatedText;

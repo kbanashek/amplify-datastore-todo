@@ -36,6 +36,15 @@
 - Full test suite should be run locally before merging PRs
 - Unit tests are disabled in CI until CodeArtifact authentication is properly configured
 
+## Translation / i18n
+
+### Translation Memory (Offline Strategy)
+
+- [ ] Add tooling to export runtime translation memory (`translation_memory:*`) to a JSON file under `src/translations/`
+- [ ] Add additional seed translation pairs (e.g. `memory.en-fr.json`, `memory.en-de.json`)
+- [ ] Add a small debug/admin screen to inspect translation memory + clear/export it
+- [ ] Consider replacing AWS Translate with a fully offline dictionary-based system for stable UI strings
+
 ## Task/Activities Rule Engine Implementation
 
 ## Task/Activities Rule Engine Implementation

@@ -1,7 +1,7 @@
 {
   "name": "amplify-datastore-todo",
   "main": "./entry.js",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
@@ -12,6 +12,12 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
+    "e2e:build:android": "eas build --profile development --platform android",
+    "e2e:build:ios": "eas build --profile development --platform ios",
+    "e2e:maestro": "maestro test e2e/maestro",
+    "e2e:maestro:android": "maestro test e2e/maestro/android",
+    "e2e:maestro:ios": "maestro test e2e/maestro/ios",
+    "e2e": "npm run e2e:maestro",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "check:circular": "madge --circular --extensions ts,tsx,js,jsx src app",
@@ -37,6 +43,7 @@
     "expo": "~53.0.20",
     "expo-blur": "~14.1.5",
     "expo-constants": "~17.1.7",
+    "expo-dev-client": "~6.0.0",
     "expo-font": "~13.3.2",
     "expo-haptics": "~14.1.4",
     "expo-image": "~2.4.0",
@@ -61,12 +68,17 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@testing-library/react-native": "^13.3.3",
     "@types/react": "~19.0.10",
+    "@types/jest": "^29.5.14",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~9.2.0",
     "husky": "^9.1.7",
+    "jest": "^29.7.0",
+    "jest-expo": "~53.0.0",
     "madge": "^7.0.0",
     "prettier": "^3.7.4",
+    "react-test-renderer": "19.0.0",
     "typescript": "~5.8.3"
   },
   "private": true
