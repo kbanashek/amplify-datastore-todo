@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleProp, StyleSheet, ViewStyle } from "react-native";
 
-import { ThemedView } from "@/components/ThemedView";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedView } from "../ThemedView";
+import { useThemeColor } from "../../hooks/useThemeColor";
 
 export interface CardProps {
   children: React.ReactNode;

@@ -2,7 +2,7 @@
  * Review screen component that displays all answers before submission
  */
 
-import { IconSymbol } from "@/components/ui/IconSymbol";
+import { IconSymbol } from "../ui/IconSymbol";
 import React from "react";
 import {
   ActivityIndicator,

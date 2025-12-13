@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/src/*"]
-    },
     "rootDir": "./src",
     "outDir": "./dist",
     "declaration": true,
@@ -25,6 +22,9 @@
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "src/**/*.json"],
   "exclude": [
+    "dist/**",
+    "node_modules/**",
+
     "src/src/amplify-config.*",
     "src/src/amplify-init.*",
     "src/src/amplify-init-sync.*",
@@ -33,34 +33,18 @@
     "src/src/API.ts",
     "src/src/graphql/**",
 
-    "src/src/components/ui/**",
-    "src/src/components/GlobalHeader.tsx",
-    "src/src/components/NavigationMenu.tsx",
-    "src/src/components/LanguageSelector.tsx",
-    "src/src/components/AppointmentsGroupedView.tsx",
-    "src/src/components/NetworkStatusIndicator.*",
+    // Exclude app-only screens/views that aren't part of the embeddable module build.
+    // These currently have type issues / missing hook modules and are not required by TaskActivityModule.
     "src/src/components/TaskList.tsx",
     "src/src/components/TasksView.tsx",
-    "src/src/components/TaskFilters.tsx",
-    "src/src/components/TaskForm.tsx",
     "src/src/components/TodoForm.tsx",
     "src/src/components/TodoList.tsx",
 
+    // Exclude list screens/hooks not used by the module embed path.
     "src/src/hooks/useActivityList.ts",
-    "src/src/hooks/useDataPoint*",
     "src/src/hooks/useQuestionList.ts",
     "src/src/hooks/useTaskAnswerList.ts",
     "src/src/hooks/useTaskHistoryList.ts",
-    "src/src/hooks/useTaskResultList.ts",
-    "src/src/hooks/useTaskUpdate.ts",
-    "src/src/hooks/useTaskFilters.ts",
-    "src/src/hooks/useTaskForm.ts",
-    "src/src/hooks/useAmplifyState.ts",
-    "src/src/hooks/useNetworkStatus.ts",
-
-    "src/src/services/DataPointService.ts",
-    "src/src/services/SeededDataCleanupService.ts",
-    "src/src/services/ConflictResolution.ts",
-    "src/src/contexts/AmplifyContext.tsx"
+    "src/src/hooks/useTaskResultList.ts"
   ]
 }

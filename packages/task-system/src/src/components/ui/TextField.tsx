@@ -8,8 +8,8 @@ import {
   ViewStyle,
 } from "react-native";
 
-import { ThemedText } from "@/components/ThemedText";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedText } from "../ThemedText";
+import { useThemeColor } from "../../hooks/useThemeColor";
 
 export interface TextFieldProps extends Omit<TextInputProps, "style"> {
   label?: string;

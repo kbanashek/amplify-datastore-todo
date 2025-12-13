@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-import { ThemedText } from "@/components/ThemedText";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedText } from "../ThemedText";
+import { useThemeColor } from "../../hooks/useThemeColor";
 
 export type DateTimeFieldMode = "date" | "time" | "datetime";
 

@@ -1,6 +1,6 @@
 {
   "name": "@orion/task-system",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Orion Task System UI components (React Native).",
   "license": "UNLICENSED",
   "main": "dist/index.js",
@@ -15,6 +15,7 @@
     "@aws-amplify/datastore": ">=5",
     "@react-navigation/native": ">=6",
     "@react-navigation/native-stack": ">=6",
+    "@react-native-community/slider": ">=4",
     "react-native-safe-area-context": ">=4",
     "react-native-screens": ">=3"
   },

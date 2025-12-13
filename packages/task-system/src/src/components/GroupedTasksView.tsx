@@ -1,5 +1,11 @@
 import React from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { GroupedTask } from "../hooks/useGroupedTasks";
 import { AppColors } from "../constants/AppColors";
 import { Appointment } from "../types/Appointment";
@@ -34,7 +40,7 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
 }) => {
   if (loading) {
     return (
-      <View style={styles.centerContainer}>
+      <View style={[styles.centerContainer, styles.fill]}>
         <ActivityIndicator size="large" color={AppColors.CIBlue} />
         <TranslatedText text="Loading tasks..." style={styles.loadingText} />
       </View>
@@ -43,7 +49,7 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
 
   if (error) {
     return (
-      <View style={styles.centerContainer}>
+      <View style={[styles.centerContainer, styles.fill]}>
         <Text style={styles.errorText}>{error}</Text>
       </View>
     );
@@ -63,17 +69,20 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
 
   if (groupedTasks.length === 0 && !shouldShowAppointments) {
     return (
-      <View style={styles.centerContainer}>
+      <View style={[styles.centerContainer, styles.fill]}>
         <TranslatedText text="No tasks available." style={styles.emptyText} />
       </View>
     );
   }
 
   return (
-    <View
-      style={styles.tasksSection}
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={styles.scrollContent}
       testID={TestIds.dashboardTasksGroupedView}
       accessibilityLabel={TestIds.dashboardTasksGroupedView}
+      nestedScrollEnabled={true}
+      keyboardShouldPersistTaps="handled"
     >
       {/* Show appointments for today if they exist and there's no "Today" task group */}
       {shouldShowAppointments && !hasTodayGroup && (
@@ -200,13 +209,19 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
           </View>
         );
       })}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  tasksSection: {
-    marginBottom: 28,
+  fill: {
+    flex: 1,
+  },
+  scroll: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 28,
   },
   dayGroup: {
     marginBottom: 4,

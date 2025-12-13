@@ -41,6 +41,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Dashboard now renders the task/activity flow via `@orion/task-system` instead of local task components
 
+## [0.1.11] - 2025-12-13
+
+### Fixed
+
+- Make `@orion/task-system` consumable by host apps by removing `@/` path-alias imports from emitted build output
+- Fix iOS host bundling by removing runtime dependency on `expo-symbols` in `IconSymbol.ios`
+- Fix Android scrolling by making the grouped tasks view scrollable
+- Ensure re-tapping / refocusing the Tasks tab resets the embedded module back to its dashboard
+
+### Changed
+
+- Add required host dependency metadata for slider-based questions (`@react-native-community/slider`)
+- Add `expo-random` + `react-native-get-random-values` to support secure random generation in the dev client runtime
+
 ## [0.1.7] - 2025-12-13
 
 ### Added

@@ -8,8 +8,8 @@ import {
   ViewStyle,
 } from "react-native";
 
-import { ThemedText } from "@/components/ThemedText";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedText } from "../ThemedText";
+import { useThemeColor } from "../../hooks/useThemeColor";
 
 export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
 export type ButtonSize = "sm" | "md" | "lg";

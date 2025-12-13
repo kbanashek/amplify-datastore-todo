@@ -1,5 +1,6 @@
 import { TaskActivityModule } from "@orion/task-system";
-import React, { useState } from "react";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GlobalHeader } from "../../src/components/GlobalHeader";
@@ -8,6 +9,26 @@ import { NavigationMenu } from "../../src/components/NavigationMenu";
 export default function DashboardScreen() {
   const [showMenu, setShowMenu] = useState(false);
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
+  const [resetSignal, setResetSignal] = useState<number>(0);
+
+  const bumpResetSignal = useCallback((): void => {
+    setResetSignal(prev => prev + 1);
+  }, []);
+
+  // Re-tapping the Tasks tab should reset the module back to its dashboard.
+  useEffect(() => {
+    const navAny = navigation as any;
+    const unsub = navAny?.addListener?.("tabPress", bumpResetSignal);
+    return () => unsub?.();
+  }, [bumpResetSignal, navigation]);
+
+  // Switching away/back to the Tasks tab should also reset to the module dashboard.
+  useEffect(() => {
+    if (!isFocused) return;
+    bumpResetSignal();
+  }, [bumpResetSignal, isFocused]);
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
@@ -21,7 +42,7 @@ export default function DashboardScreen() {
       />
 
       <View style={styles.moduleContainer}>
-        <TaskActivityModule />
+        <TaskActivityModule resetSignal={resetSignal} />
       </View>
 
       <NavigationMenu visible={showMenu} onClose={() => setShowMenu(false)} />

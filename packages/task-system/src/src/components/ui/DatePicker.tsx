@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleProp, ViewStyle } from "react-native";
 
-import { DateTimeField } from "@/components/ui/DateTimeField";
+import { DateTimeField } from "./DateTimeField";
 
 export interface DatePickerProps {
   value: Date | null;

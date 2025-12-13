@@ -1,13 +1,14 @@
-import React from "react";
 import {
   NavigationContainer,
   NavigationIndependentTree,
+  createNavigationContainerRef,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React, { useEffect, useMemo } from "react";
 import { View } from "react-native";
 import { TaskContainer } from "./src/components/TaskContainer";
-import QuestionsScreen from "./src/screens/QuestionsScreen";
 import { TranslationProvider } from "./src/contexts/TranslationContext";
+import QuestionsScreen from "./src/screens/QuestionsScreen";
 
 export type TaskSystemStackParamList = {
   TaskDashboard: undefined;
@@ -15,6 +16,14 @@ export type TaskSystemStackParamList = {
 };
 
 const Stack = createNativeStackNavigator<TaskSystemStackParamList>();
+
+export interface TaskActivityModuleProps {
+  /**
+   * When this value changes, the module resets back to the dashboard route.
+   * Useful for host apps that want "tab re-press" behavior to pop-to-top.
+   */
+  resetSignal?: number;
+}
 
 /**
  * Self-contained task/activity module.
@@ -26,12 +35,29 @@ const Stack = createNativeStackNavigator<TaskSystemStackParamList>();
  * - Uses its own independent NavigationContainer.
  * - Expects Amplify/DataStore to be configured in the host runtime.
  */
-export const TaskActivityModule: React.FC = () => {
+export const TaskActivityModule: React.FC<TaskActivityModuleProps> = ({
+  resetSignal,
+}) => {
+  const navigationRef = useMemo(
+    () => createNavigationContainerRef<TaskSystemStackParamList>(),
+    []
+  );
+
+  useEffect(() => {
+    if (resetSignal === undefined) return;
+    if (!navigationRef.isReady()) return;
+
+    navigationRef.resetRoot({
+      index: 0,
+      routes: [{ name: "TaskDashboard" }],
+    });
+  }, [navigationRef, resetSignal]);
+
   return (
     <TranslationProvider>
       <NavigationIndependentTree>
         <View style={{ flex: 1, minHeight: 1 }}>
-          <NavigationContainer>
+          <NavigationContainer ref={navigationRef}>
             <Stack.Navigator
               {...({ screenOptions: { headerShown: false } } as any)}
             >

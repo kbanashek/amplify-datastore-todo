@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GlobalHeader } from "../components/GlobalHeader";
 import { CompletionScreen } from "../components/questions/CompletionScreen";
@@ -43,7 +43,7 @@ export default function QuestionsScreen() {
   } = useQuestionsScreen();
 
   const { translatedText: headerTitle } = useTranslatedText(
-    taskId ? "Answer Questions" : "Questions"
+    taskId ? "Answer Questionz" : "Questions"
   );
 
   if (loading) {
@@ -61,23 +61,23 @@ export default function QuestionsScreen() {
     );
   }
 
-  if (!activityData || activityData.screens.length === 0) {
-    return (
-      <View style={[styles.container, { paddingTop: insets.top }]}>
-        <GlobalHeader
-          title={headerTitle}
-          showBackButton={!!taskId}
-          onBackPress={handleBack}
-        />
-        <View style={styles.centerContainer}>
-          <Text style={styles.emptyText}>No questions available</Text>
-          <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-            <Text style={styles.backButtonText}>Go Back</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
+  //   if (!activityData || activityData.screens.length === 0) {
+  //     return (
+  //       <View style={[styles.container, { paddingTop: insets.top }]}>
+  //         <GlobalHeader
+  //           title={headerTitle}
+  //           showBackButton={!!taskId}
+  //           onBackPress={handleBack}
+  //         />
+  //         {/* <View style={styles.centerContainer}>
+  //           <Text style={styles.emptyText}>No questions available</Text>
+  //           <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+  //             <Text style={styles.backButtonText}>Go Back</Text>
+  //           </TouchableOpacity>
+  //         </View> */}
+  //       </View>
+  //     );
+  //   }
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
