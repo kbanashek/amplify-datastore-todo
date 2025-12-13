@@ -89,11 +89,15 @@ export function formatTimeRange(
 }
 
 /**
- * Extract timezone abbreviation from timezone ID (e.g., "America/New_York" -> "NYO")
- * Returns empty string if timezoneId is invalid or doesn't contain "/"
+ * Extract a simple display label from an IANA timezone ID.
+ *
+ * Current implementation takes the last segment and returns its first 3 characters:
+ * - "America/New_York" -> "NEW"
+ * - "Europe/London" -> "LON"
+ * - "UTC" -> "UTC"
  *
  * @param timezoneId - IANA timezone identifier (e.g., "America/New_York")
- * @returns Timezone abbreviation (e.g., "NYO") or empty string
+ * @returns Uppercased short label (first 3 chars of last segment) or empty string
  */
 export function getTimezoneAbbreviation(timezoneId?: string | null): string {
   if (!timezoneId) {

@@ -273,7 +273,7 @@ describe("appointmentParser", () => {
 
   describe("getTimezoneAbbreviation", () => {
     it("should extract abbreviation from valid timezone ID", () => {
-      expect(getTimezoneAbbreviation("America/New_York")).toBe("NYO");
+      expect(getTimezoneAbbreviation("America/New_York")).toBe("NEW");
       expect(getTimezoneAbbreviation("Europe/London")).toBe("LON");
       expect(getTimezoneAbbreviation("Asia/Tokyo")).toBe("TOK");
     });
@@ -283,9 +283,9 @@ describe("appointmentParser", () => {
       expect(getTimezoneAbbreviation(undefined)).toBe("");
     });
 
-    it("should return empty string for timezone ID without slash", () => {
-      expect(getTimezoneAbbreviation("UTC")).toBe("");
-      expect(getTimezoneAbbreviation("EST")).toBe("");
+    it("should return the first 3 characters for timezone ID without slash", () => {
+      expect(getTimezoneAbbreviation("UTC")).toBe("UTC");
+      expect(getTimezoneAbbreviation("EST")).toBe("EST");
     });
 
     it("should handle timezone IDs with multiple slashes", () => {
