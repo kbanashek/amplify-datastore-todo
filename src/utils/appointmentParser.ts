@@ -89,6 +89,20 @@ export function formatTimeRange(
 }
 
 /**
+ * Extract timezone abbreviation from timezone ID (e.g., "America/New_York" -> "NYO")
+ * Returns empty string if timezoneId is invalid or doesn't contain "/"
+ *
+ * @param timezoneId - IANA timezone identifier (e.g., "America/New_York")
+ * @returns Timezone abbreviation (e.g., "NYO") or empty string
+ */
+export function getTimezoneAbbreviation(timezoneId?: string | null): string {
+  if (!timezoneId) {
+    return "";
+  }
+  return timezoneId.split("/").pop()?.substring(0, 3)?.toUpperCase() ?? "";
+}
+
+/**
  * Group appointments by date
  * @param appointments - Array of appointments to group
  * @param timezoneId - Optional timezone ID for date calculations

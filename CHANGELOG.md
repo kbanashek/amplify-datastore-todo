@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.7] - 2025-12-13
+
+### Added
+
+- Extracted timezone abbreviation formatting logic to `getTimezoneAbbreviation` utility function in `src/utils/appointmentParser.ts`
+- Added comprehensive unit tests for `getTimezoneAbbreviation` function
+
+### Changed
+
+- Refactored `app/(tabs)/appointment-details.tsx` to use `getTimezoneAbbreviation` utility instead of inline formatting logic
+- Refactored `src/components/AppointmentCard.tsx` to use `getTimezoneAbbreviation` utility instead of inline formatting logic
+- Fixed potential runtime error in timezone abbreviation extraction by adding proper optional chaining
+
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 

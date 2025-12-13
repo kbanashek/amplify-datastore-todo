@@ -1,5 +1,39 @@
 # Project Todos
 
+## CI/CD and Testing
+
+### AWS Credentials in CI/CD
+
+**Status:** ⚠️ Partial Implementation
+
+**Current State:**
+
+- GitHub Actions workflow configured for PR tests
+- Tests that require AWS credentials are currently skipped in CI
+- Tests requiring AWS services (TranslationService, DataStore, Amplify) are excluded from CI runs
+
+**What Needs to be Done:**
+
+- [ ] Configure GitHub Secrets for AWS credentials (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`)
+- [ ] Set up AWS CodeArtifact authentication in GitHub Actions
+- [ ] Enable full test suite in CI once credentials are configured
+- [ ] Consider using AWS IAM roles for GitHub Actions instead of access keys
+- [ ] Add integration tests that can run with mocked AWS services
+
+**Test Files Currently Skipped in CI:**
+
+- Tests that use `TranslationService` (requires AWS Translate)
+- Tests that use `DataStore` directly (requires AWS Amplify configuration)
+- Tests that require Amplify initialization
+
+**Workaround:**
+
+- Tests are run locally where AWS credentials are available
+- CI runs lint, format checks, and non-AWS-dependent unit tests
+- Full test suite should be run locally before merging PRs
+
+## Task/Activities Rule Engine Implementation
+
 ## Task/Activities Rule Engine Implementation
 
 ### Overview
