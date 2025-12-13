@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  TextInput,
-  View,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, TextInput, View, Text } from "react-native";
 import Slider from "@react-native-community/slider";
 import { Question } from "../../types/ActivityConfig";
 import { useTranslatedText } from "../../hooks/useTranslatedText";
 import { getUnitDisplayLabel } from "../../utils/unitLabel";
+import {
+  ValidationType,
+  QuestionType,
+} from "../../types/activity-config-enums";
 
 interface NumberQuestionProps {
   question: Question;
@@ -34,8 +32,8 @@ export const NumberQuestion: React.FC<NumberQuestionProps> = ({
 
   // Handle numeric scale (1-10, etc.)
   const validations = question.validations || [];
-  const minValidation = validations.find(v => v.type === "min");
-  const maxValidation = validations.find(v => v.type === "max");
+  const minValidation = validations.find(v => v.type === ValidationType.MIN);
+  const maxValidation = validations.find(v => v.type === ValidationType.MAX);
   const min = minValidation?.value
     ? parseInt(minValidation.value, 10)
     : undefined;
@@ -45,8 +43,9 @@ export const NumberQuestion: React.FC<NumberQuestionProps> = ({
 
   // Check if this is a numeric scale slider
   const isNumericScale =
-    (question.type === "numericScale" ||
-      question.type?.toLowerCase() === "numericscale") &&
+    (question.type === QuestionType.NUMERIC_SCALE ||
+      question.type?.toLowerCase() ===
+        QuestionType.NUMERIC_SCALE.toLowerCase()) &&
     min !== undefined &&
     max !== undefined;
 

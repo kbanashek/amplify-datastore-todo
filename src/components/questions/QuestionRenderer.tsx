@@ -7,6 +7,7 @@ import { MultiSelectQuestion } from "./MultiSelectQuestion";
 import { NumberQuestion } from "./NumberQuestion";
 import { SingleSelectQuestion } from "./SingleSelectQuestion";
 import { TextQuestion } from "./TextQuestion";
+import { QuestionType } from "../../types/activity-config-enums";
 
 // Component to render a single error message (extracted to avoid hooks in map)
 // This must be a separate component because hooks cannot be called inside loops
@@ -186,9 +187,9 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
 
     // Use lowercase for other standard types
     switch (questionTypeLower) {
-      case "text":
-      case "text-field":
-      case "textarea-field":
+      case QuestionType.TEXT:
+      case QuestionType.TEXT_FIELD:
+      case QuestionType.TEXTAREA_FIELD:
         return (
           <TextQuestion
             question={question}
@@ -199,10 +200,10 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
           />
         );
 
-      case "singleselect":
-      case "choice-field":
-      case "radio-field":
-      case "dropdown-field":
+      case QuestionType.SINGLE_SELECT:
+      case QuestionType.CHOICE_FIELD:
+      case QuestionType.RADIO_FIELD:
+      case QuestionType.DROPDOWN_FIELD:
         return (
           <SingleSelectQuestion
             question={question}
@@ -213,9 +214,9 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
           />
         );
 
-      case "multiselect":
-      case "multi-select-field":
-      case "checkbox-field":
+      case QuestionType.MULTI_SELECT:
+      case QuestionType.MULTI_SELECT_FIELD:
+      case QuestionType.CHECKBOX_FIELD:
         return (
           <MultiSelectQuestion
             question={question}
@@ -226,8 +227,8 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
           />
         );
 
-      case "number":
-      case "number-field":
+      case QuestionType.NUMBER:
+      case QuestionType.NUMBER_FIELD:
         return (
           <NumberQuestion
             question={question}
@@ -238,11 +239,11 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
           />
         );
 
-      case "date":
-      case "date-field":
-      case "date-time-field":
-      case "time":
-      case "time-picker-field":
+      case QuestionType.DATE:
+      case QuestionType.DATE_FIELD:
+      case QuestionType.DATE_TIME_FIELD:
+      case QuestionType.TIME:
+      case QuestionType.TIME_PICKER_FIELD:
         return (
           <DateQuestion
             question={question}
@@ -253,7 +254,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
           />
         );
 
-      case "label":
+      case QuestionType.LABEL:
         return (
           <View style={styles.labelContainer}>
             <Text style={[styles.labelText, { fontSize, color: fontColor }]}>

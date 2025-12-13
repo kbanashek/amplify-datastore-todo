@@ -3,6 +3,11 @@ import {
   ParsedScreen,
   Validation,
 } from "../types/ActivityConfig";
+import {
+  CompareFact,
+  QuestionType,
+  ValidationType,
+} from "../types/activity-config-enums";
 
 /**
  * Validates a single question answer
@@ -15,9 +20,9 @@ export const validateQuestionAnswer = (
 ): string[] => {
   const errors: string[] = [];
   const isNumberField =
-    question.type === "number" ||
-    question.type === "number-field" ||
-    question.type === "numericScale";
+    question.type === QuestionType.NUMBER ||
+    question.type === QuestionType.NUMBER_FIELD ||
+    question.type === QuestionType.NUMERIC_SCALE;
 
   // For number fields, check if the value is a valid number
   if (
@@ -46,8 +51,8 @@ export const validateQuestionAnswer = (
       (Array.isArray(answer) && answer.length === 0))
   ) {
     const errorMsg =
-      question.validations?.find(v => v.type === "required")?.text ||
-      "This field is required.";
+      question.validations?.find(v => v.type === ValidationType.REQUIRED)
+        ?.text || "This field is required.";
     errors.push(errorMsg);
   }
 
@@ -67,7 +72,7 @@ export const validateQuestionAnswer = (
       const answerNum = parseFloat(answerStr);
 
       // Min validation
-      if (validation.type === "min" && validation.value) {
+      if (validation.type === ValidationType.MIN && validation.value) {
         const min = parseFloat(validation.value);
         if (!isNaN(answerNum) && !isNaN(min) && answerNum < min) {
           errors.push(validation.text || `Value must be at least ${min}`);
@@ -75,7 +80,7 @@ export const validateQuestionAnswer = (
       }
 
       // Max validation
-      if (validation.type === "max" && validation.value) {
+      if (validation.type === ValidationType.MAX && validation.value) {
         const max = parseFloat(validation.value);
         if (!isNaN(answerNum) && !isNaN(max) && answerNum > max) {
           errors.push(validation.text || `Value must be at most ${max}`);
@@ -83,7 +88,7 @@ export const validateQuestionAnswer = (
       }
 
       // Pattern validation
-      if (validation.type === "pattern" && validation.value) {
+      if (validation.type === ValidationType.PATTERN && validation.value) {
         try {
           const regex = new RegExp(validation.value);
           if (!regex.test(answerStr)) {
@@ -91,16 +96,17 @@ export const validateQuestionAnswer = (
               validation.text || "Value does not match required format"
             );
           }
-        } catch (e) {
+        } catch (error) {
           console.warn(
             "Invalid regex pattern in validation:",
-            validation.value
+            validation.value,
+            error
           );
         }
       }
 
       // Email validation
-      if (validation.type === "email") {
+      if (validation.type === ValidationType.EMAIL) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(answerStr)) {
           errors.push(validation.text || "Please enter a valid email address");
@@ -108,7 +114,7 @@ export const validateQuestionAnswer = (
       }
 
       // URL validation
-      if (validation.type === "url") {
+      if (validation.type === ValidationType.URL) {
         try {
           new URL(answerStr);
         } catch {
@@ -117,7 +123,7 @@ export const validateQuestionAnswer = (
       }
 
       // String length validation
-      if (validation.type === "minLength" && validation.value) {
+      if (validation.type === ValidationType.MIN_LENGTH && validation.value) {
         const minLength = parseInt(validation.value, 10);
         if (!isNaN(minLength) && answerStr.length < minLength) {
           errors.push(
@@ -126,7 +132,7 @@ export const validateQuestionAnswer = (
         }
       }
 
-      if (validation.type === "maxLength" && validation.value) {
+      if (validation.type === ValidationType.MAX_LENGTH && validation.value) {
         const maxLength = parseInt(validation.value, 10);
         if (!isNaN(maxLength) && answerStr.length > maxLength) {
           errors.push(
@@ -137,7 +143,7 @@ export const validateQuestionAnswer = (
 
       // Cross-field comparison
       if (
-        validation.type === "compare" &&
+        validation.type === ValidationType.COMPARE &&
         validation.comparePath &&
         validation.value &&
         allAnswers
@@ -147,20 +153,20 @@ export const validateQuestionAnswer = (
           const compareValue = parseFloat(String(compareAnswer));
           const currentValue = parseFloat(answerStr);
           if (!isNaN(compareValue) && !isNaN(currentValue)) {
-            const fact = validation.compareFact || "equal";
+            const fact = validation.compareFact || CompareFact.EQUAL;
             let comparisonFailed = false;
 
             switch (fact) {
-              case "greaterThan":
+              case CompareFact.GREATER_THAN:
                 comparisonFailed = currentValue <= compareValue;
                 break;
-              case "lessThan":
+              case CompareFact.LESS_THAN:
                 comparisonFailed = currentValue >= compareValue;
                 break;
-              case "equal":
+              case CompareFact.EQUAL:
                 comparisonFailed = currentValue !== compareValue;
                 break;
-              case "notEqual":
+              case CompareFact.NOT_EQUAL:
                 comparisonFailed = currentValue === compareValue;
                 break;
             }
