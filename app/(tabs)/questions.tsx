@@ -31,6 +31,7 @@ export default function QuestionsScreen() {
     currentScreenValid,
     cameFromReview,
     taskId,
+    task,
 
     // Actions
     handleAnswerChange,
@@ -95,10 +96,11 @@ export default function QuestionsScreen() {
       />
 
       {/* Introduction Screen */}
-      {showIntroduction && activityConfig && (
+      {showIntroduction && (
         <IntroductionScreen
-          activityConfig={activityConfig}
+          activityConfig={activityConfig || {}}
           onBegin={handleBegin}
+          task={task}
         />
       )}
 

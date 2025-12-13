@@ -1,33 +1,69 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useTranslatedText } from "../../hooks/useTranslatedText";
 import { ActivityConfig } from "../../types/ActivityConfig";
+import { Task, TaskStatus } from "../../types/Task";
 
 interface IntroductionScreenProps {
   activityConfig: ActivityConfig;
   onBegin: () => void;
+  task?: Task | null;
 }
 
 export const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
   activityConfig,
   onBegin,
+  task,
 }) => {
+  // Determine button text key based on task status
+  const getButtonTextKey = (): string => {
+    // If task is STARTED or INPROGRESS, show "RESUME"
+    // Handle both enum and string comparisons
+    if (task) {
+      const status = task.status;
+      if (
+        status === TaskStatus.STARTED ||
+        status === TaskStatus.INPROGRESS ||
+        String(status) === String(TaskStatus.STARTED) ||
+        String(status) === String(TaskStatus.INPROGRESS)
+      ) {
+        return "RESUME";
+      }
+    }
+    // Otherwise use configured button text or default to "Begin"
+    return activityConfig.introductionScreen?.buttonText || "Begin";
+  };
+
+  // Translate all text
+  const titleText = activityConfig.introductionScreen?.title || "Welcome";
+  const { translatedText: translatedTitle } = useTranslatedText(titleText);
+
+  const descriptionText =
+    activityConfig.introductionScreen?.description ||
+    "Please complete all questions.";
+  const { translatedText: translatedDescription } =
+    useTranslatedText(descriptionText);
+
+  const buttonTextKey = getButtonTextKey();
+  const { translatedText: translatedButtonText } =
+    useTranslatedText(buttonTextKey);
+
   return (
     <View style={styles.introContainer}>
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.introContent}
       >
-        <Text style={styles.introTitle}>
-          {activityConfig.introductionScreen?.title || "Welcome"}
-        </Text>
-        <Text style={styles.introDescription}>
-          {activityConfig.introductionScreen?.description ||
-            "Please complete all questions."}
-        </Text>
+        <Text style={styles.introTitle}>{translatedTitle}</Text>
+        <Text style={styles.introDescription}>{translatedDescription}</Text>
         <TouchableOpacity style={styles.beginButton} onPress={onBegin}>
-          <Text style={styles.beginButtonText}>
-            {activityConfig.introductionScreen?.buttonText || "Begin"}
-          </Text>
+          <Text style={styles.beginButtonText}>{translatedButtonText}</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -76,6 +112,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-
-
-

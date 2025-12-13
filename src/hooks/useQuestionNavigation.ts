@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
 import { useCallback } from "react";
 import { Alert } from "react-native";
+import { useTranslatedText } from "./useTranslatedText";
 import { ActivityConfig } from "../types/ActivityConfig";
 import { ParsedActivityData } from "../utils/activityParser";
 
@@ -52,6 +53,15 @@ export const useQuestionNavigation = ({
 }: UseQuestionNavigationOptions): UseQuestionNavigationReturn => {
   const router = useRouter();
 
+  // Translate validation messages
+  const { translatedText: validationErrorTitle } = useTranslatedText("Validation Error");
+  const { translatedText: validationErrorMessage } = useTranslatedText(
+    "Please answer all required questions before continuing."
+  );
+  const { translatedText: validationReviewMessage } = useTranslatedText(
+    "Please answer all required questions before reviewing."
+  );
+
   const handleNext = useCallback(() => {
     // If we came from review, always return to review screen (bypass validation)
     if (cameFromReview) {
@@ -66,10 +76,7 @@ export const useQuestionNavigation = ({
       setCurrentScreenIndex((prev) => prev + 1);
       setErrors({});
     } else {
-      Alert.alert(
-        "Validation Error",
-        "Please answer all required questions before continuing."
-      );
+      Alert.alert(validationErrorTitle, validationErrorMessage);
     }
   }, [
     cameFromReview,
@@ -78,6 +85,8 @@ export const useQuestionNavigation = ({
     setCameFromReview,
     setShowReview,
     setCurrentScreenIndex,
+    validationErrorTitle,
+    validationErrorMessage,
   ]);
 
   const handleReviewOrSubmit = useCallback(() => {
@@ -97,10 +106,7 @@ export const useQuestionNavigation = ({
         onSubmit();
       }
     } else {
-      Alert.alert(
-        "Validation Error",
-        "Please answer all required questions before reviewing."
-      );
+      Alert.alert(validationErrorTitle, validationReviewMessage);
     }
   }, [
     cameFromReview,
@@ -110,6 +116,8 @@ export const useQuestionNavigation = ({
     setErrors,
     setCameFromReview,
     setShowReview,
+    validationErrorTitle,
+    validationReviewMessage,
   ]);
 
   const handlePrevious = useCallback(() => {

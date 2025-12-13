@@ -1,6 +1,7 @@
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useTranslatedText } from "../hooks/useTranslatedText";
 import { TaskService } from "../services/TaskService";
 import { Task, TaskStatus, TaskType } from "../types/Task";
 
@@ -68,6 +69,17 @@ export const TaskCard: React.FC<TaskCardProps> = ({
     simple,
   });
 
+  // Translate task title
+  const { translatedText: translatedTitle } = useTranslatedText(
+    task.title || "Untitled Task"
+  );
+
+  // Translate button text
+  const isStarted = task.status === TaskStatus.STARTED || task.status === TaskStatus.INPROGRESS;
+  const { translatedText: beginButtonText } = useTranslatedText(isStarted ? "RESUME" : "BEGIN");
+  const { translatedText: completedText } = useTranslatedText("COMPLETED");
+  const { translatedText: untitledText } = useTranslatedText("Untitled Task");
+
   const icon = getTaskIcon(task);
 
   const handleBeginPress = async () => {
@@ -118,7 +130,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
               />
             </View>
             <Text style={styles.title} numberOfLines={2}>
-              {task.title || "Untitled Task"}
+              {translatedTitle}
             </Text>
           </View>
         </View>
@@ -133,10 +145,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
                   activeOpacity={0.8}
                 >
                   <Text style={styles.beginButtonText}>
-                    {task.status === TaskStatus.STARTED ||
-                    task.status === TaskStatus.INPROGRESS
-                      ? "RESUME"
-                      : "BEGIN"}
+                    {beginButtonText}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -149,7 +158,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
               </>
             ) : (
               <View style={styles.completedBadge}>
-                <Text style={styles.completedText}>COMPLETED</Text>
+                <Text style={styles.completedText}>{completedText}</Text>
               </View>
             )}
           </View>

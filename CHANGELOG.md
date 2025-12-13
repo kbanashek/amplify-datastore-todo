@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3] - 2025-01-15
+
+### Added
+- Comprehensive README with architecture documentation and component library roadmap
+- Component library structure documentation with base UI, question, domain, and layout components
+- Component library development standards and roadmap (high/medium priority components)
+- Unit test coverage requirements documentation with mandatory testing guidelines
+- Mermaid architecture diagrams for component architecture and AWS architecture
+- Distinction between container components (with logic) and pure presentation components
+
+### Changed
+- Enhanced README with visual improvements, badges, and better organization
+- Updated README to reflect current architecture, functionality, and future work
+- Improved component architecture documentation with clear layer separation
+- Added translation support to TaskCard, IntroductionScreen, and validation messages
+- Centralized task status update logic in useQuestionsScreen hook
+- Made IntroductionScreen a pure presentation component
+
+### Fixed
+- Fixed RESUME button not appearing by ensuring proper task status handling
+- Fixed translation issues in TaskCard, IntroductionScreen, and validation messages
+- Improved component architecture clarity with container vs presentation distinction
+
 ## [0.1.2] - 2025-12-12
 
 ### Added

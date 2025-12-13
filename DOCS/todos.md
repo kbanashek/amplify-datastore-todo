@@ -309,6 +309,76 @@ class RuleEngine {
 - `json-rules-engine` - For rule condition evaluation
 - Existing services: `TaskService`, `AppointmentService`, `ActivityService`
 
+### Possible Solutions & Libraries
+
+#### json-rules-engine
+
+**Library**: [json-rules-engine](https://github.com/cachecontrol/json-rules-engine) by CacheControl
+
+**Documentation**: https://github.com/cachecontrol/json-rules-engine/blob/HEAD/docs/rules.md
+
+**Why it's a good fit:**
+
+- **JSON-Based Rules**: Rules are defined using simple JSON structures, making them easy to read, maintain, and store in our `rules` field
+- **Boolean Logic Support**: Supports `ALL` and `ANY` operators, allowing for complex nested conditions perfect for our rule conditions
+- **Performance Optimization**: Offers priority levels and caching settings to fine-tune performance
+- **Security**: Does not use `eval()`, ensuring a secure evaluation environment
+- **Isomorphic**: Can run in both Node.js and browser environments (works with React Native)
+- **Lightweight and Extendable**: The library is minimal in size and can be extended as needed
+- **Event-Driven**: Supports event-based rule triggering, which aligns with our trigger types (ON_TASK_COMPLETION, ON_TASK_START, ON_ANSWER_VALUE)
+
+**Example Integration:**
+
+```typescript
+import { Engine } from 'json-rules-engine';
+
+// Initialize engine for task rules
+const engine = new Engine();
+
+// Add rule from task.rules JSON field
+engine.addRule({
+  conditions: {
+    all: [
+      {
+        fact: 'task.status',
+        operator: 'equal',
+        value: 'COMPLETED'
+      },
+      {
+        fact: 'answer.value',
+        operator: 'greaterThan',
+        value: 5
+      }
+    ]
+  },
+  event: {
+    type: 'TRIGGER_ACTION',
+    params: {
+      actionType: 'START_TIMED_TASK',
+      taskDefId: 'some-task-id'
+    }
+  }
+});
+
+// Evaluate with facts
+const facts = {
+  'task.status': task.status,
+  'answer.value': answerValue,
+  currentTime: Date.now()
+};
+
+const { events } = await engine.run(facts);
+// Process triggered events/actions
+```
+
+**Considerations:**
+
+- Rules can be parsed from JSON strings stored in `task.rules` field
+- Facts can be built from task data, answers, and context
+- Events can trigger our action processor
+- Supports complex nested conditions with `all` and `any` operators
+- Can be extended with custom operators if needed
+
 ### File Structure
 
 ```

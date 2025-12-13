@@ -1,5 +1,9 @@
+import { DataStore } from "@aws-amplify/datastore";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { Task as DataStoreTask } from "../../models";
+import { TaskService } from "../services/TaskService";
+import { Task, TaskStatus } from "../types/Task";
 import { useActivityData } from "./useActivityData";
 import { useAnswerManagement } from "./useAnswerManagement";
 import { useQuestionNavigation } from "./useQuestionNavigation";
@@ -23,6 +27,7 @@ export interface UseQuestionsScreenReturn {
   cameFromReview: boolean;
   taskId: string | undefined;
   entityId: string | undefined;
+  task: Task | null;
 
   // Actions
   handleAnswerChange: (questionId: string, answer: any) => void;
@@ -47,6 +52,54 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
   const taskId = params.taskId as string | undefined;
   const entityId = params.entityId as string | undefined;
 
+  // Fetch task to get status
+  const [task, setTask] = useState<Task | null>(null);
+
+  useEffect(() => {
+    if (!taskId) {
+      console.log("[useQuestionsScreen] No taskId provided");
+      setTask(null);
+      return;
+    }
+
+    // Fetch initial task
+    const fetchTask = async () => {
+      try {
+        console.log("[useQuestionsScreen] Fetching task:", taskId);
+        const fetchedTask = await TaskService.getTaskById(taskId);
+        console.log("[useQuestionsScreen] Fetched task:", {
+          id: fetchedTask?.id,
+          status: fetchedTask?.status,
+          statusType: typeof fetchedTask?.status,
+          title: fetchedTask?.title,
+        });
+        // Type assertion: DataStore Task is compatible with our Task interface
+        setTask(fetchedTask as Task | null);
+      } catch (error) {
+        console.error("[useQuestionsScreen] Error fetching task:", error);
+        // Don't set error state here - task status is optional for button text
+      }
+    };
+
+    fetchTask();
+
+    // Subscribe to task updates for real-time status changes
+    const subscription = DataStore.observe(DataStoreTask).subscribe((msg) => {
+      if (msg.element.id === taskId) {
+        console.log("[useQuestionsScreen] Task updated via subscription:", {
+          id: msg.element.id,
+          status: msg.element.status,
+          opType: msg.opType,
+        });
+        setTask(msg.element as Task);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [taskId]);
+
   // Fetch and parse activity data
   const { loading, error, activityData, activityConfig, initialAnswers } =
     useActivityData({ entityId, taskId });
@@ -56,11 +109,13 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
   const [showIntroduction, setShowIntroduction] = useState(false);
 
   useEffect(() => {
+    // Only show introduction screen if activity config specifies it
     if (activityConfig?.introductionScreen?.showScreen) {
       setShowIntroduction(true);
       setCurrentScreenIndex(-1);
     } else {
       setCurrentScreenIndex(0);
+      setShowIntroduction(false);
     }
   }, [activityConfig]);
 
@@ -126,6 +181,33 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
     setCameFromReview,
   });
 
+  // Enhanced handleBegin that updates task status before navigation
+  const handleBeginWithStatusUpdate = useCallback(async () => {
+    // If task exists and is not already started, update status to STARTED
+    if (
+      task &&
+      task.status !== TaskStatus.STARTED &&
+      task.status !== TaskStatus.INPROGRESS
+    ) {
+      try {
+        console.log(
+          "[useQuestionsScreen] Updating task status to STARTED before begin"
+        );
+        await TaskService.updateTask(task.id, {
+          status: TaskStatus.STARTED,
+        });
+        // The DataStore subscription will pick up the update and refresh the task state
+      } catch (error) {
+        console.error(
+          "[useQuestionsScreen] Error updating task status:",
+          error
+        );
+      }
+    }
+    // Proceed with navigation
+    navigation.handleBegin();
+  }, [task, navigation]);
+
   return {
     // State
     loading,
@@ -143,13 +225,14 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
     cameFromReview,
     taskId,
     entityId,
+    task,
 
     // Actions
     handleAnswerChange,
     handleSubmit,
     handleNext: navigation.handleNext,
     handlePrevious: navigation.handlePrevious,
-    handleBegin: navigation.handleBegin,
+    handleBegin: handleBeginWithStatusUpdate,
     handleBackToQuestions: navigation.handleBackToQuestions,
     handleEditQuestion: navigation.handleEditQuestion,
     handleReviewSubmit: navigation.handleReviewOrSubmit,
