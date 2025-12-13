@@ -1,0 +1,51 @@
+appId: com.amplifydatastore.todo
+---
+- launchApp
+- tapOn:
+    id: "global_header_menu_button"
+- tapOn:
+    id: "navigation_menu_item_seed_data"
+- assertVisible:
+    id: "seed_screen_root"
+- tapOn:
+    id: "seed_screen_clear_all_seeded_data_button"
+- tapOn: "Delete All"
+- waitForAnimationToEnd
+- tapOn: "OK"
+- tapOn:
+    id: "seed_screen_seed_coordinated_button"
+- waitForAnimationToEnd
+- tapOn: "OK"
+- assertVisible:
+    id: "seed_screen_coordinated_results_section"
+- tapOn:
+    id: "seed_screen_back_to_dashboard_button"
+- assertVisible:
+    id: "dashboard_tasks_grouped_view"
+
+appId: com.amplifydatastore.todo
+---
+- launchApp
+- tapOn:
+    id: "global_header_menu_button"
+- tapOn:
+    id: "navigation_menu_item_seed_data"
+- assertVisible:
+    id: "seed_screen_root"
+- tapOn:
+    id: "seed_screen_clear_all_seeded_data_button"
+- tapOn: "Delete All"
+- waitForAnimationToEnd
+- tapOn: "OK"
+- tapOn:
+    id: "seed_screen_seed_coordinated_button"
+- waitForAnimationToEnd
+- tapOn: "OK"
+- assertVisible:
+    id: "seed_screen_coordinated_results_section"
+- tapOn:
+    id: "seed_screen_back_to_dashboard_button"
+- assertVisible:
+    id: "dashboard_tasks_grouped_view"
+
+

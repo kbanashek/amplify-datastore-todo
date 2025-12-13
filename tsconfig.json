@@ -4,7 +4,8 @@
     "strict": true,
     "module": "esnext",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@orion/task-system": ["./packages/task-system/src/index.ts"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]

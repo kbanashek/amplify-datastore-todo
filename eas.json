@@ -1,0 +1,12 @@
+{
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "NPM_CONFIG_REGISTRY": "https://registry.npmjs.org/",
+        "NPM_CONFIG_ALWAYS_AUTH": "false"
+      }
+    }
+  }
+}

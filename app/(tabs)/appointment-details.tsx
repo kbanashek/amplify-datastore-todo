@@ -1,15 +1,15 @@
+import { IconSymbol } from "@/components/ui/IconSymbol";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useMemo } from "react";
 import {
   ScrollView,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
+  View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GlobalHeader } from "../../src/components/GlobalHeader";
-import { IconSymbol } from "@/components/ui/IconSymbol";
 import { AppColors } from "../../src/constants/AppColors";
 import { useRTL } from "../../src/hooks/useRTL";
 import { useTranslatedText } from "../../src/hooks/useTranslatedText";
@@ -18,7 +18,10 @@ import {
   AppointmentStatus,
   AppointmentType,
 } from "../../src/types/Appointment";
-import { formatTime } from "../../src/utils/appointmentParser";
+import {
+  formatTime,
+  getTimezoneAbbreviation,
+} from "../../src/utils/appointmentParser";
 
 export default function AppointmentDetailsScreen() {
   const params = useLocalSearchParams();
@@ -95,9 +98,7 @@ export default function AppointmentDetailsScreen() {
   const timezoneId = params.timezoneId as string | undefined;
   const formattedStartTime = formatTime(startTime, timezoneId);
   const formattedEndTime = formatTime(endTime, timezoneId);
-  const timezoneAbbr = timezoneId
-    ? timezoneId.split("/").pop()?.substring(0, 3).toUpperCase()
-    : "";
+  const timezoneAbbr = getTimezoneAbbreviation(timezoneId);
 
   const getAppointmentTypeText = () => {
     return isTelehealth ? telehealthLabel : onsiteVisitLabel;

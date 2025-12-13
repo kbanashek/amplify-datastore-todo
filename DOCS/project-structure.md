@@ -19,7 +19,8 @@ amplify-datastore-todo/
 │   │   │   └── ...
 │   │   ├── TaskCard.tsx            # Task display card
 │   │   ├── AppointmentCard.tsx     # Appointment display card
-│   │   ├── TasksGroupedView.tsx    # Grouped task display
+│   │   ├── GroupedTasksView.tsx    # Grouped task display
+│   │   ├── TaskContainer.tsx       # Container for task list state/handlers
 │   │   └── ...
 │   │
 │   ├── 🪝 hooks/                    # Custom React Hooks

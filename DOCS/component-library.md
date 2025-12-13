@@ -9,7 +9,13 @@ components/
 ├── ui/                          # 🎨 Base UI Components (Design System)
 │   ├── IconSymbol.tsx          # Icon component with SF Symbols support
 │   ├── TabBarBackground.tsx     # Tab bar styling component
-│   └── ...                     # Future: Button, Input, Card, Modal, etc.
+│   ├── Button.tsx               # Button component with variants + loading state
+│   ├── Card.tsx                 # Card container with consistent border + padding
+│   ├── TextField.tsx            # Text input with label + helper/error text
+│   ├── LoadingSpinner.tsx       # Consistent loading indicator
+│   ├── DatePicker.tsx           # Date-only picker field (wraps native DateTimePicker)
+│   ├── DateTimePicker.tsx       # Date + time picker field (wraps native DateTimePicker)
+│   └── ...                      # Future: Modal, Badge, EmptyState, etc.
 │
 src/components/
 ├── questions/                   # ❓ Question/Assessment Components
@@ -27,7 +33,8 @@ src/components/
 │
 ├── TaskCard.tsx                # 📋 Domain-Specific Components
 ├── AppointmentCard.tsx          # 📅 Domain-Specific Components
-├── TasksGroupedView.tsx        # 📊 Feature Components
+├── GroupedTasksView.tsx        # 📊 Feature Components
+├── TaskContainer.tsx           # 📦 Container Component (state + hooks)
 ├── AppointmentsGroupedView.tsx
 ├── TaskFilters.tsx
 ├── TaskForm.tsx
@@ -86,13 +93,73 @@ src/components/
 
 - **Base UI Components Expansion**
   - ✅ `IconSymbol` - Complete
-  - 🚧 `Button` - Standardized button component with variants (primary, secondary, outline)
-  - 🚧 `Input` - Text input with validation states and error messages
-  - 🚧 `Card` - Reusable card container with consistent styling
+  - ✅ `Button` - Standardized button component with variants (primary, secondary, outline, ghost) + loading state
+  - ✅ `TextField` - Text input with label + helper/error text
+  - ✅ `Card` - Reusable card container with consistent border + padding
   - 🚧 `Modal` - Modal/dialog component with animations
   - 🚧 `Badge` - Status badges and labels
-  - 🚧 `LoadingSpinner` - Consistent loading indicators
+  - ✅ `LoadingSpinner` - Consistent loading indicators
   - 🚧 `EmptyState` - Empty state messages with icons
+
+## Usage Examples
+
+### Button
+
+```tsx
+import { Button } from "@/components/ui/Button";
+
+<Button label="Save" onPress={handleSave} />;
+<Button variant="outline" label="Cancel" onPress={handleCancel} />;
+<Button loading label="Saving..." />;
+```
+
+### DatePicker / DateTimePicker
+
+```tsx
+import { DatePicker } from "@/components/ui/DatePicker";
+import { DateTimePicker } from "@/components/ui/DateTimePicker";
+
+<DatePicker
+  value={selectedDate}
+  onChange={setSelectedDate}
+  placeholder="Select a date"
+/>;
+
+<DateTimePicker
+  value={selectedDateTime}
+  onChange={setSelectedDateTime}
+  placeholder="Select date & time"
+/>;
+```
+
+### Card
+
+```tsx
+import { Card } from "@/components/ui/Card";
+
+<Card>
+  <Text>Content</Text>
+</Card>;
+```
+
+### TextField
+
+```tsx
+import { TextField } from "@/components/ui/TextField";
+
+<TextField
+  label="Email"
+  value={email}
+  onChangeText={setEmail}
+  helperText="We’ll never share your email."
+/>;
+<TextField
+  label="Email"
+  value={email}
+  onChangeText={setEmail}
+  errorText="Please enter a valid email."
+/>;
+```
 
 ### 🟡 Medium Priority
 
