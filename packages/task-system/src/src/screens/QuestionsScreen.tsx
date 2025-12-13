@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { GlobalHeader } from "../components/GlobalHeader";
 import { CompletionScreen } from "../components/questions/CompletionScreen";
 import { ErrorState } from "../components/questions/ErrorState";
 import { IntroductionScreen } from "../components/questions/IntroductionScreen";
@@ -10,10 +9,21 @@ import { ProgressIndicator } from "../components/questions/ProgressIndicator";
 import { QuestionScreenContent } from "../components/questions/QuestionScreenContent";
 import { ReviewScreenContainer } from "../components/questions/ReviewScreenContainer";
 import { useQuestionsScreen } from "../hooks/useQuestionsScreen";
-import { useTranslatedText } from "../hooks/useTranslatedText";
 
-export default function QuestionsScreen() {
+interface QuestionsScreenProps {
+  /**
+   * When the module is embedded under a host header (e.g. Dashboard), the host
+   * has already applied safe-area padding. Disable the extra top inset to avoid
+   * large empty space above the progress indicator.
+   */
+  disableSafeAreaTopInset?: boolean;
+}
+
+export default function QuestionsScreen({
+  disableSafeAreaTopInset = false,
+}: QuestionsScreenProps) {
   const insets = useSafeAreaInsets();
+  const topInset = disableSafeAreaTopInset ? 0 : insets.top;
 
   const {
     loading,
@@ -42,12 +52,14 @@ export default function QuestionsScreen() {
     handleBack,
   } = useQuestionsScreen();
 
-  const { translatedText: headerTitle } = useTranslatedText(
-    taskId ? "Answer Questionz" : "Questions"
-  );
+  // NOTE: The internal header is currently disabled for the embedded module.
+  // Keep this translation hook here only when we re-enable the header.
+  // const { translatedText: headerTitle } = useTranslatedText(
+  //   taskId ? "Answer Questions" : "Questions"
+  // );
 
   if (loading) {
-    return <LoadingState taskId={taskId} topInset={insets.top} />;
+    return <LoadingState taskId={taskId} topInset={topInset} />;
   }
 
   if (error) {
@@ -55,7 +67,7 @@ export default function QuestionsScreen() {
       <ErrorState
         error={error}
         taskId={taskId}
-        topInset={insets.top}
+        topInset={topInset}
         onBack={handleBack}
       />
     );
@@ -80,12 +92,12 @@ export default function QuestionsScreen() {
   //   }
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <GlobalHeader
+    <View style={[styles.container, { paddingTop: topInset }]}>
+      {/* <GlobalHeader
         title={headerTitle}
         showBackButton={!!(taskId && !showIntroduction && !showCompletion)}
         onBackPress={handleBack}
-      />
+      /> */}
 
       {showIntroduction && (
         <IntroductionScreen

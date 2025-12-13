@@ -23,6 +23,12 @@ export interface TaskActivityModuleProps {
    * Useful for host apps that want "tab re-press" behavior to pop-to-top.
    */
   resetSignal?: number;
+
+  /**
+   * Disable applying a top safe-area inset inside internal module screens.
+   * Use this when embedding under a host header that already applies insets.
+   */
+  disableSafeAreaTopInset?: boolean;
 }
 
 /**
@@ -37,6 +43,7 @@ export interface TaskActivityModuleProps {
  */
 export const TaskActivityModule: React.FC<TaskActivityModuleProps> = ({
   resetSignal,
+  disableSafeAreaTopInset = false,
 }) => {
   const navigationRef = useMemo(
     () => createNavigationContainerRef<TaskSystemStackParamList>(),
@@ -67,7 +74,11 @@ export const TaskActivityModule: React.FC<TaskActivityModuleProps> = ({
               />
               <Stack.Screen
                 name="TaskQuestions"
-                component={QuestionsScreen as any}
+                component={() => (
+                  <QuestionsScreen
+                    disableSafeAreaTopInset={disableSafeAreaTopInset}
+                  />
+                )}
               />
             </Stack.Navigator>
           </NavigationContainer>

@@ -42,7 +42,10 @@ export default function DashboardScreen() {
       />
 
       <View style={styles.moduleContainer}>
-        <TaskActivityModule resetSignal={resetSignal} />
+        <TaskActivityModule
+          resetSignal={resetSignal}
+          disableSafeAreaTopInset={true}
+        />
       </View>
 
       <NavigationMenu visible={showMenu} onClose={() => setShowMenu(false)} />

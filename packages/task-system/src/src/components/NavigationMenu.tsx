@@ -1,17 +1,17 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
   Modal,
+  Pressable,
+  ScrollView,
   StyleSheet,
-  View,
   Text,
   TouchableOpacity,
-  ScrollView,
-  Pressable,
+  View,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { IconSymbol } from "./ui/IconSymbol";
 import { Colors } from "../constants/Colors";
 import { useColorScheme } from "../hooks/useColorScheme";
+import { IconSymbol } from "./ui/IconSymbol";
 
 interface MenuItem {
   name: string;

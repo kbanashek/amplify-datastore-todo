@@ -7,7 +7,9 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePicker, {
+  DateTimePickerAndroid,
+} from "@react-native-community/datetimepicker";
 
 import { ThemedText } from "../ThemedText";
 import { useThemeColor } from "../../hooks/useThemeColor";
@@ -82,9 +84,7 @@ export const DateTimeField: React.FC<DateTimeFieldProps> = ({
   const borderColor = error ? "#d32f2f" : borderBase + "55";
 
   const handlePickerChange = (_event: unknown, date?: Date) => {
-    if (Platform.OS === "android") {
-      setShowPicker(false);
-    }
+    setShowPicker(false);
     if (date) {
       onChange(date);
     }
@@ -97,7 +97,23 @@ export const DateTimeField: React.FC<DateTimeFieldProps> = ({
         accessibilityRole="button"
         accessibilityState={{ disabled }}
         disabled={disabled}
-        onPress={() => setShowPicker(true)}
+        onPress={() => {
+          if (Platform.OS === "android") {
+            // Avoid mounting the Android DateTimePicker component (it auto-opens and dismisses on unmount).
+            // Using the imperative API prevents crashes when Material pickers are unavailable in the host.
+            DateTimePickerAndroid.open({
+              value: value ?? new Date(),
+              mode,
+              display: "default",
+              design: "default",
+              onChange: (_event, selectedDate) => {
+                if (selectedDate) onChange(selectedDate);
+              },
+            } as any);
+            return;
+          }
+          setShowPicker(true);
+        }}
         style={({ pressed }) => [
           styles.button,
           {
@@ -113,12 +129,12 @@ export const DateTimeField: React.FC<DateTimeFieldProps> = ({
         </ThemedText>
       </Pressable>
 
-      {showPicker ? (
+      {Platform.OS === "ios" && showPicker ? (
         <DateTimePicker
           testID={testID ? `${testID}-picker` : undefined}
           value={value ?? new Date()}
           mode={mode}
-          display={Platform.OS === "ios" ? "spinner" : "default"}
+          display="spinner"
           onChange={handlePickerChange}
         />
       ) : null}
