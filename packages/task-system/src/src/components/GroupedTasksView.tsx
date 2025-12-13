@@ -1,20 +1,15 @@
 import React from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { GroupedTask } from "../hooks/useGroupedTasks";
 import { AppColors } from "../constants/AppColors";
 import { Appointment } from "../types/Appointment";
 import { Task } from "../types/Task";
 import { AppointmentCard } from "./AppointmentCard";
 import { TaskCard } from "./TaskCard";
 import { TranslatedText } from "./TranslatedText";
+import { TestIds } from "../constants/testIds";
 
-interface GroupedTask {
-  dayLabel: string;
-  dayDate: string;
-  tasksWithoutTime: Task[];
-  timeGroups: { time: string; tasks: Task[] }[];
-}
-
-interface TasksGroupedViewProps {
+interface GroupedTasksViewProps {
   groupedTasks: GroupedTask[];
   loading: boolean;
   error: string | null;
@@ -26,7 +21,7 @@ interface TasksGroupedViewProps {
   appointmentTimezoneId?: string;
 }
 
-export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
+export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
   groupedTasks,
   loading,
   error,
@@ -58,7 +53,7 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
   const hasTodayGroup = groupedTasks.some(g => g.dayLabel === "Today");
   const shouldShowAppointments = todayAppointments.length > 0;
 
-  console.log("[TasksGroupedView] Rendering", {
+  console.log("[GroupedTasksView] Rendering", {
     groupedTasksCount: groupedTasks.length,
     hasTodayGroup,
     todayAppointmentsCount: todayAppointments.length,
@@ -75,7 +70,11 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
   }
 
   return (
-    <View style={styles.tasksSection}>
+    <View
+      style={styles.tasksSection}
+      testID={TestIds.dashboardTasksGroupedView}
+      accessibilityLabel={TestIds.dashboardTasksGroupedView}
+    >
       {/* Show appointments for today if they exist and there's no "Today" task group */}
       {shouldShowAppointments && !hasTodayGroup && (
         <View style={styles.dayGroup}>
@@ -107,7 +106,7 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
         const showAppointments = isToday && todayAppointments.length > 0;
 
         console.log(
-          `[TasksGroupedView] Rendering dayGroup: ${dayGroup.dayLabel}`,
+          `[GroupedTasksView] Rendering dayGroup: ${dayGroup.dayLabel}`,
           {
             isToday,
             todayAppointmentsCount: todayAppointments.length,
@@ -142,9 +141,6 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
             {/* Appointments for Today - show first */}
             {showAppointments ? (
               <View style={styles.appointmentsContainer}>
-                {console.log(
-                  `[TasksGroupedView] RENDERING APPOINTMENTS: ${todayAppointments.length} appointments for Today`
-                )}
                 {todayAppointments.length === 0 ? (
                   <Text style={styles.errorText}>
                     No appointments to display (array is empty)
@@ -152,7 +148,7 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
                 ) : (
                   todayAppointments.map(appointment => {
                     console.log(
-                      `[TasksGroupedView] Rendering appointment card: ${appointment.title}`,
+                      `[GroupedTasksView] Rendering appointment card: ${appointment.title}`,
                       {
                         appointmentId: appointment.appointmentId,
                         startAt: appointment.startAt,
@@ -170,15 +166,7 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
                   })
                 )}
               </View>
-            ) : (
-              console.log(
-                `[TasksGroupedView] NOT RENDERING APPOINTMENTS - showAppointments=false`,
-                {
-                  isToday,
-                  todayAppointmentsCount: todayAppointments.length,
-                }
-              ) || null
-            )}
+            ) : null}
 
             {/* Tasks without due time (simple cards) */}
             {dayGroup.tasksWithoutTime.map(task => (
@@ -190,6 +178,7 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
                 onDelete={onDelete}
               />
             ))}
+
             {/* Tasks grouped by time */}
             {dayGroup.timeGroups.map(timeGroup => (
               <View key={timeGroup.time} style={styles.timeGroup}>

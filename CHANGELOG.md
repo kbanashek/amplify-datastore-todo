@@ -30,6 +30,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Prevent rendering raw `uniti18nKey` values by mapping units to display labels in `NumberQuestion`
 
+## [0.1.10] - 2025-12-13
+
+### Added
+
+- Workspace npm package `@orion/task-system` (`packages/task-system`) exporting `TaskActivityModule` for drop-in task/activity flow reuse
+- Package documentation: `DOCS/task-system-package.md`
+
+### Changed
+
+- Dashboard now renders the task/activity flow via `@orion/task-system` instead of local task components
+
 ## [0.1.7] - 2025-12-13
 
 ### Added

@@ -33,7 +33,8 @@ src/components/
 │
 ├── TaskCard.tsx                # 📋 Domain-Specific Components
 ├── AppointmentCard.tsx          # 📅 Domain-Specific Components
-├── TasksGroupedView.tsx        # 📊 Feature Components
+├── GroupedTasksView.tsx        # 📊 Feature Components
+├── TaskContainer.tsx           # 📦 Container Component (state + hooks)
 ├── AppointmentsGroupedView.tsx
 ├── TaskFilters.tsx
 ├── TaskForm.tsx

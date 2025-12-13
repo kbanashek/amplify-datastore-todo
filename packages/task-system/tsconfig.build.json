@@ -1,0 +1,66 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/src/*"]
+    },
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "emitDeclarationOnly": false,
+    "noEmit": false,
+    "composite": false,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "target": "es2019",
+    "jsx": "react-jsx",
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "src/**/*.json"],
+  "exclude": [
+    "src/src/amplify-config.*",
+    "src/src/amplify-init.*",
+    "src/src/amplify-init-sync.*",
+    "src/src/amplifyconfiguration.json",
+    "src/src/aws-exports.*",
+    "src/src/API.ts",
+    "src/src/graphql/**",
+
+    "src/src/components/ui/**",
+    "src/src/components/GlobalHeader.tsx",
+    "src/src/components/NavigationMenu.tsx",
+    "src/src/components/LanguageSelector.tsx",
+    "src/src/components/AppointmentsGroupedView.tsx",
+    "src/src/components/NetworkStatusIndicator.*",
+    "src/src/components/TaskList.tsx",
+    "src/src/components/TasksView.tsx",
+    "src/src/components/TaskFilters.tsx",
+    "src/src/components/TaskForm.tsx",
+    "src/src/components/TodoForm.tsx",
+    "src/src/components/TodoList.tsx",
+
+    "src/src/hooks/useActivityList.ts",
+    "src/src/hooks/useDataPoint*",
+    "src/src/hooks/useQuestionList.ts",
+    "src/src/hooks/useTaskAnswerList.ts",
+    "src/src/hooks/useTaskHistoryList.ts",
+    "src/src/hooks/useTaskResultList.ts",
+    "src/src/hooks/useTaskUpdate.ts",
+    "src/src/hooks/useTaskFilters.ts",
+    "src/src/hooks/useTaskForm.ts",
+    "src/src/hooks/useAmplifyState.ts",
+    "src/src/hooks/useNetworkStatus.ts",
+
+    "src/src/services/DataPointService.ts",
+    "src/src/services/SeededDataCleanupService.ts",
+    "src/src/services/ConflictResolution.ts",
+    "src/src/contexts/AmplifyContext.tsx"
+  ]
+}

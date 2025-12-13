@@ -1,0 +1,27 @@
+appId: com.amplifydatastore.todo
+---
+- runFlow: seed_and_verify_dashboard.yaml
+- tapOn:
+    id: "task_card_begin_button"
+- waitForAnimationToEnd
+- assertVisible:
+    id: "questions_screen_root"
+- stopApp
+- launchApp
+- assertVisible:
+    id: "dashboard_tasks_grouped_view"
+
+appId: com.amplifydatastore.todo
+---
+- runFlow: seed_and_verify_dashboard.yaml
+- tapOn:
+    id: "task_card_begin_button"
+- waitForAnimationToEnd
+- assertVisible:
+    id: "questions_screen_root"
+- stopApp
+- launchApp
+- assertVisible:
+    id: "dashboard_tasks_grouped_view"
+
+

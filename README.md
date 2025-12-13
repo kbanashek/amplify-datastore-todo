@@ -106,6 +106,7 @@ flowchart TD
 - [Project Structure](DOCS/project-structure.md)
 - [AWS Architecture](DOCS/aws-architecture.md)
 - [Development Guidelines](DOCS/development-guidelines.md)
+- [Task System Package (LX Integration)](DOCS/task-system-package.md)
 
 ---
 
