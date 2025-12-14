@@ -1,6 +1,5 @@
 import {
   NavigationContainer,
-  NavigationIndependentTree,
   createNavigationContainerRef,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -9,6 +8,60 @@ import { View } from "react-native";
 import { TaskContainer } from "./src/components/TaskContainer";
 import { TranslationProvider } from "./src/contexts/TranslationContext";
 import QuestionsScreen from "./src/screens/QuestionsScreen";
+
+// Conditionally import NavigationIndependentTree (only available in RN 6.2+)
+// For backward compatibility with RN 6.1.18, we'll use independent={true} instead
+let NavigationIndependentTree:
+  | React.FC<{ children: React.ReactNode }>
+  | undefined;
+try {
+  const navModule = require("@react-navigation/native");
+  NavigationIndependentTree = navModule.NavigationIndependentTree;
+} catch {
+  // NavigationIndependentTree not available (RN < 6.2)
+  NavigationIndependentTree = undefined;
+}
+
+// Patch BaseNavigationContainer for RN 6.1.18 compatibility
+// In 6.1.18, the independent prop doesn't exist, so we need to bypass the nested container check
+if (!NavigationIndependentTree) {
+  try {
+    const ReactNavigationCore = require("@react-navigation/core");
+    const coreAny = ReactNavigationCore as any;
+    if (!coreAny._BaseNavigationContainerPatched && coreAny.default) {
+      const BaseNavigationContainerOriginal = coreAny.default;
+      const BaseNavigationContainerPatched = React.forwardRef(
+        (props: any, ref: any) => {
+          // Wrap in NavigationStateContext with isDefault: true to bypass nested container check
+          // This makes BaseNavigationContainer think there's no parent container
+          const NavigationStateContext =
+            require("@react-navigation/core/src/NavigationStateContext").default;
+          const defaultContextValue = {
+            isDefault: true,
+            getKey: () => undefined,
+            setKey: () => {},
+            getState: () => undefined,
+            setState: () => {},
+            getIsInitial: () => false,
+          };
+          return React.createElement(
+            NavigationStateContext.Provider,
+            { value: defaultContextValue },
+            React.createElement(BaseNavigationContainerOriginal, {
+              ...props,
+              ref,
+            })
+          );
+        }
+      );
+      BaseNavigationContainerPatched.displayName = "BaseNavigationContainer";
+      coreAny.default = BaseNavigationContainerPatched;
+      coreAny._BaseNavigationContainerPatched = true;
+    }
+  } catch {
+    // Patch failed, continue without it
+  }
+}
 
 export type TaskSystemStackParamList = {
   TaskDashboard: undefined;
@@ -60,30 +113,38 @@ export const TaskActivityModule: React.FC<TaskActivityModuleProps> = ({
     });
   }, [navigationRef, resetSignal]);
 
+  const navigationContent = (
+    <View style={{ flex: 1, minHeight: 1 }}>
+      <NavigationContainer
+        ref={navigationRef}
+        {...({ independent: true } as any)}
+      >
+        <Stack.Navigator
+          {...({ screenOptions: { headerShown: false } } as any)}
+        >
+          <Stack.Screen name="TaskDashboard" component={TaskContainer as any} />
+          <Stack.Screen
+            name="TaskQuestions"
+            component={() => (
+              <QuestionsScreen
+                disableSafeAreaTopInset={disableSafeAreaTopInset}
+              />
+            )}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </View>
+  );
+
   return (
     <TranslationProvider>
-      <NavigationIndependentTree>
-        <View style={{ flex: 1, minHeight: 1 }}>
-          <NavigationContainer ref={navigationRef}>
-            <Stack.Navigator
-              {...({ screenOptions: { headerShown: false } } as any)}
-            >
-              <Stack.Screen
-                name="TaskDashboard"
-                component={TaskContainer as any}
-              />
-              <Stack.Screen
-                name="TaskQuestions"
-                component={() => (
-                  <QuestionsScreen
-                    disableSafeAreaTopInset={disableSafeAreaTopInset}
-                  />
-                )}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </View>
-      </NavigationIndependentTree>
+      {NavigationIndependentTree ? (
+        <NavigationIndependentTree>
+          {navigationContent}
+        </NavigationIndependentTree>
+      ) : (
+        navigationContent
+      )}
     </TranslationProvider>
   );
 };

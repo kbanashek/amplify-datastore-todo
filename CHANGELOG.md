@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Component consolidation analysis and plan documentation
+- `DOCS/component-consolidation-plan.md` - Detailed plan for eliminating component duplication between main app and package
+- `DOCS/component-consolidation-summary.md` - Executive summary of consolidation strategy
+- `DOCS/why-components-outside-package.md` - Explanation of component architecture and why components exist outside package directory
+
 ## [0.1.8] - 2025-12-13
 
 ### Added
