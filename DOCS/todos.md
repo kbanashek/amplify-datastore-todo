@@ -17,7 +17,7 @@
 
 - [ ] Configure GitHub Secrets for AWS credentials (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`)
 - [ ] Set up AWS CodeArtifact authentication in GitHub Actions
-- [ ] Fix npm install to work with or without CodeArtifact credentials
+- [ ] Fix yarn install to work with or without CodeArtifact credentials
 - [ ] Re-enable unit tests in CI once authentication is configured
 - [ ] Consider using AWS IAM roles for GitHub Actions instead of access keys
 - [ ] Add integration tests that can run with mocked AWS services

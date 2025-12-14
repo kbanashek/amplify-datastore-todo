@@ -1,4 +1,4 @@
-appId: com.amplifydatastore.todo
+appId: com.orion.tasksystem
 ---
 - runFlow: seed_and_verify_dashboard.yaml
 # NOTE: Network toggling is device/OS dependent. This is a best-effort smoke check.
@@ -7,7 +7,7 @@ appId: com.amplifydatastore.todo
 - toggleAirplaneMode: false
 - waitForAnimationToEnd
 
-appId: com.amplifydatastore.todo
+appId: com.orion.tasksystem
 ---
 - runFlow: seed_and_verify_dashboard.yaml
 # NOTE: Network toggling is device/OS dependent. This is a best-effort smoke check.

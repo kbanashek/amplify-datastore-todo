@@ -68,13 +68,22 @@ export const useTaskContainer = (): UseTaskContainerReturn => {
   };
 
   const handleAppointmentPress = (appointment: Appointment): void => {
-    router.push({
-      pathname: "/(tabs)/appointment-details",
-      params: {
-        appointment: JSON.stringify(appointment),
-        timezoneId: appointmentTimezoneId || "",
-      },
+    console.log("[useTaskContainer] Navigating to appointment details:", {
+      appointmentId: appointment.appointmentId,
+      title: appointment.title,
+      hasTimezone: !!appointmentTimezoneId,
     });
+    try {
+      router.push({
+        pathname: "/(tabs)/appointment-details",
+        params: {
+          appointment: JSON.stringify(appointment),
+          timezoneId: appointmentTimezoneId || "",
+        },
+      });
+    } catch (error) {
+      console.error("[useTaskContainer] Navigation error:", error);
+    }
   };
 
   return {

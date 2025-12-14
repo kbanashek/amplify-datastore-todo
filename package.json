@@ -12,18 +12,18 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "eas-build-pre-install": "npm config set registry https://registry.npmjs.org/ && npm config set always-auth false && printf \"registry=https://registry.npmjs.org/\\nalways-auth=false\\n\" > .npmrc",
+    "eas-build-pre-install": "yarn config set registry https://registry.npmjs.org/ && yarn config set always-auth false && printf \"registry=https://registry.npmjs.org/\\nalways-auth=false\\n\" > .npmrc",
     "e2e:build:android": "eas build --profile development --platform android",
     "e2e:build:ios": "eas build --profile development --platform ios",
     "e2e:maestro": "maestro test e2e/maestro",
     "e2e:maestro:android": "maestro test e2e/maestro/android",
     "e2e:maestro:ios": "maestro test e2e/maestro/ios",
-    "e2e": "npm run e2e:maestro",
+    "e2e": "yarn e2e:maestro",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "check:circular": "madge --circular --extensions ts,tsx,js,jsx src app",
     "prepare": "husky install || true",
-    "build:task-system": "npm --prefix packages/task-system run build"
+    "build:task-system": "yarn --cwd packages/task-system build"
   },
   "workspaces": [
     "packages/*"

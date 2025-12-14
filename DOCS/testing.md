@@ -38,7 +38,7 @@
 ## Running Unit Tests
 
 ```bash
-npm test
+yarn test
 ```
 
 ## Test Structure Example

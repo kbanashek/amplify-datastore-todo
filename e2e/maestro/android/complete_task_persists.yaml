@@ -1,4 +1,4 @@
-appId: com.amplifydatastore.todo
+appId: com.orion.tasksystem
 ---
 - runFlow: seed_and_verify_dashboard.yaml
 - tapOn:
@@ -11,7 +11,7 @@ appId: com.amplifydatastore.todo
 - assertVisible:
     id: "dashboard_tasks_grouped_view"
 
-appId: com.amplifydatastore.todo
+appId: com.orion.tasksystem
 ---
 - runFlow: seed_and_verify_dashboard.yaml
 - tapOn:

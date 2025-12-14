@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Updated Android package name from `com.orion.task-system` to `com.orion.tasksystem` (removed hyphen for valid Java package name)
+- Updated iOS bundle identifier to match Android package name (`com.orion.tasksystem`)
+- Updated Maestro E2E test configurations with new package name
+- Switched package manager from npm to yarn across all documentation and scripts
+- Removed `package-lock.json` in favor of `yarn.lock`
+
+### Fixed
+
+- Fixed task completion status not being marked as COMPLETED when questions are submitted
+- Fixed both "Begin" and "Done" buttons showing simultaneously on task question screen
+- Fixed React Hooks conditional call error in `useTaskContainer` hook
+- Fixed scope issue in `useQuestionsScreen` hook where `setShowCompletion` was used before declaration
+- Fixed task status update logic to properly mark tasks as COMPLETED when validation passes and all answers save successfully
+- Fixed introduction and completion screens rendering simultaneously by making them mutually exclusive
+
 ### Added
 
 - Component consolidation analysis and plan documentation

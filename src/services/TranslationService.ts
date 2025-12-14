@@ -442,7 +442,7 @@ export class TranslationService {
         console.warn(
           "📝 [TranslationService] AWS credentials not found. Translation disabled.",
           {
-            suggestion: "Run: npm run load-aws-credentials <profile-name>",
+            suggestion: "Run: yarn load-aws-credentials <profile-name>",
           }
         );
       }

@@ -185,7 +185,7 @@
 1. **Build package**
 
    ```bash
-   npm run build:task-system
+   yarn build:task-system
    ```
 
 2. **Test main app consumption**
@@ -229,7 +229,7 @@ amplify-datastore-todo/
 - [ ] Update `TaskActivityModule.tsx` imports to use `../../src/`
 - [ ] Compare and merge diverged files (GroupedTasksView, etc.)
 - [ ] Update all package component imports
-- [ ] Test package build: `npm run build:task-system`
+- [ ] Test package build: `yarn build:task-system`
 - [ ] Verify main app still works with updated package
 - [ ] Remove `packages/task-system/src/src/` directory
 - [ ] Update documentation

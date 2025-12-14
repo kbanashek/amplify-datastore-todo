@@ -2694,13 +2694,15 @@
   resolved "https://registry.npmjs.org/@nolyfill/is-core-module/-/is-core-module-1.0.39.tgz"
   integrity sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==
 
-"@orion/task-system@file:/Users/Kyle.Banashek/Source/amplify-datastore-todo/packages/task-system":
-  version "0.0.2"
-  resolved "file:packages/task-system"
-
 "@orion/task-system@file:/Users/Kyle.Banashek/Source/app-sync-poc-working/amplify-datastore-todo/packages/task-system":
   version "0.0.2"
   resolved "file:../app-sync-poc-working/amplify-datastore-todo/packages/task-system"
+  dependencies:
+    "@orion/task-system" "file:/Users/Kyle.Banashek/Source/app-sync-poc-working/amplify-datastore-todo/packages/task-system"
+
+"@orion/task-system@file:/Users/Kyle.Banashek/Source/orion-task-system/packages/task-system":
+  version "0.0.2"
+  resolved "file:packages/task-system"
   dependencies:
     "@orion/task-system" "file:/Users/Kyle.Banashek/Source/app-sync-poc-working/amplify-datastore-todo/packages/task-system"
 

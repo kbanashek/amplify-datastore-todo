@@ -108,17 +108,6 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const [showIntroduction, setShowIntroduction] = useState(false);
 
-  useEffect(() => {
-    // Only show introduction screen if activity config specifies it
-    if (activityConfig?.introductionScreen?.showScreen) {
-      setShowIntroduction(true);
-      setCurrentScreenIndex(-1);
-    } else {
-      setCurrentScreenIndex(0);
-      setShowIntroduction(false);
-    }
-  }, [activityConfig]);
-
   // Manage answers and real-time validation
   const { answers, errors, setAnswers, setErrors, handleAnswerChange } =
     useAnswerManagement({
@@ -146,6 +135,26 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
   const [showReview, setShowReview] = useState(false);
   const [showCompletion, setShowCompletion] = useState(false);
   const [cameFromReview, setCameFromReview] = useState(false);
+
+  // Initialize screen state based on activity config
+  useEffect(() => {
+    // Only show introduction screen if activity config specifies it
+    // BUT don't show introduction if completion screen is showing
+    if (activityConfig?.introductionScreen?.showScreen) {
+      setShowIntroduction(true);
+      setCurrentScreenIndex(-1);
+    } else {
+      setCurrentScreenIndex(0);
+      setShowIntroduction(false);
+    }
+  }, [activityConfig]);
+
+  // Reset completion state when showing introduction (they're mutually exclusive)
+  useEffect(() => {
+    if (showIntroduction) {
+      setShowCompletion(false);
+    }
+  }, [showIntroduction]);
 
   // Submission
   const { isSubmitting, handleSubmit } = useQuestionSubmission({

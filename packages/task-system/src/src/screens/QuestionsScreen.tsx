@@ -99,7 +99,16 @@ export default function QuestionsScreen({
         onBackPress={handleBack}
       /> */}
 
-      {showIntroduction && (
+      {/* Completion Screen - Show first if completed (highest priority) */}
+      {showCompletion && !showIntroduction && !showReview && activityConfig && (
+        <CompletionScreen
+          activityConfig={activityConfig}
+          onDone={handleCompletionDone}
+        />
+      )}
+
+      {/* Introduction Screen - Only show if not completed */}
+      {showIntroduction && !showCompletion && (
         <IntroductionScreen
           activityConfig={activityConfig || {}}
           onBegin={handleBegin}
@@ -107,6 +116,7 @@ export default function QuestionsScreen({
         />
       )}
 
+      {/* Review Screen */}
       {showReview && !showIntroduction && !showCompletion && activityData && (
         <ReviewScreenContainer
           activityData={activityData}
@@ -116,13 +126,6 @@ export default function QuestionsScreen({
           onSubmit={handleSubmit}
           bottomInset={insets.bottom}
           tabBarHeight={60}
-        />
-      )}
-
-      {showCompletion && activityConfig && (
-        <CompletionScreen
-          activityConfig={activityConfig}
-          onDone={handleCompletionDone}
         />
       )}
 

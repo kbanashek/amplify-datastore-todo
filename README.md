@@ -115,10 +115,10 @@ flowchart TD
 ### Prerequisites
 
 - 📦 **Node.js** (v14 or later)
-- 📥 **npm** or **yarn**
-- 📱 **Expo CLI** (`npm install -g expo-cli`)
+- 📥 **yarn** (package manager)
+- 📱 **Expo CLI** (`yarn global add expo-cli`)
 - ☁️ **AWS Account** (for backend services)
-- 🔨 **AWS Amplify CLI** (`npm install -g @aws-amplify/cli`)
+- 🔨 **AWS Amplify CLI** (`yarn global add @aws-amplify/cli`)
 
 ### Installation
 
@@ -132,7 +132,7 @@ flowchart TD
 2. **📦 Install dependencies**
 
    ```bash
-   npm install
+   yarn install
    ```
 
 3. **☁️ Pull the existing Amplify backend**
@@ -146,7 +146,7 @@ flowchart TD
 4. **🚀 Start the app**
 
    ```bash
-   npm start
+   yarn start
    ```
 
    In the output, you'll find options to open the app in:
@@ -182,7 +182,7 @@ flowchart TD
 **Quick Start:**
 
 ```bash
-npm test
+yarn test
 ```
 
 ---

@@ -1,4 +1,4 @@
-appId: com.amplifydatastore.todo
+appId: com.orion.tasksystem
 ---
 - launchApp
 - tapOn:
@@ -23,7 +23,7 @@ appId: com.amplifydatastore.todo
 - assertVisible:
     id: "dashboard_tasks_grouped_view"
 
-appId: com.amplifydatastore.todo
+appId: com.orion.tasksystem
 ---
 - launchApp
 - tapOn:

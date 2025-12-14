@@ -162,6 +162,9 @@ export const useQuestionSubmission = ({
       }
 
       // Determine task status based on answers
+      // If we got here, validation passed (we return early if validation fails)
+      // If validation passed and we have saved answers, mark as COMPLETED
+      // If some answers were saved but some failed, mark as INPROGRESS
       if (taskId && activityData) {
         const totalQuestions = activityData.screens.reduce(
           (sum: number, screen: ParsedActivityData["screens"][number]) =>
@@ -169,35 +172,74 @@ export const useQuestionSubmission = ({
           0
         );
         const answeredQuestions = savedAnswers.length;
-        const allQuestionsAnswered =
-          answeredQuestions === totalQuestions && failedAnswers.length === 0;
+        const questionsWithAnswers = Object.keys(answers).filter(key => {
+          const answer = answers[key];
+          return (
+            answer !== null &&
+            answer !== undefined &&
+            answer !== "" &&
+            !(Array.isArray(answer) && answer.length === 0)
+          );
+        }).length;
+
+        // If we got here, validation passed (all required questions are answered)
+        // If no answers failed to save, task is complete
+        // If some answers failed to save, task is in progress
+        const allAnswersSaved = failedAnswers.length === 0;
         const someQuestionsAnswered = answeredQuestions > 0;
 
         console.log("[useQuestionSubmission] Task status update:", {
           taskId,
           totalQuestions,
           answeredQuestions,
-          allQuestionsAnswered,
+          questionsWithAnswers,
+          allAnswersSaved,
           someQuestionsAnswered,
+          failedAnswersCount: failedAnswers.length,
+          // Note: Validation passed (we got past the validation check)
         });
 
-        if (allQuestionsAnswered) {
+        if (allAnswersSaved && someQuestionsAnswered) {
+          // Validation passed AND all answers saved successfully = COMPLETED
           console.log("[useQuestionSubmission] Updating task to COMPLETED");
-          const updated = await updateTask(taskId, {
-            status: TaskStatus.COMPLETED,
-          });
-          console.log(
-            "[useQuestionSubmission] Task updated to COMPLETED:",
-            updated?.status
-          );
+          try {
+            const updated = await updateTask(taskId, {
+              status: TaskStatus.COMPLETED,
+            });
+            console.log(
+              "[useQuestionSubmission] Task updated to COMPLETED:",
+              updated?.status,
+              updated?.id
+            );
+          } catch (error) {
+            console.error(
+              "[useQuestionSubmission] Error updating task to COMPLETED:",
+              error
+            );
+          }
         } else if (someQuestionsAnswered) {
+          // Validation passed but some answers failed to save = INPROGRESS
           console.log("[useQuestionSubmission] Updating task to INPROGRESS");
-          const updated = await updateTask(taskId, {
-            status: TaskStatus.INPROGRESS,
-          });
-          console.log(
-            "[useQuestionSubmission] Task updated to INPROGRESS:",
-            updated?.status
+          try {
+            const updated = await updateTask(taskId, {
+              status: TaskStatus.INPROGRESS,
+            });
+            console.log(
+              "[useQuestionSubmission] Task updated to INPROGRESS:",
+              updated?.status,
+              updated?.id
+            );
+          } catch (error) {
+            console.error(
+              "[useQuestionSubmission] Error updating task to INPROGRESS:",
+              error
+            );
+          }
+        } else {
+          // No answers were saved at all - this shouldn't happen if validation passed
+          console.warn(
+            "[useQuestionSubmission] Validation passed but no answers were saved",
+            { taskId, savedAnswers, failedAnswers }
           );
         }
       }

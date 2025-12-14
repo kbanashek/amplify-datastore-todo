@@ -48,7 +48,7 @@ The `@orion/task-system` package was created by copying the entire `src/` direct
    - Ensure main app version is authoritative
 
 3. **Test and validate**
-   - Build package: `npm run build:task-system`
+   - Build package: `yarn build:task-system`
    - Verify main app works with updated package
    - Test `TaskActivityModule` rendering
 

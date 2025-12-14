@@ -9,11 +9,11 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "bundleIdentifier": "com.amplifydatastore.todo",
+      "bundleIdentifier": "com.orion.tasksystem",
       "supportsTablet": true
     },
     "android": {
-      "package": "com.amplifydatastore.todo",
+      "package": "com.orion.tasksystem",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
