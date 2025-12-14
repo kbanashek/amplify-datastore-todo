@@ -1,15 +1,15 @@
+import { IconSymbol } from "@/components/ui/IconSymbol";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useMemo } from "react";
 import {
   ScrollView,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
+  View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GlobalHeader } from "../../src/components/GlobalHeader";
-import { IconSymbol } from "@/components/ui/IconSymbol";
 import { AppColors } from "../../src/constants/AppColors";
 import { useRTL } from "../../src/hooks/useRTL";
 import { useTranslatedText } from "../../src/hooks/useTranslatedText";
@@ -18,7 +18,10 @@ import {
   AppointmentStatus,
   AppointmentType,
 } from "../../src/types/Appointment";
-import { formatTime } from "../../src/utils/appointmentParser";
+import {
+  formatTime,
+  getTimezoneAbbreviation,
+} from "../../src/utils/appointmentParser";
 
 export default function AppointmentDetailsScreen() {
   const params = useLocalSearchParams();
@@ -28,14 +31,36 @@ export default function AppointmentDetailsScreen() {
 
   // Parse appointment from params (passed as JSON string)
   const appointment: Appointment | null = useMemo(() => {
+    console.log("[AppointmentDetails] Received params:", {
+      hasAppointment: !!params.appointment,
+      appointmentType: typeof params.appointment,
+      appointmentLength:
+        typeof params.appointment === "string" ? params.appointment.length : 0,
+      timezoneId: params.timezoneId,
+    });
+
     if (params.appointment && typeof params.appointment === "string") {
       try {
-        return JSON.parse(params.appointment) as Appointment;
+        const parsed = JSON.parse(params.appointment) as Appointment;
+        console.log("[AppointmentDetails] Successfully parsed appointment:", {
+          appointmentId: parsed.appointmentId,
+          title: parsed.title,
+          startAt: parsed.startAt,
+          endAt: parsed.endAt,
+        });
+        return parsed;
       } catch (e) {
-        console.error("Failed to parse appointment from params:", e);
+        console.error(
+          "[AppointmentDetails] Failed to parse appointment from params:",
+          e,
+          {
+            rawParams: params.appointment,
+          }
+        );
         return null;
       }
     }
+    console.warn("[AppointmentDetails] No appointment in params or wrong type");
     return null;
   }, [params.appointment]);
 
@@ -95,9 +120,7 @@ export default function AppointmentDetailsScreen() {
   const timezoneId = params.timezoneId as string | undefined;
   const formattedStartTime = formatTime(startTime, timezoneId);
   const formattedEndTime = formatTime(endTime, timezoneId);
-  const timezoneAbbr = timezoneId
-    ? timezoneId.split("/").pop()?.substring(0, 3).toUpperCase()
-    : "";
+  const timezoneAbbr = getTimezoneAbbreviation(timezoneId);
 
   const getAppointmentTypeText = () => {
     return isTelehealth ? telehealthLabel : onsiteVisitLabel;

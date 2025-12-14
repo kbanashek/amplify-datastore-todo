@@ -81,7 +81,7 @@ check_prerequisites() {
     log_step "0" "Checking Prerequisites"
     
     if ! command -v amplify &> /dev/null; then
-        log_error "Amplify CLI not found. Install it with: npm install -g @aws-amplify/cli"
+        log_error "Amplify CLI not found. Install it with: yarn global add @aws-amplify/cli"
         exit 1
     fi
     
@@ -214,8 +214,8 @@ pull_or_init_amplify() {
             --framework "react-native" \
             --srcDir "src" \
             --distributionDir "/" \
-            --buildCommand "npm run-script build" \
-            --startCommand "npm run-script start" \
+            --buildCommand "yarn build" \
+            --startCommand "yarn start" \
             --providers "awscloudformation" \
             --yes 2>/dev/null || \
             AWS_PROFILE="${PROFILE}" amplify init; then

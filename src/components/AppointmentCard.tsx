@@ -6,7 +6,10 @@ import { Shadows, TextStyles } from "../constants/AppStyles";
 import { useRTL } from "../hooks/useRTL";
 import { useTranslatedText } from "../hooks/useTranslatedText";
 import { Appointment, AppointmentType } from "../types/Appointment";
-import { formatTime } from "../utils/appointmentParser";
+import {
+  formatTime,
+  getTimezoneAbbreviation,
+} from "../utils/appointmentParser";
 
 interface AppointmentCardProps {
   appointment: Appointment;
@@ -26,9 +29,7 @@ export const AppointmentCard: React.FC<AppointmentCardProps> = ({
     appointment.appointmentType === AppointmentType.TELEVISIT;
   const startTime = new Date(appointment.startAt);
   const formattedTime = formatTime(startTime, timezoneId);
-  const timezoneAbbr = timezoneId
-    ? timezoneId.split("/").pop()?.substring(0, 3).toUpperCase()
-    : "";
+  const timezoneAbbr = getTimezoneAbbreviation(timezoneId);
 
   const getAppointmentIcon = () => {
     if (isTelehealth) {

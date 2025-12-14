@@ -56,7 +56,7 @@ export AMPLIFY_PROJECT_NAME=LXTodoApp # Project name
 
 **Prerequisites:**
 
-- Amplify CLI installed: `npm install -g @aws-amplify/cli`
+- Amplify CLI installed: `yarn global add @aws-amplify/cli`
 - AWS profile configured: `aws configure --profile amplify-user`
 - Proper IAM permissions (see `minimal-policy.json` in project root)
 
@@ -191,7 +191,7 @@ Automatically creates a new version branch, commits changes, and pushes to remot
 
 **First time setup:**
 
-1. Install Amplify CLI: `npm install -g @aws-amplify/cli`
+1. Install Amplify CLI: `yarn global add @aws-amplify/cli`
 2. Configure AWS profile: `aws configure --profile amplify-user`
 3. Get IAM permissions from your team lead (see `minimal-policy.json`)
 4. Run setup script: `./scripts/setup-amplify-backend.sh`

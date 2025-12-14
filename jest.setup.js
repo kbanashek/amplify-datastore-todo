@@ -10,6 +10,21 @@ jest.mock('expo-router', () => ({
   useSegments: () => [],
 }));
 
+// Mock AsyncStorage (required by TranslationContext and other modules in Jest)
+jest.mock(
+  "@react-native-async-storage/async-storage",
+  () => require("@react-native-async-storage/async-storage/jest/async-storage-mock")
+);
+
+jest.mock("@react-native-community/datetimepicker", () => {
+  const React = require("react");
+  const { View } = require("react-native");
+  return (props: any) => {
+    const { testID = "datetimepicker", onChange, ...rest } = props;
+    return <View testID={testID} onChange={onChange} {...rest} />;
+  };
+});
+
 jest.mock('@react-native-community/netinfo', () => ({
   fetch: jest.fn(() => Promise.resolve({ isConnected: true })),
   addEventListener: jest.fn(() => jest.fn()),
@@ -25,6 +40,23 @@ jest.mock('./src/contexts/AmplifyContext', () => ({
     isSynced: true,
   }),
   AmplifyProvider: ({ children }) => children,
+}));
+
+jest.mock("./src/contexts/TranslationContext", () => ({
+  useTranslation: () => ({
+    currentLanguage: "en",
+    setLanguage: jest.fn(),
+    translate: jest.fn(async (text: string) => text),
+    translateSync: (text: string) => text,
+    isTranslating: false,
+    isRTL: false,
+    supportedLanguages: [],
+    translationService: {
+      translateText: jest.fn(async (text: string) => text),
+      translateBatch: jest.fn(async (texts: string[]) => texts),
+    },
+  }),
+  TranslationProvider: ({ children }) => children,
 }));
 
 jest.mock('@aws-amplify/datastore', () => {

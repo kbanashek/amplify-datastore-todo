@@ -551,7 +551,7 @@ if (require.main === module) {
     "coverage-interactive.html"
   );
   if (!fs.existsSync(coveragePath)) {
-    console.error("Coverage summary not found. Run: npm test -- --coverage");
+    console.error("Coverage summary not found. Run: yarn test --coverage");
     process.exit(1);
   }
   try {

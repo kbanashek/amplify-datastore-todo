@@ -1,20 +1,21 @@
 import React from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { GroupedTask } from "../hooks/useGroupedTasks";
 import { AppColors } from "../constants/AppColors";
 import { Appointment } from "../types/Appointment";
 import { Task } from "../types/Task";
 import { AppointmentCard } from "./AppointmentCard";
 import { TaskCard } from "./TaskCard";
 import { TranslatedText } from "./TranslatedText";
+import { TestIds } from "../constants/testIds";
 
-interface GroupedTask {
-  dayLabel: string;
-  dayDate: string;
-  tasksWithoutTime: Task[];
-  timeGroups: { time: string; tasks: Task[] }[];
-}
-
-interface TasksGroupedViewProps {
+interface GroupedTasksViewProps {
   groupedTasks: GroupedTask[];
   loading: boolean;
   error: string | null;
@@ -26,7 +27,7 @@ interface TasksGroupedViewProps {
   appointmentTimezoneId?: string;
 }
 
-export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
+export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
   groupedTasks,
   loading,
   error,
@@ -39,7 +40,7 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
 }) => {
   if (loading) {
     return (
-      <View style={styles.centerContainer}>
+      <View style={[styles.centerContainer, styles.fill]}>
         <ActivityIndicator size="large" color={AppColors.CIBlue} />
         <TranslatedText text="Loading tasks..." style={styles.loadingText} />
       </View>
@@ -48,7 +49,7 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
 
   if (error) {
     return (
-      <View style={styles.centerContainer}>
+      <View style={[styles.centerContainer, styles.fill]}>
         <Text style={styles.errorText}>{error}</Text>
       </View>
     );
@@ -58,7 +59,7 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
   const hasTodayGroup = groupedTasks.some(g => g.dayLabel === "Today");
   const shouldShowAppointments = todayAppointments.length > 0;
 
-  console.log("[TasksGroupedView] Rendering", {
+  console.log("[GroupedTasksView] Rendering", {
     groupedTasksCount: groupedTasks.length,
     hasTodayGroup,
     todayAppointmentsCount: todayAppointments.length,
@@ -68,14 +69,21 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
 
   if (groupedTasks.length === 0 && !shouldShowAppointments) {
     return (
-      <View style={styles.centerContainer}>
+      <View style={[styles.centerContainer, styles.fill]}>
         <TranslatedText text="No tasks available." style={styles.emptyText} />
       </View>
     );
   }
 
   return (
-    <View style={styles.tasksSection}>
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={styles.scrollContent}
+      testID={TestIds.dashboardTasksGroupedView}
+      accessibilityLabel={TestIds.dashboardTasksGroupedView}
+      nestedScrollEnabled={true}
+      keyboardShouldPersistTaps="handled"
+    >
       {/* Show appointments for today if they exist and there's no "Today" task group */}
       {shouldShowAppointments && !hasTodayGroup && (
         <View style={styles.dayGroup}>
@@ -107,7 +115,7 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
         const showAppointments = isToday && todayAppointments.length > 0;
 
         console.log(
-          `[TasksGroupedView] Rendering dayGroup: ${dayGroup.dayLabel}`,
+          `[GroupedTasksView] Rendering dayGroup: ${dayGroup.dayLabel}`,
           {
             isToday,
             todayAppointmentsCount: todayAppointments.length,
@@ -142,9 +150,6 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
             {/* Appointments for Today - show first */}
             {showAppointments ? (
               <View style={styles.appointmentsContainer}>
-                {console.log(
-                  `[TasksGroupedView] RENDERING APPOINTMENTS: ${todayAppointments.length} appointments for Today`
-                )}
                 {todayAppointments.length === 0 ? (
                   <Text style={styles.errorText}>
                     No appointments to display (array is empty)
@@ -152,7 +157,7 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
                 ) : (
                   todayAppointments.map(appointment => {
                     console.log(
-                      `[TasksGroupedView] Rendering appointment card: ${appointment.title}`,
+                      `[GroupedTasksView] Rendering appointment card: ${appointment.title}`,
                       {
                         appointmentId: appointment.appointmentId,
                         startAt: appointment.startAt,
@@ -170,15 +175,7 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
                   })
                 )}
               </View>
-            ) : (
-              console.log(
-                `[TasksGroupedView] NOT RENDERING APPOINTMENTS - showAppointments=false`,
-                {
-                  isToday,
-                  todayAppointmentsCount: todayAppointments.length,
-                }
-              ) || null
-            )}
+            ) : null}
 
             {/* Tasks without due time (simple cards) */}
             {dayGroup.tasksWithoutTime.map(task => (
@@ -190,6 +187,7 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
                 onDelete={onDelete}
               />
             ))}
+
             {/* Tasks grouped by time */}
             {dayGroup.timeGroups.map(timeGroup => (
               <View key={timeGroup.time} style={styles.timeGroup}>
@@ -211,13 +209,19 @@ export const TasksGroupedView: React.FC<TasksGroupedViewProps> = ({
           </View>
         );
       })}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  tasksSection: {
-    marginBottom: 28,
+  fill: {
+    flex: 1,
+  },
+  scroll: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 28,
   },
   dayGroup: {
     marginBottom: 4,
