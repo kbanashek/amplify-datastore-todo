@@ -278,12 +278,37 @@ describe("NumberQuestion", () => {
         question={question}
         value=""
         onChange={mockOnChange}
-        displayProperties={{ uniti18nKey: "lbs" }}
+        displayProperties={{ uniti18nKey: "unit_lbs_key" }}
         errors={[]}
       />
     );
 
     expect(getByText("lbs")).toBeTruthy();
+  });
+
+  it("maps known unit i18n keys to display labels", () => {
+    const question: Question = {
+      id: "question-1",
+      type: "number-field",
+      text: "<p>Enter pressure</p>",
+      friendlyName: "Pressure",
+      required: false,
+      validations: [],
+      choices: [],
+      dataMappers: [],
+    };
+
+    const { getByText } = render(
+      <NumberQuestion
+        question={question}
+        value=""
+        onChange={mockOnChange}
+        displayProperties={{ uniti18nKey: "unit_mmhg_key" }}
+        errors={[]}
+      />
+    );
+
+    expect(getByText("mmHg")).toBeTruthy();
   });
 
   it("handles case-insensitive numericScale type", () => {

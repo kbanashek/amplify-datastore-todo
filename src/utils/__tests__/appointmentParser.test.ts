@@ -3,6 +3,7 @@ import {
   formatDateLabel,
   formatTime,
   groupAppointmentsByDate,
+  getTimezoneAbbreviation,
 } from "../appointmentParser";
 import {
   AppointmentData,
@@ -267,6 +268,33 @@ describe("appointmentParser", () => {
       expect(result).toHaveLength(2);
       // Timezone is used internally for date calculations
       expect(result[0].date).toBeDefined();
+    });
+  });
+
+  describe("getTimezoneAbbreviation", () => {
+    it("should extract abbreviation from valid timezone ID", () => {
+      expect(getTimezoneAbbreviation("America/New_York")).toBe("NEW");
+      expect(getTimezoneAbbreviation("Europe/London")).toBe("LON");
+      expect(getTimezoneAbbreviation("Asia/Tokyo")).toBe("TOK");
+    });
+
+    it("should return empty string for null or undefined", () => {
+      expect(getTimezoneAbbreviation(null)).toBe("");
+      expect(getTimezoneAbbreviation(undefined)).toBe("");
+    });
+
+    it("should return the first 3 characters for timezone ID without slash", () => {
+      expect(getTimezoneAbbreviation("UTC")).toBe("UTC");
+      expect(getTimezoneAbbreviation("EST")).toBe("EST");
+    });
+
+    it("should handle timezone IDs with multiple slashes", () => {
+      expect(getTimezoneAbbreviation("America/New_York/Zone")).toBe("ZON");
+    });
+
+    it("should handle short timezone segments", () => {
+      expect(getTimezoneAbbreviation("America/LA")).toBe("LA");
+      expect(getTimezoneAbbreviation("US/CA")).toBe("CA");
     });
   });
 });

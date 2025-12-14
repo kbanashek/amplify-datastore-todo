@@ -1,13 +1,12 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
-import { TasksGroupedView } from "../TasksGroupedView";
-import { Task, TaskStatus, TaskType } from "../../types/Task";
+import { GroupedTasksView } from "../GroupedTasksView";
 import { createMockTask } from "../../__tests__/__mocks__/DataStore.mock";
 
 // Mock TaskCard
 jest.mock("../TaskCard", () => ({
-  TaskCard: ({ task, onPress, onDelete, simple }: any) => {
-    const { View, Text, TouchableOpacity } = require("react-native");
+  TaskCard: ({ task, onPress, simple }: any) => {
+    const { Text, TouchableOpacity } = require("react-native");
     return (
       <TouchableOpacity
         testID={`task-card-${task.id}`}
@@ -20,7 +19,7 @@ jest.mock("../TaskCard", () => ({
   },
 }));
 
-describe("TasksGroupedView", () => {
+describe("GroupedTasksView", () => {
   const mockOnPress = jest.fn();
   const mockOnDelete = jest.fn();
 
@@ -30,7 +29,7 @@ describe("TasksGroupedView", () => {
 
   it("renders loading state", () => {
     const { getByText } = render(
-      <TasksGroupedView
+      <GroupedTasksView
         groupedTasks={[]}
         loading={true}
         error={null}
@@ -44,7 +43,7 @@ describe("TasksGroupedView", () => {
 
   it("renders error state", () => {
     const { getByText } = render(
-      <TasksGroupedView
+      <GroupedTasksView
         groupedTasks={[]}
         loading={false}
         error="Failed to load tasks"
@@ -58,7 +57,7 @@ describe("TasksGroupedView", () => {
 
   it("renders empty state", () => {
     const { getByText } = render(
-      <TasksGroupedView
+      <GroupedTasksView
         groupedTasks={[]}
         loading={false}
         error={null}
@@ -120,7 +119,7 @@ describe("TasksGroupedView", () => {
     ];
 
     const { getByText, getByTestId } = render(
-      <TasksGroupedView
+      <GroupedTasksView
         groupedTasks={groupedTasks}
         loading={false}
         error={null}
@@ -159,7 +158,7 @@ describe("TasksGroupedView", () => {
     ];
 
     const { getByText, getByTestId } = render(
-      <TasksGroupedView
+      <GroupedTasksView
         groupedTasks={groupedTasks}
         loading={false}
         error={null}
@@ -206,7 +205,7 @@ describe("TasksGroupedView", () => {
     ];
 
     const { getByText } = render(
-      <TasksGroupedView
+      <GroupedTasksView
         groupedTasks={groupedTasks}
         loading={false}
         error={null}
@@ -239,7 +238,7 @@ describe("TasksGroupedView", () => {
     ];
 
     const { getByText } = render(
-      <TasksGroupedView
+      <GroupedTasksView
         groupedTasks={groupedTasks}
         loading={false}
         error={null}
@@ -271,7 +270,7 @@ describe("TasksGroupedView", () => {
     ];
 
     const { getByText } = render(
-      <TasksGroupedView
+      <GroupedTasksView
         groupedTasks={groupedTasks}
         loading={false}
         error={null}
@@ -302,8 +301,8 @@ describe("TasksGroupedView", () => {
       },
     ];
 
-    const { getByText, queryByText } = render(
-      <TasksGroupedView
+    const { getByText } = render(
+      <GroupedTasksView
         groupedTasks={groupedTasks}
         loading={false}
         error={null}
@@ -313,7 +312,5 @@ describe("TasksGroupedView", () => {
     );
 
     expect(getByText("Thu, Dec 11")).toBeTruthy();
-    // Date should not be shown separately for non-Today/Tomorrow labels
-    // (it's already in the dayLabel)
   });
 });

@@ -1,13 +1,8 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Platform,
-} from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import React, { useEffect, useMemo, useState } from "react";
+import { StyleSheet, View } from "react-native";
 import { Question } from "../../types/ActivityConfig";
+import { DateTimeFieldMode } from "@/components/ui/DateTimeField";
+import { DateTimeField } from "@/components/ui/DateTimeField";
 
 interface DateQuestionProps {
   question: Question;
@@ -24,21 +19,31 @@ export const DateQuestion: React.FC<DateQuestionProps> = ({
   displayProperties,
   errors,
 }) => {
-  const [showPicker, setShowPicker] = useState(false);
   const questionType = question.type?.toLowerCase() || "";
 
   // Parse value to Date
-  const getDateValue = (): Date => {
+  const getDateValue = (): Date | null => {
     if (!value) return new Date();
     if (value instanceof Date) return value;
     if (typeof value === "string") {
       const parsed = new Date(value);
-      return isNaN(parsed.getTime()) ? new Date() : parsed;
+      return isNaN(parsed.getTime()) ? null : parsed;
     }
-    return new Date();
+    return null;
   };
 
-  const [selectedDate, setSelectedDate] = useState<Date>(getDateValue());
+  const initialDate = getDateValue();
+  const [selectedDate, setSelectedDate] = useState<Date | null>(
+    initialDate ?? null
+  );
+
+  useEffect(() => {
+    // Keep local state in sync if answer updates externally
+    const next = getDateValue();
+    if (next && (!selectedDate || next.getTime() !== selectedDate.getTime())) {
+      setSelectedDate(next);
+    }
+  }, [value]);
 
   const formatDate = (date: Date): string => {
     if (questionType.includes("time")) {
@@ -65,78 +70,29 @@ export const DateQuestion: React.FC<DateQuestionProps> = ({
     });
   };
 
-  const handleDateChange = (event: any, date?: Date) => {
-    console.log("📅 [DateQuestion] Date picker changed", {
-      questionId: question.id,
-      date: date?.toISOString(),
-      platform: Platform.OS,
-      questionType: questionType,
-    });
-
-    if (Platform.OS === "android") {
-      setShowPicker(false);
+  const mode: DateTimeFieldMode = useMemo(() => {
+    if (questionType.includes("time") && !questionType.includes("date")) {
+      return "time";
     }
-    if (date) {
-      setSelectedDate(date);
-      onChange(date.toISOString());
-      console.log("✅ [DateQuestion] Date value updated", {
-        questionId: question.id,
-        isoString: date.toISOString(),
-        formatted: formatDate(date),
-      });
+    if (questionType.includes("date-time")) {
+      return "datetime";
     }
-  };
-
-  const displayValue = value ? formatDate(getDateValue()) : "Select date/time";
+    return "date";
+  }, [questionType]);
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={[styles.dateButton, errors.length > 0 && styles.dateButtonError]}
-        onPress={() => {
-          console.log("📅 [DateQuestion] Date button pressed", {
-            questionId: question.id,
-            currentValue: value,
-            questionType: questionType,
-          });
-          setShowPicker(true);
+      <DateTimeField
+        mode={mode}
+        value={selectedDate}
+        onChange={date => {
+          setSelectedDate(date);
+          onChange(date.toISOString());
         }}
-      >
-        <Text style={styles.dateButtonText}>{displayValue}</Text>
-      </TouchableOpacity>
-
-      {showPicker && (
-        <DateTimePicker
-          value={selectedDate}
-          mode={
-            questionType.includes("time") && !questionType.includes("date")
-              ? "time"
-              : questionType.includes("date-time")
-                ? "datetime"
-                : "date"
-          }
-          display={Platform.OS === "ios" ? "spinner" : "default"}
-          onChange={handleDateChange}
-        />
-      )}
-
-      {Platform.OS === "ios" && showPicker && (
-        <View style={styles.iosPickerContainer}>
-          <TouchableOpacity
-            style={styles.iosPickerButton}
-            onPress={() => {
-              console.log("✅ [DateQuestion] Done button pressed (iOS)", {
-                questionId: question.id,
-                selectedDate: selectedDate.toISOString(),
-                formatted: formatDate(selectedDate),
-              });
-              setShowPicker(false);
-            }}
-          >
-            <Text style={styles.iosPickerButtonText}>Done</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+        format={formatDate}
+        error={errors.length > 0}
+        testID={`date-question-${question.id}`}
+      />
     </View>
   );
 };
@@ -144,36 +100,5 @@ export const DateQuestion: React.FC<DateQuestionProps> = ({
 const styles = StyleSheet.create({
   container: {
     marginTop: 8,
-  },
-  dateButton: {
-    backgroundColor: "#f8f9fa",
-    borderWidth: 1,
-    borderColor: "#dfe4ea",
-    borderRadius: 8,
-    padding: 12,
-    minHeight: 44,
-    justifyContent: "center",
-  },
-  dateButtonError: {
-    borderColor: "#e74c3c",
-  },
-  dateButtonText: {
-    fontSize: 16,
-    color: "#2f3542",
-  },
-  iosPickerContainer: {
-    marginTop: 8,
-    alignItems: "flex-end",
-  },
-  iosPickerButton: {
-    backgroundColor: "#3498db",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
-  },
-  iosPickerButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
   },
 });

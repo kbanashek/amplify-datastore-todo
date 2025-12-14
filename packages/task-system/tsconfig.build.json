@@ -1,0 +1,48 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "emitDeclarationOnly": false,
+    "noEmit": false,
+    "composite": false,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "target": "es2019",
+    "jsx": "react-jsx",
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "src/**/*.json"],
+  "exclude": [
+    "dist/**",
+    "node_modules/**",
+
+    "src/src/amplify-config.*",
+    "src/src/amplify-init.*",
+    "src/src/amplify-init-sync.*",
+    "src/src/amplifyconfiguration.json",
+    "src/src/aws-exports.*",
+    "src/src/API.ts",
+    "src/src/graphql/**",
+
+    // Exclude app-only screens/views that aren't part of the embeddable module build.
+    // These currently have type issues / missing hook modules and are not required by TaskActivityModule.
+    "src/src/components/TaskList.tsx",
+    "src/src/components/TasksView.tsx",
+
+    // Exclude list screens/hooks not used by the module embed path.
+    "src/src/hooks/useActivityList.ts",
+    "src/src/hooks/useQuestionList.ts",
+    "src/src/hooks/useTaskAnswerList.ts",
+    "src/src/hooks/useTaskHistoryList.ts",
+    "src/src/hooks/useTaskResultList.ts"
+  ]
+}

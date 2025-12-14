@@ -30,6 +30,7 @@ export default function SeedScreen() {
   const [isSeedingCoordinated, setIsSeedingCoordinated] = useState(false);
   const [isClearing, setIsClearing] = useState(false);
   const [isClearingAppointments, setIsClearingAppointments] = useState(false);
+  const [isNuclearResetting, setIsNuclearResetting] = useState(false);
   const [seedResult, setSeedResult] = useState<any>(null);
   const [appointmentSeedResult, setAppointmentSeedResult] = useState<any>(null);
   const [coordinatedSeedResult, setCoordinatedSeedResult] = useState<any>(null);
@@ -63,7 +64,7 @@ export default function SeedScreen() {
                   deletedCount !== 1 ? "s" : ""
                 } from the database.`
               );
-            } catch (error: any) {
+            } catch (error: unknown) {
               console.error("❌ [SeedScreen] Error deleting tasks:", {
                 error: error instanceof Error ? error.message : String(error),
                 stack: error instanceof Error ? error.stack : undefined,
@@ -103,7 +104,7 @@ export default function SeedScreen() {
                 "✅ [SeedScreen] All appointments cleared successfully"
               );
               Alert.alert("Success", "All appointments have been cleared.");
-            } catch (error: any) {
+            } catch (error: unknown) {
               console.error("❌ [SeedScreen] Error clearing appointments:", {
                 error: error instanceof Error ? error.message : String(error),
                 stack: error instanceof Error ? error.stack : undefined,
@@ -114,6 +115,72 @@ export default function SeedScreen() {
               );
             } finally {
               setIsClearingAppointments(false);
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const handleNuclearReset = async () => {
+    console.log("☢️ [SeedScreen] Nuclear Reset button pressed");
+
+    Alert.alert(
+      "⚠️ Nuclear Reset - Delete All Task Data?",
+      "This will permanently delete ALL task-related submitted data:\n\n" +
+        "• All Tasks\n" +
+        "• All Task Answers\n" +
+        "• All Task Results\n" +
+        "• All Task History\n\n" +
+        "This action cannot be undone and will remove all submitted data from AWS databases.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete All Data",
+          style: "destructive",
+          onPress: async () => {
+            setIsNuclearResetting(true);
+            try {
+              console.log("☢️ [SeedScreen] Starting nuclear reset...");
+              const result = await TaskService.nuclearReset();
+              console.log(
+                "✅ [SeedScreen] Nuclear reset completed successfully",
+                {
+                  result,
+                }
+              );
+              Alert.alert(
+                "Success",
+                `Nuclear reset completed!\n\n` +
+                  `Deleted:\n` +
+                  `• ${result.tasks} task${result.tasks !== 1 ? "s" : ""}\n` +
+                  `• ${result.taskAnswers} task answer${
+                    result.taskAnswers !== 1 ? "s" : ""
+                  }\n` +
+                  `• ${result.taskResults} task result${
+                    result.taskResults !== 1 ? "s" : ""
+                  }\n` +
+                  `• ${result.taskHistories} task histor${
+                    result.taskHistories !== 1 ? "ies" : "y"
+                  }\n\n` +
+                  `All task-related submitted data has been removed from AWS databases.`
+              );
+            } catch (error: unknown) {
+              console.error("❌ [SeedScreen] Error during nuclear reset:", {
+                error: error instanceof Error ? error.message : String(error),
+                stack: error instanceof Error ? error.stack : undefined,
+              });
+              Alert.alert(
+                "Error",
+                error instanceof Error
+                  ? error.message
+                  : "Failed to perform nuclear reset"
+              );
+            } finally {
+              setIsNuclearResetting(false);
             }
           },
         },
@@ -173,7 +240,7 @@ export default function SeedScreen() {
           `Timezone: ${appointmentData.siteTimezoneId}\n\n` +
           `Please refresh the dashboard to see the appointments.`
       );
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("❌ [SeedScreen] Appointment seed error:", {
         error: error instanceof Error ? error.message : String(error),
         stack: error instanceof Error ? error.stack : undefined,
@@ -212,7 +279,7 @@ export default function SeedScreen() {
             result.tasks.filter((t: any) => !t.entityId).length
           } tasks are simple (no questions).`
       );
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("❌ [SeedScreen] Seed error:", {
         error: error instanceof Error ? error.message : String(error),
         stack: error instanceof Error ? error.stack : undefined,
@@ -259,7 +326,7 @@ export default function SeedScreen() {
           `• ${result.relationships.length} appointment-task relationships\n\n` +
           `Tasks are scheduled relative to appointment dates and can move with visit rescheduling.`
       );
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("❌ [SeedScreen] Coordinated seed error:", {
         error: error instanceof Error ? error.message : String(error),
         stack: error instanceof Error ? error.stack : undefined,
@@ -317,7 +384,7 @@ export default function SeedScreen() {
         <TouchableOpacity
           style={[styles.clearButton, isClearing && styles.clearButtonDisabled]}
           onPress={handleClearAll}
-          disabled={isClearing || isSeeding}
+          disabled={isClearing || isSeeding || isNuclearResetting}
         >
           {isClearing ? (
             <ActivityIndicator size="small" color="#fff" />
@@ -330,9 +397,34 @@ export default function SeedScreen() {
         </TouchableOpacity>
 
         <TouchableOpacity
+          style={[
+            styles.nuclearButton,
+            isNuclearResetting && styles.clearButtonDisabled,
+          ]}
+          onPress={handleNuclearReset}
+          disabled={
+            isNuclearResetting ||
+            isSeeding ||
+            isClearing ||
+            isSeedingAppointments ||
+            isClearingAppointments ||
+            isSeedingCoordinated
+          }
+        >
+          {isNuclearResetting ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <TranslatedText
+              text="☢️ Nuclear Reset - Delete All Task Data"
+              style={styles.clearButtonText}
+            />
+          )}
+        </TouchableOpacity>
+
+        <TouchableOpacity
           style={[styles.seedButton, isSeeding && styles.seedButtonDisabled]}
           onPress={handleSeed}
-          disabled={isSeeding || isClearing}
+          disabled={isSeeding || isClearing || isNuclearResetting}
         >
           {isSeeding ? (
             <ActivityIndicator size="small" color="#fff" />
@@ -392,7 +484,8 @@ export default function SeedScreen() {
             isSeeding ||
             isSeedingAppointments ||
             isClearing ||
-            isClearingAppointments
+            isClearingAppointments ||
+            isNuclearResetting
           }
         >
           {isSeedingCoordinated ? (
@@ -628,6 +721,16 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
     marginBottom: 12,
+  },
+  nuclearButton: {
+    backgroundColor: "#8b0000",
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: "center",
+    marginBottom: 12,
+    borderWidth: 2,
+    borderColor: "#ff0000",
   },
   clearButtonDisabled: {
     opacity: 0.6,

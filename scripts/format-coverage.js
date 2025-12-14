@@ -181,7 +181,7 @@ if (require.main === module) {
       process.exit(1);
     }
   } else {
-    console.error("Coverage summary not found. Run: npm test -- --coverage");
+    console.error("Coverage summary not found. Run: yarn test --coverage");
     process.exit(1);
   }
 }

@@ -25,10 +25,16 @@ globs: ['**/*.test.ts', '**/*.test.tsx', '**/__tests__/**/*']
   - Test error states and loading states
   - Test edge cases (empty data, null values, invalid inputs)
 - **When creating new code:**
-  1. Create the hook/service/component
-  2. **Immediately create the corresponding test file**
+  1. Create the hook/service/component/utility
+  2. **IMMEDIATELY create the corresponding test file** - tests are REQUIRED, not optional
   3. Write tests covering the main functionality
   4. Ensure tests pass before considering the feature complete
+- **CRITICAL: ALL new files must have unit tests**
+  - **Hooks**: `src/hooks/__tests__/useHookName.test.ts`
+  - **Components**: `src/components/__tests__/ComponentName.test.tsx` or `src/components/[category]/__tests__/ComponentName.test.tsx`
+  - **Services**: `src/services/__tests__/ServiceName.test.ts`
+  - **Utils**: `src/utils/__tests__/utilityName.test.ts`
+  - **NO EXCEPTIONS** - if you create a new file, you MUST create its test file immediately
 - **Examples:**
   - ✅ Good: Create `src/hooks/useAppointmentList.ts` → Create `src/hooks/__tests__/useAppointmentList.test.ts` immediately
   - ✅ Good: Create `src/services/AppointmentService.ts` → Create `src/services/__tests__/AppointmentService.test.ts` immediately
