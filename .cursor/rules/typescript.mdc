@@ -11,6 +11,9 @@ globs: ['**/*.ts', '**/*.tsx']
   - ❌ Bad: `function process(data: any) { ... }`
   - ✅ Good: `function process<T>(data: T): T { ... }`
   - ✅ Good: `function process(data: unknown): ProcessedData { ... }`
+  - **Error handling**: Always use `unknown` for catch clauses, then narrow with type guards
+    - ❌ Bad: `catch (error: any) { console.log(error.message); }`
+    - ✅ Good: `catch (error: unknown) { const message = error instanceof Error ? error.message : String(error); }`
 - **Use explicit return types** for functions, especially public APIs
   - ✅ Good: `function calculateTotal(items: Item[]): number { ... }`
   - ✅ Good: `const getItems = (): Promise<Item[]> => { ... }`

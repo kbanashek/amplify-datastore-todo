@@ -8,6 +8,7 @@
 [![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactnative.dev/)
 [![Expo](https://img.shields.io/badge/Expo-1C1E24?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev/)
 [![AWS Amplify](https://img.shields.io/badge/AWS_Amplify-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/amplify/)
+[![codecov](https://codecov.io/gh/YOUR_USERNAME/YOUR_REPO/branch/main/graph/badge.svg)](https://codecov.io/gh/YOUR_USERNAME/YOUR_REPO)
 
 </div>
 
@@ -115,10 +116,16 @@ flowchart TD
 ### Prerequisites
 
 - 📦 **Node.js** (v14 or later)
-- 📥 **yarn** (package manager)
+- 📥 **yarn** (package manager) - This project uses yarn workspaces
 - 📱 **Expo CLI** (`yarn global add expo-cli`)
 - ☁️ **AWS Account** (for backend services)
 - 🔨 **AWS Amplify CLI** (`yarn global add @aws-amplify/cli`)
+
+### Package Information
+
+- **Android Package**: `com.orion.tasksystem`
+- **iOS Bundle Identifier**: `com.orion.tasksystem`
+- **Workspace Package**: `@orion/task-system` (located in `packages/task-system/`)
 
 ### Installation
 
@@ -134,6 +141,8 @@ flowchart TD
    ```bash
    yarn install
    ```
+
+   This will install dependencies for both the main app and the workspace package (`@orion/task-system`).
 
 3. **☁️ Pull the existing Amplify backend**
 
@@ -167,6 +176,7 @@ flowchart TD
 | **[AWS Architecture](DOCS/aws-architecture.md)**                       | AWS services, data flow, and conflict resolution           |
 | **[Development Guidelines](DOCS/development-guidelines.md)**           | Coding standards, testing requirements, and best practices |
 | **[Testing Guide](DOCS/testing.md)**                                   | Unit test requirements, coverage, and examples             |
+| **[Coverage Setup](DOCS/coverage-setup.md)**                           | GitHub Actions coverage reporting and Codecov setup        |
 | **[Rule Engine Plan](DOCS/todos.md)**                                  | Comprehensive rule engine implementation plan              |
 | **[Current Rule Logic](DOCS/current-rule-logic.md)**                   | Current rule implementation status                         |
 | **[Testing Coordinated Seeding](DOCS/testing-coordinated-seeding.md)** | Testing guide for coordinated seeding feature              |
@@ -182,20 +192,47 @@ flowchart TD
 **Quick Start:**
 
 ```bash
+# Run all tests
 yarn test
+
+# Run tests in watch mode
+yarn test:watch
+
+# Generate coverage report
+yarn test:coverage
 ```
+
+**Coverage Reports:**
+
+- **Pull Requests**: Coverage summary is automatically posted as a comment on every PR showing overall coverage metrics
+- **Local**: Coverage reports are generated in the `coverage/` directory. Open `coverage/lcov-report/index.html` in your browser for a detailed interactive report.
+- **GitHub Actions**: Coverage reports are automatically generated on every push and PR. View them in:
+  - PR comments (automatic coverage summary)
+  - Workflow artifacts (downloadable HTML reports)
+  - Codecov dashboard (if configured - see setup instructions below)
+  - Coverage summary in workflow run details
 
 ---
 
 ## 🎯 Current Status
 
-- ✅ **Fully Implemented**: Task management, appointments, questions, seeding, translation, conflict resolution
+- ✅ **Fully Implemented**: Task management, appointments, questions, seeding, translation, conflict resolution, task completion workflow
 - ⚠️ **Partially Implemented**: Rule fields (stored but not enforced), task visibility, anchors
 - 🚧 **Not Yet Implemented**: Rule engine, time-based validation, anchor rescheduling
 
 📖 **For detailed status information**, see [Implementation Status](DOCS/implementation-status.md)
 
 📖 **For future plans**, see [Roadmap](DOCS/roadmap.md)
+
+## 📦 Project Structure
+
+This project uses **yarn workspaces** with the following structure:
+
+- **Main App** (`src/`, `app/`) - The Expo Router application
+- **Workspace Package** (`packages/task-system/`) - Reusable task/activity module (`@orion/task-system`)
+- **Shared Components** (`components/ui/`) - Base UI design system components
+
+📖 **For detailed structure information**, see [Project Structure](DOCS/project-structure.md) and [Task System Package](DOCS/task-system-package.md)
 
 ---
 

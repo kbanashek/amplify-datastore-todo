@@ -1,7 +1,8 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
-import { Task } from "../models";
+import { Task as DataStoreTask } from "../models";
 import {
   CreateTaskInput,
+  Task,
   TaskFilters,
   TaskStatus,
   TaskType,
@@ -24,7 +25,10 @@ export class TaskService {
         attempts,
       }) => {
         // For Task model conflicts
-        if (modelConstructor.name === "Task") {
+        if (
+          modelConstructor.name === "Task" ||
+          modelConstructor === DataStoreTask
+        ) {
           // For update operations
           if (operation === OpType.UPDATE) {
             // Prefer local status changes, but remote timing updates
@@ -81,13 +85,13 @@ export class TaskService {
     try {
       console.log("[TaskService] Creating task with DataStore:", input);
       const task = await DataStore.save(
-        new Task({
+        new DataStoreTask({
           ...input,
         })
       );
 
       console.log("[TaskService] Task created successfully:", task.id);
-      return task;
+      return task as Task;
     } catch (error) {
       console.error("Error creating task:", error);
       throw error;
@@ -101,7 +105,7 @@ export class TaskService {
    */
   static async getTasks(filters?: TaskFilters): Promise<Task[]> {
     try {
-      let tasks = await DataStore.query(Task);
+      let tasks = await DataStore.query(DataStoreTask);
 
       // Apply filters
       if (filters) {
@@ -138,7 +142,7 @@ export class TaskService {
         }
       }
 
-      return tasks;
+      return tasks as Task[];
     } catch (error) {
       console.error("Error fetching tasks:", error);
       throw error;
@@ -152,8 +156,8 @@ export class TaskService {
    */
   static async getTaskById(id: string): Promise<Task | null> {
     try {
-      const task = await DataStore.query(Task, id);
-      return task || null;
+      const task = await DataStore.query(DataStoreTask, id);
+      return (task as Task) || null;
     } catch (error) {
       console.error("Error fetching task:", error);
       throw error;
@@ -169,14 +173,14 @@ export class TaskService {
   static async updateTask(id: string, data: TaskUpdateData): Promise<Task> {
     try {
       console.log("[TaskService] updateTask called:", { id, data });
-      const original = await DataStore.query(Task, id);
+      const original = await DataStore.query(DataStoreTask, id);
       if (!original) {
         throw new Error(`Task with id ${id} not found`);
       }
 
       console.log("[TaskService] Original task status:", original.status);
       const updated = await DataStore.save(
-        Task.copyOf(original, updated => {
+        DataStoreTask.copyOf(original, updated => {
           Object.assign(updated, data);
         })
       );
@@ -187,7 +191,7 @@ export class TaskService {
         title: updated.title,
       });
 
-      return updated;
+      return updated as Task;
     } catch (error) {
       console.error("[TaskService] Error updating task:", error);
       throw error;
@@ -201,7 +205,7 @@ export class TaskService {
    */
   static async deleteTask(id: string): Promise<void> {
     try {
-      const toDelete = await DataStore.query(Task, id);
+      const toDelete = await DataStore.query(DataStoreTask, id);
       if (!toDelete) {
         throw new Error(`Task with id ${id} not found`);
       }
@@ -223,7 +227,7 @@ export class TaskService {
   } {
     console.log("[TaskService] Setting up DataStore subscription for Task");
 
-    const querySubscription = DataStore.observeQuery(Task).subscribe(
+    const querySubscription = DataStore.observeQuery(DataStoreTask).subscribe(
       snapshot => {
         const { items, isSynced } = snapshot;
 
@@ -238,7 +242,7 @@ export class TaskService {
           })),
         });
 
-        callback(items, isSynced);
+        callback(items as Task[], isSynced);
       }
     );
 
@@ -256,7 +260,7 @@ export class TaskService {
    */
   static async deleteAllTasks(): Promise<number> {
     try {
-      const tasks = await DataStore.query(Task);
+      const tasks = await DataStore.query(DataStoreTask);
       let deletedCount = 0;
 
       for (const task of tasks) {
@@ -267,6 +271,51 @@ export class TaskService {
       return deletedCount;
     } catch (error) {
       console.error("Error deleting all tasks:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Nuclear reset: Delete all task-related submitted data
+   * This includes TaskAnswers, TaskResults, TaskHistory, and Tasks
+   * @returns {Promise<{ tasks: number; taskAnswers: number; taskResults: number; taskHistories: number }>} - Counts of deleted items
+   */
+  static async nuclearReset(): Promise<{
+    tasks: number;
+    taskAnswers: number;
+    taskResults: number;
+    taskHistories: number;
+  }> {
+    try {
+      // Import services dynamically to avoid circular dependencies
+      const { TaskAnswerService } = await import("./TaskAnswerService");
+      const { TaskResultService } = await import("./TaskResultService");
+      const { TaskHistoryService } = await import("./TaskHistoryService");
+
+      console.log("[TaskService] Starting nuclear reset...");
+
+      // Delete in order: answers, results, histories first, then tasks
+      // This ensures we delete dependent data before parent data
+      const taskAnswers = await TaskAnswerService.deleteAllTaskAnswers();
+      const taskResults = await TaskResultService.deleteAllTaskResults();
+      const taskHistories = await TaskHistoryService.deleteAllTaskHistories();
+      const tasks = await this.deleteAllTasks();
+
+      console.log("[TaskService] Nuclear reset completed", {
+        tasks,
+        taskAnswers,
+        taskResults,
+        taskHistories,
+      });
+
+      return {
+        tasks,
+        taskAnswers,
+        taskResults,
+        taskHistories,
+      };
+    } catch (error) {
+      console.error("Error during nuclear reset:", error);
       throw error;
     }
   }

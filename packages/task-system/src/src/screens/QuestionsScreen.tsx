@@ -73,23 +73,23 @@ export default function QuestionsScreen({
     );
   }
 
-  //   if (!activityData || activityData.screens.length === 0) {
-  //     return (
-  //       <View style={[styles.container, { paddingTop: insets.top }]}>
-  //         <GlobalHeader
-  //           title={headerTitle}
-  //           showBackButton={!!taskId}
-  //           onBackPress={handleBack}
-  //         />
-  //         {/* <View style={styles.centerContainer}>
-  //           <Text style={styles.emptyText}>No questions available</Text>
-  //           <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-  //             <Text style={styles.backButtonText}>Go Back</Text>
-  //           </TouchableOpacity>
-  //         </View> */}
-  //       </View>
-  //     );
-  //   }
+  if (!activityData || activityData.screens.length === 0) {
+    return (
+      <View style={[styles.container, { paddingTop: insets.top }]}>
+        <GlobalHeader
+          title={headerTitle}
+          showBackButton={!!taskId}
+          onBackPress={handleBack}
+        />
+        <View style={styles.centerContainer}>
+          <Text style={styles.emptyText}>No questions available</Text>
+          <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+            <Text style={styles.backButtonText}>Go Back</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={[styles.container, { paddingTop: topInset }]}>

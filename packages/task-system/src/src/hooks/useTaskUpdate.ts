@@ -34,7 +34,7 @@ export const useTaskUpdate = (): UseTaskUpdateReturn => {
           id,
           updated,
         });
-        return updated as unknown as Task;
+        return updated;
       } catch (err: unknown) {
         const errorMessage =
           err instanceof Error ? err.message : "Failed to update task";

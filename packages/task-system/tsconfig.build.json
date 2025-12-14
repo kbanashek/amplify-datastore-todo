@@ -37,8 +37,6 @@
     // These currently have type issues / missing hook modules and are not required by TaskActivityModule.
     "src/src/components/TaskList.tsx",
     "src/src/components/TasksView.tsx",
-    "src/src/components/TodoForm.tsx",
-    "src/src/components/TodoList.tsx",
 
     // Exclude list screens/hooks not used by the module embed path.
     "src/src/hooks/useActivityList.ts",

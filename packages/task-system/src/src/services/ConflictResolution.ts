@@ -2,8 +2,9 @@ import { DataStore, OpType } from "@aws-amplify/datastore";
 
 /**
  * Unified conflict resolution strategy for all DataStore models
- * This handles conflicts for Task, Todo, Question, Activity, DataPoint,
+ * This handles conflicts for Task, Question, Activity, DataPoint,
  * DataPointInstance, TaskAnswer, TaskResult, and TaskHistory
+ * Note: Todo model conflict resolution is included for schema compatibility but Todo components are not used in this package
  */
 export class ConflictResolution {
   static configure() {

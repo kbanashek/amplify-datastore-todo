@@ -96,7 +96,7 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
           filteredItems.length,
           "after filtering"
         );
-        setTasks(filteredItems as unknown as Task[]);
+        setTasks(filteredItems);
         setIsSynced(synced);
         setLoading(false);
       });
@@ -146,7 +146,7 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
       setLoading(true);
       setError(null);
       const allTasks = await TaskService.getTasks(filters);
-      setTasks(allTasks as unknown as Task[]);
+      setTasks(allTasks);
       setLoading(false);
     } catch (err) {
       console.error("Error refreshing tasks:", err);

@@ -106,17 +106,40 @@ export const TaskCard: React.FC<TaskCardProps> = ({
     }
   };
 
+  const handleCardPress = async () => {
+    if (isCompleted) return;
+
+    try {
+      // If task is not started, update status to STARTED when card is clicked
+      // This ensures the button text updates to "RESUME" when user returns to dashboard
+      if (
+        task.status !== TaskStatus.STARTED &&
+        task.status !== TaskStatus.INPROGRESS
+      ) {
+        console.log("[TaskCard] Card pressed, updating task status to STARTED");
+        await TaskService.updateTask(task.id, {
+          status: TaskStatus.STARTED,
+        });
+      }
+      // Call the onPress callback
+      onPress?.(task);
+    } catch (error) {
+      console.error(
+        "[TaskCard] Error updating task status on card press:",
+        error
+      );
+      // Still navigate even if status update fails
+      onPress?.(task);
+    }
+  };
+
   const isCompleted = task.status === TaskStatus.COMPLETED;
   const isDisabled = isCompleted;
 
   return (
     <TouchableOpacity
       style={[styles.card, isDisabled && styles.cardDisabled]}
-      onPress={() => {
-        if (!isDisabled) {
-          onPress?.(task);
-        }
-      }}
+      onPress={handleCardPress}
       activeOpacity={isDisabled ? 1 : 0.7}
       disabled={isDisabled}
     >

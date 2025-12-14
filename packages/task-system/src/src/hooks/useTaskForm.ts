@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Task } from "../../models";
 import { TaskService } from "../services/TaskService";
-import { CreateTaskInput, TaskStatus, TaskType } from "../types/Task";
+import { CreateTaskInput, Task, TaskStatus, TaskType } from "../types/Task";
 
 interface UseTaskFormReturn {
   title: string;
@@ -27,7 +26,7 @@ interface UseTaskFormReturn {
 }
 
 interface UseTaskFormProps {
-  onTaskCreated?: (task: any) => void;
+  onTaskCreated?: (task: Task) => void;
   initialTask?: Task;
 }
 
@@ -130,9 +129,11 @@ export const useTaskForm = ({
       reset();
 
       return task;
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMessage =
-        err?.message || "Failed to create task. Please try again.";
+        err instanceof Error
+          ? err.message
+          : "Failed to create task. Please try again.";
       setError(errorMessage);
       console.error("Error creating task:", err);
       return null;

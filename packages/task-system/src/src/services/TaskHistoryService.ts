@@ -144,6 +144,31 @@ export class TaskHistoryService {
     };
   }
 
+  /**
+   * Delete all TaskHistories
+   * @returns {Promise<number>} - The number of task histories deleted
+   */
+  static async deleteAllTaskHistories(): Promise<number> {
+    try {
+      const histories = await DataStore.query(TaskHistory);
+      let deletedCount = 0;
+
+      for (const history of histories) {
+        await DataStore.delete(history);
+        deletedCount++;
+      }
+
+      console.log("[TaskHistoryService] Deleted all task histories", {
+        deletedCount,
+      });
+
+      return deletedCount;
+    } catch (error) {
+      console.error("Error deleting all task histories:", error);
+      throw error;
+    }
+  }
+
   static async clearDataStore(): Promise<void> {
     try {
       await DataStore.clear();

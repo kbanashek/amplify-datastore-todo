@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Switched package manager from npm to yarn across all documentation and scripts
 - Removed `package-lock.json` in favor of `yarn.lock`
 
+### Removed
+
+- Removed unused `AppointmentsGroupedView` component from package (replaced by `GroupedTasksView`)
+- Removed all Todo-related UI components from package (`TodoForm.tsx`, `TodoList.tsx`) - Todo model remains in schema for backend compatibility
+- Cleaned up unused component files that are excluded from package build
+
 ### Fixed
 
 - Fixed task completion status not being marked as COMPLETED when questions are submitted
@@ -23,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed scope issue in `useQuestionsScreen` hook where `setShowCompletion` was used before declaration
 - Fixed task status update logic to properly mark tasks as COMPLETED when validation passes and all answers save successfully
 - Fixed introduction and completion screens rendering simultaneously by making them mutually exclusive
+- Fixed regression where clicking task card from dashboard didn't update button text to "RESUME" - now updates task status to STARTED when card is clicked
 
 ### Added
 
@@ -30,6 +37,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `DOCS/component-consolidation-plan.md` - Detailed plan for eliminating component duplication between main app and package
 - `DOCS/component-consolidation-summary.md` - Executive summary of consolidation strategy
 - `DOCS/why-components-outside-package.md` - Explanation of component architecture and why components exist outside package directory
+- Nuclear reset functionality on seed screen to delete all task-related submitted data (Tasks, TaskAnswers, TaskResults, TaskHistory) from AWS databases
+- `deleteAll` methods to TaskAnswerService, TaskResultService, and TaskHistoryService for comprehensive data cleanup
+- `UNUSED_FILES.md` - Documentation of unused files identified in codebase analysis
 
 ## [0.1.8] - 2025-12-13
 

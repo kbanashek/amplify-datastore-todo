@@ -18,7 +18,7 @@ This command creates a new branch, commits changes, pushes to remote, and option
 
 1. Creates a new branch with `{username}/feature/{description}` (where `{username}` is your GitHub username and `{description}` is provided by cursor)
 2. Stages all changes (`git add -A`)
-3. Updates `CHANGELOG.md` with the changes
+3. Updates `CHANGELOG.md` with the changes & update README.md if necessary
 4. Commits with the provided message
 5. Pushes the branch to remote
 6. If GitHub CLI (`gh`) is available, opens a pull request to `develop` branch

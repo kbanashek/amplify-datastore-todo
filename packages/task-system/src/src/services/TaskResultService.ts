@@ -144,6 +144,31 @@ export class TaskResultService {
     };
   }
 
+  /**
+   * Delete all TaskResults
+   * @returns {Promise<number>} - The number of task results deleted
+   */
+  static async deleteAllTaskResults(): Promise<number> {
+    try {
+      const results = await DataStore.query(TaskResult);
+      let deletedCount = 0;
+
+      for (const result of results) {
+        await DataStore.delete(result);
+        deletedCount++;
+      }
+
+      console.log("[TaskResultService] Deleted all task results", {
+        deletedCount,
+      });
+
+      return deletedCount;
+    } catch (error) {
+      console.error("Error deleting all task results:", error);
+      throw error;
+    }
+  }
+
   static async clearDataStore(): Promise<void> {
     try {
       await DataStore.clear();

@@ -144,6 +144,31 @@ export class TaskAnswerService {
     };
   }
 
+  /**
+   * Delete all TaskAnswers
+   * @returns {Promise<number>} - The number of task answers deleted
+   */
+  static async deleteAllTaskAnswers(): Promise<number> {
+    try {
+      const answers = await DataStore.query(TaskAnswer);
+      let deletedCount = 0;
+
+      for (const answer of answers) {
+        await DataStore.delete(answer);
+        deletedCount++;
+      }
+
+      console.log("[TaskAnswerService] Deleted all task answers", {
+        deletedCount,
+      });
+
+      return deletedCount;
+    } catch (error) {
+      console.error("Error deleting all task answers:", error);
+      throw error;
+    }
+  }
+
   static async clearDataStore(): Promise<void> {
     try {
       await DataStore.clear();

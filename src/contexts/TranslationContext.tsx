@@ -205,10 +205,10 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
           changed: translated !== text,
         });
         return translated;
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error("🔤 [TranslationProvider] Error translating", {
           text: text.substring(0, 50),
-          error: error?.message || String(error),
+          error: error instanceof Error ? error.message : String(error),
           targetLanguage,
           sourceLanguage,
         });

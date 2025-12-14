@@ -412,10 +412,11 @@ export class TranslationService {
       } else {
         return text;
       }
-    } catch (error: any) {
-      const errorMessage = error?.message || String(error);
-      const errorStack = error?.stack;
-      const errorName = error?.name;
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      const errorStack = error instanceof Error ? error.stack : undefined;
+      const errorName = error instanceof Error ? error.name : undefined;
 
       // Check if it's a clock skew error
       const isClockSkewError =
