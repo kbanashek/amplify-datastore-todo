@@ -6,7 +6,6 @@ import { IconSymbol } from "../ui/IconSymbol";
 import React from "react";
 import {
   ActivityIndicator,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -17,6 +16,7 @@ import { AppColors } from "../../constants/AppColors";
 import { useRTL } from "../../hooks/useRTL";
 import { useTranslatedText } from "../../hooks/useTranslatedText";
 import { ParsedElement, ParsedScreen } from "../../types/ActivityConfig";
+import { isIOS } from "../../utils/platform";
 
 // Component for screen section with translated title
 const ScreenSection: React.FC<{
@@ -124,7 +124,7 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
   // Calculate bottom padding for tab bar and safe area
   const calculatedBottomPadding =
     Math.max(bottomInset || 0, 20) +
-    (Platform.OS === "ios" ? Math.max(tabBarHeight || 60, 60) : 0) +
+    (isIOS() ? Math.max(tabBarHeight || 60, 60) : 0) +
     20;
 
   console.log("📋 [ReviewScreen] Rendering review screen", {

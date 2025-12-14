@@ -7,7 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Extracted question screen button logic into dedicated `QuestionScreenButtons` component and `useQuestionScreenButtons` hook
+- Created platform utility functions (`isAndroid()`, `isIOS()`, `getPlatform()`) to replace direct `Platform.OS` checks
+- Added comprehensive unit tests for all new files (hooks, components, utilities)
+- Updated cursor rules to require unit tests for ALL new files immediately
+
 ### Changed
+
+- Refactored `QuestionScreenContent` to use `QuestionScreenButtons` component, reducing complexity by ~48%
+- Updated `QuestionScreenButtons` to use shared `Button` UI component instead of `TouchableOpacity`
+- Updated `NavigationButtons` to use `useTranslatedText` hook for "Review" and "Submit" button text
+- Replaced all `Platform.OS === "android"` and `Platform.OS === "ios"` checks with platform utility functions
 
 - Updated Android package name from `com.orion.task-system` to `com.orion.tasksystem` (removed hyphen for valid Java package name)
 - Updated iOS bundle identifier to match Android package name (`com.orion.tasksystem`)

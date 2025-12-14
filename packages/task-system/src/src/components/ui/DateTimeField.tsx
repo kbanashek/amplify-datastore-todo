@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from "react";
 import {
-  Platform,
   Pressable,
   StyleProp,
   StyleSheet,
@@ -13,6 +12,7 @@ import DateTimePicker, {
 
 import { ThemedText } from "../ThemedText";
 import { useThemeColor } from "../../hooks/useThemeColor";
+import { isAndroid, isIOS } from "../../utils/platform";
 
 export type DateTimeFieldMode = "date" | "time" | "datetime";
 
@@ -98,7 +98,7 @@ export const DateTimeField: React.FC<DateTimeFieldProps> = ({
         accessibilityState={{ disabled }}
         disabled={disabled}
         onPress={() => {
-          if (Platform.OS === "android") {
+          if (isAndroid()) {
             // Avoid mounting the Android DateTimePicker component (it auto-opens and dismisses on unmount).
             // Using the imperative API prevents crashes when Material pickers are unavailable in the host.
             DateTimePickerAndroid.open({
@@ -129,7 +129,7 @@ export const DateTimeField: React.FC<DateTimeFieldProps> = ({
         </ThemedText>
       </Pressable>
 
-      {Platform.OS === "ios" && showPicker ? (
+      {isIOS() && showPicker ? (
         <DateTimePicker
           testID={testID ? `${testID}-picker` : undefined}
           value={value ?? new Date()}
@@ -139,7 +139,7 @@ export const DateTimeField: React.FC<DateTimeFieldProps> = ({
         />
       ) : null}
 
-      {Platform.OS === "ios" && showPicker ? (
+      {isIOS() && showPicker ? (
         <View style={styles.iosActions}>
           <Pressable
             testID={testID ? `${testID}-done` : undefined}

@@ -1,13 +1,9 @@
 import React from "react";
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { ActivityConfig } from "../../types/ActivityConfig";
+import { StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native";
 import { useRTL } from "../../hooks/useRTL";
+import { useTranslatedText } from "../../hooks/useTranslatedText";
+import { ActivityConfig } from "../../types/ActivityConfig";
+import { isIOS } from "../../utils/platform";
 import { TranslatedText } from "../TranslatedText";
 
 interface NavigationButtonsProps {
@@ -35,19 +31,20 @@ export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
 }) => {
   const { rtlStyle } = useRTL();
   const isLastScreen = currentScreenIndex === totalScreens - 1;
+  const { translatedText: reviewText } = useTranslatedText("Review");
+  const { translatedText: submitText } = useTranslatedText("Submit");
   const buttonText = activityConfig?.summaryScreen?.showScreen
-    ? "Review"
-    : "Submit";
+    ? reviewText
+    : submitText;
 
   return (
     <View
       style={[
         styles.navigationContainer,
-        rtlStyle(styles.navigationContainer),
+        rtlStyle(styles.navigationContainer) as ViewStyle,
         {
           paddingBottom: Math.max(bottomInset, 20),
-          marginBottom:
-            Platform.OS === "ios" ? Math.max(tabBarHeight || 60, 60) : 0,
+          marginBottom: isIOS() ? Math.max(tabBarHeight || 60, 60) : 0,
         },
       ]}
     >
