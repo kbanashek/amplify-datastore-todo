@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.12] - 2025-12-14
+
+### Added
+
+- Automated script `scripts/apply-native-fixes.sh` to apply required native code fixes after `expo prebuild`
+- Documentation `DOCS/native-build-fixes.md` explaining iOS and Android build fixes
+- `yarn apply-native-fixes` npm script for easy access to the fix script
+- Todo item for future AWS CodeArtifact configuration
+
+### Fixed
+
+- Fixed iOS build failures caused by duplicate symbols (`JKBigInteger`/`JKBigDecimal`) between `AmplifyRTNCore` and `RNAWSCognito` by excluding duplicate source files in Podfile
+- Fixed Android app crash with "App react context shouldn't be created before" error by correcting `MainActivity.onCreate()` to pass `savedInstanceState` instead of `null`
+- Fixed dependency resolution issues by bypassing CodeArtifact and using public npm registry
+- Fixed workspace dependency resolution by changing `@orion/task-system` from `workspace:*` to `file:packages/task-system`
+
+### Changed
+
+- Updated `.npmrc` to explicitly point all scoped registries (`@orion`, `@sentry`, `@aws-sdk`, `@aws-amplify`) to public npm registry
+- Updated `yarn.lock` to remove CodeArtifact URLs and use public npm registry
+- Updated `README.md` with native build fixes installation steps
+- Updated `scripts/README.md` with documentation for `apply-native-fixes.sh` script
+
+## [Unreleased]
+
 ### Added
 
 - Extracted question screen button logic into dedicated `QuestionScreenButtons` component and `useQuestionScreenButtons` hook
