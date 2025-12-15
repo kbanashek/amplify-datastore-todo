@@ -2,7 +2,7 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 echo "🔍 Running lint..."
-npm run lint || {
+yarn lint || {
   echo "❌ Lint failed. Please fix linting errors before committing."
   exit 1
 }
@@ -10,17 +10,17 @@ npm run lint || {
 echo "✅ Lint passed!"
 
 echo "💅 Running format check..."
-npm run format:check || {
-  echo "❌ Format check failed. Please run 'npm run format' to fix formatting."
+yarn format:check || {
+  echo "❌ Format check failed. Please run 'yarn format' to fix formatting."
   exit 1
 }
 
 echo "✅ Format check passed!"
 
 echo "🔄 Checking for circular dependencies..."
-npm run check:circular || {
+yarn check:circular || {
   echo "❌ Circular dependencies detected. Please fix them before committing."
-  echo "💡 Run 'npm run check:circular' to see the circular dependency graph."
+  echo "💡 Run 'yarn check:circular' to see the circular dependency graph."
   exit 1
 }
 

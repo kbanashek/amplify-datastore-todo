@@ -19,22 +19,28 @@ jest.mock("@/components/ui/IconSymbol", () => ({
   },
 }));
 
-// Mock translation hooks
+// Mock translation hooks - now from @orion/task-system
 const mockTranslateText = jest.fn((text: string) => text);
-jest.mock("../../hooks/useTranslatedText", () => ({
-  useTranslatedText: jest.fn((text: string) => ({
-    translatedText: mockTranslateText(text),
-    isTranslating: false,
-  })),
-}));
-
-// Mock useRTL
-jest.mock("../../hooks/useRTL", () => ({
-  useRTL: jest.fn(() => ({
-    rtlStyle: (style: any) => style,
-    isRTL: false,
-  })),
-}));
+jest.mock("@orion/task-system", () => {
+  // Try to get actual module, but don't fail if it doesn't work
+  let actual = {};
+  try {
+    actual = jest.requireActual("@orion/task-system");
+  } catch (e) {
+    // Silently fail - use mocks from jest.setup.js
+  }
+  return {
+    ...actual,
+    useTranslatedText: jest.fn((text: string) => ({
+      translatedText: mockTranslateText(text),
+      isTranslating: false,
+    })),
+    useRTL: jest.fn(() => ({
+      rtlStyle: (style: any) => style,
+      isRTL: false,
+    })),
+  };
+});
 
 describe("AppointmentCard", () => {
   const mockAppointment: Appointment = {
@@ -177,8 +183,9 @@ describe("AppointmentCard", () => {
   });
 
   it("handles RTL layout correctly", () => {
-    const { useRTL } = require("../../hooks/useRTL");
-    useRTL.mockReturnValue({
+    // Mock useRTL from @orion/task-system
+    const { useRTL } = require("@orion/task-system");
+    (useRTL as jest.Mock).mockReturnValue({
       rtlStyle: (style: any) => ({ ...style, flexDirection: "row-reverse" }),
       isRTL: true,
     });

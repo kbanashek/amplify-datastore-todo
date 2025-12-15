@@ -1,7 +1,8 @@
 import { DataStore } from "@aws-amplify/datastore";
-import { ActivityService } from "@orion/task-system";
 import { Activity } from "../../../models";
 import { createMockActivity } from "../../__tests__/__mocks__/DataStore.mock";
+// Import directly from source to bypass package mock
+import { ActivityService } from "../../../packages/task-system/src/src/services/ActivityService";
 
 jest.mock("@aws-amplify/datastore");
 

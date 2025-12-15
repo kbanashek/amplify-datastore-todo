@@ -1,5 +1,6 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
-import { TaskService } from "@orion/task-system";
+// Import directly from source to bypass package mock
+import { TaskService } from "../../../packages/task-system/src/src/services/TaskService";
 import { Task } from "../../../models";
 import {
   TaskStatus,

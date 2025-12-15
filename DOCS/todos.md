@@ -103,7 +103,44 @@ Create isolated, temporary AWS Amplify environments for each developer to enable
 - [ ] Add a small debug/admin screen to inspect translation memory + clear/export it
 - [ ] Consider replacing AWS Translate with a fully offline dictionary-based system for stable UI strings
 
-## Task/Activities Rule Engine Implementation
+## User Engagement Analytics
+
+**Status:** 📝 To Do - Planning Complete
+
+**Overview:**
+Implement comprehensive user engagement tracking to understand all user actions when filling out task questions. Track interactions including question answers, navigation, app state changes (backgrounding), and time spent on screens.
+
+📖 **For detailed information**, see [Analytics Implementation](analytics-implementation.md)
+
+**Quick Summary:**
+
+- Track all user interactions during question completion flow
+- Real-time dashboards via AWS Pinpoint
+- Data export to S3 via Kinesis Data Firehose for custom analysis
+- Track: question answers, screen navigation, app backgrounding, time spent
+- Anonymous by default (no PII, only metadata)
+
+**Key Features:**
+
+- Question answer tracking (question ID, screen index, answer type, validation status)
+- Screen navigation tracking (next, previous, review actions)
+- App state tracking (background/foreground during question flow)
+- Time tracking (time spent on each screen, total task completion time)
+- Task lifecycle tracking (started, completed, abandoned)
+
+**Next Steps:**
+
+- [ ] Install `@aws-amplify/analytics` package
+- [ ] Configure Amplify Analytics with Pinpoint
+- [ ] Create AnalyticsService with event tracking methods
+- [ ] Create useAnalytics hook for component integration
+- [ ] Create useAppStateTracking hook for background/foreground tracking
+- [ ] Integrate analytics into question flow hooks (useAnswerManagement, useQuestionNavigation, useQuestionSubmission, useQuestionsScreen)
+- [ ] Create AnalyticsContext for app-wide analytics
+- [ ] Configure AWS Kinesis Data Firehose and S3 bucket for event export
+- [ ] Update Amplify backend configuration to include Analytics
+- [ ] Write unit tests for analytics components
+- [ ] Document analytics implementation and usage
 
 ## Task/Activities Rule Engine Implementation
 

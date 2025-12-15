@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { TranslationMemoryService } from "@orion/task-system";
+// Import directly from source to bypass package mock
+import { TranslationMemoryService } from "../../../packages/task-system/src/src/services/TranslationMemoryService";
 
 describe("TranslationMemoryService", () => {
   beforeEach(async () => {
