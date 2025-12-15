@@ -152,7 +152,32 @@ flowchart TD
 
    Follow the prompts to configure the Amplify backend. This will create the necessary `aws-exports.js` file.
 
-4. **🚀 Start the app**
+4. **🏗️ Generate native projects (if needed)**
+
+   If you need to build native iOS/Android apps:
+
+   ```bash
+   expo prebuild
+   ```
+
+5. **🔧 Apply native build fixes**
+
+   Since `ios/` and `android/` directories are not committed, you need to apply required fixes after `expo prebuild`:
+
+   ```bash
+   yarn apply-native-fixes
+   # Or: ./scripts/apply-native-fixes.sh
+   ```
+
+   Then for iOS:
+
+   ```bash
+   cd ios && pod install
+   ```
+
+   📖 **For details**, see [Native Build Fixes](DOCS/native-build-fixes.md)
+
+6. **🚀 Start the app**
 
    ```bash
    yarn start
@@ -177,6 +202,7 @@ flowchart TD
 | **[Development Guidelines](DOCS/development-guidelines.md)**           | Coding standards, testing requirements, and best practices |
 | **[Testing Guide](DOCS/testing.md)**                                   | Unit test requirements, coverage, and examples             |
 | **[Coverage Setup](DOCS/coverage-setup.md)**                           | GitHub Actions coverage reporting and Codecov setup        |
+| **[Native Build Fixes](DOCS/native-build-fixes.md)**                   | Required fixes for iOS and Android native builds           |
 | **[Rule Engine Plan](DOCS/todos.md)**                                  | Comprehensive rule engine implementation plan              |
 | **[Current Rule Logic](DOCS/current-rule-logic.md)**                   | Current rule implementation status                         |
 | **[Testing Coordinated Seeding](DOCS/testing-coordinated-seeding.md)** | Testing guide for coordinated seeding feature              |

@@ -32,6 +32,40 @@
 - CI runs lint, format checks, and non-AWS-dependent unit tests
 - Full test suite should be run locally before merging PRs
 
+## Dependency Management
+
+### CodeArtifact Integration
+
+**Status:** ⚠️ Temporarily Disabled
+
+**Current State:**
+
+- CodeArtifact registries have been overridden in `.npmrc` to use npmjs.org
+- All scoped registries (`@orion`, `@sentry`, `@aws-sdk`, `@aws-amplify`) point to npmjs.org
+- `yarn.lock` has been updated to use npm registry URLs instead of CodeArtifact
+- Workspace dependency `@orion/task-system` uses `file:packages/task-system` protocol
+
+**What Needs to be Done:**
+
+- [ ] Re-enable CodeArtifact authentication for scoped packages
+- [ ] Configure CodeArtifact credentials in CI/CD (GitHub Actions)
+- [ ] Update `.npmrc` to use CodeArtifact registries for:
+  - `@orion:registry` → CodeArtifact orion-aws-npm-repo
+  - `@sentry:registry` → CodeArtifact orion-be-utils
+  - `@aws-sdk:registry` → CodeArtifact orion-be-utils (if needed)
+  - `@aws-amplify:registry` → CodeArtifact orion-be-utils (if needed)
+- [ ] Update `yarn.lock` to use CodeArtifact URLs (or regenerate after re-enabling)
+- [ ] Document CodeArtifact authentication setup for local development
+- [ ] Consider using AWS IAM roles for CodeArtifact access instead of tokens
+- [ ] Set up token refresh automation for CodeArtifact credentials
+
+**Notes:**
+
+- CodeArtifact was disabled to resolve build issues with expired credentials
+- When re-enabling, ensure credentials are properly refreshed and not expired
+- Consider using AWS CLI `aws codeartifact get-authorization-token` for token management
+- May need to update CI/CD workflows to refresh tokens before `yarn install`
+
 ## Translation / i18n
 
 ### Translation Memory (Offline Strategy)

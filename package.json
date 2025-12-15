@@ -1,7 +1,7 @@
 {
   "name": "amplify-datastore-todo",
   "main": "./entry.js",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
@@ -23,7 +23,8 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "check:circular": "madge --circular --extensions ts,tsx,js,jsx src app",
     "prepare": "husky install || true",
-    "build:task-system": "yarn --cwd packages/task-system build"
+    "build:task-system": "yarn --cwd packages/task-system build",
+    "apply-native-fixes": "./scripts/apply-native-fixes.sh"
   },
   "workspaces": [
     "packages/*"
@@ -36,7 +37,7 @@
     "@aws-amplify/ui-react-native": "^2.5.3",
     "@aws-sdk/client-translate": "^3.700.0",
     "@expo/vector-icons": "^14.1.0",
-    "@orion/task-system": "workspace:*",
+    "@orion/task-system": "file:packages/task-system",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-community/datetimepicker": "^8.2.0",
     "@react-native-community/netinfo": "^11.4.1",
@@ -70,7 +71,6 @@
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
-    "react-native-sqlite-storage": "^6.0.1",
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5"
   },

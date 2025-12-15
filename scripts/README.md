@@ -187,6 +187,40 @@ Automatically creates a new version branch, commits changes, and pushes to remot
 
 ---
 
+### `apply-native-fixes.sh`
+
+Applies required fixes to native iOS and Android code after `expo prebuild`. These fixes are needed because `ios/` and `android/` directories are not committed to git.
+
+**What it fixes:**
+
+- **iOS:** Duplicate symbols error for `JKBigInteger`/`JKBigDecimal` between AmplifyRTNCore and RNAWSCognito
+- **Android:** React context timing issue in MainActivity
+
+**Usage:**
+
+```bash
+# After expo prebuild or when setting up the project
+./scripts/apply-native-fixes.sh
+
+# Or use the npm script
+yarn apply-native-fixes
+
+# Then for iOS
+cd ios && pod install
+```
+
+**When to run:**
+
+- After running `expo prebuild` for the first time
+- After cloning the repository and setting up native projects
+- After Expo updates that regenerate native code
+- When iOS builds fail with duplicate symbol errors
+- When Android crashes with React context errors
+
+For detailed information about the fixes, see `DOCS/native-build-fixes.md`.
+
+---
+
 ## For New Developers
 
 **First time setup:**
@@ -197,6 +231,9 @@ Automatically creates a new version branch, commits changes, and pushes to remot
 4. Run setup script: `./scripts/setup-amplify-backend.sh`
 5. Follow the prompts during `amplify init` and `amplify add api`
 6. After setup, get API key from AWS Console and update `aws-exports.js`
+7. **Generate native projects:** `expo prebuild`
+8. **Apply native fixes:** `./scripts/apply-native-fixes.sh`
+9. **Install iOS pods:** `cd ios && pod install`
 
 **Daily workflow:**
 
