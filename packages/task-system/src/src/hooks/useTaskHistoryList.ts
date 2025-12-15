@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { TaskHistoryService } from "../services/TaskHistoryService";
+import { TaskHistoryService } from "@orion/task-system";
 import { TaskHistory } from "../types/TaskHistory";
 
 interface UseTaskHistoryListReturn {
@@ -27,7 +27,7 @@ export const useTaskHistoryList = (): UseTaskHistoryListReturn => {
         isSynced
       );
     });
-    setSubscription(sub);
+    setSubscription(() => sub.unsubscribe);
 
     return () => {
       if (sub) {

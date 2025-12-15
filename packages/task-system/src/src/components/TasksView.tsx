@@ -11,14 +11,10 @@ import { Task, TaskStatus, TaskType } from "../types/Task";
 import { useTaskList } from "../hooks/useTaskList";
 import { TaskCard } from "./TaskCard";
 
+import { TaskFilters } from "../types/Task";
+
 interface TasksViewProps {
-  filters?: {
-    status?: TaskStatus[];
-    taskType?: string[];
-    dateFrom?: Date;
-    dateTo?: Date;
-    searchText?: string;
-  };
+  filters?: TaskFilters;
   onTaskPress?: (task: Task) => void;
 }
 

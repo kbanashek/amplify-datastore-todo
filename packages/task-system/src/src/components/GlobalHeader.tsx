@@ -13,6 +13,7 @@ import { NetworkStatusIndicator } from "./NetworkStatusIndicator";
 import { LanguageSelector } from "./LanguageSelector";
 import { useTranslatedText } from "../hooks/useTranslatedText";
 import { useRTL } from "../hooks/useRTL";
+import { TestIds } from "../constants/testIds";
 
 interface GlobalHeaderProps {
   title: string;
@@ -53,7 +54,11 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
             <BackButton onPress={onBackPress} />
           )}
           {showMenuButton && onMenuPress && (
-            <TouchableOpacity onPress={onMenuPress} style={styles.menuButton}>
+            <TouchableOpacity
+              onPress={onMenuPress}
+              style={styles.menuButton}
+              testID={TestIds.globalHeaderMenuButton}
+            >
               <IconSymbol
                 name="line.3.horizontal"
                 size={24}

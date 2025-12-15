@@ -2,6 +2,7 @@ import { DataStore, OpType } from "@aws-amplify/datastore";
 // @ts-ignore - Activity is exported from models/index.js at runtime
 import { Activity } from "../models";
 import { CreateActivityInput, UpdateActivityInput } from "../types/Activity";
+import { logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
 
 type ActivityUpdateData = Omit<UpdateActivityInput, "id" | "_version">;
 
@@ -65,7 +66,8 @@ export class ActivityService {
 
   static async getActivity(id: string): Promise<Activity | null> {
     try {
-      return await DataStore.query(Activity, id);
+      const activity = await DataStore.query(Activity, id);
+      return activity || null;
     } catch (error) {
       console.error("Error fetching activity:", error);
       throw error;
@@ -122,7 +124,7 @@ export class ActivityService {
       snapshot => {
         const { items, isSynced } = snapshot;
 
-        console.log("[ActivityService] DataStore subscription update:", {
+        logWithDevice("ActivityService", "Subscription update (observeQuery)", {
           itemCount: items.length,
           isSynced,
           itemIds: items.map(i => i.id),
@@ -132,10 +134,37 @@ export class ActivityService {
       }
     );
 
+    // Also observe DELETE operations to ensure deletions trigger updates
+    const deleteObserver = DataStore.observe(Activity).subscribe(msg => {
+      if (msg.opType === OpType.DELETE) {
+        const element = msg.element as any;
+        const isLocalDelete = element?._deleted === true;
+        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+        
+        logWithDevice("ActivityService", `DELETE operation detected (${source})`, {
+          activityId: element?.id,
+          activityName: element?.name || element?.title,
+          deleted: element?._deleted,
+          operationType: msg.opType,
+        });
+        
+        DataStore.query(Activity).then(activities => {
+          logWithDevice("ActivityService", "Query refresh after DELETE completed", {
+            remainingActivityCount: activities.length,
+            remainingActivityIds: activities.map(a => a.id),
+          });
+          callback(activities, true);
+        }).catch(err => {
+          logErrorWithDevice("ActivityService", "Error refreshing after delete", err);
+        });
+      }
+    });
+
     return {
       unsubscribe: () => {
-        console.log("[ActivityService] Unsubscribing from DataStore");
+        logWithDevice("ActivityService", "Unsubscribing from DataStore");
         querySubscription.unsubscribe();
+        deleteObserver.unsubscribe();
       },
     };
   }

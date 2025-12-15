@@ -8,17 +8,11 @@ import {
   RefreshControl,
 } from "react-native";
 import { Task, TaskStatus, TaskType } from "../types/Task";
-import { useTaskList } from "../hooks/useTaskList";
+import { useTaskList, TaskFilters } from "@orion/task-system";
 import { TaskCard } from "./TaskCard";
 
 interface TasksViewProps {
-  filters?: {
-    status?: TaskStatus[];
-    taskType?: string[];
-    dateFrom?: Date;
-    dateTo?: Date;
-    searchText?: string;
-  };
+  filters?: TaskFilters;
   onTaskPress?: (task: Task) => void;
 }
 

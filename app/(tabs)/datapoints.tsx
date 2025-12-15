@@ -9,8 +9,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useDataPointList } from "../../src/hooks/useDataPointList";
-import { DataPointService } from "../../src/services/DataPointService";
+import { useDataPointList } from "@orion/task-system";
+import { DataPointService } from "@orion/task-system";
 import { NetworkStatusIndicator } from "../../src/components/NetworkStatusIndicator";
 
 export default function DataPointsScreen() {

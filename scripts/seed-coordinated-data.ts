@@ -17,9 +17,7 @@
  * be created for "today" relative to when the seed function is executed.
  */
 
-import { ActivityService } from "../src/services/ActivityService";
-import { TaskService } from "../src/services/TaskService";
-import { AppointmentService } from "../src/services/AppointmentService";
+import { ActivityService, TaskService, AppointmentService } from "@orion/task-system";
 import {
   Appointment,
   AppointmentData,
@@ -202,10 +200,11 @@ async function createAppointmentWithTasks(
   // Pre-Visit Tasks (1 day before appointment)
   const preVisitDate = addDays(appointmentDate, -1);
   const preVisitTime = setTime(preVisitDate, 8, 0); // 8 AM
+  const preVisitTaskId = generateId("Task");
 
   tasks.push(
     await createAnchoredTask(
-      `Pre-Visit Questionnaire: ${appointment.title}`,
+      `Pre-Visit Questionnaire: ${appointment.title} (${preVisitTaskId.substring(0, 8)})`,
       `Complete this questionnaire before your ${appointment.title} appointment`,
       appointment,
       -1, // anchorDayOffset: 1 day before
@@ -220,10 +219,11 @@ async function createAppointmentWithTasks(
   const beforeVisitTime = new Date(appointmentDate);
   beforeVisitTime.setHours(beforeVisitTime.getHours() - 1);
   beforeVisitTime.setMinutes(0);
+  const beforeVisitTaskId = generateId("Task");
 
   tasks.push(
     await createAnchoredTask(
-      `Prepare for Visit: ${appointment.title}`,
+      `Prepare for Visit: ${appointment.title} (${beforeVisitTaskId.substring(0, 8)})`,
       `Prepare for your ${appointment.title} appointment`,
       appointment,
       0, // anchorDayOffset: same day
@@ -237,10 +237,11 @@ async function createAppointmentWithTasks(
   const afterVisitTime = new Date(appointmentDate);
   afterVisitTime.setHours(afterVisitTime.getHours() + 1);
   afterVisitTime.setMinutes(0);
+  const afterVisitTaskId = generateId("Task");
 
   tasks.push(
     await createAnchoredTask(
-      `Post-Visit Survey: ${appointment.title}`,
+      `Post-Visit Survey: ${appointment.title} (${afterVisitTaskId.substring(0, 8)})`,
       `Complete this survey after your ${appointment.title} appointment`,
       appointment,
       0, // anchorDayOffset: same day
@@ -253,10 +254,11 @@ async function createAppointmentWithTasks(
   // Post-Visit Tasks (1 day after appointment)
   const postVisitDate = addDays(appointmentDate, 1);
   const postVisitTime = setTime(postVisitDate, 18, 0); // 6 PM
+  const postVisitTaskId = generateId("Task");
 
   tasks.push(
     await createAnchoredTask(
-      `Follow-up Survey: ${appointment.title}`,
+      `Follow-up Survey: ${appointment.title} (${postVisitTaskId.substring(0, 8)})`,
       `Follow-up survey for your ${appointment.title} appointment`,
       appointment,
       1, // anchorDayOffset: 1 day after
@@ -269,10 +271,11 @@ async function createAppointmentWithTasks(
   // Post-Visit Task (3 days after appointment)
   const postVisit3DaysDate = addDays(appointmentDate, 3);
   const postVisit3DaysTime = setTime(postVisit3DaysDate, 18, 0); // 6 PM
+  const postVisit3DaysTaskId = generateId("Task");
 
   tasks.push(
     await createAnchoredTask(
-      `Medication Adherence Check: ${appointment.title}`,
+      `Medication Adherence Check: ${appointment.title} (${postVisit3DaysTaskId.substring(0, 8)})`,
       `Check your medication adherence after your ${appointment.title} appointment`,
       appointment,
       3, // anchorDayOffset: 3 days after
@@ -329,7 +332,8 @@ async function createStandaloneTasks(
       // Select an activity for this task
       const activity =
         activities[Math.floor(Math.random() * activities.length)];
-      const taskTitle = `${activity.title || activity.name} - Day ${dayOffset + 1}`;
+      const uniqueTaskId = generateId("Task").substring(0, 8);
+      const taskTitle = `${activity.title || activity.name} - Day ${dayOffset + 1} (${uniqueTaskId})`;
 
       const taskInput: CreateTaskInput = {
         pk: `TASK-STANDALONE-${dayOffset}-${i}-${taskTimestamp}`,

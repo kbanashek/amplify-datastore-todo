@@ -1,8 +1,7 @@
 import React from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { AppColors } from "../constants/AppColors";
-import { useRTL } from "../hooks/useRTL";
-import { useTranslatedText } from "../hooks/useTranslatedText";
+import { useRTL, useTranslatedText } from "@orion/task-system";
 import { Appointment, GroupedAppointment } from "../types/Appointment";
 import { AppointmentCard } from "./AppointmentCard";
 

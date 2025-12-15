@@ -8,6 +8,7 @@ import {
   TaskType,
   UpdateTaskInput,
 } from "../types/Task";
+import { getLogPrefix, logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
 
 type TaskUpdateData = Omit<UpdateTaskInput, "id" | "_version">;
 
@@ -225,13 +226,14 @@ export class TaskService {
   static subscribeTasks(callback: (items: Task[], isSynced: boolean) => void): {
     unsubscribe: () => void;
   } {
-    console.log("[TaskService] Setting up DataStore subscription for Task");
+    logWithDevice("TaskService", "Setting up DataStore subscription for Task");
 
+    // Use observeQuery for the main subscription (filters out deleted items automatically)
     const querySubscription = DataStore.observeQuery(DataStoreTask).subscribe(
       snapshot => {
         const { items, isSynced } = snapshot;
 
-        console.log("[TaskService] DataStore subscription update:", {
+        logWithDevice("TaskService", "Subscription update (observeQuery)", {
           itemCount: items.length,
           isSynced,
           itemIds: items.map(i => i.id),
@@ -246,10 +248,40 @@ export class TaskService {
       }
     );
 
+    // Also observe DELETE operations explicitly to ensure deletions trigger updates
+    // This ensures that when deletions sync from other devices, the subscription fires
+    const deleteObserver = DataStore.observe(DataStoreTask).subscribe(msg => {
+      if (msg.opType === OpType.DELETE) {
+        const isLocalDelete = msg.element?._deleted === true;
+        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+        
+        logWithDevice("TaskService", `DELETE operation detected (${source})`, {
+          taskId: msg.element?.id,
+          taskTitle: msg.element?.title,
+          deleted: msg.element?._deleted,
+          operationType: msg.opType,
+          modelConstructor: msg.modelConstructor?.name,
+        });
+        
+        // The observeQuery subscription will automatically update with the new item count
+        // But we explicitly trigger a refresh to ensure immediate update
+        DataStore.query(DataStoreTask).then(tasks => {
+          logWithDevice("TaskService", "Query refresh after DELETE completed", {
+            remainingTaskCount: tasks.length,
+            remainingTaskIds: tasks.map(t => t.id),
+          });
+          callback(tasks as Task[], true);
+        }).catch(err => {
+          logErrorWithDevice("TaskService", "Error refreshing after delete", err);
+        });
+      }
+    });
+
     return {
       unsubscribe: () => {
-        console.log("[TaskService] Unsubscribing from DataStore");
+        logWithDevice("TaskService", "Unsubscribing from DataStore");
         querySubscription.unsubscribe();
+        deleteObserver.unsubscribe();
       },
     };
   }
@@ -260,41 +292,84 @@ export class TaskService {
    */
   static async deleteAllTasks(): Promise<number> {
     try {
+      logWithDevice("TaskService", "Starting deleteAllTasks operation");
       const tasks = await DataStore.query(DataStoreTask);
       let deletedCount = 0;
 
-      for (const task of tasks) {
-        await DataStore.delete(task);
-        deletedCount++;
+      logWithDevice("TaskService", "Found tasks to delete", {
+        totalTasks: tasks.length,
+        taskIds: tasks.map(t => t.id),
+      });
+
+      // Delete in batches to avoid overwhelming the sync queue
+      const batchSize = 10;
+      for (let i = 0; i < tasks.length; i += batchSize) {
+        const batch = tasks.slice(i, i + batchSize);
+        logWithDevice("TaskService", `Deleting batch ${Math.floor(i / batchSize) + 1}`, {
+          batchSize: batch.length,
+          batchTaskIds: batch.map(t => t.id),
+        });
+        
+        await Promise.all(batch.map(task => DataStore.delete(task)));
+        deletedCount += batch.length;
+
+        logWithDevice("TaskService", `Batch ${Math.floor(i / batchSize) + 1} deleted, queued for sync`, {
+          deletedInBatch: batch.length,
+          totalDeleted: deletedCount,
+        });
+
+        // Small delay between batches to allow sync
+        if (i + batchSize < tasks.length) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
       }
+
+      logWithDevice("TaskService", "All tasks deleted, waiting for sync", {
+        deletedCount,
+        totalQueried: tasks.length,
+      });
+
+      // Wait for deletions to sync
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      logWithDevice("TaskService", "DeleteAllTasks operation complete", {
+        deletedCount,
+        totalQueried: tasks.length,
+      });
 
       return deletedCount;
     } catch (error) {
-      console.error("Error deleting all tasks:", error);
+      logErrorWithDevice("TaskService", "Error deleting all tasks", error);
       throw error;
     }
   }
 
   /**
    * Nuclear reset: Delete all task-related submitted data
-   * This includes TaskAnswers, TaskResults, TaskHistory, and Tasks
-   * @returns {Promise<{ tasks: number; taskAnswers: number; taskResults: number; taskHistories: number }>} - Counts of deleted items
+   * This includes TaskAnswers, TaskResults, TaskHistory, Tasks, DataPoints, and DataPointInstances
+   * @returns {Promise<{ tasks: number; taskAnswers: number; taskResults: number; taskHistories: number; dataPoints: number; dataPointInstances: number }>} - Counts of deleted items
    */
   static async nuclearReset(): Promise<{
     tasks: number;
     taskAnswers: number;
     taskResults: number;
     taskHistories: number;
+    dataPoints: number;
+    dataPointInstances: number;
   }> {
     try {
       const { TaskAnswerService } = await import("./TaskAnswerService");
       const { TaskResultService } = await import("./TaskResultService");
       const { TaskHistoryService } = await import("./TaskHistoryService");
+      const { DataPointService } = await import("./DataPointService");
 
       console.log("[TaskService] Starting nuclear reset...");
 
-      // Delete in order: answers, results, histories first, then tasks
+      // Delete in order: instances first, then parent data
       // This ensures we delete dependent data before parent data
+      const dataPointInstances =
+        await DataPointService.deleteAllDataPointInstances();
+      const dataPoints = await DataPointService.deleteAllDataPoints();
       const taskAnswers = await TaskAnswerService.deleteAllTaskAnswers();
       const taskResults = await TaskResultService.deleteAllTaskResults();
       const taskHistories = await TaskHistoryService.deleteAllTaskHistories();
@@ -305,13 +380,63 @@ export class TaskService {
         taskAnswers,
         taskResults,
         taskHistories,
+        dataPoints,
+        dataPointInstances,
       });
+
+      // Wait a bit to allow DataStore to sync deletions to AWS
+      // DataStore.delete() queues deletions and syncs them, but we need to give it time
+      console.log("[TaskService] Waiting for deletions to sync to AWS...");
+      await new Promise(resolve => setTimeout(resolve, 2000)); // 2 second delay
+
+      // Verify deletions by querying again
+      const {
+        TaskAnswer,
+        TaskResult,
+        TaskHistory,
+        DataPoint,
+        DataPointInstance,
+      } = await import("../../models");
+      const remainingTasks = await DataStore.query(DataStoreTask);
+      const remainingAnswers = await DataStore.query(TaskAnswer);
+      const remainingResults = await DataStore.query(TaskResult);
+      const remainingHistories = await DataStore.query(TaskHistory);
+      const remainingDataPoints = await DataStore.query(DataPoint);
+      const remainingDataPointInstances =
+        await DataStore.query(DataPointInstance);
+
+      if (
+        remainingTasks.length > 0 ||
+        remainingAnswers.length > 0 ||
+        remainingResults.length > 0 ||
+        remainingHistories.length > 0 ||
+        remainingDataPoints.length > 0 ||
+        remainingDataPointInstances.length > 0
+      ) {
+        console.warn(
+          "[TaskService] Some items still remain after deletion. This may indicate sync issues.",
+          {
+            remainingTasks: remainingTasks.length,
+            remainingAnswers: remainingAnswers.length,
+            remainingResults: remainingResults.length,
+            remainingHistories: remainingHistories.length,
+            remainingDataPoints: remainingDataPoints.length,
+            remainingDataPointInstances: remainingDataPointInstances.length,
+          }
+        );
+      } else {
+        console.log(
+          "[TaskService] All items successfully deleted and synced to AWS"
+        );
+      }
 
       return {
         tasks,
         taskAnswers,
         taskResults,
         taskHistories,
+        dataPoints,
+        dataPointInstances,
       };
     } catch (error) {
       console.error("Error during nuclear reset:", error);

@@ -1,3 +1,6 @@
+import DateTimePicker, {
+  DateTimePickerAndroid,
+} from "@react-native-community/datetimepicker";
 import React, { useMemo, useState } from "react";
 import {
   Pressable,
@@ -6,13 +9,10 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import DateTimePicker, {
-  DateTimePickerAndroid,
-} from "@react-native-community/datetimepicker";
 
-import { ThemedText } from "../ThemedText";
 import { useThemeColor } from "../../hooks/useThemeColor";
 import { isAndroid, isIOS } from "../../utils/platform";
+import { ThemedText } from "../ThemedText";
 
 export type DateTimeFieldMode = "date" | "time" | "datetime";
 
@@ -106,7 +106,7 @@ export const DateTimeField: React.FC<DateTimeFieldProps> = ({
               mode,
               display: "default",
               design: "default",
-              onChange: (_event, selectedDate) => {
+              onChange: (_event: any, selectedDate: Date | undefined) => {
                 if (selectedDate) onChange(selectedDate);
               },
             } as any);

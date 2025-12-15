@@ -1,6 +1,6 @@
 import React from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import { GroupedTask } from "../hooks/useGroupedTasks";
+import { GroupedTask } from "@orion/task-system";
 import { AppColors } from "../constants/AppColors";
 import { Appointment } from "../types/Appointment";
 import { Task } from "../types/Task";
@@ -141,9 +141,6 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
             {/* Appointments for Today - show first */}
             {showAppointments ? (
               <View style={styles.appointmentsContainer}>
-                {console.log(
-                  `[GroupedTasksView] RENDERING APPOINTMENTS: ${todayAppointments.length} appointments for Today`
-                )}
                 {todayAppointments.length === 0 ? (
                   <Text style={styles.errorText}>
                     No appointments to display (array is empty)
@@ -169,18 +166,10 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
                   })
                 )}
               </View>
-            ) : (
-              console.log(
-                `[GroupedTasksView] NOT RENDERING APPOINTMENTS - showAppointments=false`,
-                {
-                  isToday,
-                  todayAppointmentsCount: todayAppointments.length,
-                }
-              ) || null
-            )}
+            ) : null}
 
             {/* Tasks without due time (simple cards) */}
-            {dayGroup.tasksWithoutTime.map(task => (
+            {dayGroup.tasksWithoutTime.map((task: Task) => (
               <TaskCard
                 key={task.id}
                 task={task}
@@ -197,7 +186,7 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
                   text={`DUE BY ${timeGroup.time}`}
                   style={styles.dueByHeader}
                 />
-                {timeGroup.tasks.map(task => (
+                {timeGroup.tasks.map((task: Task) => (
                   <TaskCard
                     key={task.id}
                     task={task}

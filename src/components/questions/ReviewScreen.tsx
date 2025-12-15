@@ -14,8 +14,7 @@ import {
   View,
 } from "react-native";
 import { AppColors } from "../../constants/AppColors";
-import { useRTL } from "../../hooks/useRTL";
-import { useTranslatedText } from "../../hooks/useTranslatedText";
+import { useRTL, useTranslatedText } from "@orion/task-system";
 import { ParsedElement, ParsedScreen } from "../../types/ActivityConfig";
 
 // Component for screen section with translated title

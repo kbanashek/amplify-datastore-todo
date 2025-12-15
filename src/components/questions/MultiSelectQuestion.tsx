@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Question } from "../../types/ActivityConfig";
-import { useTranslation } from "../../contexts/TranslationContext";
+import { useTranslation } from "@orion/task-system";
 
 interface MultiSelectQuestionProps {
   question: Question;

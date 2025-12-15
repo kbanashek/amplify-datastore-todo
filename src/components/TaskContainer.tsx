@@ -1,5 +1,5 @@
 import React from "react";
-import { useTaskContainer } from "../hooks/useTaskContainer";
+import { useTaskContainer } from "@orion/task-system";
 import { GroupedTasksView } from "./GroupedTasksView";
 
 export const TaskContainer: React.FC = () => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, TextProps } from "react-native";
-import { useTranslatedText } from "../hooks/useTranslatedText";
-import { useTranslation } from "../contexts/TranslationContext";
+import { useTranslatedText } from "@orion/task-system";
+import { useTranslation } from "@orion/task-system";
 
 interface TranslatedTextProps extends Omit<TextProps, "children"> {
   text: string;

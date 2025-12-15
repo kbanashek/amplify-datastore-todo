@@ -2,8 +2,23 @@ import { Hub } from "@aws-amplify/core";
 import { DataStore } from "@aws-amplify/datastore";
 import NetInfo from "@react-native-community/netinfo";
 import { useEffect, useState } from "react";
-import { configureAmplify } from "../amplify-config";
-import { ConflictResolution } from "../services/ConflictResolution";
+// configureAmplify should be provided by the consuming app
+// Import from main app's amplify-config or provide as parameter
+// For now, we'll make it optional and let the consuming app handle it
+let configureAmplifyFn: (() => void) | null = null;
+
+export function setConfigureAmplify(fn: () => void): void {
+  configureAmplifyFn = fn;
+}
+
+function configureAmplify(): void {
+  if (configureAmplifyFn) {
+    configureAmplifyFn();
+  } else {
+    console.warn("[useAmplifyState] configureAmplify not set. Call setConfigureAmplify() from consuming app.");
+  }
+}
+import { ConflictResolution } from "@orion/task-system";
 
 // Define enums for network and sync states
 export enum NetworkStatus {

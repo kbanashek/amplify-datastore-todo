@@ -1,4 +1,5 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
+import { logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
 import { TaskHistory } from "../models";
 import {
   CreateTaskHistoryInput,
@@ -69,7 +70,8 @@ export class TaskHistoryService {
 
   static async getTaskHistory(id: string): Promise<TaskHistory | null> {
     try {
-      return await DataStore.query(TaskHistory, id);
+      const taskHistory = await DataStore.query(TaskHistory, id);
+      return taskHistory || null;
     } catch (error) {
       console.error("Error fetching task history:", error);
       throw error;
@@ -126,7 +128,7 @@ export class TaskHistoryService {
       snapshot => {
         const { items, isSynced } = snapshot;
 
-        console.log("[TaskHistoryService] DataStore subscription update:", {
+        logWithDevice("TaskHistoryService", "Subscription update (observeQuery)", {
           itemCount: items.length,
           isSynced,
           itemIds: items.map(i => i.id),
@@ -136,10 +138,36 @@ export class TaskHistoryService {
       }
     );
 
+    // Also observe DELETE operations to ensure deletions trigger updates
+    const deleteObserver = DataStore.observe(TaskHistory).subscribe(msg => {
+      if (msg.opType === OpType.DELETE) {
+        const element = msg.element as any;
+        const isLocalDelete = element?._deleted === true;
+        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+        
+        logWithDevice("TaskHistoryService", `DELETE operation detected (${source})`, {
+          taskHistoryId: element?.id,
+          taskId: element?.taskId,
+          deleted: element?._deleted,
+          operationType: msg.opType,
+        });
+        
+        DataStore.query(TaskHistory).then(histories => {
+          logWithDevice("TaskHistoryService", "Query refresh after DELETE completed", {
+            remainingHistoryCount: histories.length,
+          });
+          callback(histories, true);
+        }).catch(err => {
+          logErrorWithDevice("TaskHistoryService", "Error refreshing after delete", err);
+        });
+      }
+    });
+
     return {
       unsubscribe: () => {
-        console.log("[TaskHistoryService] Unsubscribing from DataStore");
+        logWithDevice("TaskHistoryService", "Unsubscribing from DataStore");
         querySubscription.unsubscribe();
+        deleteObserver.unsubscribe();
       },
     };
   }

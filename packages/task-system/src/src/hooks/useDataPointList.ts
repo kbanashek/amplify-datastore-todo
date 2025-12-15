@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { DataPointService } from "../services/DataPointService";
+import { DataPointService } from "@orion/task-system";
 import { DataPoint, DataPointInstance } from "../types/DataPoint";
 
 interface UseDataPointListReturn {
@@ -41,7 +41,7 @@ export const useDataPointList = (): UseDataPointListReturn => {
         );
       }
     );
-    setSubscriptions([sub1, sub2]);
+    setSubscriptions([() => sub1.unsubscribe(), () => sub2.unsubscribe()]);
 
     return () => {
       sub1.unsubscribe();

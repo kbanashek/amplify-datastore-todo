@@ -1,4 +1,4 @@
-import { AppointmentService } from "../AppointmentService";
+import { AppointmentService } from "@orion/task-system";
 import { AppointmentData } from "../../types/Appointment";
 import { parseAppointmentData } from "../../utils/appointmentParser";
 

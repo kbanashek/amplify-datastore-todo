@@ -114,14 +114,24 @@ cd ios && pod install
 1. **iOS:** Open `ios/Podfile` and add the fix code to the `post_install` block (see above)
 2. **Android:** Open `android/app/src/main/java/com/orion/tasksystem/MainActivity.kt` and change `super.onCreate(null)` to `super.onCreate(savedInstanceState)`
 
-### Option 3: After Expo Prebuild
+### After Expo Prebuild
 
-If you run `expo prebuild`, you'll need to apply these fixes afterward:
+If you run `expo prebuild`, the fixes will be automatically applied on your next build:
 
 ```bash
 expo prebuild
-./scripts/apply-native-fixes.sh
-cd ios && pod install
+# Fixes will be applied automatically when you run:
+yarn ios
+# or
+yarn android
+```
+
+Alternatively, you can apply fixes manually:
+
+```bash
+expo prebuild
+yarn apply-native-fixes
+yarn ios:install-pods  # For iOS only
 ```
 
 ## When to Apply

@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import { ActivityConfig } from "../../types/ActivityConfig";
-import { useRTL } from "../../hooks/useRTL";
+import { useRTL } from "@orion/task-system";
 import { TranslatedText } from "../TranslatedText";
 
 interface NavigationButtonsProps {
@@ -43,7 +43,7 @@ export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
     <View
       style={[
         styles.navigationContainer,
-        rtlStyle(styles.navigationContainer),
+        rtlStyle(styles.navigationContainer) as any,
         {
           paddingBottom: Math.max(bottomInset, 20),
           marginBottom:

@@ -1,4 +1,5 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
+import { logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
 import { TaskAnswer } from "../../models";
 import {
   CreateTaskAnswerInput,
@@ -136,10 +137,35 @@ export class TaskAnswerService {
       }
     );
 
+    // Also observe DELETE operations to ensure deletions trigger updates
+    const deleteObserver = DataStore.observe(TaskAnswer).subscribe(msg => {
+      if (msg.opType === OpType.DELETE) {
+        const isLocalDelete = msg.element?._deleted === true;
+        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+        
+        logWithDevice("TaskAnswerService", `DELETE operation detected (${source})`, {
+          taskAnswerId: msg.element?.id,
+          taskId: msg.element?.taskId,
+          deleted: msg.element?._deleted,
+          operationType: msg.opType,
+        });
+        
+        DataStore.query(TaskAnswer).then(answers => {
+          logWithDevice("TaskAnswerService", "Query refresh after DELETE completed", {
+            remainingAnswerCount: answers.length,
+          });
+          callback(answers, true);
+        }).catch(err => {
+          logErrorWithDevice("TaskAnswerService", "Error refreshing after delete", err);
+        });
+      }
+    });
+
     return {
       unsubscribe: () => {
         console.log("[TaskAnswerService] Unsubscribing from DataStore");
         querySubscription.unsubscribe();
+        deleteObserver.unsubscribe();
       },
     };
   }
@@ -153,13 +179,22 @@ export class TaskAnswerService {
       const answers = await DataStore.query(TaskAnswer);
       let deletedCount = 0;
 
-      for (const answer of answers) {
-        await DataStore.delete(answer);
-        deletedCount++;
+      // Delete in batches to avoid overwhelming the sync queue
+      const batchSize = 10;
+      for (let i = 0; i < answers.length; i += batchSize) {
+        const batch = answers.slice(i, i + batchSize);
+        await Promise.all(batch.map(answer => DataStore.delete(answer)));
+        deletedCount += batch.length;
+
+        // Small delay between batches to allow sync
+        if (i + batchSize < answers.length) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
       }
 
       console.log("[TaskAnswerService] Deleted all task answers", {
         deletedCount,
+        totalQueried: answers.length,
       });
 
       return deletedCount;

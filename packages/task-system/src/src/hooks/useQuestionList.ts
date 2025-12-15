@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { QuestionService } from "../services/QuestionService";
+import { QuestionService } from "@orion/task-system";
 import { Question } from "../types/Question";
 
 interface UseQuestionListReturn {
@@ -27,7 +27,7 @@ export const useQuestionList = (): UseQuestionListReturn => {
         isSynced
       );
     });
-    setSubscription(sub);
+    setSubscription(() => sub.unsubscribe);
 
     return () => {
       if (sub) {

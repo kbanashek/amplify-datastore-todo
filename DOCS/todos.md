@@ -2,6 +2,34 @@
 
 ## CI/CD and Testing
 
+### Ephemeral Developer Environments
+
+**Status:** 📝 To Do - Feasibility Study
+
+**Overview:**
+Create isolated, temporary AWS Amplify environments for each developer to enable parallel development without conflicts, easier testing, and safer experimentation.
+
+📖 **For detailed information**, see [Ephemeral Developer Environments](ephemeral-environments.md)
+
+**Quick Summary:**
+
+- Each developer gets their own isolated AWS Amplify environment (e.g., `dev-kyle`, `dev-alice`)
+- Estimated cost: ~$5-15/month per active environment
+- Benefits: Isolation, parallel development, easier testing, faster onboarding, cost control
+- Implementation: Scripts for create/destroy/list/switch environments, CI/CD integration
+- Workflow: Create environment → Develop → Test → Destroy when done
+
+**Next Steps:**
+
+- [ ] Research Amplify environment management best practices
+- [ ] Create proof-of-concept script for environment creation
+- [ ] Test environment creation/destruction workflow
+- [ ] Document AWS permissions required
+- [ ] Estimate costs and set up monitoring
+- [ ] Create developer onboarding guide
+- [ ] Integrate with CI/CD for PR environments
+- [ ] Set up automatic cleanup of stale environments
+
 ### AWS Credentials in CI/CD
 
 **Status:** ⚠️ Partial Implementation

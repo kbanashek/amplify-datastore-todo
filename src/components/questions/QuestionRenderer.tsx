@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { useTranslatedText } from "../../hooks/useTranslatedText";
+import { useTranslatedText } from "@orion/task-system";
 import { ParsedElement } from "../../types/ActivityConfig";
 import { QuestionType } from "../../types/activity-config-enums";
 import { DateQuestion } from "./DateQuestion";

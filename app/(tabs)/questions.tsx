@@ -9,8 +9,7 @@ import { LoadingState } from "../../src/components/questions/LoadingState";
 import { ProgressIndicator } from "../../src/components/questions/ProgressIndicator";
 import { QuestionScreenContent } from "../../src/components/questions/QuestionScreenContent";
 import { ReviewScreenContainer } from "../../src/components/questions/ReviewScreenContainer";
-import { useQuestionsScreen } from "../../src/hooks/useQuestionsScreen";
-import { useTranslatedText } from "../../src/hooks/useTranslatedText";
+import { useQuestionsScreen, useTranslatedText } from "@orion/task-system";
 
 export default function QuestionsScreen() {
   const insets = useSafeAreaInsets();

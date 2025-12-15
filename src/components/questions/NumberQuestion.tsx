@@ -1,7 +1,7 @@
 import Slider from "@react-native-community/slider";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import { useTranslatedText } from "../../hooks/useTranslatedText";
+import { useTranslatedText } from "@orion/task-system";
 import { Question } from "../../types/ActivityConfig";
 import {
   QuestionType,

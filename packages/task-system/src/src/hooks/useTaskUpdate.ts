@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { TaskService } from "../services/TaskService";
+import { TaskService } from "@orion/task-system";
 import { Task, UpdateTaskInput } from "../types/Task";
 
 interface UseTaskUpdateReturn {

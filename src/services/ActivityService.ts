@@ -2,6 +2,7 @@ import { DataStore, OpType } from "@aws-amplify/datastore";
 // @ts-ignore - Activity is exported from models/index.js at runtime
 import { Activity } from "../../models";
 import { CreateActivityInput, UpdateActivityInput } from "../types/Activity";
+import { logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
 
 type ActivityUpdateData = Omit<UpdateActivityInput, "id" | "_version">;
 
@@ -132,10 +133,36 @@ export class ActivityService {
       }
     );
 
+    // Also observe DELETE operations to ensure deletions trigger updates
+    const deleteObserver = DataStore.observe(Activity).subscribe(msg => {
+      if (msg.opType === OpType.DELETE) {
+        const isLocalDelete = msg.element?._deleted === true;
+        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+        
+        logWithDevice("ActivityService", `DELETE operation detected (${source})`, {
+          activityId: msg.element?.id,
+          activityName: msg.element?.name || msg.element?.title,
+          deleted: msg.element?._deleted,
+          operationType: msg.opType,
+        });
+        
+        DataStore.query(Activity).then(activities => {
+          logWithDevice("ActivityService", "Query refresh after DELETE completed", {
+            remainingActivityCount: activities.length,
+            remainingActivityIds: activities.map(a => a.id),
+          });
+          callback(activities, true);
+        }).catch(err => {
+          logErrorWithDevice("ActivityService", "Error refreshing after delete", err);
+        });
+      }
+    });
+
     return {
       unsubscribe: () => {
         console.log("[ActivityService] Unsubscribing from DataStore");
         querySubscription.unsubscribe();
+        deleteObserver.unsubscribe();
       },
     };
   }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TaskService } from "../services/TaskService";
+import { TaskService } from "@orion/task-system";
 import { CreateTaskInput, Task, TaskStatus, TaskType } from "../types/Task";
 
 interface UseTaskFormReturn {

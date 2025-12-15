@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { CompletionScreen } from "../components/questions/CompletionScreen";
 import { ErrorState } from "../components/questions/ErrorState";
@@ -9,6 +9,7 @@ import { ProgressIndicator } from "../components/questions/ProgressIndicator";
 import { QuestionScreenContent } from "../components/questions/QuestionScreenContent";
 import { ReviewScreenContainer } from "../components/questions/ReviewScreenContainer";
 import { useQuestionsScreen } from "../hooks/useQuestionsScreen";
+import { GlobalHeader } from "../components/GlobalHeader";
 
 interface QuestionsScreenProps {
   /**
@@ -54,9 +55,7 @@ export default function QuestionsScreen({
 
   // NOTE: The internal header is currently disabled for the embedded module.
   // Keep this translation hook here only when we re-enable the header.
-  // const { translatedText: headerTitle } = useTranslatedText(
-  //   taskId ? "Answer Questions" : "Questions"
-  // );
+  const headerTitle = taskId ? "Answer Questions" : "Questions";
 
   if (loading) {
     return <LoadingState taskId={taskId} topInset={topInset} />;
