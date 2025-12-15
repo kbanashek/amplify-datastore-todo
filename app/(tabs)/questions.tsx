@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 import { GlobalHeader } from "../../src/components/GlobalHeader";
 import { CompletionScreen } from "../../src/components/questions/CompletionScreen";
 import { ErrorState } from "../../src/components/questions/ErrorState";
@@ -13,6 +14,7 @@ import { useQuestionsScreen, useTranslatedText } from "@orion/task-system";
 
 export default function QuestionsScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   const {
     // State
@@ -41,9 +43,24 @@ export default function QuestionsScreen() {
     handleBackToQuestions,
     handleEditQuestion,
     handleReviewSubmit,
-    handleCompletionDone,
+    handleCompletionDone: originalHandleCompletionDone,
     handleBack,
   } = useQuestionsScreen();
+
+  // Override handleCompletionDone to use expo-router
+  const handleCompletionDone = useCallback(() => {
+    try {
+      // Use expo-router to navigate to the dashboard
+      router.replace("/(tabs)/" as any);
+    } catch (error) {
+      console.warn(
+        "[QuestionsScreen] Failed to navigate with router, using fallback:",
+        error
+      );
+      // Fallback to original handler
+      originalHandleCompletionDone();
+    }
+  }, [router, originalHandleCompletionDone]);
 
   // Hooks must be called before early returns
   const { translatedText: headerTitle } = useTranslatedText(

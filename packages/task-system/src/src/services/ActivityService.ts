@@ -140,23 +140,37 @@ export class ActivityService {
         const element = msg.element as any;
         const isLocalDelete = element?._deleted === true;
         const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
-        
-        logWithDevice("ActivityService", `DELETE operation detected (${source})`, {
-          activityId: element?.id,
-          activityName: element?.name || element?.title,
-          deleted: element?._deleted,
-          operationType: msg.opType,
-        });
-        
-        DataStore.query(Activity).then(activities => {
-          logWithDevice("ActivityService", "Query refresh after DELETE completed", {
-            remainingActivityCount: activities.length,
-            remainingActivityIds: activities.map(a => a.id),
+
+        logWithDevice(
+          "ActivityService",
+          `DELETE operation detected (${source})`,
+          {
+            activityId: element?.id,
+            activityName: element?.name || element?.title,
+            deleted: element?._deleted,
+            operationType: msg.opType,
+          }
+        );
+
+        DataStore.query(Activity)
+          .then(activities => {
+            logWithDevice(
+              "ActivityService",
+              "Query refresh after DELETE completed",
+              {
+                remainingActivityCount: activities.length,
+                remainingActivityIds: activities.map(a => a.id),
+              }
+            );
+            callback(activities, true);
+          })
+          .catch(err => {
+            logErrorWithDevice(
+              "ActivityService",
+              "Error refreshing after delete",
+              err
+            );
           });
-          callback(activities, true);
-        }).catch(err => {
-          logErrorWithDevice("ActivityService", "Error refreshing after delete", err);
-        });
       }
     });
 

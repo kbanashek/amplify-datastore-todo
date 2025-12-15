@@ -1,5 +1,8 @@
 import { DataStore } from "@aws-amplify/datastore";
-import { AppointmentService, SeededDataCleanupService } from "@orion/task-system";
+import {
+  AppointmentService,
+  SeededDataCleanupService,
+} from "@orion/task-system";
 
 describe("SeededDataCleanupService", () => {
   beforeEach(() => {

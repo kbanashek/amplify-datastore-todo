@@ -150,22 +150,36 @@ export class DataPointService {
       if (msg.opType === OpType.DELETE) {
         const isLocalDelete = msg.element?._deleted === true;
         const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
-        
-        logWithDevice("DataPointService", `DELETE operation detected for DataPoint (${source})`, {
-          dataPointId: msg.element?.id,
-          dataPointName: msg.element?.name,
-          deleted: msg.element?._deleted,
-          operationType: msg.opType,
-        });
-        
-        DataStore.query(DataPoint).then(dataPoints => {
-          logWithDevice("DataPointService", "Query refresh after DELETE completed", {
-            remainingDataPointCount: dataPoints.length,
+
+        logWithDevice(
+          "DataPointService",
+          `DELETE operation detected for DataPoint (${source})`,
+          {
+            dataPointId: msg.element?.id,
+            dataPointName: msg.element?.name,
+            deleted: msg.element?._deleted,
+            operationType: msg.opType,
+          }
+        );
+
+        DataStore.query(DataPoint)
+          .then(dataPoints => {
+            logWithDevice(
+              "DataPointService",
+              "Query refresh after DELETE completed",
+              {
+                remainingDataPointCount: dataPoints.length,
+              }
+            );
+            callback(dataPoints, true);
+          })
+          .catch(err => {
+            logErrorWithDevice(
+              "DataPointService",
+              "Error refreshing after delete",
+              err
+            );
           });
-          callback(dataPoints, true);
-        }).catch(err => {
-          logErrorWithDevice("DataPointService", "Error refreshing after delete", err);
-        });
       }
     });
 
@@ -353,28 +367,44 @@ export class DataPointService {
     });
 
     // Also observe DELETE operations to ensure deletions trigger updates
-    const deleteObserver = DataStore.observe(DataPointInstance).subscribe(msg => {
-      if (msg.opType === OpType.DELETE) {
-        const isLocalDelete = msg.element?._deleted === true;
-        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
-        
-        logWithDevice("DataPointService", `DELETE operation detected for DataPointInstance (${source})`, {
-          instanceId: msg.element?.id,
-          dataPointId: msg.element?.dataPointId,
-          deleted: msg.element?._deleted,
-          operationType: msg.opType,
-        });
-        
-        DataStore.query(DataPointInstance).then(instances => {
-          logWithDevice("DataPointService", "Query refresh after DELETE completed for DataPointInstance", {
-            remainingInstanceCount: instances.length,
-          });
-          callback(instances, true);
-        }).catch(err => {
-          logErrorWithDevice("DataPointService", "Error refreshing after delete", err);
-        });
+    const deleteObserver = DataStore.observe(DataPointInstance).subscribe(
+      msg => {
+        if (msg.opType === OpType.DELETE) {
+          const isLocalDelete = msg.element?._deleted === true;
+          const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+
+          logWithDevice(
+            "DataPointService",
+            `DELETE operation detected for DataPointInstance (${source})`,
+            {
+              instanceId: msg.element?.id,
+              dataPointId: msg.element?.dataPointId,
+              deleted: msg.element?._deleted,
+              operationType: msg.opType,
+            }
+          );
+
+          DataStore.query(DataPointInstance)
+            .then(instances => {
+              logWithDevice(
+                "DataPointService",
+                "Query refresh after DELETE completed for DataPointInstance",
+                {
+                  remainingInstanceCount: instances.length,
+                }
+              );
+              callback(instances, true);
+            })
+            .catch(err => {
+              logErrorWithDevice(
+                "DataPointService",
+                "Error refreshing after delete",
+                err
+              );
+            });
+        }
       }
-    });
+    );
 
     return {
       unsubscribe: () => {

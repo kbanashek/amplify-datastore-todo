@@ -158,22 +158,36 @@ export class QuestionService {
         const element = msg.element as any;
         const isLocalDelete = element?._deleted === true;
         const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
-        
-        logWithDevice("QuestionService", `DELETE operation detected (${source})`, {
-          questionId: element?.id,
-          questionText: element?.question,
-          deleted: element?._deleted,
-          operationType: msg.opType,
-        });
-        
-        DataStore.query(Question).then(questions => {
-          logWithDevice("QuestionService", "Query refresh after DELETE completed", {
-            remainingQuestionCount: questions.length,
+
+        logWithDevice(
+          "QuestionService",
+          `DELETE operation detected (${source})`,
+          {
+            questionId: element?.id,
+            questionText: element?.question,
+            deleted: element?._deleted,
+            operationType: msg.opType,
+          }
+        );
+
+        DataStore.query(Question)
+          .then(questions => {
+            logWithDevice(
+              "QuestionService",
+              "Query refresh after DELETE completed",
+              {
+                remainingQuestionCount: questions.length,
+              }
+            );
+            callback(questions, true);
+          })
+          .catch(err => {
+            logErrorWithDevice(
+              "QuestionService",
+              "Error refreshing after delete",
+              err
+            );
           });
-          callback(questions, true);
-        }).catch(err => {
-          logErrorWithDevice("QuestionService", "Error refreshing after delete", err);
-        });
       }
     });
 

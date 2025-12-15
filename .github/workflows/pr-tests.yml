@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
+          cache: 'yarn'
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -58,24 +58,23 @@ jobs:
 
       - name: Install dependencies
         run: |
-          # If CodeArtifact authentication failed, configure npm to use public registry
+          # If CodeArtifact authentication failed, configure yarn to use public registry
           if ! grep -q "codeartifact" ~/.npmrc 2>/dev/null; then
             echo "CodeArtifact not available, using public npm registry"
-            # Override CodeArtifact URLs in package-lock.json by setting registry
-            npm config set registry https://registry.npmjs.org/
-            # Install with --no-save to avoid modifying package-lock.json
-            npm ci --legacy-peer-deps --registry=https://registry.npmjs.org/ || npm install --legacy-peer-deps --registry=https://registry.npmjs.org/
+            # Configure yarn to use public registry (yarn respects .npmrc)
+            echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
+            yarn install --frozen-lockfile
           else
             echo "Using CodeArtifact for authenticated packages"
-            npm ci --legacy-peer-deps || npm install --legacy-peer-deps
+            yarn install --frozen-lockfile
           fi
         continue-on-error: false
 
       - name: Run linter
-        run: npm run lint
+        run: yarn lint
 
       - name: Run unit tests (skip AWS-dependent tests)
-        run: npm test -- --coverage --watchAll=false --passWithNoTests --testPathIgnorePatterns=".*(TranslationService|DataStore|Amplify).*" || echo "⚠️ Some tests were skipped due to missing AWS credentials"
+        run: yarn test --coverage --watchAll=false --passWithNoTests --testPathIgnorePatterns=".*(TranslationService|DataStore|Amplify).*" || echo "⚠️ Some tests were skipped due to missing AWS credentials"
         env:
           SKIP_AWS_TESTS: "true"
         continue-on-error: true

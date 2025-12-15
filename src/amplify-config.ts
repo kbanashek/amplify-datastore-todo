@@ -10,10 +10,11 @@ export const configureAmplify = (): void => {
       DataStore: {
         // Enable automatic sync when online
         syncExpressions: [],
-        // Enable periodic full sync to ensure all devices stay in sync
-        // Full sync runs every 1 minute (60000ms) to catch any missed real-time updates
-        // This ensures iOS, Android, and web all show the same data more quickly
-        fullSyncInterval: 60000, // 1 minute - faster sync for better cross-device consistency
+        // Enable frequent periodic full sync for immediate cross-device updates
+        // Full sync runs every 10 seconds (10000ms) to catch any missed real-time updates
+        // This ensures iOS, Android, and web all show the same data almost immediately
+        // Real-time subscriptions handle immediate updates, this is a safety net
+        fullSyncInterval: 10000, // 10 seconds - very fast sync for immediate cross-device consistency
       },
     } as any);
 

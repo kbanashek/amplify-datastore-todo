@@ -142,22 +142,36 @@ export class TaskResultService {
       if (msg.opType === OpType.DELETE) {
         const isLocalDelete = msg.element?._deleted === true;
         const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
-        
-        logWithDevice("TaskResultService", `DELETE operation detected (${source})`, {
-          taskResultId: msg.element?.id,
-          taskId: msg.element?.taskId,
-          deleted: msg.element?._deleted,
-          operationType: msg.opType,
-        });
-        
-        DataStore.query(TaskResult).then(results => {
-          logWithDevice("TaskResultService", "Query refresh after DELETE completed", {
-            remainingResultCount: results.length,
+
+        logWithDevice(
+          "TaskResultService",
+          `DELETE operation detected (${source})`,
+          {
+            taskResultId: msg.element?.id,
+            taskId: msg.element?.taskId,
+            deleted: msg.element?._deleted,
+            operationType: msg.opType,
+          }
+        );
+
+        DataStore.query(TaskResult)
+          .then(results => {
+            logWithDevice(
+              "TaskResultService",
+              "Query refresh after DELETE completed",
+              {
+                remainingResultCount: results.length,
+              }
+            );
+            callback(results, true);
+          })
+          .catch(err => {
+            logErrorWithDevice(
+              "TaskResultService",
+              "Error refreshing after delete",
+              err
+            );
           });
-          callback(results, true);
-        }).catch(err => {
-          logErrorWithDevice("TaskResultService", "Error refreshing after delete", err);
-        });
       }
     });
 

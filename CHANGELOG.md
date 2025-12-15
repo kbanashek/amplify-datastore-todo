@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.14] - 2025-01-15
+
+### Fixed
+
+- Fixed TaskAnswer deletion in reset functionality - TaskAnswers were not being deleted during nuclear reset
+- Added retry logic for TaskAnswer deletion to ensure all items are removed
+- Improved error handling for individual deletion failures with detailed logging
+- Enhanced verification steps to confirm all TaskAnswers are deleted after reset
+
+### Added
+
+- Added `deleteAllTaskAnswersWithRetry()` method with up to 3 retry attempts
+- Added comprehensive verification logging for TaskAnswer deletion
+- Added step-by-step logging for all deletion phases in nuclear reset
+
 ## [0.1.13] - 2024-12-14
 
 ### Fixed

@@ -8,7 +8,11 @@ import {
   TaskType,
   UpdateTaskInput,
 } from "../types/Task";
-import { getLogPrefix, logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
+import {
+  getLogPrefix,
+  logWithDevice,
+  logErrorWithDevice,
+} from "../utils/deviceLogger";
 
 type TaskUpdateData = Omit<UpdateTaskInput, "id" | "_version">;
 
@@ -254,7 +258,7 @@ export class TaskService {
       if (msg.opType === OpType.DELETE) {
         const isLocalDelete = msg.element?._deleted === true;
         const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
-        
+
         logWithDevice("TaskService", `DELETE operation detected (${source})`, {
           taskId: msg.element?.id,
           taskTitle: msg.element?.title,
@@ -262,18 +266,28 @@ export class TaskService {
           operationType: msg.opType,
           modelConstructor: msg.modelConstructor?.name,
         });
-        
+
         // The observeQuery subscription will automatically update with the new item count
         // But we explicitly trigger a refresh to ensure immediate update
-        DataStore.query(DataStoreTask).then(tasks => {
-          logWithDevice("TaskService", "Query refresh after DELETE completed", {
-            remainingTaskCount: tasks.length,
-            remainingTaskIds: tasks.map(t => t.id),
+        DataStore.query(DataStoreTask)
+          .then(tasks => {
+            logWithDevice(
+              "TaskService",
+              "Query refresh after DELETE completed",
+              {
+                remainingTaskCount: tasks.length,
+                remainingTaskIds: tasks.map(t => t.id),
+              }
+            );
+            callback(tasks as Task[], true);
+          })
+          .catch(err => {
+            logErrorWithDevice(
+              "TaskService",
+              "Error refreshing after delete",
+              err
+            );
           });
-          callback(tasks as Task[], true);
-        }).catch(err => {
-          logErrorWithDevice("TaskService", "Error refreshing after delete", err);
-        });
       }
     });
 
@@ -305,18 +319,26 @@ export class TaskService {
       const batchSize = 10;
       for (let i = 0; i < tasks.length; i += batchSize) {
         const batch = tasks.slice(i, i + batchSize);
-        logWithDevice("TaskService", `Deleting batch ${Math.floor(i / batchSize) + 1}`, {
-          batchSize: batch.length,
-          batchTaskIds: batch.map(t => t.id),
-        });
-        
+        logWithDevice(
+          "TaskService",
+          `Deleting batch ${Math.floor(i / batchSize) + 1}`,
+          {
+            batchSize: batch.length,
+            batchTaskIds: batch.map(t => t.id),
+          }
+        );
+
         await Promise.all(batch.map(task => DataStore.delete(task)));
         deletedCount += batch.length;
 
-        logWithDevice("TaskService", `Batch ${Math.floor(i / batchSize) + 1} deleted, queued for sync`, {
-          deletedInBatch: batch.length,
-          totalDeleted: deletedCount,
-        });
+        logWithDevice(
+          "TaskService",
+          `Batch ${Math.floor(i / batchSize) + 1} deleted, queued for sync`,
+          {
+            deletedInBatch: batch.length,
+            totalDeleted: deletedCount,
+          }
+        );
 
         // Small delay between batches to allow sync
         if (i + batchSize < tasks.length) {

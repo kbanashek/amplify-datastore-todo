@@ -434,10 +434,31 @@ export async function createMedicalHistoryActivity() {
  * Create tasks linked to activities and standalone tasks
  * Creates tasks for today + 5 days with a mix of types
  */
-export async function createTasksForActivities(activities: any[]) {
+/**
+ * Helper to get task type name for title
+ */
+function getTaskTypeName(taskType: TaskType): string {
+  switch (taskType) {
+    case TaskType.SCHEDULED:
+      return "Scheduled";
+    case TaskType.TIMED:
+      return "Timed";
+    case TaskType.EPISODIC:
+      return "Episodic";
+    default:
+      return "Task";
+  }
+}
+
+export async function createTasksForActivities(activities: any[]): Promise<{
+  tasks: any[];
+  taskCounter: { scheduled: number; timed: number; episodic: number };
+}> {
   const now = Date.now();
   const tasks: any[] = [];
   const taskTypes = [TaskType.SCHEDULED, TaskType.TIMED, TaskType.EPISODIC];
+  // Initialize task counter for numbering tasks by type
+  const taskCounter = { scheduled: 0, timed: 0, episodic: 0 };
   const times = [
     { hour: 8, minute: 0 }, // 8:00 AM
     { hour: 11, minute: 45 }, // 11:45 AM
@@ -488,7 +509,18 @@ export async function createTasksForActivities(activities: any[]) {
       const activity =
         activities[Math.floor(Math.random() * activities.length)];
 
-      const taskTitle = `${activity.title || activity.name} - Day ${dayOffset + 1}`;
+      // Increment counter for this task type and create title
+      let taskTitle: string;
+      if (taskType === TaskType.SCHEDULED) {
+        taskCounter.scheduled++;
+        taskTitle = `${getTaskTypeName(TaskType.SCHEDULED)} Task ${taskCounter.scheduled}`;
+      } else if (taskType === TaskType.TIMED) {
+        taskCounter.timed++;
+        taskTitle = `${getTaskTypeName(TaskType.TIMED)} Task ${taskCounter.timed}`;
+      } else {
+        taskCounter.episodic++;
+        taskTitle = `${getTaskTypeName(TaskType.EPISODIC)} Task ${taskCounter.episodic}`;
+      }
 
       log("Creating task with questions", {
         dayOffset,
@@ -538,7 +570,7 @@ export async function createTasksForActivities(activities: any[]) {
     allTasksHaveQuestions: tasks.every(t => t.entityId),
   });
 
-  return tasks;
+  return { tasks, taskCounter };
 }
 
 /**
@@ -1108,7 +1140,8 @@ export async function seedQuestionData() {
       painAssessment,
       medicalHistory,
     ];
-    const tasks = await createTasksForActivities(allActivities);
+    const { tasks, taskCounter } =
+      await createTasksForActivities(allActivities);
 
     // Ensure at least one multi-page task per day for the first 3 days
     const now = Date.now();
@@ -1138,13 +1171,11 @@ export async function seedQuestionData() {
 
       if (!existingMultiPageTask) {
         const taskTimestamp = Date.now() + dayOffset * 1000;
+        taskCounter.scheduled++;
         const task = await TaskService.createTask({
           pk: `TASK-MULTI-PAGE-${dayOffset}-${taskTimestamp}`,
           sk: `SK-${taskTimestamp}`,
-          title:
-            dayOffset === 0
-              ? "Multi-Page Health Assessment"
-              : `Multi-Page Health Assessment - Day ${dayOffset + 1}`,
+          title: `${getTaskTypeName(TaskType.SCHEDULED)} Task ${taskCounter.scheduled}`,
           description: "Complete the multi-page health questionnaire",
           taskType: TaskType.SCHEDULED,
           status: TaskStatus.OPEN,

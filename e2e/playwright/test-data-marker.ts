@@ -19,4 +19,3 @@ export function isTestData(pk: string | null | undefined): boolean {
 export function createTestDataPk(prefix: string): string {
   return `${E2E_TEST_MARKER}_${prefix}`;
 }
-

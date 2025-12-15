@@ -14,7 +14,10 @@ export { TaskResultService } from "./src/services/TaskResultService";
 export { TaskHistoryService } from "./src/services/TaskHistoryService";
 export { AppointmentService } from "./src/services/AppointmentService";
 export { SeededDataCleanupService } from "./src/services/SeededDataCleanupService";
-export { TranslationService, getTranslationService } from "./src/services/TranslationService";
+export {
+  TranslationService,
+  getTranslationService,
+} from "./src/services/TranslationService";
 export { TranslationMemoryService } from "./src/services/TranslationMemoryService";
 export { ConflictResolution } from "./src/services/ConflictResolution";
 export * from "./src/services/translationTypes";
@@ -23,7 +26,12 @@ export * from "./src/services/translationTypes";
 export { useActivity } from "./src/hooks/useActivity";
 export { useActivityData } from "./src/hooks/useActivityData";
 export { useActivityList } from "./src/hooks/useActivityList";
-export { useAmplifyState, NetworkStatus, SyncState, DataStoreEventType } from "./src/hooks/useAmplifyState";
+export {
+  useAmplifyState,
+  NetworkStatus,
+  SyncState,
+  DataStoreEventType,
+} from "./src/hooks/useAmplifyState";
 export type { AmplifyState } from "./src/hooks/useAmplifyState";
 export { useAnswerManagement } from "./src/hooks/useAnswerManagement";
 export { useAppointmentList } from "./src/hooks/useAppointmentList";
@@ -57,4 +65,7 @@ export type { TaskFilters } from "./src/types/Task";
 
 // Export contexts
 export { AmplifyProvider, useAmplify } from "./src/contexts/AmplifyContext";
-export { TranslationProvider, useTranslation } from "./src/contexts/TranslationContext";
+export {
+  TranslationProvider,
+  useTranslation,
+} from "./src/contexts/TranslationContext";

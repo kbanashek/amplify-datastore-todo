@@ -12,10 +12,11 @@ import { Platform } from "react-native";
 export function getDeviceId(): string {
   const platform = Platform.OS;
   const platformName = platform.charAt(0).toUpperCase() + platform.slice(1);
-  
+
   // For web, try to get more specific info
   if (platform === "web") {
-    const userAgent = typeof navigator !== "undefined" ? navigator.userAgent : "";
+    const userAgent =
+      typeof navigator !== "undefined" ? navigator.userAgent : "";
     if (userAgent.includes("iPhone") || userAgent.includes("iPad")) {
       return "Web-iOS";
     }
@@ -24,7 +25,7 @@ export function getDeviceId(): string {
     }
     return "Web";
   }
-  
+
   return platformName;
 }
 
@@ -70,4 +71,3 @@ export function logErrorWithDevice(
     console.error(`${prefix} ${message}`);
   }
 }
-

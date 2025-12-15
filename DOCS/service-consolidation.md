@@ -44,7 +44,10 @@ export { TaskResultService } from "./src/services/TaskResultService";
 export { TaskHistoryService } from "./src/services/TaskHistoryService";
 export { AppointmentService } from "./src/services/AppointmentService";
 export { SeededDataCleanupService } from "./src/services/SeededDataCleanupService";
-export { TranslationService, getTranslationService } from "./src/services/TranslationService";
+export {
+  TranslationService,
+  getTranslationService,
+} from "./src/services/TranslationService";
 export { TranslationMemoryService } from "./src/services/TranslationMemoryService";
 export { ConflictResolution } from "./src/services/ConflictResolution";
 export * from "./src/services/translationTypes";
@@ -55,12 +58,14 @@ export * from "./src/services/translationTypes";
 All imports across the codebase have been updated to use `@orion/task-system`:
 
 **Before:**
+
 ```typescript
 import { TaskService } from "../services/TaskService";
 import { ActivityService } from "../../src/services/ActivityService";
 ```
 
 **After:**
+
 ```typescript
 import { TaskService, ActivityService } from "@orion/task-system";
 ```
@@ -101,6 +106,6 @@ All package services now include:
 ## Note on TodoService
 
 `TodoService` remains in `src/services/` because it depends on generated GraphQL types from `API.ts`. If needed, it can be moved to the package later by:
+
 - Creating package-specific types
 - Or ensuring `API.ts` types are available to the package
-

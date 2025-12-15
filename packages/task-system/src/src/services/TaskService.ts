@@ -170,24 +170,35 @@ export class TaskService {
    */
   static async updateTask(id: string, data: TaskUpdateData): Promise<Task> {
     try {
-      console.log("[TaskService] updateTask called:", { id, data });
+      logWithDevice("TaskService", "updateTask called", { id, data });
       const original = await DataStore.query(DataStoreTask, id);
       if (!original) {
         throw new Error(`Task with id ${id} not found`);
       }
 
-      console.log("[TaskService] Original task status:", original.status);
+      logWithDevice("TaskService", "Original task before update", {
+        id: original.id,
+        status: original.status,
+        title: original.title,
+        _version: (original as any)._version,
+      });
+
       const updated = await DataStore.save(
         DataStoreTask.copyOf(original, updated => {
           Object.assign(updated, data);
         })
       );
 
-      console.log("[TaskService] Task updated successfully:", {
-        id: updated.id,
-        status: updated.status,
-        title: updated.title,
-      });
+      logWithDevice(
+        "TaskService",
+        "Task updated successfully - syncing to cloud immediately",
+        {
+          id: updated.id,
+          status: updated.status,
+          title: updated.title,
+          _version: (updated as any)._version,
+        }
+      );
 
       return updated as Task;
     } catch (error) {
@@ -245,51 +256,59 @@ export class TaskService {
       }
     );
 
-    // Also observe DELETE operations explicitly to ensure deletions trigger updates
-    // This ensures that when deletions sync from other devices, the subscription fires
-    // Note: observeQuery automatically handles INSERT and UPDATE operations from remote devices
-    const deleteObserver = DataStore.observe(DataStoreTask).subscribe(msg => {
-      if (msg.opType === OpType.DELETE) {
-        const element = msg.element as any;
-        const isLocalDelete = element?._deleted === true;
-        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+    // CRITICAL: Observe ALL operations (INSERT, UPDATE, DELETE) to catch remote changes immediately
+    // The issue: observeQuery may not always fire for remote updates, so we explicitly observe
+    // all operations and refresh the query to ensure immediate UI updates across devices
+    //
+    // Strategy: Refresh on ALL operations to ensure we catch remote sync operations
+    // This is safe because we're just refreshing the query, which is idempotent
+    const changeObserver = DataStore.observe(DataStoreTask).subscribe(msg => {
+      const element = msg.element as any;
 
-        logWithDevice("TaskService", `DELETE operation detected (${source})`, {
-          taskId: element?.id,
-          taskTitle: element?.title,
-          deleted: element?._deleted,
-          operationType: msg.opType,
+      // Log all operations for debugging sync issues across devices
+      logWithDevice("TaskService", `DataStore operation detected via observe`, {
+        taskId: element?.id,
+        taskTitle: element?.title,
+        status: element?.status,
+        operationType: msg.opType,
+        deleted: element?._deleted,
+        _version: element?._version,
+      });
+
+      // Refresh query for ALL operations to ensure immediate UI updates
+      // This is critical for catching remote updates from other devices
+      // observeQuery should handle this, but explicit refresh ensures we don't miss anything
+      DataStore.query(DataStoreTask)
+        .then(tasks => {
+          logWithDevice(
+            "TaskService",
+            `Query refresh after ${msg.opType} operation`,
+            {
+              taskCount: tasks.length,
+              taskIds: tasks.map((t: any) => t.id),
+              taskStatuses: tasks.map((t: any) => ({
+                id: t.id,
+                status: t.status,
+                title: t.title,
+              })),
+            }
+          );
+          callback(tasks as Task[], true);
+        })
+        .catch(err => {
+          logErrorWithDevice(
+            "TaskService",
+            `Error refreshing after ${msg.opType}`,
+            err
+          );
         });
-
-        // The observeQuery subscription will automatically update with the new item count
-        // But we explicitly trigger a refresh to ensure immediate update
-        DataStore.query(DataStoreTask)
-          .then(tasks => {
-            logWithDevice(
-              "TaskService",
-              "Query refresh after DELETE completed",
-              {
-                remainingTaskCount: tasks.length,
-                remainingTaskIds: tasks.map((t: any) => t.id),
-              }
-            );
-            callback(tasks as Task[], true);
-          })
-          .catch(err => {
-            logErrorWithDevice(
-              "TaskService",
-              "Error refreshing after delete",
-              err
-            );
-          });
-      }
     });
 
     return {
       unsubscribe: () => {
         logWithDevice("TaskService", "Unsubscribing from DataStore");
         querySubscription.unsubscribe();
-        deleteObserver.unsubscribe();
+        changeObserver.unsubscribe();
       },
     };
   }

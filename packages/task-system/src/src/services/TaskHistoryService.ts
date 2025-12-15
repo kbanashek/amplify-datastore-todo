@@ -128,11 +128,15 @@ export class TaskHistoryService {
       snapshot => {
         const { items, isSynced } = snapshot;
 
-        logWithDevice("TaskHistoryService", "Subscription update (observeQuery)", {
-          itemCount: items.length,
-          isSynced,
-          itemIds: items.map(i => i.id),
-        });
+        logWithDevice(
+          "TaskHistoryService",
+          "Subscription update (observeQuery)",
+          {
+            itemCount: items.length,
+            isSynced,
+            itemIds: items.map(i => i.id),
+          }
+        );
 
         callback(items, isSynced);
       }
@@ -144,22 +148,36 @@ export class TaskHistoryService {
         const element = msg.element as any;
         const isLocalDelete = element?._deleted === true;
         const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
-        
-        logWithDevice("TaskHistoryService", `DELETE operation detected (${source})`, {
-          taskHistoryId: element?.id,
-          taskId: element?.taskId,
-          deleted: element?._deleted,
-          operationType: msg.opType,
-        });
-        
-        DataStore.query(TaskHistory).then(histories => {
-          logWithDevice("TaskHistoryService", "Query refresh after DELETE completed", {
-            remainingHistoryCount: histories.length,
+
+        logWithDevice(
+          "TaskHistoryService",
+          `DELETE operation detected (${source})`,
+          {
+            taskHistoryId: element?.id,
+            taskId: element?.taskId,
+            deleted: element?._deleted,
+            operationType: msg.opType,
+          }
+        );
+
+        DataStore.query(TaskHistory)
+          .then(histories => {
+            logWithDevice(
+              "TaskHistoryService",
+              "Query refresh after DELETE completed",
+              {
+                remainingHistoryCount: histories.length,
+              }
+            );
+            callback(histories, true);
+          })
+          .catch(err => {
+            logErrorWithDevice(
+              "TaskHistoryService",
+              "Error refreshing after delete",
+              err
+            );
           });
-          callback(histories, true);
-        }).catch(err => {
-          logErrorWithDevice("TaskHistoryService", "Error refreshing after delete", err);
-        });
       }
     });
 

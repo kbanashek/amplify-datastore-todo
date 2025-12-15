@@ -4,7 +4,7 @@ import { TestIds } from "../../src/constants/testIds";
 /**
  * Web e2e test: Begin task and navigate to questions screen
  * Tests core task flow: dashboard → begin task → questions screen
- * 
+ *
  * Note: Test data is automatically seeded via fixtures before tests run
  * and cleaned up after tests complete (see global-teardown.ts)
  */
@@ -26,20 +26,28 @@ test.describe("Begin Task and Navigate", () => {
     const newDashboard = page.getByTestId(TestIds.dashboardGroupedTasksView);
     const legacyDashboard = page.getByTestId(TestIds.dashboardTasksGroupedView);
     const emptyState = page.getByText("No tasks available.");
-    
+
     // Wait for one of: tasks view, empty state, or loading to complete
     await Promise.race([
-      newDashboard.waitFor({ state: "visible", timeout: 5000 }).catch(() => null),
-      legacyDashboard.waitFor({ state: "visible", timeout: 5000 }).catch(() => null),
+      newDashboard
+        .waitFor({ state: "visible", timeout: 5000 })
+        .catch(() => null),
+      legacyDashboard
+        .waitFor({ state: "visible", timeout: 5000 })
+        .catch(() => null),
       emptyState.waitFor({ state: "visible", timeout: 5000 }).catch(() => null),
       page.waitForTimeout(5000), // Max wait
     ]);
 
     // Check if we have tasks - if not, fail the test (data should have been seeded)
-    const hasTasks = await page.getByTestId(TestIds.taskCardBeginButton).count();
-    
+    const hasTasks = await page
+      .getByTestId(TestIds.taskCardBeginButton)
+      .count();
+
     if (hasTasks === 0) {
-      throw new Error("No tasks available - test data seeding may have failed. Check fixtures.ts");
+      throw new Error(
+        "No tasks available - test data seeding may have failed. Check fixtures.ts"
+      );
     }
 
     // Find and click the first "Begin" button on a task card
@@ -51,9 +59,8 @@ test.describe("Begin Task and Navigate", () => {
     await page.waitForTimeout(2000);
 
     // Verify questions screen is visible
-    await expect(
-      page.getByTestId(TestIds.questionsScreenRoot)
-    ).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId(TestIds.questionsScreenRoot)).toBeVisible({
+      timeout: 15000,
+    });
   });
 });
-

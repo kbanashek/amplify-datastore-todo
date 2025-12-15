@@ -23,15 +23,21 @@ export const test = base.extend<TestFixtures>({
       await page.goto("/");
       await page.waitForLoadState("networkidle");
       await page.waitForTimeout(3000);
-      
-      const hasTasks = await page.getByTestId(TestIds.taskCardBeginButton).count();
-      
+
+      const hasTasks = await page
+        .getByTestId(TestIds.taskCardBeginButton)
+        .count();
+
       if (hasTasks === 0) {
-        console.warn("⚠️  [Fixture] No test tasks found - global setup may have failed");
+        console.warn(
+          "⚠️  [Fixture] No test tasks found - global setup may have failed"
+        );
       } else {
-        console.log(`✅ [Fixture] Found ${hasTasks} test tasks (marked with E2E_TEST_MARKER)`);
+        console.log(
+          `✅ [Fixture] Found ${hasTasks} test tasks (marked with E2E_TEST_MARKER)`
+        );
       }
-      
+
       await use(true);
     },
     { scope: "test", auto: true }, // Run once per test, automatically
@@ -40,4 +46,3 @@ export const test = base.extend<TestFixtures>({
 
 // Re-export expect for convenience
 export { expect };
-

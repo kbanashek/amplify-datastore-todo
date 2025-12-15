@@ -128,11 +128,15 @@ export class TaskAnswerService {
       snapshot => {
         const { items, isSynced } = snapshot;
 
-        logWithDevice("TaskAnswerService", "Subscription update (observeQuery)", {
-          itemCount: items.length,
-          isSynced,
-          itemIds: items.map(i => i.id),
-        });
+        logWithDevice(
+          "TaskAnswerService",
+          "Subscription update (observeQuery)",
+          {
+            itemCount: items.length,
+            isSynced,
+            itemIds: items.map(i => i.id),
+          }
+        );
 
         callback(items, isSynced);
       }
@@ -144,22 +148,36 @@ export class TaskAnswerService {
         const element = msg.element as any;
         const isLocalDelete = element?._deleted === true;
         const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
-        
-        logWithDevice("TaskAnswerService", `DELETE operation detected (${source})`, {
-          taskAnswerId: element?.id,
-          taskId: element?.taskId,
-          deleted: element?._deleted,
-          operationType: msg.opType,
-        });
-        
-        DataStore.query(TaskAnswer).then(answers => {
-          logWithDevice("TaskAnswerService", "Query refresh after DELETE completed", {
-            remainingAnswerCount: answers.length,
+
+        logWithDevice(
+          "TaskAnswerService",
+          `DELETE operation detected (${source})`,
+          {
+            taskAnswerId: element?.id,
+            taskId: element?.taskId,
+            deleted: element?._deleted,
+            operationType: msg.opType,
+          }
+        );
+
+        DataStore.query(TaskAnswer)
+          .then(answers => {
+            logWithDevice(
+              "TaskAnswerService",
+              "Query refresh after DELETE completed",
+              {
+                remainingAnswerCount: answers.length,
+              }
+            );
+            callback(answers, true);
+          })
+          .catch(err => {
+            logErrorWithDevice(
+              "TaskAnswerService",
+              "Error refreshing after delete",
+              err
+            );
           });
-          callback(answers, true);
-        }).catch(err => {
-          logErrorWithDevice("TaskAnswerService", "Error refreshing after delete", err);
-        });
       }
     });
 

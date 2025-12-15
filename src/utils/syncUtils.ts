@@ -9,32 +9,38 @@ import { logWithDevice, logErrorWithDevice } from "./deviceLogger";
 /**
  * Manually trigger a full sync of all DataStore models
  * Useful when you need to force sync across devices immediately
- * 
+ *
  * This function stops and restarts DataStore, which triggers a full sync
  * from the cloud. All local data will be reconciled with the server.
- * 
+ *
  * @returns Promise that resolves when sync completes
  */
 export async function forceFullSync(): Promise<void> {
   try {
-    logWithDevice("syncUtils", "🔄 Starting manual full sync (stop/start DataStore)...");
-    
+    logWithDevice(
+      "syncUtils",
+      "🔄 Starting manual full sync (stop/start DataStore)..."
+    );
+
     // Stop DataStore - this will queue any pending operations
     logWithDevice("syncUtils", "Stopping DataStore...");
     await DataStore.stop();
     logWithDevice("syncUtils", "DataStore stopped");
-    
+
     // Wait a brief moment to ensure stop completes
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     // Start DataStore - this triggers a full sync from the cloud
-    logWithDevice("syncUtils", "Starting DataStore (triggers full sync from cloud)...");
+    logWithDevice(
+      "syncUtils",
+      "Starting DataStore (triggers full sync from cloud)..."
+    );
     await DataStore.start();
     logWithDevice("syncUtils", "✅ DataStore started - full sync initiated");
-    
+
     // Wait a bit for sync to begin processing
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
+
     logWithDevice("syncUtils", "✅ Manual full sync completed");
   } catch (error) {
     logErrorWithDevice("syncUtils", "❌ Error during manual sync", error);
@@ -46,43 +52,56 @@ export async function forceFullSync(): Promise<void> {
  * Clear local DataStore cache and force complete resync from cloud
  * This is the most aggressive sync method - clears all local data and resyncs from server
  * Use this when devices are showing different data and you need to force them to match
- * 
+ *
  * WARNING: This will clear all local data and resync from cloud. Any unsynced local changes will be lost.
- * 
+ *
  * @returns Promise that resolves when sync completes
  */
 export async function clearCacheAndResync(): Promise<void> {
   try {
-    logWithDevice("syncUtils", "🗑️ Starting cache clear and resync (most aggressive sync)...");
-    
+    logWithDevice(
+      "syncUtils",
+      "🗑️ Starting cache clear and resync (most aggressive sync)..."
+    );
+
     // Stop DataStore first
     logWithDevice("syncUtils", "Stopping DataStore...");
     await DataStore.stop();
     logWithDevice("syncUtils", "DataStore stopped");
-    
+
     // Wait a moment
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     // Clear all local data - this removes the local SQLite cache
     logWithDevice("syncUtils", "Clearing local DataStore cache...");
     await DataStore.clear();
     logWithDevice("syncUtils", "✅ Local cache cleared");
-    
+
     // Wait a moment
     await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     // Start DataStore - this will trigger a complete resync from cloud
-    logWithDevice("syncUtils", "Starting DataStore (triggers complete resync from cloud)...");
+    logWithDevice(
+      "syncUtils",
+      "Starting DataStore (triggers complete resync from cloud)..."
+    );
     await DataStore.start();
-    logWithDevice("syncUtils", "✅ DataStore started - complete resync initiated");
-    
+    logWithDevice(
+      "syncUtils",
+      "✅ DataStore started - complete resync initiated"
+    );
+
     // Wait longer for sync to process (clearing cache means full resync)
     logWithDevice("syncUtils", "Waiting for complete resync to process...");
     await new Promise(resolve => setTimeout(resolve, 5000));
-    
+
     logWithDevice("syncUtils", "✅ Cache clear and resync completed");
   } catch (error) {
-    logErrorWithDevice("syncUtils", "❌ Error during cache clear and resync", error);
+    logErrorWithDevice(
+      "syncUtils",
+      "❌ Error during cache clear and resync",
+      error
+    );
     throw error;
   }
 }
@@ -97,4 +116,3 @@ export async function isSyncing(): Promise<boolean> {
   // For now, we'll return false and let the caller check via useAmplifyState hook
   return false;
 }
-
