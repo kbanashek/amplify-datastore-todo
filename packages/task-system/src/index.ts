@@ -63,6 +63,14 @@ export { useTranslatedText } from "./src/hooks/useTranslatedText";
 export type { GroupedTask } from "./src/hooks/useGroupedTasks";
 export type { TaskFilters } from "./src/types/Task";
 
+// Export constants
+export { ModelName } from "./src/constants/modelNames";
+export type { ModelNameType } from "./src/constants/modelNames";
+export { OperationSource } from "./src/constants/operationSource";
+export type { OperationSourceType } from "./src/constants/operationSource";
+export { AWSErrorName } from "./src/constants/awsErrors";
+export type { AWSErrorNameType } from "./src/constants/awsErrors";
+
 // Export contexts
 export { AmplifyProvider, useAmplify } from "./src/contexts/AmplifyContext";
 export {

@@ -5,6 +5,8 @@ import {
   CreateTaskAnswerInput,
   UpdateTaskAnswerInput,
 } from "../types/TaskAnswer";
+import { ModelName } from "../constants/modelNames";
+import { OperationSource } from "../constants/operationSource";
 
 type TaskAnswerUpdateData = Omit<UpdateTaskAnswerInput, "id" | "_version">;
 
@@ -18,7 +20,7 @@ export class TaskAnswerService {
         operation,
         attempts,
       }) => {
-        if (modelConstructor.name === "TaskAnswer") {
+        if (modelConstructor.name === ModelName.TaskAnswer) {
           if (operation === OpType.DELETE) {
             if (remoteModel._deleted) {
               return remoteModel;
@@ -147,7 +149,9 @@ export class TaskAnswerService {
       if (msg.opType === OpType.DELETE) {
         const element = msg.element as any;
         const isLocalDelete = element?._deleted === true;
-        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+        const source = isLocalDelete
+          ? OperationSource.LOCAL
+          : OperationSource.REMOTE_SYNC;
 
         logWithDevice(
           "TaskAnswerService",

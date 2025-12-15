@@ -1,4 +1,5 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
+import { ModelName } from "../constants/modelNames";
 import { Task as DataStoreTask } from "../models";
 import {
   CreateTaskInput,
@@ -26,7 +27,7 @@ export class TaskService {
         attempts,
       }) => {
         // For Task model conflicts
-        if (modelConstructor.name === "Task") {
+        if (modelConstructor.name === ModelName.Task) {
           // For update operations
           if (operation === OpType.UPDATE) {
             // Prefer local status changes, but remote timing updates

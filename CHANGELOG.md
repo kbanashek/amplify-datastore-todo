@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added `ModelName` constants to replace string literals for DataStore model names
+- Added `OperationSource` constants for LOCAL/REMOTE_SYNC operation logging
+- Added `AWSErrorName` constants for AWS error type checking
+- Created cursor rule `.cursor/rules/no-string-model-names.mdc` to prevent magic strings
+- Added comprehensive unit test coverage for all services in the task-system package
+
+### Changed
+
+- Replaced all string literals for model names with `ModelName` constants across all services
+- Replaced all `"LOCAL"` and `"REMOTE_SYNC"` strings with `OperationSource` constants
+- Replaced `"InvalidSignatureException"` string with `AWSErrorName` constant
+- Updated all services (ActivityService, TaskService, QuestionService, DataPointService, TaskAnswerService, TaskHistoryService, TaskResultService, ConflictResolution, TranslationService) to use constants
+- Exported new constants from package index for external use
+
+### Fixed
+
+- Improved type safety by eliminating magic strings for model names
+- Enhanced maintainability with centralized constant definitions
+
 ## [0.1.15] - 2025-12-15
 
 ### Added

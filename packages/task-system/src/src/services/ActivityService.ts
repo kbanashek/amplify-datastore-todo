@@ -1,8 +1,9 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
 // @ts-ignore - Activity is exported from models/index.js at runtime
+import { ModelName } from "../constants/modelNames";
 import { Activity } from "../models";
 import { CreateActivityInput, UpdateActivityInput } from "../types/Activity";
-import { logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
+import { logErrorWithDevice, logWithDevice } from "../utils/deviceLogger";
 
 type ActivityUpdateData = Omit<UpdateActivityInput, "id" | "_version">;
 
@@ -19,7 +20,7 @@ export class ActivityService {
         operation,
         attempts,
       }) => {
-        if (modelConstructor.name === "Activity") {
+        if (modelConstructor.name === ModelName.Activity) {
           if (operation === OpType.DELETE) {
             if (remoteModel._deleted) {
               return remoteModel;
@@ -139,7 +140,9 @@ export class ActivityService {
       if (msg.opType === OpType.DELETE) {
         const element = msg.element as any;
         const isLocalDelete = element?._deleted === true;
-        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+        const source = isLocalDelete
+          ? OperationSource.LOCAL
+          : OperationSource.REMOTE_SYNC;
 
         logWithDevice(
           "ActivityService",

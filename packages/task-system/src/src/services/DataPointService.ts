@@ -7,6 +7,8 @@ import {
   UpdateDataPointInput,
   UpdateDataPointInstanceInput,
 } from "../types/DataPoint";
+import { ModelName } from "../constants/modelNames";
+import { OperationSource } from "../constants/operationSource";
 
 type DataPointUpdateData = Omit<UpdateDataPointInput, "id" | "_version">;
 type DataPointInstanceUpdateData = Omit<
@@ -25,7 +27,10 @@ export class DataPointService {
         attempts,
       }) => {
         const modelName = modelConstructor.name;
-        if (modelName === "DataPoint" || modelName === "DataPointInstance") {
+        if (
+          modelName === ModelName.DataPoint ||
+          modelName === ModelName.DataPointInstance
+        ) {
           if (operation === OpType.DELETE) {
             if (remoteModel._deleted) {
               return remoteModel;
@@ -155,7 +160,9 @@ export class DataPointService {
       if (msg.opType === OpType.DELETE) {
         const element = msg.element as any;
         const isLocalDelete = element?._deleted === true;
-        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+        const source = isLocalDelete
+          ? OperationSource.LOCAL
+          : OperationSource.REMOTE_SYNC;
 
         logWithDevice(
           "DataPointService",
@@ -315,7 +322,9 @@ export class DataPointService {
         if (msg.opType === OpType.DELETE) {
           const element = msg.element as any;
           const isLocalDelete = element?._deleted === true;
-          const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+          const source = isLocalDelete
+            ? OperationSource.LOCAL
+            : OperationSource.REMOTE_SYNC;
 
           logWithDevice(
             "DataPointService",

@@ -2,6 +2,8 @@ import { DataStore, OpType } from "@aws-amplify/datastore";
 import { Question } from "../models";
 import { CreateQuestionInput, UpdateQuestionInput } from "../types/Question";
 import { logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
+import { ModelName } from "../constants/modelNames";
+import { OperationSource } from "../constants/operationSource";
 
 type QuestionUpdateData = Omit<UpdateQuestionInput, "id" | "_version">;
 
@@ -19,7 +21,7 @@ export class QuestionService {
         attempts,
       }) => {
         // For Question model conflicts
-        if (modelConstructor.name === "Question") {
+        if (modelConstructor.name === ModelName.Question) {
           // For delete operations, handle carefully
           if (operation === OpType.DELETE) {
             if (remoteModel._deleted) {
@@ -157,7 +159,9 @@ export class QuestionService {
       if (msg.opType === OpType.DELETE) {
         const element = msg.element as any;
         const isLocalDelete = element?._deleted === true;
-        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+        const source = isLocalDelete
+          ? OperationSource.LOCAL
+          : OperationSource.REMOTE_SYNC;
 
         logWithDevice(
           "QuestionService",
