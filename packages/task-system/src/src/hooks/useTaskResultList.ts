@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { TaskResultService } from "../services/TaskResultService";
+import { TaskResultService } from "@orion/task-system";
 import { TaskResult } from "../types/TaskResult";
 
 interface UseTaskResultListReturn {
@@ -27,7 +27,7 @@ export const useTaskResultList = (): UseTaskResultListReturn => {
         isSynced
       );
     });
-    setSubscription(sub);
+    setSubscription(() => sub.unsubscribe);
 
     return () => {
       if (sub) {

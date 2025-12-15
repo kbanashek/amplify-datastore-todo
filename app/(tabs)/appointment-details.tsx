@@ -11,8 +11,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GlobalHeader } from "../../src/components/GlobalHeader";
 import { AppColors } from "../../src/constants/AppColors";
-import { useRTL } from "../../src/hooks/useRTL";
-import { useTranslatedText } from "../../src/hooks/useTranslatedText";
+import { useRTL, useTranslatedText } from "@orion/task-system";
 import {
   Appointment,
   AppointmentStatus,

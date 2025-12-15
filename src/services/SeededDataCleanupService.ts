@@ -12,6 +12,7 @@ import {
   TaskResult,
   Todo,
 } from "../../models";
+import { logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
 
 export interface ClearSeededDataResult {
   deleted: {
@@ -39,16 +40,56 @@ export class SeededDataCleanupService {
     modelConstructor: PersistentModelConstructor<TModel>,
     label: string
   ): Promise<number> {
+    logWithDevice("SeededDataCleanupService", `Starting deletion for ${label}`);
     const items = await DataStore.query(modelConstructor);
     let deletedCount = 0;
 
-    for (const item of items) {
-      await DataStore.delete(item);
-      deletedCount++;
+    logWithDevice("SeededDataCleanupService", `Found ${label} items to delete`, {
+      modelName: label,
+      itemCount: items.length,
+      itemIds: items.map((item: any) => item.id).slice(0, 10), // Log first 10 IDs
+    });
+
+    // Delete in batches to avoid overwhelming the sync queue
+    const batchSize = 10;
+    for (let i = 0; i < items.length; i += batchSize) {
+      const batch = items.slice(i, i + batchSize);
+      const batchNumber = Math.floor(i / batchSize) + 1;
+      const totalBatches = Math.ceil(items.length / batchSize);
+      
+      logWithDevice("SeededDataCleanupService", `Deleting ${label} batch ${batchNumber}/${totalBatches}`, {
+        modelName: label,
+        batchSize: batch.length,
+        batchItemIds: batch.map((item: any) => item.id),
+      });
+      
+      await Promise.all(batch.map(item => DataStore.delete(item)));
+      deletedCount += batch.length;
+
+      logWithDevice("SeededDataCleanupService", `${label} batch ${batchNumber} deleted, queued for sync`, {
+        modelName: label,
+        deletedInBatch: batch.length,
+        totalDeleted: deletedCount,
+        remaining: items.length - deletedCount,
+      });
+
+      // Small delay between batches to allow sync to process
+      if (i + batchSize < items.length) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
     }
 
-    console.log("[SeededDataCleanupService] Deleted items", {
-      label,
+    logWithDevice("SeededDataCleanupService", `All ${label} items deleted, waiting for sync`, {
+      modelName: label,
+      deletedCount,
+      totalQueried: items.length,
+    });
+
+    // Wait for deletions to sync to ensure they propagate to other devices
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    logWithDevice("SeededDataCleanupService", `${label} deletion complete and synced`, {
+      modelName: label,
       deletedCount,
     });
 
@@ -56,6 +97,8 @@ export class SeededDataCleanupService {
   }
 
   static async clearAllSeededData(): Promise<ClearSeededDataResult> {
+    logWithDevice("SeededDataCleanupService", "🚨 NUCLEAR DELETE STARTED - Clearing all seeded data");
+    
     const taskAnswers = await this.deleteAllForModel(TaskAnswer, "TaskAnswer");
     const taskResults = await this.deleteAllForModel(TaskResult, "TaskResult");
     const taskHistories = await this.deleteAllForModel(
@@ -74,9 +117,10 @@ export class SeededDataCleanupService {
     );
     const todos = await this.deleteAllForModel(Todo, "Todo");
 
+    logWithDevice("SeededDataCleanupService", "Clearing appointments");
     await AppointmentService.clearAppointments();
 
-    return {
+    const result = {
       deleted: {
         todos,
         tasks,
@@ -90,5 +134,12 @@ export class SeededDataCleanupService {
       },
       clearedAppointments: true,
     };
+
+    logWithDevice("SeededDataCleanupService", "✅ NUCLEAR DELETE COMPLETE - All data deleted and syncing", {
+      summary: result.deleted,
+      totalItemsDeleted: Object.values(result.deleted).reduce((sum, count) => sum + count, 0),
+    });
+
+    return result;
   }
 }

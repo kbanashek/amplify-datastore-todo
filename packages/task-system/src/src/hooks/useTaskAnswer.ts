@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { TaskAnswerService } from "../services/TaskAnswerService";
+import { TaskAnswerService } from "@orion/task-system";
 import {
   TaskAnswer,
   CreateTaskAnswerInput,

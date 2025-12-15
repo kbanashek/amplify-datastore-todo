@@ -3,8 +3,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AppColors } from "../constants/AppColors";
 import { Shadows, TextStyles } from "../constants/AppStyles";
-import { useRTL } from "../hooks/useRTL";
-import { useTranslatedText } from "../hooks/useTranslatedText";
+import { useRTL, useTranslatedText } from "@orion/task-system";
 import { Appointment, AppointmentType } from "../types/Appointment";
 import {
   formatTime,

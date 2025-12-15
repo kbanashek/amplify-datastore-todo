@@ -11,7 +11,8 @@ import {
 import { useRouter } from "expo-router";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { useColorScheme } from "@orion/task-system";
+import { TestIds } from "../constants/testIds";
 
 interface MenuItem {
   name: string;
@@ -143,12 +144,18 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
                   index,
                   item.name
                 );
+                // Map route to testID for e2e testing
+                const testID =
+                  item.route === "/(tabs)/seed-screen"
+                    ? TestIds.navigationMenuItemSeedData
+                    : undefined;
                 return (
                   <TouchableOpacity
                     key={item.route}
                     style={styles.menuItem}
                     onPress={() => handleNavigate(item.route)}
                     activeOpacity={0.7}
+                    testID={testID}
                   >
                     <View style={styles.menuItemIcon}>
                       <IconSymbol

@@ -1,7 +1,7 @@
 import { renderHook, waitFor } from "@testing-library/react-native";
-import { AppointmentService } from "../../services/AppointmentService";
+import { AppointmentService } from "@orion/task-system";
 import { Appointment, AppointmentData } from "../../types/Appointment";
-import { useAppointmentList } from "../useAppointmentList";
+import { useAppointmentList } from "@orion/task-system";
 
 // Mock AppointmentService
 jest.mock("../../services/AppointmentService", () => ({

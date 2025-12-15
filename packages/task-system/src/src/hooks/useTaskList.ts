@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
-import { TaskService } from "../services/TaskService";
-import { Task, TaskFilters, TaskStatus, TaskType } from "../types/Task";
+import { TaskService } from "@orion/task-system";
+import { Task, TaskFilters, TaskStatus } from "../types/Task";
+import { useAmplify } from "../contexts/AmplifyContext";
+import { NetworkStatus } from "./useAmplifyState";
 
 interface UseTaskListReturn {
   tasks: Task[];
   loading: boolean;
   error: string | null;
   isSynced: boolean;
+  isOnline: boolean;
   handleDeleteTask: (id: string) => Promise<void>;
   retryLoading: () => void;
   clearDataStore: () => Promise<void>;
@@ -18,6 +21,8 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isSynced, setIsSynced] = useState<boolean>(false);
+  const { networkStatus } = useAmplify();
+  const isOnline = networkStatus === NetworkStatus.Online;
   const [subscription, setSubscription] = useState<{
     unsubscribe: () => void;
   } | null>(null);
@@ -52,13 +57,13 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
         if (filters) {
           if (filters.status && filters.status.length > 0) {
             filteredItems = filteredItems.filter(task =>
-              filters.status!.includes(task.status as TaskStatus)
+              filters.status!.includes(task.status)
             );
           }
 
           if (filters.taskType && filters.taskType.length > 0) {
             filteredItems = filteredItems.filter(task =>
-              filters.taskType!.includes(task.taskType as TaskType)
+              filters.taskType!.includes(task.taskType)
             );
           }
 
@@ -179,6 +184,7 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
     loading,
     error,
     isSynced,
+    isOnline,
     handleDeleteTask,
     retryLoading,
     clearDataStore,

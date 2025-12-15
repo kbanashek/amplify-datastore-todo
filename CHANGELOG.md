@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.13] - 2024-12-14
+
+### Fixed
+
+- Fixed sync issues across platforms (iOS, Android, Web) by reverting subscription pattern to original working implementation
+- Fixed seed screen crash by adding missing `handleForceSync` function
+- Fixed duplicate context files causing `useTranslation must be used within a TranslationProvider` error
+- Fixed reset and reseed function to use single comprehensive cleanup instead of redundant operations
+
+### Added
+
+- Added "Force Sync" button to Seed Data screen for clearing local cache and forcing complete resync
+- Added `clearCacheAndResync()` utility function for aggressive sync when devices show different data
+- Added device-specific logging to sync utilities
+- Enhanced reset and reseed function with detailed verification steps and logging
+
+### Changed
+
+- Reduced DataStore sync interval from 5 minutes to 1 minute for faster cross-device consistency
+- Updated reset and reseed to use `SeededDataCleanupService.clearAllSeededData()` instead of redundant `TaskService.nuclearReset()` call
+- Reverted TaskService subscription to original pattern (only observe DELETE, rely on `observeQuery` for INSERT/UPDATE)
+- Updated all context imports to use `@orion/task-system` package for consistency
+
 ## [0.1.12] - 2025-12-14
 
 ### Added

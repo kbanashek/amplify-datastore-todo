@@ -1,4 +1,5 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
+import { logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
 import { TaskHistory } from "../../models";
 import {
   CreateTaskHistoryInput,
@@ -136,10 +137,35 @@ export class TaskHistoryService {
       }
     );
 
+    // Also observe DELETE operations to ensure deletions trigger updates
+    const deleteObserver = DataStore.observe(TaskHistory).subscribe(msg => {
+      if (msg.opType === OpType.DELETE) {
+        const isLocalDelete = msg.element?._deleted === true;
+        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+        
+        logWithDevice("TaskHistoryService", `DELETE operation detected (${source})`, {
+          taskHistoryId: msg.element?.id,
+          taskId: msg.element?.taskId,
+          deleted: msg.element?._deleted,
+          operationType: msg.opType,
+        });
+        
+        DataStore.query(TaskHistory).then(histories => {
+          logWithDevice("TaskHistoryService", "Query refresh after DELETE completed", {
+            remainingHistoryCount: histories.length,
+          });
+          callback(histories, true);
+        }).catch(err => {
+          logErrorWithDevice("TaskHistoryService", "Error refreshing after delete", err);
+        });
+      }
+    });
+
     return {
       unsubscribe: () => {
         console.log("[TaskHistoryService] Unsubscribing from DataStore");
         querySubscription.unsubscribe();
+        deleteObserver.unsubscribe();
       },
     };
   }
@@ -153,13 +179,22 @@ export class TaskHistoryService {
       const histories = await DataStore.query(TaskHistory);
       let deletedCount = 0;
 
-      for (const history of histories) {
-        await DataStore.delete(history);
-        deletedCount++;
+      // Delete in batches to avoid overwhelming the sync queue
+      const batchSize = 10;
+      for (let i = 0; i < histories.length; i += batchSize) {
+        const batch = histories.slice(i, i + batchSize);
+        await Promise.all(batch.map(history => DataStore.delete(history)));
+        deletedCount += batch.length;
+
+        // Small delay between batches to allow sync
+        if (i + batchSize < histories.length) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
       }
 
       console.log("[TaskHistoryService] Deleted all task histories", {
         deletedCount,
+        totalQueried: histories.length,
       });
 
       return deletedCount;

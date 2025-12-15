@@ -8,6 +8,7 @@ import {
   TaskType,
   UpdateTaskInput,
 } from "../types/Task";
+import { logErrorWithDevice, logWithDevice } from "../utils/deviceLogger";
 
 type TaskUpdateData = Omit<UpdateTaskInput, "id" | "_version">;
 
@@ -25,10 +26,7 @@ export class TaskService {
         attempts,
       }) => {
         // For Task model conflicts
-        if (
-          modelConstructor.name === "Task" ||
-          modelConstructor === DataStoreTask
-        ) {
+        if (modelConstructor.name === "Task") {
           // For update operations
           if (operation === OpType.UPDATE) {
             // Prefer local status changes, but remote timing updates
@@ -225,13 +223,14 @@ export class TaskService {
   static subscribeTasks(callback: (items: Task[], isSynced: boolean) => void): {
     unsubscribe: () => void;
   } {
-    console.log("[TaskService] Setting up DataStore subscription for Task");
+    logWithDevice("TaskService", "Setting up DataStore subscription for Task");
 
+    // Use observeQuery for the main subscription (filters out deleted items automatically)
     const querySubscription = DataStore.observeQuery(DataStoreTask).subscribe(
       snapshot => {
         const { items, isSynced } = snapshot;
 
-        console.log("[TaskService] DataStore subscription update:", {
+        logWithDevice("TaskService", "Subscription update (observeQuery)", {
           itemCount: items.length,
           isSynced,
           itemIds: items.map(i => i.id),
@@ -246,10 +245,51 @@ export class TaskService {
       }
     );
 
+    // Also observe DELETE operations explicitly to ensure deletions trigger updates
+    // This ensures that when deletions sync from other devices, the subscription fires
+    // Note: observeQuery automatically handles INSERT and UPDATE operations from remote devices
+    const deleteObserver = DataStore.observe(DataStoreTask).subscribe(msg => {
+      if (msg.opType === OpType.DELETE) {
+        const element = msg.element as any;
+        const isLocalDelete = element?._deleted === true;
+        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+
+        logWithDevice("TaskService", `DELETE operation detected (${source})`, {
+          taskId: element?.id,
+          taskTitle: element?.title,
+          deleted: element?._deleted,
+          operationType: msg.opType,
+        });
+
+        // The observeQuery subscription will automatically update with the new item count
+        // But we explicitly trigger a refresh to ensure immediate update
+        DataStore.query(DataStoreTask)
+          .then(tasks => {
+            logWithDevice(
+              "TaskService",
+              "Query refresh after DELETE completed",
+              {
+                remainingTaskCount: tasks.length,
+                remainingTaskIds: tasks.map((t: any) => t.id),
+              }
+            );
+            callback(tasks as Task[], true);
+          })
+          .catch(err => {
+            logErrorWithDevice(
+              "TaskService",
+              "Error refreshing after delete",
+              err
+            );
+          });
+      }
+    });
+
     return {
       unsubscribe: () => {
-        console.log("[TaskService] Unsubscribing from DataStore");
+        logWithDevice("TaskService", "Unsubscribing from DataStore");
         querySubscription.unsubscribe();
+        deleteObserver.unsubscribe();
       },
     };
   }
@@ -260,17 +300,62 @@ export class TaskService {
    */
   static async deleteAllTasks(): Promise<number> {
     try {
+      logWithDevice("TaskService", "Starting deleteAllTasks operation");
       const tasks = await DataStore.query(DataStoreTask);
       let deletedCount = 0;
 
-      for (const task of tasks) {
-        await DataStore.delete(task);
-        deletedCount++;
+      logWithDevice("TaskService", "Found tasks to delete", {
+        totalTasks: tasks.length,
+        taskIds: tasks.map(t => t.id),
+      });
+
+      // Delete in batches to avoid overwhelming the sync queue
+      const batchSize = 10;
+      for (let i = 0; i < tasks.length; i += batchSize) {
+        const batch = tasks.slice(i, i + batchSize);
+        logWithDevice(
+          "TaskService",
+          `Deleting batch ${Math.floor(i / batchSize) + 1}`,
+          {
+            batchSize: batch.length,
+            batchTaskIds: batch.map(t => t.id),
+          }
+        );
+
+        await Promise.all(batch.map(task => DataStore.delete(task)));
+        deletedCount += batch.length;
+
+        logWithDevice(
+          "TaskService",
+          `Batch ${Math.floor(i / batchSize) + 1} deleted, queued for sync`,
+          {
+            deletedInBatch: batch.length,
+            totalDeleted: deletedCount,
+          }
+        );
+
+        // Small delay between batches to allow sync
+        if (i + batchSize < tasks.length) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
       }
+
+      logWithDevice("TaskService", "All tasks deleted, waiting for sync", {
+        deletedCount,
+        totalQueried: tasks.length,
+      });
+
+      // Wait for deletions to sync
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      logWithDevice("TaskService", "DeleteAllTasks operation complete", {
+        deletedCount,
+        totalQueried: tasks.length,
+      });
 
       return deletedCount;
     } catch (error) {
-      console.error("Error deleting all tasks:", error);
+      logErrorWithDevice("TaskService", "Error deleting all tasks", error);
       throw error;
     }
   }

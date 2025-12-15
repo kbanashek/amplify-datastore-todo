@@ -2,7 +2,7 @@ import { DataStore } from "@aws-amplify/datastore";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
 import { Task as DataStoreTask } from "../models";
-import { TaskService } from "../services/TaskService";
+import { TaskService } from "@orion/task-system";
 import { Task, TaskStatus } from "../types/Task";
 import { useActivityData } from "./useActivityData";
 import { useAnswerManagement } from "./useAnswerManagement";

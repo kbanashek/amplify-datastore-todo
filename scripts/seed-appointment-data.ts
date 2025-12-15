@@ -234,8 +234,8 @@ function generateAppointments(): Appointment[] {
       AppointmentStatus.COMPLETED,
       setTime(yesterday, 10, 0),
       30,
-      null,
-      null
+      undefined,
+      undefined
     )
   );
 
@@ -249,7 +249,7 @@ function generateAppointments(): Appointment[] {
       AppointmentStatus.CANCELLED,
       setTime(lastWeek, 15, 0),
       45,
-      null,
+      undefined,
       "meeting-cancelled-001"
     )
   );

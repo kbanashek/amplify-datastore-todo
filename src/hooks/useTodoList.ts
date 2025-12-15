@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
-import { TodoService } from "../services/TodoService";
+import { NetworkStatus, useAmplify } from "@orion/task-system";
+import { useEffect, useState } from "react";
 import { Todo } from "../../models";
-import { useAmplify } from "../contexts/AmplifyContext";
-import { NetworkStatus } from "./useAmplifyState";
+import { TodoService } from "../services/TodoService";
 
 interface UseTodoListReturn {
   todos: Todo[];

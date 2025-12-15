@@ -57,8 +57,9 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
       });
       setModalVisible(false);
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
       console.error("🌐 [LanguageSelector] Error changing language", {
-        error: error?.message || String(error),
+        error: errorMessage,
         languageCode,
       });
     } finally {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ActivityService } from "../services/ActivityService";
+import { ActivityService } from "@orion/task-system";
 import { Activity } from "../types/Activity";
 
 interface UseActivityListReturn {
@@ -27,7 +27,7 @@ export const useActivityList = (): UseActivityListReturn => {
         isSynced
       );
     });
-    setSubscription(sub);
+    setSubscription(() => sub.unsubscribe);
 
     return () => {
       if (sub) {

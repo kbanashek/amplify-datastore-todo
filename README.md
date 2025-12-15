@@ -160,24 +160,7 @@ flowchart TD
    expo prebuild
    ```
 
-5. **🔧 Apply native build fixes**
-
-   Since `ios/` and `android/` directories are not committed, you need to apply required fixes after `expo prebuild`:
-
-   ```bash
-   yarn apply-native-fixes
-   # Or: ./scripts/apply-native-fixes.sh
-   ```
-
-   Then for iOS:
-
-   ```bash
-   cd ios && pod install
-   ```
-
-   📖 **For details**, see [Native Build Fixes](DOCS/native-build-fixes.md)
-
-6. **🚀 Start the app**
+5. **🚀 Start the app**
 
    ```bash
    yarn start
@@ -187,6 +170,10 @@ flowchart TD
    - 📱 [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
    - 🍎 [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
    - 📲 [Expo Go](https://expo.dev/go) on your physical device
+
+   **Note:** Native build fixes are **automatically applied** when running `yarn ios` or `yarn android`. For iOS, run `yarn ios:install-pods` after the first build or when pods change.
+
+   📖 **For details**, see [Native Build Fixes](DOCS/native-build-fixes.md)
 
 ---
 

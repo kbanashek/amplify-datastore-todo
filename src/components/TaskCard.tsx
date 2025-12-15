@@ -1,8 +1,8 @@
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useTranslatedText } from "../hooks/useTranslatedText";
-import { TaskService } from "../services/TaskService";
+import { useTranslatedText } from "@orion/task-system";
+import { TaskService } from "@orion/task-system";
 import { Task, TaskStatus, TaskType } from "../types/Task";
 
 interface TaskCardProps {

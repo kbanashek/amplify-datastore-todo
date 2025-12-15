@@ -1,4 +1,5 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
+import { logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
 import { TaskResult } from "../models";
 import {
   CreateTaskResultInput,
@@ -69,7 +70,8 @@ export class TaskResultService {
 
   static async getTaskResult(id: string): Promise<TaskResult | null> {
     try {
-      return await DataStore.query(TaskResult, id);
+      const taskResult = await DataStore.query(TaskResult, id);
+      return taskResult || null;
     } catch (error) {
       console.error("Error fetching task result:", error);
       throw error;
@@ -126,7 +128,7 @@ export class TaskResultService {
       snapshot => {
         const { items, isSynced } = snapshot;
 
-        console.log("[TaskResultService] DataStore subscription update:", {
+        logWithDevice("TaskResultService", "Subscription update (observeQuery)", {
           itemCount: items.length,
           isSynced,
           itemIds: items.map(i => i.id),
@@ -136,10 +138,36 @@ export class TaskResultService {
       }
     );
 
+    // Also observe DELETE operations to ensure deletions trigger updates
+    const deleteObserver = DataStore.observe(TaskResult).subscribe(msg => {
+      if (msg.opType === OpType.DELETE) {
+        const element = msg.element as any;
+        const isLocalDelete = element?._deleted === true;
+        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+        
+        logWithDevice("TaskResultService", `DELETE operation detected (${source})`, {
+          taskResultId: element?.id,
+          taskId: element?.taskId,
+          deleted: element?._deleted,
+          operationType: msg.opType,
+        });
+        
+        DataStore.query(TaskResult).then(results => {
+          logWithDevice("TaskResultService", "Query refresh after DELETE completed", {
+            remainingResultCount: results.length,
+          });
+          callback(results, true);
+        }).catch(err => {
+          logErrorWithDevice("TaskResultService", "Error refreshing after delete", err);
+        });
+      }
+    });
+
     return {
       unsubscribe: () => {
-        console.log("[TaskResultService] Unsubscribing from DataStore");
+        logWithDevice("TaskResultService", "Unsubscribing from DataStore");
         querySubscription.unsubscribe();
+        deleteObserver.unsubscribe();
       },
     };
   }

@@ -1,39 +1,12 @@
-import { useEffect, useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { Alert } from "react-native";
-import { Appointment } from "../types/Appointment";
-import { Task } from "../types/Task";
-import { groupAppointmentsByDate } from "../utils/appointmentParser";
-import { useAppointmentList } from "./useAppointmentList";
+import { useRouter } from "expo-router";
 import { useGroupedTasks } from "./useGroupedTasks";
 import { useTaskList } from "./useTaskList";
-
-// Try to import navigation hooks - support both Expo Router and React Navigation
-let useRouterHook: (() => any) | null = null;
-let useNavigationHook: (() => any) | null = null;
-
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const expoRouter = require("expo-router");
-  if (expoRouter?.useRouter) {
-    useRouterHook = expoRouter.useRouter;
-  }
-} catch {
-  // Expo Router not available
-}
-
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const reactNavigation = require("@react-navigation/native");
-  if (reactNavigation?.useNavigation) {
-    useNavigationHook = reactNavigation.useNavigation;
-  }
-} catch {
-  // React Navigation not available
-}
-
-// No-op hook function that always returns null
-// This allows us to always call hooks unconditionally
-const useNoOp = (): null => null;
+import { useAppointmentList } from "./useAppointmentList";
+import { groupAppointmentsByDate } from "../utils/appointmentParser";
+import { Appointment } from "../types/Appointment";
+import { Task } from "../types/Task";
 
 export interface UseTaskContainerReturn {
   groupedTasks: ReturnType<typeof useGroupedTasks>;
@@ -47,15 +20,7 @@ export interface UseTaskContainerReturn {
 }
 
 export const useTaskContainer = (): UseTaskContainerReturn => {
-  // Always call hooks unconditionally - use no-op if hook doesn't exist
-  // This ensures hooks are always called in the same order
-  const routerResult = (useRouterHook || useNoOp)();
-  const navigationResult = (
-    !routerResult && useNavigationHook ? useNavigationHook : useNoOp
-  )();
-
-  const router = routerResult || null;
-  const navigation = navigationResult || null;
+  const router = useRouter();
 
   const { tasks, loading, error, handleDeleteTask } = useTaskList();
   const groupedTasks = useGroupedTasks(tasks);
@@ -96,24 +61,19 @@ export const useTaskContainer = (): UseTaskContainerReturn => {
       return;
     }
 
-    if (router) {
-      // Use Expo Router
-      router.push({
-        pathname: "/(tabs)/questions",
-        params: { taskId: task.id, entityId: task.entityId },
-      });
-    } else if (navigation?.navigate) {
-      // Use React Navigation
-      navigation.navigate("TaskQuestions", {
-        taskId: task.id,
-        entityId: task.entityId,
-      });
-    }
+    router.push({
+      pathname: "/(tabs)/questions",
+      params: { taskId: task.id, entityId: task.entityId },
+    });
   };
 
   const handleAppointmentPress = (appointment: Appointment): void => {
-    if (router) {
-      // Use Expo Router
+    console.log("[useTaskContainer] Navigating to appointment details:", {
+      appointmentId: appointment.appointmentId,
+      title: appointment.title,
+      hasTimezone: !!appointmentTimezoneId,
+    });
+    try {
       router.push({
         pathname: "/(tabs)/appointment-details",
         params: {
@@ -121,16 +81,8 @@ export const useTaskContainer = (): UseTaskContainerReturn => {
           timezoneId: appointmentTimezoneId || "",
         },
       });
-    } else if (navigation?.navigate) {
-      // Use React Navigation (for other apps using the package)
-      try {
-        navigation.navigate("TaskAppointmentDetails", {
-          appointment: appointment,
-          timezoneId: appointmentTimezoneId || "",
-        });
-      } catch {
-        // ignore
-      }
+    } catch (error) {
+      console.error("[useTaskContainer] Navigation error:", error);
     }
   };
 

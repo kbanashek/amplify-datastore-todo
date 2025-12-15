@@ -1,3 +1,6 @@
+import { IconSymbol } from "@/components/ui/IconSymbol";
+import { Colors } from "@/constants/Colors";
+import { useColorScheme, useRTL, useTranslatedText } from "@orion/task-system";
 import React from "react";
 import {
   StyleSheet,
@@ -6,13 +9,9 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { IconSymbol } from "@/components/ui/IconSymbol";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { NetworkStatusIndicator } from "./NetworkStatusIndicator";
+import { TestIds } from "../constants/testIds";
 import { LanguageSelector } from "./LanguageSelector";
-import { useTranslatedText } from "../hooks/useTranslatedText";
-import { useRTL } from "../hooks/useRTL";
+import { NetworkStatusIndicator } from "./NetworkStatusIndicator";
 
 interface GlobalHeaderProps {
   title: string;
@@ -53,7 +52,11 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
             <BackButton onPress={onBackPress} />
           )}
           {showMenuButton && onMenuPress && (
-            <TouchableOpacity onPress={onMenuPress} style={styles.menuButton}>
+            <TouchableOpacity
+              onPress={onMenuPress}
+              style={styles.menuButton}
+              testID={TestIds.globalHeaderMenuButton}
+            >
               <IconSymbol
                 name="line.3.horizontal"
                 size={24}

@@ -33,31 +33,32 @@ jest.mock('@react-native-community/netinfo', () => ({
 // Mock react-native-get-random-values for Amplify
 jest.mock('react-native-get-random-values', () => ({}));
 
-jest.mock('./src/contexts/AmplifyContext', () => ({
-  useAmplify: () => ({
-    networkStatus: 'ONLINE',
-    isOnline: true,
-    isSynced: true,
-  }),
-  AmplifyProvider: ({ children }) => children,
-}));
-
-jest.mock("./src/contexts/TranslationContext", () => ({
-  useTranslation: () => ({
-    currentLanguage: "en",
-    setLanguage: jest.fn(),
-    translate: jest.fn(async (text: string) => text),
-    translateSync: (text: string) => text,
-    isTranslating: false,
-    isRTL: false,
-    supportedLanguages: [],
-    translationService: {
-      translateText: jest.fn(async (text: string) => text),
-      translateBatch: jest.fn(async (texts: string[]) => texts),
-    },
-  }),
-  TranslationProvider: ({ children }) => children,
-}));
+jest.mock('@orion/task-system', () => {
+  const actual = jest.requireActual('@orion/task-system');
+  return {
+    ...actual,
+    useAmplify: () => ({
+      networkStatus: 'ONLINE',
+      isOnline: true,
+      isSynced: true,
+    }),
+    AmplifyProvider: ({ children }) => children,
+    useTranslation: () => ({
+      currentLanguage: "en",
+      setLanguage: jest.fn(),
+      translate: jest.fn(async (text: string) => text),
+      translateSync: (text: string) => text,
+      isTranslating: false,
+      isRTL: false,
+      supportedLanguages: [],
+      translationService: {
+        translateText: jest.fn(async (text: string) => text),
+        translateBatch: jest.fn(async (texts: string[]) => texts),
+      },
+    }),
+    TranslationProvider: ({ children }) => children,
+  };
+});
 
 jest.mock('@aws-amplify/datastore', () => {
   const mockDataStore = {

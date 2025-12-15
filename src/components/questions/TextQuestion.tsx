@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { Question } from "../../types/ActivityConfig";
-import { useTranslation } from "../../contexts/TranslationContext";
-import { useTranslatedText } from "../../hooks/useTranslatedText";
+import { useTranslation } from "@orion/task-system";
+import { useTranslatedText } from "@orion/task-system";
 
 interface TextQuestionProps {
   question: Question;

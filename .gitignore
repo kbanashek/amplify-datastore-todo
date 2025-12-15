@@ -85,3 +85,8 @@ src/config/aws-credentials.json
 
 # Test coverage reports (generated locally)
 coverage/
+
+# Playwright test results and reports
+test-results/
+playwright-report/
+playwright/.auth/

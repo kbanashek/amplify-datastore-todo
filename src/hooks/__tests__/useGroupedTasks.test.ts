@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react-native";
-import { useGroupedTasks } from "../useGroupedTasks";
+import { useGroupedTasks } from "@orion/task-system";
 import { Task, TaskStatus, TaskType } from "../../types/Task";
 import { createMockTask } from "../../__tests__/__mocks__/DataStore.mock";
 

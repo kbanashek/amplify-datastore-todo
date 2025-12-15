@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Activity } from "../../src/types/Activity";
-import { useActivityList } from "../../src/hooks/useActivityList";
-import { ActivityService } from "../../src/services/ActivityService";
+import { useActivityList } from "@orion/task-system";
+import { ActivityService } from "@orion/task-system";
 import { NetworkStatusIndicator } from "../../src/components/NetworkStatusIndicator";
 
 export default function ActivitiesScreen() {

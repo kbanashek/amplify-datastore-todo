@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useTranslatedText } from "../../hooks/useTranslatedText";
+import { useTranslatedText } from "@orion/task-system";
 import { ActivityConfig } from "../../types/ActivityConfig";
 import { Task, TaskStatus } from "../../types/Task";
 

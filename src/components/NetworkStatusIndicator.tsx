@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { useNetworkStatus } from "../hooks/useNetworkStatus";
+import { useNetworkStatus } from "@orion/task-system";
 
 export const NetworkStatusIndicator: React.FC = () => {
   // Use the custom hook to get network status information

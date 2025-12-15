@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { TranslationMemoryService } from "../TranslationMemoryService";
+import { TranslationMemoryService } from "@orion/task-system";
 
 describe("TranslationMemoryService", () => {
   beforeEach(async () => {

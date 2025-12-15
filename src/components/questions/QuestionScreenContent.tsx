@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useRTL } from "../../hooks/useRTL";
+import { useRTL } from "@orion/task-system";
 import { AppColors } from "../../constants/AppColors";
 import { Shadows, TextStyles } from "../../constants/AppStyles";
 import { ParsedActivityData } from "../../utils/activityParser";
@@ -133,7 +133,7 @@ export const QuestionScreenContent: React.FC<QuestionScreenContentProps> = ({
       {/* Navigation Buttons - Rendered as part of form using display properties */}
       {/* Add extra spacing before buttons to ensure visibility */}
       <View style={styles.buttonSpacer} />
-      <View style={buttonContainerStyle}>
+      <View style={buttonContainerStyle as any}>
         {currentScreenIndex > 0 && onPrevious && (
           <TouchableOpacity
             style={[styles.navButton, styles.previousButton]}

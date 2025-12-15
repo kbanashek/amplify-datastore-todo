@@ -10,8 +10,7 @@
  * - Run via a test/development screen
  */
 
-import { ActivityService } from "../src/services/ActivityService";
-import { TaskService } from "../src/services/TaskService";
+import { ActivityService, TaskService } from "@orion/task-system";
 import { TaskType, TaskStatus } from "../src/types/Task";
 
 // Logging helper

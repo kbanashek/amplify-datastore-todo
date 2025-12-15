@@ -1,5 +1,5 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
-import { TaskService } from "../TaskService";
+import { TaskService } from "@orion/task-system";
 import { Task } from "../../../models";
 import {
   TaskStatus,

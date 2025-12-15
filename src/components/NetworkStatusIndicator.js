@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { useAmplify } from "../contexts/AmplifyContext";
+import { useAmplify } from "@orion/task-system";
 
 export const NetworkStatusIndicator = () => {
   const { networkStatus, syncState } = useAmplify();

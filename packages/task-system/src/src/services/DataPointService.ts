@@ -1,4 +1,5 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
+import { logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
 import { DataPoint, DataPointInstance } from "../models";
 import {
   CreateDataPointInput,
@@ -77,7 +78,8 @@ export class DataPointService {
 
   static async getDataPoint(id: string): Promise<DataPoint | null> {
     try {
-      return await DataStore.query(DataPoint, id);
+      const dataPoint = await DataStore.query(DataPoint, id);
+      return dataPoint || null;
     } catch (error) {
       console.error("Error fetching data point:", error);
       throw error;
@@ -134,7 +136,7 @@ export class DataPointService {
       snapshot => {
         const { items, isSynced } = snapshot;
 
-        console.log("[DataPointService] DataStore subscription update:", {
+        logWithDevice("DataPointService", "Subscription update (observeQuery)", {
           itemCount: items.length,
           isSynced,
           itemIds: items.map(i => i.id),
@@ -144,10 +146,36 @@ export class DataPointService {
       }
     );
 
+    // Also observe DELETE operations to ensure deletions trigger updates
+    const deleteObserver = DataStore.observe(DataPoint).subscribe(msg => {
+      if (msg.opType === OpType.DELETE) {
+        const element = msg.element as any;
+        const isLocalDelete = element?._deleted === true;
+        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+        
+        logWithDevice("DataPointService", `DELETE operation detected for DataPoint (${source})`, {
+          dataPointId: element?.id,
+          dataPointName: element?.name,
+          deleted: element?._deleted,
+          operationType: msg.opType,
+        });
+        
+        DataStore.query(DataPoint).then(dataPoints => {
+          logWithDevice("DataPointService", "Query refresh after DELETE completed", {
+            remainingDataPointCount: dataPoints.length,
+          });
+          callback(dataPoints, true);
+        }).catch(err => {
+          logErrorWithDevice("DataPointService", "Error refreshing after delete", err);
+        });
+      }
+    });
+
     return {
       unsubscribe: () => {
-        console.log("[DataPointService] Unsubscribing from DataStore");
+        logWithDevice("DataPointService", "Unsubscribing from DataStore");
         querySubscription.unsubscribe();
+        deleteObserver.unsubscribe();
       },
     };
   }
@@ -191,7 +219,8 @@ export class DataPointService {
     id: string
   ): Promise<DataPointInstance | null> {
     try {
-      return await DataStore.query(DataPointInstance, id);
+      const instance = await DataStore.query(DataPointInstance, id);
+      return instance || null;
     } catch (error) {
       console.error("Error fetching data point instance:", error);
       throw error;
@@ -249,7 +278,7 @@ export class DataPointService {
     ).subscribe(snapshot => {
       const { items, isSynced } = snapshot;
 
-      console.log("[DataPointService] DataStore subscription update:", {
+      logWithDevice("DataPointService", "Subscription update (observeQuery) for DataPointInstance", {
         itemCount: items.length,
         isSynced,
         itemIds: items.map(i => i.id),
@@ -258,10 +287,36 @@ export class DataPointService {
       callback(items, isSynced);
     });
 
+    // Also observe DELETE operations to ensure deletions trigger updates
+    const deleteObserver = DataStore.observe(DataPointInstance).subscribe(msg => {
+      if (msg.opType === OpType.DELETE) {
+        const element = msg.element as any;
+        const isLocalDelete = element?._deleted === true;
+        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+        
+        logWithDevice("DataPointService", `DELETE operation detected for DataPointInstance (${source})`, {
+          instanceId: element?.id,
+          dataPointId: element?.dataPointId,
+          deleted: element?._deleted,
+          operationType: msg.opType,
+        });
+        
+        DataStore.query(DataPointInstance).then(instances => {
+          logWithDevice("DataPointService", "Query refresh after DELETE completed for DataPointInstance", {
+            remainingInstanceCount: instances.length,
+          });
+          callback(instances, true);
+        }).catch(err => {
+          logErrorWithDevice("DataPointService", "Error refreshing after delete", err);
+        });
+      }
+    });
+
     return {
       unsubscribe: () => {
-        console.log("[DataPointService] Unsubscribing from DataStore");
+        logWithDevice("DataPointService", "Unsubscribing from DataStore");
         querySubscription.unsubscribe();
+        deleteObserver.unsubscribe();
       },
     };
   }

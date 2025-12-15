@@ -1,6 +1,7 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
 import { Question } from "../models";
 import { CreateQuestionInput, UpdateQuestionInput } from "../types/Question";
+import { logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
 
 type QuestionUpdateData = Omit<UpdateQuestionInput, "id" | "_version">;
 
@@ -74,7 +75,8 @@ export class QuestionService {
    */
   static async getQuestion(id: string): Promise<Question | null> {
     try {
-      return await DataStore.query(Question, id);
+      const question = await DataStore.query(Question, id);
+      return question || null;
     } catch (error) {
       console.error("Error fetching question:", error);
       throw error;
@@ -140,7 +142,7 @@ export class QuestionService {
       snapshot => {
         const { items, isSynced } = snapshot;
 
-        console.log("[QuestionService] DataStore subscription update:", {
+        logWithDevice("QuestionService", "Subscription update (observeQuery)", {
           itemCount: items.length,
           isSynced,
           itemIds: items.map(i => i.id),
@@ -150,10 +152,36 @@ export class QuestionService {
       }
     );
 
+    // Also observe DELETE operations to ensure deletions trigger updates
+    const deleteObserver = DataStore.observe(Question).subscribe(msg => {
+      if (msg.opType === OpType.DELETE) {
+        const element = msg.element as any;
+        const isLocalDelete = element?._deleted === true;
+        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
+        
+        logWithDevice("QuestionService", `DELETE operation detected (${source})`, {
+          questionId: element?.id,
+          questionText: element?.question,
+          deleted: element?._deleted,
+          operationType: msg.opType,
+        });
+        
+        DataStore.query(Question).then(questions => {
+          logWithDevice("QuestionService", "Query refresh after DELETE completed", {
+            remainingQuestionCount: questions.length,
+          });
+          callback(questions, true);
+        }).catch(err => {
+          logErrorWithDevice("QuestionService", "Error refreshing after delete", err);
+        });
+      }
+    });
+
     return {
       unsubscribe: () => {
-        console.log("[QuestionService] Unsubscribing from DataStore");
+        logWithDevice("QuestionService", "Unsubscribing from DataStore");
         querySubscription.unsubscribe();
+        deleteObserver.unsubscribe();
       },
     };
   }

@@ -1,5 +1,5 @@
 import { DataStore } from "@aws-amplify/datastore";
-import { QuestionService } from "../QuestionService";
+import { QuestionService } from "@orion/task-system";
 import { Question } from "../../../models";
 import { createMockQuestion } from "../../__tests__/__mocks__/DataStore.mock";
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AppointmentService } from "../services/AppointmentService";
+import { AppointmentService } from "@orion/task-system";
 import { Appointment, AppointmentData } from "../types/Appointment";
 
 interface UseAppointmentListReturn {
