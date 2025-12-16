@@ -41,7 +41,9 @@ export interface TestDataCleanupResult {
  * Dev data is left untouched
  */
 export class TestDataCleanupService {
-  private static async deleteTestDataForModel<TModel extends { pk?: string | null }>(
+  private static async deleteTestDataForModel<
+    TModel extends { pk?: string | null },
+  >(
     modelConstructor: PersistentModelConstructor<TModel>,
     label: string
   ): Promise<number> {
@@ -145,7 +147,9 @@ export class TestDataCleanupService {
     // AppointmentService doesn't expose query, so we'll need to check via API
     // For now, we'll skip appointment cleanup or do it via the service
     // TODO: Add appointment test marker support
-    console.log("[TestDataCleanupService] Appointment cleanup not yet implemented with test markers");
+    console.log(
+      "[TestDataCleanupService] Appointment cleanup not yet implemented with test markers"
+    );
     return 0;
   }
 
@@ -153,8 +157,12 @@ export class TestDataCleanupService {
    * Clean up only e2e test data, leaving dev data untouched
    */
   static async cleanupTestData(): Promise<TestDataCleanupResult> {
-    console.log("🧹 [TestDataCleanupService] Cleaning up e2e test data only...");
-    console.log(`🔍 [TestDataCleanupService] Looking for items with pk prefix: ${E2E_TEST_MARKER}`);
+    console.log(
+      "🧹 [TestDataCleanupService] Cleaning up e2e test data only..."
+    );
+    console.log(
+      `🔍 [TestDataCleanupService] Looking for items with pk prefix: ${E2E_TEST_MARKER}`
+    );
 
     // Delete test data in dependency order
     const taskAnswers = await this.deleteTestTaskAnswers();
@@ -167,7 +175,10 @@ export class TestDataCleanupService {
 
     // Delete related test data
     const questions = await this.deleteTestDataForModel(Question, "Question");
-    const dataPoints = await this.deleteTestDataForModel(DataPoint, "DataPoint");
+    const dataPoints = await this.deleteTestDataForModel(
+      DataPoint,
+      "DataPoint"
+    );
     const dataPointInstances = await this.deleteTestDataForModel(
       DataPointInstance,
       "DataPointInstance"
@@ -192,10 +203,12 @@ export class TestDataCleanupService {
       clearedAppointments,
     };
 
-    console.log("✅ [TestDataCleanupService] Test data cleanup complete:", result);
+    console.log(
+      "✅ [TestDataCleanupService] Test data cleanup complete:",
+      result
+    );
     console.log("💡 [TestDataCleanupService] Dev data remains untouched");
 
     return result;
   }
 }
-

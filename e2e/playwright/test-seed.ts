@@ -70,4 +70,3 @@ export async function seedTestData(): Promise<void> {
   // Wait for sync
   await new Promise(resolve => setTimeout(resolve, 2000));
 }
-

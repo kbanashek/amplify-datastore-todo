@@ -1,15 +1,28 @@
-import { renderHook, waitFor } from "@testing-library/react-native";
-import { AppointmentService } from "@orion/task-system";
+import { renderHook, waitFor, act } from "@testing-library/react-native";
 import { Appointment, AppointmentData } from "../../types/Appointment";
-import { useAppointmentList } from "@orion/task-system";
 
-// Mock AppointmentService
-jest.mock("../../services/AppointmentService", () => ({
+// Mock AppointmentService from @orion/task-system - MUST be before hook import
+jest.mock("@orion/task-system", () => ({
   AppointmentService: {
     getAppointmentData: jest.fn(),
     getAppointments: jest.fn(),
+    clearAppointments: jest.fn(),
   },
 }));
+
+// Import the hook directly from source (like the package test does)
+import { useAppointmentList } from "../../../packages/task-system/src/src/hooks/useAppointmentList";
+import { AppointmentService } from "@orion/task-system";
+
+// Get typed mocks
+const mockGetAppointmentData =
+  AppointmentService.getAppointmentData as jest.MockedFunction<
+    typeof AppointmentService.getAppointmentData
+  >;
+const mockGetAppointments =
+  AppointmentService.getAppointments as jest.MockedFunction<
+    typeof AppointmentService.getAppointments
+  >;
 
 describe("useAppointmentList", () => {
   const mockAppointmentData: AppointmentData = {
@@ -72,7 +85,7 @@ describe("useAppointmentList", () => {
   });
 
   it("should initialize with loading state", () => {
-    (AppointmentService.getAppointmentData as jest.Mock).mockImplementation(
+    mockGetAppointmentData.mockImplementation(
       () => new Promise(() => {}) // Never resolves
     );
 
@@ -85,12 +98,8 @@ describe("useAppointmentList", () => {
   });
 
   it("should load appointments successfully", async () => {
-    (AppointmentService.getAppointmentData as jest.Mock).mockResolvedValue(
-      mockAppointmentData
-    );
-    (AppointmentService.getAppointments as jest.Mock).mockResolvedValue(
-      mockAppointments
-    );
+    mockGetAppointmentData.mockResolvedValue(mockAppointmentData);
+    mockGetAppointments.mockResolvedValue(mockAppointments);
 
     const { result } = renderHook(() => useAppointmentList());
 
@@ -105,9 +114,7 @@ describe("useAppointmentList", () => {
 
   it("should handle error when loading fails", async () => {
     const error = new Error("Failed to load");
-    (AppointmentService.getAppointmentData as jest.Mock).mockRejectedValue(
-      error
-    );
+    mockGetAppointmentData.mockRejectedValue(error);
 
     const { result } = renderHook(() => useAppointmentList());
 
@@ -123,9 +130,7 @@ describe("useAppointmentList", () => {
   });
 
   it("should handle null appointment data", async () => {
-    (AppointmentService.getAppointmentData as jest.Mock).mockResolvedValue(
-      null
-    );
+    mockGetAppointmentData.mockResolvedValue(null);
 
     const { result } = renderHook(() => useAppointmentList());
 
@@ -139,12 +144,8 @@ describe("useAppointmentList", () => {
   });
 
   it("should refresh appointments when refreshAppointments is called", async () => {
-    (AppointmentService.getAppointmentData as jest.Mock).mockResolvedValue(
-      mockAppointmentData
-    );
-    (AppointmentService.getAppointments as jest.Mock).mockResolvedValue(
-      mockAppointments
-    );
+    mockGetAppointmentData.mockResolvedValue(mockAppointmentData);
+    mockGetAppointments.mockResolvedValue(mockAppointments);
 
     const { result } = renderHook(() => useAppointmentList());
 
@@ -154,16 +155,14 @@ describe("useAppointmentList", () => {
 
     // Clear mocks to verify refresh calls them again
     jest.clearAllMocks();
-    (AppointmentService.getAppointmentData as jest.Mock).mockResolvedValue(
-      mockAppointmentData
-    );
-    (AppointmentService.getAppointments as jest.Mock).mockResolvedValue(
-      mockAppointments
-    );
+    mockGetAppointmentData.mockResolvedValue(mockAppointmentData);
+    mockGetAppointments.mockResolvedValue(mockAppointments);
 
-    await result.current.refreshAppointments();
+    await act(async () => {
+      await result.current.refreshAppointments();
+    });
 
-    expect(AppointmentService.getAppointmentData).toHaveBeenCalled();
-    expect(AppointmentService.getAppointments).toHaveBeenCalled();
+    expect(mockGetAppointmentData).toHaveBeenCalled();
+    expect(mockGetAppointments).toHaveBeenCalled();
   });
 });

@@ -7,6 +7,8 @@ import {
   UpdateDataPointInput,
   UpdateDataPointInstanceInput,
 } from "../types/DataPoint";
+import { ModelName } from "../constants/modelNames";
+import { OperationSource } from "../constants/operationSource";
 
 type DataPointUpdateData = Omit<UpdateDataPointInput, "id" | "_version">;
 type DataPointInstanceUpdateData = Omit<
@@ -25,7 +27,10 @@ export class DataPointService {
         attempts,
       }) => {
         const modelName = modelConstructor.name;
-        if (modelName === "DataPoint" || modelName === "DataPointInstance") {
+        if (
+          modelName === ModelName.DataPoint ||
+          modelName === ModelName.DataPointInstance
+        ) {
           if (operation === OpType.DELETE) {
             if (remoteModel._deleted) {
               return remoteModel;
@@ -136,11 +141,15 @@ export class DataPointService {
       snapshot => {
         const { items, isSynced } = snapshot;
 
-        logWithDevice("DataPointService", "Subscription update (observeQuery)", {
-          itemCount: items.length,
-          isSynced,
-          itemIds: items.map(i => i.id),
-        });
+        logWithDevice(
+          "DataPointService",
+          "Subscription update (observeQuery)",
+          {
+            itemCount: items.length,
+            isSynced,
+            itemIds: items.map(i => i.id),
+          }
+        );
 
         callback(items, isSynced);
       }
@@ -151,23 +160,39 @@ export class DataPointService {
       if (msg.opType === OpType.DELETE) {
         const element = msg.element as any;
         const isLocalDelete = element?._deleted === true;
-        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
-        
-        logWithDevice("DataPointService", `DELETE operation detected for DataPoint (${source})`, {
-          dataPointId: element?.id,
-          dataPointName: element?.name,
-          deleted: element?._deleted,
-          operationType: msg.opType,
-        });
-        
-        DataStore.query(DataPoint).then(dataPoints => {
-          logWithDevice("DataPointService", "Query refresh after DELETE completed", {
-            remainingDataPointCount: dataPoints.length,
+        const source = isLocalDelete
+          ? OperationSource.LOCAL
+          : OperationSource.REMOTE_SYNC;
+
+        logWithDevice(
+          "DataPointService",
+          `DELETE operation detected for DataPoint (${source})`,
+          {
+            dataPointId: element?.id,
+            dataPointName: element?.name,
+            deleted: element?._deleted,
+            operationType: msg.opType,
+          }
+        );
+
+        DataStore.query(DataPoint)
+          .then(dataPoints => {
+            logWithDevice(
+              "DataPointService",
+              "Query refresh after DELETE completed",
+              {
+                remainingDataPointCount: dataPoints.length,
+              }
+            );
+            callback(dataPoints, true);
+          })
+          .catch(err => {
+            logErrorWithDevice(
+              "DataPointService",
+              "Error refreshing after delete",
+              err
+            );
           });
-          callback(dataPoints, true);
-        }).catch(err => {
-          logErrorWithDevice("DataPointService", "Error refreshing after delete", err);
-        });
       }
     });
 
@@ -278,39 +303,61 @@ export class DataPointService {
     ).subscribe(snapshot => {
       const { items, isSynced } = snapshot;
 
-      logWithDevice("DataPointService", "Subscription update (observeQuery) for DataPointInstance", {
-        itemCount: items.length,
-        isSynced,
-        itemIds: items.map(i => i.id),
-      });
+      logWithDevice(
+        "DataPointService",
+        "Subscription update (observeQuery) for DataPointInstance",
+        {
+          itemCount: items.length,
+          isSynced,
+          itemIds: items.map(i => i.id),
+        }
+      );
 
       callback(items, isSynced);
     });
 
     // Also observe DELETE operations to ensure deletions trigger updates
-    const deleteObserver = DataStore.observe(DataPointInstance).subscribe(msg => {
-      if (msg.opType === OpType.DELETE) {
-        const element = msg.element as any;
-        const isLocalDelete = element?._deleted === true;
-        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
-        
-        logWithDevice("DataPointService", `DELETE operation detected for DataPointInstance (${source})`, {
-          instanceId: element?.id,
-          dataPointId: element?.dataPointId,
-          deleted: element?._deleted,
-          operationType: msg.opType,
-        });
-        
-        DataStore.query(DataPointInstance).then(instances => {
-          logWithDevice("DataPointService", "Query refresh after DELETE completed for DataPointInstance", {
-            remainingInstanceCount: instances.length,
-          });
-          callback(instances, true);
-        }).catch(err => {
-          logErrorWithDevice("DataPointService", "Error refreshing after delete", err);
-        });
+    const deleteObserver = DataStore.observe(DataPointInstance).subscribe(
+      msg => {
+        if (msg.opType === OpType.DELETE) {
+          const element = msg.element as any;
+          const isLocalDelete = element?._deleted === true;
+          const source = isLocalDelete
+            ? OperationSource.LOCAL
+            : OperationSource.REMOTE_SYNC;
+
+          logWithDevice(
+            "DataPointService",
+            `DELETE operation detected for DataPointInstance (${source})`,
+            {
+              instanceId: element?.id,
+              dataPointId: element?.dataPointId,
+              deleted: element?._deleted,
+              operationType: msg.opType,
+            }
+          );
+
+          DataStore.query(DataPointInstance)
+            .then(instances => {
+              logWithDevice(
+                "DataPointService",
+                "Query refresh after DELETE completed for DataPointInstance",
+                {
+                  remainingInstanceCount: instances.length,
+                }
+              );
+              callback(instances, true);
+            })
+            .catch(err => {
+              logErrorWithDevice(
+                "DataPointService",
+                "Error refreshing after delete",
+                err
+              );
+            });
+        }
       }
-    });
+    );
 
     return {
       unsubscribe: () => {

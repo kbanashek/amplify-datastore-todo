@@ -1,0 +1,66 @@
+# No String Literals for Model Names
+
+## Rule
+
+**NEVER use string literals when comparing DataStore model names.** Always use the `ModelName` constant from `@orion/task-system` or `../constants/modelNames`.
+
+## Why
+
+- **Type Safety**: Prevents typos and enables refactoring
+- **Consistency**: Single source of truth for model names
+- **Maintainability**: Easy to update model names across the codebase
+
+## Examples
+
+### ❌ Bad: Using string literals
+
+```typescript
+if (modelConstructor.name === "Task") {
+  // ...
+}
+
+if (modelName === "Activity" || modelName === "Question") {
+  // ...
+}
+```
+
+### ✅ Good: Using ModelName constants
+
+```typescript
+import { ModelName } from "@orion/task-system";
+
+if (modelConstructor.name === ModelName.Task) {
+  // ...
+}
+
+if (modelName === ModelName.Activity || modelName === ModelName.Question) {
+  // ...
+}
+```
+
+## Available Model Names
+
+All model names are available in `ModelName`:
+- `ModelName.Activity`
+- `ModelName.Appointment`
+- `ModelName.DataPoint`
+- `ModelName.DataPointInstance`
+- `ModelName.Question`
+- `ModelName.Task`
+- `ModelName.TaskAnswer`
+- `ModelName.TaskHistory`
+- `ModelName.TaskResult`
+- `ModelName.Todo`
+
+## Where This Applies
+
+- Conflict resolution handlers (`modelConstructor.name === ...`)
+- Model name comparisons (`modelName === ...`)
+- Any code that compares model names as strings
+
+## Enforcement
+
+This rule should be enforced through:
+- Code reviews
+- Linting (if ESLint rule is added)
+- TypeScript types (prefer `ModelNameType` over `string` for model name variables)

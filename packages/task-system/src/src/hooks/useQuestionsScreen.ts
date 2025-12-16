@@ -1,5 +1,9 @@
 import { DataStore } from "@aws-amplify/datastore";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useNavigation,
+  useRoute,
+  CommonActions,
+} from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
 import { Task as DataStoreTask } from "../models";
 import { TaskService } from "@orion/task-system";
@@ -169,7 +173,42 @@ export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
       setCameFromReview(false);
     },
     onNavigateToDashboard: () => {
-      nav.popToTop?.();
+      // Navigate to root - works with both expo-router and standard React Navigation
+      // Try multiple approaches for compatibility
+      try {
+        const navAny = nav as any;
+        if (navAny.navigate) {
+          navAny.navigate("(tabs)");
+        } else if (navAny.getParent) {
+          // Navigate up to root navigator
+          const parent = navAny.getParent();
+          if (parent) {
+            parent.navigate("(tabs)");
+          }
+        } else {
+          // Fallback: use CommonActions.reset
+          nav.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: "(tabs)" }],
+            })
+          );
+        }
+      } catch (error) {
+        console.warn("[useQuestionsScreen] Failed to navigate to root:", error);
+        // Last resort: try goBack (not ideal but better than crashing)
+        try {
+          const navAny = nav as any;
+          if (navAny.canGoBack && navAny.canGoBack()) {
+            navAny.goBack();
+          }
+        } catch (fallbackError) {
+          console.error(
+            "[useQuestionsScreen] All navigation methods failed:",
+            fallbackError
+          );
+        }
+      }
     },
   });
 

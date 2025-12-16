@@ -1,6 +1,6 @@
-import { AppointmentService } from "@orion/task-system";
+// Import directly from source to bypass package mock
+import { AppointmentService } from "../../../packages/task-system/src/src/services/AppointmentService";
 import { AppointmentData } from "../../types/Appointment";
-import { parseAppointmentData } from "../../utils/appointmentParser";
 
 const mockAppointmentData: AppointmentData = {
   clinicPatientAppointments: {
@@ -54,10 +54,17 @@ const mockAppointmentData: AppointmentData = {
   siteTimezoneId: "America/New_York",
 };
 
-// Mock appointmentParser
-jest.mock("../../utils/appointmentParser", () => ({
-  parseAppointmentData: jest.fn(),
-}));
+// Mock appointmentParser - the service imports from ../utils/appointmentParser relative to the service file
+// which is packages/task-system/src/src/utils/appointmentParser
+// We need to mock the module before the service imports it
+// Use the exact path that the service uses (relative to the service file)
+const mockParseAppointmentData = jest.fn();
+jest.mock(
+  "../../../packages/task-system/src/src/utils/appointmentParser",
+  () => ({
+    parseAppointmentData: (...args: any[]) => mockParseAppointmentData(...args),
+  })
+);
 
 describe("AppointmentService", () => {
   beforeEach(() => {
@@ -99,11 +106,11 @@ describe("AppointmentService", () => {
       jest
         .spyOn(AppointmentService, "loadAppointments")
         .mockResolvedValue(mockAppointmentData);
-      (parseAppointmentData as jest.Mock).mockReturnValue(mockAppointments);
+      mockParseAppointmentData.mockReturnValue(mockAppointments);
 
       const result = await AppointmentService.getAppointments();
 
-      expect(parseAppointmentData).toHaveBeenCalled();
+      expect(mockParseAppointmentData).toHaveBeenCalled();
       expect(result).toEqual(mockAppointments);
     });
 
@@ -122,7 +129,7 @@ describe("AppointmentService", () => {
       jest
         .spyOn(AppointmentService, "loadAppointments")
         .mockResolvedValue(mockAppointmentData);
-      (parseAppointmentData as jest.Mock).mockImplementation(() => {
+      mockParseAppointmentData.mockImplementation(() => {
         throw new Error("Parse failed");
       });
 

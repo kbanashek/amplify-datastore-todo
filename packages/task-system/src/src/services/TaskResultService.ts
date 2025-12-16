@@ -5,6 +5,8 @@ import {
   CreateTaskResultInput,
   UpdateTaskResultInput,
 } from "../types/TaskResult";
+import { ModelName } from "../constants/modelNames";
+import { OperationSource } from "../constants/operationSource";
 
 type TaskResultUpdateData = Omit<UpdateTaskResultInput, "id" | "_version">;
 
@@ -18,7 +20,7 @@ export class TaskResultService {
         operation,
         attempts,
       }) => {
-        if (modelConstructor.name === "TaskResult") {
+        if (modelConstructor.name === ModelName.TaskResult) {
           if (operation === OpType.DELETE) {
             if (remoteModel._deleted) {
               return remoteModel;
@@ -128,11 +130,15 @@ export class TaskResultService {
       snapshot => {
         const { items, isSynced } = snapshot;
 
-        logWithDevice("TaskResultService", "Subscription update (observeQuery)", {
-          itemCount: items.length,
-          isSynced,
-          itemIds: items.map(i => i.id),
-        });
+        logWithDevice(
+          "TaskResultService",
+          "Subscription update (observeQuery)",
+          {
+            itemCount: items.length,
+            isSynced,
+            itemIds: items.map(i => i.id),
+          }
+        );
 
         callback(items, isSynced);
       }
@@ -143,23 +149,39 @@ export class TaskResultService {
       if (msg.opType === OpType.DELETE) {
         const element = msg.element as any;
         const isLocalDelete = element?._deleted === true;
-        const source = isLocalDelete ? "LOCAL" : "REMOTE_SYNC";
-        
-        logWithDevice("TaskResultService", `DELETE operation detected (${source})`, {
-          taskResultId: element?.id,
-          taskId: element?.taskId,
-          deleted: element?._deleted,
-          operationType: msg.opType,
-        });
-        
-        DataStore.query(TaskResult).then(results => {
-          logWithDevice("TaskResultService", "Query refresh after DELETE completed", {
-            remainingResultCount: results.length,
+        const source = isLocalDelete
+          ? OperationSource.LOCAL
+          : OperationSource.REMOTE_SYNC;
+
+        logWithDevice(
+          "TaskResultService",
+          `DELETE operation detected (${source})`,
+          {
+            taskResultId: element?.id,
+            taskId: element?.taskId,
+            deleted: element?._deleted,
+            operationType: msg.opType,
+          }
+        );
+
+        DataStore.query(TaskResult)
+          .then(results => {
+            logWithDevice(
+              "TaskResultService",
+              "Query refresh after DELETE completed",
+              {
+                remainingResultCount: results.length,
+              }
+            );
+            callback(results, true);
+          })
+          .catch(err => {
+            logErrorWithDevice(
+              "TaskResultService",
+              "Error refreshing after delete",
+              err
+            );
           });
-          callback(results, true);
-        }).catch(err => {
-          logErrorWithDevice("TaskResultService", "Error refreshing after delete", err);
-        });
       }
     });
 

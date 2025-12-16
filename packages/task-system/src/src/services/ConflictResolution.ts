@@ -1,4 +1,5 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
+import { ModelName } from "../constants/modelNames";
 
 /**
  * Unified conflict resolution strategy for all DataStore models
@@ -22,7 +23,7 @@ export class ConflictResolution {
         );
 
         // Task model has special handling for UPDATE operations
-        if (modelName === "Task") {
+        if (modelName === ModelName.Task) {
           if (operation === OpType.UPDATE) {
             // Prefer local status changes, but remote timing updates
             const resolvedModel = {
@@ -57,13 +58,13 @@ export class ConflictResolution {
           // Check for different identifying fields based on model type
           let isIncomplete = false;
 
-          if (modelName === "Task") {
+          if (modelName === ModelName.Task) {
             isIncomplete = !localModel.title && !localModel.description;
-          } else if (modelName === "Todo") {
+          } else if (modelName === ModelName.Todo) {
             isIncomplete = !localModel.name;
-          } else if (modelName === "Question") {
+          } else if (modelName === ModelName.Question) {
             isIncomplete = !localModel.question && !localModel.questionId;
-          } else if (modelName === "Activity") {
+          } else if (modelName === ModelName.Activity) {
             isIncomplete = !localModel.name && !localModel.title;
           } else {
             // For other models (DataPoint, DataPointInstance, TaskAnswer, TaskResult, TaskHistory)

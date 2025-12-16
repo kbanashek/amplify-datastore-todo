@@ -1,45 +1,47 @@
 import { renderHook } from "@testing-library/react-native";
-import { useTaskContainer } from "../useTaskContainer";
 import { Alert } from "react-native";
 
-jest.mock("../useTaskList", () => ({
+// Mock expo-router
+jest.mock("expo-router", () => ({
+  useRouter: jest.fn(),
+}));
+
+// Mock hooks - import from package paths
+jest.mock("../../../packages/task-system/src/src/hooks/useTaskList", () => ({
   useTaskList: jest.fn(),
 }));
 
-jest.mock("../useGroupedTasks", () => ({
-  useGroupedTasks: jest.fn(),
-}));
+jest.mock(
+  "../../../packages/task-system/src/src/hooks/useGroupedTasks",
+  () => ({
+    useGroupedTasks: jest.fn(),
+  })
+);
 
-jest.mock("../useAppointmentList", () => ({
-  useAppointmentList: jest.fn(),
-}));
+jest.mock(
+  "../../../packages/task-system/src/src/hooks/useAppointmentList",
+  () => ({
+    useAppointmentList: jest.fn(),
+  })
+);
 
 jest.mock("../../utils/appointmentParser", () => ({
   groupAppointmentsByDate: jest.fn(),
 }));
 
-jest.mock("expo-router", () => ({
-  useRouter: jest.fn(),
-}));
+// Import the hook directly from source (like the package test does)
+import { useTaskContainer } from "../../../packages/task-system/src/src/hooks/useTaskContainer";
+import { useRouter } from "expo-router";
+import { useTaskList } from "../../../packages/task-system/src/src/hooks/useTaskList";
+import { useGroupedTasks } from "../../../packages/task-system/src/src/hooks/useGroupedTasks";
+import { useAppointmentList } from "../../../packages/task-system/src/src/hooks/useAppointmentList";
 
 describe("useTaskContainer", () => {
-  const { useTaskList } = jest.requireMock("../useTaskList") as {
-    useTaskList: jest.Mock;
-  };
-  const { useGroupedTasks } = jest.requireMock("../useGroupedTasks") as {
-    useGroupedTasks: jest.Mock;
-  };
-  const { useAppointmentList } = jest.requireMock("../useAppointmentList") as {
-    useAppointmentList: jest.Mock;
-  };
-  const { groupAppointmentsByDate } = jest.requireMock(
-    "../../utils/appointmentParser"
-  ) as {
-    groupAppointmentsByDate: jest.Mock;
-  };
-  const { useRouter } = jest.requireMock("expo-router") as {
-    useRouter: jest.Mock;
-  };
+  // Get mocks - they're already imported above
+  const { groupAppointmentsByDate } =
+    require("../../utils/appointmentParser") as {
+      groupAppointmentsByDate: jest.Mock;
+    };
 
   beforeEach(() => {
     jest.clearAllMocks();

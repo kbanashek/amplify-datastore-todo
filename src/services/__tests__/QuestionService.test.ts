@@ -1,5 +1,6 @@
 import { DataStore } from "@aws-amplify/datastore";
-import { QuestionService } from "@orion/task-system";
+// Import directly from source to bypass package mock
+import { QuestionService } from "../../../packages/task-system/src/src/services/QuestionService";
 import { Question } from "../../../models";
 import { createMockQuestion } from "../../__tests__/__mocks__/DataStore.mock";
 

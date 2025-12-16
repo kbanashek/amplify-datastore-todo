@@ -13,7 +13,11 @@ import "react-native-reanimated";
 import { useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { useColorScheme, AmplifyProvider, TranslationProvider } from "@orion/task-system";
+import {
+  useColorScheme,
+  AmplifyProvider,
+  TranslationProvider,
+} from "@orion/task-system";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();

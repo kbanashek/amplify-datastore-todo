@@ -37,20 +37,23 @@ The app implements custom conflict resolution in `src/services/ConflictResolutio
 ## Data Flow
 
 1. **Local Operations**: All data operations happen against local SQLite database first
-2. **Background Sync**: DataStore sync engine handles synchronization with AppSync in the background
-3. **Periodic Full Sync**: Full sync runs every 5 minutes to ensure cross-device consistency (iOS, Android, web)
-4. **Real-time Updates**: Real-time subscriptions provide immediate updates when data changes
+2. **Immediate Sync**: DataStore automatically syncs mutations (save/delete) to AppSync immediately when online
+3. **Real-time Updates**: Real-time subscriptions via AppSync provide immediate updates across all devices when data changes
+4. **Periodic Full Sync**: Full sync runs every 10 seconds as a safety net to catch any missed real-time updates
 5. **Conflict Handling**: Custom conflict resolution logic ensures data consistency
 6. **Offline Support**: App works completely offline, syncing when connection is restored
 
 ## Sync Configuration
 
 The app is configured with:
-- **Periodic Full Sync**: Every 5 minutes (`fullSyncInterval: 300000`)
-- **Real-time Subscriptions**: Enabled for immediate updates
+
+- **Real-time Subscriptions**: Enabled for immediate cross-device updates via AppSync GraphQL subscriptions
+- **Periodic Full Sync**: Every 10 seconds (`fullSyncInterval: 10000`) as a safety net for missed updates
 - **No Sync Filters**: All data syncs to all devices (`syncExpressions: []`)
+- **Automatic Mutation Sync**: All `DataStore.save()` and `DataStore.delete()` operations automatically sync immediately when online
 
 This ensures iOS, Android, and web all show the same data. If you notice sync issues:
+
 1. Wait up to 5 minutes for the next periodic sync
 2. Restart the app to trigger an immediate full sync
 3. Check network connectivity - sync requires online status

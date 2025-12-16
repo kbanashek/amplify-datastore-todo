@@ -14,8 +14,12 @@
 - ✅ Use explicit return types for functions
 - ✅ Prefer interfaces over type aliases for object shapes
 - ✅ Handle null/undefined explicitly
+- ❌ **Never use magic strings** - use constants instead
+  - Model names: Use `ModelName` from `@orion/task-system` or `../constants/modelNames`
+  - Operation sources: Use `OperationSource` from `@orion/task-system` or `../constants/operationSource`
+  - AWS errors: Use `AWSErrorName` from `@orion/task-system` or `../constants/awsErrors`
 
-📖 See `.cursor/rules/typescript.mdc` for detailed guidelines.
+📖 See `.cursor/rules/typescript.mdc` and `.cursor/rules/no-string-model-names.mdc` for detailed guidelines.
 
 ## Testing Requirements
 

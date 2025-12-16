@@ -6,6 +6,7 @@ import {
   TranslateTextCommand,
 } from "@aws-sdk/client-translate";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AWSErrorName } from "../constants/awsErrors";
 import { TranslationMemoryService } from "./TranslationMemoryService";
 import { simpleHash } from "../utils/simpleHash";
 import type { LanguageCode } from "./translationTypes";
@@ -421,8 +422,8 @@ export class TranslationService {
       // Check if it's a clock skew error
       const isClockSkewError =
         errorMessage.includes("Signature not yet current") ||
-        errorMessage.includes("InvalidSignatureException") ||
-        errorName === "InvalidSignatureException";
+        errorMessage.includes(AWSErrorName.InvalidSignatureException) ||
+        errorName === AWSErrorName.InvalidSignatureException;
 
       // Provide specific guidance for clock skew
       if (isClockSkewError) {

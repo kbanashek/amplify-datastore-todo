@@ -17,7 +17,11 @@
  * be created for "today" relative to when the seed function is executed.
  */
 
-import { ActivityService, TaskService, AppointmentService } from "@orion/task-system";
+import {
+  ActivityService,
+  TaskService,
+  AppointmentService,
+} from "@orion/task-system";
 import {
   Appointment,
   AppointmentData,
@@ -184,11 +188,28 @@ async function createAnchoredTask(
 }
 
 /**
+ * Helper to get task type name for title
+ */
+function getTaskTypeName(taskType: TaskType): string {
+  switch (taskType) {
+    case TaskType.SCHEDULED:
+      return "Scheduled";
+    case TaskType.TIMED:
+      return "Timed";
+    case TaskType.EPISODIC:
+      return "Episodic";
+    default:
+      return "Task";
+  }
+}
+
+/**
  * Create tasks linked to an appointment (pre-visit, visit-day, post-visit)
  */
 async function createAppointmentWithTasks(
   appointment: Appointment,
-  activities: any[]
+  activities: any[],
+  taskCounter: { scheduled: number; timed: number; episodic: number }
 ): Promise<any[]> {
   const tasks: any[] = [];
   const appointmentDate = new Date(appointment.startAt);
@@ -200,11 +221,12 @@ async function createAppointmentWithTasks(
   // Pre-Visit Tasks (1 day before appointment)
   const preVisitDate = addDays(appointmentDate, -1);
   const preVisitTime = setTime(preVisitDate, 8, 0); // 8 AM
-  const preVisitTaskId = generateId("Task");
+  taskCounter.scheduled++;
+  const preVisitTitle = `${getTaskTypeName(TaskType.SCHEDULED)} Task ${taskCounter.scheduled}`;
 
   tasks.push(
     await createAnchoredTask(
-      `Pre-Visit Questionnaire: ${appointment.title} (${preVisitTaskId.substring(0, 8)})`,
+      preVisitTitle,
       `Complete this questionnaire before your ${appointment.title} appointment`,
       appointment,
       -1, // anchorDayOffset: 1 day before
@@ -219,11 +241,12 @@ async function createAppointmentWithTasks(
   const beforeVisitTime = new Date(appointmentDate);
   beforeVisitTime.setHours(beforeVisitTime.getHours() - 1);
   beforeVisitTime.setMinutes(0);
-  const beforeVisitTaskId = generateId("Task");
+  taskCounter.scheduled++;
+  const beforeVisitTitle = `${getTaskTypeName(TaskType.SCHEDULED)} Task ${taskCounter.scheduled}`;
 
   tasks.push(
     await createAnchoredTask(
-      `Prepare for Visit: ${appointment.title} (${beforeVisitTaskId.substring(0, 8)})`,
+      beforeVisitTitle,
       `Prepare for your ${appointment.title} appointment`,
       appointment,
       0, // anchorDayOffset: same day
@@ -237,11 +260,12 @@ async function createAppointmentWithTasks(
   const afterVisitTime = new Date(appointmentDate);
   afterVisitTime.setHours(afterVisitTime.getHours() + 1);
   afterVisitTime.setMinutes(0);
-  const afterVisitTaskId = generateId("Task");
+  taskCounter.scheduled++;
+  const afterVisitTitle = `${getTaskTypeName(TaskType.SCHEDULED)} Task ${taskCounter.scheduled}`;
 
   tasks.push(
     await createAnchoredTask(
-      `Post-Visit Survey: ${appointment.title} (${afterVisitTaskId.substring(0, 8)})`,
+      afterVisitTitle,
       `Complete this survey after your ${appointment.title} appointment`,
       appointment,
       0, // anchorDayOffset: same day
@@ -254,11 +278,12 @@ async function createAppointmentWithTasks(
   // Post-Visit Tasks (1 day after appointment)
   const postVisitDate = addDays(appointmentDate, 1);
   const postVisitTime = setTime(postVisitDate, 18, 0); // 6 PM
-  const postVisitTaskId = generateId("Task");
+  taskCounter.scheduled++;
+  const postVisitTitle = `${getTaskTypeName(TaskType.SCHEDULED)} Task ${taskCounter.scheduled}`;
 
   tasks.push(
     await createAnchoredTask(
-      `Follow-up Survey: ${appointment.title} (${postVisitTaskId.substring(0, 8)})`,
+      postVisitTitle,
       `Follow-up survey for your ${appointment.title} appointment`,
       appointment,
       1, // anchorDayOffset: 1 day after
@@ -271,11 +296,12 @@ async function createAppointmentWithTasks(
   // Post-Visit Task (3 days after appointment)
   const postVisit3DaysDate = addDays(appointmentDate, 3);
   const postVisit3DaysTime = setTime(postVisit3DaysDate, 18, 0); // 6 PM
-  const postVisit3DaysTaskId = generateId("Task");
+  taskCounter.scheduled++;
+  const postVisit3DaysTitle = `${getTaskTypeName(TaskType.SCHEDULED)} Task ${taskCounter.scheduled}`;
 
   tasks.push(
     await createAnchoredTask(
-      `Medication Adherence Check: ${appointment.title} (${postVisit3DaysTaskId.substring(0, 8)})`,
+      postVisit3DaysTitle,
       `Check your medication adherence after your ${appointment.title} appointment`,
       appointment,
       3, // anchorDayOffset: 3 days after
@@ -293,7 +319,8 @@ async function createAppointmentWithTasks(
  */
 async function createStandaloneTasks(
   activities: any[],
-  daysToCreate: number = 6
+  daysToCreate: number = 6,
+  taskCounter: { scheduled: number; timed: number; episodic: number }
 ): Promise<any[]> {
   const tasks: any[] = [];
   const now = Date.now();
@@ -332,8 +359,19 @@ async function createStandaloneTasks(
       // Select an activity for this task
       const activity =
         activities[Math.floor(Math.random() * activities.length)];
-      const uniqueTaskId = generateId("Task").substring(0, 8);
-      const taskTitle = `${activity.title || activity.name} - Day ${dayOffset + 1} (${uniqueTaskId})`;
+
+      // Increment counter for this task type and create title
+      let taskTitle: string;
+      if (taskType === TaskType.SCHEDULED) {
+        taskCounter.scheduled++;
+        taskTitle = `${getTaskTypeName(TaskType.SCHEDULED)} Task ${taskCounter.scheduled}`;
+      } else if (taskType === TaskType.TIMED) {
+        taskCounter.timed++;
+        taskTitle = `${getTaskTypeName(TaskType.TIMED)} Task ${taskCounter.timed}`;
+      } else {
+        taskCounter.episodic++;
+        taskTitle = `${getTaskTypeName(TaskType.EPISODIC)} Task ${taskCounter.episodic}`;
+      }
 
       const taskInput: CreateTaskInput = {
         pk: `TASK-STANDALONE-${dayOffset}-${i}-${taskTimestamp}`,
@@ -510,12 +548,16 @@ export async function seedCoordinatedData(): Promise<CoordinatedSeedResult> {
     const linkedTasks: any[] = [];
     const relationships: AppointmentTaskRelationship[] = [];
 
+    // Initialize task counter for numbering tasks by type
+    const taskCounter = { scheduled: 0, timed: 0, episodic: 0 };
+
     for (const appointment of appointments) {
       // Only create linked tasks for SCHEDULED appointments
       if (appointment.status === AppointmentStatus.SCHEDULED) {
         const appointmentTasks = await createAppointmentWithTasks(
           appointment,
-          activities
+          activities,
+          taskCounter
         );
         linkedTasks.push(...appointmentTasks);
 
@@ -552,7 +594,11 @@ export async function seedCoordinatedData(): Promise<CoordinatedSeedResult> {
 
     // Step 4: Create standalone tasks
     log("Step 4: Creating standalone tasks");
-    const standaloneTasks = await createStandaloneTasks(activities, 6);
+    const standaloneTasks = await createStandaloneTasks(
+      activities,
+      6,
+      taskCounter
+    );
     log("Standalone tasks created", {
       count: standaloneTasks.length,
     });

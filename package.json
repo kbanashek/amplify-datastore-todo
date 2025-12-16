@@ -1,7 +1,7 @@
 {
   "name": "amplify-datastore-todo",
   "main": "./entry.js",
-  "version": "0.1.13",
+  "version": "0.1.15",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
@@ -11,7 +11,7 @@
     "ios:install-pods": "cd ios && pod install && cd ..",
     "web": "expo start --web",
     "lint": "expo lint",
-    "test": "jest",
+    "test": "NODE_OPTIONS=--max-old-space-size=6144 jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "eas-build-pre-install": "yarn config set registry https://registry.npmjs.org/ && yarn config set always-auth false && printf \"registry=https://registry.npmjs.org/\\nalways-auth=false\\n\" > .npmrc",

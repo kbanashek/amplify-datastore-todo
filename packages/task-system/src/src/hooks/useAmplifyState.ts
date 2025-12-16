@@ -15,7 +15,9 @@ function configureAmplify(): void {
   if (configureAmplifyFn) {
     configureAmplifyFn();
   } else {
-    console.warn("[useAmplifyState] configureAmplify not set. Call setConfigureAmplify() from consuming app.");
+    console.warn(
+      "[useAmplifyState] configureAmplify not set. Call setConfigureAmplify() from consuming app."
+    );
   }
 }
 import { ConflictResolution } from "@orion/task-system";

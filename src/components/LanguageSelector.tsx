@@ -9,10 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useTranslation } from "@orion/task-system";
-import {
-  LanguageCode,
-  SUPPORTED_LANGUAGES,
-} from "@orion/task-system";
+import { LanguageCode, SUPPORTED_LANGUAGES } from "@orion/task-system";
 
 interface LanguageSelectorProps {
   style?: object;
@@ -57,7 +54,8 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
       });
       setModalVisible(false);
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       console.error("🌐 [LanguageSelector] Error changing language", {
         error: errorMessage,
         languageCode,

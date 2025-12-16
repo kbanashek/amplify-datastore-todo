@@ -38,12 +38,14 @@ E2E tests focus on **user-facing task behavior**, not development utilities:
 **Test data is automatically created** before tests run via `global-setup.ts`. You don't need to manually seed data.
 
 **Test Data Isolation**:
+
 - All test data is marked with `E2E_TEST_MARKER` prefix in the `pk` field
 - Test data is completely isolated from your dev data
 - Cleanup only removes test data, leaving dev data untouched
 - Test data will sync across devices (like any DataStore data) but is clearly identifiable
 
 **If you need to manually create test data** (for debugging or development):
+
 1. Start the app: `yarn web` or `yarn start`
 2. Navigate to the Seed Data screen (via menu or direct route)
 3. Click "🌱 Seed Appointments & Tasks Together" (creates tasks with activities)
@@ -52,6 +54,7 @@ E2E tests focus on **user-facing task behavior**, not development utilities:
 ### Test ID Strategy
 
 All tests use `testID` props that map to:
+
 - **Mobile**: Native accessibility identifiers
 - **Web**: `data-testid` HTML attributes (via React Native Web)
 
@@ -125,17 +128,17 @@ Flows are intentionally small and high-signal:
 
 ### Troubleshooting
 
-- **Maestro can't find elements**: 
+- **Maestro can't find elements**:
   - Ensure you're running a **Dev Client build** (not Expo Go)
   - Verify you're on the expected screen
   - Check that `testID` props are correctly set in components
   - The flows rely on stable `testID` selectors defined in `src/constants/testIds.ts`
 
-- **Seed flows hang**: 
+- **Seed flows hang**:
   - The seed screen shows native `Alert` dialogs that must be dismissed
   - The flows already tap `OK`; if you changed alert button text, update the flows
 
-- **App id mismatch**: 
+- **App id mismatch**:
   - Flows use `appId: com.orion.tasksystem`
   - If you change bundle identifiers in `app.json`, update the Maestro YAML files under `e2e/maestro/`
 
@@ -160,6 +163,7 @@ Flows are intentionally small and high-signal:
 ### Run E2E tests
 
 - **Run all tests**:
+
   ```bash
   yarn e2e:playwright
   # or
@@ -167,11 +171,13 @@ Flows are intentionally small and high-signal:
   ```
 
 - **Run with UI mode** (interactive debugging):
+
   ```bash
   yarn e2e:playwright:ui
   ```
 
 - **Run in debug mode** (step through tests):
+
   ```bash
   yarn e2e:playwright:debug
   ```
@@ -206,19 +212,22 @@ The web test suite focuses on **task-related behavior**:
 ### Automatic Test Data Setup
 
 **Test data is automatically seeded before tests run** via `global-setup.ts`:
+
 - Creates minimal test data (activities + tasks) needed for tests
 - **All test data is marked with `E2E_TEST_MARKER` prefix** for isolation from dev data
 - Runs once before all tests (not per-test)
 - **Dev data remains untouched** - test data is completely isolated
 
 **Test data cleanup is controlled by environment variable**:
+
 - **Default (CI/CD)**: Test data is cleaned up after tests complete
 - **Dev mode**: Set `E2E_CLEANUP=false` to keep test data for inspection
   ```bash
   E2E_CLEANUP=false yarn e2e:web
   ```
 
-**Important**: 
+**Important**:
+
 - ✅ **Cleanup only deletes test data** (items with `E2E_TEST_MARKER` prefix)
 - ✅ **Dev data is never touched** - your development work is safe
 - ✅ **Test data syncs across devices** but is clearly marked and can be cleaned up separately
@@ -243,23 +252,23 @@ Each test:
 
 ### Troubleshooting
 
-- **Tests fail to start**: 
+- **Tests fail to start**:
   - Ensure port 8081 is available
   - If another process is using it, either stop it or set `E2E_BASE_URL` environment variable to a different URL
   - Check that `yarn web` works manually
 
-- **Elements not found**: 
+- **Elements not found**:
   - Verify the web app is running correctly by manually visiting `http://localhost:8081`
   - Check that `testID` props are correctly rendered as `data-testid` attributes in the browser DevTools
   - Use Playwright's UI mode (`yarn e2e:playwright:ui`) to see what's actually on the page
   - Check browser console for React Native Web errors
 
-- **Timeout errors**: 
+- **Timeout errors**:
   - Increase timeout in `playwright.config.ts` if your app takes longer to load
   - The default webServer timeout is 120 seconds
   - React Native Web needs time to hydrate - tests include 3 second initial wait
 
-- **"No tasks available" message**: 
+- **"No tasks available" message**:
   - This is expected if your database is empty
   - Tests will skip gracefully and show as "passed" (they didn't fail, they just had nothing to test)
   - To run the full test flow, ensure tasks exist in your database:
@@ -267,7 +276,7 @@ Each test:
     - Or manually create tasks with `entityId` values pointing to activities
   - Tests will automatically detect tasks and run when they're available
 
-- **Tests pass but seem slow**: 
+- **Tests pass but seem slow**:
   - React Native Web hydration takes time
   - Tests include generous timeouts to account for this
   - Consider running tests in headed mode to see what's happening: `npx playwright test --headed`
@@ -318,7 +327,7 @@ React Native Web automatically maps `testID` props to `data-testid` HTML attribu
 Playwright can then find elements using:
 
 ```typescript
-page.getByTestId("my-test-id")
+page.getByTestId("my-test-id");
 ```
 
 ---
@@ -343,22 +352,22 @@ test.describe("My New Test Suite", () => {
   test("should do something", async ({ page }) => {
     // Navigate to app
     await page.goto("/");
-    
+
     // Wait for app to load
     await page.waitForLoadState("networkidle");
     await page.waitForTimeout(3000); // React Native Web hydration
-    
+
     // Find element by test ID
     const button = page.getByTestId(TestIds.someButton);
     await expect(button).toBeVisible({ timeout: 10000 });
-    
+
     // Interact with element
     await button.click();
-    
+
     // Verify outcome
-    await expect(
-      page.getByTestId(TestIds.expectedResult)
-    ).toBeVisible({ timeout: 10000 });
+    await expect(page.getByTestId(TestIds.expectedResult)).toBeVisible({
+      timeout: 10000,
+    });
   });
 });
 ```
@@ -428,11 +437,13 @@ export const MyComponent = () => {
 Both test suites can be integrated into CI/CD pipelines:
 
 **Maestro (Mobile)**:
+
 - Requires EAS build setup
 - Can run on physical devices or emulators
 - See Maestro CI documentation for setup
 
 **Playwright (Web)**:
+
 - Runs headlessly by default
 - Can run in Docker containers
 - Supports parallel execution

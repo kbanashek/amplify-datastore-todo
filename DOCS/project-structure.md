@@ -43,6 +43,12 @@ amplify-datastore-todo/
 │   │   ├── Activity.ts             # Activity/assessment types
 │   │   └── ...
 │   │
+│   ├── 📌 constants/                # Constants and Enums
+│   │   ├── modelNames.ts           # DataStore model name constants
+│   │   ├── operationSource.ts      # Operation source constants (LOCAL/REMOTE_SYNC)
+│   │   ├── awsErrors.ts            # AWS error name constants
+│   │   └── ...
+│   │
 │   ├── 🌐 contexts/                 # React Contexts
 │   │   ├── AmplifyContext.tsx      # Amplify configuration
 │   │   └── TranslationContext.tsx  # Translation state
@@ -99,6 +105,14 @@ Data services that handle all DataStore operations, API calls, and data transfor
 ### `src/types/`
 
 TypeScript type definitions for all domain models and interfaces.
+
+### `src/constants/`
+
+Constants and enums used throughout the application. Prefer constants over magic strings for:
+
+- Model names (use `ModelName` constants)
+- Operation sources (use `OperationSource` constants)
+- AWS error names (use `AWSErrorName` constants)
 
 ### `scripts/`
 

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { Alert } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, CommonActions } from "@react-navigation/native";
 import { useTranslatedText } from "./useTranslatedText";
 import { ActivityConfig } from "../types/ActivityConfig";
 import { ParsedActivityData } from "../utils/activityParser";
@@ -180,7 +180,91 @@ export const useQuestionNavigation = ({
   );
 
   const handleCompletionDone = useCallback(() => {
-    navigation.popToTop?.();
+    // Navigate to root - works with both expo-router and standard React Navigation
+    try {
+      const navAny = navigation as any;
+
+      // Try to use expo-router's router if available (stored in navigation state)
+      // expo-router stores the router in navigation state
+      if (navAny.getState) {
+        const state = navAny.getState();
+        // Check if we can access expo-router's navigation methods
+        // expo-router uses a different navigation structure
+      }
+
+      // For expo-router: try to navigate to the index route within tabs
+      // The route structure is: (tabs) -> index
+      if (navAny.navigate) {
+        try {
+          // Try navigating to the tabs index route
+          navAny.navigate("(tabs)", { screen: "index" });
+          return;
+        } catch (navError) {
+          // Try just navigating to tabs
+          try {
+            navAny.navigate("(tabs)");
+            return;
+          } catch (navError2) {
+            // Try getting parent navigator
+            if (navAny.getParent) {
+              const parent = navAny.getParent();
+              if (parent && parent.navigate) {
+                try {
+                  parent.navigate("(tabs)", { screen: "index" });
+                  return;
+                } catch (parentError) {
+                  parent.navigate("(tabs)");
+                  return;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // Fallback: use CommonActions.reset to go to tabs index
+      try {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [
+              {
+                name: "(tabs)",
+                state: {
+                  routes: [{ name: "index" }],
+                },
+              },
+            ],
+          })
+        );
+        return;
+      } catch (resetError) {
+        // Try simpler reset
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: "(tabs)" }],
+          })
+        );
+      }
+    } catch (error) {
+      console.warn(
+        "[useQuestionNavigation] Failed to navigate to root:",
+        error
+      );
+      // Last resort: try goBack
+      try {
+        const navAny = navigation as any;
+        if (navAny.canGoBack && navAny.canGoBack()) {
+          navAny.goBack();
+        }
+      } catch (fallbackError) {
+        console.error(
+          "[useQuestionNavigation] All navigation methods failed:",
+          fallbackError
+        );
+      }
+    }
   }, [navigation]);
 
   const handleBack = useCallback(() => {
