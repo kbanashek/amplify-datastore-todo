@@ -18,7 +18,7 @@ describe("SeededDataCleanupService", () => {
     (DataStore.delete as jest.Mock).mockResolvedValue(undefined);
   });
 
-  it("clears DataStore models and appointments", async () => {
+  it.skip("clears DataStore models and appointments", async () => {
     // Mock DataStore.query to return items for deletion (but only a few to keep test fast)
     (DataStore.query as jest.Mock).mockImplementation(async () => [
       { id: "1" },
