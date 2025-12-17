@@ -1,6 +1,7 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
 // @ts-ignore - Activity is exported from models/index.js at runtime
 import { ModelName } from "../constants/modelNames";
+import { OperationSource } from "../constants/operationSource";
 import { Activity } from "../models";
 import { CreateActivityInput, UpdateActivityInput } from "../types/Activity";
 import { logErrorWithDevice, logWithDevice } from "../utils/deviceLogger";

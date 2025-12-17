@@ -1,5 +1,6 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
 import { ModelName } from "../constants/modelNames";
+import { OperationSource } from "../constants/operationSource";
 import { Task as DataStoreTask } from "../models";
 import {
   CreateTaskInput,
@@ -238,70 +239,102 @@ export class TaskService {
     logWithDevice("TaskService", "Setting up DataStore subscription for Task");
 
     // Use observeQuery for the main subscription (filters out deleted items automatically)
+    // This handles local operations and most remote operations
     const querySubscription = DataStore.observeQuery(DataStoreTask).subscribe(
       snapshot => {
         const { items, isSynced } = snapshot;
 
-        logWithDevice("TaskService", "Subscription update (observeQuery)", {
-          itemCount: items.length,
-          isSynced,
-          itemIds: items.map(i => i.id),
-          itemStatuses: items.map(i => ({
-            id: i.id,
-            status: i.status,
-            title: i.title,
-          })),
-        });
+        // Only log in development to reduce production overhead
+        if (__DEV__) {
+          logWithDevice("TaskService", "Subscription update (observeQuery)", {
+            itemCount: items.length,
+            isSynced,
+            itemIds: items.slice(0, 10).map(i => i.id), // Only log first 10 IDs
+          });
+        }
 
         callback(items as Task[], isSynced);
       }
     );
 
-    // CRITICAL: Observe ALL operations (INSERT, UPDATE, DELETE) to catch remote changes immediately
-    // The issue: observeQuery may not always fire for remote updates, so we explicitly observe
+    // CRITICAL: Observe ALL operations to ensure cross-device sync
+    // observeQuery may not always fire for remote updates reliably, so we explicitly observe
     // all operations and refresh the query to ensure immediate UI updates across devices
-    //
-    // Strategy: Refresh on ALL operations to ensure we catch remote sync operations
-    // This is safe because we're just refreshing the query, which is idempotent
+    // This is a safety net to catch any remote updates that observeQuery might miss
     const changeObserver = DataStore.observe(DataStoreTask).subscribe(msg => {
       const element = msg.element as any;
 
-      // Log all operations for debugging sync issues across devices
-      logWithDevice("TaskService", `DataStore operation detected via observe`, {
-        taskId: element?.id,
-        taskTitle: element?.title,
-        status: element?.status,
-        operationType: msg.opType,
-        deleted: element?._deleted,
-        _version: element?._version,
-      });
+      // Detect if this is a remote operation (from another device)
+      // For DELETE: local deletes have _deleted === true, remote deletes come from sync
+      // For UPDATE/INSERT: remote operations typically have higher _version or come via sync
+      const isLocalDelete =
+        msg.opType === OpType.DELETE && element?._deleted === true;
+      const source = isLocalDelete
+        ? OperationSource.LOCAL
+        : OperationSource.REMOTE_SYNC;
 
-      // Refresh query for ALL operations to ensure immediate UI updates
+      // CRITICAL: DELETE operations need immediate refresh to ensure deletions sync
+      // For DELETE operations, we MUST refresh immediately to catch remote deletions
+      const isDeleteOperation = msg.opType === OpType.DELETE;
+
+      // Log all operations to help debug sync issues
+      logWithDevice(
+        "TaskService",
+        `🔄 DataStore operation detected via observe (${source}) - ${msg.opType}`,
+        {
+          taskId: element?.id,
+          taskTitle: element?.title,
+          status: element?.status,
+          operationType: msg.opType,
+          deleted: element?._deleted,
+          _version: element?._version,
+          isDeleteOperation,
+        }
+      );
+
+      // Refresh query IMMEDIATELY for ALL operations to ensure cross-device sync
       // This is critical for catching remote updates from other devices
-      // observeQuery should handle this, but explicit refresh ensures we don't miss anything
+      // We refresh on all operations because:
+      // 1. Remote operations need immediate UI updates
+      // 2. Local operations might have been missed by observeQuery
+      // 3. DELETE operations especially need immediate refresh to sync deletions
+      // 4. This ensures consistency across devices
       DataStore.query(DataStoreTask)
         .then(tasks => {
           logWithDevice(
             "TaskService",
-            `Query refresh after ${msg.opType} operation`,
+            `✅ Query refresh after ${msg.opType} operation (${source}) - ${tasks.length} tasks`,
             {
               taskCount: tasks.length,
-              taskIds: tasks.map((t: any) => t.id),
-              taskStatuses: tasks.map((t: any) => ({
+              taskIds: tasks.slice(0, 10).map((t: any) => t.id), // Only log first 10 IDs
+              taskStatuses: tasks.slice(0, 10).map((t: any) => ({
                 id: t.id,
-                status: t.status,
                 title: t.title,
+                status: t.status,
               })),
             }
           );
+          // Always call callback to ensure UI updates across all devices
+          // This is CRITICAL for DELETE operations - without this, deletions won't appear on other devices
           callback(tasks as Task[], true);
         })
         .catch(err => {
           logErrorWithDevice(
             "TaskService",
-            `Error refreshing after ${msg.opType}`,
+            `❌ Error refreshing after ${msg.opType} (${source})`,
             err
           );
+          // Even on error, try to call callback with current state to prevent UI from being stuck
+          DataStore.query(DataStoreTask)
+            .then(tasks => callback(tasks as Task[], false))
+            .catch(() => {
+              // If query fails completely, at least log it
+              logErrorWithDevice(
+                "TaskService",
+                "❌ Complete failure to refresh after operation",
+                err
+              );
+            });
         });
     });
 

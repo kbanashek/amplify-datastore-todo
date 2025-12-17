@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
 import { TaskService } from "@orion/task-system";
-import { Task, TaskFilters, TaskStatus } from "../types/Task";
+import { useEffect, useMemo, useState } from "react";
 import { useAmplify } from "../contexts/AmplifyContext";
+import { Task, TaskFilters } from "../types/Task";
 import { NetworkStatus } from "./useAmplifyState";
 
 interface UseTaskListReturn {
@@ -17,7 +17,7 @@ interface UseTaskListReturn {
 }
 
 export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [allTasks, setAllTasks] = useState<Task[]>([]); // Store unfiltered tasks
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isSynced, setIsSynced] = useState<boolean>(false);
@@ -32,76 +32,17 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
       setLoading(true);
       setError(null);
 
-      // Subscribe to changes in tasks
+      // Subscribe to changes in tasks - just store data, don't filter
+      // Filtering happens in useMemo below
       const sub = TaskService.subscribeTasks((items, synced) => {
-        console.log("========================================");
-        console.log("[useTaskList] SUBSCRIPTION CALLBACK FIRED");
-        console.log("[useTaskList] Items count:", items.length);
-        console.log("[useTaskList] Synced:", synced);
-        console.log(
-          "[useTaskList] Items:",
-          items.map(t => ({
-            id: t.id,
-            title: t.title,
-            status: t.status,
-            statusString: t.status,
-            isStarted: t.status === TaskStatus.STARTED,
-            isInProgress: t.status === TaskStatus.INPROGRESS,
-            isCompleted: t.status === TaskStatus.COMPLETED,
-          }))
-        );
-        console.log("========================================");
-        // Apply filters if provided
-        let filteredItems = items;
-
-        if (filters) {
-          if (filters.status && filters.status.length > 0) {
-            filteredItems = filteredItems.filter(task =>
-              filters.status!.includes(task.status)
-            );
-          }
-
-          if (filters.taskType && filters.taskType.length > 0) {
-            filteredItems = filteredItems.filter(task =>
-              filters.taskType!.includes(task.taskType)
-            );
-          }
-
-          if (filters.searchText) {
-            const searchLower = filters.searchText.toLowerCase();
-            filteredItems = filteredItems.filter(
-              task =>
-                task.title.toLowerCase().includes(searchLower) ||
-                (task.description &&
-                  task.description.toLowerCase().includes(searchLower))
-            );
-          }
-
-          if (filters.dateFrom || filters.dateTo) {
-            filteredItems = filteredItems.filter(task => {
-              if (!task.startTimeInMillSec) return false;
-
-              const taskDate = new Date(task.startTimeInMillSec);
-
-              if (filters.dateFrom && taskDate < filters.dateFrom) {
-                return false;
-              }
-
-              if (filters.dateTo && taskDate > filters.dateTo) {
-                return false;
-              }
-
-              return true;
-            });
-          }
+        if (__DEV__) {
+          console.log("[useTaskList] Subscription update", {
+            itemCount: items.length,
+            isSynced: synced,
+          });
         }
-
-        console.log(
-          "[useTaskList] Setting tasks:",
-          filteredItems.length,
-          "after filtering"
-        );
-        setTasks(filteredItems);
+        // Store unfiltered tasks - filtering happens in useMemo
+        setAllTasks(items);
         setIsSynced(synced);
         setLoading(false);
       });
@@ -127,6 +68,57 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
+  // Memoize filtered tasks - only recalculates when allTasks or filters change
+  const tasks = useMemo(() => {
+    if (!filters) return allTasks;
+
+    let filtered = allTasks;
+
+    // Apply status filter
+    if (filters.status && filters.status.length > 0) {
+      filtered = filtered.filter(task => filters.status!.includes(task.status));
+    }
+
+    // Apply taskType filter
+    if (filters.taskType && filters.taskType.length > 0) {
+      filtered = filtered.filter(task =>
+        filters.taskType!.includes(task.taskType)
+      );
+    }
+
+    // Apply searchText filter
+    if (filters.searchText) {
+      const searchLower = filters.searchText.toLowerCase();
+      filtered = filtered.filter(
+        task =>
+          task.title.toLowerCase().includes(searchLower) ||
+          (task.description &&
+            task.description.toLowerCase().includes(searchLower))
+      );
+    }
+
+    // Apply date range filter
+    if (filters.dateFrom || filters.dateTo) {
+      filtered = filtered.filter(task => {
+        if (!task.startTimeInMillSec) return false;
+
+        const taskDate = new Date(task.startTimeInMillSec);
+
+        if (filters.dateFrom && taskDate < filters.dateFrom) {
+          return false;
+        }
+
+        if (filters.dateTo && taskDate > filters.dateTo) {
+          return false;
+        }
+
+        return true;
+      });
+    }
+
+    return filtered;
+  }, [allTasks, filters]);
+
   const handleDeleteTask = async (id: string): Promise<void> => {
     try {
       await TaskService.deleteTask(id);
@@ -150,8 +142,8 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
     try {
       setLoading(true);
       setError(null);
-      const allTasks = await TaskService.getTasks(filters);
-      setTasks(allTasks);
+      const fetchedTasks = await TaskService.getTasks(filters);
+      setAllTasks(fetchedTasks);
       setLoading(false);
     } catch (err) {
       console.error("Error refreshing tasks:", err);

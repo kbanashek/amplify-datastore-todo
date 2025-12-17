@@ -1,9 +1,10 @@
-import { IconSymbol } from "./ui/IconSymbol";
-import React from "react";
+import React, { useCallback } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTranslatedText } from "../hooks/useTranslatedText";
 import { TaskService } from "../services/TaskService";
-import { Task, TaskStatus, TaskType } from "../types/Task";
+import { Task, TaskStatus } from "../types/Task";
+import { getTaskIcon } from "../utils/taskIcon";
+import { IconSymbol } from "./ui/IconSymbol";
 
 interface TaskCardProps {
   task: Task;
@@ -12,185 +13,176 @@ interface TaskCardProps {
   simple?: boolean; // If true, show simple card without BEGIN button
 }
 
-// Get icon name and color based on task type and title
-const getTaskIcon = (task: Task): { name: string; color: string } => {
-  const title = (task.title || "").toLowerCase();
-
-  // Check for specific keywords in title
-  if (title.includes("medication") || title.includes("diary")) {
-    return { name: "pills", color: "#3498db" };
-  }
-  if (title.includes("survey") || title.includes("health")) {
-    return { name: "questionmark.circle", color: "#3498db" };
-  }
-  if (title.includes("quality") || title.includes("life")) {
-    return { name: "list.clipboard", color: "#3498db" };
-  }
-  if (title.includes("recall") || title.includes("recognition")) {
-    return { name: "bell", color: "#f39c12" };
-  }
-  if (
-    title.includes("symptom") ||
-    title.includes("pain") ||
-    title.includes("neuropathic")
-  ) {
-    return { name: "questionmark.circle", color: "#3498db" };
-  }
-
-  // Default based on task type
-  switch (task.taskType) {
-    case TaskType.SCHEDULED:
-      return { name: "calendar", color: "#3498db" };
-    case TaskType.TIMED:
-      return { name: "clock", color: "#3498db" };
-    case TaskType.EPISODIC:
-      return { name: "repeat", color: "#3498db" };
-    default:
-      return { name: "doc.text", color: "#3498db" };
-  }
-};
-
-export const TaskCard: React.FC<TaskCardProps> = ({
-  task,
-  onPress,
-  onDelete,
-  simple = false,
-}) => {
-  console.log("[TaskCard] RENDER:", {
-    id: task.id,
-    title: task.title,
-    hasTitle: !!task.title,
-    titleLength: task.title?.length || 0,
-    status: task.status,
-    statusString: TaskStatus[task.status as keyof typeof TaskStatus],
-    isStarted: task.status === TaskStatus.STARTED,
-    isInProgress: task.status === TaskStatus.INPROGRESS,
-    isCompleted: task.status === TaskStatus.COMPLETED,
-    simple,
-  });
-
-  // Translate task title
-  const { translatedText: translatedTitle } = useTranslatedText(
-    task.title || "Untitled Task"
-  );
-
-  // Translate button text
-  const isStarted =
-    task.status === TaskStatus.STARTED || task.status === TaskStatus.INPROGRESS;
-  const { translatedText: beginButtonText } = useTranslatedText(
-    isStarted ? "RESUME" : "BEGIN"
-  );
-  const { translatedText: completedText } = useTranslatedText("COMPLETED");
-  const { translatedText: untitledText } = useTranslatedText("Untitled Task");
-
-  const icon = getTaskIcon(task);
-
-  const handleBeginPress = async () => {
-    try {
-      console.log("[TaskCard] BEGIN pressed, current status:", task.status);
-      // If task is not started, update status to STARTED
-      if (
-        task.status !== TaskStatus.STARTED &&
-        task.status !== TaskStatus.INPROGRESS
-      ) {
-        console.log("[TaskCard] Updating task status to STARTED");
-        const updated = await TaskService.updateTask(task.id, {
-          status: TaskStatus.STARTED,
-        });
-        console.log("[TaskCard] Task updated, new status:", updated?.status);
-      }
-      // Call the onPress callback if provided
-      onPress?.(task);
-    } catch (error) {
-      console.error("[TaskCard] Error updating task status:", error);
+export const TaskCard: React.FC<TaskCardProps> = React.memo<TaskCardProps>(
+  ({ task, onPress, onDelete, simple = false }) => {
+    if (__DEV__) {
+      console.log("[TaskCard] RENDER:", {
+        id: task.id,
+        title: task.title,
+        status: task.status,
+        simple,
+      });
     }
-  };
 
-  const handleCardPress = async () => {
-    if (isCompleted) return;
+    // Translate task title
+    const { translatedText: translatedTitle } = useTranslatedText(
+      task.title || "Untitled Task"
+    );
 
-    try {
-      // If task is not started, update status to STARTED when card is clicked
-      // This ensures the button text updates to "RESUME" when user returns to dashboard
-      if (
-        task.status !== TaskStatus.STARTED &&
-        task.status !== TaskStatus.INPROGRESS
-      ) {
-        console.log("[TaskCard] Card pressed, updating task status to STARTED");
-        await TaskService.updateTask(task.id, {
-          status: TaskStatus.STARTED,
-        });
+    // Translate button text
+    const isStarted =
+      task.status === TaskStatus.STARTED ||
+      task.status === TaskStatus.INPROGRESS;
+    const { translatedText: beginButtonText } = useTranslatedText(
+      isStarted ? "RESUME" : "BEGIN"
+    );
+    const { translatedText: completedText } = useTranslatedText("COMPLETED");
+
+    const icon = getTaskIcon(task);
+
+    const handleBeginPress = useCallback(async () => {
+      try {
+        if (__DEV__) {
+          console.log("[TaskCard] BEGIN pressed, current status:", task.status);
+        }
+        // If task is not started, update status to STARTED
+        if (
+          task.status !== TaskStatus.STARTED &&
+          task.status !== TaskStatus.INPROGRESS
+        ) {
+          if (__DEV__) {
+            console.log("[TaskCard] Updating task status to STARTED");
+          }
+          const updated = await TaskService.updateTask(task.id, {
+            status: TaskStatus.STARTED,
+          });
+          if (__DEV__) {
+            console.log(
+              "[TaskCard] Task updated, new status:",
+              updated?.status
+            );
+          }
+        }
+        // Call the onPress callback if provided
+        onPress?.(task);
+      } catch (error) {
+        console.error("[TaskCard] Error updating task status:", error);
       }
-      // Call the onPress callback
-      onPress?.(task);
-    } catch (error) {
-      console.error(
-        "[TaskCard] Error updating task status on card press:",
-        error
-      );
-      // Still navigate even if status update fails
-      onPress?.(task);
-    }
-  };
+    }, [task, onPress]);
 
-  const isCompleted = task.status === TaskStatus.COMPLETED;
-  const isDisabled = isCompleted;
+    const handleCardPress = useCallback(async () => {
+      const isCompleted = task.status === TaskStatus.COMPLETED;
+      if (isCompleted) return;
 
-  return (
-    <TouchableOpacity
-      style={[styles.card, isDisabled && styles.cardDisabled]}
-      onPress={handleCardPress}
-      activeOpacity={isDisabled ? 1 : 0.7}
-      disabled={isDisabled}
-    >
-      <View style={styles.cardContent}>
-        <View
-          style={[styles.titleSection, simple && styles.titleSectionSimple]}
-        >
-          <View style={styles.titleRow}>
-            <View style={styles.iconContainer}>
-              <IconSymbol
-                name={icon.name as any}
-                size={24}
-                color={icon.color}
-              />
-            </View>
-            <Text style={styles.title} numberOfLines={2}>
-              {translatedTitle}
-            </Text>
-          </View>
-        </View>
+      try {
+        // If task is not started, update status to STARTED when card is clicked
+        // This ensures the button text updates to "RESUME" when user returns to dashboard
+        if (
+          task.status !== TaskStatus.STARTED &&
+          task.status !== TaskStatus.INPROGRESS
+        ) {
+          if (__DEV__) {
+            console.log(
+              "[TaskCard] Card pressed, updating task status to STARTED"
+            );
+          }
+          await TaskService.updateTask(task.id, {
+            status: TaskStatus.STARTED,
+          });
+        }
+        // Call the onPress callback
+        onPress?.(task);
+      } catch (error) {
+        console.error(
+          "[TaskCard] Error updating task status on card press:",
+          error
+        );
+        // Still navigate even if status update fails
+        onPress?.(task);
+      }
+    }, [task, onPress]);
 
-        {!simple && (
-          <View style={styles.actionRow}>
-            {!isCompleted ? (
-              <>
-                <TouchableOpacity
-                  style={styles.beginButton}
-                  onPress={handleBeginPress}
-                  activeOpacity={0.8}
-                >
-                  <Text style={styles.beginButtonText}>{beginButtonText}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.arrowButton}
-                  onPress={() => onPress?.(task)}
-                  activeOpacity={0.7}
-                >
-                  <IconSymbol name="chevron.right" size={20} color="#57606f" />
-                </TouchableOpacity>
-              </>
-            ) : (
-              <View style={styles.completedBadge}>
-                <Text style={styles.completedText}>{completedText}</Text>
+    const isCompleted = task.status === TaskStatus.COMPLETED;
+    const isDisabled = isCompleted;
+
+    return (
+      <TouchableOpacity
+        style={[styles.card, isDisabled && styles.cardDisabled]}
+        onPress={handleCardPress}
+        activeOpacity={isDisabled ? 1 : 0.7}
+        disabled={isDisabled}
+      >
+        <View style={styles.cardContent}>
+          <View
+            style={[styles.titleSection, simple && styles.titleSectionSimple]}
+          >
+            <View style={styles.titleRow}>
+              <View style={styles.iconContainer}>
+                <IconSymbol
+                  name={icon.name as any}
+                  size={24}
+                  color={icon.color}
+                />
               </View>
-            )}
+              <Text style={styles.title} numberOfLines={2}>
+                {translatedTitle}
+              </Text>
+            </View>
           </View>
-        )}
-      </View>
-    </TouchableOpacity>
-  );
-};
+
+          {!simple && (
+            <View style={styles.actionRow}>
+              {!isCompleted ? (
+                <>
+                  <TouchableOpacity
+                    style={styles.beginButton}
+                    onPress={handleBeginPress}
+                    activeOpacity={0.8}
+                  >
+                    <Text style={styles.beginButtonText}>
+                      {beginButtonText}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.arrowButton}
+                    onPress={() => onPress?.(task)}
+                    activeOpacity={0.7}
+                  >
+                    <IconSymbol
+                      name="chevron.right"
+                      size={20}
+                      color="#57606f"
+                    />
+                  </TouchableOpacity>
+                </>
+              ) : (
+                <View style={styles.completedBadge}>
+                  <Text style={styles.completedText}>{completedText}</Text>
+                </View>
+              )}
+            </View>
+          )}
+        </View>
+      </TouchableOpacity>
+    );
+  },
+  (prevProps, nextProps) => {
+    // Custom comparison function
+    // Only re-render if these specific props change
+    return (
+      prevProps.task.id === nextProps.task.id &&
+      prevProps.task.status === nextProps.task.status &&
+      prevProps.task.title === nextProps.task.title &&
+      prevProps.task.description === nextProps.task.description &&
+      prevProps.task.taskType === nextProps.task.taskType &&
+      prevProps.simple === nextProps.simple &&
+      prevProps.onPress === nextProps.onPress &&
+      prevProps.onDelete === nextProps.onDelete
+    );
+  }
+);
+
+TaskCard.displayName = "TaskCard";
 
 const styles = StyleSheet.create({
   card: {

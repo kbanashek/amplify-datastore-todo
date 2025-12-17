@@ -147,7 +147,7 @@ flowchart TD
 3. **☁️ Pull the existing Amplify backend**
 
    ```bash
-   amplify pull --appId d19l3dxjz56ge3 --envName dev
+   amplify pull --appId d2vty117li92m8 --envName dev
    ```
 
    Follow the prompts to configure the Amplify backend. This will create the necessary `aws-exports.js` file.

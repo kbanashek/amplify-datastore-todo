@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `AWSErrorName` constants for AWS error type checking
 - Created cursor rule `.cursor/rules/no-string-model-names.mdc` to prevent magic strings
 - Added comprehensive unit test coverage for all services in the task-system package
+- Added `getTaskIcon` utility function with unit tests for task icon determination
+- Added troubleshooting documentation for "Unauthorized" errors (`DOCS/troubleshooting-unauthorized.md`)
+- Added `check-api-key.sh` script to verify AppSync API key status
+- Enhanced API key verification logging in Amplify configuration
 
 ### Changed
 
@@ -22,11 +26,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replaced `"InvalidSignatureException"` string with `AWSErrorName` constant
 - Updated all services (ActivityService, TaskService, QuestionService, DataPointService, TaskAnswerService, TaskHistoryService, TaskResultService, ConflictResolution, TranslationService) to use constants
 - Exported new constants from package index for external use
+- Improved error logging for DataStore sync errors with detailed API key information
+- Enhanced "Unauthorized" error detection and reporting in `useAmplifyState` hook
+- Updated AWS architecture documentation with comprehensive troubleshooting steps
 
 ### Fixed
 
 - Improved type safety by eliminating magic strings for model names
 - Enhanced maintainability with centralized constant definitions
+- Fixed missing `OperationSource` import in `ActivityService.ts`
+- Improved API key validation and error reporting for DataStore sync issues
+- Enhanced debugging capabilities for "Unauthorized" errors with detailed logging
 
 ## [0.1.15] - 2025-12-15
 
