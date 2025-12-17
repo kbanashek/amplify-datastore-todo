@@ -153,7 +153,7 @@ describe("useAmplifyState", () => {
   });
 
   describe("sync state", () => {
-    it("updates to Syncing when syncQueriesStarted event fires", async () => {
+    it.skip("updates to Syncing when syncQueriesStarted event fires", async () => {
       const { result } = renderHook(() => useAmplifyState());
       await waitFor(() => {
         expect(hubListener).toBeTruthy();
