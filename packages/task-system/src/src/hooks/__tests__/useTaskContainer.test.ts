@@ -3,6 +3,11 @@ import { useTaskContainer } from "../useTaskContainer";
 import { Task, TaskStatus, TaskType } from "../../types/Task";
 import { Alert } from "react-native";
 
+// Mock react-navigation
+jest.mock("@react-navigation/native", () => ({
+  useNavigation: jest.fn(),
+}));
+
 // Mock expo-router
 jest.mock("expo-router", () => ({
   useRouter: jest.fn(),
@@ -25,6 +30,7 @@ jest.mock("../../utils/appointmentParser", () => ({
   groupAppointmentsByDate: jest.fn(),
 }));
 
+import { useNavigation } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import { useTaskList } from "../useTaskList";
 import { useGroupedTasks } from "../useGroupedTasks";
@@ -32,8 +38,12 @@ import { useAppointmentList } from "../useAppointmentList";
 import { groupAppointmentsByDate } from "../../utils/appointmentParser";
 
 describe("useTaskContainer", () => {
+  const mockNavigate = jest.fn();
   const mockPush = jest.fn();
   const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
+  const mockUseNavigation = useNavigation as jest.MockedFunction<
+    typeof useNavigation
+  >;
   const mockUseTaskList = useTaskList as jest.MockedFunction<
     typeof useTaskList
   >;
@@ -90,6 +100,9 @@ describe("useTaskContainer", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockUseNavigation.mockReturnValue({
+      navigate: mockNavigate,
+    } as any);
     mockUseRouter.mockReturnValue({
       push: mockPush,
       back: jest.fn(),
@@ -234,10 +247,11 @@ describe("useTaskContainer", () => {
         result.current.handleTaskPress(task);
       });
 
-      expect(mockPush).toHaveBeenCalledWith({
-        pathname: "/(tabs)/questions",
-        params: { taskId: task.id, entityId: task.entityId },
+      expect(mockNavigate).toHaveBeenCalledWith("TaskQuestions", {
+        taskId: task.id,
+        entityId: task.entityId,
       });
+      expect(mockPush).not.toHaveBeenCalled();
     });
 
     it("shows alert when task has no entityId", () => {
@@ -267,6 +281,7 @@ describe("useTaskContainer", () => {
         [{ text: "OK", style: "default" }]
       );
       expect(mockPush).not.toHaveBeenCalled();
+      expect(mockNavigate).not.toHaveBeenCalled();
     });
   });
 

@@ -1,5 +1,7 @@
 # Changelog
 
+<!-- markdownlint-disable MD024 -->
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
@@ -60,6 +62,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed “unsupported question type” rendering failures caused by importing stale shadow components
 - Hardened DataStore conflict resolution to ensure required keys are present in resolved models
 - Reduced require-cycle risk by switching internal package imports from `@orion/task-system` to relative imports
+
+## [0.1.17] - 2025-12-19
+
+### Added
+
+- Added compact **Dev Options** screen (replaces Seed screen UI) with clear action descriptions and an Advanced tools accordion
+- Added `useDevOptions` hook to keep Dev Options UI purely presentational and consolidate seed/sync/delete logic
+- Added `generate:task-system-fixture` workflow improvements: fixture now includes 10 tasks + sample appointments for end-to-end completion testing
+
+### Changed
+
+- Refactored fixture import workflow to always prune non-fixture core content on dev reseed (`pruneNonFixture`)
+- Extended fixture importer to **dedupe by `pk`** (since `pk` is not Dynamo primary key) to collapse cloud duplicates during reseed
+- Replaced `app/(tabs)/seed-screen.tsx` with a thin wrapper around the new Dev Options screen
+
+### Fixed
+
+- Fixed task open crash when `activityGroups` is not an array by normalizing activity config parsing
+- Fixed unsupported question rendering for camelCase types like `numberField` / `dateField` by expanding type normalization
+- Fixed dev reseed leaving stale progress by adding `pruneDerivedModels` to clear TaskAnswer/TaskResult/TaskHistory/DataPoint/DataPointInstance during reseed
 
 ## [0.1.15] - 2025-12-15
 

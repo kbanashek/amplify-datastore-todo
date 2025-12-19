@@ -9,7 +9,7 @@ import {
   useQuestionsScreen,
   useTranslatedText,
 } from "@orion/task-system";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useCallback } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -18,6 +18,14 @@ import { GlobalHeader } from "../../src/components/GlobalHeader";
 export default function QuestionsScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const params = useLocalSearchParams();
+
+  const taskIdParam =
+    typeof params.taskId === "string" ? (params.taskId as string) : undefined;
+  const entityIdParam =
+    typeof params.entityId === "string"
+      ? (params.entityId as string)
+      : undefined;
 
   const {
     // State
@@ -43,12 +51,24 @@ export default function QuestionsScreen() {
     handleNext,
     handlePrevious,
     handleBegin,
-    handleBackToQuestions,
     handleEditQuestion,
     handleReviewSubmit,
     handleCompletionDone: originalHandleCompletionDone,
-    handleBack,
-  } = useQuestionsScreen();
+    handleBack: originalHandleBack,
+  } = useQuestionsScreen({ taskId: taskIdParam, entityId: entityIdParam });
+
+  // In expo-router context, prefer router.back() for back navigation.
+  const handleBack = useCallback(() => {
+    try {
+      router.back();
+    } catch (error) {
+      console.warn(
+        "[QuestionsScreen] Failed to navigate back with router, using fallback:",
+        error
+      );
+      originalHandleBack();
+    }
+  }, [router, originalHandleBack]);
 
   // Override handleCompletionDone to use expo-router
   const handleCompletionDone = useCallback(() => {

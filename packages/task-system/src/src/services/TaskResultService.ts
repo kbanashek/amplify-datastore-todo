@@ -126,21 +126,26 @@ export class TaskResultService {
       "[TaskResultService] Setting up DataStore subscription for TaskResult"
     );
 
+    const filterNotDeleted = (items: TaskResult[]): TaskResult[] => {
+      return items.filter(item => (item as any)?._deleted !== true);
+    };
+
     const querySubscription = DataStore.observeQuery(TaskResult).subscribe(
       snapshot => {
         const { items, isSynced } = snapshot;
+        const visibleItems = filterNotDeleted(items);
 
         logWithDevice(
           "TaskResultService",
           "Subscription update (observeQuery)",
           {
-            itemCount: items.length,
+            itemCount: visibleItems.length,
             isSynced,
-            itemIds: items.map(i => i.id),
+            itemIds: visibleItems.map(i => i.id),
           }
         );
 
-        callback(items, isSynced);
+        callback(visibleItems, isSynced);
       }
     );
 
@@ -166,14 +171,15 @@ export class TaskResultService {
 
         DataStore.query(TaskResult)
           .then(results => {
+            const visibleResults = filterNotDeleted(results);
             logWithDevice(
               "TaskResultService",
               "Query refresh after DELETE completed",
               {
-                remainingResultCount: results.length,
+                remainingResultCount: visibleResults.length,
               }
             );
-            callback(results, true);
+            callback(visibleResults, true);
           })
           .catch(err => {
             logErrorWithDevice(

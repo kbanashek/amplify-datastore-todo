@@ -178,6 +178,26 @@ describe("useQuestionsScreen", () => {
       expect(result.current.entityId).toBe("ACTIVITY-1");
     });
 
+    it("prefers explicit params over route params", async () => {
+      mockUseRoute.mockReturnValue({
+        params: { taskId: "TASK-ROUTE", entityId: "ACTIVITY-ROUTE" },
+      } as any);
+
+      const { result } = renderHook(() =>
+        useQuestionsScreen({
+          taskId: "TASK-OVERRIDE",
+          entityId: "ACTIVITY-OVERRIDE",
+        })
+      );
+
+      expect(result.current.taskId).toBe("TASK-OVERRIDE");
+      expect(result.current.entityId).toBe("ACTIVITY-OVERRIDE");
+
+      await waitFor(() => {
+        expect(mockGetTaskById).toHaveBeenCalledWith("TASK-OVERRIDE");
+      });
+    });
+
     it("fetches task on mount", async () => {
       renderHook(() => useQuestionsScreen());
       await waitFor(() => {
