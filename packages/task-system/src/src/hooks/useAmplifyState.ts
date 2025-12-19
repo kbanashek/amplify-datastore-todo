@@ -1,8 +1,9 @@
 import { Amplify, Hub } from "@aws-amplify/core";
 import { DataStore } from "@aws-amplify/datastore";
-import { ConflictResolution } from "@orion/task-system";
 import NetInfo from "@react-native-community/netinfo";
 import { useEffect, useState } from "react";
+import { logWithDevice } from "../utils/deviceLogger";
+import { ConflictResolution } from "../services/ConflictResolution";
 
 // NOTE: Amplify is configured by amplify-init-sync.ts in app/_layout.tsx
 // This runs synchronously before any components mount, so Amplify is always
@@ -66,13 +67,13 @@ export const useAmplifyState = (): AmplifyState => {
 
         // Start DataStore with sync enabled
         // This will attempt to sync with AppSync using the configured API key
-        console.log("[useAmplifyState] Starting DataStore...");
+        logWithDevice("useAmplifyState", "Starting DataStore...");
 
         // Verify Amplify config before starting DataStore
         try {
           const amplifyConfig = Amplify.getConfig();
           const hasConfig = !!amplifyConfig;
-          console.log("[useAmplifyState] Amplify config check:", {
+          logWithDevice("useAmplifyState", "Amplify config check", {
             hasConfig,
             configType: typeof amplifyConfig,
           });
@@ -81,8 +82,10 @@ export const useAmplifyState = (): AmplifyState => {
           // The API key is configured via Amplify.configure() and used internally
           // If we get here, Amplify was configured successfully
         } catch (configError) {
-          console.warn(
-            "[useAmplifyState] Could not verify Amplify config:",
+          // Keep this debug-only to avoid noisy startup logs; gated in logWithDevice().
+          logWithDevice(
+            "useAmplifyState",
+            "Could not verify Amplify config",
             configError
           );
         }
@@ -91,12 +94,13 @@ export const useAmplifyState = (): AmplifyState => {
         // The API key was already configured in amplify-init-sync.ts
         // Check the console logs for "[Amplify] ✅ Configured with API_KEY authentication"
         // to see which API key is being used
-        console.log(
-          "[useAmplifyState] Starting DataStore (API key configured in amplify-init-sync.ts)..."
+        logWithDevice(
+          "useAmplifyState",
+          "Starting DataStore (API key configured in amplify-init-sync.ts)..."
         );
 
         await DataStore.start();
-        console.log("[useAmplifyState] ✅ DataStore started successfully");
+        logWithDevice("useAmplifyState", "DataStore started successfully");
 
         if (!isMounted) return;
 

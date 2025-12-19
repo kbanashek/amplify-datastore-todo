@@ -3,13 +3,13 @@ import { useTaskForm } from "../useTaskForm";
 import { TaskStatus, TaskType } from "../../types/Task";
 
 // Mock TaskService
-jest.mock("@orion/task-system", () => ({
+jest.mock("../../services/TaskService", () => ({
   TaskService: {
     createTask: jest.fn(),
   },
 }));
 
-import { TaskService } from "@orion/task-system";
+import { TaskService } from "../../services/TaskService";
 import { Task } from "../../types/Task";
 
 describe("useTaskForm", () => {

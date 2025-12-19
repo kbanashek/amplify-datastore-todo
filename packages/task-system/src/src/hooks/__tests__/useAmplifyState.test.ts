@@ -23,7 +23,7 @@ jest.mock("@react-native-community/netinfo", () => ({
 }));
 
 // Mock ConflictResolution
-jest.mock("@orion/task-system", () => ({
+jest.mock("../../services/ConflictResolution", () => ({
   ConflictResolution: {
     configure: jest.fn(),
   },
@@ -32,7 +32,7 @@ jest.mock("@orion/task-system", () => ({
 import { Hub } from "@aws-amplify/core";
 import { DataStore } from "@aws-amplify/datastore";
 import NetInfo from "@react-native-community/netinfo";
-import { ConflictResolution } from "@orion/task-system";
+import { ConflictResolution } from "../../services/ConflictResolution";
 
 describe("useAmplifyState", () => {
   const mockHubListen = Hub.listen as jest.MockedFunction<typeof Hub.listen>;

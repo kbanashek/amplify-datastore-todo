@@ -17,23 +17,22 @@
  * be created for "today" relative to when the seed function is executed.
  */
 
-import {
-  ActivityService,
-  TaskService,
-  AppointmentService,
-} from "@orion/task-system";
+import { AppointmentService, TaskService } from "@orion/task-system";
 import {
   Appointment,
   AppointmentData,
-  AppointmentType,
   AppointmentStatus,
+  AppointmentType,
 } from "../src/types/Appointment";
-import { TaskType, TaskStatus, CreateTaskInput } from "../src/types/Task";
+import { CreateTaskInput, TaskStatus, TaskType } from "../src/types/Task";
 import {
+  createAllQuestionTypesActivity,
+  createClinicalVitalsActivity,
   createHealthSurveyActivity,
-  createPainAssessmentActivity,
   createMedicalHistoryActivity,
   createMultiPageHealthAssessmentActivity,
+  createPainAssessmentActivity,
+  createTasksForActivities,
 } from "./seed-question-data";
 
 // Logging helper
@@ -402,7 +401,7 @@ async function createStandaloneTasks(
 /**
  * Generate appointments for multiple days (reuses logic from seed-appointment-data)
  */
-function generateAppointments(): Appointment[] {
+function generateAppointments(options?: { count?: number }): Appointment[] {
   const appointments: Appointment[] = [];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -413,14 +412,16 @@ function generateAppointments(): Appointment[] {
     note: "Appointments are created dynamically for the current date",
   });
 
-  // Today's appointments
+  const count = options?.count ?? 2;
+
+  // Today's appointments (always create 2 first)
   const today9am = new Date(today);
   today9am.setHours(9, 0, 0, 0);
 
   const today2pm = new Date(today);
   today2pm.setHours(14, 0, 0, 0);
 
-  appointments.push(
+  const baseToday = [
     createAppointment(
       "Morning Check-up",
       "Regular health check-up with primary care physician",
@@ -440,40 +441,44 @@ function generateAppointments(): Appointment[] {
       45,
       "Please join the meeting 5 minutes early",
       "meeting-telehealth-001"
-    )
-  );
+    ),
+  ];
+  appointments.push(...baseToday.slice(0, Math.min(count, baseToday.length)));
 
-  // Tomorrow's appointments
-  const tomorrow = addDays(today, 1);
-  appointments.push(
-    createAppointment(
-      "Specialist Consultation",
-      "Consultation with cardiologist",
-      AppointmentType.ONSITE,
-      AppointmentStatus.SCHEDULED,
-      setTime(tomorrow, 10, 0),
-      60,
-      "Please bring all previous test results",
-      null
-    )
-  );
+  if (appointments.length < count) {
+    const tomorrow = addDays(today, 1);
+    appointments.push(
+      createAppointment(
+        "Specialist Consultation",
+        "Consultation with cardiologist",
+        AppointmentType.ONSITE,
+        AppointmentStatus.SCHEDULED,
+        setTime(tomorrow, 10, 0),
+        60,
+        "Please bring all previous test results",
+        null
+      )
+    );
+  }
 
-  // Next week appointments
-  const nextWeek = addDays(today, 7);
-  appointments.push(
-    createAppointment(
-      "Annual Physical Exam",
-      "Comprehensive annual physical examination",
-      AppointmentType.ONSITE,
-      AppointmentStatus.SCHEDULED,
-      setTime(nextWeek, 9, 0),
-      90,
-      "Please bring a list of all current medications",
-      null
-    )
-  );
+  if (appointments.length < count) {
+    const nextWeek = addDays(today, 7);
+    appointments.push(
+      createAppointment(
+        "Annual Physical Exam",
+        "Comprehensive annual physical examination",
+        AppointmentType.ONSITE,
+        AppointmentStatus.SCHEDULED,
+        setTime(nextWeek, 9, 0),
+        90,
+        "Please bring a list of all current medications",
+        null
+      )
+    );
+  }
 
-  return appointments;
+  // Hard cap
+  return appointments.slice(0, count);
 }
 
 /**
@@ -508,27 +513,112 @@ export interface CoordinatedSeedResult {
   };
 }
 
+export type SeedCoordinatedOptions = {
+  /**
+   * Total number of tasks to create (standalone + appointment-linked).
+   * Default: 10
+   */
+  maxTasks?: number;
+  /**
+   * Number of appointments to create.
+   * Default: 2
+   */
+  appointmentCount?: number;
+  /**
+   * Number of appointment-linked tasks to create per appointment.
+   * Default: 2
+   */
+  linkedTasksPerAppointment?: number;
+};
+
+async function createLinkedTasksForAppointment(
+  appointment: Appointment,
+  activities: any[],
+  taskCounter: { scheduled: number; timed: number; episodic: number },
+  limit: number
+): Promise<any[]> {
+  if (limit <= 0) return [];
+
+  const tasks: any[] = [];
+
+  const healthSurvey =
+    activities.find(a => a.name === "Health Survey") ?? activities[0];
+  const clinicalVitals =
+    activities.find(a => a.name === "Clinical Vitals") ?? healthSurvey;
+
+  const start = new Date(appointment.startAt);
+
+  // Task 1: due at the appointment hour (keeps "All Question Types" at 8:00 AM as the first bucket)
+  if (tasks.length < limit) {
+    taskCounter.scheduled++;
+    const title = `${getTaskTypeName(TaskType.SCHEDULED)} Task ${taskCounter.scheduled}`;
+    const dueAt = setTime(start, start.getHours(), 0);
+    tasks.push(
+      await createAnchoredTask(
+        title,
+        `Pre-visit survey for ${appointment.title}`,
+        appointment,
+        0,
+        dueAt,
+        healthSurvey.pk,
+        TaskType.SCHEDULED
+      )
+    );
+  }
+
+  // Task 2: due 3 hours after appointment start (same day)
+  if (tasks.length < limit) {
+    taskCounter.scheduled++;
+    const title = `${getTaskTypeName(TaskType.SCHEDULED)} Task ${taskCounter.scheduled}`;
+    const dueAt = new Date(start);
+    dueAt.setHours(start.getHours() + 3, 0, 0, 0);
+    tasks.push(
+      await createAnchoredTask(
+        title,
+        `Post-visit check-in after ${appointment.title}`,
+        appointment,
+        0,
+        dueAt,
+        clinicalVitals.pk,
+        TaskType.SCHEDULED
+      )
+    );
+  }
+
+  return tasks;
+}
+
 /**
  * Main coordinated seed function
  */
-export async function seedCoordinatedData(): Promise<CoordinatedSeedResult> {
+export async function seedCoordinatedData(
+  options?: SeedCoordinatedOptions
+): Promise<CoordinatedSeedResult> {
   log("========================================");
   log("Starting coordinated seed (Appointments + Tasks)...");
   log("========================================");
 
   try {
+    const maxTasks = options?.maxTasks ?? 10;
+    const appointmentCount = options?.appointmentCount ?? 2;
+    const linkedTasksPerAppointment = options?.linkedTasksPerAppointment ?? 2;
+
     // Step 1: Create activities
     log("Step 1: Creating activities");
     const multiPageHealth = await createMultiPageHealthAssessmentActivity();
     const healthSurvey = await createHealthSurveyActivity();
     const painAssessment = await createPainAssessmentActivity();
     const medicalHistory = await createMedicalHistoryActivity();
+    const clinicalVitals = await createClinicalVitalsActivity();
+    const allQuestionTypes = await createAllQuestionTypesActivity();
 
     const activities = [
       multiPageHealth,
       healthSurvey,
       painAssessment,
       medicalHistory,
+      clinicalVitals,
+      allQuestionTypes,
     ];
     log("All activities created", {
       count: activities.length,
@@ -537,7 +627,7 @@ export async function seedCoordinatedData(): Promise<CoordinatedSeedResult> {
 
     // Step 2: Generate appointments
     log("Step 2: Generating appointments");
-    const appointments = generateAppointments();
+    const appointments = generateAppointments({ count: appointmentCount });
     log("Appointments generated", {
       count: appointments.length,
       eventIds: appointments.map(a => a.eventId),
@@ -551,37 +641,38 @@ export async function seedCoordinatedData(): Promise<CoordinatedSeedResult> {
     // Initialize task counter for numbering tasks by type
     const taskCounter = { scheduled: 0, timed: 0, episodic: 0 };
 
-    for (const appointment of appointments) {
-      // Only create linked tasks for SCHEDULED appointments
-      if (appointment.status === AppointmentStatus.SCHEDULED) {
-        const appointmentTasks = await createAppointmentWithTasks(
-          appointment,
-          activities,
-          taskCounter
-        );
-        linkedTasks.push(...appointmentTasks);
+    // Budget: keep total tasks at maxTasks while still creating appointment-linked tasks.
+    const linkedBudget = Math.min(
+      Math.max(maxTasks - 1, 0),
+      appointmentCount * linkedTasksPerAppointment
+    );
 
-        // Track relationships
-        const appointmentDate = new Date(appointment.startAt);
-        const preVisitTasks = appointmentTasks.filter(
-          (t: any, i: number) => i === 0
-        );
-        const visitDayTasks = appointmentTasks.filter(
-          (t: any, i: number) => i === 1 || i === 2
-        );
-        const postVisitTasks = appointmentTasks.filter(
-          (t: any, i: number) => i === 3 || i === 4
-        );
+    let remainingLinked = linkedBudget;
+    for (const appointment of appointments) {
+      if (remainingLinked <= 0) break;
+      if (appointment.status !== AppointmentStatus.SCHEDULED) continue;
+
+      const perApptLimit = Math.min(linkedTasksPerAppointment, remainingLinked);
+      const appointmentTasks = await createLinkedTasksForAppointment(
+        appointment,
+        activities,
+        taskCounter,
+        perApptLimit
+      );
+
+      if (appointmentTasks.length > 0) {
+        linkedTasks.push(...appointmentTasks);
+        remainingLinked -= appointmentTasks.length;
 
         relationships.push({
           appointmentId: appointment.appointmentId,
           eventId: appointment.eventId,
-          appointmentDate,
+          appointmentDate: new Date(appointment.startAt),
           linkedTaskIds: appointmentTasks.map((t: any) => t.id),
           taskTypes: {
-            preVisit: preVisitTasks.map((t: any) => t.id),
-            visitDay: visitDayTasks.map((t: any) => t.id),
-            postVisit: postVisitTasks.map((t: any) => t.id),
+            preVisit: appointmentTasks.slice(0, 1).map((t: any) => t.id),
+            visitDay: [],
+            postVisit: appointmentTasks.slice(1).map((t: any) => t.id),
           },
         });
       }
@@ -592,19 +683,21 @@ export async function seedCoordinatedData(): Promise<CoordinatedSeedResult> {
       relationshipsCount: relationships.length,
     });
 
-    // Step 4: Create standalone tasks
+    // Step 4: Create standalone tasks (fills remaining budget, and always includes "All Question Types Test" first)
     log("Step 4: Creating standalone tasks");
-    const standaloneTasks = await createStandaloneTasks(
+    const standaloneBudget = Math.max(maxTasks - linkedTasks.length, 0);
+    const { tasks: standaloneTasks } = await createTasksForActivities(
       activities,
-      6,
-      taskCounter
+      {
+        maxTasks: standaloneBudget,
+      }
     );
     log("Standalone tasks created", {
       count: standaloneTasks.length,
     });
 
-    // Step 5: Combine all tasks
-    const allTasks = [...linkedTasks, ...standaloneTasks];
+    // Step 5: Combine tasks (All Question Types should already be first due-time bucket)
+    const allTasks = [...standaloneTasks, ...linkedTasks].slice(0, maxTasks);
 
     // Step 6: Save appointments
     log("Step 5: Saving appointments");

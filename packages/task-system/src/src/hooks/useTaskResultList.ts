@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { TaskResultService } from "@orion/task-system";
+import { TaskResultService } from "../services/TaskResultService";
 import { TaskResult } from "../types/TaskResult";
 
 interface UseTaskResultListReturn {

@@ -17,6 +17,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
       </Text>
       <View style={styles.progressBar}>
         <View
+          testID="progress-fill"
           style={[
             styles.progressFill,
             {

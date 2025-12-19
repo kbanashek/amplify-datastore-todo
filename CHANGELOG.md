@@ -38,6 +38,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved API key validation and error reporting for DataStore sync issues
 - Enhanced debugging capabilities for "Unauthorized" errors with detailed logging
 
+## [0.1.16] - 2025-12-19
+
+### Added
+
+- Added new question components (blood pressure, temperature, pulse/clinical dynamic input, weight/height, horizontal VAS, image capture) with unit tests
+- Added shared UI primitives (`FieldLabel`, `NumericInput`, `UnitText`) with unit tests
+- Exported question flow components from `@orion/task-system` package root for consistent app imports
+
+### Changed
+
+- Refactored question rendering to a component map with per-type value transformers
+- Updated seed reset flow to clear local DataStore cache/outbox before reseeding
+- Made “All Question Types Test” seeding idempotent (reuses existing task for today’s 8:00 AM bucket and removes duplicates)
+- Consolidated question/task components into the task-system package and removed shadow copies from `src/`
+
+### Fixed
+
+- Fixed “unsupported question type” rendering failures caused by importing stale shadow components
+- Hardened DataStore conflict resolution to ensure required keys are present in resolved models
+- Reduced require-cycle risk by switching internal package imports from `@orion/task-system` to relative imports
+
 ## [0.1.15] - 2025-12-15
 
 ### Added

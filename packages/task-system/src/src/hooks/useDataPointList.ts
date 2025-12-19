@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { DataPointService } from "@orion/task-system";
+import { DataPointService } from "../services/DataPointService";
 import { DataPoint, DataPointInstance } from "../types/DataPoint";
 
 interface UseDataPointListReturn {

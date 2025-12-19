@@ -31,3 +31,4 @@ echo "   3. Create a new API key"
 echo "   4. Run: amplify pull --appId d2vty117li92m8 --envName dev"
 echo "   5. Restart your app"
 
+

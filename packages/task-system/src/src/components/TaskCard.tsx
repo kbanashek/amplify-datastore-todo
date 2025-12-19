@@ -15,15 +15,6 @@ interface TaskCardProps {
 
 export const TaskCard: React.FC<TaskCardProps> = React.memo<TaskCardProps>(
   ({ task, onPress, onDelete, simple = false }) => {
-    if (__DEV__) {
-      console.log("[TaskCard] RENDER:", {
-        id: task.id,
-        title: task.title,
-        status: task.status,
-        simple,
-      });
-    }
-
     // Translate task title
     const { translatedText: translatedTitle } = useTranslatedText(
       task.title || "Untitled Task"
@@ -42,26 +33,14 @@ export const TaskCard: React.FC<TaskCardProps> = React.memo<TaskCardProps>(
 
     const handleBeginPress = useCallback(async () => {
       try {
-        if (__DEV__) {
-          console.log("[TaskCard] BEGIN pressed, current status:", task.status);
-        }
         // If task is not started, update status to STARTED
         if (
           task.status !== TaskStatus.STARTED &&
           task.status !== TaskStatus.INPROGRESS
         ) {
-          if (__DEV__) {
-            console.log("[TaskCard] Updating task status to STARTED");
-          }
           const updated = await TaskService.updateTask(task.id, {
             status: TaskStatus.STARTED,
           });
-          if (__DEV__) {
-            console.log(
-              "[TaskCard] Task updated, new status:",
-              updated?.status
-            );
-          }
         }
         // Call the onPress callback if provided
         onPress?.(task);
@@ -81,11 +60,6 @@ export const TaskCard: React.FC<TaskCardProps> = React.memo<TaskCardProps>(
           task.status !== TaskStatus.STARTED &&
           task.status !== TaskStatus.INPROGRESS
         ) {
-          if (__DEV__) {
-            console.log(
-              "[TaskCard] Card pressed, updating task status to STARTED"
-            );
-          }
           await TaskService.updateTask(task.id, {
             status: TaskStatus.STARTED,
           });

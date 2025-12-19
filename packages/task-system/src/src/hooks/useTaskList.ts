@@ -1,6 +1,6 @@
-import { TaskService } from "@orion/task-system";
 import { useEffect, useMemo, useState } from "react";
 import { useAmplify } from "../contexts/AmplifyContext";
+import { TaskService } from "../services/TaskService";
 import { Task, TaskFilters } from "../types/Task";
 import { NetworkStatus } from "./useAmplifyState";
 
@@ -35,12 +35,6 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
       // Subscribe to changes in tasks - just store data, don't filter
       // Filtering happens in useMemo below
       const sub = TaskService.subscribeTasks((items, synced) => {
-        if (__DEV__) {
-          console.log("[useTaskList] Subscription update", {
-            itemCount: items.length,
-            isSynced: synced,
-          });
-        }
         // Store unfiltered tasks - filtering happens in useMemo
         setAllTasks(items);
         setIsSynced(synced);

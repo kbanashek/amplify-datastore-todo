@@ -2,7 +2,7 @@ import { renderHook, waitFor, act } from "@testing-library/react-native";
 import { useDataPointInstance } from "../useDataPointInstance";
 
 // Mock DataPointService
-jest.mock("@orion/task-system", () => ({
+jest.mock("../../services/DataPointService", () => ({
   DataPointService: {
     subscribeDataPointInstances: jest.fn(),
     createDataPointInstance: jest.fn(),
@@ -10,7 +10,7 @@ jest.mock("@orion/task-system", () => ({
   },
 }));
 
-import { DataPointService } from "@orion/task-system";
+import { DataPointService } from "../../services/DataPointService";
 import {
   DataPointInstance,
   CreateDataPointInstanceInput,

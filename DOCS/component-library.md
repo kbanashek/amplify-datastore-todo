@@ -59,7 +59,7 @@ src/components/
 - **Examples**: Buttons, Inputs, Cards, Modals, Icons, Badges
 - **Status**: 🚧 In Progress - Currently has `IconSymbol`, expanding to full design system
 
-### 2. Question Components (`src/components/questions/`)
+### 2. Question Components (`@orion/task-system` → `packages/task-system/src/src/components/questions/`)
 
 - **Purpose**: Specialized components for health assessment forms
 - **Characteristics**:
@@ -67,7 +67,7 @@ src/components/
   - Validation built-in
   - Accessible form controls
   - Consistent styling and behavior
-- **Status**: ✅ Complete - All question types implemented and tested
+- **Status**: ✅ Complete - All question types implemented and tested (single source of truth in the task-system package)
 
 ### 3. Domain Components (`src/components/`)
 

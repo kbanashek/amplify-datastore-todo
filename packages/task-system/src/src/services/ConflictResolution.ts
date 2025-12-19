@@ -1,6 +1,18 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
 import { ModelName } from "../constants/modelNames";
 
+function ensurePkSk(model: any, fallback?: any): any {
+  if (!model) return model;
+  const merged = { ...model };
+  const pk = merged.pk ?? fallback?.pk;
+  const sk = merged.sk ?? fallback?.sk;
+  const id = merged.id ?? fallback?.id;
+  if (pk != null) merged.pk = pk;
+  if (sk != null) merged.sk = sk;
+  if (id != null) merged.id = id;
+  return merged;
+}
+
 /**
  * Unified conflict resolution strategy for all DataStore models
  * This handles conflicts for Task, Question, Activity, DataPoint,
@@ -22,36 +34,42 @@ export class ConflictResolution {
           `[ConflictResolution] Handling conflict for ${modelName}, operation: ${operation}, attempts: ${attempts}`
         );
 
+        // Defensive: Amplify can sometimes surface conflict callbacks with partial/null models.
+        // Always prefer returning a model that includes required keys (pk/sk/id) when available.
+        const safeLocal = localModel ?? null;
+        const safeRemote = remoteModel ?? null;
+
         // Task model has special handling for UPDATE operations
         if (modelName === ModelName.Task) {
           if (operation === OpType.UPDATE) {
             // Prefer local status changes, but remote timing updates
             const resolvedModel = {
-              ...remoteModel, // Start with remote model as base
-              status: localModel.status || remoteModel.status, // Prefer local status
+              ...(safeRemote || {}), // Start with remote model as base (may be missing pk/sk on tombstones)
+              status: safeLocal?.status || safeRemote?.status, // Prefer local status
               // For timing, prefer remote if it's more recent
               startTimeInMillSec:
-                remoteModel.startTimeInMillSec || localModel.startTimeInMillSec,
+                safeRemote?.startTimeInMillSec || safeLocal?.startTimeInMillSec,
               expireTimeInMillSec:
-                remoteModel.expireTimeInMillSec ||
-                localModel.expireTimeInMillSec,
+                safeRemote?.expireTimeInMillSec ||
+                safeLocal?.expireTimeInMillSec,
               endTimeInMillSec:
-                remoteModel.endTimeInMillSec || localModel.endTimeInMillSec,
+                safeRemote?.endTimeInMillSec || safeLocal?.endTimeInMillSec,
               // For activity responses, prefer local if it exists
               activityAnswer:
-                localModel.activityAnswer || remoteModel.activityAnswer,
+                safeLocal?.activityAnswer || safeRemote?.activityAnswer,
               activityResponse:
-                localModel.activityResponse || remoteModel.activityResponse,
+                safeLocal?.activityResponse || safeRemote?.activityResponse,
             };
-            return resolvedModel;
+            return ensurePkSk(resolvedModel, safeLocal);
           }
         }
 
         // Handle DELETE operations for all models
         if (operation === OpType.DELETE) {
           // If remote is already deleted, use that version
-          if (remoteModel._deleted) {
-            return remoteModel;
+          if (safeRemote?._deleted) {
+            // Amplify can provide a "tombstone" remoteModel missing required fields like pk/sk.
+            return ensurePkSk(safeRemote, safeLocal);
           }
 
           // If local model is incomplete, use remote with _deleted flag
@@ -59,29 +77,36 @@ export class ConflictResolution {
           let isIncomplete = false;
 
           if (modelName === ModelName.Task) {
-            isIncomplete = !localModel.title && !localModel.description;
+            isIncomplete = !safeLocal?.title && !safeLocal?.description;
           } else if (modelName === ModelName.Todo) {
-            isIncomplete = !localModel.name;
+            isIncomplete = !safeLocal?.name;
           } else if (modelName === ModelName.Question) {
-            isIncomplete = !localModel.question && !localModel.questionId;
+            isIncomplete = !safeLocal?.question && !safeLocal?.questionId;
           } else if (modelName === ModelName.Activity) {
-            isIncomplete = !localModel.name && !localModel.title;
+            isIncomplete = !safeLocal?.name && !safeLocal?.title;
           } else {
             // For other models (DataPoint, DataPointInstance, TaskAnswer, TaskResult, TaskHistory)
             // Check if pk and sk are missing
-            isIncomplete = !localModel.pk && !localModel.sk;
+            isIncomplete = !safeLocal?.pk && !safeLocal?.sk;
           }
 
           if (isIncomplete) {
-            return { ...remoteModel, _deleted: true };
+            // If we have no remote, fall back to local (ensuring keys).
+            if (!safeRemote) {
+              return ensurePkSk(safeLocal, safeRemote);
+            }
+            return ensurePkSk({ ...safeRemote, _deleted: true }, safeLocal);
           }
 
           // Otherwise use local delete
-          return localModel;
+          return ensurePkSk(safeLocal, safeRemote);
         }
 
         // Default to remote model for UPDATE and CREATE operations
-        return remoteModel;
+        // Prefer remote, but if remote is missing, fall back to local.
+        return (
+          ensurePkSk(safeRemote, safeLocal) ?? ensurePkSk(safeLocal, safeRemote)
+        );
       },
     });
   }

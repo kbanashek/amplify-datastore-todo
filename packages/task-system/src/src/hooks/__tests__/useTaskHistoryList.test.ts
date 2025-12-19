@@ -2,7 +2,7 @@ import { renderHook, waitFor, act } from "@testing-library/react-native";
 import { useTaskHistoryList } from "../useTaskHistoryList";
 
 // Mock TaskHistoryService
-jest.mock("@orion/task-system", () => ({
+jest.mock("../../services/TaskHistoryService", () => ({
   TaskHistoryService: {
     subscribeTaskHistories: jest.fn(),
     getTaskHistories: jest.fn(),
@@ -10,7 +10,7 @@ jest.mock("@orion/task-system", () => ({
   },
 }));
 
-import { TaskHistoryService } from "@orion/task-system";
+import { TaskHistoryService } from "../../services/TaskHistoryService";
 import { TaskHistory } from "../../types/TaskHistory";
 
 describe("useTaskHistoryList", () => {

@@ -83,14 +83,16 @@ export class TaskService {
    */
   static async createTask(input: CreateTaskInput): Promise<Task> {
     try {
-      console.log("[TaskService] Creating task with DataStore:", input);
+      logWithDevice("TaskService", "Creating task with DataStore", input);
       const task = await DataStore.save(
         new DataStoreTask({
           ...input,
         })
       );
 
-      console.log("[TaskService] Task created successfully:", task.id);
+      logWithDevice("TaskService", "Task created successfully", {
+        id: task.id,
+      });
       return task as Task;
     } catch (error) {
       console.error("Error creating task:", error);
@@ -277,20 +279,7 @@ export class TaskService {
       // For DELETE operations, we MUST refresh immediately to catch remote deletions
       const isDeleteOperation = msg.opType === OpType.DELETE;
 
-      // Log all operations to help debug sync issues
-      logWithDevice(
-        "TaskService",
-        `🔄 DataStore operation detected via observe (${source}) - ${msg.opType}`,
-        {
-          taskId: element?.id,
-          taskTitle: element?.title,
-          status: element?.status,
-          operationType: msg.opType,
-          deleted: element?._deleted,
-          _version: element?._version,
-          isDeleteOperation,
-        }
-      );
+      // Verbose observe logging is gated in logWithDevice() to avoid console "loops".
 
       // Refresh query IMMEDIATELY for ALL operations to ensure cross-device sync
       // This is critical for catching remote updates from other devices
@@ -301,19 +290,7 @@ export class TaskService {
       // 4. This ensures consistency across devices
       DataStore.query(DataStoreTask)
         .then(tasks => {
-          logWithDevice(
-            "TaskService",
-            `✅ Query refresh after ${msg.opType} operation (${source}) - ${tasks.length} tasks`,
-            {
-              taskCount: tasks.length,
-              taskIds: tasks.slice(0, 10).map((t: any) => t.id), // Only log first 10 IDs
-              taskStatuses: tasks.slice(0, 10).map((t: any) => ({
-                id: t.id,
-                title: t.title,
-                status: t.status,
-              })),
-            }
-          );
+          // Verbose query-refresh logging is gated in logWithDevice() to avoid console "loops".
           // Always call callback to ensure UI updates across all devices
           // This is CRITICAL for DELETE operations - without this, deletions won't appear on other devices
           callback(tasks as Task[], true);
@@ -430,7 +407,7 @@ export class TaskService {
       const { TaskResultService } = await import("./TaskResultService");
       const { TaskHistoryService } = await import("./TaskHistoryService");
 
-      console.log("[TaskService] Starting nuclear reset...");
+      logWithDevice("TaskService", "Starting nuclear reset...");
 
       // Delete in order: answers, results, histories first, then tasks
       // This ensures we delete dependent data before parent data
@@ -439,7 +416,7 @@ export class TaskService {
       const taskHistories = await TaskHistoryService.deleteAllTaskHistories();
       const tasks = await this.deleteAllTasks();
 
-      console.log("[TaskService] Nuclear reset completed", {
+      logWithDevice("TaskService", "Nuclear reset completed", {
         tasks,
         taskAnswers,
         taskResults,

@@ -88,6 +88,7 @@ const QuestionReviewItem: React.FC<{
         <Text style={styles.questionText}>{translatedText}</Text>
         {onEdit && (
           <TouchableOpacity
+            testID={`edit-button-${questionId}`}
             style={styles.editButton}
             onPress={() => onEdit(questionId)}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
@@ -126,11 +127,6 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
     Math.max(bottomInset || 0, 20) +
     (isIOS() ? Math.max(tabBarHeight || 60, 60) : 0) +
     20;
-
-  console.log("📋 [ReviewScreen] Rendering review screen", {
-    screensCount: screens.length,
-    answersCount: Object.keys(answers).length,
-  });
 
   const formatAnswer = (element: ParsedElement, answer: any): string => {
     if (answer === null || answer === undefined || answer === "") {
@@ -201,6 +197,7 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
       {onSubmit && (
         <View style={styles.submitButtonContainer}>
           <TouchableOpacity
+            testID="submit-button"
             style={styles.submitButton}
             onPress={onSubmit}
             disabled={isSubmitting}
