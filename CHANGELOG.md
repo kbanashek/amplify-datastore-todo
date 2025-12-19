@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhanced "Unauthorized" error detection and reporting in `useAmplifyState` hook
 - Updated AWS architecture documentation with comprehensive troubleshooting steps
 - Package module loading prep: host-owned task-system bootstrap/init flow and LX host example wiring
+- Moved `LXHostExample` into `src/screens/` and updated in-app harness/doc imports
 
 ### Fixed
 
