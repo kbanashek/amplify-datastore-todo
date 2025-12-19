@@ -1,9 +1,8 @@
 import { Amplify, Hub } from "@aws-amplify/core";
-import { DataStore } from "@aws-amplify/datastore";
 import NetInfo from "@react-native-community/netinfo";
 import { useEffect, useState } from "react";
+import { initTaskSystem } from "../runtime/taskSystem";
 import { logWithDevice } from "../utils/deviceLogger";
-import { ConflictResolution } from "../services/ConflictResolution";
 
 // NOTE: Amplify is configured by amplify-init-sync.ts in app/_layout.tsx
 // This runs synchronously before any components mount, so Amplify is always
@@ -39,7 +38,14 @@ export interface AmplifyState {
   conflictCount: number;
 }
 
-export const useAmplifyState = (): AmplifyState => {
+export const useAmplifyState = (options?: {
+  /**
+   * If true, this hook will start DataStore (after host has configured Amplify).
+   * Default is true for this repo's harness. LX can set false and manage DataStore lifecycle itself.
+   */
+  autoStartDataStore?: boolean;
+}): AmplifyState => {
+  const autoStartDataStore = options?.autoStartDataStore ?? true;
   const [isReady, setIsReady] = useState<boolean>(false);
   const [networkStatus, setNetworkStatus] = useState<NetworkStatus>(
     NetworkStatus.Online
@@ -61,50 +67,7 @@ export const useAmplifyState = (): AmplifyState => {
         // Small delay to ensure Amplify configuration is complete
         await new Promise(resolve => setTimeout(resolve, 100));
 
-        // Configure unified conflict resolution strategy for all models
-        // This only sets the conflict handler, it does NOT reset Amplify config
-        ConflictResolution.configure();
-
-        // Start DataStore with sync enabled
-        // This will attempt to sync with AppSync using the configured API key
-        logWithDevice("useAmplifyState", "Starting DataStore...");
-
-        // Verify Amplify config before starting DataStore
-        try {
-          const amplifyConfig = Amplify.getConfig();
-          const hasConfig = !!amplifyConfig;
-          logWithDevice("useAmplifyState", "Amplify config check", {
-            hasConfig,
-            configType: typeof amplifyConfig,
-          });
-
-          // Note: Amplify.getConfig() may not expose API key directly
-          // The API key is configured via Amplify.configure() and used internally
-          // If we get here, Amplify was configured successfully
-        } catch (configError) {
-          // Keep this debug-only to avoid noisy startup logs; gated in logWithDevice().
-          logWithDevice(
-            "useAmplifyState",
-            "Could not verify Amplify config",
-            configError
-          );
-        }
-
-        // Log that we're starting DataStore
-        // The API key was already configured in amplify-init-sync.ts
-        // Check the console logs for "[Amplify] ✅ Configured with API_KEY authentication"
-        // to see which API key is being used
-        logWithDevice(
-          "useAmplifyState",
-          "Starting DataStore (API key configured in amplify-init-sync.ts)..."
-        );
-
-        await DataStore.start();
-        logWithDevice("useAmplifyState", "DataStore started successfully");
-
-        if (!isMounted) return;
-
-        // Subscribe to DataStore events
+        // Subscribe to DataStore events BEFORE starting DataStore so we don't miss early events.
         hubListener = Hub.listen("datastore", async (hubData: any) => {
           if (!isMounted) return;
 
@@ -131,8 +94,6 @@ export const useAmplifyState = (): AmplifyState => {
               setSyncState(SyncState.Error);
 
               // Log sync errors for debugging
-              // Note: Check console logs for "[Amplify] ✅ Configured with API_KEY authentication"
-              // to see which API key is being used
               console.error("[useAmplifyState] DataStore sync error:", {
                 event,
                 data,
@@ -190,6 +151,47 @@ export const useAmplifyState = (): AmplifyState => {
             );
           }
         });
+
+        // Configure package-level DataStore options (conflict handler) and optionally start DataStore.
+        // IMPORTANT: This does NOT call Amplify.configure() — the host owns Amplify.configure().
+        logWithDevice("useAmplifyState", "Initializing task-system runtime...");
+
+        // Verify Amplify config before starting DataStore
+        try {
+          const amplifyConfig = Amplify.getConfig();
+          const hasConfig = !!amplifyConfig;
+          logWithDevice("useAmplifyState", "Amplify config check", {
+            hasConfig,
+            configType: typeof amplifyConfig,
+          });
+
+          // Note: Amplify.getConfig() may not expose API key directly
+          // The API key is configured via Amplify.configure() and used internally
+          // If we get here, Amplify was configured successfully
+        } catch (configError) {
+          // Keep this debug-only to avoid noisy startup logs; gated in logWithDevice().
+          logWithDevice(
+            "useAmplifyState",
+            "Could not verify Amplify config",
+            configError
+          );
+        }
+
+        // Log that we're starting DataStore
+        // The API key was already configured in amplify-init-sync.ts
+        // Check the console logs for "[Amplify] ✅ Configured with API_KEY authentication"
+        // to see which API key is being used
+        logWithDevice(
+          "useAmplifyState",
+          "Starting DataStore (if enabled) — API key configured by host Amplify.configure()..."
+        );
+
+        await initTaskSystem({ startDataStore: autoStartDataStore });
+        logWithDevice("useAmplifyState", "task-system runtime initialized", {
+          autoStartDataStore,
+        });
+
+        if (!isMounted) return;
       } catch (error) {
         console.error("Error initializing DataStore:", error);
         if (isMounted) {
@@ -209,7 +211,7 @@ export const useAmplifyState = (): AmplifyState => {
         unsubscribeNetInfo();
       }
     };
-  }, []);
+  }, [autoStartDataStore]);
 
   return {
     isReady,

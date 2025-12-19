@@ -1,17 +1,17 @@
-import React from "react";
-import {
-  Modal,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Pressable,
-} from "react-native";
-import { useRouter } from "expo-router";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@orion/task-system";
+import { useRouter } from "expo-router";
+import React from "react";
+import {
+  Modal,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { TestIds } from "../constants/testIds";
 
 interface MenuItem {
@@ -63,6 +63,12 @@ const menuItems: MenuItem[] = [
     route: "/(tabs)/seed-screen",
     icon: "leaf.fill",
     description: "Seed Activities and Tasks for testing",
+  },
+  {
+    name: "LX Host Example",
+    route: "/(tabs)/lx-host-example",
+    icon: "network",
+    description: "Test LX-style host + fixture import flow",
   },
 ];
 

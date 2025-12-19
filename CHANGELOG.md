@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved error logging for DataStore sync errors with detailed API key information
 - Enhanced "Unauthorized" error detection and reporting in `useAmplifyState` hook
 - Updated AWS architecture documentation with comprehensive troubleshooting steps
+- Package module loading prep: host-owned task-system bootstrap/init flow and LX host example wiring
 
 ### Fixed
 

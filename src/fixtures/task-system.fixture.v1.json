@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "fixtureId": "example-all-question-types-absolute-timestamps",
+  "activities": [
+    {
+      "pk": "ACTIVITY-ALL-TYPES-FIXTURE-1",
+      "sk": "SK-ACTIVITY-ALL-TYPES-FIXTURE-1",
+      "name": "All Question Types",
+      "title": "All Question Types Test",
+      "description": "Fixture activity with many question types on one screen",
+      "type": "SURVEY",
+      "activityGroups": "{\"id\":\"group-1\",\"questions\":[{\"id\":\"q_text\",\"type\":\"textField\",\"text\":\"What is your name?\",\"friendlyName\":\"Name\",\"required\":true},{\"id\":\"q_single\",\"type\":\"singleSelect\",\"text\":\"Pick one option\",\"friendlyName\":\"Single Select\",\"required\":true,\"choices\":[{\"id\":\"c1\",\"order\":1,\"text\":\"Option A\",\"value\":\"A\"},{\"id\":\"c2\",\"order\":2,\"text\":\"Option B\",\"value\":\"B\"}]},{\"id\":\"q_multi\",\"type\":\"multiSelect\",\"text\":\"Pick multiple options\",\"friendlyName\":\"Multi Select\",\"required\":false,\"choices\":[{\"id\":\"m1\",\"order\":1,\"text\":\"Red\",\"value\":\"red\"},{\"id\":\"m2\",\"order\":2,\"text\":\"Blue\",\"value\":\"blue\"},{\"id\":\"m3\",\"order\":3,\"text\":\"Green\",\"value\":\"green\"}]},{\"id\":\"q_number\",\"type\":\"numberField\",\"text\":\"Enter a number\",\"friendlyName\":\"Number\",\"required\":false},{\"id\":\"q_date\",\"type\":\"dateField\",\"text\":\"Select a date\",\"friendlyName\":\"Date\",\"required\":false},{\"id\":\"q_bp\",\"type\":\"bloodPressure\",\"text\":\"Blood pressure\",\"friendlyName\":\"Blood Pressure\",\"required\":false},{\"id\":\"q_temp\",\"type\":\"temperature\",\"text\":\"Temperature\",\"friendlyName\":\"Temperature\",\"required\":false},{\"id\":\"q_pulse\",\"type\":\"pulse\",\"text\":\"Pulse\",\"friendlyName\":\"Pulse\",\"required\":false},{\"id\":\"q_weight_height\",\"type\":\"weightHeight\",\"text\":\"Weight & Height\",\"friendlyName\":\"Weight & Height\",\"required\":false},{\"id\":\"q_vas\",\"type\":\"horizontalVAS\",\"text\":\"Pain level\",\"friendlyName\":\"Pain\",\"required\":false},{\"id\":\"q_image\",\"type\":\"imageCapture\",\"text\":\"Capture an image\",\"friendlyName\":\"Image\",\"required\":false}]}",
+      "layouts": "[{\"type\":\"MOBILE\",\"screens\":[{\"id\":\"screen-1\",\"name\":\"All Types\",\"order\":0,\"elements\":[{\"id\":\"q_text\",\"order\":1,\"displayProperties\":[{\"key\":\"width\",\"value\":\"\\\"100%\\\"\"}]},{\"id\":\"q_single\",\"order\":2,\"displayProperties\":[{\"key\":\"width\",\"value\":\"\\\"100%\\\"\"}]},{\"id\":\"q_multi\",\"order\":3,\"displayProperties\":[{\"key\":\"width\",\"value\":\"\\\"100%\\\"\"}]},{\"id\":\"q_number\",\"order\":4,\"displayProperties\":[{\"key\":\"width\",\"value\":\"\\\"100%\\\"\"}]},{\"id\":\"q_date\",\"order\":5,\"displayProperties\":[{\"key\":\"width\",\"value\":\"\\\"100%\\\"\"}]},{\"id\":\"q_bp\",\"order\":6,\"displayProperties\":[{\"key\":\"width\",\"value\":\"\\\"100%\\\"\"}]},{\"id\":\"q_temp\",\"order\":7,\"displayProperties\":[{\"key\":\"width\",\"value\":\"\\\"100%\\\"\"}]},{\"id\":\"q_pulse\",\"order\":8,\"displayProperties\":[{\"key\":\"width\",\"value\":\"\\\"100%\\\"\"}]},{\"id\":\"q_weight_height\",\"order\":9,\"displayProperties\":[{\"key\":\"width\",\"value\":\"\\\"100%\\\"\"}]},{\"id\":\"q_vas\",\"order\":10,\"displayProperties\":[{\"key\":\"width\",\"value\":\"\\\"100%\\\"\"}]},{\"id\":\"q_image\",\"order\":11,\"displayProperties\":[{\"key\":\"width\",\"value\":\"\\\"100%\\\"\"}]}]}]}]",
+      "resumable": true,
+      "progressBar": true
+    }
+  ],
+  "tasks": [
+    {
+      "pk": "TASK-ALL-TYPES-FIXTURE-1",
+      "sk": "SK-TASK-ALL-TYPES-FIXTURE-1",
+      "title": "All Question Types Test (Fixture)",
+      "description": "Loaded from disk fixture: references the All Question Types activity",
+      "taskType": "SCHEDULED",
+      "status": "OPEN",
+      "startTimeInMillSec": 1766140800000,
+      "expireTimeInMillSec": 1766144400000,
+      "entityId": "ACTIVITY-ALL-TYPES-FIXTURE-1",
+      "activityIndex": 0,
+      "showBeforeStart": true,
+      "allowEarlyCompletion": true,
+      "allowLateCompletion": true,
+      "allowLateEdits": false
+    }
+  ]
+}
