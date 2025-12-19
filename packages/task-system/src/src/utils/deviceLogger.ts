@@ -6,6 +6,27 @@
 import { Platform } from "react-native";
 
 /**
+ * Enable verbose debug logging only when explicitly opted-in.
+ *
+ * - Default: OFF (prevents "log loops" from render/subscription hot paths)
+ * - To enable: set `EXPO_PUBLIC_TASK_SYSTEM_DEBUG_LOGS=1`
+ */
+function debugLogsEnabled(): boolean {
+  // eslint-disable-next-line no-undef
+  const isDev = typeof __DEV__ !== "undefined" ? __DEV__ : false;
+  if (!isDev) return false;
+
+  // Expo public env var (preferred)
+  const expoFlag =
+    typeof process !== "undefined" &&
+    typeof process.env !== "undefined" &&
+    process.env.EXPO_PUBLIC_TASK_SYSTEM_DEBUG_LOGS === "1";
+  if (expoFlag) return true;
+
+  return false;
+}
+
+/**
  * Get device/platform identifier for logging
  * @returns Device identifier string (e.g., "iOS", "Android", "Web")
  */
@@ -48,6 +69,7 @@ export function logWithDevice(
   message: string,
   data?: any
 ): void {
+  if (!debugLogsEnabled()) return;
   const prefix = getLogPrefix(serviceName);
   if (data) {
     console.log(`${prefix} ${message}`, data);

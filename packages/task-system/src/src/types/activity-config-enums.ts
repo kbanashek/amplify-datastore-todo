@@ -49,6 +49,23 @@ export const QuestionType = {
   TIME: "time",
   TIME_PICKER_FIELD: "time-picker-field",
 
+  // Clinical measurements
+  BLOOD_PRESSURE: "bloodPressure",
+  TEMPERATURE: "temperature",
+  PULSE: "pulse",
+  WEIGHT: "weight",
+  HEIGHT: "height",
+  WEIGHT_HEIGHT: "weightHeight",
+  CLINICAL_DYNAMIC_INPUT: "clinicalDynamicInput",
+
+  // Visual scales
+  HORIZONTAL_VAS: "horizontalVAS",
+  VERTICAL_VAS: "verticalVAS",
+  NUMERIC_RATING_SCALE: "numericRatingScale",
+
+  // Media
+  IMAGE_CAPTURE: "imageCapture",
+
   // Other
   LABEL: "label",
 } as const;

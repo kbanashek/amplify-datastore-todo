@@ -25,6 +25,12 @@
     "dist/**",
     "node_modules/**",
 
+    // Never ship test code/types in the package build output.
+    "**/__tests__/**",
+    "**/__mocks__/**",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+
     "src/src/amplify-config.*",
     "src/src/amplify-init.*",
     "src/src/amplify-init-sync.*",

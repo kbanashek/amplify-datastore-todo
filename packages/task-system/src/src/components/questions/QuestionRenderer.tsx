@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useTranslatedText } from "../../hooks/useTranslatedText";
 import { ParsedElement } from "../../types/ActivityConfig";
 import { QuestionType } from "../../types/activity-config-enums";
+import { BloodPressureQuestion } from "./BloodPressureQuestion";
+import { ClinicalDynamicInputQuestion } from "./ClinicalDynamicInputQuestion";
 import { DateQuestion } from "./DateQuestion";
+import { HorizontalVASQuestion } from "./HorizontalVASQuestion";
+import { ImageCaptureQuestion } from "./ImageCaptureQuestion";
 import { MultiSelectQuestion } from "./MultiSelectQuestion";
 import { NumberQuestion } from "./NumberQuestion";
 import { SingleSelectQuestion } from "./SingleSelectQuestion";
+import { TemperatureQuestion } from "./TemperatureQuestion";
 import { TextQuestion } from "./TextQuestion";
+import { WeightHeightQuestion } from "./WeightHeightQuestion";
 
 // Component to render a single error message (extracted to avoid hooks in map)
 // This must be a separate component because hooks cannot be called inside loops
@@ -19,6 +25,223 @@ const ErrorMessage: React.FC<{ error: string }> = ({ error }) => {
       <Text style={styles.errorText}>{translatedError}</Text>
     </View>
   );
+};
+
+// Component map with value transformers - single source of truth for question rendering
+type QuestionConfig = {
+  component: React.ComponentType<any>;
+  getValue: (answerValue: any) => any;
+};
+
+const QUESTION_CONFIG: Record<string, QuestionConfig> = {
+  // Text types - default to empty string
+  [QuestionType.TEXT]: {
+    component: TextQuestion,
+    getValue: (answerValue: any) => answerValue || "",
+  },
+  [QuestionType.TEXT_FIELD]: {
+    component: TextQuestion,
+    getValue: (answerValue: any) => answerValue || "",
+  },
+  [QuestionType.TEXTAREA_FIELD]: {
+    component: TextQuestion,
+    getValue: (answerValue: any) => answerValue || "",
+  },
+
+  // Single select types - default to null
+  [QuestionType.SINGLE_SELECT]: {
+    component: SingleSelectQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+  [QuestionType.CHOICE_FIELD]: {
+    component: SingleSelectQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+  [QuestionType.RADIO_FIELD]: {
+    component: SingleSelectQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+  [QuestionType.DROPDOWN_FIELD]: {
+    component: SingleSelectQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+
+  // Multi select types - default to empty array
+  [QuestionType.MULTI_SELECT]: {
+    component: MultiSelectQuestion,
+    getValue: (answerValue: any) =>
+      Array.isArray(answerValue) ? answerValue : [],
+  },
+  [QuestionType.MULTI_SELECT_FIELD]: {
+    component: MultiSelectQuestion,
+    getValue: (answerValue: any) =>
+      Array.isArray(answerValue) ? answerValue : [],
+  },
+  [QuestionType.CHECKBOX_FIELD]: {
+    component: MultiSelectQuestion,
+    getValue: (answerValue: any) =>
+      Array.isArray(answerValue) ? answerValue : [],
+  },
+
+  // Number types - default to empty string
+  [QuestionType.NUMBER]: {
+    component: NumberQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : "",
+  },
+  [QuestionType.NUMBER_FIELD]: {
+    component: NumberQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : "",
+  },
+  [QuestionType.NUMERIC_SCALE]: {
+    component: NumberQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : "",
+  },
+
+  // Date/Time types - default to null
+  [QuestionType.DATE]: {
+    component: DateQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+  [QuestionType.DATE_FIELD]: {
+    component: DateQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+  [QuestionType.DATE_TIME_FIELD]: {
+    component: DateQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+  [QuestionType.TIME]: {
+    component: DateQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+  [QuestionType.TIME_PICKER_FIELD]: {
+    component: DateQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+
+  // Clinical measurement types - default to null
+  [QuestionType.TEMPERATURE]: {
+    component: TemperatureQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+  [QuestionType.PULSE]: {
+    component: ClinicalDynamicInputQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+  [QuestionType.CLINICAL_DYNAMIC_INPUT]: {
+    component: ClinicalDynamicInputQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+  [QuestionType.BLOOD_PRESSURE]: {
+    component: BloodPressureQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+  [QuestionType.WEIGHT]: {
+    component: WeightHeightQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+  [QuestionType.HEIGHT]: {
+    component: WeightHeightQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+  [QuestionType.WEIGHT_HEIGHT]: {
+    component: WeightHeightQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+
+  // Visual scales - default to null
+  [QuestionType.HORIZONTAL_VAS]: {
+    component: HorizontalVASQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+
+  // Media - default to null
+  [QuestionType.IMAGE_CAPTURE]: {
+    component: ImageCaptureQuestion,
+    getValue: (answerValue: any) =>
+      answerValue !== undefined ? answerValue : null,
+  },
+};
+
+// Helper to normalize question type to match enum format (handles case variations)
+// This ensures all question types match the QuestionType enum values exactly
+const normalizeToEnumFormat = (type: string): string => {
+  if (!type) return type;
+  const lower = type.toLowerCase().trim();
+
+  // Direct mapping of all enum values (case-insensitive)
+  // This maps all possible input formats to the exact enum values
+  const enumMap: Record<string, string> = {
+    // Clinical measurement types - these are the ones causing issues
+    temperature: QuestionType.TEMPERATURE,
+    pulse: QuestionType.PULSE,
+    bloodpressure: QuestionType.BLOOD_PRESSURE,
+    "blood-pressure": QuestionType.BLOOD_PRESSURE,
+    blood_pressure: QuestionType.BLOOD_PRESSURE,
+    weight: QuestionType.WEIGHT,
+    height: QuestionType.HEIGHT,
+    weightheight: QuestionType.WEIGHT_HEIGHT,
+    "weight-height": QuestionType.WEIGHT_HEIGHT,
+    weight_height: QuestionType.WEIGHT_HEIGHT,
+    clinicaldynamicinput: QuestionType.CLINICAL_DYNAMIC_INPUT,
+    "clinical-dynamic-input": QuestionType.CLINICAL_DYNAMIC_INPUT,
+    clinical_dynamic_input: QuestionType.CLINICAL_DYNAMIC_INPUT,
+    // Visual scales
+    horizontalvas: QuestionType.HORIZONTAL_VAS,
+    "horizontal-vas": QuestionType.HORIZONTAL_VAS,
+    horizontal_vas: QuestionType.HORIZONTAL_VAS,
+    // Media
+    imagecapture: QuestionType.IMAGE_CAPTURE,
+    "image-capture": QuestionType.IMAGE_CAPTURE,
+    image_capture: QuestionType.IMAGE_CAPTURE,
+    // Text types
+    text: QuestionType.TEXT,
+    "text-field": QuestionType.TEXT_FIELD,
+    "textarea-field": QuestionType.TEXTAREA_FIELD,
+    // Select types
+    singleselect: QuestionType.SINGLE_SELECT,
+    "choice-field": QuestionType.CHOICE_FIELD,
+    "radio-field": QuestionType.RADIO_FIELD,
+    "dropdown-field": QuestionType.DROPDOWN_FIELD,
+    multiselect: QuestionType.MULTI_SELECT,
+    "multi-select-field": QuestionType.MULTI_SELECT_FIELD,
+    "checkbox-field": QuestionType.CHECKBOX_FIELD,
+    // Number types
+    number: QuestionType.NUMBER,
+    "number-field": QuestionType.NUMBER_FIELD,
+    numericscale: QuestionType.NUMERIC_SCALE,
+    // Date/Time types
+    date: QuestionType.DATE,
+    "date-field": QuestionType.DATE_FIELD,
+    "date-time-field": QuestionType.DATE_TIME_FIELD,
+    time: QuestionType.TIME,
+    "time-picker-field": QuestionType.TIME_PICKER_FIELD,
+    // Other
+    label: QuestionType.LABEL,
+  };
+
+  // Return normalized enum value if found, otherwise return original (for backwards compatibility)
+  return enumMap[lower] || type;
 };
 
 interface QuestionRendererProps {
@@ -35,26 +258,13 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
   errors = {},
 }) => {
   const { question, displayProperties, patientAnswer } = element;
-  // Keep original case for type checking, but also have lowercase for switch
-  const questionType = question.type || "";
-  const questionTypeLower = questionType.toLowerCase();
+  // Normalize question type to match enum format for consistent comparison
+  const rawType = (question.type || "").trim();
+  const questionType = normalizeToEnumFormat(rawType);
 
   // Use currentAnswer if available (from state), otherwise fall back to patientAnswer (initial)
   const answerValue =
     currentAnswer !== undefined ? currentAnswer : patientAnswer;
-
-  console.log("❓ [QuestionRenderer] Rendering question", {
-    questionId: question.id,
-    questionType,
-    friendlyName: question.friendlyName,
-    hasPatientAnswer: patientAnswer !== null && patientAnswer !== undefined,
-    hasCurrentAnswer: currentAnswer !== undefined,
-    answerValue:
-      typeof answerValue === "string"
-        ? answerValue.substring(0, 30)
-        : answerValue,
-    hasErrors: errors[question.id]?.length > 0,
-  });
 
   // Get display properties
   const width = displayProperties.width || "100%";
@@ -75,209 +285,95 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
     ? parseInt(displayProperties.paddingRight, 10)
     : 0;
 
-  // Build container style with proper typing
-  const containerStyle: {
-    width?: number | "100%";
-    marginLeft: number;
-    marginRight: number;
-    paddingLeft: number;
-    paddingRight: number;
-  } = {
-    ...(width === "100%"
-      ? { width: "100%" as const }
-      : width
-        ? { width: parseFloat(width) || undefined }
-        : {}),
-    marginLeft,
-    marginRight,
-    paddingLeft,
-    paddingRight,
-  };
+  // Build container style with proper typing - memoized to prevent recreation
+  const containerStyle = useMemo(() => {
+    const style: {
+      width?: number | "100%";
+      marginLeft: number;
+      marginRight: number;
+      paddingLeft: number;
+      paddingRight: number;
+    } = {
+      ...(width === "100%"
+        ? { width: "100%" as const }
+        : width
+          ? { width: parseFloat(width) || undefined }
+          : {}),
+      marginLeft,
+      marginRight,
+      paddingLeft,
+      paddingRight,
+    };
+    return style;
+  }, [width, marginLeft, marginRight, paddingLeft, paddingRight]);
 
   // Get original question text (strip HTML tags)
   const originalQuestionText = question.text
     ? question.text.replace(/<[^>]*>/g, "").trim()
     : question.friendlyName || "";
 
-  console.log("❓ [QuestionRenderer] Preparing question text for translation", {
-    questionId: question.id,
-    originalText: originalQuestionText.substring(0, 50),
-    originalLength: originalQuestionText.length,
-    hasText: !!question.text,
-    hasFriendlyName: !!question.friendlyName,
-  });
-
   // Translate question text
-  const { translatedText: questionText, isTranslating: isTranslatingQuestion } =
+  const { translatedText: questionText } =
     useTranslatedText(originalQuestionText);
-
-  console.log("❓ [QuestionRenderer] Translation result", {
-    questionId: question.id,
-    original: originalQuestionText.substring(0, 50),
-    translated: questionText?.substring(0, 50) || "(empty)",
-    isTranslating: isTranslatingQuestion,
-    changed: questionText !== originalQuestionText,
-  });
 
   const questionErrors = errors[question.id] || [];
 
-  // Render based on question type
+  // Memoize onChange handler to prevent infinite re-renders
+  const handleAnswerChange = useCallback(
+    (value: any) => {
+      onAnswerChange(question.id, value);
+    },
+    [question.id, onAnswerChange]
+  );
+
+  // Memoize transformed value to prevent unnecessary recalculations
+  const config = QUESTION_CONFIG[questionType];
+  const transformedValue = useMemo(() => {
+    if (!config) return undefined;
+    return config.getValue(answerValue);
+  }, [config, answerValue]);
+
+  // Render based on question type using component map
   const renderQuestion = () => {
-    // Check for numericScale first (case-sensitive check)
-    if (
-      questionType === "numericScale" ||
-      questionTypeLower === "numericscale"
-    ) {
+    // Handle special case: LABEL (doesn't use a component)
+    if (questionType === QuestionType.LABEL) {
       return (
-        <NumberQuestion
-          question={question}
-          value={answerValue !== undefined ? answerValue : ""}
-          onChange={value => onAnswerChange(question.id, value)}
-          displayProperties={displayProperties}
-          errors={questionErrors}
-        />
+        <View style={styles.labelContainer}>
+          <Text style={[styles.labelText, { fontSize, color: fontColor }]}>
+            {questionText}
+          </Text>
+        </View>
       );
     }
 
-    // Check for other types that need special handling
-    if (
-      questionType === "horizontalvas" ||
-      questionTypeLower === "horizontalvas"
-    ) {
-      // Horizontal VAS scale - treat as numeric scale
+    if (!config) {
       return (
-        <NumberQuestion
-          question={question}
-          value={answerValue !== undefined ? answerValue : ""}
-          onChange={value => onAnswerChange(question.id, value)}
-          displayProperties={displayProperties}
-          errors={questionErrors}
-        />
+        <View style={styles.unsupportedContainer}>
+          <Text style={styles.unsupportedText}>
+            Unsupported question type: {questionType}
+          </Text>
+          <Text style={styles.questionText}>{questionText}</Text>
+        </View>
       );
     }
 
-    if (
-      questionType === "bloodPressure" ||
-      questionTypeLower === "bloodpressure"
-    ) {
-      // Blood pressure - treat as number input
-      return (
-        <NumberQuestion
-          question={question}
-          value={answerValue !== undefined ? answerValue : ""}
-          onChange={value => onAnswerChange(question.id, value)}
-          displayProperties={displayProperties}
-          errors={questionErrors}
-        />
-      );
-    }
+    // Render component with transformed value
+    const QuestionComponent = config.component;
 
-    if (questionType === "weight" || questionTypeLower === "weight") {
-      // Weight - treat as number input
-      return (
-        <NumberQuestion
-          question={question}
-          value={answerValue !== undefined ? answerValue : ""}
-          onChange={value => onAnswerChange(question.id, value)}
-          displayProperties={displayProperties}
-          errors={questionErrors}
-        />
-      );
-    }
-
-    // Use lowercase for other standard types
-    switch (questionTypeLower) {
-      case QuestionType.TEXT:
-      case QuestionType.TEXT_FIELD:
-      case QuestionType.TEXTAREA_FIELD:
-        return (
-          <TextQuestion
-            question={question}
-            value={answerValue || ""}
-            onChange={value => onAnswerChange(question.id, value)}
-            displayProperties={displayProperties}
-            errors={questionErrors}
-          />
-        );
-
-      case QuestionType.SINGLE_SELECT:
-      case QuestionType.CHOICE_FIELD:
-      case QuestionType.RADIO_FIELD:
-      case QuestionType.DROPDOWN_FIELD:
-        return (
-          <SingleSelectQuestion
-            question={question}
-            value={answerValue !== undefined ? answerValue : null}
-            onChange={value => onAnswerChange(question.id, value)}
-            displayProperties={displayProperties}
-            errors={questionErrors}
-          />
-        );
-
-      case QuestionType.MULTI_SELECT:
-      case QuestionType.MULTI_SELECT_FIELD:
-      case QuestionType.CHECKBOX_FIELD:
-        return (
-          <MultiSelectQuestion
-            question={question}
-            value={Array.isArray(answerValue) ? answerValue : []}
-            onChange={value => onAnswerChange(question.id, value)}
-            displayProperties={displayProperties}
-            errors={questionErrors}
-          />
-        );
-
-      case QuestionType.NUMBER:
-      case QuestionType.NUMBER_FIELD:
-        return (
-          <NumberQuestion
-            question={question}
-            value={answerValue !== undefined ? answerValue : ""}
-            onChange={value => onAnswerChange(question.id, value)}
-            displayProperties={displayProperties}
-            errors={questionErrors}
-          />
-        );
-
-      case QuestionType.DATE:
-      case QuestionType.DATE_FIELD:
-      case QuestionType.DATE_TIME_FIELD:
-      case QuestionType.TIME:
-      case QuestionType.TIME_PICKER_FIELD:
-        return (
-          <DateQuestion
-            question={question}
-            value={answerValue !== undefined ? answerValue : null}
-            onChange={value => onAnswerChange(question.id, value)}
-            displayProperties={displayProperties}
-            errors={questionErrors}
-          />
-        );
-
-      case QuestionType.LABEL:
-        return (
-          <View style={styles.labelContainer}>
-            <Text style={[styles.labelText, { fontSize, color: fontColor }]}>
-              {questionText}
-            </Text>
-          </View>
-        );
-
-      default:
-        return (
-          <View style={styles.unsupportedContainer}>
-            <Text style={styles.unsupportedText}>
-              Unsupported question type: {questionType}
-            </Text>
-            <Text style={styles.questionText}>{questionText}</Text>
-          </View>
-        );
-    }
+    return (
+      <QuestionComponent
+        question={question}
+        value={transformedValue}
+        onChange={handleAnswerChange}
+        displayProperties={displayProperties}
+        errors={questionErrors}
+      />
+    );
   };
 
   return (
     <View style={[styles.container, containerStyle]}>
-      {questionType !== "label" && (
+      {questionType !== QuestionType.LABEL && (
         <Text style={[styles.questionText, { fontSize, color: fontColor }]}>
           {questionText}
           {question.required && <Text style={styles.required}> *</Text>}

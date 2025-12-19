@@ -59,14 +59,6 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
   const hasTodayGroup = groupedTasks.some(g => g.dayLabel === "Today");
   const shouldShowAppointments = todayAppointments.length > 0;
 
-  console.log("[GroupedTasksView] Rendering", {
-    groupedTasksCount: groupedTasks.length,
-    hasTodayGroup,
-    todayAppointmentsCount: todayAppointments.length,
-    shouldShowAppointments,
-    dayLabels: groupedTasks.map(g => g.dayLabel),
-  });
-
   if (groupedTasks.length === 0 && !shouldShowAppointments) {
     return (
       <View style={[styles.centerContainer, styles.fill]}>
@@ -114,22 +106,6 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
         const isToday = dayGroup.dayLabel === "Today";
         const showAppointments = isToday && todayAppointments.length > 0;
 
-        console.log(
-          `[GroupedTasksView] Rendering dayGroup: ${dayGroup.dayLabel}`,
-          {
-            isToday,
-            todayAppointmentsCount: todayAppointments.length,
-            showAppointments,
-            hasOnAppointmentPress: !!onAppointmentPress,
-            hasTimezone: !!appointmentTimezoneId,
-            todayAppointments: todayAppointments.map(apt => ({
-              id: apt.appointmentId,
-              title: apt.title,
-              startAt: apt.startAt,
-            })),
-          }
-        );
-
         return (
           <View key={dayGroup.dayLabel} style={styles.dayGroup}>
             {/* Date Header - hide if hideDateHeader is true and it's "Today" */}
@@ -156,14 +132,6 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
                   </Text>
                 ) : (
                   todayAppointments.map(appointment => {
-                    console.log(
-                      `[GroupedTasksView] Rendering appointment card: ${appointment.title}`,
-                      {
-                        appointmentId: appointment.appointmentId,
-                        startAt: appointment.startAt,
-                        hasOnPress: !!onAppointmentPress,
-                      }
-                    );
                     return (
                       <AppointmentCard
                         key={appointment.appointmentId}

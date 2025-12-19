@@ -28,12 +28,12 @@
 
 ## Current Test Coverage
 
-| Category                | Location                              | Examples                                                                       |
-| ----------------------- | ------------------------------------- | ------------------------------------------------------------------------------ |
-| **Hooks**               | `src/hooks/__tests__/`                | `useAppointmentList.test.ts`, `useGroupedTasks.test.ts`                        |
-| **Services**            | `src/services/__tests__/`             | `TaskService.test.ts`, `AppointmentService.test.ts`, `ActivityService.test.ts` |
-| **Components**          | `src/components/__tests__/`           | `TaskCard.test.tsx`, `AppointmentCard.test.tsx`, `GroupedTasksView.test.tsx`   |
-| **Question Components** | `src/components/questions/__tests__/` | `IntroductionScreen.test.tsx`, `SingleSelectQuestion.test.tsx`, etc.           |
+| Category                | Location                                                       | Examples                                                                       |
+| ----------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| **Hooks**               | `src/hooks/__tests__/`                                         | `useAppointmentList.test.ts`, `useGroupedTasks.test.ts`                        |
+| **Services**            | `src/services/__tests__/`                                      | `TaskService.test.ts`, `AppointmentService.test.ts`, `ActivityService.test.ts` |
+| **Components**          | `src/components/__tests__/`                                    | `TaskCard.test.tsx`, `AppointmentCard.test.tsx`, `GroupedTasksView.test.tsx`   |
+| **Question Components** | `packages/task-system/src/src/components/questions/__tests__/` | `IntroductionScreen.test.tsx`, `SingleSelectQuestion.test.tsx`, etc.           |
 
 ## Running Unit Tests
 

@@ -1,26 +1,13 @@
-import { Hub } from "@aws-amplify/core";
+import { Amplify, Hub } from "@aws-amplify/core";
 import { DataStore } from "@aws-amplify/datastore";
 import NetInfo from "@react-native-community/netinfo";
 import { useEffect, useState } from "react";
-// configureAmplify should be provided by the consuming app
-// Import from main app's amplify-config or provide as parameter
-// For now, we'll make it optional and let the consuming app handle it
-let configureAmplifyFn: (() => void) | null = null;
+import { logWithDevice } from "../utils/deviceLogger";
+import { ConflictResolution } from "../services/ConflictResolution";
 
-export function setConfigureAmplify(fn: () => void): void {
-  configureAmplifyFn = fn;
-}
-
-function configureAmplify(): void {
-  if (configureAmplifyFn) {
-    configureAmplifyFn();
-  } else {
-    console.warn(
-      "[useAmplifyState] configureAmplify not set. Call setConfigureAmplify() from consuming app."
-    );
-  }
-}
-import { ConflictResolution } from "@orion/task-system";
+// NOTE: Amplify is configured by amplify-init-sync.ts in app/_layout.tsx
+// This runs synchronously before any components mount, so Amplify is always
+// configured with the correct DataStore settings before useAmplifyState runs.
 
 // Define enums for network and sync states
 export enum NetworkStatus {
@@ -67,12 +54,53 @@ export const useAmplifyState = (): AmplifyState => {
 
     const initializeDataStore = async () => {
       try {
-        configureAmplify();
+        // CRITICAL: Amplify is already configured by amplify-init-sync.ts in app/_layout.tsx
+        // DO NOT call configureAmplify() again here as it may reset the auth configuration
+        // The amplify-init-sync.ts runs synchronously before any components mount
+
+        // Small delay to ensure Amplify configuration is complete
+        await new Promise(resolve => setTimeout(resolve, 100));
+
         // Configure unified conflict resolution strategy for all models
+        // This only sets the conflict handler, it does NOT reset Amplify config
         ConflictResolution.configure();
 
         // Start DataStore with sync enabled
+        // This will attempt to sync with AppSync using the configured API key
+        logWithDevice("useAmplifyState", "Starting DataStore...");
+
+        // Verify Amplify config before starting DataStore
+        try {
+          const amplifyConfig = Amplify.getConfig();
+          const hasConfig = !!amplifyConfig;
+          logWithDevice("useAmplifyState", "Amplify config check", {
+            hasConfig,
+            configType: typeof amplifyConfig,
+          });
+
+          // Note: Amplify.getConfig() may not expose API key directly
+          // The API key is configured via Amplify.configure() and used internally
+          // If we get here, Amplify was configured successfully
+        } catch (configError) {
+          // Keep this debug-only to avoid noisy startup logs; gated in logWithDevice().
+          logWithDevice(
+            "useAmplifyState",
+            "Could not verify Amplify config",
+            configError
+          );
+        }
+
+        // Log that we're starting DataStore
+        // The API key was already configured in amplify-init-sync.ts
+        // Check the console logs for "[Amplify] ✅ Configured with API_KEY authentication"
+        // to see which API key is being used
+        logWithDevice(
+          "useAmplifyState",
+          "Starting DataStore (API key configured in amplify-init-sync.ts)..."
+        );
+
         await DataStore.start();
+        logWithDevice("useAmplifyState", "DataStore started successfully");
 
         if (!isMounted) return;
 
@@ -101,6 +129,45 @@ export const useAmplifyState = (): AmplifyState => {
               break;
             case DataStoreEventType.SyncQueriesError:
               setSyncState(SyncState.Error);
+
+              // Log sync errors for debugging
+              // Note: Check console logs for "[Amplify] ✅ Configured with API_KEY authentication"
+              // to see which API key is being used
+              console.error("[useAmplifyState] DataStore sync error:", {
+                event,
+                data,
+                errorDetails: data?.error || data,
+                note: "Check earlier logs for '[Amplify] ✅ Configured' to see API key being used",
+              });
+
+              // Check if it's an auth error
+              const isUnauthorized =
+                data?.error?.message?.includes("Unauthorized") ||
+                data?.error?.errors?.[0]?.message?.includes("Unauthorized") ||
+                data?.error?.message?.includes("401") ||
+                data?.error?.errors?.[0]?.message?.includes("401") ||
+                String(data?.error || "").includes("Unauthorized");
+
+              if (isUnauthorized) {
+                console.error(
+                  "[useAmplifyState] ⚠️ UNAUTHORIZED ERROR - API key issue detected!",
+                  {
+                    expectedApiKey: "da2-b655th...",
+                    suggestion: [
+                      "1. Check console logs for '[Amplify] ✅ Configured with API_KEY authentication'",
+                      "2. Verify the API key prefix shown matches: da2-b655th...",
+                      "3. Verify API key exists in AWS AppSync Console and is NOT expired",
+                      "4. If API key is wrong, update aws-exports.js and restart app completely",
+                      "5. If API key is correct but still failing, the key may not exist in AWS",
+                      "6. Create a new API key in AWS Console if needed",
+                    ],
+                    error: data?.error,
+                    errorMessage: data?.error?.message,
+                    errorDetails: data?.error?.errors,
+                    fullError: JSON.stringify(data?.error || data, null, 2),
+                  }
+                );
+              }
               break;
             default:
               break;

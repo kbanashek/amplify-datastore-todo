@@ -2,14 +2,14 @@ import { renderHook, waitFor, act } from "@testing-library/react-native";
 import { useActivity } from "../useActivity";
 
 // Mock ActivityService
-jest.mock("@orion/task-system", () => ({
+jest.mock("../../services/ActivityService", () => ({
   ActivityService: {
     getActivities: jest.fn(),
     subscribeActivities: jest.fn(),
   },
 }));
 
-import { ActivityService } from "@orion/task-system";
+import { ActivityService } from "../../services/ActivityService";
 import { Activity } from "../../types/Activity";
 
 describe("useActivity", () => {

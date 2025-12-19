@@ -10,7 +10,7 @@
 
 2. **`src/components/`** (Main app domain components)
    - Domain components: TaskCard, AppointmentCard, TaskContainer, GroupedTasksView, etc.
-   - Question components: `src/components/questions/`
+   - Question components: `@orion/task-system` (source: `packages/task-system/src/src/components/questions/`)
    - Layout components: GlobalHeader, NavigationMenu, LanguageSelector, NetworkStatusIndicator
    - **134 TypeScript files total**
 

@@ -19,7 +19,7 @@ jest.mock("@aws-amplify/datastore", () => ({
 }));
 
 // Mock TaskService
-jest.mock("@orion/task-system", () => ({
+jest.mock("../../services/TaskService", () => ({
   TaskService: {
     getTaskById: jest.fn(),
     updateTask: jest.fn(),
@@ -49,7 +49,7 @@ jest.mock("../useQuestionSubmission", () => ({
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { DataStore } from "@aws-amplify/datastore";
-import { TaskService } from "@orion/task-system";
+import { TaskService } from "../../services/TaskService";
 import { useActivityData } from "../useActivityData";
 import { useAnswerManagement } from "../useAnswerManagement";
 import { useQuestionValidation } from "../useQuestionValidation";

@@ -34,10 +34,8 @@ function createActivityConfig(questions: any[]) {
         {
           id: "screen-1",
           order: 1,
-          elements: questions.map((question, index) => ({
-            id: question.id,
-            order: index + 1,
-            displayProperties: [
+          elements: questions.map((question, index) => {
+            const baseDisplayProperties = [
               { key: "fieldType", value: JSON.stringify(question.type) },
               { key: "width", value: JSON.stringify("100%") },
               { key: "marginLeft", value: "0" },
@@ -46,9 +44,81 @@ function createActivityConfig(questions: any[]) {
               { key: "paddingRight", value: "10" },
               { key: "fontSize", value: "16" },
               { key: "fontColor", value: "#000000" },
-            ],
-            question: question,
-          })),
+            ];
+
+            // Add type-specific display properties
+            const typeSpecificProps: any[] = [];
+
+            if (question.type === "bloodPressure") {
+              typeSpecificProps.push({
+                key: "bloodPressure",
+                value: JSON.stringify({
+                  displayType: "line",
+                  leftLabeli18nKey: "Systolic",
+                  rightLabeli18nKey: "Diastolic",
+                  uniti18nKey: "mmHg",
+                }),
+              });
+            } else if (question.type === "temperature") {
+              typeSpecificProps.push({
+                key: "others",
+                value: JSON.stringify({
+                  unitType: "both", // "celsius", "fahrenheit", or "both"
+                  fieldDisplayStyle: "line",
+                }),
+              });
+            } else if (question.type === "pulse") {
+              typeSpecificProps.push(
+                { key: "type", value: "pulse" },
+                { key: "unitText", value: "bpm" },
+                { key: "fieldLabelText", value: "Pulse Rate" },
+                {
+                  key: "bloodPressure",
+                  value: JSON.stringify({
+                    displayType: "line",
+                  }),
+                }
+              );
+            } else if (
+              question.type === "weight" ||
+              question.type === "height"
+            ) {
+              typeSpecificProps.push({
+                key: "others",
+                value: JSON.stringify({
+                  fieldType: question.type,
+                  unitType: "both", // "kg", "lb", "cm", "in", or "both"
+                  fieldDisplayStyle: "line",
+                }),
+              });
+            } else if (question.type === "horizontalVAS") {
+              typeSpecificProps.push({
+                key: "others",
+                value: JSON.stringify({
+                  scaleMin: 0,
+                  scaleMax: 10,
+                  scaleIncrements: 1,
+                  lowerRangei18nKey: "No pain",
+                  upperRangei18nKey: "Severe pain",
+                }),
+              });
+            } else if (question.type === "imageCapture") {
+              typeSpecificProps.push(
+                { key: "addPhotoText", value: "Add Photo" },
+                { key: "editPhotoText", value: "Edit Photo" }
+              );
+            }
+
+            return {
+              id: question.id,
+              order: index + 1,
+              displayProperties: [
+                ...baseDisplayProperties,
+                ...typeSpecificProps,
+              ],
+              question: question,
+            };
+          }),
         },
       ],
     },
@@ -309,6 +379,125 @@ const sampleQuestions = {
     choices: [],
     dataMappers: [],
   },
+
+  // Blood pressure question
+  bloodPressure: {
+    id: "Question.blood-pressure",
+    type: "bloodPressure",
+    text: "<p>Please enter your blood pressure reading:</p>",
+    i18nKey: "blood_pressure_question_key",
+    friendlyName: "Blood Pressure",
+    dataPointKey: "patient.bloodPressure",
+    required: true,
+    validations: [
+      {
+        type: "required",
+        text: "Blood pressure is required",
+        i18nKey: "blood_pressure_required_key",
+        warningOnly: false,
+      },
+    ],
+    choices: [],
+    dataMappers: [],
+  },
+
+  // Temperature question
+  temperature: {
+    id: "Question.temperature",
+    type: "temperature",
+    text: "<p>What is your current body temperature?</p>",
+    i18nKey: "temperature_question_key",
+    friendlyName: "Temperature",
+    dataPointKey: "patient.temperature",
+    required: true,
+    validations: [
+      {
+        type: "required",
+        text: "Temperature is required",
+        i18nKey: "temperature_required_key",
+        warningOnly: false,
+      },
+    ],
+    choices: [],
+    dataMappers: [],
+  },
+
+  // Pulse/Clinical dynamic input question
+  pulse: {
+    id: "Question.pulse",
+    type: "pulse",
+    text: "<p>What is your current pulse rate?</p>",
+    i18nKey: "pulse_question_key",
+    friendlyName: "Pulse Rate",
+    dataPointKey: "patient.pulse",
+    required: true,
+    validations: [
+      {
+        type: "required",
+        text: "Pulse rate is required",
+        i18nKey: "pulse_required_key",
+        warningOnly: false,
+      },
+    ],
+    choices: [],
+    dataMappers: [],
+  },
+
+  // Weight/Height question
+  weightHeight: {
+    id: "Question.weight-height",
+    type: "weight",
+    text: "<p>What is your current weight?</p>",
+    i18nKey: "weight_question_key",
+    friendlyName: "Weight",
+    dataPointKey: "patient.weight",
+    required: true,
+    validations: [
+      {
+        type: "required",
+        text: "Weight is required",
+        i18nKey: "weight_required_key",
+        warningOnly: false,
+      },
+    ],
+    choices: [],
+    dataMappers: [],
+  },
+
+  // Horizontal VAS question
+  horizontalVAS: {
+    id: "Question.horizontal-vas-pain",
+    type: "horizontalVAS",
+    text: "<p>On a scale of 0 to 10, how would you rate your current pain level?</p>",
+    i18nKey: "pain_vas_question_key",
+    friendlyName: "Pain Level (VAS)",
+    dataPointKey: "patient.painVAS",
+    required: true,
+    validations: [
+      {
+        type: "required",
+        text: "Please select a pain level",
+        i18nKey: "pain_vas_required_key",
+        warningOnly: false,
+      },
+    ],
+    choices: [],
+    dataMappers: [],
+  },
+
+  // Image capture question
+  imageCapture: {
+    id: "Question.image-capture",
+    type: "imageCapture",
+    text: "<p>Please capture a photo of the affected area:</p>",
+    i18nKey: "image_capture_question_key",
+    friendlyName: "Photo",
+    dataPointKey: "patient.photo",
+    required: false,
+    validations: [],
+    choices: [],
+    dataMappers: [],
+  },
 };
 
 /**
@@ -325,11 +514,6 @@ export async function createHealthSurveyActivity() {
   const config = createActivityConfig(questions);
   const timestamp = Date.now();
 
-  log("Creating Health Survey Activity", {
-    questionsCount: questions.length,
-    questionTypes: questions.map(q => q.type),
-  });
-
   const activity = await ActivityService.createActivity({
     pk: `ACTIVITY-HEALTH-SURVEY-${timestamp}`,
     sk: `SK-${timestamp}`,
@@ -343,12 +527,7 @@ export async function createHealthSurveyActivity() {
     progressBar: true,
   });
 
-  log("Health Survey Activity created successfully", {
-    activityId: activity.id,
-    pk: activity.pk,
-    hasLayouts: !!activity.layouts,
-    hasActivityGroups: !!activity.activityGroups,
-  });
+  log("Health Survey Activity created");
   return activity;
 }
 
@@ -365,11 +544,6 @@ export async function createPainAssessmentActivity() {
   const config = createActivityConfig(questions);
   const timestamp = Date.now();
 
-  log("Creating Pain Assessment Activity", {
-    questionsCount: questions.length,
-    questionTypes: questions.map(q => q.type),
-  });
-
   const activity = await ActivityService.createActivity({
     pk: `ACTIVITY-PAIN-ASSESSMENT-${timestamp}`,
     sk: `SK-${timestamp}`,
@@ -383,10 +557,7 @@ export async function createPainAssessmentActivity() {
     progressBar: true,
   });
 
-  log("Pain Assessment Activity created successfully", {
-    activityId: activity.id,
-    pk: activity.pk,
-  });
+  log("Pain Assessment Activity created");
   return activity;
 }
 
@@ -405,11 +576,6 @@ export async function createMedicalHistoryActivity() {
   const config = createActivityConfig(questions);
   const timestamp = Date.now();
 
-  log("Creating Medical History Activity", {
-    questionsCount: questions.length,
-    questionTypes: questions.map(q => q.type),
-  });
-
   const activity = await ActivityService.createActivity({
     pk: `ACTIVITY-MEDICAL-HISTORY-${timestamp}`,
     sk: `SK-${timestamp}`,
@@ -423,10 +589,41 @@ export async function createMedicalHistoryActivity() {
     progressBar: true,
   });
 
-  log("Medical History Activity created successfully", {
-    activityId: activity.id,
-    pk: activity.pk,
+  log("Medical History Activity created");
+  return activity;
+}
+
+/**
+ * Create a clinical vitals activity with all new question types
+ */
+export async function createClinicalVitalsActivity() {
+  const questions = [
+    sampleQuestions.bloodPressure,
+    sampleQuestions.temperature,
+    sampleQuestions.pulse,
+    sampleQuestions.weightHeight,
+    sampleQuestions.horizontalVAS,
+    sampleQuestions.imageCapture,
+  ];
+
+  const config = createActivityConfig(questions);
+  const timestamp = Date.now();
+
+  const activity = await ActivityService.createActivity({
+    pk: `ACTIVITY-CLINICAL-VITALS-${timestamp}`,
+    sk: `SK-${timestamp}`,
+    name: "Clinical Vitals",
+    title: "Clinical Vitals Assessment",
+    description:
+      "Comprehensive clinical vitals collection with all new question types",
+    type: "ASSESSMENT",
+    activityGroups: JSON.stringify(config.activityGroups),
+    layouts: JSON.stringify(config.layouts),
+    resumable: true,
+    progressBar: true,
   });
+
+  log("Clinical Vitals Activity created");
   return activity;
 }
 
@@ -450,14 +647,16 @@ function getTaskTypeName(taskType: TaskType): string {
   }
 }
 
-export async function createTasksForActivities(activities: any[]): Promise<{
+export async function createTasksForActivities(
+  activities: any[],
+  options?: { maxTasks?: number }
+): Promise<{
   tasks: any[];
   taskCounter: { scheduled: number; timed: number; episodic: number };
 }> {
   const now = Date.now();
   const tasks: any[] = [];
   const taskTypes = [TaskType.SCHEDULED, TaskType.TIMED, TaskType.EPISODIC];
-  // Initialize task counter for numbering tasks by type
   const taskCounter = { scheduled: 0, timed: 0, episodic: 0 };
   const times = [
     { hour: 8, minute: 0 }, // 8:00 AM
@@ -467,49 +666,123 @@ export async function createTasksForActivities(activities: any[]): Promise<{
     { hour: 20, minute: 0 }, // 8:00 PM
   ];
 
-  log("Creating tasks for activities", {
-    activitiesCount: activities.length,
-    activities: activities.map(a => ({
-      id: a.id,
-      pk: a.pk,
-      title: a.title || a.name,
-    })),
-    daysToCreate: 6,
-  });
+  const allQuestionTypesActivity = activities.find(
+    a =>
+      a.name === "All Question Types" || a.title === "All Question Types Test"
+  );
 
-  // Create tasks for today + 5 days (6 days total)
-  for (let dayOffset = 0; dayOffset < 6; dayOffset++) {
+  const MAX_TASKS = options?.maxTasks ?? 10;
+  let tasksCreated = 0;
+
+  // Always create "All Question Types Test" for today and make it the first due-time bucket.
+  if (!allQuestionTypesActivity) {
+    log("WARNING: All Question Types activity not found!");
+  } else {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const dueAt = new Date(today);
+    dueAt.setHours(8, 0, 0, 0);
+
+    // Prevent duplicate "All Question Types Test" tasks across repeated seed runs.
+    // If one already exists for today's 8:00 AM bucket, reuse it and delete any extras.
+    const dueAtMs = dueAt.getTime();
+    const existingAllTypes = (await TaskService.getTasks()).filter(t => {
+      const sameTitle = t.title === "All Question Types Test";
+      const sameDueBucket = t.expireTimeInMillSec === dueAtMs;
+      return sameTitle && sameDueBucket;
+    });
+
+    if (existingAllTypes.length > 0) {
+      const [keep, ...extras] = existingAllTypes;
+
+      // Best-effort cleanup: remove duplicates if they exist.
+      if (extras.length > 0) {
+        await Promise.all(
+          extras.map(async t => {
+            try {
+              await TaskService.deleteTask(t.id);
+            } catch {
+              // Ignore - if a task was already deleted remotely or not present in cloud,
+              // it will be cleared on the next DataStore cache reset.
+            }
+          })
+        );
+        log(`Removed duplicate All Question Types tasks`, {
+          removed: extras.length,
+          keptId: keep.id,
+        });
+      }
+
+      tasks.unshift(keep);
+      tasksCreated++;
+      taskCounter.scheduled++;
+      log("All Question Types task reused");
+    } else {
+      const ts = Date.now();
+      const allTypesTask = await TaskService.createTask({
+        pk: `TASK-ALL-TYPES-${ts}`,
+        sk: `SK-${ts}`,
+        title: "All Question Types Test",
+        description: "Test all question types on a single screen",
+        taskType: TaskType.SCHEDULED,
+        status: TaskStatus.OPEN,
+        startTimeInMillSec: now,
+        expireTimeInMillSec: dueAtMs,
+        entityId: allQuestionTypesActivity.pk,
+        activityIndex: 0,
+        showBeforeStart: true,
+        allowEarlyCompletion: true,
+        allowLateCompletion: true,
+        allowLateEdits: false,
+      });
+
+      tasks.unshift(allTypesTask);
+      tasksCreated++;
+      taskCounter.scheduled++;
+      log("All Question Types task created");
+    }
+  }
+
+  for (
+    let dayOffset = 0;
+    dayOffset < 6 && tasksCreated < MAX_TASKS;
+    dayOffset++
+  ) {
     const taskDate = new Date();
     taskDate.setDate(taskDate.getDate() + dayOffset);
     taskDate.setHours(0, 0, 0, 0);
 
-    // Create 2-3 tasks per day
-    const tasksPerDay = dayOffset === 0 ? 3 : 2; // More tasks today
+    const remainingTasks = MAX_TASKS - tasksCreated;
+    const tasksPerDay =
+      dayOffset === 0
+        ? Math.min(3, remainingTasks)
+        : Math.min(2, remainingTasks);
 
-    for (let i = 0; i < tasksPerDay; i++) {
-      const timeIndex = i % times.length;
+    for (let i = 0; i < tasksPerDay && tasksCreated < MAX_TASKS; i++) {
+      // On day 0, skip the 8:00 slot (reserved for All Question Types)
+      const baseIndex = dayOffset === 0 ? i + 1 : i;
+      const timeIndex = baseIndex % times.length;
       const time = times[timeIndex];
+
       const taskDateTime = new Date(taskDate);
       taskDateTime.setHours(time.hour, time.minute, 0, 0);
       const expireTime = taskDateTime.getTime();
 
+      if (activities.length === 0) continue;
+
+      const availableActivities = activities.filter(
+        a => a.pk !== allQuestionTypesActivity?.pk
+      );
+      const activity =
+        availableActivities.length > 0
+          ? availableActivities[
+              Math.floor(Math.random() * availableActivities.length)
+            ]
+          : activities[Math.floor(Math.random() * activities.length)];
+
       const taskType = taskTypes[i % taskTypes.length];
       const taskTimestamp = Date.now() + dayOffset * 1000 + i;
 
-      // Only create tasks with questions - always link to an activity
-      if (activities.length === 0) {
-        log("Skipping task creation - no activities available", {
-          dayOffset,
-          taskIndex: i,
-        });
-        continue;
-      }
-
-      // Select an activity for this task
-      const activity =
-        activities[Math.floor(Math.random() * activities.length)];
-
-      // Increment counter for this task type and create title
       let taskTitle: string;
       if (taskType === TaskType.SCHEDULED) {
         taskCounter.scheduled++;
@@ -522,15 +795,6 @@ export async function createTasksForActivities(activities: any[]): Promise<{
         taskTitle = `${getTaskTypeName(TaskType.EPISODIC)} Task ${taskCounter.episodic}`;
       }
 
-      log("Creating task with questions", {
-        dayOffset,
-        taskIndex: i,
-        taskType,
-        activityTitle: activity.title || activity.name,
-        activityPk: activity.pk,
-        expireTime: new Date(expireTime).toISOString(),
-      });
-
       const task = await TaskService.createTask({
         pk: `TASK-${dayOffset}-${i}-${taskTimestamp}`,
         sk: `SK-${taskTimestamp}`,
@@ -541,7 +805,7 @@ export async function createTasksForActivities(activities: any[]): Promise<{
         status: TaskStatus.OPEN,
         startTimeInMillSec: now,
         expireTimeInMillSec: expireTime,
-        entityId: activity.pk, // Always link to activity
+        entityId: activity.pk,
         activityIndex: 0,
         showBeforeStart: true,
         allowEarlyCompletion: true,
@@ -549,27 +813,12 @@ export async function createTasksForActivities(activities: any[]): Promise<{
         allowLateEdits: false,
       });
 
-      log("Task created successfully", {
-        taskId: task.id,
-        taskTitle: task.title,
-        taskType: task.taskType,
-        entityId: task.entityId,
-        hasQuestions: !!task.entityId,
-        dayOffset,
-        expireTime: new Date(task.expireTimeInMillSec || 0).toISOString(),
-      });
-
       tasks.push(task);
+      tasksCreated++;
     }
   }
 
-  log("All tasks created", {
-    tasksCount: tasks.length,
-    tasksWithQuestions: tasks.filter(t => t.entityId).length,
-    taskIds: tasks.map(t => t.id),
-    allTasksHaveQuestions: tasks.every(t => t.entityId),
-  });
-
+  log(`All tasks created: ${tasks.length} total`);
   return { tasks, taskCounter };
 }
 
@@ -771,6 +1020,30 @@ export async function createMultiPageHealthAssessmentActivity() {
       dataMappers: [],
     },
     {
+      id: "Question.page4-temperature",
+      type: "temperature",
+      text: "<p>What is your current body temperature?</p>",
+      i18nKey: "question_temperature_key",
+      friendlyName: "Temperature",
+      dataPointKey: "patient.temperature",
+      required: false,
+      validations: [],
+      choices: [],
+      dataMappers: [],
+    },
+    {
+      id: "Question.page4-pulse",
+      type: "pulse",
+      text: "<p>What is your current pulse rate?</p>",
+      i18nKey: "question_pulse_key",
+      friendlyName: "Pulse Rate",
+      dataPointKey: "patient.pulse",
+      required: false,
+      validations: [],
+      choices: [],
+      dataMappers: [],
+    },
+    {
       id: "Question.page4-vitals-date",
       type: "date",
       text: "<p>When were these vitals measured?</p>",
@@ -789,6 +1062,18 @@ export async function createMultiPageHealthAssessmentActivity() {
       i18nKey: "question_followup_datetime_key",
       friendlyName: "Follow-up Date/Time",
       dataPointKey: "patient.followupDateTime",
+      required: false,
+      validations: [],
+      choices: [],
+      dataMappers: [],
+    },
+    {
+      id: "Question.page4-image",
+      type: "imageCapture",
+      text: "<p>Please capture a photo if needed:</p>",
+      i18nKey: "question_image_key",
+      friendlyName: "Photo",
+      dataPointKey: "patient.photo",
       required: false,
       validations: [],
       choices: [],
@@ -956,11 +1241,19 @@ export async function createMultiPageHealthAssessmentActivity() {
               order: 1,
               type: null,
               displayProperties: [
-                { key: "fieldType", value: JSON.stringify("bloodpressure") },
+                { key: "fieldType", value: JSON.stringify("bloodPressure") },
                 { key: "width", value: JSON.stringify("100%") },
                 { key: "marginTop", value: "10" },
                 { key: "marginBottom", value: "10" },
-                { key: "uniti18nKey", value: "unit_mmhg_key" },
+                {
+                  key: "bloodPressure",
+                  value: JSON.stringify({
+                    displayType: "line",
+                    leftLabeli18nKey: "Systolic",
+                    rightLabeli18nKey: "Diastolic",
+                    uniti18nKey: "mmHg",
+                  }),
+                },
               ],
             },
             {
@@ -972,12 +1265,57 @@ export async function createMultiPageHealthAssessmentActivity() {
                 { key: "width", value: JSON.stringify("100%") },
                 { key: "marginTop", value: "10" },
                 { key: "marginBottom", value: "10" },
-                { key: "uniti18nKey", value: "unit_lbs_key" },
+                {
+                  key: "others",
+                  value: JSON.stringify({
+                    fieldType: "weight",
+                    unitType: "both",
+                    fieldDisplayStyle: "line",
+                  }),
+                },
+              ],
+            },
+            {
+              id: "Question.page4-temperature",
+              order: 3,
+              type: null,
+              displayProperties: [
+                { key: "fieldType", value: JSON.stringify("temperature") },
+                { key: "width", value: JSON.stringify("100%") },
+                { key: "marginTop", value: "10" },
+                { key: "marginBottom", value: "10" },
+                {
+                  key: "others",
+                  value: JSON.stringify({
+                    unitType: "both",
+                    fieldDisplayStyle: "line",
+                  }),
+                },
+              ],
+            },
+            {
+              id: "Question.page4-pulse",
+              order: 4,
+              type: null,
+              displayProperties: [
+                { key: "fieldType", value: JSON.stringify("pulse") },
+                { key: "width", value: JSON.stringify("100%") },
+                { key: "marginTop", value: "10" },
+                { key: "marginBottom", value: "10" },
+                { key: "type", value: "pulse" },
+                { key: "unitText", value: "bpm" },
+                { key: "fieldLabelText", value: "Pulse Rate" },
+                {
+                  key: "bloodPressure",
+                  value: JSON.stringify({
+                    displayType: "line",
+                  }),
+                },
               ],
             },
             {
               id: "Question.page4-vitals-date",
-              order: 3,
+              order: 5,
               type: null,
               displayProperties: [
                 { key: "fieldType", value: JSON.stringify("date") },
@@ -988,13 +1326,26 @@ export async function createMultiPageHealthAssessmentActivity() {
             },
             {
               id: "Question.page4-followup-datetime",
-              order: 4,
+              order: 6,
               type: null,
               displayProperties: [
                 { key: "fieldType", value: JSON.stringify("date-time") },
                 { key: "width", value: JSON.stringify("100%") },
                 { key: "marginTop", value: "10" },
                 { key: "marginBottom", value: "10" },
+              ],
+            },
+            {
+              id: "Question.page4-image",
+              order: 7,
+              type: null,
+              displayProperties: [
+                { key: "fieldType", value: JSON.stringify("imageCapture") },
+                { key: "width", value: JSON.stringify("100%") },
+                { key: "marginTop", value: "10" },
+                { key: "marginBottom", value: "10" },
+                { key: "addPhotoText", value: "Add Photo" },
+                { key: "editPhotoText", value: "Edit Photo" },
               ],
             },
           ],
@@ -1038,14 +1389,6 @@ export async function createMultiPageHealthAssessmentActivity() {
     summaryScreen,
     completionScreen,
   };
-
-  log("Creating Multi-Page Health Assessment Activity", {
-    screensCount: layouts[0].screens.length,
-    questionsCount: questions.length,
-    hasIntroduction: introductionScreen.showScreen,
-    hasSummary: summaryScreen.showScreen,
-    hasCompletion: completionScreen.showScreen,
-  });
 
   const activity = await ActivityService.createActivity({
     pk: activityPk,
@@ -1094,11 +1437,57 @@ export async function createMultiPageHealthAssessmentActivity() {
     layouts: JSON.stringify(fullActivityJson),
   });
 
-  log("Multi-Page Health Assessment Activity created successfully", {
-    activityId: activity.id,
-    pk: activity.pk,
-    screensCount: layouts[0].screens.length,
+  log("Multi-Page Health Assessment Activity created");
+
+  return activity;
+}
+
+/**
+ * Create an activity with ALL question types on one screen for testing
+ */
+export async function createAllQuestionTypesActivity() {
+  const questions = [
+    // Text types
+    sampleQuestions.textField,
+    sampleQuestions.textarea,
+    // Select types
+    sampleQuestions.singleSelect,
+    sampleQuestions.multiSelect,
+    // Number types
+    sampleQuestions.numberField,
+    sampleQuestions.numericScale,
+    // Date/Time types
+    sampleQuestions.dateField,
+    sampleQuestions.dateTimeField,
+    // Clinical measurement types
+    sampleQuestions.bloodPressure,
+    sampleQuestions.temperature,
+    sampleQuestions.pulse,
+    sampleQuestions.weightHeight,
+    // Visual scales
+    sampleQuestions.horizontalVAS,
+    // Media
+    sampleQuestions.imageCapture,
+  ];
+
+  const config = createActivityConfig(questions);
+  const timestamp = Date.now();
+
+  const activity = await ActivityService.createActivity({
+    pk: `ACTIVITY-ALL-TYPES-${timestamp}`,
+    sk: `SK-${timestamp}`,
+    name: "All Question Types",
+    title: "All Question Types Test",
+    description:
+      "A comprehensive test activity with all question types on one screen",
+    type: "SURVEY",
+    activityGroups: JSON.stringify(config.activityGroups),
+    layouts: JSON.stringify(config.layouts),
+    resumable: true,
+    progressBar: true,
   });
+
+  log("All Question Types Activity created");
 
   return activity;
 }
@@ -1113,107 +1502,44 @@ export async function seedQuestionData() {
 
   try {
     // Create activities
-    log("Step 1: Creating activities");
     const multiPageHealth = await createMultiPageHealthAssessmentActivity();
     const healthSurvey = await createHealthSurveyActivity();
     const painAssessment = await createPainAssessmentActivity();
     const medicalHistory = await createMedicalHistoryActivity();
+    const clinicalVitals = await createClinicalVitalsActivity();
+    const allQuestionTypes = await createAllQuestionTypesActivity();
 
     const activities = [
       multiPageHealth,
       healthSurvey,
       painAssessment,
       medicalHistory,
+      clinicalVitals,
+      allQuestionTypes,
     ];
-    log("All activities created", {
-      count: activities.length,
-      ids: activities.map(a => a.id),
-    });
+    log(`All activities created: ${activities.length} total`);
 
     // Create tasks linked to activities
-    log("Step 2: Creating tasks linked to activities");
 
-    // Include multi-page activity in the list so it gets tasks created for multiple days
+    // Include all activities in the list so they get tasks created for multiple days
     const allActivities = [
       multiPageHealth,
       healthSurvey,
       painAssessment,
       medicalHistory,
+      clinicalVitals,
+      allQuestionTypes,
     ];
     const { tasks, taskCounter } =
       await createTasksForActivities(allActivities);
 
-    // Ensure at least one multi-page task per day for the first 3 days
-    const now = Date.now();
-    const times = [
-      { hour: 8, minute: 0 },
-      { hour: 11, minute: 45 },
-      { hour: 14, minute: 30 },
-    ];
-
-    for (let dayOffset = 0; dayOffset < 3; dayOffset++) {
-      const taskDate = new Date();
-      taskDate.setDate(taskDate.getDate() + dayOffset);
-      taskDate.setHours(0, 0, 0, 0);
-
-      const time = times[dayOffset % times.length];
-      const taskDateTime = new Date(taskDate);
-      taskDateTime.setHours(time.hour, time.minute, 0, 0);
-      const expireTime = taskDateTime.getTime();
-
-      // Check if we already have a multi-page task for this day
-      const existingMultiPageTask = tasks.find(
-        t =>
-          t.entityId === multiPageHealth.pk &&
-          t.expireTimeInMillSec &&
-          Math.abs(t.expireTimeInMillSec - expireTime) < 86400000 // Within same day
-      );
-
-      if (!existingMultiPageTask) {
-        const taskTimestamp = Date.now() + dayOffset * 1000;
-        taskCounter.scheduled++;
-        const task = await TaskService.createTask({
-          pk: `TASK-MULTI-PAGE-${dayOffset}-${taskTimestamp}`,
-          sk: `SK-${taskTimestamp}`,
-          title: `${getTaskTypeName(TaskType.SCHEDULED)} Task ${taskCounter.scheduled}`,
-          description: "Complete the multi-page health questionnaire",
-          taskType: TaskType.SCHEDULED,
-          status: TaskStatus.OPEN,
-          entityId: multiPageHealth.pk,
-          activityIndex: 0,
-          startTimeInMillSec: now,
-          expireTimeInMillSec: expireTime,
-          showBeforeStart: true,
-          allowEarlyCompletion: true,
-          allowLateCompletion: true,
-          allowLateEdits: false,
-        });
-
-        log("Created multi-page task", {
-          taskId: task.id,
-          dayOffset,
-          expireTime: new Date(expireTime).toISOString(),
-        });
-
-        tasks.push(task);
-      }
-    }
+    log(`✅ All tasks created: ${tasks.length} total`);
 
     log("========================================");
-    log("Seeding complete!");
+    log(
+      `Seeding complete! ${activities.length} activities, ${tasks.length} tasks`
+    );
     log("========================================");
-    log("Summary:", {
-      activities: {
-        count: activities.length,
-        ids: activities.map(a => a.id),
-        pks: activities.map(a => a.pk),
-      },
-      tasks: {
-        count: tasks.length,
-        ids: tasks.map(t => t.id),
-        entityIds: tasks.map(t => t.entityId),
-      },
-    });
 
     return {
       activities,

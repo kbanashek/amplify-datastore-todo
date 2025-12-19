@@ -2,7 +2,7 @@ import { renderHook, waitFor, act } from "@testing-library/react-native";
 import { useActivityList } from "../useActivityList";
 
 // Mock ActivityService
-jest.mock("@orion/task-system", () => ({
+jest.mock("../../services/ActivityService", () => ({
   ActivityService: {
     subscribeActivities: jest.fn(),
     getActivities: jest.fn(),
@@ -10,7 +10,7 @@ jest.mock("@orion/task-system", () => ({
   },
 }));
 
-import { ActivityService } from "@orion/task-system";
+import { ActivityService } from "../../services/ActivityService";
 import { Activity } from "../../types/Activity";
 
 describe("useActivityList", () => {

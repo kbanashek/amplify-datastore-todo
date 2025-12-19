@@ -4,6 +4,12 @@ export { TaskActivityModule } from "./TaskActivityModule";
 export { TaskContainer } from "./src/components/TaskContainer";
 export { GroupedTasksView } from "./src/components/GroupedTasksView";
 
+// Question flow + question components
+export * from "./src/components/questions";
+
+// Reusable UI building blocks
+export * from "./src/components/ui";
+
 // Export all services - single source of truth
 export { TaskService } from "./src/services/TaskService";
 export { ActivityService } from "./src/services/ActivityService";
@@ -61,7 +67,51 @@ export { useTranslatedText } from "./src/hooks/useTranslatedText";
 
 // Export types
 export type { GroupedTask } from "./src/hooks/useGroupedTasks";
-export type { TaskFilters } from "./src/types/Task";
+export type {
+  TaskFilters,
+  Task,
+  CreateTaskInput,
+  UpdateTaskInput,
+} from "./src/types/Task";
+export { TaskStatus, TaskType } from "./src/types/Task";
+export type { Activity } from "./src/types/Activity";
+export type { Question } from "./src/types/Question";
+export type {
+  Appointment,
+  GroupedAppointment,
+  AppointmentData,
+} from "./src/types/Appointment";
+export { AppointmentStatus, AppointmentType } from "./src/types/Appointment";
+export type { DataPoint } from "./src/types/DataPoint";
+export type { TaskAnswer } from "./src/types/TaskAnswer";
+export type { TaskResult } from "./src/types/TaskResult";
+export type { TaskHistory } from "./src/types/TaskHistory";
+export type {
+  ActivityConfig,
+  ParsedElement,
+  ParsedScreen,
+} from "./src/types/ActivityConfig";
+export {
+  QuestionType,
+  ValidationType,
+} from "./src/types/activity-config-enums";
+
+// Activity parsing types/utils
+export type { ParsedActivityData } from "./src/utils/activityParser";
+export {
+  parseActivityConfig,
+  getDisplayProperty,
+} from "./src/utils/activityParser";
+
+// Export utils commonly used by host apps
+export {
+  formatTime,
+  formatTimeRange,
+  getTimezoneAbbreviation,
+  parseAppointmentData,
+  groupAppointmentsByDate,
+  formatDateLabel,
+} from "./src/utils/appointmentParser";
 
 // Export constants
 export { ModelName } from "./src/constants/modelNames";

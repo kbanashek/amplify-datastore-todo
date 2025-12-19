@@ -2,7 +2,7 @@ import { renderHook, waitFor, act } from "@testing-library/react-native";
 import { useTaskAnswerList } from "../useTaskAnswerList";
 
 // Mock TaskAnswerService
-jest.mock("@orion/task-system", () => ({
+jest.mock("../../services/TaskAnswerService", () => ({
   TaskAnswerService: {
     subscribeTaskAnswers: jest.fn(),
     getTaskAnswers: jest.fn(),
@@ -10,7 +10,7 @@ jest.mock("@orion/task-system", () => ({
   },
 }));
 
-import { TaskAnswerService } from "@orion/task-system";
+import { TaskAnswerService } from "../../services/TaskAnswerService";
 import { TaskAnswer } from "../../types/TaskAnswer";
 
 describe("useTaskAnswerList", () => {

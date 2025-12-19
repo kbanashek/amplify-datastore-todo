@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ActivityService } from "@orion/task-system";
+import { ActivityService } from "../services/ActivityService";
 import { Activity } from "../types/Activity";
 
 interface UseActivityListReturn {

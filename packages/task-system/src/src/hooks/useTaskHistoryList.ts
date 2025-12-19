@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { TaskHistoryService } from "@orion/task-system";
+import { TaskHistoryService } from "../services/TaskHistoryService";
 import { TaskHistory } from "../types/TaskHistory";
 
 interface UseTaskHistoryListReturn {

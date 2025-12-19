@@ -2,13 +2,13 @@ import { renderHook, act } from "@testing-library/react-native";
 import { useTaskUpdate } from "../useTaskUpdate";
 
 // Mock TaskService
-jest.mock("@orion/task-system", () => ({
+jest.mock("../../services/TaskService", () => ({
   TaskService: {
     updateTask: jest.fn(),
   },
 }));
 
-import { TaskService } from "@orion/task-system";
+import { TaskService } from "../../services/TaskService";
 import { Task, TaskStatus, TaskType } from "../../types/Task";
 
 describe("useTaskUpdate", () => {

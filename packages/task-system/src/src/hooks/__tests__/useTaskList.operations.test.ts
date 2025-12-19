@@ -2,7 +2,7 @@ import { renderHook, waitFor, act } from "@testing-library/react-native";
 import { useTaskList } from "../useTaskList";
 
 // Mock TaskService
-jest.mock("@orion/task-system", () => ({
+jest.mock("../../services/TaskService", () => ({
   TaskService: {
     subscribeTasks: jest.fn(),
     getTasks: jest.fn(),
@@ -16,7 +16,7 @@ jest.mock("../../contexts/AmplifyContext", () => ({
   useAmplify: jest.fn(),
 }));
 
-import { TaskService } from "@orion/task-system";
+import { TaskService } from "../../services/TaskService";
 import { useAmplify } from "../../contexts/AmplifyContext";
 import { NetworkStatus } from "../useAmplifyState";
 import { TaskStatus, TaskType } from "../../types/Task";

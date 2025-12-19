@@ -16,7 +16,10 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
   onBack,
 }) => {
   return (
-    <View style={[styles.container, { paddingTop: topInset }]}>
+    <View
+      testID="error-state-container"
+      style={[styles.container, { paddingTop: topInset }]}
+    >
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Questions</Text>
         <NetworkStatusIndicator />

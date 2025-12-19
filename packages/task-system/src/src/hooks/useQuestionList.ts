@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { QuestionService } from "@orion/task-system";
+import { QuestionService } from "../services/QuestionService";
 import { Question } from "../types/Question";
 
 interface UseQuestionListReturn {

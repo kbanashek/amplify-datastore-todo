@@ -1,4 +1,13 @@
 import { IconSymbol } from "@/components/ui/IconSymbol";
+import {
+  Appointment,
+  AppointmentStatus,
+  AppointmentType,
+  formatTime,
+  getTimezoneAbbreviation,
+  useRTL,
+  useTranslatedText,
+} from "@orion/task-system";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useMemo } from "react";
 import {
@@ -11,16 +20,6 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GlobalHeader } from "../../src/components/GlobalHeader";
 import { AppColors } from "../../src/constants/AppColors";
-import { useRTL, useTranslatedText } from "@orion/task-system";
-import {
-  Appointment,
-  AppointmentStatus,
-  AppointmentType,
-} from "../../src/types/Appointment";
-import {
-  formatTime,
-  getTimezoneAbbreviation,
-} from "../../src/utils/appointmentParser";
 
 export default function AppointmentDetailsScreen() {
   const params = useLocalSearchParams();
@@ -61,15 +60,13 @@ export default function AppointmentDetailsScreen() {
     }
     console.warn("[AppointmentDetails] No appointment in params or wrong type");
     return null;
-  }, [params.appointment]);
+  }, [params.appointment, params.timezoneId]);
 
   const { translatedText: headerTitle } = useTranslatedText(
     "Appointment Details"
   );
   const { translatedText: backText } = useTranslatedText("Back");
-  const { translatedText: titleLabel } = useTranslatedText("Title");
   const { translatedText: typeLabel } = useTranslatedText("Type");
-  const { translatedText: statusLabel } = useTranslatedText("Status");
   const { translatedText: startTimeLabel } = useTranslatedText("Start Time");
   const { translatedText: endTimeLabel } = useTranslatedText("End Time");
   const { translatedText: descriptionLabel } = useTranslatedText("Description");

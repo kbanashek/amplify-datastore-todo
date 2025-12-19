@@ -12,7 +12,10 @@ export const LoadingState: React.FC<LoadingStateProps> = ({
   topInset,
 }) => {
   return (
-    <View style={[styles.container, { paddingTop: topInset }]}>
+    <View
+      testID="loading-state-container"
+      style={[styles.container, { paddingTop: topInset }]}
+    >
       <View style={styles.header}>
         <Text style={styles.headerTitle}>
           {taskId ? "Answer Questions" : "Questions"}

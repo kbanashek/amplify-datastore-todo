@@ -12,6 +12,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -21,11 +22,7 @@ import { seedCoordinatedData } from "../../scripts/seed-coordinated-data";
 import { seedQuestionData } from "../../scripts/seed-question-data";
 import { GlobalHeader } from "../../src/components/GlobalHeader";
 import { TranslatedText } from "../../src/components/TranslatedText";
-import {
-  AppointmentService,
-  TaskService,
-  SeededDataCleanupService,
-} from "@orion/task-system";
+import { AppointmentService, TaskService } from "@orion/task-system";
 import { TestIds } from "../../src/constants/testIds";
 import { useRouter } from "expo-router";
 import { logWithDevice } from "../../src/utils/deviceLogger";
@@ -43,8 +40,16 @@ export default function SeedScreen() {
   const [seedResult, setSeedResult] = useState<any>(null);
   const [appointmentSeedResult, setAppointmentSeedResult] = useState<any>(null);
   const [coordinatedSeedResult, setCoordinatedSeedResult] = useState<any>(null);
+  const [taskCount, setTaskCount] = useState("10");
+  const [appointmentsCount, setAppointmentsCount] = useState("2");
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const insets = useSafeAreaInsets();
   const router = useRouter();
+
+  const parsePositiveInt = (value: string, fallback: number) => {
+    const n = Number.parseInt(value, 10);
+    return Number.isFinite(n) && n > 0 ? n : fallback;
+  };
 
   // ============================================================================
   // DELETE OPERATIONS
@@ -250,25 +255,24 @@ export default function SeedScreen() {
   };
 
   const handleSeedCoordinated = async () => {
-    console.log("🌱 [SeedScreen] Coordinated Seed button pressed");
     setIsSeedingCoordinated(true);
     setCoordinatedSeedResult(null);
 
     try {
-      console.log("🌱 [SeedScreen] Starting coordinated seed process...");
-      const result = await seedCoordinatedData();
+      const maxTasks = parsePositiveInt(taskCount, 10);
+      const apptCount = parsePositiveInt(appointmentsCount, 2);
+      const result = await seedCoordinatedData({
+        maxTasks,
+        appointmentCount: apptCount,
+      });
 
-      console.log(
-        "✅ [SeedScreen] Coordinated seed process completed successfully",
-        {
-          appointmentsCount: result.summary.appointmentsCount,
-          tasksCount: result.summary.tasksCount,
-          linkedTasksCount: result.summary.linkedTasksCount,
-          standaloneTasksCount: result.summary.standaloneTasksCount,
-          activitiesCount: result.summary.activitiesCount,
-          relationshipsCount: result.relationships.length,
-        }
-      );
+      logWithDevice("SeedScreen", "Coordinated seed complete", {
+        appointmentsCount: result.summary.appointmentsCount,
+        tasksCount: result.summary.tasksCount,
+        linkedTasksCount: result.summary.linkedTasksCount,
+        standaloneTasksCount: result.summary.standaloneTasksCount,
+        activitiesCount: result.summary.activitiesCount,
+      });
 
       setCoordinatedSeedResult(result);
 
@@ -356,176 +360,97 @@ export default function SeedScreen() {
   };
 
   const handleResetAndReseed = async () => {
-    console.log("🔄 [SeedScreen] Reset & Reseed button pressed");
     setIsResettingAndReseeding(true);
 
     try {
+      const maxTasks = parsePositiveInt(taskCount, 10);
+      const apptCount = parsePositiveInt(appointmentsCount, 2);
+
       // Step 0: Verify initial task count
-      console.log("🔄 [SeedScreen] Step 0: Verifying initial task count...");
       const initialTasks = await TaskService.getTasks();
       const initialTaskCount = initialTasks.length;
-      console.log(`📊 [SeedScreen] Initial task count: ${initialTaskCount}`);
 
-      // Step 1: Clear ALL seeded data (nuclear delete)
-      // This deletes: tasks, taskAnswers, taskResults, taskHistories, activities,
-      // questions, dataPoints, dataPointInstances, todos, and appointments
-      console.log(
-        "🔄 [SeedScreen] Step 1: Nuclear delete - Clearing ALL seeded data..."
-      );
-      const cleanupResult = await SeededDataCleanupService.clearAllSeededData();
-      console.log("✅ [SeedScreen] Nuclear delete completed:", {
-        tasksDeleted: cleanupResult.deleted.tasks,
-        taskAnswersDeleted: cleanupResult.deleted.taskAnswers,
-        taskResultsDeleted: cleanupResult.deleted.taskResults,
-        taskHistoriesDeleted: cleanupResult.deleted.taskHistories,
-        activitiesDeleted: cleanupResult.deleted.activities,
-        questionsDeleted: cleanupResult.deleted.questions,
-        dataPointsDeleted: cleanupResult.deleted.dataPoints,
-        dataPointInstancesDeleted: cleanupResult.deleted.dataPointInstances,
-        todosDeleted: cleanupResult.deleted.todos,
-        appointmentsCleared: cleanupResult.clearedAppointments,
-      });
+      // Step 1: LOCAL reset (recommended after any cloud wipe)
+      // Clears the local DataStore cache AND outbox so we don't attempt to push deletes
+      // for records that no longer exist in DynamoDB.
+      await clearCacheAndResync();
 
-      // Step 3: Verify deletions - check task count is zero
-      console.log("🔄 [SeedScreen] Step 3: Verifying all tasks are deleted...");
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Brief wait for local deletion
+      // Step 2: Clear appointments (stored outside DataStore, in AsyncStorage)
+      await AppointmentService.clearAppointments();
+
+      // Step 3: Verify local reset - check task count is zero (or close to it)
+      await new Promise(resolve => setTimeout(resolve, 1000));
       const tasksAfterDelete = await TaskService.getTasks();
       const taskCountAfterDelete = tasksAfterDelete.length;
-      console.log(
-        `📊 [SeedScreen] Task count after deletion: ${taskCountAfterDelete}`
-      );
 
       if (taskCountAfterDelete > 0) {
-        console.warn(
-          `⚠️ [SeedScreen] Warning: ${taskCountAfterDelete} tasks still remain after deletion. This may indicate sync delay.`
-        );
+        logWithDevice("SeedScreen", "Warning: tasks remain after delete", {
+          taskCountAfterDelete,
+        });
       }
 
-      // Step 4: Force full sync to ensure deletions propagate to all devices
-      console.log(
-        "🔄 [SeedScreen] Step 4: Forcing full sync to propagate deletions to all devices..."
-      );
-      try {
-        await forceFullSync();
-        console.log("✅ [SeedScreen] Full sync completed after deletions");
-      } catch (syncError) {
-        console.warn(
-          "⚠️ [SeedScreen] Error during forced sync, continuing anyway:",
-          syncError
-        );
-      }
-
-      // Step 5: Wait additional time for deletions to sync across all devices
-      console.log(
-        "🔄 [SeedScreen] Step 5: Waiting 10 seconds for deletions to fully sync across all devices..."
-      );
-      await new Promise(resolve => setTimeout(resolve, 10000));
-
-      // Step 6: Verify sync - check task count again after sync wait
-      console.log("🔄 [SeedScreen] Step 6: Verifying deletions have synced...");
+      // Step 4: Verify after short wait - should still be empty until we reseed
       const tasksAfterSync = await TaskService.getTasks();
       const taskCountAfterSync = tasksAfterSync.length;
-      console.log(
-        `📊 [SeedScreen] Task count after sync wait: ${taskCountAfterSync}`
-      );
 
-      // Step 7: Reseed coordinated data
-      console.log("🔄 [SeedScreen] Step 7: Reseeding coordinated data...");
-      const result = await seedCoordinatedData();
-      // result contains appointments array, need to convert to AppointmentData format
-      const appointmentData: any = {
-        clinicPatientAppointments: {
-          clinicAppointments: {
-            items: result.appointments,
-          },
-        },
-        siteTimezoneId: "America/New_York", // Default timezone
-      };
-      await AppointmentService.saveAppointments(appointmentData);
-      console.log("✅ [SeedScreen] Coordinated data reseeded:", {
+      // Step 5: Reseed coordinated data
+      const result = await seedCoordinatedData({
+        maxTasks,
+        appointmentCount: apptCount,
+      });
+      logWithDevice("SeedScreen", "Reset & reseed complete", {
         appointmentsCount: result.summary.appointmentsCount,
         tasksCount: result.summary.tasksCount,
         activitiesCount: result.summary.activitiesCount,
       });
 
-      // Step 8: Verify reseeded data locally
-      console.log("🔄 [SeedScreen] Step 8: Verifying reseeded data locally...");
+      // Step 6: Verify reseeded data locally
       await new Promise(resolve => setTimeout(resolve, 2000)); // Brief wait for local creation
       const tasksAfterReseed = await TaskService.getTasks();
       const taskCountAfterReseed = tasksAfterReseed.length;
-      console.log(
-        `📊 [SeedScreen] Task count after reseed: ${taskCountAfterReseed} (expected: ${result.summary.tasksCount})`
-      );
 
       if (taskCountAfterReseed !== result.summary.tasksCount) {
-        console.warn(
-          `⚠️ [SeedScreen] Warning: Task count mismatch. Expected ${result.summary.tasksCount}, got ${taskCountAfterReseed}. This may indicate sync delay.`
+        logWithDevice(
+          "SeedScreen",
+          "Warning: task count mismatch after reseed",
+          {
+            expected: result.summary.tasksCount,
+            actual: taskCountAfterReseed,
+          }
         );
       }
 
-      // Step 9: Force full sync to ensure new data propagates to all devices
-      console.log(
-        "🔄 [SeedScreen] Step 9: Forcing full sync to propagate new data to all devices..."
-      );
+      // Step 7: Force full sync to ensure new data propagates to all devices
       try {
         await forceFullSync();
-        console.log("✅ [SeedScreen] Full sync completed after reseeding");
       } catch (syncError) {
-        console.warn(
-          "⚠️ [SeedScreen] Error during forced sync, continuing anyway:",
-          syncError
-        );
+        logWithDevice("SeedScreen", "Warning: force sync after reseed failed", {
+          error:
+            syncError instanceof Error ? syncError.message : String(syncError),
+        });
       }
 
-      // Step 10: Wait additional time for new data to sync across all devices
+      // Step 8: Wait additional time for new data to sync across all devices
       console.log(
         "🔄 [SeedScreen] Step 10: Waiting 10 seconds for new data to fully sync across all devices..."
       );
       await new Promise(resolve => setTimeout(resolve, 10000));
 
-      // Step 11: Final verification
-      console.log(
-        "🔄 [SeedScreen] Step 11: Final verification of synced data..."
-      );
+      // Step 9: Final verification
       const finalTasks = await TaskService.getTasks();
       const finalTaskCount = finalTasks.length;
-      console.log(
-        `📊 [SeedScreen] Final task count: ${finalTaskCount} (expected: ${result.summary.tasksCount})`
-      );
-
-      console.log("✅ [SeedScreen] Reset & Reseed completed successfully", {
-        initialTaskCount,
-        tasksDeleted: cleanupResult.deleted.tasks,
-        taskAnswersDeleted: cleanupResult.deleted.taskAnswers,
-        taskResultsDeleted: cleanupResult.deleted.taskResults,
-        taskHistoriesDeleted: cleanupResult.deleted.taskHistories,
-        activitiesDeleted: cleanupResult.deleted.activities,
-        taskCountAfterDelete,
-        taskCountAfterSync,
-        taskCountAfterReseed,
-        finalTaskCount,
-        expectedTaskCount: result.summary.tasksCount,
-        appointmentsCount: result.summary.appointmentsCount,
-        activitiesCount: result.summary.activitiesCount,
-      });
 
       const syncStatus =
         finalTaskCount === result.summary.tasksCount
-          ? "✅ All platforms should be in sync!"
-          : `⚠️ Task count mismatch. Check logs for sync status.`;
+          ? "All platforms should be in sync."
+          : `Task count mismatch. Check logs for sync status.`;
 
       Alert.alert(
         "Reset & Reseed Complete",
         `Reset & Reseed completed on this device!\n\n` +
-          `Nuclear Delete Results:\n` +
-          `• ${cleanupResult.deleted.tasks} tasks\n` +
-          `• ${cleanupResult.deleted.taskAnswers} task answers\n` +
-          `• ${cleanupResult.deleted.taskResults} task results\n` +
-          `• ${cleanupResult.deleted.taskHistories} task histories\n` +
-          `• ${cleanupResult.deleted.activities} activities\n` +
-          `• ${cleanupResult.deleted.questions} questions\n` +
-          `• ${cleanupResult.deleted.dataPoints} data points\n` +
-          `• ${cleanupResult.deleted.dataPointInstances} data point instances\n` +
+          `Local Reset:\n` +
+          `• DataStore cache cleared\n` +
+          `• DataStore outbox cleared (prevents stale deletes)\n` +
           `• Appointments cleared\n\n` +
           `Sync Verification:\n` +
           `• Initial tasks: ${initialTaskCount}\n` +
@@ -539,11 +464,11 @@ export default function SeedScreen() {
           `• ${result.summary.tasksCount} tasks\n` +
           `• ${result.summary.activitiesCount} activities\n\n` +
           `${syncStatus}\n\n` +
-          `⚠️ CRITICAL: Other devices need to sync!\n\n` +
+          `Other devices need to sync.\n\n` +
           `To fix sync on other devices:\n` +
           `1. Open the app on iOS/Android/Web\n` +
           `2. Go to Seed Data screen\n` +
-          `3. Press "🔄 Force Sync (Clear Cache & Resync)" button\n` +
+          `3. Press "Force Sync" button\n` +
           `4. Wait for sync to complete\n` +
           `5. Check task count matches: ${result.summary.tasksCount}\n\n` +
           `OR restart the app on each device to force sync.\n\n` +
@@ -692,10 +617,10 @@ export default function SeedScreen() {
       >
         {/* Introduction */}
         <View style={styles.introSection}>
-          <Text style={styles.introTitle}>📋 Seed Data Management</Text>
+          <Text style={styles.introTitle}>Seed Data</Text>
           <Text style={styles.introText}>
-            Create test data, delete data, or fix sync issues. Each button
-            clearly states what it does.
+            Reset and reseed test data. Defaults are optimized for development:
+            10 tasks total and 2 appointments.
           </Text>
         </View>
 
@@ -703,13 +628,36 @@ export default function SeedScreen() {
         {/* QUICK ACTIONS - Most Common Operations */}
         {/* ====================================================================== */}
         <View style={styles.operationGroup}>
-          <Text style={styles.groupTitle}>⚡ Quick Actions</Text>
+          <Text style={styles.groupTitle}>Quick Actions</Text>
           <Text style={styles.groupDescription}>
-            Most common operations - click to see what each does
+            Configure counts, then run a single reseed.
           </Text>
 
+          <View style={styles.configRow}>
+            <View style={styles.configField}>
+              <Text style={styles.configLabel}>Tasks (total)</Text>
+              <TextInput
+                value={taskCount}
+                onChangeText={setTaskCount}
+                keyboardType="number-pad"
+                style={styles.configInput}
+                placeholder="10"
+              />
+            </View>
+            <View style={styles.configField}>
+              <Text style={styles.configLabel}>Appointments</Text>
+              <TextInput
+                value={appointmentsCount}
+                onChangeText={setAppointmentsCount}
+                keyboardType="number-pad"
+                style={styles.configInput}
+                placeholder="2"
+              />
+            </View>
+          </View>
+
           {renderButton(
-            "🔄 Delete Everything & Reseed (Recommended)",
+            "Delete Everything & Reseed",
             handleResetAndReseed,
             isResettingAndReseeding,
             isAnyOperationRunning,
@@ -717,12 +665,12 @@ export default function SeedScreen() {
             styles.buttonText
           )}
           <Text style={styles.buttonHelpText}>
-            Deletes ALL data, waits for sync, then creates fresh appointments +
-            tasks. Use this to start fresh and sync all devices.
+            Recommended. Clears all seeded data, then reseeds appointments and
+            tasks using the counts above.
           </Text>
 
           {renderButton(
-            "🌱 Create Appointments + Tasks",
+            "Create Appointments + Tasks",
             handleSeedCoordinated,
             isSeedingCoordinated,
             isAnyOperationRunning,
@@ -731,12 +679,11 @@ export default function SeedScreen() {
             TestIds.seedScreenSeedCoordinatedButton
           )}
           <Text style={styles.buttonHelpText}>
-            Creates appointments and tasks with relationships. Tasks are linked
-            to appointments and scheduled relative to appointment dates.
+            Creates appointments and tasks without deleting existing data.
           </Text>
 
           {renderButton(
-            "🔄 Fix Sync Issues (Force Sync)",
+            "Force Sync",
             handleForceSync,
             isForceSyncing,
             isAnyOperationRunning,
@@ -748,91 +695,101 @@ export default function SeedScreen() {
             when they show different data. ⚠️ Any unsaved local changes will be
             lost.
           </Text>
+
+          {renderButton(
+            showAdvanced ? "Hide Advanced" : "Show Advanced",
+            () => setShowAdvanced(prev => !prev),
+            false,
+            isAnyOperationRunning,
+            styles.secondaryButton,
+            styles.secondaryButtonText
+          )}
         </View>
 
         {/* ====================================================================== */}
         {/* DELETE OPERATIONS */}
         {/* ====================================================================== */}
-        <View style={styles.operationGroup}>
-          <Text style={styles.groupTitle}>🗑️ Delete Data</Text>
-          <Text style={styles.groupDescription}>
-            Remove data from the database. ⚠️ These operations cannot be undone.
-          </Text>
+        {showAdvanced && (
+          <View style={styles.operationGroup}>
+            <Text style={styles.groupTitle}>Advanced: Delete Data</Text>
+            <Text style={styles.groupDescription}>
+              Remove data from the database. These operations cannot be undone.
+            </Text>
 
-          {renderButton(
-            "☢️ Delete ALL Task Data (Nuclear Reset)",
-            handleNuclearReset,
-            isNuclearResetting,
-            isAnyOperationRunning,
-            styles.dangerButton,
-            styles.buttonText
-          )}
-          <Text style={styles.buttonHelpText}>
-            Deletes: Tasks, Task Answers, Task Results, Task History,
-            DataPoints, DataPoint Instances. Most comprehensive deletion.
-          </Text>
+            {renderButton(
+              "Delete ALL Task Data (Nuclear Reset)",
+              handleNuclearReset,
+              isNuclearResetting,
+              isAnyOperationRunning,
+              styles.dangerButton,
+              styles.buttonText
+            )}
+            <Text style={styles.buttonHelpText}>
+              Deletes: Tasks, Task Answers, Task Results, Task History,
+              DataPoints, DataPoint Instances.
+            </Text>
 
-          {renderButton(
-            "🗑️ Delete Tasks Only",
-            handleClearAll,
-            isClearing,
-            isAnyOperationRunning,
-            styles.dangerButton,
-            styles.buttonText
-          )}
-          <Text style={styles.buttonHelpText}>
-            Deletes only Tasks. Task Answers, Results, and History remain.
-          </Text>
+            {renderButton(
+              "Delete Tasks Only",
+              handleClearAll,
+              isClearing,
+              isAnyOperationRunning,
+              styles.dangerButton,
+              styles.buttonText
+            )}
+            <Text style={styles.buttonHelpText}>
+              Deletes only Tasks. Task Answers, Results, and History remain.
+            </Text>
 
-          {renderButton(
-            "🗑️ Delete Appointments Only",
-            handleClearAppointments,
-            isClearingAppointments,
-            isAnyOperationRunning,
-            styles.dangerButton,
-            styles.buttonText
-          )}
-          <Text style={styles.buttonHelpText}>
-            Deletes only Appointments. Tasks and other data remain.
-          </Text>
-        </View>
+            {renderButton(
+              "Delete Appointments Only",
+              handleClearAppointments,
+              isClearingAppointments,
+              isAnyOperationRunning,
+              styles.dangerButton,
+              styles.buttonText
+            )}
+            <Text style={styles.buttonHelpText}>
+              Deletes only Appointments. Tasks and other data remain.
+            </Text>
+          </View>
+        )}
 
         {/* ====================================================================== */}
         {/* SEED OPERATIONS */}
         {/* ====================================================================== */}
-        <View style={styles.operationGroup}>
-          <Text style={styles.groupTitle}>🌱 Create Test Data</Text>
-          <Text style={styles.groupDescription}>
-            Create different types of test data for development and testing.
-          </Text>
+        {showAdvanced && (
+          <View style={styles.operationGroup}>
+            <Text style={styles.groupTitle}>Advanced: Create Test Data</Text>
+            <Text style={styles.groupDescription}>
+              Targeted seeding operations.
+            </Text>
 
-          {renderButton(
-            "🌱 Create Tasks & Activities Only",
-            handleSeed,
-            isSeeding,
-            isAnyOperationRunning,
-            styles.seedButton,
-            styles.buttonText
-          )}
-          <Text style={styles.buttonHelpText}>
-            Creates Activities with questions and Tasks that reference them.
-            Simple option for testing question rendering. Creates ~60 tasks over
-            6 days.
-          </Text>
+            {renderButton(
+              "Create Tasks & Activities Only",
+              handleSeed,
+              isSeeding,
+              isAnyOperationRunning,
+              styles.seedButton,
+              styles.buttonText
+            )}
+            <Text style={styles.buttonHelpText}>
+              Creates Activities with questions and a limited number of Tasks.
+            </Text>
 
-          {renderButton(
-            "📅 Create Appointments Only",
-            handleSeedAppointments,
-            isSeedingAppointments,
-            isAnyOperationRunning,
-            styles.seedButton,
-            styles.buttonText
-          )}
-          <Text style={styles.buttonHelpText}>
-            Creates sample appointments (TELEVISIT and ONSITE) for today,
-            tomorrow, and next week. No tasks are created.
-          </Text>
-        </View>
+            {renderButton(
+              "Create Appointments Only",
+              handleSeedAppointments,
+              isSeedingAppointments,
+              isAnyOperationRunning,
+              styles.seedButton,
+              styles.buttonText
+            )}
+            <Text style={styles.buttonHelpText}>
+              Creates sample appointments. No tasks are created.
+            </Text>
+          </View>
+        )}
 
         {/* ====================================================================== */}
         {/* RESULTS SECTION */}
@@ -1134,5 +1091,45 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
     marginTop: 16,
+  },
+  secondaryButton: {
+    backgroundColor: "#f1f2f6",
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 16,
+    borderWidth: 1,
+    borderColor: "#dfe4ea",
+  },
+  secondaryButtonText: {
+    color: "#2f3542",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  configRow: {
+    flexDirection: "row",
+    gap: 12,
+    marginTop: 8,
+    marginBottom: 8,
+  },
+  configField: {
+    flex: 1,
+  },
+  configLabel: {
+    fontSize: 13,
+    color: "#57606f",
+    marginBottom: 6,
+    fontWeight: "600",
+  },
+  configInput: {
+    borderWidth: 1,
+    borderColor: "#dfe4ea",
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 16,
+    color: "#2f3542",
   },
 });

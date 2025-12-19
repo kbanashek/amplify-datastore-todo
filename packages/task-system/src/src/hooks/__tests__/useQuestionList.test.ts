@@ -2,7 +2,7 @@ import { renderHook, waitFor, act } from "@testing-library/react-native";
 import { useQuestionList } from "../useQuestionList";
 
 // Mock QuestionService
-jest.mock("@orion/task-system", () => ({
+jest.mock("../../services/QuestionService", () => ({
   QuestionService: {
     subscribeQuestions: jest.fn(),
     getQuestions: jest.fn(),
@@ -10,7 +10,7 @@ jest.mock("@orion/task-system", () => ({
   },
 }));
 
-import { QuestionService } from "@orion/task-system";
+import { QuestionService } from "../../services/QuestionService";
 import { Question } from "../../types/Question";
 
 describe("useQuestionList", () => {
