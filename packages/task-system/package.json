@@ -23,8 +23,5 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "clean": "rm -rf dist"
-  },
-  "dependencies": {
-    "@orion/task-system": "file:/Users/Kyle.Banashek/Source/app-sync-poc-working/amplify-datastore-todo/packages/task-system"
   }
 }

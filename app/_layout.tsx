@@ -9,28 +9,49 @@ import {
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
 import "react-native-reanimated";
-import { useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import {
-  useColorScheme,
   AmplifyProvider,
   TranslationProvider,
+  useColorScheme,
 } from "@orion/task-system";
+import { bootstrapTaskSystem } from "../src/bootstrap/taskSystemBootstrap";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
+  const [isTaskSystemReady, setIsTaskSystemReady] = useState(false);
 
-  // Verify Amplify is initialized at the root level
+  // LX-style host ownership:
+  // - Host owns Amplify.configure() (via amplify-init-sync import above)
+  // - Host explicitly starts DataStore and gates app render until ready
   useEffect(() => {
-    // Amplify is already initialized by importing amplify-init-sync
+    let cancelled = false;
+
+    (async () => {
+      try {
+        await bootstrapTaskSystem({ startDataStore: true });
+      } catch (error) {
+        console.error(
+          "[RootLayout] Failed to initialize task system/DataStore",
+          error
+        );
+      } finally {
+        if (!cancelled) setIsTaskSystemReady(true);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  if (!loaded) {
+  if (!loaded || !isTaskSystemReady) {
     // Async font loading only occurs in development.
     return null;
   }
@@ -39,7 +60,7 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <TranslationProvider>
-          <AmplifyProvider>
+          <AmplifyProvider autoStartDataStore={false}>
             <Stack>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen name="+not-found" />

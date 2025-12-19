@@ -15,11 +15,17 @@ export const useAmplify = (): AmplifyContextType => {
 
 interface AmplifyProviderProps {
   children: ReactNode;
+  /**
+   * If true, task-system will start DataStore on mount (after host Amplify.configure()).
+   * Default is true for this repo harness. LX can set false and own DataStore lifecycle.
+   */
+  autoStartDataStore?: boolean;
 }
 export const AmplifyProvider: React.FC<AmplifyProviderProps> = ({
   children,
+  autoStartDataStore = true,
 }) => {
-  const value = useAmplifyState();
+  const value = useAmplifyState({ autoStartDataStore });
 
   return (
     <AmplifyContext.Provider value={value}>{children}</AmplifyContext.Provider>
