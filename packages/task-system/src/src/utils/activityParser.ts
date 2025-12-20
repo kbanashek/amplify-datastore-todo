@@ -25,18 +25,45 @@ export function parseActivityConfig(
   const screens: ParsedScreen[] = [];
   const allQuestions: Question[] = [];
 
+  const normalizeActivityGroups = (
+    raw: unknown
+  ): ActivityConfig["activityGroups"] => {
+    if (raw === null || raw === undefined) {
+      return [];
+    }
+
+    if (typeof raw === "string") {
+      try {
+        const parsed: unknown = JSON.parse(raw);
+        return normalizeActivityGroups(parsed);
+      } catch {
+        return [];
+      }
+    }
+
+    if (Array.isArray(raw)) {
+      return raw as ActivityConfig["activityGroups"];
+    }
+
+    // Some fixture/import paths may provide a single group object instead of an array.
+    if (typeof raw === "object") {
+      return [raw as ActivityConfig["activityGroups"][number]];
+    }
+
+    return [];
+  };
+
   // Extract questions from activityGroups for reference
   const questionMap = new Map<string, Question>();
-  if (activityConfig.activityGroups) {
-    activityConfig.activityGroups.forEach(group => {
-      if (group.questions) {
-        group.questions.forEach(question => {
-          questionMap.set(question.id, question);
-        });
-        allQuestions.push(...group.questions);
-      }
-    });
-  }
+  const activityGroups = normalizeActivityGroups(activityConfig.activityGroups);
+  activityGroups.forEach(group => {
+    if (group?.questions) {
+      group.questions.forEach(question => {
+        questionMap.set(question.id, question);
+      });
+      allQuestions.push(...group.questions);
+    }
+  });
 
   // Process layouts (preferred structure)
   if (activityConfig.layouts) {

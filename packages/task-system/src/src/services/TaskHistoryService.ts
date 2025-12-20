@@ -126,21 +126,26 @@ export class TaskHistoryService {
       "[TaskHistoryService] Setting up DataStore subscription for TaskHistory"
     );
 
+    const filterNotDeleted = (items: TaskHistory[]): TaskHistory[] => {
+      return items.filter(item => (item as any)?._deleted !== true);
+    };
+
     const querySubscription = DataStore.observeQuery(TaskHistory).subscribe(
       snapshot => {
         const { items, isSynced } = snapshot;
+        const visibleItems = filterNotDeleted(items);
 
         logWithDevice(
           "TaskHistoryService",
           "Subscription update (observeQuery)",
           {
-            itemCount: items.length,
+            itemCount: visibleItems.length,
             isSynced,
-            itemIds: items.map(i => i.id),
+            itemIds: visibleItems.map(i => i.id),
           }
         );
 
-        callback(items, isSynced);
+        callback(visibleItems, isSynced);
       }
     );
 
@@ -166,14 +171,15 @@ export class TaskHistoryService {
 
         DataStore.query(TaskHistory)
           .then(histories => {
+            const visibleHistories = filterNotDeleted(histories);
             logWithDevice(
               "TaskHistoryService",
               "Query refresh after DELETE completed",
               {
-                remainingHistoryCount: histories.length,
+                remainingHistoryCount: visibleHistories.length,
               }
             );
-            callback(histories, true);
+            callback(visibleHistories, true);
           })
           .catch(err => {
             logErrorWithDevice(

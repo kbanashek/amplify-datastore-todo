@@ -17,6 +17,7 @@ import {
   SUPPORTED_LANGUAGES,
   isRTL as isRTLanguage,
 } from "../services/translationTypes";
+import { DEBUG_TRANSLATION_LOGS } from "../utils/debug";
 
 const LANGUAGE_PREFERENCE_KEY = "user_language_preference";
 const DEFAULT_LANGUAGE: LanguageCode = "en";
@@ -64,28 +65,36 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
   useEffect(() => {
     const loadLanguagePreference = async () => {
       try {
-        console.log(
-          "🌍 [TranslationProvider] Loading language preference from AsyncStorage..."
-        );
+        if (DEBUG_TRANSLATION_LOGS) {
+          console.log(
+            "🌍 [TranslationProvider] Loading language preference from AsyncStorage..."
+          );
+        }
         const saved = await AsyncStorage.getItem(LANGUAGE_PREFERENCE_KEY);
-        console.log("🌍 [TranslationProvider] Loaded from AsyncStorage:", {
-          saved,
-          isValid:
-            saved && SUPPORTED_LANGUAGES.some(lang => lang.code === saved),
-        });
+        if (DEBUG_TRANSLATION_LOGS) {
+          console.log("🌍 [TranslationProvider] Loaded from AsyncStorage:", {
+            saved,
+            isValid:
+              saved && SUPPORTED_LANGUAGES.some(lang => lang.code === saved),
+          });
+        }
 
         let languageToUse: LanguageCode;
         if (saved && SUPPORTED_LANGUAGES.some(lang => lang.code === saved)) {
-          console.log(
-            "🌍 [TranslationProvider] Setting language to saved preference:",
-            saved
-          );
+          if (DEBUG_TRANSLATION_LOGS) {
+            console.log(
+              "🌍 [TranslationProvider] Setting language to saved preference:",
+              saved
+            );
+          }
           languageToUse = saved as LanguageCode;
         } else {
-          console.log(
-            "🌍 [TranslationProvider] No valid saved preference, using default:",
-            defaultLanguage
-          );
+          if (DEBUG_TRANSLATION_LOGS) {
+            console.log(
+              "🌍 [TranslationProvider] No valid saved preference, using default:",
+              defaultLanguage
+            );
+          }
           languageToUse = defaultLanguage;
         }
 
@@ -98,9 +107,11 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
         );
         setCurrentLanguage(defaultLanguage);
       }
-      console.log(
-        "🌍 [TranslationProvider] Language preference loading complete"
-      );
+      if (DEBUG_TRANSLATION_LOGS) {
+        console.log(
+          "🌍 [TranslationProvider] Language preference loading complete"
+        );
+      }
     };
 
     loadLanguagePreference();
@@ -119,33 +130,41 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
       I18nManager.forceRTL(shouldBeRTL);
       // Note: I18nManager.forceRTL requires app restart on Android
       // On iOS, it works immediately
-      console.log("🌍 [TranslationProvider] RTL mode updated", {
-        language: currentLanguage,
-        isRTL: shouldBeRTL,
-        previousRTL: I18nManager.isRTL,
-        note: "Android may require app restart for RTL changes",
-      });
+      if (DEBUG_TRANSLATION_LOGS) {
+        console.log("🌍 [TranslationProvider] RTL mode updated", {
+          language: currentLanguage,
+          isRTL: shouldBeRTL,
+          previousRTL: I18nManager.isRTL,
+          note: "Android may require app restart for RTL changes",
+        });
+      }
     }
   }, [currentLanguage]);
 
   // Save language preference when it changes
   const setLanguage = useCallback(
     async (language: LanguageCode) => {
-      console.log("🌍 [TranslationProvider] setLanguage() called", {
-        newLanguage: language,
-        currentLanguage,
-        willChange: language !== currentLanguage,
-      });
+      if (DEBUG_TRANSLATION_LOGS) {
+        console.log("🌍 [TranslationProvider] setLanguage() called", {
+          newLanguage: language,
+          currentLanguage,
+          willChange: language !== currentLanguage,
+        });
+      }
       try {
         await AsyncStorage.setItem(LANGUAGE_PREFERENCE_KEY, language);
-        console.log(
-          "🌍 [TranslationProvider] Language preference saved to AsyncStorage"
-        );
+        if (DEBUG_TRANSLATION_LOGS) {
+          console.log(
+            "🌍 [TranslationProvider] Language preference saved to AsyncStorage"
+          );
+        }
         setCurrentLanguage(language);
-        console.log(
-          "🌍 [TranslationProvider] Language state updated to:",
-          language
-        );
+        if (DEBUG_TRANSLATION_LOGS) {
+          console.log(
+            "🌍 [TranslationProvider] Language state updated to:",
+            language
+          );
+        }
       } catch (error) {
         console.error(
           "🌍 [TranslationProvider] Error saving language preference:",
@@ -174,22 +193,26 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
         targetLanguage === sourceLanguage ||
         targetLanguage === DEFAULT_LANGUAGE
       ) {
-        console.log("🔤 [TranslationProvider] Skipping translation", {
-          targetLanguage,
-          sourceLanguage,
-          reason:
-            targetLanguage === sourceLanguage
-              ? "same language"
-              : "target language is English",
-        });
+        if (DEBUG_TRANSLATION_LOGS) {
+          console.log("🔤 [TranslationProvider] Skipping translation", {
+            targetLanguage,
+            sourceLanguage,
+            reason:
+              targetLanguage === sourceLanguage
+                ? "same language"
+                : "target language is English",
+          });
+        }
         return text;
       }
 
-      console.log("🔤 [TranslationProvider] Translating", {
-        text: text.substring(0, 50),
-        from: sourceLanguage,
-        to: targetLanguage,
-      });
+      if (DEBUG_TRANSLATION_LOGS) {
+        console.log("🔤 [TranslationProvider] Translating", {
+          text: text.substring(0, 50),
+          from: sourceLanguage,
+          to: targetLanguage,
+        });
+      }
 
       setIsTranslating(true);
 
@@ -199,19 +222,23 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
           targetLanguage,
           sourceLanguage
         );
-        console.log("🔤 [TranslationProvider] Translation result", {
-          original: text.substring(0, 50),
-          translated: translated.substring(0, 50),
-          changed: translated !== text,
-        });
+        if (DEBUG_TRANSLATION_LOGS) {
+          console.log("🔤 [TranslationProvider] Translation result", {
+            original: text.substring(0, 50),
+            translated: translated.substring(0, 50),
+            changed: translated !== text,
+          });
+        }
         return translated;
       } catch (error: unknown) {
-        console.error("🔤 [TranslationProvider] Error translating", {
-          text: text.substring(0, 50),
-          error: error instanceof Error ? error.message : String(error),
-          targetLanguage,
-          sourceLanguage,
-        });
+        if (DEBUG_TRANSLATION_LOGS) {
+          console.error("🔤 [TranslationProvider] Error translating", {
+            text: text.substring(0, 50),
+            error: error instanceof Error ? error.message : String(error),
+            targetLanguage,
+            sourceLanguage,
+          });
+        }
         return text; // Return original on error
       } finally {
         setIsTranslating(false);
@@ -242,12 +269,14 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
 
   // Log when context value changes
   useEffect(() => {
-    console.log("🌍 [TranslationProvider] Context value updated", {
-      currentLanguage: effectiveLanguage,
-      isTranslating,
-      supportedLanguagesCount: SUPPORTED_LANGUAGES.length,
-      isLoading: currentLanguage === null,
-    });
+    if (DEBUG_TRANSLATION_LOGS) {
+      console.log("🌍 [TranslationProvider] Context value updated", {
+        currentLanguage: effectiveLanguage,
+        isTranslating,
+        supportedLanguagesCount: SUPPORTED_LANGUAGES.length,
+        isLoading: currentLanguage === null,
+      });
+    }
   }, [effectiveLanguage, isTranslating, currentLanguage]);
 
   return (

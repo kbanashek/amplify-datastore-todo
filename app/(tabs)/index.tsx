@@ -42,6 +42,7 @@ export default function DashboardScreen() {
       />
 
       <View style={styles.moduleContainer}>
+        {/* <SyncStatusBanner /> */}
         <TaskActivityModule
           resetSignal={resetSignal}
           disableSafeAreaTopInset={true}

@@ -6,6 +6,11 @@ jest.mock("../../models", () => ({
   Activity: { copyOf: (_: any, mutator: any) => mutator({}) },
   Task: { copyOf: (_: any, mutator: any) => mutator({}) },
   Question: { copyOf: (_: any, mutator: any) => mutator({}) },
+  TaskAnswer: {},
+  TaskResult: {},
+  TaskHistory: {},
+  DataPoint: {},
+  DataPointInstance: {},
 }));
 
 const mockCreateActivity = jest.fn();
@@ -188,5 +193,126 @@ describe("FixtureImportService", () => {
 
     expect(mockCreateQuestion).toHaveBeenCalledTimes(1);
     expect(result.questions.created).toBe(1);
+  });
+
+  it("prunes non-fixture Task/Activity/Question records when pruneNonFixture=true", async () => {
+    (DataStore.query as jest.Mock)
+      .mockResolvedValueOnce([
+        { id: "a-id-1", pk: "A1", sk: "SK-A1" },
+        { id: "a-id-2", pk: "A2", sk: "SK-A2" },
+      ]) // Activity
+      .mockResolvedValueOnce([
+        { id: "t-id-1", pk: "T1", sk: "SK-T1" },
+        { id: "t-id-2", pk: "T2", sk: "SK-T2" },
+      ]) // Task
+      .mockResolvedValueOnce([
+        { id: "q-id-1", pk: "Q1", sk: "SK-Q1" },
+        { id: "q-id-2", pk: "Q2", sk: "SK-Q2" },
+      ]); // Question
+
+    (DataStore.delete as jest.Mock).mockResolvedValue(undefined);
+
+    const fixture = {
+      version: 1,
+      activities: [{ pk: "A1", sk: "SK-A1", name: "Act" }],
+      tasks: [
+        {
+          pk: "T1",
+          sk: "SK-T1",
+          title: "Task",
+          taskType: "SCHEDULED",
+          status: "OPEN",
+        },
+      ],
+      questions: [
+        {
+          pk: "Q1",
+          sk: "SK-Q1",
+          question: "Q",
+          questionId: "Q1",
+          friendlyName: "Q",
+          controlType: "text",
+          version: 1,
+          index: 0,
+        },
+      ],
+    };
+
+    await FixtureImportService.importTaskSystemFixture(fixture as any, {
+      updateExisting: false,
+      pruneNonFixture: true,
+    });
+
+    // Should delete A2, T2, Q2 only.
+    expect(DataStore.delete).toHaveBeenCalledTimes(3);
+  });
+
+  it("dedupes by pk when pruneNonFixture=true (deletes extra rows sharing the same pk)", async () => {
+    (DataStore.query as jest.Mock)
+      .mockResolvedValueOnce([]) // Activity
+      .mockResolvedValueOnce([
+        { id: "t1-old", pk: "T1", sk: "SK-T1", _lastChangedAt: 1 },
+        { id: "t1-new", pk: "T1", sk: "SK-T1", _lastChangedAt: 2 },
+      ]) // Task
+      .mockResolvedValueOnce([]); // Question
+
+    (DataStore.delete as jest.Mock).mockResolvedValue(undefined);
+
+    const fixture = {
+      version: 1,
+      activities: [],
+      tasks: [
+        {
+          pk: "T1",
+          sk: "SK-T1",
+          title: "Task",
+          taskType: "SCHEDULED",
+          status: "OPEN",
+        },
+      ],
+      questions: [],
+    };
+
+    await FixtureImportService.importTaskSystemFixture(fixture as any, {
+      updateExisting: false,
+      pruneNonFixture: true,
+    });
+
+    expect(DataStore.delete).toHaveBeenCalledTimes(1);
+    expect((DataStore.delete as jest.Mock).mock.calls[0][0].id).toBe("t1-old");
+  });
+
+  it("prunes derived models when pruneDerivedModels=true (TaskAnswer/Result/History/DataPoint/Instance)", async () => {
+    (DataStore.query as jest.Mock)
+      .mockResolvedValueOnce([]) // Activity
+      .mockResolvedValueOnce([]) // Task
+      .mockResolvedValueOnce([]) // Question
+      .mockResolvedValueOnce([{ id: "ta-1" }]) // TaskAnswer
+      .mockResolvedValueOnce([{ id: "tr-1" }]) // TaskResult
+      .mockResolvedValueOnce([{ id: "th-1" }]) // TaskHistory
+      .mockResolvedValueOnce([{ id: "dpi-1" }]) // DataPointInstance
+      .mockResolvedValueOnce([{ id: "dp-1" }]); // DataPoint
+
+    (DataStore.delete as jest.Mock).mockResolvedValue(undefined);
+
+    const fixture = {
+      version: 1,
+      activities: [],
+      tasks: [],
+      questions: [],
+    };
+
+    await FixtureImportService.importTaskSystemFixture(fixture as any, {
+      updateExisting: false,
+      pruneNonFixture: true,
+      pruneDerivedModels: true,
+    });
+
+    // 5 derived deletes
+    expect(DataStore.delete).toHaveBeenCalledWith({ id: "ta-1" });
+    expect(DataStore.delete).toHaveBeenCalledWith({ id: "tr-1" });
+    expect(DataStore.delete).toHaveBeenCalledWith({ id: "th-1" });
+    expect(DataStore.delete).toHaveBeenCalledWith({ id: "dpi-1" });
+    expect(DataStore.delete).toHaveBeenCalledWith({ id: "dp-1" });
   });
 });

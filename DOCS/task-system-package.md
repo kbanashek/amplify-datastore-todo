@@ -57,7 +57,7 @@ This package intentionally does **not** try to ship a baked-in `aws-exports` bec
 
 ### 3) Example (copy/paste starting point)
 
-See `src/LXHostExample.tsx` in this repo for the exact sequence:
+See `src/screens/LXHostExample.tsx` in this repo for the exact sequence:
 
 - `Amplify.configure(...)`
 - `bootstrapTaskSystem({ startDataStore: true })`

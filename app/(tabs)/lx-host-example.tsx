@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GlobalHeader } from "../../src/components/GlobalHeader";
-import { LXHostExample } from "../../src/LXHostExample";
+import { LXHostExample } from "../../src/screens/LXHostExample";
 import { NavigationMenu } from "../../src/components/NavigationMenu";
 
 /**

@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useTranslation } from "../contexts/TranslationContext";
+import { DEBUG_TRANSLATION_LOGS } from "../utils/debug";
 
 /**
  * Hook to translate text with loading state
@@ -33,14 +34,16 @@ export const useTranslatedText = (
       return;
     }
 
-    console.log("🌐 [useTranslatedText] Effect triggered", {
-      text: text.substring(0, 50),
-      currentLanguage,
-      previousLanguage: previousLanguageRef.current,
-      sourceLanguage,
-      textChanged: text !== previousTextRef.current,
-      languageChanged: currentLanguage !== previousLanguageRef.current,
-    });
+    if (DEBUG_TRANSLATION_LOGS) {
+      console.log("🌐 [useTranslatedText] Effect triggered", {
+        text: text.substring(0, 50),
+        currentLanguage,
+        previousLanguage: previousLanguageRef.current,
+        sourceLanguage,
+        textChanged: text !== previousTextRef.current,
+        languageChanged: currentLanguage !== previousLanguageRef.current,
+      });
+    }
 
     // Update refs immediately to prevent duplicate calls
     previousTextRef.current = text;
@@ -54,13 +57,15 @@ export const useTranslatedText = (
 
     // If current language is English (default), don't translate
     if (currentLanguage === "en" || currentLanguage === sourceLanguage) {
-      console.log(
-        "🌐 [useTranslatedText] Skipping translation (English or same language)",
-        {
-          currentLanguage,
-          sourceLanguage,
-        }
-      );
+      if (DEBUG_TRANSLATION_LOGS) {
+        console.log(
+          "🌐 [useTranslatedText] Skipping translation (English or same language)",
+          {
+            currentLanguage,
+            sourceLanguage,
+          }
+        );
+      }
       setTranslatedText(text);
       setIsTranslating(false);
       return;
@@ -71,50 +76,60 @@ export const useTranslatedText = (
       currentLanguage !== previousLanguageRef.current &&
       text === previousTextRef.current
     ) {
-      console.log(
-        "🌐 [useTranslatedText] Language changed, re-translating same text",
-        {
-          text: text.substring(0, 50),
-          oldLanguage: previousLanguageRef.current,
-          newLanguage: currentLanguage,
-        }
-      );
+      if (DEBUG_TRANSLATION_LOGS) {
+        console.log(
+          "🌐 [useTranslatedText] Language changed, re-translating same text",
+          {
+            text: text.substring(0, 50),
+            oldLanguage: previousLanguageRef.current,
+            newLanguage: currentLanguage,
+          }
+        );
+      }
     }
 
-    console.log("🌐 [useTranslatedText] Triggering translation", {
-      text: text.substring(0, 50),
-      currentLanguage,
-      sourceLanguage,
-      previousLanguage: previousLanguageRef.current,
-    });
+    if (DEBUG_TRANSLATION_LOGS) {
+      console.log("🌐 [useTranslatedText] Triggering translation", {
+        text: text.substring(0, 50),
+        currentLanguage,
+        sourceLanguage,
+        previousLanguage: previousLanguageRef.current,
+      });
+    }
 
     // Translate the text
     setIsTranslating(true);
 
     translate(text, sourceLanguage as any)
       .then(translated => {
-        console.log("🌐 [useTranslatedText] Translation completed", {
-          original: text.substring(0, 50),
-          translated: translated.substring(0, 50),
-          changed: translated !== text,
-          currentLanguage,
-          previousLanguage: previousLanguageRef.current,
-        });
+        if (DEBUG_TRANSLATION_LOGS) {
+          console.log("🌐 [useTranslatedText] Translation completed", {
+            original: text.substring(0, 50),
+            translated: translated.substring(0, 50),
+            changed: translated !== text,
+            currentLanguage,
+            previousLanguage: previousLanguageRef.current,
+          });
+        }
         // Only update if language hasn't changed during translation
         if (currentLanguage === previousLanguageRef.current) {
           setTranslatedText(translated);
         } else {
-          console.log(
-            "🌐 [useTranslatedText] Language changed during translation, skipping update"
-          );
+          if (DEBUG_TRANSLATION_LOGS) {
+            console.log(
+              "🌐 [useTranslatedText] Language changed during translation, skipping update"
+            );
+          }
         }
       })
       .catch(error => {
-        console.error("🌐 [useTranslatedText] Translation error", {
-          text: text.substring(0, 50),
-          error: error?.message || String(error),
-          currentLanguage,
-        });
+        if (DEBUG_TRANSLATION_LOGS) {
+          console.error("🌐 [useTranslatedText] Translation error", {
+            text: text.substring(0, 50),
+            error: error?.message || String(error),
+            currentLanguage,
+          });
+        }
         // Only update if language hasn't changed during translation
         if (currentLanguage === previousLanguageRef.current) {
           setTranslatedText(text); // Fallback to original

@@ -216,7 +216,9 @@ const normalizeToEnumFormat = (type: string): string => {
     image_capture: QuestionType.IMAGE_CAPTURE,
     // Text types
     text: QuestionType.TEXT,
+    textfield: QuestionType.TEXT_FIELD,
     "text-field": QuestionType.TEXT_FIELD,
+    textareafield: QuestionType.TEXTAREA_FIELD,
     "textarea-field": QuestionType.TEXTAREA_FIELD,
     // Select types
     singleselect: QuestionType.SINGLE_SELECT,
@@ -228,13 +230,17 @@ const normalizeToEnumFormat = (type: string): string => {
     "checkbox-field": QuestionType.CHECKBOX_FIELD,
     // Number types
     number: QuestionType.NUMBER,
+    numberfield: QuestionType.NUMBER_FIELD,
     "number-field": QuestionType.NUMBER_FIELD,
     numericscale: QuestionType.NUMERIC_SCALE,
     // Date/Time types
     date: QuestionType.DATE,
+    datefield: QuestionType.DATE_FIELD,
     "date-field": QuestionType.DATE_FIELD,
+    datetimefield: QuestionType.DATE_TIME_FIELD,
     "date-time-field": QuestionType.DATE_TIME_FIELD,
     time: QuestionType.TIME,
+    timepickerfield: QuestionType.TIME_PICKER_FIELD,
     "time-picker-field": QuestionType.TIME_PICKER_FIELD,
     // Other
     label: QuestionType.LABEL,

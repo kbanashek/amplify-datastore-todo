@@ -1,6 +1,7 @@
 import { useMemo, useEffect } from "react";
 import { Alert } from "react-native";
 import { useRouter } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import { useGroupedTasks } from "./useGroupedTasks";
 import { useTaskList } from "./useTaskList";
 import { useAppointmentList } from "./useAppointmentList";
@@ -21,6 +22,7 @@ export interface UseTaskContainerReturn {
 
 export const useTaskContainer = (): UseTaskContainerReturn => {
   const router = useRouter();
+  const navigation = useNavigation<any>();
 
   const { tasks, loading, error, handleDeleteTask } = useTaskList();
   const groupedTasks = useGroupedTasks(tasks);
@@ -59,6 +61,26 @@ export const useTaskContainer = (): UseTaskContainerReturn => {
         [{ text: "OK", style: "default" }]
       );
       return;
+    }
+
+    // Prefer internal module navigation when running inside TaskActivityModule.
+    // Fallback to expo-router when used outside the module stack.
+    try {
+      if (navigation?.navigate) {
+        navigation.navigate("TaskQuestions", {
+          taskId: task.id,
+          entityId: task.entityId,
+        });
+        return;
+      }
+    } catch (error) {
+      // Fall back to expo-router below
+      console.warn(
+        "[useTaskContainer] navigation.navigate failed, falling back",
+        {
+          error: error instanceof Error ? error.message : String(error),
+        }
+      );
     }
 
     router.push({

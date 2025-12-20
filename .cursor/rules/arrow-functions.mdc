@@ -1,0 +1,52 @@
+---
+description: Prefer arrow functions when creating or modifying code
+alwaysApply: true
+globs: ["**/*.ts", "**/*.tsx"]
+---
+
+# Prefer Arrow Functions (when it makes sense)
+
+## Rule
+
+- Prefer **arrow functions** for:
+  - **React components**
+  - **hooks** (custom hooks and hook callbacks)
+  - **event handlers** and callbacks
+  - **small utilities** and one-off helpers
+- Prefer **const-assigned arrows** for exported APIs:
+  - ✅ Good: `export const buildPayload = (input: Input): Output => { ... }`
+
+## React Components
+
+- ✅ Preferred:
+
+```ts
+export const MyComponent: React.FC<MyProps> = ({ title }) => {
+  return <View />;
+};
+```
+
+- ✅ Also acceptable (if it reads cleaner):
+
+```ts
+export const MyComponent = ({ title }: MyProps): React.ReactElement => {
+  return <View />;
+};
+```
+
+## When `function` is acceptable
+
+Use `function` declarations when they provide a concrete benefit:
+- **Function overloads** (often clearer with `function`)
+- **Generators** (`function*`)
+- **Hoisting is required** (rare; prefer re-ordering instead)
+- **Very large utilities** where `function name()` reads materially better
+
+## Notes
+
+- This rule is about **consistency and readability**, not dogma.
+- Still follow the existing rules:
+  - Type all params/returns
+  - Avoid `any`
+  - Extract standalone utilities into `utils/` with unit tests when applicable
+

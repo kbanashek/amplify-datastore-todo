@@ -191,6 +191,17 @@ describe("QuestionRenderer", () => {
     expect(getByTestId("number-question-question-1")).toBeTruthy();
   });
 
+  it("renders NumberQuestion for camelCase numberField type", () => {
+    const { getByTestId } = render(
+      <QuestionRenderer
+        {...defaultProps}
+        element={createMockElement("numberField")}
+      />
+    );
+
+    expect(getByTestId("number-question-question-1")).toBeTruthy();
+  });
+
   it("renders SingleSelectQuestion for singleselect type", () => {
     const { getByTestId } = render(
       <QuestionRenderer
@@ -218,6 +229,17 @@ describe("QuestionRenderer", () => {
       <QuestionRenderer
         {...defaultProps}
         element={createMockElement("date-field")}
+      />
+    );
+
+    expect(getByTestId("date-question-question-1")).toBeTruthy();
+  });
+
+  it("renders DateQuestion for camelCase dateField type", () => {
+    const { getByTestId } = render(
+      <QuestionRenderer
+        {...defaultProps}
+        element={createMockElement("dateField")}
       />
     );
 

@@ -45,6 +45,24 @@ export type ImportTaskSystemFixtureOptions = {
    * Default: true
    */
   updateExisting?: boolean;
+
+  /**
+   * If true, remove any non-fixture Task/Activity/Question records from DataStore/cloud
+   * so the fixture becomes the authoritative dataset across devices.
+   *
+   * Default: false
+   */
+  pruneNonFixture?: boolean;
+
+  /**
+   * If true, also remove derived/ephemeral task data that is tied to a previous run
+   * (TaskAnswer, TaskResult, TaskHistory, DataPoint, DataPointInstance).
+   *
+   * This is typically desirable for dev/test "reseed" flows where you want a clean slate.
+   *
+   * Default: false
+   */
+  pruneDerivedModels?: boolean;
 };
 
 export type ImportTaskSystemFixtureResult = {

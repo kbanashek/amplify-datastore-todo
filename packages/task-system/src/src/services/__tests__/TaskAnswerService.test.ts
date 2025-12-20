@@ -169,6 +169,29 @@ describe("TaskAnswerService", () => {
       expect(callback).toHaveBeenCalledWith(mockAnswers, true);
       expect(result).toHaveProperty("unsubscribe");
     });
+
+    it("filters out _deleted tombstones from subscription items", () => {
+      const mockAnswers = [
+        createMockTaskAnswer({ id: "1" }),
+        createMockTaskAnswer({ id: "2", _deleted: true }),
+      ];
+      const mockSubscription = {
+        subscribe: jest.fn(callback => {
+          callback({ items: mockAnswers, isSynced: true });
+          return { unsubscribe: jest.fn() };
+        }),
+      };
+
+      (DataStore.observeQuery as jest.Mock).mockReturnValue(mockSubscription);
+      (DataStore.observe as jest.Mock).mockReturnValue({
+        subscribe: jest.fn(() => ({ unsubscribe: jest.fn() })),
+      });
+
+      const callback = jest.fn();
+      TaskAnswerService.subscribeTaskAnswers(callback);
+
+      expect(callback).toHaveBeenCalledWith([mockAnswers[0]], true);
+    });
   });
 
   describe("deleteAllTaskAnswers", () => {

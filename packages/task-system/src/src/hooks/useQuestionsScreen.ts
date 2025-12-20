@@ -46,15 +46,24 @@ export interface UseQuestionsScreenReturn {
   handleBack: () => void;
 }
 
+export interface UseQuestionsScreenParams {
+  taskId?: string;
+  entityId?: string;
+}
+
 /**
  * Main hook for questions screen
  * Composes smaller hooks for activity data, answers, validation, navigation, and submission
  */
-export const useQuestionsScreen = (): UseQuestionsScreenReturn => {
+export const useQuestionsScreen = (
+  params?: UseQuestionsScreenParams
+): UseQuestionsScreenReturn => {
   const nav = useNavigation<any>();
   const route = useRoute<any>();
-  const taskId = route?.params?.taskId as string | undefined;
-  const entityId = route?.params?.entityId as string | undefined;
+  const taskId =
+    params?.taskId ?? (route?.params?.taskId as string | undefined);
+  const entityId =
+    params?.entityId ?? (route?.params?.entityId as string | undefined);
 
   // Fetch task to get status
   const [task, setTask] = useState<Task | null>(null);
