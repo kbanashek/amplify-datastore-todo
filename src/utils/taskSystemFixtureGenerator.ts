@@ -59,10 +59,13 @@ export const buildTaskSystemFixtureV1 = (
   const taskCount = options.taskCount ?? 10;
   const appointmentCount = options.appointmentCount ?? 2;
 
-  const activityPk = "ACTIVITY-ALL-TYPES-FIXTURE-1";
-  const activitySk = "SK-ACTIVITY-ALL-TYPES-FIXTURE-1";
+  const activityAllTypesPk = "ACTIVITY-ALL-TYPES-FIXTURE-1";
+  const activityAllTypesSk = "SK-ACTIVITY-ALL-TYPES-FIXTURE-1";
 
-  const activityGroups = JSON.stringify([
+  const activityMultiPagePk = "ACTIVITY-MULTI-PAGE-FIXTURE-1";
+  const activityMultiPageSk = "SK-ACTIVITY-MULTI-PAGE-FIXTURE-1";
+
+  const activityGroupsAllTypes = JSON.stringify([
     {
       id: "group-1",
       questions: [
@@ -156,7 +159,7 @@ export const buildTaskSystemFixtureV1 = (
     },
   ]);
 
-  const layouts = JSON.stringify([
+  const layoutsAllTypes = JSON.stringify([
     {
       type: "MOBILE",
       screens: [
@@ -226,6 +229,80 @@ export const buildTaskSystemFixtureV1 = (
     },
   ]);
 
+  // Multi-page activity: 3 screens, 1 question per screen
+  const activityGroupsMultiPage = JSON.stringify([
+    {
+      id: "group-1",
+      questions: [
+        {
+          id: "mp_q1",
+          type: "textField",
+          text: "Multi-page: enter some text",
+          friendlyName: "Multi Text",
+          required: true,
+        },
+        {
+          id: "mp_q2",
+          type: "numberField",
+          text: "Multi-page: enter a number",
+          friendlyName: "Multi Number",
+          required: false,
+        },
+        {
+          id: "mp_q3",
+          type: "dateField",
+          text: "Multi-page: pick a date",
+          friendlyName: "Multi Date",
+          required: false,
+        },
+      ],
+    },
+  ]);
+
+  const layoutsMultiPage = JSON.stringify([
+    {
+      type: "MOBILE",
+      screens: [
+        {
+          id: "mp-screen-1",
+          name: "Step 1",
+          order: 0,
+          elements: [
+            {
+              id: "mp_q1",
+              order: 1,
+              displayProperties: [{ key: "width", value: '"100%"' }],
+            },
+          ],
+        },
+        {
+          id: "mp-screen-2",
+          name: "Step 2",
+          order: 1,
+          elements: [
+            {
+              id: "mp_q2",
+              order: 1,
+              displayProperties: [{ key: "width", value: '"100%"' }],
+            },
+          ],
+        },
+        {
+          id: "mp-screen-3",
+          name: "Step 3",
+          order: 2,
+          elements: [
+            {
+              id: "mp_q3",
+              order: 1,
+              displayProperties: [{ key: "width", value: '"100%"' }],
+            },
+          ],
+        },
+      ],
+    },
+  ]);
+
   const buildTaskTimes = (
     index: number
   ): { startMs: number; expireMs: number } => {
@@ -257,7 +334,7 @@ export const buildTaskSystemFixtureV1 = (
         status: "OPEN",
         startTimeInMillSec: startMs,
         expireTimeInMillSec: expireMs,
-        entityId: activityPk,
+        entityId: activityAllTypesPk,
         activityIndex: 0,
         showBeforeStart: true,
         allowEarlyCompletion: true,
@@ -266,7 +343,30 @@ export const buildTaskSystemFixtureV1 = (
       } as any;
     }
 
+    if (i === 1) {
+      return {
+        pk: "TASK-MULTI-PAGE-FIXTURE-1",
+        sk: "SK-TASK-MULTI-PAGE-FIXTURE-1",
+        title: "Multi Page (3 screens) Test (Fixture)",
+        description:
+          "Loaded from disk fixture: references the Multi Page activity (3 screens, 1 question each)",
+        taskType: "SCHEDULED",
+        status: "OPEN",
+        startTimeInMillSec: startMs,
+        expireTimeInMillSec: expireMs,
+        entityId: activityMultiPagePk,
+        activityIndex: 1,
+        showBeforeStart: true,
+        allowEarlyCompletion: true,
+        allowLateCompletion: true,
+        allowLateEdits: false,
+      } as any;
+    }
+
     const n = i + 1;
+    const useMultiPage = i % 2 === 1; // alternate after the two primary tasks
+    const entityId = useMultiPage ? activityMultiPagePk : activityAllTypesPk;
+    const activityIndex = useMultiPage ? 1 : 0;
     return {
       pk: `TASK-FIXTURE-${n}`,
       sk: `SK-TASK-FIXTURE-${n}`,
@@ -276,8 +376,8 @@ export const buildTaskSystemFixtureV1 = (
       status: "OPEN",
       startTimeInMillSec: startMs,
       expireTimeInMillSec: expireMs,
-      entityId: activityPk,
-      activityIndex: 0,
+      entityId,
+      activityIndex,
       showBeforeStart: true,
       allowEarlyCompletion: true,
       allowLateCompletion: true,
@@ -332,14 +432,26 @@ export const buildTaskSystemFixtureV1 = (
     fixtureId,
     activities: [
       {
-        pk: activityPk,
-        sk: activitySk,
+        pk: activityAllTypesPk,
+        sk: activityAllTypesSk,
         name: "All Question Types",
         title: "All Question Types Test",
         description: `Fixture activity (${fixtureId}) with many question types on one screen`,
         type: "SURVEY",
-        activityGroups,
-        layouts,
+        activityGroups: activityGroupsAllTypes,
+        layouts: layoutsAllTypes,
+        resumable: true,
+        progressBar: true,
+      } as any,
+      {
+        pk: activityMultiPagePk,
+        sk: activityMultiPageSk,
+        name: "Multi Page (3 screens)",
+        title: "Multi Page Test",
+        description: `Fixture activity (${fixtureId}) with 3 screens (1 question per screen)`,
+        type: "SURVEY",
+        activityGroups: activityGroupsMultiPage,
+        layouts: layoutsMultiPage,
         resumable: true,
         progressBar: true,
       } as any,

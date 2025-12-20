@@ -34,6 +34,7 @@ export { TaskAnswerService } from "./src/services/TaskAnswerService";
 export { TaskHistoryService } from "./src/services/TaskHistoryService";
 export { TaskResultService } from "./src/services/TaskResultService";
 export { TaskService } from "./src/services/TaskService";
+export { TempAnswerSyncService } from "./src/services/TempAnswerSyncService";
 export { TranslationMemoryService } from "./src/services/TranslationMemoryService";
 export {
   TranslationService,
@@ -108,6 +109,17 @@ export {
   QuestionType,
   ValidationType,
 } from "./src/types/activity-config-enums";
+
+// Temp answer (LX-integrated) types
+export type {
+  BuildSaveTempAnswersVariablesInput,
+  BuildSaveTempAnswersVariablesResult,
+  TaskSystemGraphQLExecutor,
+  TaskSystemGraphQLExecutorRequest,
+  TaskSystemGraphQLExecutorResponse,
+  TaskSystemSaveTempAnswersMapper,
+  TempAnswerSyncConfig,
+} from "./src/types/tempAnswerSync";
 
 // Activity parsing types/utils
 export {

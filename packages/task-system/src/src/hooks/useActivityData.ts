@@ -6,10 +6,12 @@ import {
 } from "../utils/activityParser";
 import { useActivity } from "./useActivity";
 import { useTaskAnswer } from "./useTaskAnswer";
+import type { Activity } from "../types/Activity";
 
 export interface UseActivityDataReturn {
   loading: boolean;
   error: string | null;
+  activity: Activity | null;
   activityData: ParsedActivityData | null;
   activityConfig: ActivityConfig | null;
   initialAnswers: Record<string, any>;
@@ -154,6 +156,7 @@ export const useActivityData = ({
   return {
     loading,
     error,
+    activity,
     activityData,
     activityConfig,
     initialAnswers,

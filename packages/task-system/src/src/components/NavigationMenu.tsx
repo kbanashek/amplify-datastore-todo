@@ -14,86 +14,48 @@ import { useColorScheme } from "../hooks/useColorScheme";
 import { IconSymbol } from "./ui/IconSymbol";
 
 interface MenuItem {
+  key: string;
   name: string;
-  route: string;
   icon: string;
   description?: string;
+  /**
+   * Optional React Navigation route name to navigate to.
+   * (Module-only / host-agnostic: no expo-router paths)
+   */
+  navigateTo?: string;
+  /**
+   * Optional custom handler for the host to wire actions without the package
+   * importing host navigation libraries.
+   */
+  onPress?: () => void;
 }
-
-const menuItems: MenuItem[] = [
-  {
-    name: "Activities",
-    route: "/(tabs)/activities",
-    icon: "doc.text.fill",
-    description: "Manage activities",
-  },
-  {
-    name: "Data Points",
-    route: "/(tabs)/datapoints",
-    icon: "chart.bar.fill",
-    description: "View data points",
-  },
-  {
-    name: "Questions",
-    route: "/(tabs)/questions",
-    icon: "questionmark.circle.fill",
-    description: "Manage questions",
-  },
-  {
-    name: "Task Answers",
-    route: "/(tabs)/task-answers",
-    icon: "text.bubble.fill",
-    description: "View task answers",
-  },
-  {
-    name: "Task Results",
-    route: "/(tabs)/task-results",
-    icon: "list.bullet.rectangle.portrait.fill",
-    description: "View task results",
-  },
-  {
-    name: "Task History",
-    route: "/(tabs)/task-history",
-    icon: "clock.fill",
-    description: "View task history",
-  },
-  {
-    name: "Seed Data",
-    route: "/(tabs)/seed-screen",
-    icon: "leaf.fill",
-    description: "Seed Activities and Tasks for testing",
-  },
-];
 
 interface NavigationMenuProps {
   visible: boolean;
   onClose: () => void;
+  items?: readonly MenuItem[];
 }
 
 export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   visible,
   onClose,
+  items = [],
 }) => {
   const navigation = useNavigation<any>();
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? "light"];
 
-  console.log(
-    "[NavigationMenu] Rendering, visible:",
-    visible,
-    "items:",
-    menuItems.length
-  );
-
-  const handleNavigate = (route: string) => {
-    console.log("[NavigationMenu] Navigating to:", route);
+  const handlePressItem = (item: MenuItem): void => {
     try {
-      // NavigationMenu is not part of the self-contained module contract yet.
-      // Keep it best-effort when embedded inside a React Navigation tree.
-      navigation.navigate?.(route as any);
+      if (item.onPress) {
+        item.onPress();
+      } else if (item.navigateTo) {
+        // Best-effort navigation within the current React Navigation tree.
+        navigation.navigate?.(item.navigateTo as any);
+      }
       onClose();
     } catch (error) {
-      console.error("[NavigationMenu] Navigation error:", error);
+      console.error("[NavigationMenu] Item press error:", error);
     }
   };
 
@@ -132,24 +94,19 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.menuListContent}
           >
-            {menuItems.length === 0 ? (
+            {items.length === 0 ? (
               <View style={styles.emptyState}>
                 <Text style={styles.emptyStateText}>
                   No navigation options available
                 </Text>
               </View>
             ) : (
-              menuItems.map((item, index) => {
-                console.log(
-                  "[NavigationMenu] Rendering item",
-                  index,
-                  item.name
-                );
+              items.map(item => {
                 return (
                   <TouchableOpacity
-                    key={item.route}
+                    key={item.key}
                     style={styles.menuItem}
-                    onPress={() => handleNavigate(item.route)}
+                    onPress={() => handlePressItem(item)}
                     activeOpacity={0.7}
                   >
                     <View style={styles.menuItemIcon}>

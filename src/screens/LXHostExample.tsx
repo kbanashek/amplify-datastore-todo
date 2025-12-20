@@ -1,12 +1,13 @@
 import { Amplify } from "@aws-amplify/core";
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import {
   AmplifyProvider,
   FixtureImportService,
   TaskActivityModule,
+  TempAnswerSyncService,
   TranslationProvider,
   initTaskSystem,
 } from "@orion/task-system";
@@ -52,6 +53,20 @@ export type LXHostExampleProps = {
    * Default: false (standalone example for LX copy/paste).
    */
   embedded?: boolean;
+
+  /**
+   * If true, configures TempAnswerSyncService with a mock executor/mapper and renders
+   * small debug actions (flush + inspect outbox).
+   *
+   * Default: false
+   */
+  enableTempAnswerSyncDemo?: boolean;
+
+  /**
+   * Optional: pass-through to TaskActivityModule to support "tab re-press" reset behavior
+   * in the host harness.
+   */
+  resetSignal?: number;
 };
 
 export function LXHostExample({
@@ -59,8 +74,12 @@ export function LXHostExample({
   startDataStore = true,
   importFixture = true,
   embedded = false,
+  enableTempAnswerSyncDemo = false,
+  resetSignal,
 }: LXHostExampleProps): React.ReactElement | null {
   const [ready, setReady] = useState(false);
+  const [outboxCount, setOutboxCount] = useState<number>(0);
+  const [lastFlush, setLastFlush] = useState<string>("");
 
   useEffect(() => {
     let cancelled = false;
@@ -85,6 +104,37 @@ export function LXHostExample({
             updateExisting: true,
           });
         }
+
+        if (enableTempAnswerSyncDemo) {
+          // Host provides the GraphQL executor + mapper. This is a mock implementation
+          // for the harness; LX should wire real executor + mutation document.
+          TempAnswerSyncService.configure({
+            document:
+              "mutation SaveTempAnswers($input: JSON!) { saveTempAnswers(input: $input) }",
+            executor: {
+              execute: async ({ document, variables }) => {
+                console.log("[LXHostExample] Temp-save execute", {
+                  document,
+                  variables,
+                });
+                return { data: { ok: true } };
+              },
+            },
+            mapper: ({ task, activity, answers, localtime }) => {
+              return {
+                stableKey: task.pk,
+                variables: {
+                  stableKey: task.pk,
+                  activityId: activity.pk ?? activity.id,
+                  localtime,
+                  answers,
+                },
+              };
+            },
+          });
+
+          TempAnswerSyncService.startAutoFlush();
+        }
       } catch (error) {
         console.error("[LXHostExample] bootstrap failed", error);
       } finally {
@@ -94,16 +144,81 @@ export function LXHostExample({
 
     return () => {
       cancelled = true;
+      if (enableTempAnswerSyncDemo) {
+        TempAnswerSyncService.stopAutoFlush();
+      }
     };
-  }, [configureAmplify, importFixture, startDataStore]);
+  }, [
+    configureAmplify,
+    enableTempAnswerSyncDemo,
+    importFixture,
+    startDataStore,
+  ]);
 
   if (!ready) return null;
+
+  const refreshOutbox = async (): Promise<void> => {
+    const items = await TempAnswerSyncService.peekOutbox();
+    setOutboxCount(items.length);
+  };
+
+  const flushOutbox = async (): Promise<void> => {
+    const result = await TempAnswerSyncService.flush();
+    setLastFlush(
+      `flushed=${result.flushed} remaining=${result.remaining} @ ${new Date().toLocaleTimeString()}`
+    );
+    await refreshOutbox();
+  };
 
   // Embedded mode: host app already provides SafeAreaProvider/TranslationProvider/AmplifyProvider.
   if (embedded) {
     return (
       <View style={{ flex: 1 }}>
-        <TaskActivityModule disableSafeAreaTopInset={true} />
+        {enableTempAnswerSyncDemo ? (
+          <View style={{ padding: 12 }}>
+            <View style={{ flexDirection: "row", gap: 12 }}>
+              <Pressable
+                accessibilityRole="button"
+                onPress={() => void refreshOutbox()}
+                style={{
+                  backgroundColor: "#2f3542",
+                  paddingVertical: 10,
+                  paddingHorizontal: 12,
+                  borderRadius: 10,
+                }}
+              >
+                <Text style={{ color: "white", fontWeight: "600" }}>
+                  Refresh Outbox ({outboxCount})
+                </Text>
+              </Pressable>
+
+              <Pressable
+                accessibilityRole="button"
+                onPress={() => void flushOutbox()}
+                style={{
+                  backgroundColor: "#2f3542",
+                  paddingVertical: 10,
+                  paddingHorizontal: 12,
+                  borderRadius: 10,
+                }}
+              >
+                <Text style={{ color: "white", fontWeight: "600" }}>
+                  Flush Outbox
+                </Text>
+              </Pressable>
+            </View>
+
+            {lastFlush ? (
+              <Text style={{ marginTop: 8, color: "#2f3542" }}>
+                {lastFlush}
+              </Text>
+            ) : null}
+          </View>
+        ) : null}
+        <TaskActivityModule
+          disableSafeAreaTopInset={true}
+          resetSignal={resetSignal}
+        />
       </View>
     );
   }
@@ -114,7 +229,51 @@ export function LXHostExample({
       <TranslationProvider>
         <AmplifyProvider autoStartDataStore={false}>
           <View style={{ flex: 1 }}>
-            <TaskActivityModule disableSafeAreaTopInset={true} />
+            {enableTempAnswerSyncDemo ? (
+              <View style={{ padding: 12 }}>
+                <View style={{ flexDirection: "row", gap: 12 }}>
+                  <Pressable
+                    accessibilityRole="button"
+                    onPress={() => void refreshOutbox()}
+                    style={{
+                      backgroundColor: "#2f3542",
+                      paddingVertical: 10,
+                      paddingHorizontal: 12,
+                      borderRadius: 10,
+                    }}
+                  >
+                    <Text style={{ color: "white", fontWeight: "600" }}>
+                      Refresh Outbox ({outboxCount})
+                    </Text>
+                  </Pressable>
+
+                  <Pressable
+                    accessibilityRole="button"
+                    onPress={() => void flushOutbox()}
+                    style={{
+                      backgroundColor: "#2f3542",
+                      paddingVertical: 10,
+                      paddingHorizontal: 12,
+                      borderRadius: 10,
+                    }}
+                  >
+                    <Text style={{ color: "white", fontWeight: "600" }}>
+                      Flush Outbox
+                    </Text>
+                  </Pressable>
+                </View>
+
+                {lastFlush ? (
+                  <Text style={{ marginTop: 8, color: "#2f3542" }}>
+                    {lastFlush}
+                  </Text>
+                ) : null}
+              </View>
+            ) : null}
+            <TaskActivityModule
+              disableSafeAreaTopInset={true}
+              resetSignal={resetSignal}
+            />
           </View>
         </AmplifyProvider>
       </TranslationProvider>

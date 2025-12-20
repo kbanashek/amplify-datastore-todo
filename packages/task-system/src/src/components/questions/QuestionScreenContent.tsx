@@ -50,13 +50,13 @@ export const QuestionScreenContent: React.FC<QuestionScreenContentProps> = ({
     }
   }, []);
 
-  console.log("📄 [QuestionScreenContent] Rendering", {
-    currentScreenIndex,
-    totalScreens: activityData.screens.length,
-    currentScreenName: currentScreen?.name,
-    elementsCount: currentScreen?.elements.length || 0,
-    hasScreen: !!currentScreen,
-  });
+  // console.log("📄 [QuestionScreenContent] Rendering", {
+  //   currentScreenIndex,
+  //   totalScreens: activityData.screens.length,
+  //   currentScreenName: currentScreen?.name,
+  //   elementsCount: currentScreen?.elements.length || 0,
+  //   hasScreen: !!currentScreen,
+  // });
 
   if (!currentScreen) {
     console.warn(
@@ -85,11 +85,11 @@ export const QuestionScreenContent: React.FC<QuestionScreenContentProps> = ({
       overScrollMode="never"
     >
       {currentScreen.elements.map(element => {
-        console.log("📄 [QuestionScreenContent] Rendering element", {
-          elementId: element.id,
-          questionId: element.question.id,
-          questionText: element.question.text?.substring(0, 30),
-        });
+        // console.log("📄 [QuestionScreenContent] Rendering element", {
+        //   elementId: element.id,
+        //   questionId: element.question.id,
+        //   questionText: element.question.text?.substring(0, 30),
+        // });
         return (
           <QuestionRenderer
             key={element.id}

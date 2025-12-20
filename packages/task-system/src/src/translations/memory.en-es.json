@@ -5,5 +5,19 @@
     "generatedAt": "2025-12-13",
     "notes": "Seed translation memory. Populate entries with stable UI phrases as needed."
   },
-  "entries": {}
+  "entries": {
+    "Dashboard": "Tablero",
+    "Back": "Atrás",
+    "Today": "Hoy",
+    "Tomorrow": "Mañana",
+    "Loading tasks...": "Cargando tareas...",
+    "No tasks available.": "No hay tareas disponibles.",
+    "DUE BY": "VENCE A LAS",
+    "BEGIN": "COMENZAR",
+    "RESUME": "REANUDAR",
+    "COMPLETED": "COMPLETADO",
+    "All Question Types Test (Fixture)": "Prueba de todos los tipos de preguntas (Fixture)",
+    "Sample Task 2 (Fixture)": "Tarea de ejemplo 2 (Fixture)",
+    "Sample Task 3 (Fixture)": "Tarea de ejemplo 3 (Fixture)"
+  }
 }

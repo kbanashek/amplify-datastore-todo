@@ -159,10 +159,10 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
             {/* Tasks grouped by time */}
             {dayGroup.timeGroups.map(timeGroup => (
               <View key={timeGroup.time} style={styles.timeGroup}>
-                <TranslatedText
-                  text={`DUE BY ${timeGroup.time}`}
-                  style={styles.dueByHeader}
-                />
+                <View style={styles.dueByRow}>
+                  <TranslatedText text="DUE BY" style={styles.dueByHeader} />
+                  <Text style={styles.dueByTime}>{timeGroup.time}</Text>
+                </View>
                 {timeGroup.tasks.map(task => (
                   <TaskCard
                     key={task.id}
@@ -213,12 +213,22 @@ const styles = StyleSheet.create({
   timeGroup: {
     marginBottom: 16,
   },
+  dueByRow: {
+    flexDirection: "row",
+    alignItems: "baseline",
+    gap: 6,
+    marginBottom: 12,
+  },
   dueByHeader: {
     fontSize: 14,
     fontWeight: "bold",
     color: AppColors.CINavy,
-    marginBottom: 12,
     textTransform: "uppercase",
+  },
+  dueByTime: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: AppColors.CINavy,
   },
   centerContainer: {
     padding: 32,

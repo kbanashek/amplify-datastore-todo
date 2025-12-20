@@ -1,9 +1,9 @@
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useCallback } from "react";
 import { Alert } from "react-native";
-import { useNavigation, CommonActions } from "@react-navigation/native";
-import { useTranslatedText } from "./useTranslatedText";
 import { ActivityConfig } from "../types/ActivityConfig";
 import { ParsedActivityData } from "../utils/activityParser";
+import { useTranslatedText } from "./useTranslatedText";
 
 export interface UseQuestionNavigationReturn {
   handleNext: () => void;
@@ -24,6 +24,7 @@ export interface UseQuestionNavigationOptions {
   currentScreenValid: boolean;
   validateCurrentScreen: () => boolean;
   onSubmit: () => Promise<void>;
+  onLeaveScreen?: () => void;
   setErrors: (errors: Record<string, string[]>) => void;
   setCurrentScreenIndex: React.Dispatch<React.SetStateAction<number>>;
   setShowIntroduction: React.Dispatch<React.SetStateAction<boolean>>;
@@ -44,6 +45,7 @@ export const useQuestionNavigation = ({
   currentScreenValid,
   validateCurrentScreen,
   onSubmit,
+  onLeaveScreen,
   setErrors,
   setCurrentScreenIndex,
   setShowIntroduction,
@@ -66,6 +68,7 @@ export const useQuestionNavigation = ({
   const handleNext = useCallback(() => {
     // If we came from review, always return to review screen (bypass validation)
     if (cameFromReview) {
+      onLeaveScreen?.();
       setCameFromReview(false);
       setShowReview(true);
       setErrors({});
@@ -74,6 +77,7 @@ export const useQuestionNavigation = ({
 
     // Normal flow: validate before proceeding
     if (validateCurrentScreen()) {
+      onLeaveScreen?.();
       setCurrentScreenIndex(prev => prev + 1);
       setErrors({});
     } else {
@@ -82,6 +86,7 @@ export const useQuestionNavigation = ({
   }, [
     cameFromReview,
     validateCurrentScreen,
+    onLeaveScreen,
     setErrors,
     setCameFromReview,
     setShowReview,
@@ -93,6 +98,7 @@ export const useQuestionNavigation = ({
   const handleReviewOrSubmit = useCallback(() => {
     // If we came from review, always go back to review screen
     if (cameFromReview) {
+      onLeaveScreen?.();
       setCameFromReview(false);
       setShowReview(true);
       setErrors({});
@@ -101,6 +107,7 @@ export const useQuestionNavigation = ({
 
     // Normal flow: validate before proceeding
     if (validateCurrentScreen()) {
+      onLeaveScreen?.();
       if (activityConfig?.summaryScreen?.showScreen) {
         setShowReview(true);
       } else {
@@ -114,6 +121,7 @@ export const useQuestionNavigation = ({
     activityConfig,
     validateCurrentScreen,
     onSubmit,
+    onLeaveScreen,
     setErrors,
     setCameFromReview,
     setShowReview,
@@ -124,16 +132,19 @@ export const useQuestionNavigation = ({
   const handlePrevious = useCallback(() => {
     // If we're on the first screen and came from review, go back to review
     if (cameFromReview && currentScreenIndex === 0) {
+      onLeaveScreen?.();
       setCameFromReview(false);
       setShowReview(true);
       setErrors({});
       return;
     }
+    onLeaveScreen?.();
     setCurrentScreenIndex(prev => prev - 1);
     setErrors({});
   }, [
     currentScreenIndex,
     cameFromReview,
+    onLeaveScreen,
     setErrors,
     setCameFromReview,
     setShowReview,
@@ -180,76 +191,17 @@ export const useQuestionNavigation = ({
   );
 
   const handleCompletionDone = useCallback(() => {
-    // Navigate to root - works with both expo-router and standard React Navigation
     try {
-      const navAny = navigation as any;
-
-      // Try to use expo-router's router if available (stored in navigation state)
-      // expo-router stores the router in navigation state
-      if (navAny.getState) {
-        const state = navAny.getState();
-        // Check if we can access expo-router's navigation methods
-        // expo-router uses a different navigation structure
-      }
-
-      // For expo-router: try to navigate to the index route within tabs
-      // The route structure is: (tabs) -> index
-      if (navAny.navigate) {
-        try {
-          // Try navigating to the tabs index route
-          navAny.navigate("(tabs)", { screen: "index" });
-          return;
-        } catch (navError) {
-          // Try just navigating to tabs
-          try {
-            navAny.navigate("(tabs)");
-            return;
-          } catch (navError2) {
-            // Try getting parent navigator
-            if (navAny.getParent) {
-              const parent = navAny.getParent();
-              if (parent && parent.navigate) {
-                try {
-                  parent.navigate("(tabs)", { screen: "index" });
-                  return;
-                } catch (parentError) {
-                  parent.navigate("(tabs)");
-                  return;
-                }
-              }
-            }
-          }
-        }
-      }
-
-      // Fallback: use CommonActions.reset to go to tabs index
-      try {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [
-              {
-                name: "(tabs)",
-                state: {
-                  routes: [{ name: "index" }],
-                },
-              },
-            ],
-          })
-        );
-        return;
-      } catch (resetError) {
-        // Try simpler reset
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: "(tabs)" }],
-          })
-        );
-      }
+      // Module-only behavior: reset back to the module dashboard route.
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "TaskDashboard" as never }],
+        })
+      );
     } catch (error) {
       console.warn(
-        "[useQuestionNavigation] Failed to navigate to root:",
+        "[useQuestionNavigation] Failed to reset to module dashboard:",
         error
       );
       // Last resort: try goBack

@@ -79,12 +79,6 @@ export default function TabLayout() {
           href: null, // Hide from tab bar
         }}
       />
-      <Tabs.Screen
-        name="lx-host-example"
-        options={{
-          href: null, // Hide from tab bar
-        }}
-      />
     </Tabs>
   );
 }

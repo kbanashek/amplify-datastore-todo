@@ -1,12 +1,13 @@
 import { DataStore } from "@aws-amplify/datastore";
 import {
+  CommonActions,
   useNavigation,
   useRoute,
-  CommonActions,
 } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
 import { Task as DataStoreTask } from "../models";
 import { TaskService } from "../services/TaskService";
+import { TempAnswerSyncService } from "../services/TempAnswerSyncService";
 import { Task, TaskStatus } from "../types/Task";
 import { useActivityData } from "./useActivityData";
 import { useAnswerManagement } from "./useAnswerManagement";
@@ -114,8 +115,14 @@ export const useQuestionsScreen = (
   }, [taskId]);
 
   // Fetch and parse activity data
-  const { loading, error, activityData, activityConfig, initialAnswers } =
-    useActivityData({ entityId, taskId });
+  const {
+    loading,
+    error,
+    activity,
+    activityData,
+    activityConfig,
+    initialAnswers,
+  } = useActivityData({ entityId, taskId });
 
   // Initialize screen state based on activity config
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
@@ -182,29 +189,19 @@ export const useQuestionsScreen = (
       setCameFromReview(false);
     },
     onNavigateToDashboard: () => {
-      // Navigate to root - works with both expo-router and standard React Navigation
-      // Try multiple approaches for compatibility
       try {
-        const navAny = nav as any;
-        if (navAny.navigate) {
-          navAny.navigate("(tabs)");
-        } else if (navAny.getParent) {
-          // Navigate up to root navigator
-          const parent = navAny.getParent();
-          if (parent) {
-            parent.navigate("(tabs)");
-          }
-        } else {
-          // Fallback: use CommonActions.reset
-          nav.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{ name: "(tabs)" }],
-            })
-          );
-        }
+        // Module-only behavior: reset back to the module dashboard route.
+        nav.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: "TaskDashboard" as never }],
+          })
+        );
       } catch (error) {
-        console.warn("[useQuestionsScreen] Failed to navigate to root:", error);
+        console.warn(
+          "[useQuestionsScreen] Failed to reset to module dashboard:",
+          error
+        );
         // Last resort: try goBack (not ideal but better than crashing)
         try {
           const navAny = nav as any;
@@ -222,6 +219,18 @@ export const useQuestionsScreen = (
   });
 
   // Navigation handlers
+  const enqueueTempAnswers = useCallback(() => {
+    if (!task || !activity) return;
+    if (!task.pk) return;
+
+    void TempAnswerSyncService.enqueueFromMapper({
+      task,
+      activity,
+      answers,
+      localtime: new Date().toISOString(),
+    });
+  }, [task, activity, answers]);
+
   const navigation = useQuestionNavigation({
     activityData,
     activityConfig,
@@ -230,6 +239,7 @@ export const useQuestionsScreen = (
     currentScreenValid,
     validateCurrentScreen,
     onSubmit: handleSubmit,
+    onLeaveScreen: enqueueTempAnswers,
     setErrors,
     setCurrentScreenIndex,
     setShowIntroduction,

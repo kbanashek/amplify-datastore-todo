@@ -47,6 +47,12 @@ jest.mock("../useQuestionSubmission", () => ({
   useQuestionSubmission: jest.fn(),
 }));
 
+jest.mock("../../services/TempAnswerSyncService", () => ({
+  TempAnswerSyncService: {
+    enqueueFromMapper: jest.fn(),
+  },
+}));
+
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { DataStore } from "@aws-amplify/datastore";
 import { TaskService } from "../../services/TaskService";
@@ -55,6 +61,7 @@ import { useAnswerManagement } from "../useAnswerManagement";
 import { useQuestionValidation } from "../useQuestionValidation";
 import { useQuestionNavigation } from "../useQuestionNavigation";
 import { useQuestionSubmission } from "../useQuestionSubmission";
+import { TempAnswerSyncService } from "../../services/TempAnswerSyncService";
 import { Task } from "../../types/Task";
 import { ParsedActivityData } from "../../utils/activityParser";
 import { ActivityConfig } from "../../types/ActivityConfig";
@@ -149,6 +156,7 @@ describe("useQuestionsScreen", () => {
     mockUseActivityData.mockReturnValue({
       loading: false,
       error: null,
+      activity: { id: "a1", pk: "ACTIVITY-1", sk: "SK-1", name: "A" } as any,
       activityData: mockActivityData,
       activityConfig: mockActivityConfig,
       initialAnswers: {},
@@ -164,7 +172,21 @@ describe("useQuestionsScreen", () => {
       currentScreenValid: true,
       validateCurrentScreen: jest.fn(() => true),
     });
-    mockUseQuestionNavigation.mockReturnValue(mockNavigationHandlers);
+    mockUseQuestionNavigation.mockImplementation((options: any) => ({
+      ...mockNavigationHandlers,
+      handleNext: () => {
+        mockNavigationHandlers.handleNext();
+        options.onLeaveScreen?.();
+      },
+      handlePrevious: () => {
+        mockNavigationHandlers.handlePrevious();
+        options.onLeaveScreen?.();
+      },
+      handleReviewOrSubmit: () => {
+        mockNavigationHandlers.handleReviewOrSubmit();
+        options.onLeaveScreen?.();
+      },
+    }));
     mockUseQuestionSubmission.mockReturnValue({
       isSubmitting: false,
       handleSubmit: jest.fn(),
@@ -239,6 +261,7 @@ describe("useQuestionsScreen", () => {
       mockUseActivityData.mockReturnValue({
         loading: false,
         error: null,
+        activity: { id: "a1", pk: "ACTIVITY-1", sk: "SK-1", name: "A" } as any,
         activityData: mockActivityData,
         activityConfig: { introductionScreen: { showScreen: false } },
         initialAnswers: {},
@@ -246,6 +269,24 @@ describe("useQuestionsScreen", () => {
       const { result } = renderHook(() => useQuestionsScreen());
       expect(result.current.showIntroduction).toBe(false);
       expect(result.current.currentScreenIndex).toBe(0);
+    });
+  });
+
+  describe("temp answer enqueue on navigation boundaries", () => {
+    it("enqueues temp answers on handleNext/handlePrevious/handleReviewSubmit", async () => {
+      const { result } = renderHook(() => useQuestionsScreen());
+
+      await waitFor(() => {
+        expect(result.current.task).toBeTruthy();
+      });
+
+      await act(async () => {
+        result.current.handleNext();
+        result.current.handlePrevious();
+        result.current.handleReviewSubmit();
+      });
+
+      expect(TempAnswerSyncService.enqueueFromMapper).toHaveBeenCalledTimes(3);
     });
   });
 

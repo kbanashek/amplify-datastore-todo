@@ -1,8 +1,12 @@
-import { renderHook, act } from "@testing-library/react-native";
-import { useQuestionNavigation } from "../useQuestionNavigation";
+import { act, renderHook } from "@testing-library/react-native";
 import { Alert } from "react-native";
-import { ParsedActivityData } from "../../utils/activityParser";
 import { ActivityConfig } from "../../types/ActivityConfig";
+import { ParsedActivityData } from "../../utils/activityParser";
+import { useQuestionNavigation } from "../useQuestionNavigation";
+
+import { CommonActions, useNavigation } from "@react-navigation/native";
+import { validateScreen } from "../../utils/questionValidation";
+import { useTranslatedText } from "../useTranslatedText";
 
 // Mock react-navigation
 jest.mock("@react-navigation/native", () => ({
@@ -21,10 +25,6 @@ jest.mock("../useTranslatedText", () => ({
 jest.mock("../../utils/questionValidation", () => ({
   validateScreen: jest.fn(),
 }));
-
-import { useNavigation, CommonActions } from "@react-navigation/native";
-import { useTranslatedText } from "../useTranslatedText";
-import { validateScreen } from "../../utils/questionValidation";
 
 describe("useQuestionNavigation", () => {
   const mockNavigate = jest.fn();
@@ -563,7 +563,7 @@ describe("useQuestionNavigation", () => {
   });
 
   describe("handleCompletionDone", () => {
-    it("attempts multiple navigation strategies", () => {
+    it("resets to the module dashboard route", () => {
       const { result } = renderHook(() =>
         useQuestionNavigation({
           activityData: mockActivityData,
@@ -586,36 +586,10 @@ describe("useQuestionNavigation", () => {
         result.current.handleCompletionDone();
       });
 
-      // Should attempt navigation
-      expect(mockNavigate).toHaveBeenCalled();
-    });
-
-    it("falls back to CommonActions.reset when navigate fails", () => {
-      mockNavigate.mockImplementation(() => {
-        throw new Error("Navigate failed");
+      expect(CommonActions.reset).toHaveBeenCalledWith({
+        index: 0,
+        routes: [{ name: "TaskDashboard" }],
       });
-      const { result } = renderHook(() =>
-        useQuestionNavigation({
-          activityData: mockActivityData,
-          activityConfig: mockActivityConfig,
-          currentScreenIndex: 0,
-          cameFromReview: false,
-          currentScreenValid: true,
-          validateCurrentScreen: mockValidateCurrentScreen,
-          onSubmit: mockOnSubmit,
-          setErrors: mockSetErrors,
-          setCurrentScreenIndex: mockSetCurrentScreenIndex,
-          setShowIntroduction: mockSetShowIntroduction,
-          setShowReview: mockSetShowReview,
-          setShowCompletion: mockSetShowCompletion,
-          setCameFromReview: mockSetCameFromReview,
-        })
-      );
-
-      act(() => {
-        result.current.handleCompletionDone();
-      });
-
       expect(mockDispatch).toHaveBeenCalled();
     });
   });
