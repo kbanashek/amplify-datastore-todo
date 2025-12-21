@@ -3,8 +3,7 @@ name: Test Coverage
 on:
   push:
     branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
+  # Removed pull_request trigger - coverage is now included in PR Checks workflow
 
 jobs:
   test:
