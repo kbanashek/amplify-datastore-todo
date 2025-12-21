@@ -8,6 +8,7 @@ import type {
   TempAnswerSyncConfig,
 } from "../types/tempAnswerSync";
 import { DEBUG_TEMP_ANSWER_SYNC_LOGS } from "../utils/debug";
+import { logWithPlatform } from "../utils/platformLogger";
 
 type OutboxItem = {
   stableKey: string;
@@ -25,10 +26,15 @@ let flushInFlight: Promise<{ flushed: number; remaining: number }> | null =
   null;
 let netInfoUnsubscribe: (() => void) | null = null;
 
-const debugLog = (message: string, meta?: Record<string, unknown>): void => {
+const debugLog = (
+  icon: string,
+  step: string,
+  message: string,
+  meta?: Record<string, unknown>
+): void => {
   if (!__DEV__) return;
   if (!DEBUG_TEMP_ANSWER_SYNC_LOGS) return;
-  console.log(`[TempAnswerSyncService] ${message}`, meta ?? {});
+  logWithPlatform(icon, step, "TempAnswerSyncService", message, meta);
 };
 
 const truncateForLog = (value: unknown): unknown => {
@@ -100,7 +106,7 @@ const hasGraphQLErrors = (resp: unknown): boolean => {
 export class TempAnswerSyncService {
   static configure(next: TempAnswerSyncConfig): void {
     config = next;
-    debugLog("configured", {
+    debugLog("⚙️", "", "Service configured", {
       storageKey: next.storageKey ?? DEFAULT_STORAGE_KEY,
       hasExecutor: !!next.executor,
       hasMapper: !!next.mapper,
@@ -111,6 +117,23 @@ export class TempAnswerSyncService {
     return !!config;
   }
 
+  /**
+   * Start auto-flush mechanism that retries queued temp answers when network comes online.
+   *
+   * **Design Intent:**
+   * - On app refresh/restart, if there are queued temp answers in AsyncStorage from a previous
+   *   session (e.g., user clicked "Next" but sync failed), this automatically retries them
+   *   when the network is detected as online.
+   * - This ensures users don't lose their progress even if they close the app while offline
+   *   or if a sync fails.
+   * - The flush is triggered immediately when network is detected online (including on app
+   *   startup if network is already available).
+   *
+   * **Expected Behavior:**
+   * - On app refresh with network online → flush() is called immediately
+   * - On network reconnection → flush() is called automatically
+   * - Queued items persist across app restarts until successfully synced
+   */
   static startAutoFlush(): void {
     if (netInfoUnsubscribe) return;
 
@@ -118,10 +141,16 @@ export class TempAnswerSyncService {
       const isOnline =
         state.isInternetReachable === true || state.isConnected === true;
       if (isOnline) {
-        debugLog("netinfo online -> flush()", {
-          isConnected: state.isConnected,
-          isInternetReachable: state.isInternetReachable,
-        });
+        debugLog(
+          "🔄",
+          "",
+          "Network online detected → Auto-flushing queued temp answers (this is expected on app refresh if items are queued)",
+          {
+            isConnected: state.isConnected,
+            isInternetReachable: state.isInternetReachable,
+            trigger: "auto-flush-on-network-online",
+          }
+        );
         void TempAnswerSyncService.flush();
       }
     });
@@ -167,16 +196,19 @@ export class TempAnswerSyncService {
     };
     await writeOutbox(storageKey, outbox);
 
-    debugLog("persisted temp answers to outbox", {
-      storageKey,
-      stableKey: input.stableKey,
-      replacedExisting: existed,
-      outboxCount: Object.keys(outbox).length,
-      outboxKeys: Object.keys(outbox),
-      documentSnippet: document.slice(0, 80),
-      variableKeys: Object.keys(input.variables ?? {}),
-      variables: truncateForLog(input.variables ?? {}),
-    });
+    debugLog(
+      "📦",
+      "",
+      "Queued temp answers to outbox (will sync when network is available)",
+      {
+        storageKey,
+        stableKey: input.stableKey,
+        replacedExisting: existed,
+        outboxCount: Object.keys(outbox).length,
+        documentSnippet: document.slice(0, 80),
+        variableKeys: Object.keys(input.variables ?? {}),
+      }
+    );
   }
 
   static async enqueueFromMapper(
@@ -186,17 +218,16 @@ export class TempAnswerSyncService {
     const mapper: TaskSystemSaveTempAnswersMapper = config.mapper;
     const mapped = mapper(input);
     if (!mapped) {
-      debugLog("mapper returned null (skipping temp save)", {
+      debugLog("⚠️", "", "Mapper returned null (skipping temp save)", {
         taskPk: input.task.pk,
       });
       return;
     }
 
-    debugLog("mapper produced temp-save payload", {
+    debugLog("💾", "", "Mapper produced temp-save payload", {
       stableKey: mapped.stableKey,
       documentSnippet: (mapped.document ?? config.document).slice(0, 80),
       variableKeys: Object.keys(mapped.variables ?? {}),
-      variables: truncateForLog(mapped.variables ?? {}),
     });
     await TempAnswerSyncService.enqueueTempAnswers({
       stableKey: mapped.stableKey,
@@ -220,7 +251,7 @@ export class TempAnswerSyncService {
     const mapper: TaskSystemSaveTempAnswersMapper = config.mapper;
     const mapped = mapper(input);
     if (!mapped) {
-      debugLog("mapper returned null (skipping temp save)", {
+      debugLog("⚠️", "", "Mapper returned null (skipping temp save)", {
         taskPk: input.task.pk,
       });
       return;
@@ -237,11 +268,16 @@ export class TempAnswerSyncService {
     if (isOnline) {
       // Try immediate sync
       try {
-        debugLog("attempting immediate temp-save sync", {
-          stableKey: mapped.stableKey,
-          documentSnippet: document.slice(0, 80),
-          variableKeys: Object.keys(mapped.variables ?? {}),
-        });
+        debugLog(
+          "📤",
+          "",
+          "Attempting immediate temp-save sync (user clicked Next)",
+          {
+            stableKey: mapped.stableKey,
+            documentSnippet: document.slice(0, 80),
+            variableKeys: Object.keys(mapped.variables ?? {}),
+          }
+        );
 
         const resp = await executor.execute({
           document,
@@ -249,10 +285,15 @@ export class TempAnswerSyncService {
         });
 
         if (hasGraphQLErrors(resp)) {
-          debugLog("immediate sync failed with GraphQL errors (queuing)", {
-            stableKey: mapped.stableKey,
-            errors: resp.errors,
-          });
+          debugLog(
+            "❌",
+            "",
+            "Immediate sync failed with GraphQL errors (queuing for retry)",
+            {
+              stableKey: mapped.stableKey,
+              errors: resp.errors,
+            }
+          );
           // Queue for retry
           await TempAnswerSyncService.enqueueTempAnswers({
             stableKey: mapped.stableKey,
@@ -260,17 +301,22 @@ export class TempAnswerSyncService {
             document,
           });
         } else {
-          debugLog("immediate sync succeeded", {
+          debugLog("✅", "", "Immediate sync succeeded", {
             stableKey: mapped.stableKey,
           });
           // Success - no need to queue
           return;
         }
       } catch (error) {
-        debugLog("immediate sync failed with exception (queuing)", {
-          stableKey: mapped.stableKey,
-          error: error instanceof Error ? error.message : String(error),
-        });
+        debugLog(
+          "❌",
+          "",
+          "Immediate sync failed with exception (queuing for retry)",
+          {
+            stableKey: mapped.stableKey,
+            error: error instanceof Error ? error.message : String(error),
+          }
+        );
         // Queue for retry
         await TempAnswerSyncService.enqueueTempAnswers({
           stableKey: mapped.stableKey,
@@ -280,11 +326,16 @@ export class TempAnswerSyncService {
       }
     } else {
       // Offline - queue immediately
-      debugLog("device offline (queuing temp answers)", {
-        stableKey: mapped.stableKey,
-        isConnected: netInfo.isConnected,
-        isInternetReachable: netInfo.isInternetReachable,
-      });
+      debugLog(
+        "📡",
+        "",
+        "Device offline (queuing temp answers for later sync)",
+        {
+          stableKey: mapped.stableKey,
+          isConnected: netInfo.isConnected,
+          isInternetReachable: netInfo.isInternetReachable,
+        }
+      );
       await TempAnswerSyncService.enqueueTempAnswers({
         stableKey: mapped.stableKey,
         variables: mapped.variables,
@@ -293,6 +344,20 @@ export class TempAnswerSyncService {
     }
   }
 
+  /**
+   * Flush queued temp answers from AsyncStorage outbox.
+   *
+   * **When this is called:**
+   * - Automatically on app refresh/startup if network is online (via startAutoFlush)
+   * - Automatically when network comes back online (via startAutoFlush)
+   * - Can be called manually if needed
+   *
+   * **What it does:**
+   * - Reads all queued items from AsyncStorage
+   * - Attempts to sync each item via GraphQL
+   * - Removes successfully synced items from the outbox
+   * - Retains failed items for future retry
+   */
   static async flush(): Promise<{ flushed: number; remaining: number }> {
     if (!config) {
       return { flushed: 0, remaining: 0 };
@@ -312,11 +377,15 @@ export class TempAnswerSyncService {
       let flushed = 0;
       const nextOutbox: OutboxState = { ...outbox };
 
-      debugLog("flush start", { storageKey, queued: items.length });
+      debugLog("🚀", "", "Starting flush of queued temp answers", {
+        storageKey,
+        queued: items.length,
+        source: "auto-flush-on-app-refresh-or-network-online",
+      });
 
       for (const item of items) {
         try {
-          debugLog("flush attempt", {
+          debugLog("📤", "", "Attempting to sync queued temp answer", {
             stableKey: item.stableKey,
             updatedAt: item.updatedAt,
             documentSnippet: item.document.slice(0, 80),
@@ -329,29 +398,45 @@ export class TempAnswerSyncService {
           });
 
           if (hasGraphQLErrors(resp)) {
-            debugLog("flush GraphQL errors (retaining item)", {
-              stableKey: item.stableKey,
-            });
+            debugLog(
+              "❌",
+              "",
+              "Sync failed with GraphQL errors (will retry later)",
+              {
+                stableKey: item.stableKey,
+                errors: (resp as any).errors,
+              }
+            );
             continue;
           }
 
           delete nextOutbox[item.stableKey];
           flushed++;
           await writeOutbox(storageKey, nextOutbox);
-          debugLog("flush success (deleted from outbox)", {
+          debugLog(
+            "✅",
+            "",
+            "Successfully synced temp answer (removed from outbox)",
+            {
+              stableKey: item.stableKey,
+              remaining: Object.keys(nextOutbox).length,
+            }
+          );
+        } catch (error) {
+          debugLog("❌", "", "Sync failed with exception (will retry later)", {
             stableKey: item.stableKey,
-            remaining: Object.keys(nextOutbox).length,
-          });
-        } catch {
-          debugLog("flush failed (exception; retaining item)", {
-            stableKey: item.stableKey,
+            error: error instanceof Error ? error.message : String(error),
           });
           // Keep the item for retry.
         }
       }
 
       const remaining = Object.keys(nextOutbox).length;
-      debugLog("flush done", { flushed, remaining });
+      debugLog("🏁", "", "Flush completed", {
+        flushed,
+        remaining,
+        status: remaining > 0 ? "some-items-still-queued" : "all-synced",
+      });
       return { flushed, remaining };
     })().finally(() => {
       flushInFlight = null;

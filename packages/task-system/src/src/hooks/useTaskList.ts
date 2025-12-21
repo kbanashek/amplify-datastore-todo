@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useAmplify } from "../contexts/AmplifyContext";
 import { TaskService } from "../services/TaskService";
 import { Task, TaskFilters } from "../types/Task";
 import { NetworkStatus } from "./useAmplifyState";
+import { logWithPlatform, logErrorWithPlatform } from "../utils/platformLogger";
 
 interface UseTaskListReturn {
   tasks: Task[];
@@ -26,16 +27,41 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
   const [subscription, setSubscription] = useState<{
     unsubscribe: () => void;
   } | null>(null);
+  const lastTaskCountRef = useRef<number>(-1);
+  const lastSyncedRef = useRef<boolean | null>(null);
+  const hasLoggedInitRef = useRef<boolean>(false);
 
   const initTasks = async (): Promise<void> => {
     try {
       setLoading(true);
       setError(null);
 
+      if (!hasLoggedInitRef.current) {
+        logWithPlatform("📋", "", "useTaskList", "Subscribing to task data");
+        hasLoggedInitRef.current = true;
+      }
+
       // Subscribe to changes in tasks - just store data, don't filter
       // Filtering happens in useMemo below
       const sub = TaskService.subscribeTasks((items, synced) => {
-        // Store unfiltered tasks - filtering happens in useMemo
+        // Only log if task count or sync status actually changed
+        const countChanged = items.length !== lastTaskCountRef.current;
+        const syncChanged = synced !== lastSyncedRef.current;
+
+        if (countChanged || syncChanged) {
+          logWithPlatform(
+            "📋",
+            "",
+            "useTaskList",
+            `Received ${items.length} tasks`,
+            {
+              status: synced ? "synced-with-cloud" : "local-only",
+            }
+          );
+          lastTaskCountRef.current = items.length;
+          lastSyncedRef.current = synced;
+        }
+
         setAllTasks(items);
         setIsSynced(synced);
         setLoading(false);
@@ -43,7 +69,12 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
 
       setSubscription(sub);
     } catch (err) {
-      console.error("Error initializing tasks:", err);
+      logErrorWithPlatform(
+        "",
+        "useTaskList",
+        "Failed to initialize tasks",
+        err
+      );
       setError("Failed to load tasks. Please try again.");
       setLoading(false);
     }

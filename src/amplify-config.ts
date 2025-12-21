@@ -1,5 +1,6 @@
 import { Amplify } from "@aws-amplify/core";
 import awsconfig from "../aws-exports";
+import { logWithPlatform, logErrorWithPlatform } from "./utils/platformLogger";
 
 // Configure Amplify
 export const configureAmplify = (): void => {
@@ -34,17 +35,19 @@ export const configureAmplify = (): void => {
     Amplify.configure(config as any);
 
     const apiKeyPrefix = awsconfig.aws_appsync_apiKey?.substring(0, 10) + "...";
-    console.log("[Amplify] ✅ Configured with API_KEY authentication", {
-      endpoint: awsconfig.aws_appsync_graphqlEndpoint,
-      region: awsconfig.aws_appsync_region,
-      authType: awsconfig.aws_appsync_authenticationType,
-      apiKeyPrefix,
-      apiKeyLength: awsconfig.aws_appsync_apiKey?.length,
-      hasApiKey: !!awsconfig.aws_appsync_apiKey,
-    });
-
-    // Log the actual API key prefix for verification (first 10 chars)
-    console.log("[Amplify] API Key (first 10 chars):", apiKeyPrefix);
+    logWithPlatform(
+      "🔐",
+      "",
+      "AmplifyConfig",
+      "Amplify configured with API_KEY authentication",
+      {
+        endpoint: awsconfig.aws_appsync_graphqlEndpoint,
+        region: awsconfig.aws_appsync_region,
+        authType: awsconfig.aws_appsync_authenticationType,
+        apiKeyPrefix,
+        hasApiKey: !!awsconfig.aws_appsync_apiKey,
+      }
+    );
 
     // Note: Amplify.getConfig() may not expose API key directly for security reasons
     // The API key is configured and used internally by Amplify/DataStore
@@ -54,14 +57,12 @@ export const configureAmplify = (): void => {
     // Amplify will use the appropriate adapter based on the platform
     // when using React Native. SQLite is used by default on mobile.
   } catch (error) {
-    console.error("[Amplify] Error configuring Amplify:", error);
-    // Log detailed error for debugging
-    if (error instanceof Error) {
-      console.error("[Amplify] Error details:", {
-        message: error.message,
-        stack: error.stack,
-      });
-    }
+    logErrorWithPlatform(
+      "",
+      "AmplifyConfig",
+      "Failed to configure Amplify",
+      error
+    );
     throw error; // Re-throw to prevent silent failures
   }
 };

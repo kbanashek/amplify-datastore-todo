@@ -79,15 +79,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? "light"];
 
-  console.log(
-    "[NavigationMenu] Rendering, visible:",
-    visible,
-    "items:",
-    menuItems.length
-  );
-
   const handleNavigate = (route: string) => {
-    console.log("[NavigationMenu] Navigating to:", route);
     try {
       router.push(route as any);
       onClose();
@@ -139,11 +131,6 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
               </View>
             ) : (
               menuItems.map((item, index) => {
-                console.log(
-                  "[NavigationMenu] Rendering item",
-                  index,
-                  item.name
-                );
                 // Map route to testID for e2e testing
                 const testID =
                   item.route === "/(tabs)/seed-screen"

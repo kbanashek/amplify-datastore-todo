@@ -29,38 +29,25 @@ export default function AppointmentDetailsScreen() {
 
   // Parse appointment from params (passed as JSON string)
   const appointment: Appointment | null = useMemo(() => {
-    console.log("[AppointmentDetails] Received params:", {
-      hasAppointment: !!params.appointment,
-      appointmentType: typeof params.appointment,
-      appointmentLength:
-        typeof params.appointment === "string" ? params.appointment.length : 0,
-      timezoneId: params.timezoneId,
-    });
-
     if (params.appointment && typeof params.appointment === "string") {
       try {
         const parsed = JSON.parse(params.appointment) as Appointment;
-        console.log("[AppointmentDetails] Successfully parsed appointment:", {
-          appointmentId: parsed.appointmentId,
-          title: parsed.title,
-          startAt: parsed.startAt,
-          endAt: parsed.endAt,
-        });
+        console.log(
+          `📅 [AppointmentDetails] Loaded appointment: ${parsed.title}`,
+          { id: parsed.appointmentId }
+        );
         return parsed;
       } catch (e) {
         console.error(
-          "[AppointmentDetails] Failed to parse appointment from params:",
-          e,
-          {
-            rawParams: params.appointment,
-          }
+          "❌ [AppointmentDetails] Failed to parse appointment from params",
+          e instanceof Error ? e.message : String(e)
         );
         return null;
       }
     }
-    console.warn("[AppointmentDetails] No appointment in params or wrong type");
+    console.warn("⚠️ [AppointmentDetails] No appointment in params");
     return null;
-  }, [params.appointment, params.timezoneId]);
+  }, [params.appointment]);
 
   const { translatedText: headerTitle } = useTranslatedText(
     "Appointment Details"

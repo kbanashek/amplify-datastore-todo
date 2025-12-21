@@ -8,11 +8,7 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import {
-  useTranslation,
-  LanguageCode,
-  SUPPORTED_LANGUAGES,
-} from "@orion/task-system";
+import { useTranslation, LanguageCode } from "@orion/task-system";
 
 interface LanguageSelectorProps {
   style?: object;

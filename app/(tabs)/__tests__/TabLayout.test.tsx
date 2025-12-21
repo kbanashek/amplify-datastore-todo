@@ -8,7 +8,6 @@
  * All other screens should be hidden from the tab bar.
  */
 
-import React from "react";
 import { readFileSync } from "fs";
 import { join } from "path";
 

@@ -13,7 +13,9 @@ jest.mock("../../components/SyncStatusBanner", () => ({
 
 jest.mock("../../components/GlobalHeader", () => ({
   GlobalHeader: ({ title }: { title: string }) => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const React = require("react");
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { Text } = require("react-native");
     return <Text>{title}</Text>;
   },

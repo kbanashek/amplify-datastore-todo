@@ -1,5 +1,6 @@
 import { DataStore } from "@aws-amplify/datastore";
 import { ConflictResolution } from "../services/ConflictResolution";
+import { logWithPlatform } from "../utils/platformLogger";
 
 /**
  * LX ownership contract:
@@ -22,13 +23,27 @@ export async function initTaskSystem(
   options: TaskSystemInitOptions = {}
 ): Promise<void> {
   // Safe to call multiple times; this does NOT call Amplify.configure().
+  logWithPlatform("⚙️", "", "TaskSystem", "Configuring conflict resolution");
   ConflictResolution.configure();
+  logWithPlatform("✅", "", "TaskSystem", "Conflict resolution configured");
 
   if (options.startDataStore) {
+    logWithPlatform(
+      "☁️",
+      "",
+      "TaskSystem",
+      "Starting AWS DataStore (via initTaskSystem option)"
+    );
     // Only single-flight DataStore.start (avoid concurrent starts). Do not cache permanently.
     if (!startInFlight) {
       startInFlight = DataStore.start().finally(() => {
         startInFlight = null;
+        logWithPlatform(
+          "☁️",
+          "",
+          "TaskSystem",
+          "AWS DataStore started (via initTaskSystem option)"
+        );
       });
     }
     await startInFlight;

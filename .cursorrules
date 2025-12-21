@@ -13,5 +13,6 @@ This project uses modular cursor rules organized in the `.cursor/rules/` directo
 - `.cursor/rules/documentation.mdc` - Documentation standards
 - `.cursor/rules/project-management.mdc` - Project todos and workflow
 - `.cursor/rules/ui-ux.mdc` - UI/UX design patterns
+- `.cursor/rules/logging.mdc` - Logging standards and sequential initialization visibility
 
 All rules are automatically applied. See individual rule files in `.cursor/rules/` for detailed guidelines.

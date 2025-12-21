@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GlobalHeader } from "../../src/components/GlobalHeader";
 import { LXHostExample } from "../../packages/task-system/LX Integration Resources/LXHostExample";
@@ -18,25 +17,6 @@ import { NavigationMenu } from "../../src/components/NavigationMenu";
 export default function LXHostExampleScreen(): React.ReactElement {
   const [showMenu, setShowMenu] = useState(false);
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation();
-  const isFocused = useIsFocused();
-  const [resetSignal, setResetSignal] = useState<number>(0);
-
-  const bumpResetSignal = useCallback((): void => {
-    setResetSignal(prev => prev + 1);
-  }, []);
-
-  // Mirror the home screen behavior to keep module rendering consistent.
-  useEffect(() => {
-    const navAny = navigation as any;
-    const unsub = navAny?.addListener?.("tabPress", bumpResetSignal);
-    return () => unsub?.();
-  }, [bumpResetSignal, navigation]);
-
-  useEffect(() => {
-    if (!isFocused) return;
-    bumpResetSignal();
-  }, [bumpResetSignal, isFocused]);
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>

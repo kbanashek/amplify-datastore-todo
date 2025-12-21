@@ -19,6 +19,10 @@ import {
   useColorScheme,
 } from "@orion/task-system";
 import { bootstrapTaskSystem } from "../src/bootstrap/taskSystemBootstrap";
+import {
+  logWithPlatform,
+  logErrorWithPlatform,
+} from "../src/utils/platformLogger";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -35,10 +39,26 @@ export default function RootLayout() {
 
     (async () => {
       try {
+        logWithPlatform(
+          "🚀",
+          "",
+          "RootLayout",
+          "Starting task system bootstrap"
+        );
         await bootstrapTaskSystem({ startDataStore: true });
+        if (!cancelled) {
+          logWithPlatform(
+            "✅",
+            "",
+            "RootLayout",
+            "Task system bootstrap complete - app ready to render"
+          );
+        }
       } catch (error) {
-        console.error(
-          "[RootLayout] Failed to initialize task system/DataStore",
+        logErrorWithPlatform(
+          "",
+          "RootLayout",
+          "Failed to initialize task system/DataStore",
           error
         );
       } finally {

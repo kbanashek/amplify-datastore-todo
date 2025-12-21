@@ -1,0 +1,185 @@
+---
+description: Logging standards and conventions for sequential initialization and data flow visibility
+alwaysApply: true
+---
+
+# Logging Standards
+
+## Sequential Initialization Logging
+
+**Purpose:** Provide 100% visibility into app initialization and data loading flow.
+
+**Format:** `[INIT-N]` or `[DATA-N]` prefix with icons and concise messages.
+
+### Initialization Steps (INIT)
+
+- **INIT-1**: Amplify configuration (synchronous)
+- **INIT-2**: RootLayout bootstrap start
+- **INIT-3**: Task-system runtime initialization
+- **INIT-4**: AWS DataStore start
+- **INIT-5**: Temp answer sync service configuration
+- **INIT-6**: Auto-flush service start
+- **INIT-7**: All initialization complete
+
+### Data Loading Steps (DATA)
+
+- **DATA-1**: Task data subscription and loading
+- **DATA-2**: Appointment data loading
+- **DATA-3**: Other data model loading (Questions, Activities, etc.)
+
+## Icon Conventions
+
+**ALWAYS use icons to identify log sources:**
+
+- **🚀** - Starting/initialization
+- **✅** - Success/completion
+- **❌** - Error/failure
+- **⚠️** - Warning
+- **☁️** - AWS DataStore/cloud operations
+- **🔐** - Authentication/configuration
+- **⚙️** - Configuration/setup
+- **📋** - Task data
+- **📅** - Appointment data
+- **💾** - Storage/persistence
+- **🔄** - Sync/retry operations
+- **📤** - Sending/uploading
+- **📥** - Receiving/downloading
+- **🗑️** - Deletion/cleanup
+
+## Log Message Format
+
+**Format:** `[ICON] [PLATFORM] [STEP] ServiceName: Concise message`
+
+**Platform must ALWAYS be included:** `[iOS]`, `[Android]`, or `[Web]`
+
+**Examples:**
+- ✅ Good: `☁️ [iOS] [INIT-4] Bootstrap: AWS DataStore started - ready for cloud sync`
+- ✅ Good: `📋 [Android] [DATA-1] useTaskList: Received 5 tasks (synced-with-cloud)`
+- ✅ Good: `💾 [Web] [TempAnswerSyncService] Service configured`
+- ❌ Bad: `☁️ [INIT-4] Bootstrap: AWS DataStore started` (missing platform)
+- ❌ Bad: `[TaskService] Setting up DataStore subscription` (no icon, no platform, no step)
+- ❌ Bad: `Task created` (no context, no service name, no platform)
+
+## Logging Rules
+
+### DO
+
+- **ALWAYS include platform** (`[iOS]`, `[Android]`, or `[Web]`) in every log message
+- **Use step numbers** (`[INIT-N]`, `[DATA-N]`) for sequential operations
+- **Include icons** to quickly identify log source and type
+- **Be concise** - log essential info only, not full objects
+- **Use AWS icons (☁️)** for all DataStore/AWS operations
+- **Log data counts** instead of full arrays: `Loaded 5 tasks` not `Loaded [full array]`
+- **Include status indicators**: `synced-with-cloud`, `local-only`, `queued-for-retry`
+- **Use `platformLogger.ts` utilities** (`logWithPlatform`, `logErrorWithPlatform`) for consistent formatting
+
+### DON'T
+
+- **Don't log without platform identification** - every log must include `[iOS]`, `[Android]`, or `[Web]`
+- **Don't use raw `console.log`** - use `logWithPlatform` or `logErrorWithPlatform` from `platformLogger.ts`
+- **Don't log full JSON objects** - extract key values only
+- **Don't log on every render** - only log state changes and operations
+- **Don't log navigation menu rendering** - not part of data flow
+- **Don't use generic icons** - use specific icons for context
+- **Don't log without step numbers** for initialization/data flow
+
+## Concise Logging Examples
+
+**Before (verbose):**
+```typescript
+console.log("[AppointmentService] Parsed AsyncStorage data", {
+  hasClinicPatientAppointments: !!parsed.clinicPatientAppointments,
+  hasClinicAppointments: !!parsed.clinicPatientAppointments?.clinicAppointments,
+  itemsCount: parsed.clinicPatientAppointments?.clinicAppointments?.items?.length || 0,
+  siteTimezoneId: parsed.siteTimezoneId,
+  sampleItems: parsed.clinicPatientAppointments?.clinicAppointments?.items?.slice(0, 2).map(...),
+});
+```
+
+**After (concise with platform):**
+```typescript
+import { logWithPlatform } from "../utils/platformLogger";
+
+const itemsCount = parsed.clinicPatientAppointments?.clinicAppointments?.items?.length || 0;
+logWithPlatform("📅", "DATA-2", "AppointmentService", `Loaded ${itemsCount} appointments from AsyncStorage`, {
+  timezone: parsed.siteTimezoneId
+});
+```
+
+## Sequential Flow Example
+
+```
+🚀 [iOS] [INIT-1] AmplifyInit: Starting Amplify configuration (synchronous)
+🔐 [iOS] [INIT-1] AmplifyConfig: Amplify configured with API_KEY authentication
+✅ [iOS] [INIT-1] AmplifyConfig: Amplify configuration complete
+🚀 [iOS] [INIT-2] RootLayout: Starting task system bootstrap
+🚀 [iOS] [INIT-3] Bootstrap: Initializing task-system runtime
+⚙️ [iOS] [INIT-3.1] TaskSystem: Configuring conflict resolution
+✅ [iOS] [INIT-3.1] TaskSystem: Conflict resolution configured
+✅ [iOS] [INIT-3] Bootstrap: Task-system runtime initialized
+☁️ [iOS] [INIT-4] Bootstrap: Starting AWS DataStore
+☁️ [iOS] [INIT-4] Bootstrap: AWS DataStore started - ready for cloud sync
+🚀 [iOS] [INIT-5] Bootstrap: Configuring temp answer sync service
+💾 [iOS] TempAnswerSyncService: Service configured
+✅ [iOS] [INIT-5] Bootstrap: Temp answer sync service configured
+🚀 [iOS] [INIT-6] Bootstrap: Starting auto-flush for queued temp answers
+✅ [iOS] [INIT-6] Bootstrap: Auto-flush started - will retry queued items on network online
+✅ [iOS] [INIT-7] Bootstrap: All initialization complete - data services ready
+✅ [iOS] [INIT-2] RootLayout: Task system bootstrap complete - app ready to render
+📋 [iOS] [DATA-1] useTaskList: Subscribing to task data
+☁️ [iOS] [DATA-1.1] TaskService: Setting up AWS DataStore subscription for Task model
+☁️ [iOS] [DATA-1.1] TaskService: Initial AWS DataStore query completed - 3 tasks loaded
+📋 [iOS] [DATA-1] useTaskList: Received 3 tasks (synced-with-cloud)
+📅 [iOS] [DATA-2] useAppointmentList: Loading appointments (today only)
+📅 [iOS] [DATA-2] AppointmentService: Loaded 2 appointments from AsyncStorage
+📅 [iOS] [DATA-2] useAppointmentList: Loaded 2 appointments (todayOnly: true)
+```
+
+## Error Logging
+
+**Format:** `❌ [PLATFORM] [STEP] ServiceName: Failed to [action] - error message`
+
+**Examples:**
+- `❌ [iOS] [INIT-1] AmplifyConfig: Failed to configure Amplify - API key missing`
+- `❌ [Android] [DATA-1.1] TaskService: Initial AWS DataStore query failed - Network error`
+- `❌ [Web] [DATA] TaskService: Failed to create task in AWS DataStore - Validation error`
+
+**Never log full error objects** - extract message only:
+- ✅ Good: Use `logErrorWithPlatform` which automatically extracts error messages
+- ✅ Good: `error instanceof Error ? error.message : String(error)`
+- ❌ Bad: `error` (logs full stack trace and object)
+- ❌ Bad: `console.error("Error:", error)` (missing platform, missing format)
+
+## Platform Logger Utility
+
+**ALWAYS use the platform logger utilities** to ensure platform identification:
+
+**For package code** (`packages/task-system/src/src/`):
+```typescript
+import { logWithPlatform, logErrorWithPlatform } from "../utils/platformLogger";
+
+// For regular logs
+logWithPlatform("☁️", "INIT-4", "Bootstrap", "AWS DataStore started - ready for cloud sync");
+
+// For errors
+logErrorWithPlatform("INIT-1", "AmplifyConfig", "Failed to configure Amplify", error);
+```
+
+**For app code** (`src/`):
+```typescript
+import { logWithPlatform, logErrorWithPlatform } from "./utils/platformLogger";
+
+// For regular logs
+logWithPlatform("☁️", "INIT-4", "Bootstrap", "AWS DataStore started - ready for cloud sync");
+
+// For errors
+logErrorWithPlatform("INIT-1", "AmplifyConfig", "Failed to configure Amplify", error);
+```
+
+**Both utilities provide:**
+- Automatic platform detection (`[iOS]`, `[Android]`, or `[Web]`)
+- Consistent formatting across all logs
+- Easy to identify log source and type
+- Proper error message extraction
+
+**NEVER use raw `console.log` or `console.error`** - always use the platform logger utilities.
