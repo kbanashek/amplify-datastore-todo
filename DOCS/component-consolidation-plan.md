@@ -200,7 +200,7 @@
 ## Component Organization After Consolidation
 
 ```
-amplify-datastore-todo/
+Task-System-POC/
 ├── components/                    # Expo template + base UI (stays as-is)
 │   ├── ui/                       # Base UI components
 │   └── ...                       # Template components

@@ -1,5 +1,5 @@
 {
-  "name": "amplify-datastore-todo",
+  "name": "task-system-poc",
   "main": "./entry.js",
   "version": "0.1.20",
   "scripts": {

@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "amplify-datastore-todo",
-    "slug": "amplify-datastore-todo",
+    "name": "task-system-poc",
+    "slug": "task-system-poc",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "amplifydatastoretodo",
+    "scheme": "oriontasksystem",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
