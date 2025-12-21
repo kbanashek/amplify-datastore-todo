@@ -1,10 +1,17 @@
 import { Amplify } from "@aws-amplify/core";
 import awsconfig from "../aws-exports";
-import { logWithPlatform, logErrorWithPlatform } from "./utils/platformLogger";
+import { logErrorWithPlatform, logWithPlatform } from "./utils/platformLogger";
 
 // Configure Amplify
 export const configureAmplify = (): void => {
   try {
+    // Check if Amplify is already configured to avoid re-configuration
+    const isConfigured = (Amplify as any).isConfigured;
+    if (isConfigured) {
+      // Amplify is already configured, skip re-configuration
+      return;
+    }
+
     // Verify API key is present before configuring
     if (!awsconfig.aws_appsync_apiKey) {
       throw new Error(

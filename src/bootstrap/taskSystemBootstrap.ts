@@ -1,4 +1,5 @@
 import { generateClient } from "@aws-amplify/api";
+import { Amplify } from "@aws-amplify/core";
 import { DataStore } from "@aws-amplify/datastore";
 import { initTaskSystem, TempAnswerSyncService } from "@orion/task-system";
 import { logErrorWithPlatform, logWithPlatform } from "../utils/platformLogger";
@@ -55,6 +56,24 @@ export async function bootstrapTaskSystem(
         "Bootstrap",
         "Configuring temp answer sync service"
       );
+
+      // Verify Amplify is configured before calling generateClient
+      // Note: We check isConfigured flag directly to avoid triggering the warning
+      // from Amplify.getConfig() if Amplify isn't configured yet
+      const isConfigured = (Amplify as any).isConfigured;
+      if (!isConfigured) {
+        const error = new Error(
+          "Amplify must be configured before calling bootstrapTaskSystem. Ensure amplify-init-sync.ts is imported before this function is called."
+        );
+        logErrorWithPlatform(
+          "",
+          "Bootstrap",
+          "Amplify not configured before generateClient() call",
+          error
+        );
+        throw error;
+      }
+
       const client = generateClient();
       TempAnswerSyncService.configure({
         document:

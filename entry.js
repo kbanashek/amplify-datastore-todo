@@ -1,5 +1,7 @@
 // Initialize Amplify before anything else
-// NOTE: Amplify is configured in src/amplify-init-sync.ts which is imported
-// in app/_layout.tsx. This ensures DataStore configuration is included.
+// NOTE: This MUST be imported before expo-router/entry to ensure Amplify
+// is configured before any modules that use Amplify services are loaded.
+import "./src/amplify-init-sync";
+
 // Import Expo Router at the top level
 import "expo-router/entry";

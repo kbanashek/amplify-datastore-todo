@@ -6,6 +6,10 @@ jest.mock("@aws-amplify/core", () => ({
   Hub: {
     listen: jest.fn(),
   },
+  Amplify: {
+    isConfigured: true,
+    getConfig: jest.fn(() => ({})),
+  },
 }));
 
 // Mock DataStore
