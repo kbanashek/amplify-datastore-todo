@@ -10,6 +10,7 @@ import { AWSErrorName } from "../constants/awsErrors";
 import { TranslationMemoryService } from "./TranslationMemoryService";
 import { simpleHash } from "../utils/simpleHash";
 import type { LanguageCode } from "./translationTypes";
+import { getServiceLogger } from "../utils/serviceLogger";
 
 // Try to load credentials from config file (created by load-aws-credentials script)
 let awsCredentials: {
@@ -22,7 +23,9 @@ try {
   // Try to import credentials from config file
   // Use dynamic require that works in both Node.js and React Native
   awsCredentials = require("../config/aws-credentials.json");
-  console.log("[TranslationService] Loaded credentials from config file");
+  getServiceLogger("TranslationService").info(
+    "Loaded credentials from config file"
+  );
 } catch (error) {
   // Config file doesn't exist, will use environment variables or default provider
   awsCredentials = null;
@@ -107,9 +110,10 @@ export class TranslationService {
         region: this.region,
       };
 
+      const logger = getServiceLogger("TranslationService");
       // Priority 1: Use credentials from config file if available
       if (awsCredentials?.accessKeyId && awsCredentials?.secretAccessKey) {
-        console.log("[TranslationService] Using credentials from config file");
+        logger.info("Using credentials from config file");
         config.credentials = {
           accessKeyId: awsCredentials.accessKeyId,
           secretAccessKey: awsCredentials.secretAccessKey,
@@ -122,9 +126,7 @@ export class TranslationService {
         process.env.AWS_SECRET_ACCESS_KEY
       ) {
         // Priority 2: Use environment variables
-        console.log(
-          "[TranslationService] Using credentials from environment variables"
-        );
+        logger.info("Using credentials from environment variables");
         config.credentials = {
           accessKeyId: process.env.AWS_ACCESS_KEY_ID,
           secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -135,15 +137,13 @@ export class TranslationService {
       } else {
         // Priority 3: Let SDK use default credential provider chain
         // This will try: env vars, credentials file, IAM role
-        console.log(
-          "[TranslationService] Using default credential provider chain"
-        );
+        logger.info("Using default credential provider chain");
       }
 
       this.client = new TranslateClient(config);
     } catch (error) {
-      console.error(
-        "[TranslationService] Error initializing Translate client:",
+      getServiceLogger("TranslationService").error(
+        "Error initializing Translate client",
         error
       );
       this.client = null;
@@ -202,7 +202,10 @@ export class TranslationService {
         }
       }
     } catch (error) {
-      console.error("[TranslationService] Error reading cache:", error);
+      getServiceLogger("TranslationService").error(
+        "Error reading cache",
+        error
+      );
     }
 
     return null;
@@ -225,7 +228,10 @@ export class TranslationService {
       };
       await AsyncStorage.setItem(cacheKey, JSON.stringify(cacheData));
     } catch (error) {
-      console.error("[TranslationService] Error caching translation:", error);
+      getServiceLogger("TranslationService").error(
+        "Error caching translation",
+        error
+      );
     }
   }
 
@@ -241,18 +247,24 @@ export class TranslationService {
     targetLanguage: LanguageCode = "en",
     sourceLanguage: LanguageCode = DEFAULT_SOURCE_LANGUAGE
   ): Promise<string> {
+    const logger = getServiceLogger("TranslationService");
     // Return original text if no translation needed
     if (
       sourceLanguage === targetLanguage ||
       !text ||
       text.trim().length === 0
     ) {
-      console.log("📝 [TranslationService] Skipping translation", {
-        sourceLanguage,
-        targetLanguage,
-        reason:
-          sourceLanguage === targetLanguage ? "same language" : "empty text",
-      });
+      logger.debug(
+        "Skipping translation",
+        {
+          sourceLanguage,
+          targetLanguage,
+          reason:
+            sourceLanguage === targetLanguage ? "same language" : "empty text",
+        },
+        undefined,
+        "📝"
+      );
       return text;
     }
 
@@ -266,12 +278,17 @@ export class TranslationService {
       return memoryHit;
     }
 
-    console.log("📝 [TranslationService] translateText called", {
-      text: text.substring(0, 50),
-      sourceLanguage,
-      targetLanguage,
-      hasClient: !!this.client,
-    });
+    logger.debug(
+      "translateText called",
+      {
+        text: text.substring(0, 50),
+        sourceLanguage,
+        targetLanguage,
+        hasClient: !!this.client,
+      },
+      undefined,
+      "📝"
+    );
 
     // Check cache first
     const cached = await this.getCachedTranslation(
@@ -280,10 +297,15 @@ export class TranslationService {
       targetLanguage
     );
     if (cached) {
-      console.log("📝 [TranslationService] Using cached translation", {
-        text: text.substring(0, 50),
-        cached: cached.substring(0, 50),
-      });
+      logger.debug(
+        "Using cached translation",
+        {
+          text: text.substring(0, 50),
+          cached: cached.substring(0, 50),
+        },
+        undefined,
+        "📝"
+      );
       return cached;
     }
 
@@ -332,10 +354,11 @@ export class TranslationService {
     sourceLanguage: LanguageCode,
     targetLanguage: LanguageCode
   ): Promise<string> {
+    const logger = getServiceLogger("TranslationService");
     // Safety check: client should be initialized before calling this method
     if (!this.client) {
-      console.warn(
-        "[TranslationService] Client not initialized in performTranslation, returning original text"
+      logger.warn(
+        "Client not initialized in performTranslation, returning original text"
       );
       return text;
     }
@@ -425,15 +448,21 @@ export class TranslationService {
         errorMessage.includes(AWSErrorName.InvalidSignatureException) ||
         errorName === AWSErrorName.InvalidSignatureException;
 
+      const logger = getServiceLogger("TranslationService");
       // Provide specific guidance for clock skew
       if (isClockSkewError) {
-        console.error("📝 [TranslationService] ❌ Clock Skew Error Detected!", {
-          issue: "Device clock is out of sync with AWS servers",
-          solution: "Sync your device's date/time with network time",
-          details:
-            "AWS requires requests to be within 15 minutes of server time. Your device appears to be ahead by several days.",
-          quickFix: "Check device settings → Date & Time → Set Automatically",
-        });
+        logger.error(
+          "Clock Skew Error Detected!",
+          {
+            issue: "Device clock is out of sync with AWS servers",
+            solution: "Sync your device's date/time with network time",
+            details:
+              "AWS requires requests to be within 15 minutes of server time. Your device appears to be ahead by several days.",
+            quickFix: "Check device settings → Date & Time → Set Automatically",
+          },
+          undefined,
+          "📝"
+        );
       }
 
       // Provide helpful error message for missing credentials
@@ -441,11 +470,13 @@ export class TranslationService {
         errorMessage.includes("Credential") ||
         errorMessage.includes("credentials")
       ) {
-        console.warn(
-          "📝 [TranslationService] AWS credentials not found. Translation disabled.",
+        logger.warn(
+          "AWS credentials not found. Translation disabled.",
           {
             suggestion: "Run: yarn load-aws-credentials <profile-name>",
-          }
+          },
+          undefined,
+          "📝"
         );
       }
 
@@ -507,11 +538,15 @@ export class TranslationService {
       const keys = await AsyncStorage.getAllKeys();
       const cacheKeys = keys.filter(key => key.startsWith(CACHE_PREFIX));
       await AsyncStorage.multiRemove(cacheKeys);
-      console.log(
-        `[TranslationService] Cleared ${cacheKeys.length} cached translations`
+      getServiceLogger("TranslationService").info(
+        `Cleared ${cacheKeys.length} cached translations`,
+        { count: cacheKeys.length }
       );
     } catch (error) {
-      console.error("[TranslationService] Error clearing cache:", error);
+      getServiceLogger("TranslationService").error(
+        "Error clearing cache",
+        error
+      );
     }
   }
 }

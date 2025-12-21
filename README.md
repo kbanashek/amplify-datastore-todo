@@ -181,20 +181,24 @@ flowchart TD
 
 ## 📚 Documentation
 
-| Document                                                               | Description                                                |
-| ---------------------------------------------------------------------- | ---------------------------------------------------------- |
-| **[Implementation Status](DOCS/implementation-status.md)**             | Current feature implementation status and what's missing   |
-| **[Roadmap](DOCS/roadmap.md)**                                         | Future development priorities and planned features         |
-| **[Component Library](DOCS/component-library.md)**                     | Component library structure, principles, and roadmap       |
-| **[Project Structure](DOCS/project-structure.md)**                     | Detailed directory structure and organization              |
-| **[AWS Architecture](DOCS/aws-architecture.md)**                       | AWS services, data flow, and conflict resolution           |
-| **[Development Guidelines](DOCS/development-guidelines.md)**           | Coding standards, testing requirements, and best practices |
-| **[Testing Guide](DOCS/testing.md)**                                   | Unit test requirements, coverage, and examples             |
-| **[Coverage Setup](DOCS/coverage-setup.md)**                           | GitHub Actions coverage reporting and Codecov setup        |
-| **[Native Build Fixes](DOCS/native-build-fixes.md)**                   | Required fixes for iOS and Android native builds           |
-| **[Rule Engine Plan](DOCS/todos.md)**                                  | Comprehensive rule engine implementation plan              |
-| **[Current Rule Logic](DOCS/current-rule-logic.md)**                   | Current rule implementation status                         |
-| **[Testing Coordinated Seeding](DOCS/testing-coordinated-seeding.md)** | Testing guide for coordinated seeding feature              |
+| Document                                                                 | Description                                                |
+| ------------------------------------------------------------------------ | ---------------------------------------------------------- |
+| **[Implementation Status](DOCS/implementation-status.md)**               | Current feature implementation status and what's missing   |
+| **[Roadmap](DOCS/roadmap.md)**                                           | Future development priorities and planned features         |
+| **[Component Library](DOCS/component-library.md)**                       | Component library structure, principles, and roadmap       |
+| **[Project Structure](DOCS/project-structure.md)**                       | Detailed directory structure and organization              |
+| **[AWS Architecture](DOCS/aws-architecture.md)**                         | AWS services, data flow, and conflict resolution           |
+| **[Development Guidelines](DOCS/development-guidelines.md)**             | Coding standards, testing requirements, and best practices |
+| **[Documentation Index](DOCS/README.md)**                                | Complete documentation index organized by category         |
+| **[Development Guidelines](DOCS/development/development-guidelines.md)** | Coding standards, testing requirements, and best practices |
+| **[Testing Guide](DOCS/development/testing.md)**                         | Unit test requirements, coverage, and examples             |
+| **[Logging Service](DOCS/development/logging-service.md)**               | Centralized logging service documentation                  |
+| **[Coverage Setup](DOCS/development/coverage-setup.md)**                 | GitHub Actions coverage reporting and Codecov setup        |
+| **[AWS Architecture](DOCS/architecture/aws-architecture.md)**            | AWS services, data flow, and conflict resolution           |
+| **[Project Structure](DOCS/architecture/project-structure.md)**          | Detailed directory structure and organization              |
+| **[Component Library](DOCS/architecture/component-library.md)**          | Component library structure, principles, and roadmap       |
+| **[Native Build Fixes](DOCS/troubleshooting/native-build-fixes.md)**     | Required fixes for iOS and Android native builds           |
+| **[Roadmap](DOCS/planning/roadmap.md)**                                  | Future development priorities and planned features         |
 
 ---
 

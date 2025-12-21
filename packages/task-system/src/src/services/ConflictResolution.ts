@@ -1,5 +1,6 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
 import { ModelName } from "../constants/modelNames";
+import { getServiceLogger } from "../utils/serviceLogger";
 
 function ensurePkSk(model: any, fallback?: any): any {
   if (!model) return model;
@@ -30,8 +31,9 @@ export class ConflictResolution {
         attempts,
       }) => {
         const modelName = modelConstructor.name;
-        console.log(
-          `[ConflictResolution] Handling conflict for ${modelName}, operation: ${operation}, attempts: ${attempts}`
+        getServiceLogger("ConflictResolution").debug(
+          `Handling conflict for ${modelName}, operation: ${operation}, attempts: ${attempts}`,
+          { modelName, operation, attempts }
         );
 
         // Defensive: Amplify can sometimes surface conflict callbacks with partial/null models.

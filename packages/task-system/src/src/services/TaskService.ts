@@ -11,7 +11,7 @@ import {
   UpdateTaskInput,
 } from "../types/Task";
 import { logErrorWithDevice, logWithDevice } from "../utils/deviceLogger";
-import { logErrorWithPlatform, logWithPlatform } from "../utils/platformLogger";
+import { getServiceLogger } from "../utils/serviceLogger";
 
 type TaskUpdateData = Omit<UpdateTaskInput, "id" | "_version">;
 
@@ -96,26 +96,29 @@ export class TaskService {
    * @returns {Promise<Task>} - The created task
    */
   static async createTask(input: CreateTaskInput): Promise<Task> {
+    const logger = getServiceLogger("TaskService");
     try {
-      console.log("☁️ [DATA] TaskService: Creating task via AWS DataStore", {
-        title: input.title,
-      });
+      logger.info(
+        "Creating task via AWS DataStore",
+        { title: input.title },
+        "DATA",
+        "☁️"
+      );
       const task = await DataStore.save(
         new DataStoreTask({
           ...input,
         })
       );
 
-      console.log(
-        "☁️ [DATA] TaskService: Task created successfully in AWS DataStore",
-        { id: task.id }
+      logger.info(
+        "Task created successfully in AWS DataStore",
+        { id: task.id },
+        "DATA",
+        "☁️"
       );
       return task as Task;
     } catch (error) {
-      console.error(
-        "❌ [DATA] TaskService: Failed to create task in AWS DataStore",
-        error instanceof Error ? error.message : String(error)
-      );
+      logger.error("Failed to create task in AWS DataStore", error, "DATA");
       throw error;
     }
   }
@@ -166,9 +169,10 @@ export class TaskService {
 
       return tasks as Task[];
     } catch (error) {
-      console.error(
-        "❌ [DATA] TaskService: Failed to fetch tasks from AWS DataStore",
-        error instanceof Error ? error.message : String(error)
+      getServiceLogger("TaskService").error(
+        "Failed to fetch tasks from AWS DataStore",
+        error,
+        "DATA"
       );
       throw error;
     }
@@ -184,9 +188,10 @@ export class TaskService {
       const task = await DataStore.query(DataStoreTask, id);
       return (task as Task) || null;
     } catch (error) {
-      console.error(
-        "❌ [DATA] TaskService: Failed to fetch task from AWS DataStore",
-        error instanceof Error ? error.message : String(error)
+      getServiceLogger("TaskService").error(
+        "Failed to fetch task from AWS DataStore",
+        error,
+        "DATA"
       );
       throw error;
     }
@@ -199,10 +204,9 @@ export class TaskService {
    * @returns {Promise<Task>} - The updated task
    */
   static async updateTask(id: string, data: TaskUpdateData): Promise<Task> {
+    const logger = getServiceLogger("TaskService");
     try {
-      console.log("☁️ [DATA] TaskService: Updating task in AWS DataStore", {
-        id,
-      });
+      logger.info("Updating task in AWS DataStore", { id }, "DATA", "☁️");
       const original = await DataStore.query(DataStoreTask, id);
       if (!original) {
         throw new Error(`Task with id ${id} not found`);
@@ -214,20 +218,19 @@ export class TaskService {
         })
       );
 
-      console.log(
-        "☁️ [DATA] TaskService: Task updated successfully in AWS DataStore",
+      logger.info(
+        "Task updated successfully in AWS DataStore",
         {
           id: updated.id,
           status: updated.status,
-        }
+        },
+        "DATA",
+        "☁️"
       );
 
       return updated as Task;
     } catch (error) {
-      console.error(
-        "❌ [DATA] TaskService: Failed to update task in AWS DataStore",
-        error instanceof Error ? error.message : String(error)
-      );
+      logger.error("Failed to update task in AWS DataStore", error, "DATA");
       throw error;
     }
   }
@@ -238,25 +241,23 @@ export class TaskService {
    * @returns {Promise<void>}
    */
   static async deleteTask(id: string): Promise<void> {
+    const logger = getServiceLogger("TaskService");
     try {
-      console.log("☁️ [DATA] TaskService: Deleting task from AWS DataStore", {
-        id,
-      });
+      logger.info("Deleting task from AWS DataStore", { id }, "DATA", "☁️");
       const toDelete = await DataStore.query(DataStoreTask, id);
       if (!toDelete) {
         throw new Error(`Task with id ${id} not found`);
       }
 
       await DataStore.delete(toDelete);
-      console.log(
-        "☁️ [DATA] TaskService: Task deleted successfully from AWS DataStore",
-        { id }
+      logger.info(
+        "Task deleted successfully from AWS DataStore",
+        { id },
+        "DATA",
+        "☁️"
       );
     } catch (error) {
-      console.error(
-        "❌ [DATA] TaskService: Failed to delete task from AWS DataStore",
-        error instanceof Error ? error.message : String(error)
-      );
+      logger.error("Failed to delete task from AWS DataStore", error, "DATA");
       throw error;
     }
   }
@@ -269,33 +270,29 @@ export class TaskService {
   static subscribeTasks(callback: (items: Task[], isSynced: boolean) => void): {
     unsubscribe: () => void;
   } {
-    logWithPlatform(
-      "☁️",
-      "",
-      "TaskService",
-      "Setting up AWS DataStore subscription for Task model"
+    const logger = getServiceLogger("TaskService");
+    logger.info(
+      "Setting up AWS DataStore subscription for Task model",
+      undefined,
+      undefined,
+      "☁️"
     );
 
     // CRITICAL: Do an initial query to ensure tasks are loaded immediately
     // observeQuery may not fire immediately, so we query first to populate the UI
     DataStore.query(DataStoreTask)
       .then(initialTasks => {
-        logWithPlatform(
-          "☁️",
-          "",
-          "TaskService",
-          `Initial AWS DataStore query completed - ${initialTasks.length} tasks loaded`
+        logger.info(
+          `Initial AWS DataStore query completed - ${initialTasks.length} tasks loaded`,
+          { count: initialTasks.length },
+          undefined,
+          "☁️"
         );
         // Call callback with initial data - assume synced if we got data
         callback(initialTasks as Task[], initialTasks.length > 0);
       })
       .catch(err => {
-        logErrorWithPlatform(
-          "",
-          "TaskService",
-          "Initial AWS DataStore query failed",
-          err
-        );
+        logger.error("Initial AWS DataStore query failed", err);
         // Still set up subscription even if initial query fails
         callback([], false);
       });
@@ -309,14 +306,13 @@ export class TaskService {
         // Only log in development to reduce production overhead
         // Log subscription updates with specific area identifier
         if (__DEV__) {
-          logWithPlatform(
-            "☁️",
-            "",
-            "TaskService",
+          logger.debug(
             `AWS DataStore subscription update - ${items.length} tasks`,
             {
               synced: isSynced ? "cloud-synced" : "local-only",
-            }
+            },
+            undefined,
+            "☁️"
           );
         }
 
@@ -357,9 +353,10 @@ export class TaskService {
           callback(tasks as Task[], true);
         })
         .catch(err => {
-          console.error(
-            `❌ [DATA-1.1] TaskService: AWS DataStore refresh failed after ${msg.opType} (${source})`,
-            err instanceof Error ? err.message : String(err)
+          getServiceLogger("TaskService").error(
+            `AWS DataStore refresh failed after ${msg.opType} (${source})`,
+            err,
+            "DATA-1.1"
           );
           // Even on error, try to call callback with current state to prevent UI from being stuck
           DataStore.query(DataStoreTask)
@@ -389,15 +386,22 @@ export class TaskService {
    * @returns {Promise<number>} - The number of tasks deleted
    */
   static async deleteAllTasks(): Promise<number> {
+    const logger = getServiceLogger("TaskService");
     try {
-      console.log(
-        "☁️ [DATA] TaskService: Starting deleteAllTasks operation in AWS DataStore"
+      logger.info(
+        "Starting deleteAllTasks operation in AWS DataStore",
+        undefined,
+        "DATA",
+        "☁️"
       );
       const tasks = await DataStore.query(DataStoreTask);
       let deletedCount = 0;
 
-      console.log(
-        `☁️ [DATA] TaskService: Found ${tasks.length} tasks to delete from AWS DataStore`
+      logger.info(
+        `Found ${tasks.length} tasks to delete from AWS DataStore`,
+        { count: tasks.length },
+        "DATA",
+        "☁️"
       );
 
       // Delete in batches to avoid overwhelming the sync queue
@@ -414,22 +418,29 @@ export class TaskService {
         }
       }
 
-      console.log(
-        `☁️ [DATA] TaskService: Deleted ${deletedCount} tasks from AWS DataStore, waiting for sync`
+      logger.info(
+        `Deleted ${deletedCount} tasks from AWS DataStore, waiting for sync`,
+        { deletedCount },
+        "DATA",
+        "☁️"
       );
 
       // Wait for deletions to sync
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      console.log(
-        `☁️ [DATA] TaskService: DeleteAllTasks operation complete - ${deletedCount} tasks deleted`
+      logger.info(
+        `DeleteAllTasks operation complete - ${deletedCount} tasks deleted`,
+        { deletedCount },
+        "DATA",
+        "☁️"
       );
 
       return deletedCount;
     } catch (error) {
-      console.error(
-        "❌ [DATA] TaskService: Failed to delete all tasks from AWS DataStore",
-        error instanceof Error ? error.message : String(error)
+      logger.error(
+        "Failed to delete all tasks from AWS DataStore",
+        error,
+        "DATA"
       );
       throw error;
     }
@@ -452,8 +463,12 @@ export class TaskService {
       const { TaskResultService } = await import("./TaskResultService");
       const { TaskHistoryService } = await import("./TaskHistoryService");
 
-      console.log(
-        "☁️ [DATA] TaskService: Starting nuclear reset (deleting all task-related data from AWS DataStore)"
+      const logger = getServiceLogger("TaskService");
+      logger.info(
+        "Starting nuclear reset (deleting all task-related data from AWS DataStore)",
+        undefined,
+        "DATA",
+        "☁️"
       );
 
       // Delete in order: answers, results, histories first, then tasks
@@ -463,12 +478,17 @@ export class TaskService {
       const taskHistories = await TaskHistoryService.deleteAllTaskHistories();
       const tasks = await this.deleteAllTasks();
 
-      console.log("☁️ [DATA] TaskService: Nuclear reset completed", {
-        tasks,
-        taskAnswers,
-        taskResults,
-        taskHistories,
-      });
+      logger.info(
+        "Nuclear reset completed",
+        {
+          tasks,
+          taskAnswers,
+          taskResults,
+          taskHistories,
+        },
+        "DATA",
+        "☁️"
+      );
 
       return {
         tasks,
@@ -477,9 +497,10 @@ export class TaskService {
         taskHistories,
       };
     } catch (error) {
-      console.error(
-        "❌ [DATA] TaskService: Failed during nuclear reset",
-        error instanceof Error ? error.message : String(error)
+      getServiceLogger("TaskService").error(
+        "Failed during nuclear reset",
+        error,
+        "DATA"
       );
       throw error;
     }
@@ -491,15 +512,18 @@ export class TaskService {
    * @returns {Promise<void>}
    */
   static async clearDataStore(): Promise<void> {
+    const logger = getServiceLogger("TaskService");
     try {
-      console.log("☁️ [DATA] TaskService: Clearing AWS DataStore");
+      logger.info("Clearing AWS DataStore", undefined, "DATA", "☁️");
       await DataStore.clear();
-      console.log("☁️ [DATA] TaskService: AWS DataStore cleared successfully");
-    } catch (error) {
-      console.error(
-        "❌ [DATA] TaskService: Failed to clear AWS DataStore",
-        error instanceof Error ? error.message : String(error)
+      logger.info(
+        "AWS DataStore cleared successfully",
+        undefined,
+        "DATA",
+        "☁️"
       );
+    } catch (error) {
+      logger.error("Failed to clear AWS DataStore", error, "DATA");
       throw error;
     }
   }

@@ -61,6 +61,13 @@ export function formatLogMessage(
  * Log with platform identification
  * Use this for all console.log calls to ensure platform is always included
  *
+ * NOTE: This utility uses console directly. For centralized logging with providers,
+ * the main app should configure logging and services should use the logging service.
+ *
+ * @deprecated New code should use useLogger() hook in React components.
+ * For services in the main app, use getServiceLogger() from the logging service.
+ * This function is maintained for backward compatibility during migration.
+ *
  * @param icon - Emoji icon for the log type
  * @param step - Step identifier (e.g., "INIT-1", "DATA-1", or empty string)
  * @param serviceName - Name of the service/module logging
@@ -74,6 +81,8 @@ export function logWithPlatform(
   message: string,
   data?: Record<string, unknown>
 ): void {
+  // Use console directly - package is self-contained
+  // Main app services should use the centralized logging service
   const formattedMessage = formatLogMessage(icon, step, serviceName, message);
   if (data) {
     console.log(formattedMessage, data);
@@ -86,6 +95,13 @@ export function logWithPlatform(
  * Log error with platform identification
  * Use this for all console.error calls to ensure platform is always included
  *
+ * NOTE: This utility uses console directly. For centralized logging with providers,
+ * the main app should configure logging and services should use the logging service.
+ *
+ * @deprecated New code should use useLogger() hook in React components.
+ * For services in the main app, use getServiceLogger() from the logging service.
+ * This function is maintained for backward compatibility during migration.
+ *
  * @param step - Step identifier (e.g., "INIT-1", "DATA-1", or empty string)
  * @param serviceName - Name of the service/module logging
  * @param message - The error message
@@ -97,6 +113,8 @@ export function logErrorWithPlatform(
   message: string,
   error?: unknown
 ): void {
+  // Use console directly - package is self-contained
+  // Main app services should use the centralized logging service
   const platform = getPlatformId();
   const stepPart = step ? `[${step}] ` : "";
   const errorMessage =

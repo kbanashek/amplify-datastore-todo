@@ -1,5 +1,6 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
-import { logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
+import { ModelName } from "../constants/modelNames";
+import { OperationSource } from "../constants/operationSource";
 import { DataPoint, DataPointInstance } from "../models";
 import {
   CreateDataPointInput,
@@ -7,8 +8,8 @@ import {
   UpdateDataPointInput,
   UpdateDataPointInstanceInput,
 } from "../types/DataPoint";
-import { ModelName } from "../constants/modelNames";
-import { OperationSource } from "../constants/operationSource";
+import { logErrorWithDevice, logWithDevice } from "../utils/deviceLogger";
+import { getServiceLogger } from "../utils/serviceLogger";
 
 type DataPointUpdateData = Omit<UpdateDataPointInput, "id" | "_version">;
 type DataPointInstanceUpdateData = Omit<
@@ -50,24 +51,19 @@ export class DataPointService {
   static async createDataPoint(
     input: CreateDataPointInput
   ): Promise<DataPoint> {
+    const logger = getServiceLogger("DataPointService");
     try {
-      console.log(
-        "[DataPointService] Creating data point with DataStore:",
-        input
-      );
+      logger.info("Creating data point with DataStore", input);
       const dataPoint = await DataStore.save(
         new DataPoint({
           ...input,
         })
       );
 
-      console.log(
-        "[DataPointService] DataPoint created successfully:",
-        dataPoint.id
-      );
+      logger.info("DataPoint created successfully", { id: dataPoint.id });
       return dataPoint;
     } catch (error) {
-      console.error("Error creating data point:", error);
+      logger.error("Error creating data point", error);
       throw error;
     }
   }
@@ -76,7 +72,10 @@ export class DataPointService {
     try {
       return await DataStore.query(DataPoint);
     } catch (error) {
-      console.error("Error fetching data points:", error);
+      getServiceLogger("DataPointService").error(
+        "Error fetching data points",
+        error
+      );
       throw error;
     }
   }
@@ -86,7 +85,10 @@ export class DataPointService {
       const dataPoint = await DataStore.query(DataPoint, id);
       return dataPoint || null;
     } catch (error) {
-      console.error("Error fetching data point:", error);
+      getServiceLogger("DataPointService").error(
+        "Error fetching data point",
+        error
+      );
       throw error;
     }
   }
@@ -109,7 +111,10 @@ export class DataPointService {
 
       return updated;
     } catch (error) {
-      console.error("Error updating data point:", error);
+      getServiceLogger("DataPointService").error(
+        "Error updating data point",
+        error
+      );
       throw error;
     }
   }
@@ -123,7 +128,10 @@ export class DataPointService {
 
       await DataStore.delete(toDelete);
     } catch (error) {
-      console.error("Error deleting data point:", error);
+      getServiceLogger("DataPointService").error(
+        "Error deleting data point",
+        error
+      );
       throw error;
     }
   }
@@ -133,8 +141,8 @@ export class DataPointService {
   ): {
     unsubscribe: () => void;
   } {
-    console.log(
-      "[DataPointService] Setting up DataStore subscription for DataPoint"
+    getServiceLogger("DataPointService").info(
+      "Setting up DataStore subscription for DataPoint"
     );
 
     const querySubscription = DataStore.observeQuery(DataPoint).subscribe(
@@ -209,24 +217,21 @@ export class DataPointService {
   static async createDataPointInstance(
     input: CreateDataPointInstanceInput
   ): Promise<DataPointInstance> {
+    const logger = getServiceLogger("DataPointService");
     try {
-      console.log(
-        "[DataPointService] Creating data point instance with DataStore:",
-        input
-      );
+      logger.info("Creating data point instance with DataStore", input);
       const instance = await DataStore.save(
         new DataPointInstance({
           ...input,
         })
       );
 
-      console.log(
-        "[DataPointService] DataPointInstance created successfully:",
-        instance.id
-      );
+      logger.info("DataPointInstance created successfully", {
+        id: instance.id,
+      });
       return instance;
     } catch (error) {
-      console.error("Error creating data point instance:", error);
+      logger.error("Error creating data point instance", error);
       throw error;
     }
   }
@@ -235,7 +240,10 @@ export class DataPointService {
     try {
       return await DataStore.query(DataPointInstance);
     } catch (error) {
-      console.error("Error fetching data point instances:", error);
+      getServiceLogger("DataPointService").error(
+        "Error fetching data point instances",
+        error
+      );
       throw error;
     }
   }
@@ -247,7 +255,10 @@ export class DataPointService {
       const instance = await DataStore.query(DataPointInstance, id);
       return instance || null;
     } catch (error) {
-      console.error("Error fetching data point instance:", error);
+      getServiceLogger("DataPointService").error(
+        "Error fetching data point instance",
+        error
+      );
       throw error;
     }
   }
@@ -270,7 +281,10 @@ export class DataPointService {
 
       return updated;
     } catch (error) {
-      console.error("Error updating data point instance:", error);
+      getServiceLogger("DataPointService").error(
+        "Error updating data point instance",
+        error
+      );
       throw error;
     }
   }
@@ -284,7 +298,10 @@ export class DataPointService {
 
       await DataStore.delete(toDelete);
     } catch (error) {
-      console.error("Error deleting data point instance:", error);
+      getServiceLogger("DataPointService").error(
+        "Error deleting data point instance",
+        error
+      );
       throw error;
     }
   }
@@ -294,8 +311,8 @@ export class DataPointService {
   ): {
     unsubscribe: () => void;
   } {
-    console.log(
-      "[DataPointService] Setting up DataStore subscription for DataPointInstance"
+    getServiceLogger("DataPointService").info(
+      "Setting up DataStore subscription for DataPointInstance"
     );
 
     const querySubscription = DataStore.observeQuery(
@@ -372,7 +389,10 @@ export class DataPointService {
     try {
       await DataStore.clear();
     } catch (error) {
-      console.error("Error clearing DataStore:", error);
+      getServiceLogger("DataPointService").error(
+        "Error clearing DataStore",
+        error
+      );
       throw error;
     }
   }
