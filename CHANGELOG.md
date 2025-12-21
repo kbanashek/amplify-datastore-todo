@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.20] - 2025-12-21
+
+### Added
+
+- Added tighter yarn checks to pre-commit hook
+  - Verifies yarn.lock is synchronized with package.json before allowing commits
+  - Warns if package.json is modified without updating yarn.lock
+  - Prevents commits with out-of-sync lockfiles
+  - Ensures dependency changes are properly tracked
+
 ## [0.1.19] - 2025-12-21
 
 ### Fixed
