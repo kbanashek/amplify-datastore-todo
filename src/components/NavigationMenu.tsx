@@ -23,6 +23,42 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   {
+    name: "Activities",
+    route: "/(tabs)/activities",
+    icon: "doc.text.fill",
+    description: "View all activities/assessments",
+  },
+  {
+    name: "Questions",
+    route: "/(tabs)/questions",
+    icon: "questionmark.circle.fill",
+    description: "View all questions",
+  },
+  {
+    name: "Task Answers",
+    route: "/(tabs)/task-answers",
+    icon: "checkmark.square.fill",
+    description: "View task answer submissions",
+  },
+  {
+    name: "Task Results",
+    route: "/(tabs)/task-results",
+    icon: "chart.bar.fill",
+    description: "View task result data",
+  },
+  {
+    name: "Task History",
+    route: "/(tabs)/task-history",
+    icon: "clock.fill",
+    description: "View task history logs",
+  },
+  {
+    name: "Data Points",
+    route: "/(tabs)/datapoints",
+    icon: "point.topleft.down.curvedto.point.bottomright.up.fill",
+    description: "View data point instances",
+  },
+  {
     name: "Seed Data",
     route: "/(tabs)/seed-screen",
     icon: "leaf.fill",

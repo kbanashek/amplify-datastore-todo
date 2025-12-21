@@ -24,9 +24,11 @@ describe("TempAnswerSyncService", () => {
     jest.clearAllMocks();
     Object.keys(storage).forEach(k => delete storage[k]);
 
-    (AsyncStorage.getItem as jest.Mock).mockImplementation(async (key: string) => {
-      return storage[key] ?? null;
-    });
+    (AsyncStorage.getItem as jest.Mock).mockImplementation(
+      async (key: string) => {
+        return storage[key] ?? null;
+      }
+    );
 
     (AsyncStorage.setItem as jest.Mock).mockImplementation(
       async (key: string, value: string) => {
@@ -112,5 +114,3 @@ describe("TempAnswerSyncService", () => {
     expect(flushSpy).toHaveBeenCalled();
   });
 });
-
-

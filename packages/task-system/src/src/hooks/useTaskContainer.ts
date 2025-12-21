@@ -1,12 +1,13 @@
-import { useMemo, useEffect } from "react";
-import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useGroupedTasks } from "./useGroupedTasks";
-import { useTaskList } from "./useTaskList";
-import { useAppointmentList } from "./useAppointmentList";
-import { groupAppointmentsByDate } from "../utils/appointmentParser";
+import { useEffect, useMemo } from "react";
+import { Alert } from "react-native";
+import { navigationService } from "../services/NavigationService";
 import { Appointment } from "../types/Appointment";
 import { Task } from "../types/Task";
+import { groupAppointmentsByDate } from "../utils/appointmentParser";
+import { useAppointmentList } from "./useAppointmentList";
+import { useGroupedTasks } from "./useGroupedTasks";
+import { useTaskList } from "./useTaskList";
 
 export interface UseTaskContainerReturn {
   groupedTasks: ReturnType<typeof useGroupedTasks>;
@@ -80,9 +81,13 @@ export const useTaskContainer = (): UseTaskContainerReturn => {
   };
 
   const handleAppointmentPress = (appointment: Appointment): void => {
-    Alert.alert(
-      "Not supported",
-      "Appointment details navigation is host-owned. Provide your own appointment details screen in the host app."
+    // Package handles ALL navigation logic independently
+    // NavigationService tries all strategies automatically
+    // Pass navigation object so it can try parent navigation (works with expo-router)
+    navigationService.navigateToAppointmentDetails(
+      appointment,
+      appointmentTimezoneId,
+      navigation
     );
   };
 

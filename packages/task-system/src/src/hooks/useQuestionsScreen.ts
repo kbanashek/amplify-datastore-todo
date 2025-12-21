@@ -219,11 +219,13 @@ export const useQuestionsScreen = (
   });
 
   // Navigation handlers
-  const enqueueTempAnswers = useCallback(() => {
+  // Mimics LX app behavior: when user clicks Next, try immediate sync,
+  // then queue if offline or sync fails
+  const syncTempAnswers = useCallback(() => {
     if (!task || !activity) return;
     if (!task.pk) return;
 
-    void TempAnswerSyncService.enqueueFromMapper({
+    void TempAnswerSyncService.syncTempAnswers({
       task,
       activity,
       answers,
@@ -239,7 +241,7 @@ export const useQuestionsScreen = (
     currentScreenValid,
     validateCurrentScreen,
     onSubmit: handleSubmit,
-    onLeaveScreen: enqueueTempAnswers,
+    onLeaveScreen: syncTempAnswers,
     setErrors,
     setCurrentScreenIndex,
     setShowIntroduction,

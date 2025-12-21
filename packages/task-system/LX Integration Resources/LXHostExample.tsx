@@ -1,3 +1,4 @@
+import { generateClient } from "@aws-amplify/api";
 import { Amplify } from "@aws-amplify/core";
 import React, { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
@@ -11,9 +12,9 @@ import {
   TranslationProvider,
   initTaskSystem,
 } from "@orion/task-system";
-import awsconfig from "../../aws-exports";
-import { bootstrapTaskSystem } from "../bootstrap/taskSystemBootstrap";
-import fixture from "../fixtures/task-system.fixture.v1.json";
+import awsconfig from "../../../aws-exports";
+import { bootstrapTaskSystem } from "../../../src/bootstrap/taskSystemBootstrap";
+import fixture from "../../../src/fixtures/task-system.fixture.v1.json";
 
 /**
  * LXHostExample
@@ -55,8 +56,8 @@ export type LXHostExampleProps = {
   embedded?: boolean;
 
   /**
-   * If true, configures TempAnswerSyncService with a mock executor/mapper and renders
-   * small debug actions (flush + inspect outbox).
+   * If true, configures TempAnswerSyncService with a real Amplify GraphQL executor/mapper
+   * and renders small debug actions (flush + inspect outbox).
    *
    * Default: false
    */
@@ -106,18 +107,47 @@ export function LXHostExample({
         }
 
         if (enableTempAnswerSyncDemo) {
-          // Host provides the GraphQL executor + mapper. This is a mock implementation
-          // for the harness; LX should wire real executor + mutation document.
+          // Host provides the GraphQL executor + mapper.
+          // Using real Amplify GraphQL client instead of mock for actual testing.
+          const client = generateClient();
+
           TempAnswerSyncService.configure({
             document:
               "mutation SaveTempAnswers($input: JSON!) { saveTempAnswers(input: $input) }",
             executor: {
               execute: async ({ document, variables }) => {
-                console.log("[LXHostExample] Temp-save execute", {
-                  document,
-                  variables,
-                });
-                return { data: { ok: true } };
+                try {
+                  console.log("[LXHostExample] Temp-save execute (real API)", {
+                    document: document.substring(0, 80),
+                    variableKeys: Object.keys(variables ?? {}),
+                  });
+
+                  // Use Amplify's real GraphQL API client
+                  const response = await client.graphql({
+                    query: document,
+                    variables,
+                  });
+
+                  // Handle GraphQLResult type
+                  const data = "data" in response ? response.data : undefined;
+
+                  console.log("[LXHostExample] Temp-save success", {
+                    hasData: !!data,
+                  });
+
+                  return { data };
+                } catch (error) {
+                  console.error("[LXHostExample] Temp-save error", error);
+                  // Return error in GraphQL response format
+                  return {
+                    data: undefined,
+                    errors: [
+                      error instanceof Error
+                        ? { message: error.message }
+                        : { message: String(error) },
+                    ],
+                  };
+                }
               },
             },
             mapper: ({ task, activity, answers, localtime }) => {
