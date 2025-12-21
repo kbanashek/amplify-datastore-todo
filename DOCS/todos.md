@@ -110,6 +110,35 @@ Create isolated, temporary AWS Amplify environments for each developer to enable
 - CI runs lint, format checks, and non-AWS-dependent unit tests
 - Full test suite should be run locally before merging PRs
 
+## Tooling & Integrations
+
+### Code Coverage Tools
+
+**Status:** 📝 To Investigate
+
+**Context:**
+
+- LX (host application) uses Rovo for code coverage
+- Current project uses GitHub Actions for coverage (no third-party service)
+- Codecov integration was removed due to security sign-off requirements
+
+**What Needs to be Done:**
+
+- [ ] Investigate what Rovo is and how LX uses it for code coverage
+- [ ] Determine if Rovo is a code coverage tool or knowledge management tool (Atlassian Rovo)
+- [ ] If Rovo is a coverage tool: Evaluate integration feasibility and security requirements
+- [ ] If Rovo is not a coverage tool: Document what coverage tool LX actually uses
+- [ ] Compare LX's coverage tool with current GitHub Actions solution
+- [ ] Document decision: Keep GitHub Actions or integrate with LX's coverage tool
+- [ ] If integrating: Add security review requirements to documentation
+
+**Notes:**
+
+- Rovo (Atlassian) is an AI-powered knowledge management tool, not a code coverage service
+- May need to clarify with LX team what tool they actually use for coverage
+- Current GitHub Actions solution provides all needed coverage reporting without third-party dependencies
+- Any third-party coverage service would require security sign-off (same as Codecov)
+
 ## Dependency Management
 
 ### CodeArtifact Integration
