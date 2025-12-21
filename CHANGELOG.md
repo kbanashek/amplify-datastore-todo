@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed "Amplify has not been configured" warning appearing before Amplify initialization
+  - Added Amplify initialization to entry.js to ensure configuration before any modules load
+  - Made configureAmplify() idempotent to prevent double configuration
+  - Updated useAmplifyState and bootstrapTaskSystem to check isConfigured flag before calling getConfig()
+  - Ensures Amplify is configured before any code that uses Amplify services runs
+
 ### Changed
 
 - Migrated all package components and hooks to use centralized logging service

@@ -2,6 +2,7 @@
  * This file provides synchronous Amplify initialization
  * It must be imported before any other imports that might use Amplify
  */
+import { Amplify } from "@aws-amplify/core";
 import { configureAmplify } from "./amplify-config";
 import { logErrorWithPlatform, logWithPlatform } from "./utils/platformLogger";
 
@@ -16,6 +17,13 @@ import { logErrorWithPlatform, logWithPlatform } from "./utils/platformLogger";
     );
     // Use the proper configureAmplify that includes DataStore configuration
     configureAmplify();
+
+    // Verify configuration was successful
+    const isConfigured = (Amplify as any).isConfigured;
+    if (!isConfigured) {
+      throw new Error("Amplify configuration did not complete successfully");
+    }
+
     logWithPlatform("✅", "", "AmplifyInit", "Amplify configuration complete");
   } catch (error) {
     logErrorWithPlatform(
@@ -24,6 +32,8 @@ import { logErrorWithPlatform, logWithPlatform } from "./utils/platformLogger";
       "Failed to initialize Amplify synchronously",
       error
     );
+    // Re-throw to prevent app from continuing with unconfigured Amplify
+    throw error;
   }
 })();
 

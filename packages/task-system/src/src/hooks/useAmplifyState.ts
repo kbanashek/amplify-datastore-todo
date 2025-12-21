@@ -97,18 +97,13 @@ export const useAmplifyState = (options?: {
               setSyncState(SyncState.Error);
 
               // Log sync errors for debugging
-              logger.error(
-                "DataStore sync error",
-                data?.error || data,
-                undefined,
-                undefined,
-                {
-                  event,
-                  data,
-                  errorDetails: data?.error || data,
-                  note: "Check earlier logs for '[Amplify] ✅ Configured' to see API key being used",
-                }
-              );
+              logger.error("DataStore sync error", {
+                event,
+                data,
+                errorDetails: data?.error || data,
+                note: "Check earlier logs for '[Amplify] ✅ Configured' to see API key being used",
+                error: data?.error || data,
+              });
 
               // Check if it's an auth error
               const isUnauthorized =
@@ -120,10 +115,7 @@ export const useAmplifyState = (options?: {
 
               if (isUnauthorized) {
                 logger.error(
-                  "⚠️ UNAUTHORIZED ERROR - API key issue detected!",
-                  data?.error,
-                  undefined,
-                  "⚠️",
+                  "UNAUTHORIZED ERROR - API key issue detected!",
                   {
                     expectedApiKey: "da2-b655th...",
                     suggestion: [
@@ -138,7 +130,9 @@ export const useAmplifyState = (options?: {
                     errorMessage: data?.error?.message,
                     errorDetails: data?.error?.errors,
                     fullError: JSON.stringify(data?.error || data, null, 2),
-                  }
+                  },
+                  undefined,
+                  "⚠️"
                 );
               }
               break;
@@ -169,24 +163,32 @@ export const useAmplifyState = (options?: {
         logWithDevice("useAmplifyState", "Initializing task-system runtime...");
 
         // Verify Amplify config before starting DataStore
-        try {
-          const amplifyConfig = Amplify.getConfig();
-          const hasConfig = !!amplifyConfig;
-          logWithDevice("useAmplifyState", "Amplify config check", {
-            hasConfig,
-            configType: typeof amplifyConfig,
-          });
-
-          // Note: Amplify.getConfig() may not expose API key directly
-          // The API key is configured via Amplify.configure() and used internally
-          // If we get here, Amplify was configured successfully
-        } catch (configError) {
-          // Keep this debug-only to avoid noisy startup logs; gated in logWithDevice().
-          logWithDevice(
-            "useAmplifyState",
-            "Could not verify Amplify config",
-            configError
+        // Check isConfigured flag directly to avoid triggering warning from getConfig()
+        const isConfigured = (Amplify as any).isConfigured;
+        if (!isConfigured) {
+          logger.warn(
+            "Amplify not configured yet - DataStore initialization may fail",
+            undefined,
+            undefined,
+            "⚠️"
           );
+          // Don't throw - let DataStore.start() handle the error gracefully
+        } else {
+          // Only call getConfig() if Amplify is configured to avoid warning
+          try {
+            const amplifyConfig = Amplify.getConfig();
+            const hasConfig = !!amplifyConfig;
+            logger.debug("Amplify config verified", {
+              hasConfig,
+              configType: typeof amplifyConfig,
+            });
+
+            // Note: Amplify.getConfig() may not expose API key directly
+            // The API key is configured via Amplify.configure() and used internally
+            // If we get here, Amplify was configured successfully
+          } catch (configError) {
+            logger.warn("Could not verify Amplify config", configError);
+          }
         }
 
         // Log that we're starting DataStore
