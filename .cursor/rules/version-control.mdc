@@ -5,6 +5,14 @@ alwaysApply: true
 
 # Version Control
 
+## Pre-Commit Checks
+
+- **NEVER allow commits with yarn integrity issues**
+  - Pre-commit hook automatically runs `yarn check --integrity`
+  - If integrity check fails, commit is blocked
+  - Fix by running `yarn install` to sync dependencies
+  - This prevents committing with broken dependencies or lockfile mismatches
+
 ## Commit Messages
 
 - **ALWAYS** provide meaningful commit messages when using version-bump command

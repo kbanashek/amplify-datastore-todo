@@ -2,6 +2,15 @@ import { renderHook, act } from "@testing-library/react-native";
 
 import { useDevOptions } from "../useDevOptions";
 
+import {
+  AppointmentService,
+  FixtureImportService,
+  SeededDataCleanupService,
+  TaskService,
+} from "@orion/task-system";
+import { clearCacheAndResync, forceFullSync } from "../../utils/syncUtils";
+import { seedAppointmentData } from "../../../scripts/seed-appointment-data";
+
 jest.mock("@orion/task-system", () => ({
   AppointmentService: {
     clearAppointments: jest.fn(),
@@ -26,15 +35,6 @@ jest.mock("../../utils/syncUtils", () => ({
 jest.mock("../../../scripts/seed-appointment-data", () => ({
   seedAppointmentData: jest.fn(),
 }));
-
-import {
-  AppointmentService,
-  FixtureImportService,
-  SeededDataCleanupService,
-  TaskService,
-} from "@orion/task-system";
-import { clearCacheAndResync, forceFullSync } from "../../utils/syncUtils";
-import { seedAppointmentData } from "../../../scripts/seed-appointment-data";
 
 describe("useDevOptions", () => {
   beforeEach(() => {

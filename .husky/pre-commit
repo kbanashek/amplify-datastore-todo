@@ -1,6 +1,15 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+echo "📦 Checking yarn integrity..."
+yarn check --integrity || {
+  echo "❌ Yarn integrity check failed. Please run 'yarn install' to fix dependency issues."
+  echo "💡 This prevents committing with broken dependencies or lockfile mismatches."
+  exit 1
+}
+
+echo "✅ Yarn integrity check passed!"
+
 echo "🔍 Running lint..."
 yarn lint || {
   echo "❌ Lint failed. Please fix linting errors before committing."
