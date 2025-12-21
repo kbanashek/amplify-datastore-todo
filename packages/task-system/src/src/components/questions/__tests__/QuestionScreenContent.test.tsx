@@ -32,6 +32,7 @@ jest.mock("../QuestionScreenButtons", () => {
 // Mock platform utils
 jest.mock("../../../utils/platform", () => ({
   isAndroid: jest.fn(() => false),
+  getPlatform: jest.fn(() => "ios"),
 }));
 
 describe("QuestionScreenContent", () => {

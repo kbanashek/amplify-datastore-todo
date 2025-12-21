@@ -11,8 +11,10 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTaskHistoryList, TaskHistoryService } from "@orion/task-system";
 import { NetworkStatusIndicator } from "../../src/components/NetworkStatusIndicator";
+import { useLogger } from "../../src/hooks/useLogger";
 
 export default function TaskHistoryScreen() {
+  const logger = useLogger();
   const { taskHistories, loading, error, handleDeleteTaskHistory } =
     useTaskHistoryList();
   const [showForm, setShowForm] = useState(false);
@@ -52,7 +54,7 @@ export default function TaskHistoryScreen() {
       setSk(`SK-${Date.now()}`);
       setShowForm(false);
     } catch (err) {
-      console.error("Error creating task history:", err);
+      logger.error("Error creating task history", err, "TaskHistoryScreen");
     } finally {
       setIsSubmitting(false);
     }

@@ -11,8 +11,10 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTaskResultList, TaskResultService } from "@orion/task-system";
 import { NetworkStatusIndicator } from "../../src/components/NetworkStatusIndicator";
+import { useLogger } from "../../src/hooks/useLogger";
 
 export default function TaskResultsScreen() {
+  const logger = useLogger();
   const { taskResults, loading, error, handleDeleteTaskResult } =
     useTaskResultList();
   const [showForm, setShowForm] = useState(false);
@@ -48,7 +50,7 @@ export default function TaskResultsScreen() {
       setSk(`SK-${Date.now()}`);
       setShowForm(false);
     } catch (err) {
-      console.error("Error creating task result:", err);
+      logger.error("Error creating task result", err, "TaskResultsScreen");
     } finally {
       setIsSubmitting(false);
     }

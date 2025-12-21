@@ -9,9 +9,12 @@ import {
 } from "react-native";
 import { Task, TaskStatus, TaskType } from "../types/Task";
 import { useTaskList } from "../hooks/useTaskList";
+import { getServiceLogger } from "../utils/serviceLogger";
 import { TaskCard } from "./TaskCard";
 
 import { TaskFilters } from "../types/Task";
+
+const logger = getServiceLogger("TasksView");
 
 interface TasksViewProps {
   filters?: TaskFilters;
@@ -29,7 +32,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
   // ADD TEST TASK ON MOUNT IF NONE EXIST
   React.useEffect(() => {
     if (tasks.length === 0 && !loading) {
-      console.log("[TasksView] NO TASKS - Adding test task");
+      logger.debug("NO TASKS - Adding test task");
       const testTask: Task = {
         id: "test-task-" + Date.now(),
         pk: "TEST-PK",
@@ -43,20 +46,18 @@ export const TasksView: React.FC<TasksViewProps> = ({
         updatedAt: new Date().toISOString(),
       };
       const { TaskService } = require("../services/TaskService");
-      TaskService.createTask(testTask).catch(console.error);
+      TaskService.createTask(testTask).catch((err: unknown) => {
+        logger.error("Error creating test task", err);
+      });
     }
   }, [tasks.length, loading]);
 
-  console.log("========================================");
-  console.log("[TasksView] RENDER START");
-  console.log("[TasksView] Tasks count:", tasks.length);
-  console.log(
-    "[TasksView] Tasks:",
-    tasks.map(t => ({ id: t.id, title: t.title, status: t.status }))
-  );
-  console.log("[TasksView] Loading:", loading);
-  console.log("[TasksView] Error:", error);
-  console.log("========================================");
+  logger.debug("RENDER START", {
+    tasksCount: tasks.length,
+    tasks: tasks.map(t => ({ id: t.id, title: t.title, status: t.status })),
+    loading,
+    error,
+  });
 
   // Group tasks by date
   const now = new Date();
@@ -70,22 +71,19 @@ export const TasksView: React.FC<TasksViewProps> = ({
 
   tasks.forEach(task => {
     if (!task.startTimeInMillSec) {
-      console.log(
-        "[TasksView] Task without startTimeInMillSec, adding to upcoming:",
-        task.id,
-        task.title
-      );
+      logger.debug("Task without startTimeInMillSec, adding to upcoming", {
+        id: task.id,
+        title: task.title,
+      });
       upcomingTasks.push(task);
       return;
     }
 
     const taskDate = new Date(task.startTimeInMillSec);
-    console.log(
-      "[TasksView] Task date:",
-      task.id,
-      "date:",
-      taskDate.toISOString()
-    );
+    logger.debug("Task date", {
+      id: task.id,
+      date: taskDate.toISOString(),
+    });
 
     if (taskDate >= todayStart && taskDate < todayEnd) {
       todayTasks.push(task);
@@ -96,14 +94,14 @@ export const TasksView: React.FC<TasksViewProps> = ({
     }
   });
 
-  console.log("[TasksView] Grouped:", {
+  logger.debug("Grouped", {
     today: todayTasks.length,
     upcoming: upcomingTasks.length,
     past: pastTasks.length,
   });
 
   const onRefresh = async () => {
-    console.log("[TasksView] Manual refresh triggered");
+    logger.debug("Manual refresh triggered");
     setRefreshing(true);
     await refreshTasks();
     setRefreshing(false);
@@ -127,10 +125,11 @@ export const TasksView: React.FC<TasksViewProps> = ({
     );
   }
 
-  console.log("[TasksView] ABOUT TO RETURN JSX - Blue banner should render!");
-  console.log("[TasksView] todayTasks.length:", todayTasks.length);
-  console.log("[TasksView] upcomingTasks.length:", upcomingTasks.length);
-  console.log("[TasksView] pastTasks.length:", pastTasks.length);
+  logger.debug("ABOUT TO RETURN JSX", {
+    todayTasksLength: todayTasks.length,
+    upcomingTasksLength: upcomingTasks.length,
+    pastTasksLength: pastTasks.length,
+  });
 
   return (
     <ScrollView
@@ -153,9 +152,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
 
       {/* TODAY'S TASKS - VERY PROMINENT - ALWAYS VISIBLE */}
       {(() => {
-        console.log(
-          "[TasksView] RENDERING TODAY SECTION - Header should be visible!"
-        );
+        logger.debug("RENDERING TODAY SECTION");
         return (
           <View style={styles.todaySection}>
             <View style={styles.todaySectionHeader}>
@@ -172,11 +169,10 @@ export const TasksView: React.FC<TasksViewProps> = ({
               <Text style={styles.emptySectionText}>No tasks for today</Text>
             ) : (
               todayTasks.map(task => {
-                console.log(
-                  "[TasksView] Rendering TODAY task with TaskCard:",
-                  task.id,
-                  task.title
-                );
+                logger.debug("Rendering TODAY task with TaskCard", {
+                  id: task.id,
+                  title: task.title,
+                });
                 return (
                   <TaskCard
                     key={task.id}
@@ -199,11 +195,10 @@ export const TasksView: React.FC<TasksViewProps> = ({
             <Text style={styles.sectionCount}>({upcomingTasks.length})</Text>
           </View>
           {upcomingTasks.map(task => {
-            console.log(
-              "[TasksView] Rendering UPCOMING task with TaskCard:",
-              task.id,
-              task.title
-            );
+            logger.debug("Rendering UPCOMING task with TaskCard", {
+              id: task.id,
+              title: task.title,
+            });
             return (
               <TaskCard
                 key={task.id}
@@ -224,11 +219,10 @@ export const TasksView: React.FC<TasksViewProps> = ({
             <Text style={styles.sectionCount}>({pastTasks.length})</Text>
           </View>
           {pastTasks.map(task => {
-            console.log(
-              "[TasksView] Rendering PAST task with TaskCard:",
-              task.id,
-              task.title
-            );
+            logger.debug("Rendering PAST task with TaskCard", {
+              id: task.id,
+              title: task.title,
+            });
             return (
               <TaskCard
                 key={task.id}

@@ -2,6 +2,7 @@ import { NetworkStatus, useAmplify } from "@orion/task-system";
 import { useEffect, useState } from "react";
 import { Todo } from "../../models";
 import { TodoService } from "../services/TodoService";
+import { useLogger } from "./useLogger";
 
 interface UseTodoListReturn {
   todos: Todo[];
@@ -15,6 +16,7 @@ interface UseTodoListReturn {
 }
 
 export const useTodoList = (): UseTodoListReturn => {
+  const logger = useLogger();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +41,7 @@ export const useTodoList = (): UseTodoListReturn => {
 
       setSubscription(sub);
     } catch (err) {
-      console.error("Error initializing todos:", err);
+      logger.error("Error initializing todos", err, "useTodoList");
       setError("Failed to load todos. Please try again.");
       setLoading(false);
     }
@@ -63,7 +65,7 @@ export const useTodoList = (): UseTodoListReturn => {
       await TodoService.deleteTodo(id);
       // The subscription will automatically update the UI
     } catch (err) {
-      console.error("Error deleting todo:", err);
+      logger.error("Error deleting todo", err, "useTodoList");
       setError("Failed to delete todo. Please try again.");
     }
   };
@@ -94,7 +96,7 @@ export const useTodoList = (): UseTodoListReturn => {
       // Reinitialize todos after clearing
       initTodos();
     } catch (err) {
-      console.error("Error clearing DataStore:", err);
+      logger.error("Error clearing DataStore", err, "useTodoList");
       setError("Failed to clear DataStore. Please try again.");
       setLoading(false);
     }

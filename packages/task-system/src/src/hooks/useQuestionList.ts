@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { QuestionService } from "../services/QuestionService";
 import { Question } from "../types/Question";
+import { getServiceLogger } from "../utils/serviceLogger";
+
+const logger = getServiceLogger("useQuestionList");
 
 interface UseQuestionListReturn {
   questions: Question[];
@@ -20,12 +23,10 @@ export const useQuestionList = (): UseQuestionListReturn => {
     const sub = QuestionService.subscribeQuestions((items, isSynced) => {
       setQuestions(items);
       setLoading(false);
-      console.log(
-        "[useQuestionList] Questions updated:",
-        items.length,
-        "synced:",
-        isSynced
-      );
+      logger.debug("Questions updated", {
+        count: items.length,
+        synced: isSynced,
+      });
     });
     setSubscription(() => sub.unsubscribe);
 
@@ -40,7 +41,7 @@ export const useQuestionList = (): UseQuestionListReturn => {
     try {
       await QuestionService.deleteQuestion(id);
     } catch (err) {
-      console.error("Error deleting question:", err);
+      logger.error("Error deleting question", err);
       setError("Failed to delete question.");
     }
   };
@@ -52,7 +53,7 @@ export const useQuestionList = (): UseQuestionListReturn => {
       setQuestions(allQuestions);
       setLoading(false);
     } catch (err) {
-      console.error("Error refreshing questions:", err);
+      logger.error("Error refreshing questions", err);
       setError("Failed to refresh questions.");
       setLoading(false);
     }

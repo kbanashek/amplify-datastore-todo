@@ -11,7 +11,10 @@ import {
 } from "react-native";
 import { Colors } from "../constants/Colors";
 import { useColorScheme } from "../hooks/useColorScheme";
+import { getServiceLogger } from "../utils/serviceLogger";
 import { IconSymbol } from "./ui/IconSymbol";
+
+const logger = getServiceLogger("NavigationMenu");
 
 interface MenuItem {
   key: string;
@@ -55,7 +58,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
       }
       onClose();
     } catch (error) {
-      console.error("[NavigationMenu] Item press error:", error);
+      logger.error("Item press error", error);
     }
   };
 

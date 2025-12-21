@@ -13,6 +13,7 @@ import {
   View,
 } from "react-native";
 import { TestIds } from "../constants/testIds";
+import { useLogger } from "../hooks/useLogger";
 
 interface MenuItem {
   name: string;
@@ -75,6 +76,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   visible,
   onClose,
 }) => {
+  const logger = useLogger();
   const router = useRouter();
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? "light"];
@@ -84,7 +86,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
       router.push(route as any);
       onClose();
     } catch (error) {
-      console.error("[NavigationMenu] Navigation error:", error);
+      logger.error("Navigation error", error, "NavigationMenu");
     }
   };
 

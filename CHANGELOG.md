@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Migrated all package components and hooks to use centralized logging service
+  - Updated all console.log/warn/error calls in package hooks to use getServiceLogger
+  - Migrated all package component console logs to use centralized logging
+  - Updated TranslationContext to use service logger with DEBUG_TRANSLATION_LOGS support
+  - Migrated questionValidation utility to use service logger
+
 ## [0.1.22] - 2025-12-21
 
 ### Added

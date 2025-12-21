@@ -2,8 +2,11 @@ import React, { useEffect, useRef } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { ParsedActivityData } from "../../utils/activityParser";
 import { isAndroid } from "../../utils/platform";
+import { getServiceLogger } from "../../utils/serviceLogger";
 import { QuestionRenderer } from "./QuestionRenderer";
 import { QuestionScreenButtons } from "./QuestionScreenButtons";
+
+const logger = getServiceLogger("QuestionScreenContent");
 
 interface QuestionScreenContentProps {
   activityData: ParsedActivityData;
@@ -59,8 +62,11 @@ export const QuestionScreenContent: React.FC<QuestionScreenContentProps> = ({
   // });
 
   if (!currentScreen) {
-    console.warn(
-      "📄 [QuestionScreenContent] No current screen, returning null"
+    logger.warn(
+      "No current screen, returning null",
+      undefined,
+      undefined,
+      "📄"
     );
     return null;
   }

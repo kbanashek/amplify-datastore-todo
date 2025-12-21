@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { TaskService } from "../services/TaskService";
 import { CreateTaskInput, Task, TaskStatus, TaskType } from "../types/Task";
+import { getServiceLogger } from "../utils/serviceLogger";
+
+const logger = getServiceLogger("useTaskForm");
 
 interface UseTaskFormReturn {
   title: string;
@@ -135,7 +138,7 @@ export const useTaskForm = ({
           ? err.message
           : "Failed to create task. Please try again.";
       setError(errorMessage);
-      console.error("Error creating task:", err);
+      logger.error("Error creating task", err);
       return null;
     } finally {
       setIsSubmitting(false);

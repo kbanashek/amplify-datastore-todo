@@ -20,8 +20,10 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GlobalHeader } from "../../src/components/GlobalHeader";
 import { AppColors } from "../../src/constants/AppColors";
+import { useLogger } from "../../src/hooks/useLogger";
 
 export default function AppointmentDetailsScreen() {
+  const logger = useLogger();
   const params = useLocalSearchParams();
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -32,22 +34,32 @@ export default function AppointmentDetailsScreen() {
     if (params.appointment && typeof params.appointment === "string") {
       try {
         const parsed = JSON.parse(params.appointment) as Appointment;
-        console.log(
-          `📅 [AppointmentDetails] Loaded appointment: ${parsed.title}`,
-          { id: parsed.appointmentId }
+        logger.info(
+          `Loaded appointment: ${parsed.title}`,
+          { id: parsed.appointmentId },
+          "AppointmentDetailsScreen",
+          undefined,
+          "📅"
         );
         return parsed;
       } catch (e) {
-        console.error(
-          "❌ [AppointmentDetails] Failed to parse appointment from params",
-          e instanceof Error ? e.message : String(e)
+        logger.error(
+          "Failed to parse appointment from params",
+          e,
+          "AppointmentDetailsScreen"
         );
         return null;
       }
     }
-    console.warn("⚠️ [AppointmentDetails] No appointment in params");
+    logger.warn(
+      "No appointment in params",
+      undefined,
+      "AppointmentDetailsScreen",
+      undefined,
+      "⚠️"
+    );
     return null;
-  }, [params.appointment]);
+  }, [params.appointment, logger]);
 
   const { translatedText: headerTitle } = useTranslatedText(
     "Appointment Details"

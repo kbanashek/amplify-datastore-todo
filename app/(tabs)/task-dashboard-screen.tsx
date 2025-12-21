@@ -5,8 +5,10 @@ import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GlobalHeader } from "../../src/components/GlobalHeader";
 import { NavigationMenu } from "../../src/components/NavigationMenu";
+import { useLogger } from "../../src/hooks/useLogger";
 
 export default function TaskDashboardScreen() {
+  const logger = useLogger();
   const [showMenu, setShowMenu] = useState(false);
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
@@ -36,7 +38,7 @@ export default function TaskDashboardScreen() {
         title="Dashboard"
         showMenuButton={true}
         onMenuPress={() => {
-          console.log("[Dashboard] Menu button pressed");
+          logger.debug("Menu button pressed", undefined, "TaskDashboardScreen");
           setShowMenu(true);
         }}
       />

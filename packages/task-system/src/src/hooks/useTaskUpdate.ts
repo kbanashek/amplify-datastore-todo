@@ -1,6 +1,9 @@
 import { useState, useCallback } from "react";
 import { TaskService } from "../services/TaskService";
 import { Task, UpdateTaskInput } from "../types/Task";
+import { getServiceLogger } from "../utils/serviceLogger";
+
+const logger = getServiceLogger("useTaskUpdate");
 
 interface UseTaskUpdateReturn {
   updateTask: (
@@ -28,9 +31,9 @@ export const useTaskUpdate = (): UseTaskUpdateReturn => {
       setError(null);
 
       try {
-        console.log("[useTaskUpdate] Updating task", { id, data });
+        logger.debug("Updating task", { id, data });
         const updated = await TaskService.updateTask(id, data);
-        console.log("[useTaskUpdate] Task updated successfully", {
+        logger.info("Task updated successfully", {
           id,
           updated,
         });
@@ -38,7 +41,7 @@ export const useTaskUpdate = (): UseTaskUpdateReturn => {
       } catch (err: unknown) {
         const errorMessage =
           err instanceof Error ? err.message : "Failed to update task";
-        console.error("[useTaskUpdate] Error updating task:", err);
+        logger.error("Error updating task", err);
         setError(errorMessage);
         return null;
       } finally {

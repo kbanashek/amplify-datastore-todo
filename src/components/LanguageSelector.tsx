@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useLogger } from "../hooks/useLogger";
 
 interface LanguageSelectorProps {
   style?: object;
@@ -17,6 +18,7 @@ interface LanguageSelectorProps {
 export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   style,
 }) => {
+  const logger = useLogger();
   const { currentLanguage, setLanguage, supportedLanguages, isTranslating } =
     useTranslation();
   const [modalVisible, setModalVisible] = useState(false);
@@ -27,38 +29,61 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
     "English";
 
   const handleLanguageSelect = async (languageCode: LanguageCode) => {
-    console.log("🌐 [LanguageSelector] Language selected", {
-      selectedLanguage: languageCode,
-      currentLanguage,
-      isSame: languageCode === currentLanguage,
-    });
+    logger.debug(
+      "Language selected",
+      {
+        selectedLanguage: languageCode,
+        currentLanguage,
+        isSame: languageCode === currentLanguage,
+      },
+      "LanguageSelector",
+      undefined,
+      "🌐"
+    );
 
     if (languageCode === currentLanguage) {
-      console.log(
-        "🌐 [LanguageSelector] Same language selected, closing modal"
+      logger.debug(
+        "Same language selected, closing modal",
+        undefined,
+        "LanguageSelector",
+        undefined,
+        "🌐"
       );
       setModalVisible(false);
       return;
     }
 
-    console.log("🌐 [LanguageSelector] Changing language...", {
-      from: currentLanguage,
-      to: languageCode,
-    });
+    logger.info(
+      "Changing language",
+      {
+        from: currentLanguage,
+        to: languageCode,
+      },
+      "LanguageSelector",
+      undefined,
+      "🌐"
+    );
     setChangingLanguage(true);
     try {
       await setLanguage(languageCode);
-      console.log("🌐 [LanguageSelector] Language change completed", {
-        newLanguage: languageCode,
-      });
+      logger.info(
+        "Language change completed",
+        {
+          newLanguage: languageCode,
+        },
+        "LanguageSelector",
+        undefined,
+        "🌐"
+      );
       setModalVisible(false);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
-      console.error("🌐 [LanguageSelector] Error changing language", {
-        error: errorMessage,
-        languageCode,
-      });
+      logger.error(
+        "Error changing language",
+        error,
+        "LanguageSelector",
+        undefined,
+        "🌐"
+      );
     } finally {
       setChangingLanguage(false);
     }

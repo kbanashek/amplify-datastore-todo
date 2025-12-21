@@ -97,10 +97,15 @@ export const validateQuestionAnswer = (
             );
           }
         } catch (error) {
-          console.warn(
-            "Invalid regex pattern in validation:",
-            validation.value,
-            error
+          const logger = getServiceLogger("questionValidation");
+          logger.warn(
+            "Invalid regex pattern in validation",
+            error,
+            undefined,
+            undefined,
+            {
+              pattern: validation.value,
+            }
           );
         }
       }

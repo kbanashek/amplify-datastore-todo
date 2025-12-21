@@ -14,8 +14,10 @@ import React, { useCallback } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GlobalHeader } from "../../src/components/GlobalHeader";
+import { useLogger } from "../../src/hooks/useLogger";
 
 export default function QuestionsScreen() {
+  const logger = useLogger();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const params = useLocalSearchParams();
@@ -62,13 +64,14 @@ export default function QuestionsScreen() {
     try {
       router.back();
     } catch (error) {
-      console.warn(
-        "[QuestionsScreen] Failed to navigate back with router, using fallback:",
-        error
+      logger.warn(
+        "Failed to navigate back with router, using fallback",
+        error,
+        "QuestionsScreen"
       );
       originalHandleBack();
     }
-  }, [router, originalHandleBack]);
+  }, [router, originalHandleBack, logger]);
 
   // Override handleCompletionDone to use expo-router
   const handleCompletionDone = useCallback(() => {
@@ -76,14 +79,15 @@ export default function QuestionsScreen() {
       // Use expo-router to navigate to the dashboard
       router.replace("/(tabs)/" as any);
     } catch (error) {
-      console.warn(
-        "[QuestionsScreen] Failed to navigate with router, using fallback:",
-        error
+      logger.warn(
+        "Failed to navigate with router, using fallback",
+        error,
+        "QuestionsScreen"
       );
       // Fallback to original handler
       originalHandleCompletionDone();
     }
-  }, [router, originalHandleCompletionDone]);
+  }, [router, originalHandleCompletionDone, logger]);
 
   // Hooks must be called before early returns
   const { translatedText: headerTitle } = useTranslatedText(

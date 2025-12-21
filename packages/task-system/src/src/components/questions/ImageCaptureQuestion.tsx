@@ -9,6 +9,9 @@ import {
 } from "react-native";
 import { Question } from "../../types/ActivityConfig";
 import { useTranslatedText } from "../../hooks/useTranslatedText";
+import { getServiceLogger } from "../../utils/serviceLogger";
+
+const logger = getServiceLogger("ImageCaptureQuestion");
 
 // Conditionally import expo-image-picker to handle cases where native module isn't available
 let ImagePicker: any;
@@ -102,7 +105,7 @@ export const ImageCaptureQuestion: React.FC<ImageCaptureQuestionProps> = ({
         onChange(uri);
       }
     } catch (error) {
-      console.error("Error capturing image:", error);
+      logger.error("Error capturing image", error);
     } finally {
       setLoading(false);
     }
@@ -127,7 +130,7 @@ export const ImageCaptureQuestion: React.FC<ImageCaptureQuestionProps> = ({
         onChange(uri);
       }
     } catch (error) {
-      console.error("Error selecting image:", error);
+      logger.error("Error selecting image", error);
     } finally {
       setLoading(false);
     }

@@ -11,10 +11,12 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useActivityList, ActivityService } from "@orion/task-system";
 import { NetworkStatusIndicator } from "../../src/components/NetworkStatusIndicator";
+import { useLogger } from "../../src/hooks/useLogger";
 
 export default function ActivitiesScreen() {
   const { activities, loading, error, handleDeleteActivity } =
     useActivityList();
+  const logger = useLogger();
   const [showForm, setShowForm] = useState(false);
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
@@ -45,7 +47,7 @@ export default function ActivitiesScreen() {
       setSk(`SK-${Date.now()}`);
       setShowForm(false);
     } catch (err) {
-      console.error("Error creating activity:", err);
+      logger.error("Error creating activity", err, "ActivitiesScreen");
     } finally {
       setIsSubmitting(false);
     }
