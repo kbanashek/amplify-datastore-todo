@@ -43,7 +43,7 @@ The `.github/workflows/test-coverage.yml` workflow automatically:
 
 **From Codecov (if configured):**
 
-1. Visit `https://codecov.io/gh/YOUR_USERNAME/YOUR_REPO`
+1. Visit `https://codecov.io/gh/kbanashek/Task-System-POC`
 2. See coverage trends, file-by-file breakdown, and enhanced PR comments with coverage diffs
 3. Codecov provides more detailed PR comments showing which files have coverage changes
 
@@ -78,7 +78,7 @@ Codecov provides additional features like:
    - Replace `YOUR_USERNAME` and `YOUR_REPO` in the README badge URL:
 
    ```markdown
-   [![codecov](https://codecov.io/gh/YOUR_USERNAME/YOUR_REPO/branch/main/graph/badge.svg)](https://codecov.io/gh/YOUR_USERNAME/YOUR_REPO)
+   [![codecov](https://codecov.io/gh/kbanashek/Task-System-POC/branch/main/graph/badge.svg)](https://codecov.io/gh/kbanashek/Task-System-POC)
    ```
 
 5. **Push a commit:**

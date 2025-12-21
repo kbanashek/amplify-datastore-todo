@@ -8,7 +8,7 @@
 [![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactnative.dev/)
 [![Expo](https://img.shields.io/badge/Expo-1C1E24?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev/)
 [![AWS Amplify](https://img.shields.io/badge/AWS_Amplify-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/amplify/)
-[![codecov](https://codecov.io/gh/YOUR_USERNAME/YOUR_REPO/branch/main/graph/badge.svg)](https://codecov.io/gh/YOUR_USERNAME/YOUR_REPO)
+[![codecov](https://codecov.io/gh/kbanashek/Task-System-POC/branch/main/graph/badge.svg)](https://codecov.io/gh/kbanashek/Task-System-POC)
 
 </div>
 
