@@ -1,6 +1,5 @@
 import { useMemo, useEffect } from "react";
 import { Alert } from "react-native";
-import { useRouter } from "expo-router";
 import { useNavigation } from "@react-navigation/native";
 import { useGroupedTasks } from "./useGroupedTasks";
 import { useTaskList } from "./useTaskList";
@@ -21,7 +20,6 @@ export interface UseTaskContainerReturn {
 }
 
 export const useTaskContainer = (): UseTaskContainerReturn => {
-  const router = useRouter();
   const navigation = useNavigation<any>();
 
   const { tasks, loading, error, handleDeleteTask } = useTaskList();
@@ -63,8 +61,6 @@ export const useTaskContainer = (): UseTaskContainerReturn => {
       return;
     }
 
-    // Prefer internal module navigation when running inside TaskActivityModule.
-    // Fallback to expo-router when used outside the module stack.
     try {
       if (navigation?.navigate) {
         navigation.navigate("TaskQuestions", {
@@ -74,38 +70,20 @@ export const useTaskContainer = (): UseTaskContainerReturn => {
         return;
       }
     } catch (error) {
-      // Fall back to expo-router below
-      console.warn(
-        "[useTaskContainer] navigation.navigate failed, falling back",
-        {
-          error: error instanceof Error ? error.message : String(error),
-        }
-      );
+      console.warn("[useTaskContainer] navigation.navigate failed", error);
     }
 
-    router.push({
-      pathname: "/(tabs)/questions",
-      params: { taskId: task.id, entityId: task.entityId },
-    });
+    Alert.alert(
+      "Navigation unavailable",
+      "Task navigation requires React Navigation. Mount this UI inside TaskActivityModule (recommended) or provide a compatible navigation container."
+    );
   };
 
   const handleAppointmentPress = (appointment: Appointment): void => {
-    console.log("[useTaskContainer] Navigating to appointment details:", {
-      appointmentId: appointment.appointmentId,
-      title: appointment.title,
-      hasTimezone: !!appointmentTimezoneId,
-    });
-    try {
-      router.push({
-        pathname: "/(tabs)/appointment-details",
-        params: {
-          appointment: JSON.stringify(appointment),
-          timezoneId: appointmentTimezoneId || "",
-        },
-      });
-    } catch (error) {
-      console.error("[useTaskContainer] Navigation error:", error);
-    }
+    Alert.alert(
+      "Not supported",
+      "Appointment details navigation is host-owned. Provide your own appointment details screen in the host app."
+    );
   };
 
   return {

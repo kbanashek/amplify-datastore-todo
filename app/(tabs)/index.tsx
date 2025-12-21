@@ -1,10 +1,10 @@
-import { TaskActivityModule } from "@orion/task-system";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GlobalHeader } from "../../src/components/GlobalHeader";
 import { NavigationMenu } from "../../src/components/NavigationMenu";
+import { LXHostExample } from "../../src/screens/LXHostExample";
 
 export default function DashboardScreen() {
   const [showMenu, setShowMenu] = useState(false);
@@ -43,9 +43,13 @@ export default function DashboardScreen() {
 
       <View style={styles.moduleContainer}>
         {/* <SyncStatusBanner /> */}
-        <TaskActivityModule
+        <LXHostExample
+          embedded={true}
+          configureAmplify={false}
+          startDataStore={false}
+          importFixture={true}
+          enableTempAnswerSyncDemo={true}
           resetSignal={resetSignal}
-          disableSafeAreaTopInset={true}
         />
       </View>
 

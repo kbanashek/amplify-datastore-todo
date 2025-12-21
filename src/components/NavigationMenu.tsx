@@ -23,52 +23,10 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   {
-    name: "Activities",
-    route: "/(tabs)/activities",
-    icon: "doc.text.fill",
-    description: "Manage activities",
-  },
-  {
-    name: "Data Points",
-    route: "/(tabs)/datapoints",
-    icon: "chart.bar.fill",
-    description: "View data points",
-  },
-  {
-    name: "Questions",
-    route: "/(tabs)/questions",
-    icon: "questionmark.circle.fill",
-    description: "Manage questions",
-  },
-  {
-    name: "Task Answers",
-    route: "/(tabs)/task-answers",
-    icon: "text.bubble.fill",
-    description: "View task answers",
-  },
-  {
-    name: "Task Results",
-    route: "/(tabs)/task-results",
-    icon: "list.bullet.rectangle.portrait.fill",
-    description: "View task results",
-  },
-  {
-    name: "Task History",
-    route: "/(tabs)/task-history",
-    icon: "clock.fill",
-    description: "View task history",
-  },
-  {
     name: "Seed Data",
     route: "/(tabs)/seed-screen",
     icon: "leaf.fill",
-    description: "Seed Activities and Tasks for testing",
-  },
-  {
-    name: "LX Host Example",
-    route: "/(tabs)/lx-host-example",
-    icon: "network",
-    description: "Test LX-style host + fixture import flow",
+    description: "Dev Options (fixture generation/import/reset)",
   },
 ];
 

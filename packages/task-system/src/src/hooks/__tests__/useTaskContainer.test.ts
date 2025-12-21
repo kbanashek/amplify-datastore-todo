@@ -8,11 +8,6 @@ jest.mock("@react-navigation/native", () => ({
   useNavigation: jest.fn(),
 }));
 
-// Mock expo-router
-jest.mock("expo-router", () => ({
-  useRouter: jest.fn(),
-}));
-
 // Mock hooks
 jest.mock("../useTaskList", () => ({
   useTaskList: jest.fn(),
@@ -31,7 +26,6 @@ jest.mock("../../utils/appointmentParser", () => ({
 }));
 
 import { useNavigation } from "@react-navigation/native";
-import { useRouter } from "expo-router";
 import { useTaskList } from "../useTaskList";
 import { useGroupedTasks } from "../useGroupedTasks";
 import { useAppointmentList } from "../useAppointmentList";
@@ -39,8 +33,6 @@ import { groupAppointmentsByDate } from "../../utils/appointmentParser";
 
 describe("useTaskContainer", () => {
   const mockNavigate = jest.fn();
-  const mockPush = jest.fn();
-  const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
   const mockUseNavigation = useNavigation as jest.MockedFunction<
     typeof useNavigation
   >;
@@ -102,11 +94,6 @@ describe("useTaskContainer", () => {
     jest.clearAllMocks();
     mockUseNavigation.mockReturnValue({
       navigate: mockNavigate,
-    } as any);
-    mockUseRouter.mockReturnValue({
-      push: mockPush,
-      back: jest.fn(),
-      replace: jest.fn(),
     } as any);
     mockUseTaskList.mockReturnValue({
       tasks: mockTasks,
@@ -251,7 +238,6 @@ describe("useTaskContainer", () => {
         taskId: task.id,
         entityId: task.entityId,
       });
-      expect(mockPush).not.toHaveBeenCalled();
     });
 
     it("shows alert when task has no entityId", () => {
@@ -280,13 +266,12 @@ describe("useTaskContainer", () => {
         ),
         [{ text: "OK", style: "default" }]
       );
-      expect(mockPush).not.toHaveBeenCalled();
       expect(mockNavigate).not.toHaveBeenCalled();
     });
   });
 
   describe("handleAppointmentPress", () => {
-    it("navigates to appointment details", () => {
+    it("shows alert since appointment details navigation is host-owned", () => {
       const { result } = renderHook(() => useTaskContainer());
       const appointment = mockAppointments[0];
 
@@ -294,52 +279,10 @@ describe("useTaskContainer", () => {
         result.current.handleAppointmentPress(appointment);
       });
 
-      expect(mockPush).toHaveBeenCalledWith({
-        pathname: "/(tabs)/appointment-details",
-        params: {
-          appointment: JSON.stringify(appointment),
-          timezoneId: "America/New_York",
-        },
-      });
-    });
-
-    it("handles navigation errors gracefully", () => {
-      mockPush.mockImplementation(() => {
-        throw new Error("Navigation failed");
-      });
-      const { result } = renderHook(() => useTaskContainer());
-      const appointment = mockAppointments[0];
-
-      act(() => {
-        result.current.handleAppointmentPress(appointment);
-      });
-
-      // Should not throw
-      expect(result.current).toBeDefined();
-    });
-
-    it("uses empty string for timezoneId when not available", () => {
-      mockUseAppointmentList.mockReturnValue({
-        appointments: mockAppointments,
-        appointmentData: null,
-        loading: false,
-        error: null,
-        refreshAppointments: jest.fn().mockResolvedValue(undefined),
-      });
-      const { result } = renderHook(() => useTaskContainer());
-      const appointment = mockAppointments[0];
-
-      act(() => {
-        result.current.handleAppointmentPress(appointment);
-      });
-
-      expect(mockPush).toHaveBeenCalledWith({
-        pathname: "/(tabs)/appointment-details",
-        params: {
-          appointment: JSON.stringify(appointment),
-          timezoneId: "",
-        },
-      });
+      expect(Alert.alert).toHaveBeenCalledWith(
+        "Not supported",
+        expect.stringContaining("Appointment details navigation is host-owned")
+      );
     });
   });
 

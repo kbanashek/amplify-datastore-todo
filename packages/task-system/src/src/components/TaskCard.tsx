@@ -13,8 +13,8 @@ interface TaskCardProps {
   simple?: boolean; // If true, show simple card without BEGIN button
 }
 
-export const TaskCard: React.FC<TaskCardProps> = React.memo<TaskCardProps>(
-  ({ task, onPress, onDelete, simple = false }) => {
+export const TaskCard: React.FC<TaskCardProps> = React.memo(
+  ({ task, onPress, onDelete, simple = false }: TaskCardProps) => {
     // Translate task title
     const { translatedText: translatedTitle } = useTranslatedText(
       task.title || "Untitled Task"
@@ -138,20 +138,6 @@ export const TaskCard: React.FC<TaskCardProps> = React.memo<TaskCardProps>(
           )}
         </View>
       </TouchableOpacity>
-    );
-  },
-  (prevProps, nextProps) => {
-    // Custom comparison function
-    // Only re-render if these specific props change
-    return (
-      prevProps.task.id === nextProps.task.id &&
-      prevProps.task.status === nextProps.task.status &&
-      prevProps.task.title === nextProps.task.title &&
-      prevProps.task.description === nextProps.task.description &&
-      prevProps.task.taskType === nextProps.task.taskType &&
-      prevProps.simple === nextProps.simple &&
-      prevProps.onPress === nextProps.onPress &&
-      prevProps.onDelete === nextProps.onDelete
     );
   }
 );

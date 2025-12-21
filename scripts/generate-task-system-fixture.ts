@@ -10,7 +10,7 @@ const today = new Date();
 today.setHours(0, 0, 0, 0);
 
 const fixture = buildTaskSystemFixtureV1({
-  fixtureId: "generated-all-question-types",
+  fixtureId: "generated-two-task-types",
   baseDate: today,
   allTypesHour: 8,
 });

@@ -42,6 +42,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved API key validation and error reporting for DataStore sync issues
 - Enhanced debugging capabilities for "Unauthorized" errors with detailed logging
 
+## [0.1.18] - 2025-12-20
+
+### Added
+
+- Added initial **temp answer saving** support via `TempAnswerSyncService` (AsyncStorage outbox + NetInfo auto-flush) for LX integration
+- Added temp-answer adapter types (`TaskSystemGraphQLExecutor`, `TaskSystemSaveTempAnswersMapper`) exported from `@orion/task-system`
+- Added fixture generation support for **two task types**: single-page “all question types” + 3-screen multi-page sample
+- Added seed translation memory entries for dashboard/task-card UI strings (en→es)
+
+### Changed
+
+- Wired temp-answer enqueue to Next/Previous/Review navigation boundaries (dedupe by `task.pk`)
+- Hardened the harness to a single **LX-like** path: Tasks tab mounts the module via embedded `LXHostExample`
+- Removed package → host coupling: eliminated expo-router fallbacks and `"(tabs)"` route navigation from the package
+- Refactored due-time header to translate static text without translating dynamic time strings
+
+### Fixed
+
+- Fixed Spanish/task-card translation updates by removing over-aggressive `React.memo` comparator on `TaskCard`
+
 ## [0.1.16] - 2025-12-19
 
 ### Added
