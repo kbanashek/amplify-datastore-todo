@@ -8,9 +8,11 @@ import {
 } from "@orion/task-system";
 
 import fixtureFromRepo from "../fixtures/task-system.fixture.v1.json";
+// @ts-ignore - POC fixture may not exist
+import { seedAppointmentData } from "../../scripts/seed-appointment-data";
+import pocFixture from "../fixtures/poc-fixture.9384dbad-2910-4a5b-928c-e004e06ed634.json";
 import { clearCacheAndResync, forceFullSync } from "../utils/syncUtils";
 import { buildTaskSystemFixtureV1 } from "../utils/taskSystemFixtureGenerator";
-import { seedAppointmentData } from "../../scripts/seed-appointment-data";
 
 export type DevOptionsSeedResult = Awaited<
   ReturnType<typeof FixtureImportService.importTaskSystemFixture>
@@ -38,6 +40,7 @@ export type UseDevOptionsReturn = {
   // Operations (no UI prompts; caller decides confirmation)
   generateFixtureJson: () => void;
   importFixtureFromRepo: () => Promise<void>;
+  importPOCFixture: () => Promise<void>;
   generateFixtureAndImport: () => Promise<void>;
   freshCloudResetAndImport: () => Promise<void>;
   resetLocalAndImport: () => Promise<void>;
@@ -113,6 +116,22 @@ export const useDevOptions = (): UseDevOptionsReturn => {
     try {
       await doLocalReset();
       await importFixture(fixtureFromRepo as any);
+    } catch (error: unknown) {
+      setLastError(error instanceof Error ? error.message : String(error));
+      throw error;
+    } finally {
+      setIsImportingFixture(false);
+    }
+  }, [doLocalReset, importFixture]);
+
+  const importPOCFixture = useCallback(async (): Promise<void> => {
+    setIsImportingFixture(true);
+    setLastError(null);
+    setSeedResult(null);
+
+    try {
+      await doLocalReset();
+      await importFixture(pocFixture as any);
     } catch (error: unknown) {
       setLastError(error instanceof Error ? error.message : String(error));
       throw error;
@@ -286,6 +305,7 @@ export const useDevOptions = (): UseDevOptionsReturn => {
     lastError,
     generateFixtureJson,
     importFixtureFromRepo,
+    importPOCFixture,
     generateFixtureAndImport,
     freshCloudResetAndImport,
     resetLocalAndImport,

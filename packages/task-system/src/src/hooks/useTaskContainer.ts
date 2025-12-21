@@ -6,6 +6,7 @@ import { Appointment } from "../types/Appointment";
 import { Task } from "../types/Task";
 import { groupAppointmentsByDate } from "../utils/appointmentParser";
 import { getServiceLogger } from "../utils/serviceLogger";
+import { extractActivityIdFromTask } from "../utils/taskUtils";
 import { useAppointmentList } from "./useAppointmentList";
 import { useGroupedTasks } from "./useGroupedTasks";
 import { useTaskList } from "./useTaskList";
@@ -56,10 +57,13 @@ export const useTaskContainer = (): UseTaskContainerReturn => {
   const appointmentTimezoneId = appointmentData?.siteTimezoneId;
 
   const handleTaskPress = (task: Task): void => {
-    if (!task.entityId) {
+    // Extract activity ID from task (handles both entityId and actions field)
+    const activityId = extractActivityIdFromTask(task);
+
+    if (!activityId) {
       Alert.alert(
         "No Questions Available",
-        "This task does not have an associated activity. Tasks need an entityId that links to an Activity to display questions.\n\nPlease use the seed data feature or create a task with a valid Activity reference.",
+        "This task does not have an associated activity. Tasks need an entityId or actions field that links to an Activity to display questions.\n\nPlease use the seed data feature or create a task with a valid Activity reference.",
         [{ text: "OK", style: "default" }]
       );
       return;
@@ -69,7 +73,7 @@ export const useTaskContainer = (): UseTaskContainerReturn => {
       if (navigation?.navigate) {
         navigation.navigate("TaskQuestions", {
           taskId: task.id,
-          entityId: task.entityId,
+          entityId: activityId,
         });
         return;
       }

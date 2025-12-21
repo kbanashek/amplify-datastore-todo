@@ -4,12 +4,13 @@ import {
   useNavigation,
   useRoute,
 } from "@react-navigation/native";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Task as DataStoreTask } from "../models";
 import { TaskService } from "../services/TaskService";
 import { TempAnswerSyncService } from "../services/TempAnswerSyncService";
 import { Task, TaskStatus } from "../types/Task";
 import { getServiceLogger } from "../utils/serviceLogger";
+import { extractActivityIdFromTask } from "../utils/taskUtils";
 import { useActivityData } from "./useActivityData";
 import { useAnswerManagement } from "./useAnswerManagement";
 import { useQuestionNavigation } from "./useQuestionNavigation";
@@ -66,7 +67,7 @@ export const useQuestionsScreen = (
   const route = useRoute<any>();
   const taskId =
     params?.taskId ?? (route?.params?.taskId as string | undefined);
-  const entityId =
+  const routeEntityId =
     params?.entityId ?? (route?.params?.entityId as string | undefined);
 
   // Fetch task to get status
@@ -116,6 +117,24 @@ export const useQuestionsScreen = (
       subscription.unsubscribe();
     };
   }, [taskId]);
+
+  // Extract entityId from route params or fallback to extracting from task
+  const entityId = useMemo(() => {
+    if (routeEntityId) {
+      return routeEntityId;
+    }
+    // Fallback: extract from task if available
+    if (task) {
+      const extractedId = extractActivityIdFromTask(task);
+      if (extractedId) {
+        logger.debug("Extracted entityId from task as fallback", {
+          extractedId,
+        });
+        return extractedId;
+      }
+    }
+    return undefined;
+  }, [routeEntityId, task]);
 
   // Fetch and parse activity data
   const {

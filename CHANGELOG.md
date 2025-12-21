@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Updated question rendering logic to consume LX current activity JSON structure
+  - Added support for parsing `layouts` from POC JSON files to determine screen structure
+  - Updated `convert-poc-json-to-fixture.ts` to preserve `layouts` data (was previously setting to null)
+  - Enhanced `activityParser.ts` to match questions from `activityGroups` to screen elements by ID when layouts exist
+  - Added helper functions `getScreensFromLayouts` and `matchQuestionsToScreens` to match LX behavior
+  - Activities now correctly render with multiple pages matching LX's multi-page task structure
+
 ### Fixed
 
 - Fixed "Amplify has not been configured" warning appearing before Amplify initialization
