@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.22] - 2025-12-21
+
+### Added
+
+- Created centralized logging service with flexible provider architecture
+  - Added LoggingService with support for multiple log providers (Console, Native, Sentry)
+  - Implemented LogLevel presets (VERBOSE, DEBUG, INFO, WARN, ERROR_ONLY)
+  - Added single-line log formatting with inline metadata
+  - Implemented sequence diagram formatting for initialization logs
+  - Added log level display as first log on app initialization
+  - Integrated react-native-logs for native logging support (adb logcat)
+  - Created LoggingProvider and useLogger hook for React components
+  - Added service logger helper for package-level logging with fallback
+
+### Changed
+
+- Migrated all console.log/warn/error calls to use centralized logging service
+- Updated logging format to single-line with inline metadata
+- Initialization logs now use sequence diagram formatting with indentation and arrows
+
 ## [0.1.21] - 2025-12-21
 
 ### Changed

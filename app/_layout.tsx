@@ -19,13 +19,12 @@ import {
   useColorScheme,
 } from "@orion/task-system";
 import { bootstrapTaskSystem } from "../src/bootstrap/taskSystemBootstrap";
-import {
-  logWithPlatform,
-  logErrorWithPlatform,
-} from "../src/utils/platformLogger";
+import { LoggingProvider } from "../src/contexts/LoggingContext";
+import { useLogger } from "../src/hooks/useLogger";
 
-export default function RootLayout() {
+function RootLayoutContent() {
   const colorScheme = useColorScheme();
+  const logger = useLogger();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
@@ -39,27 +38,28 @@ export default function RootLayout() {
 
     (async () => {
       try {
-        logWithPlatform(
-          "🚀",
-          "",
+        logger.info(
+          "Starting task system bootstrap",
+          undefined,
           "RootLayout",
-          "Starting task system bootstrap"
+          "",
+          "🚀"
         );
         await bootstrapTaskSystem({ startDataStore: true });
         if (!cancelled) {
-          logWithPlatform(
-            "✅",
-            "",
+          logger.info(
+            "Task system bootstrap complete - app ready to render",
+            undefined,
             "RootLayout",
-            "Task system bootstrap complete - app ready to render"
+            "",
+            "✅"
           );
         }
       } catch (error) {
-        logErrorWithPlatform(
-          "",
-          "RootLayout",
+        logger.error(
           "Failed to initialize task system/DataStore",
-          error
+          error,
+          "RootLayout"
         );
       } finally {
         if (!cancelled) setIsTaskSystemReady(true);
@@ -69,7 +69,7 @@ export default function RootLayout() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [logger]);
 
   if (!loaded || !isTaskSystemReady) {
     // Async font loading only occurs in development.
@@ -90,5 +90,13 @@ export default function RootLayout() {
         </TranslationProvider>
       </ThemeProvider>
     </SafeAreaProvider>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <LoggingProvider>
+      <RootLayoutContent />
+    </LoggingProvider>
   );
 }

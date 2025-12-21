@@ -5,6 +5,7 @@ import { OperationSource } from "../constants/operationSource";
 import { Activity } from "../models";
 import { CreateActivityInput, UpdateActivityInput } from "../types/Activity";
 import { logErrorWithDevice, logWithDevice } from "../utils/deviceLogger";
+import { getServiceLogger } from "../utils/serviceLogger";
 
 type ActivityUpdateData = Omit<UpdateActivityInput, "id" | "_version">;
 
@@ -55,7 +56,10 @@ export class ActivityService {
       });
       return activity;
     } catch (error) {
-      console.error("Error creating activity:", error);
+      getServiceLogger("ActivityService").error(
+        "Error creating activity",
+        error
+      );
       throw error;
     }
   }
@@ -64,7 +68,10 @@ export class ActivityService {
     try {
       return await DataStore.query(Activity);
     } catch (error) {
-      console.error("Error fetching activities:", error);
+      getServiceLogger("ActivityService").error(
+        "Error fetching activities",
+        error
+      );
       throw error;
     }
   }
@@ -74,7 +81,10 @@ export class ActivityService {
       const activity = await DataStore.query(Activity, id);
       return activity || null;
     } catch (error) {
-      console.error("Error fetching activity:", error);
+      getServiceLogger("ActivityService").error(
+        "Error fetching activity",
+        error
+      );
       throw error;
     }
   }
@@ -97,7 +107,10 @@ export class ActivityService {
 
       return updated;
     } catch (error) {
-      console.error("Error updating activity:", error);
+      getServiceLogger("ActivityService").error(
+        "Error updating activity",
+        error
+      );
       throw error;
     }
   }
@@ -111,7 +124,10 @@ export class ActivityService {
 
       await DataStore.delete(toDelete);
     } catch (error) {
-      console.error("Error deleting activity:", error);
+      getServiceLogger("ActivityService").error(
+        "Error deleting activity",
+        error
+      );
       throw error;
     }
   }
@@ -195,7 +211,10 @@ export class ActivityService {
     try {
       await DataStore.clear();
     } catch (error) {
-      console.error("Error clearing DataStore:", error);
+      getServiceLogger("ActivityService").error(
+        "Error clearing DataStore",
+        error
+      );
       throw error;
     }
   }

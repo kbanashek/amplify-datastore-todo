@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Appointment, AppointmentData } from "../types/Appointment";
 import { parseAppointmentData } from "../utils/appointmentParser";
-import { logWithPlatform, logErrorWithPlatform } from "../utils/platformLogger";
+import { getServiceLogger } from "../utils/serviceLogger";
 
 const APPOINTMENTS_STORAGE_KEY = "@appointments_data";
 
@@ -15,6 +15,7 @@ export class AppointmentService {
    * In production, this would load from an API or DataStore
    */
   static async loadAppointments(): Promise<AppointmentData | null> {
+    const logger = getServiceLogger("AppointmentService");
     try {
       // First try to load from AsyncStorage (seeded data)
       const storedData = await AsyncStorage.getItem(APPOINTMENTS_STORAGE_KEY);
@@ -23,12 +24,11 @@ export class AppointmentService {
         const itemsCount =
           parsed.clinicPatientAppointments?.clinicAppointments?.items?.length ||
           0;
-        logWithPlatform(
-          "📅",
-          "",
-          "AppointmentService",
+        logger.info(
           `Loaded ${itemsCount} appointments from AsyncStorage`,
-          { timezone: parsed.siteTimezoneId }
+          { timezone: parsed.siteTimezoneId },
+          undefined,
+          "📅"
         );
         return parsed;
       }
@@ -41,20 +41,15 @@ export class AppointmentService {
       const itemsCount =
         appointmentData.clinicPatientAppointments?.clinicAppointments?.items
           ?.length || 0;
-      logWithPlatform(
-        "📅",
-        "",
-        "AppointmentService",
-        `Loaded ${itemsCount} appointments from bundled JSON`
+      logger.info(
+        `Loaded ${itemsCount} appointments from bundled JSON`,
+        undefined,
+        undefined,
+        "📅"
       );
       return appointmentData;
     } catch (error) {
-      logErrorWithPlatform(
-        "",
-        "AppointmentService",
-        "Failed to load appointments",
-        error
-      );
+      logger.error("Failed to load appointments", error);
       return null;
     }
   }
@@ -64,13 +59,16 @@ export class AppointmentService {
    * Used by seed scripts to persist generated appointments
    */
   static async saveAppointments(data: AppointmentData): Promise<void> {
+    const logger = getServiceLogger("AppointmentService");
     try {
       const jsonString = JSON.stringify(data);
       const count =
         data.clinicPatientAppointments.clinicAppointments.items.length;
-      console.log(
-        `💾 [AppointmentService] Saving ${count} appointments to AsyncStorage`,
-        { timezone: data.siteTimezoneId }
+      logger.info(
+        `Saving ${count} appointments to AsyncStorage`,
+        { timezone: data.siteTimezoneId },
+        undefined,
+        "💾"
       );
 
       await AsyncStorage.setItem(APPOINTMENTS_STORAGE_KEY, jsonString);
@@ -78,15 +76,15 @@ export class AppointmentService {
       // Verify it was saved
       const verify = await AsyncStorage.getItem(APPOINTMENTS_STORAGE_KEY);
       if (verify) {
-        console.log(
-          `✅ [AppointmentService] Verified ${count} appointments saved`
+        logger.info(
+          `Verified ${count} appointments saved`,
+          undefined,
+          undefined,
+          "✅"
         );
       }
     } catch (error) {
-      console.error(
-        "❌ [AppointmentService] Failed to save appointments",
-        error instanceof Error ? error.message : String(error)
-      );
+      logger.error("Failed to save appointments", error);
       throw error;
     }
   }
@@ -95,14 +93,17 @@ export class AppointmentService {
    * Clear all stored appointments
    */
   static async clearAppointments(): Promise<void> {
+    const logger = getServiceLogger("AppointmentService");
     try {
       await AsyncStorage.removeItem(APPOINTMENTS_STORAGE_KEY);
-      console.log("🗑️ [AppointmentService] Cleared appointments from storage");
-    } catch (error) {
-      console.error(
-        "❌ [AppointmentService] Failed to clear appointments",
-        error instanceof Error ? error.message : String(error)
+      logger.info(
+        "Cleared appointments from storage",
+        undefined,
+        undefined,
+        "🗑️"
       );
+    } catch (error) {
+      logger.error("Failed to clear appointments", error);
       throw error;
     }
   }
@@ -158,8 +159,12 @@ export class AppointmentService {
         return isToday;
       });
 
-      console.log(
-        `📅 [AppointmentService] Filtered ${filtered.length} of ${allAppointments.length} appointments for today`
+      const logger = getServiceLogger("AppointmentService");
+      logger.info(
+        `Filtered ${filtered.length} of ${allAppointments.length} appointments for today`,
+        { filtered: filtered.length, total: allAppointments.length },
+        undefined,
+        "📅"
       );
 
       // If no appointments match today but we have appointments, log a warning
@@ -167,17 +172,19 @@ export class AppointmentService {
         const todayStr = `${todayStart.getFullYear()}-${
           todayStart.getMonth() + 1
         }-${todayStart.getDate()}`;
-        console.warn(
-          `⚠️ [AppointmentService] No appointments found for today (${todayStr})`,
-          { totalAvailable: allAppointments.length }
+        logger.warn(
+          `No appointments found for today (${todayStr})`,
+          { totalAvailable: allAppointments.length },
+          undefined,
+          "⚠️"
         );
       }
 
       return filtered;
     } catch (error) {
-      console.error(
-        "❌ [AppointmentService] Failed to fetch appointments",
-        error instanceof Error ? error.message : String(error)
+      getServiceLogger("AppointmentService").error(
+        "Failed to fetch appointments",
+        error
       );
       throw error;
     }

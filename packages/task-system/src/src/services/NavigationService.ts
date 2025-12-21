@@ -1,5 +1,6 @@
-import { Linking, Alert } from "react-native";
+import { Alert, Linking } from "react-native";
 import { Appointment } from "../types/Appointment";
+import { getServiceLogger } from "../utils/serviceLogger";
 
 /**
  * Navigation service for handling external navigation.
@@ -50,8 +51,8 @@ class NavigationService {
           }
         }
       } catch (error) {
-        console.warn(
-          "[NavigationService] React Navigation failed, trying next strategy:",
+        getServiceLogger("NavigationService").warn(
+          "React Navigation failed, trying next strategy",
           error
         );
       }
@@ -68,7 +69,7 @@ class NavigationService {
       });
       return;
     } catch (error) {
-      console.warn("[NavigationService] Linking API failed:", error);
+      getServiceLogger("NavigationService").warn("Linking API failed", error);
     }
 
     // Strategy 3: Last resort - show alert

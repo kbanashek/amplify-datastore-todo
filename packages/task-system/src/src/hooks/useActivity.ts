@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { ActivityService } from "../services/ActivityService";
 import { Activity } from "../types/Activity";
+import { logWithPlatform, logErrorWithPlatform } from "../utils/platformLogger";
 
 interface UseActivityReturn {
   activity: Activity | null;
@@ -29,7 +30,9 @@ export const useActivity = (activityId: string | null): UseActivityReturn => {
       setLoading(true);
       setError(null);
 
-      console.log("[useActivity] Fetching activity", { activityId });
+      logWithPlatform("📋", "", "useActivity", "Fetching activity", {
+        activityId,
+      });
       const activities = await ActivityService.getActivities();
       const found = activities.find(
         a => a.pk === activityId || a.id === activityId
@@ -40,15 +43,21 @@ export const useActivity = (activityId: string | null): UseActivityReturn => {
         setActivity(null);
       } else {
         setActivity(found);
-        console.log("[useActivity] Activity fetched successfully", {
-          id: found.id,
-          name: found.name,
-        });
+        logWithPlatform(
+          "📋",
+          "",
+          "useActivity",
+          "Activity fetched successfully",
+          {
+            id: found.id,
+            name: found.name,
+          }
+        );
       }
     } catch (err: unknown) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to fetch activity";
-      console.error("[useActivity] Error fetching activity:", err);
+      logErrorWithPlatform("", "useActivity", "Error fetching activity", err);
       setError(errorMessage);
       setActivity(null);
     } finally {
@@ -67,10 +76,16 @@ export const useActivity = (activityId: string | null): UseActivityReturn => {
       if (found) {
         setActivity(found);
         setLoading(false);
-        console.log("[useActivity] Activity updated via subscription", {
-          id: found.id,
-          name: found.name,
-        });
+        logWithPlatform(
+          "📋",
+          "",
+          "useActivity",
+          "Activity updated via subscription",
+          {
+            id: found.id,
+            name: found.name,
+          }
+        );
       }
     });
 

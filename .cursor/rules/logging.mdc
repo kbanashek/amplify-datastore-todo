@@ -150,36 +150,62 @@ logWithPlatform("📅", "DATA-2", "AppointmentService", `Loaded ${itemsCount} ap
 - ❌ Bad: `error` (logs full stack trace and object)
 - ❌ Bad: `console.error("Error:", error)` (missing platform, missing format)
 
-## Platform Logger Utility
+## Centralized Logging Service
 
-**ALWAYS use the platform logger utilities** to ensure platform identification:
+**ALWAYS use the centralized logging service** via the `useLogger` hook to ensure platform identification and consistent formatting:
 
-**For package code** (`packages/task-system/src/src/`):
+**For React components and hooks:**
 ```typescript
-import { logWithPlatform, logErrorWithPlatform } from "../utils/platformLogger";
+import { useLogger } from "../hooks/useLogger";
 
-// For regular logs
-logWithPlatform("☁️", "INIT-4", "Bootstrap", "AWS DataStore started - ready for cloud sync");
+const MyComponent = () => {
+  const logger = useLogger();
 
-// For errors
-logErrorWithPlatform("INIT-1", "AmplifyConfig", "Failed to configure Amplify", error);
+  // For regular logs
+  logger.info("AWS DataStore started - ready for cloud sync", undefined, "Bootstrap", "INIT-4", "☁️");
+
+  // For errors
+  logger.error("Failed to configure Amplify", error, "AmplifyConfig", "INIT-1");
+};
 ```
 
-**For app code** (`src/`):
+**For services and utilities (non-React code):**
 ```typescript
-import { logWithPlatform, logErrorWithPlatform } from "./utils/platformLogger";
+import { getLoggingService } from "../services/LoggingService";
+
+const logger = getLoggingService();
 
 // For regular logs
-logWithPlatform("☁️", "INIT-4", "Bootstrap", "AWS DataStore started - ready for cloud sync");
+logger.info("AWS DataStore started - ready for cloud sync", undefined, "Bootstrap", "INIT-4", "☁️");
 
 // For errors
-logErrorWithPlatform("INIT-1", "AmplifyConfig", "Failed to configure Amplify", error);
+logger.error("Failed to configure Amplify", error, "AmplifyConfig", "INIT-1");
 ```
 
-**Both utilities provide:**
+**Service-specific logger (recommended for services):**
+```typescript
+import { getLoggingService } from "../services/LoggingService";
+
+const logger = getLoggingService().createLogger("TaskService");
+
+// Now all logs automatically use "TaskService" as service name
+logger.info("Task created", { taskId: "123" }, "DATA-1", "📋");
+logger.error("Failed to create task", error);
+```
+
+**The centralized logging service provides:**
 - Automatic platform detection (`[iOS]`, `[Android]`, or `[Web]`)
 - Consistent formatting across all logs
-- Easy to identify log source and type
-- Proper error message extraction
+- Multiple log providers (console, native, Sentry)
+- Native logging support for offline testing (adb logcat)
+- Type-safe TypeScript interfaces
+- Extensible provider architecture
 
-**NEVER use raw `console.log` or `console.error`** - always use the platform logger utilities.
+**Migration from platformLogger:**
+- During migration, `platformLogger` utilities are still available for backward compatibility
+- New code should use `useLogger` hook or `getLoggingService()`
+- Existing code can be gradually migrated
+
+**NEVER use raw `console.log` or `console.error`** - always use the centralized logging service.
+
+📖 **For detailed documentation**, see [Logging Service Documentation](DOCS/development/logging-service.md)

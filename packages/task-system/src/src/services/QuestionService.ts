@@ -4,6 +4,7 @@ import { CreateQuestionInput, UpdateQuestionInput } from "../types/Question";
 import { logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
 import { ModelName } from "../constants/modelNames";
 import { OperationSource } from "../constants/operationSource";
+import { getServiceLogger } from "../utils/serviceLogger";
 
 type QuestionUpdateData = Omit<UpdateQuestionInput, "id" | "_version">;
 
@@ -43,19 +44,17 @@ export class QuestionService {
    * Create a new Question
    */
   static async createQuestion(input: CreateQuestionInput): Promise<Question> {
+    const logger = getServiceLogger("QuestionService");
     try {
-      console.log("[QuestionService] Creating question with DataStore:", input);
+      logger.info("Creating question with DataStore", input);
       const question = await DataStore.save(
         new (Question as any)(input as any)
       );
 
-      console.log(
-        "[QuestionService] Question created successfully:",
-        question.id
-      );
+      logger.info("Question created successfully", { id: question.id });
       return question;
     } catch (error) {
-      console.error("Error creating question:", error);
+      logger.error("Error creating question", error);
       throw error;
     }
   }
@@ -67,7 +66,10 @@ export class QuestionService {
     try {
       return await DataStore.query(Question);
     } catch (error) {
-      console.error("Error fetching questions:", error);
+      getServiceLogger("QuestionService").error(
+        "Error fetching questions",
+        error
+      );
       throw error;
     }
   }
@@ -80,7 +82,10 @@ export class QuestionService {
       const question = await DataStore.query(Question, id);
       return question || null;
     } catch (error) {
-      console.error("Error fetching question:", error);
+      getServiceLogger("QuestionService").error(
+        "Error fetching question",
+        error
+      );
       throw error;
     }
   }
@@ -106,7 +111,10 @@ export class QuestionService {
 
       return updated;
     } catch (error) {
-      console.error("Error updating question:", error);
+      getServiceLogger("QuestionService").error(
+        "Error updating question",
+        error
+      );
       throw error;
     }
   }
@@ -123,7 +131,10 @@ export class QuestionService {
 
       await DataStore.delete(toDelete);
     } catch (error) {
-      console.error("Error deleting question:", error);
+      getServiceLogger("QuestionService").error(
+        "Error deleting question",
+        error
+      );
       throw error;
     }
   }
@@ -136,8 +147,8 @@ export class QuestionService {
   ): {
     unsubscribe: () => void;
   } {
-    console.log(
-      "[QuestionService] Setting up DataStore subscription for Question"
+    getServiceLogger("QuestionService").info(
+      "Setting up DataStore subscription for Question"
     );
 
     const querySubscription = DataStore.observeQuery(Question).subscribe(
@@ -211,7 +222,10 @@ export class QuestionService {
     try {
       await DataStore.clear();
     } catch (error) {
-      console.error("Error clearing DataStore:", error);
+      getServiceLogger("QuestionService").error(
+        "Error clearing DataStore",
+        error
+      );
       throw error;
     }
   }

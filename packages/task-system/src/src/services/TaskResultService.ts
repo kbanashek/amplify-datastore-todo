@@ -1,6 +1,7 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
 import { logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
 import { TaskResult } from "../models";
+import { getServiceLogger } from "../utils/serviceLogger";
 import {
   CreateTaskResultInput,
   UpdateTaskResultInput,
@@ -39,24 +40,19 @@ export class TaskResultService {
   static async createTaskResult(
     input: CreateTaskResultInput
   ): Promise<TaskResult> {
+    const logger = getServiceLogger("TaskResultService");
     try {
-      console.log(
-        "[TaskResultService] Creating task result with DataStore:",
-        input
-      );
+      logger.info("Creating task result with DataStore", input);
       const result = await DataStore.save(
         new TaskResult({
           ...input,
         })
       );
 
-      console.log(
-        "[TaskResultService] TaskResult created successfully:",
-        result.id
-      );
+      logger.info("TaskResult created successfully", { id: result.id });
       return result;
     } catch (error) {
-      console.error("Error creating task result:", error);
+      logger.error("Error creating task result", error);
       throw error;
     }
   }
@@ -65,7 +61,10 @@ export class TaskResultService {
     try {
       return await DataStore.query(TaskResult);
     } catch (error) {
-      console.error("Error fetching task results:", error);
+      getServiceLogger("TaskResultService").error(
+        "Error fetching task results",
+        error
+      );
       throw error;
     }
   }
@@ -75,7 +74,10 @@ export class TaskResultService {
       const taskResult = await DataStore.query(TaskResult, id);
       return taskResult || null;
     } catch (error) {
-      console.error("Error fetching task result:", error);
+      getServiceLogger("TaskResultService").error(
+        "Error fetching task result",
+        error
+      );
       throw error;
     }
   }
@@ -98,7 +100,10 @@ export class TaskResultService {
 
       return updated;
     } catch (error) {
-      console.error("Error updating task result:", error);
+      getServiceLogger("TaskResultService").error(
+        "Error updating task result",
+        error
+      );
       throw error;
     }
   }
@@ -112,7 +117,10 @@ export class TaskResultService {
 
       await DataStore.delete(toDelete);
     } catch (error) {
-      console.error("Error deleting task result:", error);
+      getServiceLogger("TaskResultService").error(
+        "Error deleting task result",
+        error
+      );
       throw error;
     }
   }
@@ -122,8 +130,8 @@ export class TaskResultService {
   ): {
     unsubscribe: () => void;
   } {
-    console.log(
-      "[TaskResultService] Setting up DataStore subscription for TaskResult"
+    getServiceLogger("TaskResultService").info(
+      "Setting up DataStore subscription for TaskResult"
     );
 
     const filterNotDeleted = (items: TaskResult[]): TaskResult[] => {
@@ -214,13 +222,16 @@ export class TaskResultService {
         deletedCount++;
       }
 
-      console.log("[TaskResultService] Deleted all task results", {
+      getServiceLogger("TaskResultService").info("Deleted all task results", {
         deletedCount,
       });
 
       return deletedCount;
     } catch (error) {
-      console.error("Error deleting all task results:", error);
+      getServiceLogger("TaskResultService").error(
+        "Error deleting all task results",
+        error
+      );
       throw error;
     }
   }
@@ -229,7 +240,10 @@ export class TaskResultService {
     try {
       await DataStore.clear();
     } catch (error) {
-      console.error("Error clearing DataStore:", error);
+      getServiceLogger("TaskResultService").error(
+        "Error clearing DataStore",
+        error
+      );
       throw error;
     }
   }

@@ -149,7 +149,7 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
       await TaskService.deleteTask(id);
       // The subscription will automatically update the UI
     } catch (err) {
-      console.error("Error deleting task:", err);
+      logErrorWithPlatform("", "useTaskList", "Error deleting task", err);
       setError("Failed to delete task. Please try again.");
     }
   };
@@ -171,7 +171,7 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
       setAllTasks(fetchedTasks);
       setLoading(false);
     } catch (err) {
-      console.error("Error refreshing tasks:", err);
+      logErrorWithPlatform("", "useTaskList", "Error refreshing tasks", err);
       setError("Failed to refresh tasks. Please try again.");
       setLoading(false);
     }
@@ -190,7 +190,7 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
 
       initTasks();
     } catch (err) {
-      console.error("Error clearing DataStore:", err);
+      logErrorWithPlatform("", "useTaskList", "Error clearing DataStore", err);
       setError("Failed to clear DataStore. Please try again.");
       setLoading(false);
     }

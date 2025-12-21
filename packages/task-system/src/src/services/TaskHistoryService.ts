@@ -1,6 +1,7 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
 import { logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
 import { TaskHistory } from "../models";
+import { getServiceLogger } from "../utils/serviceLogger";
 import {
   CreateTaskHistoryInput,
   UpdateTaskHistoryInput,
@@ -39,24 +40,19 @@ export class TaskHistoryService {
   static async createTaskHistory(
     input: CreateTaskHistoryInput
   ): Promise<TaskHistory> {
+    const logger = getServiceLogger("TaskHistoryService");
     try {
-      console.log(
-        "[TaskHistoryService] Creating task history with DataStore:",
-        input
-      );
+      logger.info("Creating task history with DataStore", input);
       const history = await DataStore.save(
         new TaskHistory({
           ...input,
         })
       );
 
-      console.log(
-        "[TaskHistoryService] TaskHistory created successfully:",
-        history.id
-      );
+      logger.info("TaskHistory created successfully", { id: history.id });
       return history;
     } catch (error) {
-      console.error("Error creating task history:", error);
+      logger.error("Error creating task history", error);
       throw error;
     }
   }
@@ -65,7 +61,10 @@ export class TaskHistoryService {
     try {
       return await DataStore.query(TaskHistory);
     } catch (error) {
-      console.error("Error fetching task histories:", error);
+      getServiceLogger("TaskHistoryService").error(
+        "Error fetching task histories",
+        error
+      );
       throw error;
     }
   }
@@ -75,7 +74,10 @@ export class TaskHistoryService {
       const taskHistory = await DataStore.query(TaskHistory, id);
       return taskHistory || null;
     } catch (error) {
-      console.error("Error fetching task history:", error);
+      getServiceLogger("TaskHistoryService").error(
+        "Error fetching task history",
+        error
+      );
       throw error;
     }
   }
@@ -98,7 +100,10 @@ export class TaskHistoryService {
 
       return updated;
     } catch (error) {
-      console.error("Error updating task history:", error);
+      getServiceLogger("TaskHistoryService").error(
+        "Error updating task history",
+        error
+      );
       throw error;
     }
   }
@@ -112,7 +117,10 @@ export class TaskHistoryService {
 
       await DataStore.delete(toDelete);
     } catch (error) {
-      console.error("Error deleting task history:", error);
+      getServiceLogger("TaskHistoryService").error(
+        "Error deleting task history",
+        error
+      );
       throw error;
     }
   }
@@ -122,8 +130,8 @@ export class TaskHistoryService {
   ): {
     unsubscribe: () => void;
   } {
-    console.log(
-      "[TaskHistoryService] Setting up DataStore subscription for TaskHistory"
+    getServiceLogger("TaskHistoryService").info(
+      "Setting up DataStore subscription for TaskHistory"
     );
 
     const filterNotDeleted = (items: TaskHistory[]): TaskHistory[] => {
@@ -214,13 +222,19 @@ export class TaskHistoryService {
         deletedCount++;
       }
 
-      console.log("[TaskHistoryService] Deleted all task histories", {
-        deletedCount,
-      });
+      getServiceLogger("TaskHistoryService").info(
+        "Deleted all task histories",
+        {
+          deletedCount,
+        }
+      );
 
       return deletedCount;
     } catch (error) {
-      console.error("Error deleting all task histories:", error);
+      getServiceLogger("TaskHistoryService").error(
+        "Error deleting all task histories",
+        error
+      );
       throw error;
     }
   }
@@ -229,7 +243,10 @@ export class TaskHistoryService {
     try {
       await DataStore.clear();
     } catch (error) {
-      console.error("Error clearing DataStore:", error);
+      getServiceLogger("TaskHistoryService").error(
+        "Error clearing DataStore",
+        error
+      );
       throw error;
     }
   }
