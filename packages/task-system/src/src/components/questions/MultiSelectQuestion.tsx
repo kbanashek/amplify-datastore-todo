@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Question } from "../../types/ActivityConfig";
 import { useTranslation } from "../../contexts/TranslationContext";
+import { getServiceLogger } from "../../utils/serviceLogger";
+
+const logger = getServiceLogger("MultiSelectQuestion");
 
 interface MultiSelectQuestionProps {
   question: Question;
@@ -56,32 +59,47 @@ export const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
       c => c.value === choiceValue || c.id === choiceValue
     )?.text;
 
-    console.log("☑️ [MultiSelectQuestion] Toggling option", {
-      questionId: question.id,
-      choiceValue,
-      choiceText,
-      isSelected,
-      currentSelections: currentValue,
-      currentCount: currentValue.length,
-    });
+    logger.debug(
+      "Toggling option",
+      {
+        questionId: question.id,
+        choiceValue,
+        choiceText,
+        isSelected,
+        currentSelections: currentValue,
+        currentCount: currentValue.length,
+      },
+      undefined,
+      "☑️"
+    );
 
     if (isSelected) {
       const newValue = currentValue.filter(v => v !== choiceValue);
-      console.log("➖ [MultiSelectQuestion] Option deselected", {
-        questionId: question.id,
-        deselected: choiceText,
-        newSelections: newValue,
-        newCount: newValue.length,
-      });
+      logger.debug(
+        "Option deselected",
+        {
+          questionId: question.id,
+          deselected: choiceText,
+          newSelections: newValue,
+          newCount: newValue.length,
+        },
+        undefined,
+        "➖"
+      );
       onChange(newValue);
     } else {
       const newValue = [...currentValue, choiceValue];
-      console.log("➕ [MultiSelectQuestion] Option selected", {
-        questionId: question.id,
-        selected: choiceText,
-        newSelections: newValue,
-        newCount: newValue.length,
-      });
+      logger.debug(
+        "Option selected",
+        {
+          questionId: question.id,
+          selected: choiceText,
+          newSelections: newValue,
+          newCount: newValue.length,
+        },
+        undefined,
+        "➕"
+      );
       onChange(newValue);
     }
   };

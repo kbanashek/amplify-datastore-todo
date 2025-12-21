@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Todo } from "../../models";
 import { useTodoList } from "../hooks/useTodoList";
+import { useLogger } from "../hooks/useLogger";
 
 interface TodoItemProps {
   todo: Todo & { _synced?: boolean };
@@ -60,6 +61,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete, isOnline }) => {
 };
 
 export const TodoList: React.FC = () => {
+  const logger = useLogger();
   const [isClearing, setIsClearing] = useState(false);
 
   const {
@@ -107,7 +109,7 @@ export const TodoList: React.FC = () => {
             try {
               await clearDataStore();
             } catch (error) {
-              console.error("Error clearing DataStore:", error);
+              logger.error("Error clearing DataStore", error, "TodoList");
               Alert.alert("Error", "Failed to clear DataStore");
             } finally {
               setIsClearing(false);

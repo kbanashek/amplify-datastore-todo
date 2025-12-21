@@ -8,10 +8,11 @@ import {
   View,
 } from "react-native";
 import { useTaskList } from "../hooks/useTaskList";
-import { Task, TaskStatus } from "../types/Task";
+import { Task, TaskFilters } from "../types/Task";
+import { getServiceLogger } from "../utils/serviceLogger";
 import { TaskCard } from "./TaskCard";
 
-import { TaskFilters } from "../types/Task";
+const logger = getServiceLogger("TaskList");
 
 interface TaskListProps {
   filters?: TaskFilters;
@@ -39,26 +40,21 @@ const groupTasksByDate = (tasks: Task[]): GroupedTasks => {
   tasks.forEach(task => {
     // If no startTimeInMillSec, put in upcoming
     if (!task.startTimeInMillSec) {
-      console.log(
-        "[TaskList] Task without startTimeInMillSec:",
-        task.id,
-        task.title
-      );
+      logger.debug("Task without startTimeInMillSec", {
+        id: task.id,
+        title: task.title,
+      });
       grouped.upcoming.push(task);
       return;
     }
 
     const taskDate = new Date(task.startTimeInMillSec);
-    console.log(
-      "[TaskList] Task date:",
-      task.id,
-      "date:",
-      taskDate,
-      "todayStart:",
-      todayStart,
-      "todayEnd:",
-      todayEnd
-    );
+    logger.debug("Task date", {
+      id: task.id,
+      date: taskDate.toISOString(),
+      todayStart: todayStart.toISOString(),
+      todayEnd: todayEnd.toISOString(),
+    });
 
     if (taskDate >= todayStart && taskDate < todayEnd) {
       grouped.today.push(task);
@@ -87,19 +83,17 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
   const { tasks, loading, error, isSynced, handleDeleteTask, refreshTasks } =
     useTaskList(filters);
 
-  console.log("========================================");
-  console.log("[TaskList] RENDER START");
-  console.log("[TaskList] Tasks received:", tasks.length);
-  console.log("[TaskList] Loading:", loading);
-  console.log("[TaskList] Error:", error);
-  console.log("[TaskList] IsSynced:", isSynced);
-  console.log("[TaskList] Tasks data:", JSON.stringify(tasks, null, 2));
-  console.log("========================================");
+  logger.debug("RENDER START", {
+    tasksCount: tasks.length,
+    loading,
+    error,
+    isSynced,
+  });
 
   const groupedTasks = useMemo(() => {
-    console.log("[TaskList] Grouping tasks by date...");
+    logger.debug("Grouping tasks by date");
     const grouped = groupTasksByDate(tasks);
-    console.log("[TaskList] Grouped results:", {
+    logger.debug("Grouped results", {
       today: grouped.today.length,
       upcoming: grouped.upcoming.length,
       past: grouped.past.length,
@@ -108,7 +102,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
   }, [tasks]);
 
   const sections = useMemo(() => {
-    console.log("[TaskList] Creating sections...");
+    logger.debug("Creating sections");
     const sections: { title: string; data: Task[]; highlight?: boolean }[] = [];
 
     // Always show Today's Tasks section first (even if empty, to make it prominent)
@@ -132,7 +126,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
       data: todayData,
       highlight: true,
     };
-    console.log("[TaskList] Adding Today section:", {
+    logger.debug("Adding Today section", {
       title: todaySection.title,
       dataCount: todaySection.data.length,
       highlight: todaySection.highlight,
@@ -142,28 +136,26 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
 
     if (groupedTasks.upcoming.length > 0) {
       sections.push({ title: "Upcoming", data: groupedTasks.upcoming });
-      console.log(
-        "[TaskList] Added Upcoming section:",
-        groupedTasks.upcoming.length
-      );
+      logger.debug("Added Upcoming section", {
+        count: groupedTasks.upcoming.length,
+      });
     }
 
     if (groupedTasks.past.length > 0) {
       sections.push({ title: "Past", data: groupedTasks.past });
-      console.log("[TaskList] Added Past section:", groupedTasks.past.length);
+      logger.debug("Added Past section", { count: groupedTasks.past.length });
     }
 
-    console.log("[TaskList] ===== SECTIONS CREATED =====");
-    console.log("[TaskList] Total sections:", sections.length);
-    sections.forEach((section, idx) => {
-      console.log(`[TaskList] Section ${idx}:`, {
+    logger.debug("SECTIONS CREATED", {
+      totalSections: sections.length,
+      sections: sections.map((section, idx) => ({
+        index: idx,
         title: section.title,
         count: section.data.length,
         highlight: section.highlight,
         hasData: section.data.length > 0,
-      });
+      })),
     });
-    console.log("[TaskList] ============================");
     return sections;
   }, [groupedTasks]);
 
@@ -172,7 +164,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
   }: {
     section: { title: string; data: Task[]; highlight?: boolean };
   }) => {
-    console.log("[TaskList] renderSectionHeader called:", {
+    logger.debug("renderSectionHeader called", {
       title: section.title,
       highlight: section.highlight,
       dataCount: section.data.length,
@@ -180,32 +172,11 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
 
     // Make "Today's Tasks" section VERY prominent
     if (section.highlight) {
-      console.log("[TaskList] RENDERING HIGHLIGHTED SECTION (Today's Tasks)");
-      console.log("[TaskList] Using todaySectionHeader style");
+      logger.debug("RENDERING HIGHLIGHTED SECTION (Today's Tasks)");
       return (
-        <View
-          style={styles.todaySectionHeader}
-          onLayout={e => {
-            console.log("[TaskList] Today section header LAYOUT:", {
-              width: e.nativeEvent.layout.width,
-              height: e.nativeEvent.layout.height,
-              x: e.nativeEvent.layout.x,
-              y: e.nativeEvent.layout.y,
-            });
-          }}
-        >
+        <View style={styles.todaySectionHeader}>
           <View style={styles.todaySectionContent}>
-            <Text
-              style={styles.todaySectionTitle}
-              onLayout={e => {
-                console.log("[TaskList] Today section title LAYOUT:", {
-                  width: e.nativeEvent.layout.width,
-                  height: e.nativeEvent.layout.height,
-                });
-              }}
-            >
-              📅 {section.title}
-            </Text>
+            <Text style={styles.todaySectionTitle}>📅 {section.title}</Text>
             <View style={styles.todaySectionBadge}>
               <Text style={styles.todaySectionCount}>
                 {section.data.length}
@@ -217,7 +188,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
     }
 
     // Regular section headers
-    console.log("[TaskList] RENDERING REGULAR SECTION:", section.title);
+    logger.debug("RENDERING REGULAR SECTION", { title: section.title });
     return (
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>{section.title}</Text>
@@ -229,7 +200,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
   };
 
   const renderTask = ({ item }: { item: Task }) => {
-    console.log("[TaskList] renderTask called:", {
+    logger.debug("renderTask called", {
       id: item.id,
       title: item.title,
       status: item.status,
@@ -272,20 +243,16 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
   };
 
   // Debug: Always show tasks even if sections are empty
-  console.log("[TaskList] ===== RENDER DECISION =====");
-  console.log("[TaskList] Sections count:", sections.length);
-  console.log("[TaskList] Tasks count:", tasks.length);
-  console.log("[TaskList] Loading:", loading);
-  console.log("[TaskList] Will render SectionList:", sections.length > 0);
-  console.log("[TaskList] ===========================");
+  logger.debug("RENDER DECISION", {
+    sectionsCount: sections.length,
+    tasksCount: tasks.length,
+    loading,
+    willRenderSectionList: sections.length > 0,
+  });
 
   // Always show sections (Today's Tasks is always included, even if empty)
   if (sections.length === 0 && !loading && tasks.length > 0) {
-    console.log(
-      "[TaskList] WARNING: Have tasks but no sections! Using fallback"
-    );
-    // If we have tasks but no sections, something's wrong with grouping
-    console.warn("[TaskList] WARNING: Have tasks but no sections!", tasks);
+    logger.warn("Have tasks but no sections! Using fallback", { tasks });
     // Show tasks anyway in a fallback section
     const fallbackSections = [
       { title: "Today's Tasks", data: tasks, highlight: true },
@@ -308,15 +275,13 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
     return renderEmpty();
   }
 
-  console.log("[TaskList] RENDERING MAIN SECTIONLIST");
-  console.log(
-    "[TaskList] Sections to render:",
-    sections.map(s => ({
+  logger.debug("RENDERING MAIN SECTIONLIST", {
+    sections: sections.map(s => ({
       title: s.title,
       count: s.data.length,
       highlight: s.highlight,
-    }))
-  );
+    })),
+  });
 
   return (
     <View style={styles.container}>
@@ -331,20 +296,14 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
         sections={sections}
         renderItem={renderTask}
         renderSectionHeader={info => {
-          console.log(
-            "[TaskList] SectionList renderSectionHeader called with:",
-            {
-              section: info.section.title,
-              highlight: info.section.highlight,
-              sectionIndex: 0,
-            }
-          );
+          logger.debug("SectionList renderSectionHeader called", {
+            section: info.section.title,
+            highlight: info.section.highlight,
+            sectionIndex: 0,
+          });
           return renderSectionHeader(info);
         }}
-        keyExtractor={item => {
-          console.log("[TaskList] keyExtractor called for:", item.id);
-          return item.id;
-        }}
+        keyExtractor={item => item.id}
         ListEmptyComponent={renderEmpty}
         refreshControl={
           <RefreshControl
@@ -358,10 +317,9 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
         ListHeaderComponent={null}
         stickySectionHeadersEnabled={false}
         onViewableItemsChanged={info => {
-          console.log(
-            "[TaskList] Viewable items changed:",
-            info.viewableItems.length
-          );
+          logger.debug("Viewable items changed", {
+            count: info.viewableItems.length,
+          });
         }}
       />
     </View>

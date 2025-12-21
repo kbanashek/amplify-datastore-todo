@@ -3,6 +3,9 @@ import NetInfo from "@react-native-community/netinfo";
 import { useEffect, useState } from "react";
 import { initTaskSystem } from "../runtime/taskSystem";
 import { logWithDevice } from "../utils/deviceLogger";
+import { getServiceLogger } from "../utils/serviceLogger";
+
+const logger = getServiceLogger("useAmplifyState");
 
 // NOTE: Amplify is configured by amplify-init-sync.ts in app/_layout.tsx
 // This runs synchronously before any components mount, so Amplify is always
@@ -94,12 +97,18 @@ export const useAmplifyState = (options?: {
               setSyncState(SyncState.Error);
 
               // Log sync errors for debugging
-              console.error("[useAmplifyState] DataStore sync error:", {
-                event,
-                data,
-                errorDetails: data?.error || data,
-                note: "Check earlier logs for '[Amplify] ✅ Configured' to see API key being used",
-              });
+              logger.error(
+                "DataStore sync error",
+                data?.error || data,
+                undefined,
+                undefined,
+                {
+                  event,
+                  data,
+                  errorDetails: data?.error || data,
+                  note: "Check earlier logs for '[Amplify] ✅ Configured' to see API key being used",
+                }
+              );
 
               // Check if it's an auth error
               const isUnauthorized =
@@ -110,8 +119,11 @@ export const useAmplifyState = (options?: {
                 String(data?.error || "").includes("Unauthorized");
 
               if (isUnauthorized) {
-                console.error(
-                  "[useAmplifyState] ⚠️ UNAUTHORIZED ERROR - API key issue detected!",
+                logger.error(
+                  "⚠️ UNAUTHORIZED ERROR - API key issue detected!",
+                  data?.error,
+                  undefined,
+                  "⚠️",
                   {
                     expectedApiKey: "da2-b655th...",
                     suggestion: [
@@ -193,7 +205,7 @@ export const useAmplifyState = (options?: {
 
         if (!isMounted) return;
       } catch (error) {
-        console.error("Error initializing DataStore:", error);
+        logger.error("Error initializing DataStore", error);
         if (isMounted) {
           setSyncState(SyncState.Error);
         }

@@ -149,6 +149,51 @@ jobs:
       - run: yarn test --coverage --watchAll=false
 ```
 
+## Auto Merge Workflow
+
+**File:** `.github/workflows/auto-merge.yml`
+
+**Purpose:** Automatically merge pull requests when all required checks pass and conditions are met.
+
+### How It Works
+
+1. **Triggers on:**
+   - PR opened, synchronized, reopened, or marked ready for review
+   - Check suite completion
+   - Status updates
+
+2. **Conditions:**
+   - Only runs for PRs targeting `develop` or `main` branches
+   - Waits for all required status checks to pass
+   - Respects branch protection rules (approvals, etc.)
+
+3. **Merge Behavior:**
+   - Uses squash merge method
+   - Automatically deletes the source branch after merge
+   - Adds a comment to the PR when auto-merge is enabled
+
+### Configuration
+
+The workflow uses `peter-evans/enable-pull-request-automerge@v3` which:
+- Automatically waits for all required checks to pass
+- Respects branch protection rules
+- Handles merge conflicts gracefully
+- Only enables auto-merge when PR is ready
+
+### Merge Method
+
+Currently configured to use **squash merge**:
+- Creates a single commit from all PR commits
+- Keeps commit history clean
+- Can be changed to `merge` or `rebase` if needed
+
+### Notes
+
+- Auto-merge respects branch protection rules (required approvals, status checks, etc.)
+- If checks fail, auto-merge will not be enabled
+- The workflow will retry when checks complete
+- PRs can still be manually merged if needed
+
 ## Common Mistakes to Avoid
 
 1. **Misleading job names** - "Run Unit Tests" when it also runs lint
@@ -156,3 +201,4 @@ jobs:
 3. **Unclear workflow names** - "PR Tests" when it's actually "PR Checks"
 4. **Missing error handling** - Not handling CodeArtifact auth failures gracefully
 5. **Redundant workflows** - Multiple workflows doing the same thing
+6. **Auto-merge without checks** - Always ensure required checks pass before enabling auto-merge

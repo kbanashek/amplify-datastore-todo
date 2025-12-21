@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Question } from "../../types/ActivityConfig";
 import { useTranslation } from "../../contexts/TranslationContext";
+import { getServiceLogger } from "../../utils/serviceLogger";
+
+const logger = getServiceLogger("SingleSelectQuestion");
 
 interface SingleSelectQuestionProps {
   question: Question;
@@ -51,7 +54,7 @@ export const SingleSelectQuestion: React.FC<SingleSelectQuestionProps> = ({
   }, [choices, currentLanguage, translate]);
 
   const handleSelect = (choiceValue: string) => {
-    console.log("🔘 [SingleSelectQuestion] Option selected", {
+    logger.debug("Option selected", {
       questionId: question.id,
       choiceValue,
       totalChoices: choices.length,

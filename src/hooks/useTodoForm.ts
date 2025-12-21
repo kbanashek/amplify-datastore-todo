@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TodoService } from "../services/TodoService";
 import { Todo } from "../../models";
 import { CreateTodoInput } from "../API";
+import { useLogger } from "./useLogger";
 
 interface UseTodoFormReturn {
   name: string;
@@ -16,6 +17,7 @@ interface UseTodoFormReturn {
 export const useTodoForm = (
   onTodoCreated?: (todo: Todo) => void
 ): UseTodoFormReturn => {
+  const logger = useLogger();
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -50,7 +52,7 @@ export const useTodoForm = (
       }
     } catch (err) {
       setError("Failed to create todo. Please try again.");
-      console.error("Error creating todo:", err);
+      logger.error("Error creating todo", err, "useTodoForm");
     } finally {
       setIsSubmitting(false);
     }

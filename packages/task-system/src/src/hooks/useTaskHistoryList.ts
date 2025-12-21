@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { TaskHistoryService } from "../services/TaskHistoryService";
 import { TaskHistory } from "../types/TaskHistory";
+import { getServiceLogger } from "../utils/serviceLogger";
+
+const logger = getServiceLogger("useTaskHistoryList");
 
 interface UseTaskHistoryListReturn {
   taskHistories: TaskHistory[];
@@ -20,12 +23,10 @@ export const useTaskHistoryList = (): UseTaskHistoryListReturn => {
     const sub = TaskHistoryService.subscribeTaskHistories((items, isSynced) => {
       setTaskHistories(items);
       setLoading(false);
-      console.log(
-        "[useTaskHistoryList] TaskHistories updated:",
-        items.length,
-        "synced:",
-        isSynced
-      );
+      logger.debug("TaskHistories updated", {
+        count: items.length,
+        synced: isSynced,
+      });
     });
     setSubscription(() => sub.unsubscribe);
 
@@ -40,7 +41,7 @@ export const useTaskHistoryList = (): UseTaskHistoryListReturn => {
     try {
       await TaskHistoryService.deleteTaskHistory(id);
     } catch (err) {
-      console.error("Error deleting task history:", err);
+      logger.error("Error deleting task history", err);
       setError("Failed to delete task history.");
     }
   };
@@ -52,7 +53,7 @@ export const useTaskHistoryList = (): UseTaskHistoryListReturn => {
       setTaskHistories(allHistories);
       setLoading(false);
     } catch (err) {
-      console.error("Error refreshing task histories:", err);
+      logger.error("Error refreshing task histories", err);
       setError("Failed to refresh task histories.");
       setLoading(false);
     }

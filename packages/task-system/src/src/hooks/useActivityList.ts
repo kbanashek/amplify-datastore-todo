@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { ActivityService } from "../services/ActivityService";
 import { Activity } from "../types/Activity";
+import { getServiceLogger } from "../utils/serviceLogger";
+
+const logger = getServiceLogger("useActivityList");
 
 interface UseActivityListReturn {
   activities: Activity[];
@@ -20,12 +23,10 @@ export const useActivityList = (): UseActivityListReturn => {
     const sub = ActivityService.subscribeActivities((items, isSynced) => {
       setActivities(items);
       setLoading(false);
-      console.log(
-        "[useActivityList] Activities updated:",
-        items.length,
-        "synced:",
-        isSynced
-      );
+      logger.debug("Activities updated", {
+        count: items.length,
+        synced: isSynced,
+      });
     });
     setSubscription(() => sub.unsubscribe);
 
@@ -40,7 +41,7 @@ export const useActivityList = (): UseActivityListReturn => {
     try {
       await ActivityService.deleteActivity(id);
     } catch (err) {
-      console.error("Error deleting activity:", err);
+      logger.error("Error deleting activity", err);
       setError("Failed to delete activity.");
     }
   };
@@ -52,7 +53,7 @@ export const useActivityList = (): UseActivityListReturn => {
       setActivities(allActivities);
       setLoading(false);
     } catch (err) {
-      console.error("Error refreshing activities:", err);
+      logger.error("Error refreshing activities", err);
       setError("Failed to refresh activities.");
       setLoading(false);
     }

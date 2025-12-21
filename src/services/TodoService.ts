@@ -3,9 +3,12 @@ import { DataStore, OpType } from "@aws-amplify/datastore";
 import { Todo } from "../../models";
 // Import the generated types from API.ts
 import { CreateTodoInput, UpdateTodoInput } from "../API";
+import { getServiceLogger } from "./logging/serviceLogger";
 
 // Use the generated UpdateTodoInput type instead of creating our own interface
 type TodoUpdateData = Omit<UpdateTodoInput, "id" | "_version">;
+
+const logger = getServiceLogger("TodoService");
 
 export class TodoService {
   /**
@@ -78,7 +81,7 @@ export class TodoService {
       );
       return todo;
     } catch (error) {
-      console.error("Error creating todo:", error);
+      logger.error("Error creating todo", error);
       throw error;
     }
   }
@@ -92,7 +95,7 @@ export class TodoService {
       const todos = await DataStore.query(Todo);
       return todos;
     } catch (error) {
-      console.error("Error fetching todos:", error);
+      logger.error("Error fetching todos", error);
       throw error;
     }
   }
@@ -128,7 +131,7 @@ export class TodoService {
 
       return updated;
     } catch (error) {
-      console.error("Error updating todo:", error);
+      logger.error("Error updating todo", error);
       throw error;
     }
   }
@@ -147,7 +150,7 @@ export class TodoService {
 
       await DataStore.delete(toDelete);
     } catch (error) {
-      console.error("Error deleting todo:", error);
+      logger.error("Error deleting todo", error);
       throw error;
     }
   }
@@ -215,7 +218,7 @@ export class TodoService {
     try {
       await DataStore.clear();
     } catch (error) {
-      console.error("Error clearing DataStore:", error);
+      logger.error("Error clearing DataStore", error);
       throw error;
     }
   }

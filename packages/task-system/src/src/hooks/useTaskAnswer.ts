@@ -5,6 +5,9 @@ import {
   CreateTaskAnswerInput,
   UpdateTaskAnswerInput,
 } from "../types/TaskAnswer";
+import { getServiceLogger } from "../utils/serviceLogger";
+
+const logger = getServiceLogger("useTaskAnswer");
 
 interface UseTaskAnswerReturn {
   // Get answers by taskId
@@ -47,12 +50,10 @@ export const useTaskAnswer = (): UseTaskAnswerReturn => {
     const sub = TaskAnswerService.subscribeTaskAnswers((items, isSynced) => {
       setTaskAnswers(items);
       setLoading(false);
-      console.log(
-        "[useTaskAnswer] TaskAnswers updated:",
-        items.length,
-        "synced:",
-        isSynced
-      );
+      logger.debug("TaskAnswers updated", {
+        count: items.length,
+        synced: isSynced,
+      });
     });
 
     return () => {
@@ -85,18 +86,15 @@ export const useTaskAnswer = (): UseTaskAnswerReturn => {
       setError(null);
 
       try {
-        console.log("[useTaskAnswer] Creating task answer", input);
+        logger.debug("Creating task answer", input);
         const created = await TaskAnswerService.createTaskAnswer(input);
-        console.log(
-          "[useTaskAnswer] Task answer created successfully",
-          created
-        );
+        logger.info("Task answer created successfully", created);
         // The subscription will automatically update taskAnswers
         return created;
       } catch (err: unknown) {
         const errorMessage =
           err instanceof Error ? err.message : "Failed to create task answer";
-        console.error("[useTaskAnswer] Error creating task answer:", err);
+        logger.error("Error creating task answer", err);
         setError(errorMessage);
         return null;
       } finally {
@@ -115,18 +113,15 @@ export const useTaskAnswer = (): UseTaskAnswerReturn => {
       setError(null);
 
       try {
-        console.log("[useTaskAnswer] Updating task answer", { id, data });
+        logger.debug("Updating task answer", { id, data });
         const updated = await TaskAnswerService.updateTaskAnswer(id, data);
-        console.log(
-          "[useTaskAnswer] Task answer updated successfully",
-          updated
-        );
+        logger.info("Task answer updated successfully", updated);
         // The subscription will automatically update taskAnswers
         return updated;
       } catch (err: unknown) {
         const errorMessage =
           err instanceof Error ? err.message : "Failed to update task answer";
-        console.error("[useTaskAnswer] Error updating task answer:", err);
+        logger.error("Error updating task answer", err);
         setError(errorMessage);
         return null;
       } finally {

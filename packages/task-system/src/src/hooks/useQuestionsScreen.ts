@@ -9,11 +9,14 @@ import { Task as DataStoreTask } from "../models";
 import { TaskService } from "../services/TaskService";
 import { TempAnswerSyncService } from "../services/TempAnswerSyncService";
 import { Task, TaskStatus } from "../types/Task";
+import { getServiceLogger } from "../utils/serviceLogger";
 import { useActivityData } from "./useActivityData";
 import { useAnswerManagement } from "./useAnswerManagement";
 import { useQuestionNavigation } from "./useQuestionNavigation";
 import { useQuestionSubmission } from "./useQuestionSubmission";
 import { useQuestionValidation } from "./useQuestionValidation";
+
+const logger = getServiceLogger("useQuestionsScreen");
 
 export interface UseQuestionsScreenReturn {
   // State
@@ -71,7 +74,7 @@ export const useQuestionsScreen = (
 
   useEffect(() => {
     if (!taskId) {
-      console.log("[useQuestionsScreen] No taskId provided");
+      logger.debug("No taskId provided");
       setTask(null);
       return;
     }
@@ -79,9 +82,9 @@ export const useQuestionsScreen = (
     // Fetch initial task
     const fetchTask = async () => {
       try {
-        console.log("[useQuestionsScreen] Fetching task:", taskId);
+        logger.debug("Fetching task", { taskId });
         const fetchedTask = await TaskService.getTaskById(taskId);
-        console.log("[useQuestionsScreen] Fetched task:", {
+        logger.debug("Fetched task", {
           id: fetchedTask?.id,
           status: fetchedTask?.status,
           statusType: typeof fetchedTask?.status,
@@ -90,7 +93,7 @@ export const useQuestionsScreen = (
         // Type assertion: DataStore Task is compatible with our Task interface
         setTask(fetchedTask as Task | null);
       } catch (error) {
-        console.error("[useQuestionsScreen] Error fetching task:", error);
+        logger.error("Error fetching task", error);
         // Don't set error state here - task status is optional for button text
       }
     };
@@ -100,7 +103,7 @@ export const useQuestionsScreen = (
     // Subscribe to task updates for real-time status changes
     const subscription = DataStore.observe(DataStoreTask).subscribe(msg => {
       if (msg.element.id === taskId) {
-        console.log("[useQuestionsScreen] Task updated via subscription:", {
+        logger.debug("Task updated via subscription", {
           id: msg.element.id,
           status: msg.element.status,
           opType: msg.opType,
@@ -198,10 +201,7 @@ export const useQuestionsScreen = (
           })
         );
       } catch (error) {
-        console.warn(
-          "[useQuestionsScreen] Failed to reset to module dashboard:",
-          error
-        );
+        logger.warn("Failed to reset to module dashboard", error);
         // Last resort: try goBack (not ideal but better than crashing)
         try {
           const navAny = nav as any;
@@ -209,10 +209,7 @@ export const useQuestionsScreen = (
             navAny.goBack();
           }
         } catch (fallbackError) {
-          console.error(
-            "[useQuestionsScreen] All navigation methods failed:",
-            fallbackError
-          );
+          logger.error("All navigation methods failed", fallbackError);
         }
       }
     },
@@ -259,18 +256,13 @@ export const useQuestionsScreen = (
       task.status !== TaskStatus.INPROGRESS
     ) {
       try {
-        console.log(
-          "[useQuestionsScreen] Updating task status to STARTED before begin"
-        );
+        logger.info("Updating task status to STARTED before begin");
         await TaskService.updateTask(task.id, {
           status: TaskStatus.STARTED,
         });
         // The DataStore subscription will pick up the update and refresh the task state
       } catch (error) {
-        console.error(
-          "[useQuestionsScreen] Error updating task status:",
-          error
-        );
+        logger.error("Error updating task status", error);
       }
     }
     // Proceed with navigation

@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { TaskAnswerService } from "../services/TaskAnswerService";
 import { TaskAnswer } from "../types/TaskAnswer";
+import { getServiceLogger } from "../utils/serviceLogger";
+
+const logger = getServiceLogger("useTaskAnswerList");
 
 interface UseTaskAnswerListReturn {
   taskAnswers: TaskAnswer[];
@@ -20,12 +23,10 @@ export const useTaskAnswerList = (): UseTaskAnswerListReturn => {
     const sub = TaskAnswerService.subscribeTaskAnswers((items, isSynced) => {
       setTaskAnswers(items);
       setLoading(false);
-      console.log(
-        "[useTaskAnswerList] TaskAnswers updated:",
-        items.length,
-        "synced:",
-        isSynced
-      );
+      logger.debug("TaskAnswers updated", {
+        count: items.length,
+        synced: isSynced,
+      });
     });
     setSubscription(() => sub.unsubscribe);
 
@@ -40,7 +41,7 @@ export const useTaskAnswerList = (): UseTaskAnswerListReturn => {
     try {
       await TaskAnswerService.deleteTaskAnswer(id);
     } catch (err) {
-      console.error("Error deleting task answer:", err);
+      logger.error("Error deleting task answer", err);
       setError("Failed to delete task answer.");
     }
   };
@@ -52,7 +53,7 @@ export const useTaskAnswerList = (): UseTaskAnswerListReturn => {
       setTaskAnswers(allAnswers);
       setLoading(false);
     } catch (err) {
-      console.error("Error refreshing task answers:", err);
+      logger.error("Error refreshing task answers", err);
       setError("Failed to refresh task answers.");
       setLoading(false);
     }

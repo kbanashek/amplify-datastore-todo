@@ -1,18 +1,20 @@
+import { TaskAnswerService, useTaskAnswerList } from "@orion/task-system";
 import React, { useState } from "react";
 import {
-  StyleSheet,
-  View,
+  ActivityIndicator,
   ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  ActivityIndicator,
+  View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useTaskAnswerList, TaskAnswerService } from "@orion/task-system";
 import { NetworkStatusIndicator } from "../../src/components/NetworkStatusIndicator";
+import { useLogger } from "../../src/hooks/useLogger";
 
 export default function TaskAnswersScreen() {
+  const logger = useLogger();
   const { taskAnswers, loading, error, handleDeleteTaskAnswer } =
     useTaskAnswerList();
   const [showForm, setShowForm] = useState(false);
@@ -48,7 +50,7 @@ export default function TaskAnswersScreen() {
       setSk(`SK-${Date.now()}`);
       setShowForm(false);
     } catch (err) {
-      console.error("Error creating task answer:", err);
+      logger.error("Error creating task answer", err, "TaskAnswersScreen");
     } finally {
       setIsSubmitting(false);
     }

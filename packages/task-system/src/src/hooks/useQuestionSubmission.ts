@@ -4,9 +4,12 @@ import { ActivityConfig } from "../types/ActivityConfig";
 import { TaskStatus } from "../types/Task";
 import { ParsedActivityData } from "../utils/activityParser";
 import { validateAllScreens } from "../utils/questionValidation";
+import { getServiceLogger } from "../utils/serviceLogger";
 import { useDataPointInstance } from "./useDataPointInstance";
 import { useTaskAnswer } from "./useTaskAnswer";
 import { useTaskUpdate } from "./useTaskUpdate";
+
+const logger = getServiceLogger("useQuestionSubmission");
 
 export interface UseQuestionSubmissionReturn {
   isSubmitting: boolean;
@@ -141,7 +144,7 @@ export const useQuestionSubmission = ({
             }
           } catch (dataPointError: unknown) {
             // Don't fail the entire submission if data point creation fails
-            console.error("Error saving DataPointInstance:", dataPointError);
+            logger.error("Error saving DataPointInstance", dataPointError);
           }
         } catch (error: unknown) {
           failedAnswers.push({
@@ -188,7 +191,7 @@ export const useQuestionSubmission = ({
         const allAnswersSaved = failedAnswers.length === 0;
         const someQuestionsAnswered = answeredQuestions > 0;
 
-        console.log("[useQuestionSubmission] Task status update:", {
+        logger.debug("Task status update", {
           taskId,
           totalQuestions,
           answeredQuestions,
@@ -201,46 +204,39 @@ export const useQuestionSubmission = ({
 
         if (allAnswersSaved && someQuestionsAnswered) {
           // Validation passed AND all answers saved successfully = COMPLETED
-          console.log("[useQuestionSubmission] Updating task to COMPLETED");
+          logger.info("Updating task to COMPLETED");
           try {
             const updated = await updateTask(taskId, {
               status: TaskStatus.COMPLETED,
             });
-            console.log(
-              "[useQuestionSubmission] Task updated to COMPLETED:",
-              updated?.status,
-              updated?.id
-            );
+            logger.info("Task updated to COMPLETED", {
+              status: updated?.status,
+              id: updated?.id,
+            });
           } catch (error) {
-            console.error(
-              "[useQuestionSubmission] Error updating task to COMPLETED:",
-              error
-            );
+            logger.error("Error updating task to COMPLETED", error);
           }
         } else if (someQuestionsAnswered) {
           // Validation passed but some answers failed to save = INPROGRESS
-          console.log("[useQuestionSubmission] Updating task to INPROGRESS");
+          logger.info("Updating task to INPROGRESS");
           try {
             const updated = await updateTask(taskId, {
               status: TaskStatus.INPROGRESS,
             });
-            console.log(
-              "[useQuestionSubmission] Task updated to INPROGRESS:",
-              updated?.status,
-              updated?.id
-            );
+            logger.info("Task updated to INPROGRESS", {
+              status: updated?.status,
+              id: updated?.id,
+            });
           } catch (error) {
-            console.error(
-              "[useQuestionSubmission] Error updating task to INPROGRESS:",
-              error
-            );
+            logger.error("Error updating task to INPROGRESS", error);
           }
         } else {
           // No answers were saved at all - this shouldn't happen if validation passed
-          console.warn(
-            "[useQuestionSubmission] Validation passed but no answers were saved",
-            { taskId, savedAnswers, failedAnswers }
-          );
+          logger.warn("Validation passed but no answers were saved", {
+            taskId,
+            savedAnswers,
+            failedAnswers,
+          });
         }
       }
 

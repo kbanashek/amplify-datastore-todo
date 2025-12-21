@@ -11,8 +11,10 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDataPointList, DataPointService } from "@orion/task-system";
 import { NetworkStatusIndicator } from "../../src/components/NetworkStatusIndicator";
+import { useLogger } from "../../src/hooks/useLogger";
 
 export default function DataPointsScreen() {
+  const logger = useLogger();
   const {
     dataPoints,
     instances,
@@ -45,7 +47,7 @@ export default function DataPointsScreen() {
       setSk(`SK-${Date.now()}`);
       setShowForm(false);
     } catch (err) {
-      console.error("Error creating data point:", err);
+      logger.error("Error creating data point", err, "DataPointsScreen");
     } finally {
       setIsSubmitting(false);
     }

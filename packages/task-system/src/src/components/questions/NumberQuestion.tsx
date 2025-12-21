@@ -7,7 +7,10 @@ import {
   QuestionType,
   ValidationType,
 } from "../../types/activity-config-enums";
+import { getServiceLogger } from "../../utils/serviceLogger";
 import { getUnitDisplayLabel } from "../../utils/unitLabel";
+
+const logger = getServiceLogger("NumberQuestion");
 
 interface NumberQuestionProps {
   question: Question;
@@ -99,12 +102,16 @@ export const NumberQuestion: React.FC<NumberQuestionProps> = ({
             value={sliderValue}
             onValueChange={newValue => {
               const intValue = Math.round(newValue);
-              setSliderValue(intValue);
-              console.log("🔢 [NumberQuestion] Slider value changed", {
-                questionId: question.id,
-                value: intValue,
-                scaleRange: `${min}-${max}`,
-              });
+              logger.debug(
+                "Slider value changed",
+                {
+                  questionId: question.id,
+                  value: intValue,
+                  scaleRange: `${min}-${max}`,
+                },
+                undefined,
+                "🔢"
+              );
               onChange(intValue.toString());
             }}
             minimumTrackTintColor="#3498db"
@@ -126,12 +133,17 @@ export const NumberQuestion: React.FC<NumberQuestionProps> = ({
           value={value?.toString() || ""}
           onChangeText={text => {
             const numericValue = !isNaN(Number(text)) ? Number(text) : null;
-            console.log("🔢 [NumberQuestion] Value changed", {
-              questionId: question.id,
-              value: text,
-              numericValue,
-              isValidNumber: numericValue !== null,
-            });
+            logger.debug(
+              "Value changed",
+              {
+                questionId: question.id,
+                value: text,
+                numericValue,
+                isValidNumber: numericValue !== null,
+              },
+              undefined,
+              "🔢"
+            );
             onChange(text);
           }}
           placeholder={placeholder}

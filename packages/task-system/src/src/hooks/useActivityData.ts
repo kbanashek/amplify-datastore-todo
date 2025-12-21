@@ -4,9 +4,12 @@ import {
   ParsedActivityData,
   parseActivityConfig,
 } from "../utils/activityParser";
+import { getServiceLogger } from "../utils/serviceLogger";
 import { useActivity } from "./useActivity";
 import { useTaskAnswer } from "./useTaskAnswer";
 import type { Activity } from "../types/Activity";
+
+const logger = getServiceLogger("useActivityData");
 
 export interface UseActivityDataReturn {
   loading: boolean;
@@ -106,7 +109,7 @@ export const useActivityData = ({
               activityConfig.layouts = parsedLayouts;
             }
           } catch (e) {
-            console.error("Error parsing layouts:", e);
+            logger.error("Error parsing layouts", e);
           }
         }
 
@@ -115,7 +118,7 @@ export const useActivityData = ({
           try {
             activityConfig.activityGroups = JSON.parse(activity.activityGroups);
           } catch (e) {
-            console.error("Error parsing activityGroups:", e);
+            logger.error("Error parsing activityGroups", e);
           }
         }
 
@@ -140,7 +143,7 @@ export const useActivityData = ({
         setActivityConfig(activityConfig);
         setInitialAnswers(existingAnswers);
       } catch (err: unknown) {
-        console.error("Error fetching activity:", err);
+        logger.error("Error fetching activity", err);
         setError(
           err instanceof Error ? err.message : "Failed to load activity"
         );

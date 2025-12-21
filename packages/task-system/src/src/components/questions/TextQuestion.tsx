@@ -3,6 +3,9 @@ import { StyleSheet, TextInput, View } from "react-native";
 import { Question } from "../../types/ActivityConfig";
 import { useTranslation } from "../../contexts/TranslationContext";
 import { useTranslatedText } from "../../hooks/useTranslatedText";
+import { getServiceLogger } from "../../utils/serviceLogger";
+
+const logger = getServiceLogger("TextQuestion");
 
 interface TextQuestionProps {
   question: Question;
@@ -25,13 +28,18 @@ export const TextQuestion: React.FC<TextQuestionProps> = ({
   const { translatedText: placeholder } = useTranslatedText(placeholderText);
 
   const handleChange = (text: string) => {
-    console.log("✏️ [TextQuestion] Value changed", {
-      questionId: question.id,
-      questionType: question.type,
-      value: text.substring(0, 50),
-      length: text.length,
-      previousValue: value.substring(0, 50),
-    });
+    logger.debug(
+      "Value changed",
+      {
+        questionId: question.id,
+        questionType: question.type,
+        value: text.substring(0, 50),
+        length: text.length,
+        previousValue: value.substring(0, 50),
+      },
+      undefined,
+      "✏️"
+    );
     onChange(text);
   };
 

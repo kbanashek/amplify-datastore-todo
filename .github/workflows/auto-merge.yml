@@ -1,0 +1,121 @@
+name: Auto Merge
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  check_suite:
+    types: [completed]
+  status: {}
+
+jobs:
+  auto-merge:
+    name: Auto Merge
+    runs-on: ubuntu-latest
+    # Only run on PRs targeting develop or main
+    if: |
+      (github.event_name == 'pull_request' && 
+       (github.event.pull_request.base.ref == 'develop' || 
+        github.event.pull_request.base.ref == 'main')) ||
+      (github.event_name == 'check_suite' && 
+       github.event.check_suite.pull_requests.length > 0 &&
+       (github.event.check_suite.pull_requests[0].base.ref == 'develop' || 
+        github.event.check_suite.pull_requests[0].base.ref == 'main')) ||
+      (github.event_name == 'status')
+    
+    permissions:
+      contents: write
+      pull-requests: write
+      checks: read
+      statuses: read
+
+    steps:
+      - name: Get PR number
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            let prNumber;
+            if (context.eventName === 'pull_request') {
+              prNumber = context.payload.pull_request.number;
+            } else if (context.eventName === 'check_suite') {
+              const prs = context.payload.check_suite.pull_requests;
+              if (prs && prs.length > 0) {
+                prNumber = prs[0].number;
+              }
+            } else if (context.eventName === 'status') {
+              // For status events, find PR from commit SHA
+              const commitSha = context.payload.sha;
+              const { data: prs } = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+              });
+              const matchingPr = prs.find(pr => pr.head.sha === commitSha);
+              if (matchingPr) {
+                prNumber = matchingPr.number;
+              }
+            }
+            
+            if (!prNumber) {
+              core.info('Could not determine PR number, skipping auto-merge');
+              core.setOutput('number', '');
+              return;
+            }
+            
+            core.setOutput('number', prNumber);
+            
+            // Get PR details
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+            });
+            
+            core.setOutput('title', pr.title);
+            core.setOutput('base_ref', pr.base.ref);
+
+      - name: Enable auto-merge
+        if: steps.pr.outputs.number != ''
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.pr.outputs.number }}
+          merge-method: squash
+          merge-commit-message: 'Auto-merge: ${{ steps.pr.outputs.title }}'
+          delete-branch: true
+
+      - name: Comment on PR
+        if: steps.pr.outputs.number != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = ${{ steps.pr.outputs.number }};
+            
+            // Check if comment already exists
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('Auto-merge enabled')
+            );
+            
+            if (!botComment) {
+              const comment = `**Auto-merge enabled**
+              
+All required checks have passed. This PR will be automatically merged when all conditions are met (including any required approvals).
+              
+- Merge method: Squash
+- Branch will be deleted after merge`;
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: comment,
+              });
+            }
+

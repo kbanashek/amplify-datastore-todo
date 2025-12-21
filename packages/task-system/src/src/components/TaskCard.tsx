@@ -3,8 +3,11 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTranslatedText } from "../hooks/useTranslatedText";
 import { TaskService } from "../services/TaskService";
 import { Task, TaskStatus } from "../types/Task";
+import { getServiceLogger } from "../utils/serviceLogger";
 import { getTaskIcon } from "../utils/taskIcon";
 import { IconSymbol } from "./ui/IconSymbol";
+
+const logger = getServiceLogger("TaskCard");
 
 interface TaskCardProps {
   task: Task;
@@ -45,7 +48,7 @@ export const TaskCard: React.FC<TaskCardProps> = React.memo(
         // Call the onPress callback if provided
         onPress?.(task);
       } catch (error) {
-        console.error("[TaskCard] Error updating task status:", error);
+        logger.error("Error updating task status", error);
       }
     }, [task, onPress]);
 
@@ -67,10 +70,7 @@ export const TaskCard: React.FC<TaskCardProps> = React.memo(
         // Call the onPress callback
         onPress?.(task);
       } catch (error) {
-        console.error(
-          "[TaskCard] Error updating task status on card press:",
-          error
-        );
+        logger.error("Error updating task status on card press", error);
         // Still navigate even if status update fails
         onPress?.(task);
       }

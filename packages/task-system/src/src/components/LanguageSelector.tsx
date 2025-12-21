@@ -13,6 +13,9 @@ import {
   LanguageCode,
   SUPPORTED_LANGUAGES,
 } from "../services/translationTypes";
+import { getServiceLogger } from "../utils/serviceLogger";
+
+const logger = getServiceLogger("LanguageSelector");
 
 interface LanguageSelectorProps {
   style?: object;
@@ -31,38 +34,51 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
     "English";
 
   const handleLanguageSelect = async (languageCode: LanguageCode) => {
-    console.log("🌐 [LanguageSelector] Language selected", {
-      selectedLanguage: languageCode,
-      currentLanguage,
-      isSame: languageCode === currentLanguage,
-    });
+    logger.debug(
+      "Language selected",
+      {
+        selectedLanguage: languageCode,
+        currentLanguage,
+        isSame: languageCode === currentLanguage,
+      },
+      undefined,
+      "🌐"
+    );
 
     if (languageCode === currentLanguage) {
-      console.log(
-        "🌐 [LanguageSelector] Same language selected, closing modal"
+      logger.debug(
+        "Same language selected, closing modal",
+        undefined,
+        undefined,
+        "🌐"
       );
       setModalVisible(false);
       return;
     }
 
-    console.log("🌐 [LanguageSelector] Changing language...", {
-      from: currentLanguage,
-      to: languageCode,
-    });
+    logger.debug(
+      "Changing language...",
+      {
+        from: currentLanguage,
+        to: languageCode,
+      },
+      undefined,
+      "🌐"
+    );
     setChangingLanguage(true);
     try {
       await setLanguage(languageCode);
-      console.log("🌐 [LanguageSelector] Language change completed", {
-        newLanguage: languageCode,
-      });
+      logger.info(
+        "Language change completed",
+        {
+          newLanguage: languageCode,
+        },
+        undefined,
+        "🌐"
+      );
       setModalVisible(false);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
-      console.error("🌐 [LanguageSelector] Error changing language", {
-        error: errorMessage,
-        languageCode,
-      });
+      logger.error("Error changing language", error, undefined, "🌐");
     } finally {
       setChangingLanguage(false);
     }

@@ -3,7 +3,10 @@ import { useCallback } from "react";
 import { Alert } from "react-native";
 import { ActivityConfig } from "../types/ActivityConfig";
 import { ParsedActivityData } from "../utils/activityParser";
+import { getServiceLogger } from "../utils/serviceLogger";
 import { useTranslatedText } from "./useTranslatedText";
+
+const logger = getServiceLogger("useQuestionNavigation");
 
 export interface UseQuestionNavigationReturn {
   handleNext: () => void;
@@ -200,10 +203,7 @@ export const useQuestionNavigation = ({
         })
       );
     } catch (error) {
-      console.warn(
-        "[useQuestionNavigation] Failed to reset to module dashboard:",
-        error
-      );
+      logger.warn("Failed to reset to module dashboard", error);
       // Last resort: try goBack
       try {
         const navAny = navigation as any;
@@ -211,10 +211,7 @@ export const useQuestionNavigation = ({
           navAny.goBack();
         }
       } catch (fallbackError) {
-        console.error(
-          "[useQuestionNavigation] All navigation methods failed:",
-          fallbackError
-        );
+        logger.error("All navigation methods failed", fallbackError);
       }
     }
   }, [navigation]);

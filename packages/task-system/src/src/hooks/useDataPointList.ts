@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { DataPointService } from "../services/DataPointService";
 import { DataPoint, DataPointInstance } from "../types/DataPoint";
+import { getServiceLogger } from "../utils/serviceLogger";
+
+const logger = getServiceLogger("useDataPointList");
 
 interface UseDataPointListReturn {
   dataPoints: DataPoint[];
@@ -23,22 +26,18 @@ export const useDataPointList = (): UseDataPointListReturn => {
     const sub1 = DataPointService.subscribeDataPoints((items, isSynced) => {
       setDataPoints(items);
       setLoading(false);
-      console.log(
-        "[useDataPointList] DataPoints updated:",
-        items.length,
-        "synced:",
-        isSynced
-      );
+      logger.debug("DataPoints updated", {
+        count: items.length,
+        synced: isSynced,
+      });
     });
     const sub2 = DataPointService.subscribeDataPointInstances(
       (items, isSynced) => {
         setInstances(items);
-        console.log(
-          "[useDataPointList] DataPointInstances updated:",
-          items.length,
-          "synced:",
-          isSynced
-        );
+        logger.debug("DataPointInstances updated", {
+          count: items.length,
+          synced: isSynced,
+        });
       }
     );
     setSubscriptions([() => sub1.unsubscribe(), () => sub2.unsubscribe()]);
@@ -53,7 +52,7 @@ export const useDataPointList = (): UseDataPointListReturn => {
     try {
       await DataPointService.deleteDataPoint(id);
     } catch (err) {
-      console.error("Error deleting data point:", err);
+      logger.error("Error deleting data point", err);
       setError("Failed to delete data point.");
     }
   };
@@ -62,7 +61,7 @@ export const useDataPointList = (): UseDataPointListReturn => {
     try {
       await DataPointService.deleteDataPointInstance(id);
     } catch (err) {
-      console.error("Error deleting instance:", err);
+      logger.error("Error deleting instance", err);
       setError("Failed to delete instance.");
     }
   };
@@ -78,7 +77,7 @@ export const useDataPointList = (): UseDataPointListReturn => {
       setInstances(allInstances);
       setLoading(false);
     } catch (err) {
-      console.error("Error refreshing data points:", err);
+      logger.error("Error refreshing data points", err);
       setError("Failed to refresh data points.");
       setLoading(false);
     }

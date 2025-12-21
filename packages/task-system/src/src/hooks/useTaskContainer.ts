@@ -5,9 +5,12 @@ import { navigationService } from "../services/NavigationService";
 import { Appointment } from "../types/Appointment";
 import { Task } from "../types/Task";
 import { groupAppointmentsByDate } from "../utils/appointmentParser";
+import { getServiceLogger } from "../utils/serviceLogger";
 import { useAppointmentList } from "./useAppointmentList";
 import { useGroupedTasks } from "./useGroupedTasks";
 import { useTaskList } from "./useTaskList";
+
+const logger = getServiceLogger("useTaskContainer");
 
 export interface UseTaskContainerReturn {
   groupedTasks: ReturnType<typeof useGroupedTasks>;
@@ -71,7 +74,7 @@ export const useTaskContainer = (): UseTaskContainerReturn => {
         return;
       }
     } catch (error) {
-      console.warn("[useTaskContainer] navigation.navigate failed", error);
+      logger.warn("navigation.navigate failed", error);
     }
 
     Alert.alert(
