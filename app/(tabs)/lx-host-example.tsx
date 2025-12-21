@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { GlobalHeader } from "../../src/components/GlobalHeader";
 import { LXHostExample } from "../../packages/task-system/LX Integration Resources/LXHostExample";
+import { GlobalHeader } from "../../src/components/GlobalHeader";
 import { NavigationMenu } from "../../src/components/NavigationMenu";
 
 /**

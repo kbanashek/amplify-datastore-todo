@@ -1,14 +1,14 @@
+import { LanguageCode, useTranslation } from "@orion/task-system";
 import React, { useState } from "react";
 import {
-  View,
+  ActivityIndicator,
+  FlatList,
+  Modal,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  StyleSheet,
-  Modal,
-  FlatList,
-  ActivityIndicator,
+  View,
 } from "react-native";
-import { useTranslation, LanguageCode } from "@orion/task-system";
 
 interface LanguageSelectorProps {
   style?: object;

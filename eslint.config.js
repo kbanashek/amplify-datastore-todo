@@ -13,4 +13,10 @@ module.exports = defineConfig([
       "import/no-unresolved": "off", // Disable import resolution for test files
     },
   },
+  {
+    files: ["**/amplify-config.{ts,js}", "**/amplify-init.ts"],
+    rules: {
+      "import/no-unresolved": "off", // aws-exports is a generated file, not in repo
+    },
+  },
 ]);
