@@ -32,16 +32,18 @@ jobs:
           path: coverage/
           retention-days: 30
 
-      - name: Upload to Codecov (optional)
-        uses: codecov/codecov-action@v4
-        with:
-          file: ./coverage/lcov.info
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
-          token: ${{ secrets.CODECOV_TOKEN }}
-          comment: on-failure
-        continue-on-error: true
+      # Codecov integration removed - requires security sign-off for third-party service
+      # Coverage is available via GitHub Actions artifacts and PR comments
+      # - name: Upload to Codecov (optional)
+      #   uses: codecov/codecov-action@v4
+      #   with:
+      #     file: ./coverage/lcov.info
+      #     flags: unittests
+      #     name: codecov-umbrella
+      #     fail_ci_if_error: false
+      #     token: ${{ secrets.CODECOV_TOKEN }}
+      #     comment: on-failure
+      #   continue-on-error: true
 
       - name: Generate Coverage Summary for PR Comment
         if: github.event_name == 'pull_request'

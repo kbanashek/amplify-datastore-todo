@@ -7,8 +7,9 @@ This guide explains how test coverage is displayed in the GitHub repository.
 The project uses Jest for test coverage generation and displays coverage reports in multiple ways:
 
 1. **GitHub Actions** - Automated coverage generation on every push/PR
-2. **Codecov** (optional) - Coverage badges, PR comments, and historical tracking
-3. **Coverage Artifacts** - Downloadable HTML reports from workflow runs
+2. **Coverage Artifacts** - Downloadable HTML reports from workflow runs
+
+**Note:** Codecov integration has been removed as it requires security sign-off for third-party services. All coverage reporting is handled via GitHub Actions.
 
 ## Current Setup
 
@@ -20,7 +21,6 @@ The `.github/workflows/test-coverage.yml` workflow automatically:
 - Generates coverage reports in multiple formats (HTML, LCOV, text)
 - **Posts coverage summary as a comment on pull requests** (automatic)
 - Uploads coverage reports as downloadable artifacts
-- Optionally uploads to Codecov (if token is configured) for enhanced PR comments with diffs
 - Displays coverage summary in workflow run details
 
 ### Viewing Coverage Reports
@@ -41,49 +41,21 @@ The `.github/workflows/test-coverage.yml` workflow automatically:
 3. Scroll to the bottom to see the **Coverage Summary** section
 4. Download the **coverage-report** artifact to get the full HTML report
 
-**From Codecov (if configured):**
+## Codecov Integration (Removed)
 
-1. Visit `https://codecov.io/gh/kbanashek/Task-System-POC`
-2. See coverage trends, file-by-file breakdown, and enhanced PR comments with coverage diffs
-3. Codecov provides more detailed PR comments showing which files have coverage changes
+Codecov integration has been removed from this project as it requires security sign-off for third-party services. Coverage reports contain file paths, code structure, and execution details that may be considered sensitive.
 
-## Setting Up Codecov (Optional)
+**Alternative:** All coverage reporting is handled via GitHub Actions:
 
-Codecov provides additional features like:
+- PR comments with coverage summaries
+- Downloadable HTML reports from workflow artifacts
+- Coverage summary in workflow run details
 
-- Coverage badges in README
-- Automatic PR comments with coverage changes
-- Historical coverage trends
-- File-by-file coverage visualization
+If Codecov is needed in the future, it will require:
 
-### Setup Steps
-
-1. **Sign up for Codecov:**
-   - Go to [codecov.io](https://codecov.io)
-   - Sign in with your GitHub account
-   - Add your repository
-
-2. **Get your Codecov token:**
-   - In Codecov dashboard, go to your repository settings
-   - Copy the repository upload token
-
-3. **Add token to GitHub Secrets:**
-   - Go to your GitHub repository → Settings → Secrets and variables → Actions
-   - Click "New repository secret"
-   - Name: `CODECOV_TOKEN`
-   - Value: Paste your Codecov token
-   - Click "Add secret"
-
-4. **Update README badge:**
-   - Replace `YOUR_USERNAME` and `YOUR_REPO` in the README badge URL:
-
-   ```markdown
-   [![codecov](https://codecov.io/gh/kbanashek/Task-System-POC/branch/main/graph/badge.svg)](https://codecov.io/gh/kbanashek/Task-System-POC)
-   ```
-
-5. **Push a commit:**
-   - The workflow will automatically upload coverage to Codecov
-   - The badge will update after the first successful upload
+1. Security team approval
+2. Review of data sharing agreements
+3. Configuration of `CODECOV_TOKEN` secret
 
 ## Coverage Metrics
 
@@ -132,12 +104,6 @@ start coverage/lcov-report/index.html
 - Check that the workflow file exists at `.github/workflows/test-coverage.yml`
 - Verify the workflow ran successfully (check Actions tab)
 - Ensure `yarn test:coverage` works locally
-
-**Codecov badge not updating:**
-
-- Verify `CODECOV_TOKEN` secret is set correctly
-- Check that Codecov workflow step completed without errors
-- Wait a few minutes after the workflow completes (badge updates can be delayed)
 
 **Coverage percentages seem incorrect:**
 
