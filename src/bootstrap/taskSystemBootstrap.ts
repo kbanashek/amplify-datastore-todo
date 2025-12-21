@@ -1,6 +1,7 @@
-import { DataStore } from "@aws-amplify/datastore";
 import { generateClient } from "@aws-amplify/api";
+import { DataStore } from "@aws-amplify/datastore";
 import { initTaskSystem, TempAnswerSyncService } from "@orion/task-system";
+import { logErrorWithPlatform, logWithPlatform } from "../utils/platformLogger";
 
 export type TaskSystemBootstrapOptions = {
   /**
@@ -25,15 +26,35 @@ export async function bootstrapTaskSystem(
 
   if (!bootstrapInFlight) {
     bootstrapInFlight = (async () => {
+      logWithPlatform(
+        "🚀",
+        "",
+        "Bootstrap",
+        "Initializing task-system runtime"
+      );
       // Initialize task-system runtime configuration (no Amplify.configure() inside)
       await initTaskSystem({ startDataStore: false });
+      logWithPlatform("✅", "", "Bootstrap", "Task-system runtime initialized");
 
       if (startDataStore) {
+        logWithPlatform("☁️", "", "Bootstrap", "Starting AWS DataStore");
         await DataStore.start();
+        logWithPlatform(
+          "☁️",
+          "",
+          "Bootstrap",
+          "AWS DataStore started - ready for cloud sync"
+        );
       }
 
       // Configure TempAnswerSyncService with real Amplify GraphQL API
       // This enables temp-save functionality when users click Next in questionnaires
+      logWithPlatform(
+        "🚀",
+        "",
+        "Bootstrap",
+        "Configuring temp answer sync service"
+      );
       const client = generateClient();
       TempAnswerSyncService.configure({
         document:
@@ -41,8 +62,11 @@ export async function bootstrapTaskSystem(
         executor: {
           execute: async ({ document, variables }) => {
             try {
-              console.log(
-                "[bootstrapTaskSystem] Temp-save execute (real API)",
+              logWithPlatform(
+                "💾",
+                "",
+                "bootstrapTaskSystem",
+                "Executing temp-save GraphQL mutation",
                 {
                   document: document.substring(0, 80),
                   variableKeys: Object.keys(variables ?? {}),
@@ -58,13 +82,24 @@ export async function bootstrapTaskSystem(
               // Handle GraphQLResult type
               const data = "data" in response ? response.data : undefined;
 
-              console.log("[bootstrapTaskSystem] Temp-save success", {
-                hasData: !!data,
-              });
+              logWithPlatform(
+                "✅",
+                "",
+                "bootstrapTaskSystem",
+                "Temp-save GraphQL mutation succeeded",
+                {
+                  hasData: !!data,
+                }
+              );
 
               return { data };
             } catch (error) {
-              console.error("[bootstrapTaskSystem] Temp-save error", error);
+              logErrorWithPlatform(
+                "",
+                "bootstrapTaskSystem",
+                "Temp-save GraphQL mutation failed",
+                error
+              );
               // Return error in GraphQL response format
               return {
                 data: undefined,
@@ -90,8 +125,29 @@ export async function bootstrapTaskSystem(
         },
       });
 
-      // Start auto-flush to retry queued temp answers when network comes back
+      // Start auto-flush to retry queued temp answers when network comes back.
+      // This will automatically retry any queued temp answers from previous sessions
+      // when the app starts (if network is online) or when network comes back online.
+      // This is expected behavior - queued items persist across app restarts until synced.
+      logWithPlatform(
+        "🚀",
+        "",
+        "Bootstrap",
+        "Starting auto-flush for queued temp answers"
+      );
       TempAnswerSyncService.startAutoFlush();
+      logWithPlatform(
+        "✅",
+        "",
+        "Bootstrap",
+        "Auto-flush started - will retry queued items on network online"
+      );
+      logWithPlatform(
+        "✅",
+        "",
+        "Bootstrap",
+        "All initialization complete - data services ready"
+      );
     })().finally(() => {
       bootstrapInFlight = null;
     });

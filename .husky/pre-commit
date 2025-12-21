@@ -28,12 +28,28 @@ fi
 echo "✅ Yarn lockfile is synchronized!"
 
 echo "🔍 Running lint..."
-yarn lint || {
-  echo "❌ Lint failed. Please fix linting errors before committing."
-  exit 1
-}
+# Run lint and capture output, fail on any warnings or errors
+LINT_OUTPUT=$(yarn lint 2>&1)
+LINT_EXIT_CODE=$?
 
-echo "✅ Lint passed!"
+# Check if lint command failed (errors)
+if [ $LINT_EXIT_CODE -ne 0 ]; then
+  echo "$LINT_OUTPUT"
+  echo "❌ Lint failed with errors. Please fix linting errors before committing."
+  exit 1
+fi
+
+# Check if there are any lint warnings in the output (even if exit code is 0)
+# Look for actual lint warnings (format: "path:line:col warning message")
+# Ignore ESLint deprecation warnings and other system warnings
+if echo "$LINT_OUTPUT" | grep -qE "^[^/]*/[^:]+:[0-9]+:[0-9]+\s+warning"; then
+  echo "$LINT_OUTPUT"
+  echo "❌ Lint warnings detected. Please fix all linting warnings before committing."
+  echo "💡 Run 'yarn lint --fix' to auto-fix some issues."
+  exit 1
+fi
+
+echo "✅ Lint passed with no warnings or errors!"
 
 echo "💅 Running format check..."
 yarn format:check || {

@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Appointment, AppointmentData } from "../types/Appointment";
 import { parseAppointmentData } from "../utils/appointmentParser";
+import { logWithPlatform, logErrorWithPlatform } from "../utils/platformLogger";
 
 const APPOINTMENTS_STORAGE_KEY = "@appointments_data";
 
@@ -18,50 +19,42 @@ export class AppointmentService {
       // First try to load from AsyncStorage (seeded data)
       const storedData = await AsyncStorage.getItem(APPOINTMENTS_STORAGE_KEY);
       if (storedData) {
-        console.log(
-          "[AppointmentService] Loading appointments from AsyncStorage",
-          {
-            dataLength: storedData.length,
-            hasData: !!storedData,
-          }
-        );
         const parsed = JSON.parse(storedData) as AppointmentData;
-        console.log("[AppointmentService] Parsed AsyncStorage data", {
-          hasClinicPatientAppointments: !!parsed.clinicPatientAppointments,
-          hasClinicAppointments:
-            !!parsed.clinicPatientAppointments?.clinicAppointments,
-          itemsCount:
-            parsed.clinicPatientAppointments?.clinicAppointments?.items
-              ?.length || 0,
-          siteTimezoneId: parsed.siteTimezoneId,
-          sampleItems:
-            parsed.clinicPatientAppointments?.clinicAppointments?.items
-              ?.slice(0, 2)
-              .map((apt: any) => ({
-                title: apt.title,
-                startAt: apt.startAt,
-                appointmentId: apt.appointmentId,
-              })),
-        });
+        const itemsCount =
+          parsed.clinicPatientAppointments?.clinicAppointments?.items?.length ||
+          0;
+        logWithPlatform(
+          "📅",
+          "",
+          "AppointmentService",
+          `Loaded ${itemsCount} appointments from AsyncStorage`,
+          { timezone: parsed.siteTimezoneId }
+        );
         return parsed;
       }
 
       // Fallback to bundled JSON file
-      console.log(
-        "[AppointmentService] Loading appointments from bundled JSON"
-      );
       const appointmentData: AppointmentData =
         typeof window === "undefined"
           ? require("../../appointments.json")
           : (await import("../../appointments.json")).default;
-      console.log("[AppointmentService] Loaded bundled JSON", {
-        itemsCount:
-          appointmentData.clinicPatientAppointments?.clinicAppointments?.items
-            ?.length || 0,
-      });
+      const itemsCount =
+        appointmentData.clinicPatientAppointments?.clinicAppointments?.items
+          ?.length || 0;
+      logWithPlatform(
+        "📅",
+        "",
+        "AppointmentService",
+        `Loaded ${itemsCount} appointments from bundled JSON`
+      );
       return appointmentData;
     } catch (error) {
-      console.error("[AppointmentService] Error loading appointments:", error);
+      logErrorWithPlatform(
+        "",
+        "AppointmentService",
+        "Failed to load appointments",
+        error
+      );
       return null;
     }
   }
@@ -73,29 +66,27 @@ export class AppointmentService {
   static async saveAppointments(data: AppointmentData): Promise<void> {
     try {
       const jsonString = JSON.stringify(data);
-      console.log("[AppointmentService] Saving appointments to AsyncStorage", {
-        count: data.clinicPatientAppointments.clinicAppointments.items.length,
-        jsonLength: jsonString.length,
-        siteTimezoneId: data.siteTimezoneId,
-        sampleItems: data.clinicPatientAppointments.clinicAppointments.items
-          .slice(0, 2)
-          .map(apt => ({
-            title: apt.title,
-            startAt: apt.startAt,
-            appointmentId: apt.appointmentId,
-          })),
-      });
+      const count =
+        data.clinicPatientAppointments.clinicAppointments.items.length;
+      console.log(
+        `💾 [AppointmentService] Saving ${count} appointments to AsyncStorage`,
+        { timezone: data.siteTimezoneId }
+      );
 
       await AsyncStorage.setItem(APPOINTMENTS_STORAGE_KEY, jsonString);
 
       // Verify it was saved
       const verify = await AsyncStorage.getItem(APPOINTMENTS_STORAGE_KEY);
-      console.log("[AppointmentService] Verified save to AsyncStorage", {
-        saved: !!verify,
-        savedLength: verify?.length || 0,
-      });
+      if (verify) {
+        console.log(
+          `✅ [AppointmentService] Verified ${count} appointments saved`
+        );
+      }
     } catch (error) {
-      console.error("[AppointmentService] Error saving appointments:", error);
+      console.error(
+        "❌ [AppointmentService] Failed to save appointments",
+        error instanceof Error ? error.message : String(error)
+      );
       throw error;
     }
   }
@@ -106,11 +97,12 @@ export class AppointmentService {
   static async clearAppointments(): Promise<void> {
     try {
       await AsyncStorage.removeItem(APPOINTMENTS_STORAGE_KEY);
-      console.log(
-        "[AppointmentService] Cleared appointments from AsyncStorage"
-      );
+      console.log("🗑️ [AppointmentService] Cleared appointments from storage");
     } catch (error) {
-      console.error("[AppointmentService] Error clearing appointments:", error);
+      console.error(
+        "❌ [AppointmentService] Failed to clear appointments",
+        error instanceof Error ? error.message : String(error)
+      );
       throw error;
     }
   }
@@ -145,13 +137,6 @@ export class AppointmentService {
       const todayEnd = new Date(todayStart);
       todayEnd.setDate(todayEnd.getDate() + 1);
 
-      console.log("[AppointmentService] Filtering for today", {
-        now: now.toISOString(),
-        todayStart: todayStart.toISOString(),
-        todayEnd: todayEnd.toISOString(),
-        totalAppointments: allAppointments.length,
-      });
-
       const filtered = allAppointments.filter(appointment => {
         const startDate = new Date(appointment.startAt);
 
@@ -170,78 +155,30 @@ export class AppointmentService {
           appointmentMonth === todayMonth &&
           appointmentDay === todayDay;
 
-        console.log("[AppointmentService] Filtering appointment", {
-          title: appointment.title,
-          startAt: appointment.startAt,
-          startDateLocal: `${appointmentYear}-${
-            appointmentMonth + 1
-          }-${appointmentDay}`,
-          todayLocal: `${todayYear}-${todayMonth + 1}-${todayDay}`,
-          isToday,
-          startDateUTC: startDate.toISOString(),
-          todayStartUTC: todayStart.toISOString(),
-        });
-
         return isToday;
       });
 
-      console.log("[AppointmentService] Today filter results", {
-        totalAppointments: allAppointments.length,
-        todayAppointments: filtered.length,
-        todayStart: todayStart.toISOString(),
-        todayStartLocal: `${todayStart.getFullYear()}-${
-          todayStart.getMonth() + 1
-        }-${todayStart.getDate()}`,
-        filteredAppointments: filtered.map(apt => {
-          const aptDate = new Date(apt.startAt);
-          return {
-            title: apt.title,
-            startAt: apt.startAt,
-            dateLocal: `${aptDate.getFullYear()}-${
-              aptDate.getMonth() + 1
-            }-${aptDate.getDate()}`,
-            dateUTC: aptDate.toISOString(),
-          };
-        }),
-        allAppointments: allAppointments.slice(0, 5).map(apt => {
-          const aptDate = new Date(apt.startAt);
-          return {
-            title: apt.title,
-            startAt: apt.startAt,
-            dateLocal: `${aptDate.getFullYear()}-${
-              aptDate.getMonth() + 1
-            }-${aptDate.getDate()}`,
-            dateUTC: aptDate.toISOString(),
-          };
-        }),
-      });
+      console.log(
+        `📅 [AppointmentService] Filtered ${filtered.length} of ${allAppointments.length} appointments for today`
+      );
 
       // If no appointments match today but we have appointments, log a warning
       if (filtered.length === 0 && allAppointments.length > 0) {
+        const todayStr = `${todayStart.getFullYear()}-${
+          todayStart.getMonth() + 1
+        }-${todayStart.getDate()}`;
         console.warn(
-          "[AppointmentService] No appointments matched today filter!",
-          {
-            totalAppointments: allAppointments.length,
-            todayStartLocal: `${todayStart.getFullYear()}-${
-              todayStart.getMonth() + 1
-            }-${todayStart.getDate()}`,
-            sampleAppointmentDates: allAppointments.slice(0, 3).map(apt => {
-              const aptDate = new Date(apt.startAt);
-              return {
-                title: apt.title,
-                dateLocal: `${aptDate.getFullYear()}-${
-                  aptDate.getMonth() + 1
-                }-${aptDate.getDate()}`,
-                dateUTC: aptDate.toISOString(),
-              };
-            }),
-          }
+          `⚠️ [AppointmentService] No appointments found for today (${todayStr})`,
+          { totalAvailable: allAppointments.length }
         );
       }
 
       return filtered;
     } catch (error) {
-      console.error("[AppointmentService] Error fetching appointments:", error);
+      console.error(
+        "❌ [AppointmentService] Failed to fetch appointments",
+        error instanceof Error ? error.message : String(error)
+      );
       throw error;
     }
   }

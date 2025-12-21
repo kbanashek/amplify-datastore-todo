@@ -1,5 +1,3 @@
-import { DataStore, OpType } from "@aws-amplify/datastore";
-
 // Mock DataStore for testing
 export const mockDataStore = {
   query: jest.fn(),

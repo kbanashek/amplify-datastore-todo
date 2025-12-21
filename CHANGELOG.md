@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.21] - 2025-12-21
+
+### Changed
+
+- Updated logging on app initialization to remove step identifiers
+  - Removed all INIT-_ and DATA-_ step identifiers from log messages
+  - Logs now use format: `[ICON] [PLATFORM] ServiceName: message`
+  - All logs now include platform identification (iOS, Android, or Web)
+  - Reduced redundant logging by only logging on actual state changes
+  - Made logs more specific with clear service/hook names indicating app area
+
+### Fixed
+
+- Fixed pre-commit hook to fail on lint warnings, not just errors
+  - Hook now checks lint output for warnings and blocks commits
+  - Prevents GitHub CI failures by catching lint issues before push
+
 ## [0.1.20] - 2025-12-21
 
 ### Added
