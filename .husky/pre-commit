@@ -1,6 +1,32 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+echo "📦 Checking yarn integrity..."
+yarn check --integrity || {
+  echo "❌ Yarn integrity check failed. Please run 'yarn install' to fix dependency issues."
+  echo "💡 This prevents committing with broken dependencies or lockfile mismatches."
+  exit 1
+}
+
+echo "✅ Yarn integrity check passed!"
+
+echo "🔒 Verifying yarn.lock is synchronized with package.json..."
+# Check if package.json was modified but yarn.lock wasn't updated
+if git diff --cached --name-only | grep -q "package.json" && ! git diff --cached --name-only | grep -q "yarn.lock"; then
+  echo "⚠️  WARNING: package.json is staged but yarn.lock is not."
+  echo "💡 If you modified dependencies, run 'yarn install' to update yarn.lock."
+  echo "💡 If this is intentional (e.g., only version bump), you can proceed."
+fi
+
+# Verify lockfile is actually in sync by checking if yarn would modify it
+if ! yarn install --check-files --frozen-lockfile > /dev/null 2>&1; then
+  echo "❌ Yarn lockfile is out of sync with package.json."
+  echo "💡 Please run 'yarn install' to update yarn.lock before committing."
+  exit 1
+fi
+
+echo "✅ Yarn lockfile is synchronized!"
+
 echo "🔍 Running lint..."
 yarn lint || {
   echo "❌ Lint failed. Please fix linting errors before committing."

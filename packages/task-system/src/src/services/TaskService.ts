@@ -31,10 +31,23 @@ export class TaskService {
         if (modelConstructor.name === ModelName.Task) {
           // For update operations
           if (operation === OpType.UPDATE) {
+            // CRITICAL: Preserve local status changes to prevent tasks from disappearing
+            // If local has a status that indicates progress (STARTED, INPROGRESS, COMPLETED),
+            // prefer it over remote OPEN status to prevent regression
+            const shouldPreferLocalStatus =
+              localModel.status &&
+              (localModel.status === TaskStatus.STARTED ||
+                localModel.status === TaskStatus.INPROGRESS ||
+                localModel.status === TaskStatus.COMPLETED) &&
+              remoteModel.status === TaskStatus.OPEN;
+
             // Prefer local status changes, but remote timing updates
             const resolvedModel = {
               ...remoteModel, // Start with remote model as base
-              status: localModel.status || remoteModel.status, // Prefer local status
+              // Preserve local status if it indicates progress, otherwise use remote
+              status: shouldPreferLocalStatus
+                ? localModel.status
+                : localModel.status || remoteModel.status,
               // For timing, prefer remote if it's more recent
               startTimeInMillSec:
                 remoteModel.startTimeInMillSec || localModel.startTimeInMillSec,
@@ -240,6 +253,23 @@ export class TaskService {
   } {
     logWithDevice("TaskService", "Setting up DataStore subscription for Task");
 
+    // CRITICAL: Do an initial query to ensure tasks are loaded immediately
+    // observeQuery may not fire immediately, so we query first to populate the UI
+    DataStore.query(DataStoreTask)
+      .then(initialTasks => {
+        logWithDevice("TaskService", "Initial task query completed", {
+          itemCount: initialTasks.length,
+          itemIds: initialTasks.slice(0, 10).map(i => i.id),
+        });
+        // Call callback with initial data - assume synced if we got data
+        callback(initialTasks as Task[], initialTasks.length > 0);
+      })
+      .catch(err => {
+        logErrorWithDevice("TaskService", "Initial task query failed", err);
+        // Still set up subscription even if initial query fails
+        callback([], false);
+      });
+
     // Use observeQuery for the main subscription (filters out deleted items automatically)
     // This handles local operations and most remote operations
     const querySubscription = DataStore.observeQuery(DataStoreTask).subscribe(
@@ -274,10 +304,6 @@ export class TaskService {
       const source = isLocalDelete
         ? OperationSource.LOCAL
         : OperationSource.REMOTE_SYNC;
-
-      // CRITICAL: DELETE operations need immediate refresh to ensure deletions sync
-      // For DELETE operations, we MUST refresh immediately to catch remote deletions
-      const isDeleteOperation = msg.opType === OpType.DELETE;
 
       // Verbose observe logging is gated in logWithDevice() to avoid console "loops".
 

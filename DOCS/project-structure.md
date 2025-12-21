@@ -1,7 +1,7 @@
 # Project Structure
 
 ```
-amplify-datastore-todo/
+Task-System-POC/
 │
 ├── 📱 app/                          # Expo Router app directory
 │   ├── (tabs)/                     # Tab-based navigation

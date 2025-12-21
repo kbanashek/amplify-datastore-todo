@@ -13,13 +13,14 @@ export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-    // Include all tasks, but handle COMPLETED and INPROGRESS tasks differently
-    // COMPLETED and INPROGRESS tasks should always be shown regardless of date
+    // Include all tasks, but handle COMPLETED, INPROGRESS, and STARTED tasks differently
+    // These statuses indicate active work and should always be shown regardless of date
     const allTasks = tasks.filter(task => {
-      // Always show COMPLETED and INPROGRESS tasks
+      // Always show COMPLETED, INPROGRESS, and STARTED tasks (active work)
       if (
         task.status === TaskStatus.COMPLETED ||
-        task.status === TaskStatus.INPROGRESS
+        task.status === TaskStatus.INPROGRESS ||
+        task.status === TaskStatus.STARTED
       ) {
         return true;
       }

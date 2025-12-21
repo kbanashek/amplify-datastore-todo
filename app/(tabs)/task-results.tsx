@@ -9,8 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useTaskResultList } from "@orion/task-system";
-import { TaskResultService } from "@orion/task-system";
+import { useTaskResultList, TaskResultService } from "@orion/task-system";
 import { NetworkStatusIndicator } from "../../src/components/NetworkStatusIndicator";
 
 export default function TaskResultsScreen() {

@@ -49,7 +49,7 @@ jest.mock("../useQuestionSubmission", () => ({
 
 jest.mock("../../services/TempAnswerSyncService", () => ({
   TempAnswerSyncService: {
-    enqueueFromMapper: jest.fn(),
+    syncTempAnswers: jest.fn(),
   },
 }));
 
@@ -272,8 +272,8 @@ describe("useQuestionsScreen", () => {
     });
   });
 
-  describe("temp answer enqueue on navigation boundaries", () => {
-    it("enqueues temp answers on handleNext/handlePrevious/handleReviewSubmit", async () => {
+  describe("temp answer sync on navigation boundaries", () => {
+    it("syncs temp answers on handleNext/handlePrevious/handleReviewSubmit", async () => {
       const { result } = renderHook(() => useQuestionsScreen());
 
       await waitFor(() => {
@@ -286,7 +286,7 @@ describe("useQuestionsScreen", () => {
         result.current.handleReviewSubmit();
       });
 
-      expect(TempAnswerSyncService.enqueueFromMapper).toHaveBeenCalledTimes(3);
+      expect(TempAnswerSyncService.syncTempAnswers).toHaveBeenCalledTimes(3);
     });
   });
 

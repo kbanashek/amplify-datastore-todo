@@ -1,21 +1,12 @@
+import { TaskActivityModule } from "@orion/task-system";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GlobalHeader } from "../../src/components/GlobalHeader";
-import { LXHostExample } from "../../packages/task-system/LX Integration Resources/LXHostExample";
 import { NavigationMenu } from "../../src/components/NavigationMenu";
 
-/**
- * In-app harness screen to test LXHostExample without re-configuring Amplify/DataStore.
- *
- * app/_layout.tsx already:
- * - imports amplify-init-sync (Amplify.configure)
- * - bootstraps DataStore
- *
- * So this screen runs LXHostExample in "already configured" mode and only imports fixture.
- */
-export default function LXHostExampleScreen(): React.ReactElement {
+export default function TaskDashboardScreen() {
   const [showMenu, setShowMenu] = useState(false);
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
@@ -26,13 +17,14 @@ export default function LXHostExampleScreen(): React.ReactElement {
     setResetSignal(prev => prev + 1);
   }, []);
 
-  // Mirror the home screen behavior to keep module rendering consistent.
+  // Re-tapping the Tasks tab should reset the module back to its dashboard.
   useEffect(() => {
     const navAny = navigation as any;
     const unsub = navAny?.addListener?.("tabPress", bumpResetSignal);
     return () => unsub?.();
   }, [bumpResetSignal, navigation]);
 
+  // Switching away/back to the Tasks tab should also reset to the module dashboard.
   useEffect(() => {
     if (!isFocused) return;
     bumpResetSignal();
@@ -41,17 +33,19 @@ export default function LXHostExampleScreen(): React.ReactElement {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <GlobalHeader
-        title="LX Host Example"
+        title="Dashboard"
         showMenuButton={true}
-        onMenuPress={() => setShowMenu(true)}
+        onMenuPress={() => {
+          console.log("[Dashboard] Menu button pressed");
+          setShowMenu(true);
+        }}
       />
 
       <View style={styles.moduleContainer}>
-        <LXHostExample
-          configureAmplify={false}
-          startDataStore={false}
-          importFixture={true}
-          embedded={true}
+        {/* <SyncStatusBanner /> */}
+        <TaskActivityModule
+          disableSafeAreaTopInset={true}
+          resetSignal={resetSignal}
         />
       </View>
 
@@ -65,8 +59,40 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f5f6fa",
   },
+  header: {
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: "#fff",
+    borderBottomWidth: 1,
+    borderBottomColor: "#dfe4ea",
+  },
+  headerTop: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#2f3542",
+    flex: 1,
+  },
+  headerBottom: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  menuButton: {
+    padding: 4,
+  },
   moduleContainer: {
     flex: 1,
     padding: 20,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#2f3542",
+    marginBottom: 16,
   },
 });

@@ -205,6 +205,94 @@ export class TempAnswerSyncService {
     });
   }
 
+  /**
+   * Sync temp answers immediately if online, otherwise queue for later.
+   * Mimics LX app behavior: tries immediate sync, queues if offline or fails.
+   *
+   * This is the method to call when user clicks "Next" - it attempts immediate
+   * sync and only queues if the sync fails or device is offline.
+   */
+  static async syncTempAnswers(
+    input: BuildSaveTempAnswersVariablesInput
+  ): Promise<void> {
+    if (!config) return;
+
+    const mapper: TaskSystemSaveTempAnswersMapper = config.mapper;
+    const mapped = mapper(input);
+    if (!mapped) {
+      debugLog("mapper returned null (skipping temp save)", {
+        taskPk: input.task.pk,
+      });
+      return;
+    }
+
+    const document = mapped.document ?? config.document;
+    const executor: TaskSystemGraphQLExecutor = config.executor;
+
+    // Check network status
+    const netInfo = await NetInfo.fetch();
+    const isOnline =
+      netInfo.isInternetReachable === true || netInfo.isConnected === true;
+
+    if (isOnline) {
+      // Try immediate sync
+      try {
+        debugLog("attempting immediate temp-save sync", {
+          stableKey: mapped.stableKey,
+          documentSnippet: document.slice(0, 80),
+          variableKeys: Object.keys(mapped.variables ?? {}),
+        });
+
+        const resp = await executor.execute({
+          document,
+          variables: mapped.variables,
+        });
+
+        if (hasGraphQLErrors(resp)) {
+          debugLog("immediate sync failed with GraphQL errors (queuing)", {
+            stableKey: mapped.stableKey,
+            errors: resp.errors,
+          });
+          // Queue for retry
+          await TempAnswerSyncService.enqueueTempAnswers({
+            stableKey: mapped.stableKey,
+            variables: mapped.variables,
+            document,
+          });
+        } else {
+          debugLog("immediate sync succeeded", {
+            stableKey: mapped.stableKey,
+          });
+          // Success - no need to queue
+          return;
+        }
+      } catch (error) {
+        debugLog("immediate sync failed with exception (queuing)", {
+          stableKey: mapped.stableKey,
+          error: error instanceof Error ? error.message : String(error),
+        });
+        // Queue for retry
+        await TempAnswerSyncService.enqueueTempAnswers({
+          stableKey: mapped.stableKey,
+          variables: mapped.variables,
+          document,
+        });
+      }
+    } else {
+      // Offline - queue immediately
+      debugLog("device offline (queuing temp answers)", {
+        stableKey: mapped.stableKey,
+        isConnected: netInfo.isConnected,
+        isInternetReachable: netInfo.isInternetReachable,
+      });
+      await TempAnswerSyncService.enqueueTempAnswers({
+        stableKey: mapped.stableKey,
+        variables: mapped.variables,
+        document,
+      });
+    }
+  }
+
   static async flush(): Promise<{ flushed: number; remaining: number }> {
     if (!config) {
       return { flushed: 0, remaining: 0 };

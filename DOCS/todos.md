@@ -1,5 +1,55 @@
 # Project Todos
 
+## Priority #1: Package-Owned Temp Answer GraphQL Mutation
+
+**Status:** 🔴 Critical - Blocking Feature
+
+**Overview:**
+Implement a package-owned GraphQL mutation `saveTaskTempAnswers` that uses AppSync but is completely independent of LX's existing endpoints. This fixes the current issue where temp answers cannot be saved because the mutation doesn't exist in the AppSync schema.
+
+📖 **For detailed information**, see [Package-Owned Temp Answer GraphQL Mutation](temp-answer-graphql-mutation.md)
+
+**Quick Summary:**
+
+- Current mutation `saveTempAnswers` doesn't exist in AppSync schema
+- Temp answers are queued but cannot sync (causing errors)
+- Need to create new package-owned mutation using AppSync native types
+- Backend team needs to add mutation to AppSync schema
+- Package remains independent - no LX endpoint dependencies
+
+**Current Problem:**
+
+- GraphQL errors: `Unknown type JSON` and `Field 'saveTempAnswers' is undefined`
+- Temp answers queue in outbox but fail to sync
+- Users lose progress when app restarts (temp answers not saved)
+
+**Solution:**
+
+- Create `saveTaskTempAnswers` mutation with AppSync types (AWSJSON, AWSDateTime)
+- Update bootstrap configuration to use new mutation
+- Backend implements AppSync mutation and resolver
+- Package handles all logic independently
+
+**Next Steps:**
+
+- [ ] Backend: Add `saveTaskTempAnswers` mutation to AppSync schema
+- [ ] Backend: Implement DynamoDB resolver or Lambda resolver
+- [ ] Frontend: Update bootstrap mutation document
+- [ ] Frontend: Update executor to handle AWSJSON/AWSDateTime types
+- [ ] Frontend: Verify mapper provides correct data structure
+- [ ] Testing: Test online sync, offline queuing, error handling
+- [ ] Testing: Verify temp save works end-to-end
+- [ ] Documentation: Update implementation docs
+
+**Files to Modify:**
+
+- `src/bootstrap/taskSystemBootstrap.ts` - Update mutation, executor, mapper
+
+**Dependencies:**
+
+- Backend: AppSync schema update required
+- Backend: DynamoDB table or Lambda resolver needed
+
 ## CI/CD and Testing
 
 ### Ephemeral Developer Environments

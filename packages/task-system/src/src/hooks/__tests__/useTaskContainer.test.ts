@@ -25,11 +25,18 @@ jest.mock("../../utils/appointmentParser", () => ({
   groupAppointmentsByDate: jest.fn(),
 }));
 
+jest.mock("../../services/NavigationService", () => ({
+  navigationService: {
+    navigateToAppointmentDetails: jest.fn(),
+  },
+}));
+
 import { useNavigation } from "@react-navigation/native";
 import { useTaskList } from "../useTaskList";
 import { useGroupedTasks } from "../useGroupedTasks";
 import { useAppointmentList } from "../useAppointmentList";
 import { groupAppointmentsByDate } from "../../utils/appointmentParser";
+import { navigationService } from "../../services/NavigationService";
 
 describe("useTaskContainer", () => {
   const mockNavigate = jest.fn();
@@ -271,7 +278,7 @@ describe("useTaskContainer", () => {
   });
 
   describe("handleAppointmentPress", () => {
-    it("shows alert since appointment details navigation is host-owned", () => {
+    it("calls NavigationService to handle appointment navigation", () => {
       const { result } = renderHook(() => useTaskContainer());
       const appointment = mockAppointments[0];
 
@@ -279,9 +286,12 @@ describe("useTaskContainer", () => {
         result.current.handleAppointmentPress(appointment);
       });
 
-      expect(Alert.alert).toHaveBeenCalledWith(
-        "Not supported",
-        expect.stringContaining("Appointment details navigation is host-owned")
+      expect(
+        navigationService.navigateToAppointmentDetails
+      ).toHaveBeenCalledWith(
+        appointment,
+        mockAppointmentData.siteTimezoneId,
+        expect.anything() // navigation object
       );
     });
   });

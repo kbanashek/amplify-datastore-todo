@@ -9,6 +9,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.20] - 2025-12-21
+
+### Added
+
+- Added tighter yarn checks to pre-commit hook
+  - Verifies yarn.lock is synchronized with package.json before allowing commits
+  - Warns if package.json is modified without updating yarn.lock
+  - Prevents commits with out-of-sync lockfiles
+  - Ensures dependency changes are properly tracked
+
+## [0.1.19] - 2025-12-21
+
+### Fixed
+
+- Fixed issue where tasks were disappearing from dashboard after saving changes
+  - Updated conflict resolution in TaskService to preserve local status changes (STARTED, INPROGRESS, COMPLETED) when they conflict with remote OPEN status
+  - Updated useGroupedTasks to always show STARTED tasks (in addition to COMPLETED and INPROGRESS), even if they have expired dates
+  - Added initial query in TaskService.subscribeTasks to ensure tasks load immediately on mount
+
+### Changed
+
+- Updated bottom navigation to show only 2 tabs: Task Dashboard and Dev Options
+  - Task Dashboard uses checkmark.circle.fill icon
+  - Dev Options uses atom icon (React-related)
+  - All other screens are hidden from tab bar but accessible via navigation menu
+- Enhanced NavigationMenu to include all data model screens (Activities, Questions, Task Answers, Task Results, Task History, Data Points)
+
+### Added
+
+- Added regression tests for TabLayout to prevent unwanted tabs from appearing in bottom navigation
+- Added initial query in TaskService.subscribeTasks to ensure immediate task loading
+
+## [Unreleased]
+
 ### Added
 
 - Added `ModelName` constants to replace string literals for DataStore model names

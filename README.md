@@ -133,7 +133,7 @@ flowchart TD
 
    ```bash
    git clone <repository-url>
-   cd amplify-datastore-todo
+   cd Task-System-POC
    ```
 
 2. **📦 Install dependencies**
