@@ -332,8 +332,39 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
     [question.id, onAnswerChange]
   );
 
+  // Parse questionProperties to determine behavior
+  const questionProperties = useMemo(() => {
+    const props: Record<string, string> = {};
+    if (question.questionProperties) {
+      question.questionProperties.forEach(
+        (prop: { key: string; value: string }) => {
+          props[prop.key] = prop.value;
+        }
+      );
+    }
+    return props;
+  }, [question.questionProperties]);
+
+  // For multiselect questions, check multipleselect property to determine single vs multiple
+  const effectiveQuestionType = useMemo(() => {
+    // If question type is multiselect, check questionProperties
+    if (
+      questionType === QuestionType.MULTI_SELECT ||
+      rawType.toLowerCase() === "multiselect"
+    ) {
+      const multipleselect = questionProperties.multipleselect;
+      // If multipleselect is "false", treat as single select
+      if (multipleselect === "false") {
+        return QuestionType.SINGLE_SELECT;
+      }
+      // If multipleselect is "true" or not set, treat as multi select
+      return QuestionType.MULTI_SELECT;
+    }
+    return questionType;
+  }, [questionType, rawType, questionProperties]);
+
   // Memoize transformed value to prevent unnecessary recalculations
-  const config = QUESTION_CONFIG[questionType];
+  const config = QUESTION_CONFIG[effectiveQuestionType];
   const transformedValue = useMemo(() => {
     if (!config) return undefined;
     return config.getValue(answerValue);
@@ -342,7 +373,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
   // Render based on question type using component map
   const renderQuestion = () => {
     // Handle special case: LABEL (doesn't use a component)
-    if (questionType === QuestionType.LABEL) {
+    if (effectiveQuestionType === QuestionType.LABEL) {
       return (
         <View style={styles.labelContainer}>
           <Text style={[styles.labelText, { fontSize, color: fontColor }]}>
@@ -356,7 +387,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
       return (
         <View style={styles.unsupportedContainer}>
           <Text style={styles.unsupportedText}>
-            Unsupported question type: {questionType}
+            Unsupported question type: {effectiveQuestionType}
           </Text>
           <Text style={styles.questionText}>{questionText}</Text>
         </View>
@@ -379,7 +410,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
 
   return (
     <View style={[styles.container, containerStyle]}>
-      {questionType !== QuestionType.LABEL && (
+      {effectiveQuestionType !== QuestionType.LABEL && (
         <Text style={[styles.questionText, { fontSize, color: fontColor }]}>
           {questionText}
           {question.required && <Text style={styles.required}> *</Text>}

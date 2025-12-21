@@ -33,7 +33,8 @@
     "prepare": "husky install || true",
     "build:task-system": "yarn --cwd packages/task-system build",
     "apply-native-fixes": "./scripts/apply-native-fixes.sh",
-    "generate:task-system-fixture": "tsx scripts/generate-task-system-fixture.ts"
+    "generate:task-system-fixture": "tsx scripts/generate-task-system-fixture.ts",
+    "convert:poc-json": "tsx scripts/convert-poc-json-to-fixture.ts"
   },
   "workspaces": [
     "packages/*"

@@ -66,20 +66,24 @@ export class FixtureImportService {
       return map;
     };
 
-    // Build pk maps for idempotent upserts.
-    // Note: Dynamo primary key is "id", so pk is NOT unique. We explicitly dedupe by pk.
+    // Build pk+sk maps for idempotent upserts.
+    // Note: Activities can have the same pk but different sk values (e.g., all activities in a study share the same pk)
+    // We need to match by both pk AND sk to correctly identify existing activities
     const existingActivities = await DataStore.query(Activity);
-    const activitiesByPkList = groupByPk(existingActivities as any[]);
+    const activityByPkSk = new Map<string, any>(); // Key: `${pk}#${sk}`
     const duplicateActivities: any[] = [];
-    const activityByPk = new Map<string, any>();
-    activitiesByPkList.forEach((items, pk) => {
-      if (items.length === 1) {
-        activityByPk.set(pk, items[0]);
-        return;
+
+    existingActivities.forEach((activity: any) => {
+      const key = `${activity.pk}#${activity.sk}`;
+      const existing = activityByPkSk.get(key);
+      if (!existing) {
+        activityByPkSk.set(key, activity);
+      } else {
+        // If duplicate found, keep the latest one
+        const keep = selectLatestByLastChanged([existing, activity]);
+        activityByPkSk.set(key, keep);
+        duplicateActivities.push(keep === existing ? activity : existing);
       }
-      const keep = selectLatestByLastChanged(items as any[]);
-      activityByPk.set(pk, keep);
-      duplicateActivities.push(...items.filter(i => i !== keep));
     });
 
     const existingTasks = await DataStore.query(Task);
@@ -119,10 +123,11 @@ export class FixtureImportService {
 
     // Activities
     for (const activityInput of fixture.activities || []) {
-      const existing = activityByPk.get(activityInput.pk);
+      const key = `${activityInput.pk}#${activityInput.sk}`;
+      const existing = activityByPkSk.get(key);
       if (!existing) {
         const created = await ActivityService.createActivity(activityInput);
-        activityByPk.set(created.pk, created);
+        activityByPkSk.set(key, created);
         result.activities.created++;
         continue;
       }
@@ -139,7 +144,7 @@ export class FixtureImportService {
         })
       );
 
-      activityByPk.set(updated.pk, updated);
+      activityByPkSk.set(key, updated);
       result.activities.updated++;
     }
 

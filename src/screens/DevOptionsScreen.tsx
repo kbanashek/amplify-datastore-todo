@@ -129,6 +129,7 @@ export const DevOptionsScreen: React.FC = () => {
     lastError,
     generateFixtureJson,
     importFixtureFromRepo,
+    importPOCFixture,
     generateFixtureAndImport,
     freshCloudResetAndImport,
     resetLocalAndImport,
@@ -287,6 +288,25 @@ export const DevOptionsScreen: React.FC = () => {
               importFixtureFromRepo()
                 .then(() =>
                   Alert.alert("Done", "Imported fixture from repo file.")
+                )
+                .catch(() => {});
+            }}
+            disabled={isBusy}
+            loading={isImportingFixture}
+            variant="primary"
+          />
+
+          <ActionCard
+            title="Import POC Fixture"
+            description="Imports POC JSON fixture (37 activities, 2 tasks) from poc-fixture.9384dbad-2910-4a5b-928c-e004e06ed634.json"
+            buttonLabel="Run"
+            onPress={() => {
+              importPOCFixture()
+                .then(() =>
+                  Alert.alert(
+                    "Done",
+                    "Imported POC fixture. Check task list for 2 tasks."
+                  )
                 )
                 .catch(() => {});
             }}
