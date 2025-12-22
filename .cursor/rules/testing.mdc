@@ -1,7 +1,7 @@
 ---
 description: Unit testing requirements and patterns
 alwaysApply: true
-globs: ['**/*.test.ts', '**/*.test.tsx', '**/__tests__/**/*']
+globs: ["**/*.test.ts", "**/*.test.tsx", "**/__tests__/**/*"]
 ---
 
 # Testing
@@ -29,6 +29,13 @@ globs: ['**/*.test.ts', '**/*.test.tsx', '**/__tests__/**/*']
   2. **IMMEDIATELY create the corresponding test file** - tests are REQUIRED, not optional
   3. Write tests covering the main functionality
   4. Ensure tests pass before considering the feature complete
+- **When refactoring or moving code:**
+  1. **ALWAYS update or create unit tests** for moved/refactored code
+  2. Update test file paths to match new locations
+  3. Update test imports to reflect new module structure
+  4. Ensure all existing tests still pass after the move
+  5. Add new tests if functionality changes during refactoring
+  6. **NO EXCEPTIONS** - refactoring without updating tests is incomplete
 - **CRITICAL: ALL new files must have unit tests**
   - **Hooks**: `src/hooks/__tests__/useHookName.test.ts`
   - **Components**: `src/components/__tests__/ComponentName.test.tsx` or `src/components/[category]/__tests__/ComponentName.test.tsx`

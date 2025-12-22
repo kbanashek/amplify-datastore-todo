@@ -11,7 +11,7 @@ import { logErrorWithPlatform, logWithPlatform } from "./utils/platformLogger";
   try {
     logWithPlatform(
       "🚀",
-      "",
+      "INIT-1",
       "AmplifyInit",
       "Starting Amplify configuration (synchronous)"
     );
@@ -24,7 +24,12 @@ import { logErrorWithPlatform, logWithPlatform } from "./utils/platformLogger";
       throw new Error("Amplify configuration did not complete successfully");
     }
 
-    logWithPlatform("✅", "", "AmplifyInit", "Amplify configuration complete");
+    logWithPlatform(
+      "✅",
+      "INIT-1",
+      "AmplifyInit",
+      "Amplify configuration complete"
+    );
   } catch (error) {
     logErrorWithPlatform(
       "",

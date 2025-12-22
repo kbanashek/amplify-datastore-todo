@@ -42,31 +42,19 @@ export class ConsoleProvider implements LogProvider {
     const { level, message, metadata, platform, serviceName, step, icon } =
       entry;
 
-    // Format message based on configuration
-    let formattedMessage: string;
+    // New standard format: [Platform:task-system:ServiceName - STEP] : message (with icon inline)
+    // Or: [Platform:task-system:ServiceName] : message (with icon inline)
+    const iconPart = icon ? `${icon} ` : "";
+    const messageWithIcon = `${iconPart}${message}`;
+    const source = "task-system"; // Package source
 
-    if (
-      this.sequenceDiagram &&
-      step &&
-      (step.startsWith("INIT") || step.startsWith("DATA"))
-    ) {
-      // Use sequence diagram formatting for initialization logs
-      formattedMessage = formatSequenceDiagram(
-        step,
-        serviceName || "App",
-        message,
-        icon
-      );
-      // Add platform prefix if not in sequence format
-      if (platform) {
-        formattedMessage = `[${platform}] ${formattedMessage}`;
-      }
+    let formattedMessage: string;
+    if (step) {
+      // Initialization/data flow logs: [Platform:task-system:ServiceName - STEP] : message
+      formattedMessage = `[${platform}:${source}:${serviceName} - ${step}] : ${messageWithIcon}`;
     } else {
-      // Standard format
-      const stepPart = step ? `[${step}] ` : "";
-      const servicePart = serviceName ? `${serviceName}: ` : "";
-      const iconPart = icon ? `${icon} ` : "";
-      formattedMessage = `${iconPart}[${platform}] ${stepPart}${servicePart}${message}`;
+      // Function logs: [Platform:task-system:ServiceName] : message
+      formattedMessage = `[${platform}:${source}:${serviceName}] : ${messageWithIcon}`;
     }
 
     // Add inline metadata for single-line logs

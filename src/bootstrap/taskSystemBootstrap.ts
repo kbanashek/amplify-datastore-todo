@@ -13,6 +13,35 @@ export type TaskSystemBootstrapOptions = {
 };
 
 let bootstrapInFlight: Promise<void> | null = null;
+const bootstrapLogs = new Map<string, number>();
+const BOOTSTRAP_LOG_DEDUP_MS = 10000; // 10 second window for bootstrap logs (React Strict Mode)
+
+/**
+ * Deduplicated bootstrap logging
+ * Uses module-level cache to prevent duplicates even with React Strict Mode double renders
+ */
+function logBootstrap(icon: string, message: string): void {
+  const signature = `bootstrap-${message}`;
+  const now = Date.now();
+  const lastLogTime = bootstrapLogs.get(signature) || 0;
+
+  // Skip if logged within the deduplication window
+  if (now - lastLogTime < BOOTSTRAP_LOG_DEDUP_MS) {
+    return; // Skip duplicate
+  }
+
+  logWithPlatform(icon, "", "Bootstrap", message);
+  bootstrapLogs.set(signature, now);
+
+  // Clean up old entries periodically
+  if (bootstrapLogs.size > 50) {
+    const entries = Array.from(bootstrapLogs.entries());
+    entries
+      .sort((a, b) => a[1] - b[1])
+      .slice(0, 25)
+      .forEach(([key]) => bootstrapLogs.delete(key));
+  }
+}
 
 /**
  * Host-owned bootstrap (LX-style):
@@ -27,35 +56,20 @@ export async function bootstrapTaskSystem(
 
   if (!bootstrapInFlight) {
     bootstrapInFlight = (async () => {
-      logWithPlatform(
-        "🚀",
-        "",
-        "Bootstrap",
-        "Initializing task-system runtime"
-      );
+      logBootstrap("🚀", "Initializing task-system runtime");
       // Initialize task-system runtime configuration (no Amplify.configure() inside)
       await initTaskSystem({ startDataStore: false });
-      logWithPlatform("✅", "", "Bootstrap", "Task-system runtime initialized");
+      logBootstrap("✅", "Task-system runtime initialized");
 
       if (startDataStore) {
-        logWithPlatform("☁️", "", "Bootstrap", "Starting AWS DataStore");
+        logBootstrap("☁️", "Starting AWS DataStore");
         await DataStore.start();
-        logWithPlatform(
-          "☁️",
-          "",
-          "Bootstrap",
-          "AWS DataStore started - ready for cloud sync"
-        );
+        logBootstrap("☁️", "AWS DataStore started - ready for cloud sync");
       }
 
       // Configure TempAnswerSyncService with real Amplify GraphQL API
       // This enables temp-save functionality when users click Next in questionnaires
-      logWithPlatform(
-        "🚀",
-        "",
-        "Bootstrap",
-        "Configuring temp answer sync service"
-      );
+      logBootstrap("🚀", "Configuring temp answer sync service");
 
       // Verify Amplify is configured before calling generateClient
       // Note: We check isConfigured flag directly to avoid triggering the warning
@@ -81,16 +95,30 @@ export async function bootstrapTaskSystem(
         executor: {
           execute: async ({ document, variables }) => {
             try {
-              logWithPlatform(
-                "💾",
-                "",
-                "bootstrapTaskSystem",
-                "Executing temp-save GraphQL mutation",
-                {
-                  document: document.substring(0, 80),
-                  variableKeys: Object.keys(variables ?? {}),
-                }
-              );
+              // Deduplicate GraphQL mutation logs - use a more specific signature
+              const variableKeysStr = Object.keys(variables ?? {})
+                .sort()
+                .join(",");
+              const mutationSignature = `mutation-exec-${document.substring(0, 40)}-${variableKeysStr}`;
+              const mutationLastLog = bootstrapLogs.get(mutationSignature) || 0;
+              const now = Date.now();
+
+              // Only log if not a duplicate (but still execute the mutation)
+              if (now - mutationLastLog >= BOOTSTRAP_LOG_DEDUP_MS) {
+                // Format metadata as readable list
+                const metadataList = [
+                  `  • document: ${document.substring(0, 80)}`,
+                  `  • variableKeys: [${Object.keys(variables ?? {}).join(", ")}]`,
+                ].join("\n");
+
+                logWithPlatform(
+                  "💾",
+                  "",
+                  "bootstrapTaskSystem",
+                  `Executing temp-save GraphQL mutation\n${metadataList}`
+                );
+                bootstrapLogs.set(mutationSignature, now);
+              }
 
               // Use Amplify's real GraphQL API client
               const response = await client.graphql({
@@ -148,27 +176,19 @@ export async function bootstrapTaskSystem(
       // This will automatically retry any queued temp answers from previous sessions
       // when the app starts (if network is online) or when network comes back online.
       // This is expected behavior - queued items persist across app restarts until synced.
-      logWithPlatform(
-        "🚀",
-        "",
-        "Bootstrap",
-        "Starting auto-flush for queued temp answers"
-      );
+      logBootstrap("🚀", "Starting auto-flush for queued temp answers");
       TempAnswerSyncService.startAutoFlush();
-      logWithPlatform(
+      logBootstrap(
         "✅",
-        "",
-        "Bootstrap",
         "Auto-flush started - will retry queued items on network online"
       );
-      logWithPlatform(
-        "✅",
-        "",
-        "Bootstrap",
-        "All initialization complete - data services ready"
-      );
+      logBootstrap("✅", "All initialization complete - data services ready");
     })().finally(() => {
-      bootstrapInFlight = null;
+      // Don't reset bootstrapInFlight immediately - keep it for a bit to prevent rapid re-initialization
+      // This helps with React Strict Mode double renders
+      setTimeout(() => {
+        bootstrapInFlight = null;
+      }, 1000); // Keep for 1 second after completion
     });
   }
 

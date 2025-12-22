@@ -7,10 +7,10 @@ import {
 } from "@aws-sdk/client-translate";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AWSErrorName } from "../constants/awsErrors";
-import { TranslationMemoryService } from "./TranslationMemoryService";
-import { simpleHash } from "../utils/simpleHash";
-import type { LanguageCode } from "./translationTypes";
 import { getServiceLogger } from "../utils/serviceLogger";
+import { simpleHash } from "../utils/simpleHash";
+import { TranslationMemoryService } from "./TranslationMemoryService";
+import type { LanguageCode } from "./translationTypes";
 
 // Try to load credentials from config file (created by load-aws-credentials script)
 let awsCredentials: {
@@ -23,10 +23,9 @@ try {
   // Try to import credentials from config file
   // Use dynamic require that works in both Node.js and React Native
   awsCredentials = require("../config/aws-credentials.json");
-  getServiceLogger("TranslationService").info(
-    "Loaded credentials from config file"
-  );
-} catch (error) {
+  // Don't log here at module load time - logging service may not be initialized yet
+  // Logging will happen when TranslationService is actually used
+} catch {
   // Config file doesn't exist, will use environment variables or default provider
   awsCredentials = null;
 }
@@ -387,7 +386,7 @@ export class TranslationService {
           // This is a conservative estimate
           textBytes = cleanText.length * 2; // Approximate: assume average 2 bytes per char
         }
-      } catch (error) {
+      } catch {
         // Fallback to character count * 2 (conservative estimate)
         textBytes = cleanText.length * 2;
       }
@@ -439,7 +438,6 @@ export class TranslationService {
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : String(error);
-      const errorStack = error instanceof Error ? error.stack : undefined;
       const errorName = error instanceof Error ? error.name : undefined;
 
       // Check if it's a clock skew error

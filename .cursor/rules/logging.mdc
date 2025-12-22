@@ -83,6 +83,60 @@ alwaysApply: true
 - **Don't use generic icons** - use specific icons for context
 - **Don't log without step numbers** for initialization/data flow
 
+## Readable JSON Formatting in Logs
+
+**NEVER log JSON blobs directly** - format data as human-readable text instead.
+
+**When logging arrays or objects with multiple items:**
+- Format as a readable list in the message itself (using newlines and bullet points)
+- Keep metadata minimal (only essential summary info)
+- Use multi-line formatted strings for complex data structures
+
+**Examples:**
+
+**❌ Bad (JSON blob in metadata):**
+```typescript
+logWithPlatform("📋", "", "useTaskList", `Received ${items.length} tasks`, {
+  tasks: items.map(t => ({ title: t.title, startTime: t.startTime, ... })), // Creates huge JSON blob
+});
+```
+
+**✅ Good (formatted list in message):**
+```typescript
+const taskList = items
+  .map(t => {
+    const startDate = t.startTimeInMillSec
+      ? new Date(t.startTimeInMillSec).toISOString().split("T")[0]
+      : "no date";
+    return `  • ${t.title} (start: ${startDate})`;
+  })
+  .join("\n");
+
+logWithPlatform(
+  "📋",
+  "",
+  "useTaskList",
+  `Received ${items.length} tasks (synced-with-cloud)\n${taskList}`,
+  { status: "synced-with-cloud" } // Minimal metadata
+);
+```
+
+**Output:**
+```
+📋 [Android] useTaskList: Received 12 tasks (synced-with-cloud)
+  • All Question Types Test (Fixture) (start: 2025-12-21)
+  • Multi Page (3 screens) Test (Fixture) (start: 2025-12-21)
+  • Sample Task 3 (Fixture) (start: 2025-12-21)
+  ...
+```
+
+**Guidelines:**
+- Use bullet points (`•`) or dashes (`-`) for list items
+- Indent list items with 2 spaces for readability
+- Include essential info inline (dates, status, counts)
+- Keep metadata objects small (max 3-4 key-value pairs)
+- For large arrays (>10 items), consider showing summary + sample items
+
 ## Concise Logging Examples
 
 **Before (verbose):**

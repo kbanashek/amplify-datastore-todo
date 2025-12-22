@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ActivityService } from "../services/ActivityService";
 import { Activity } from "../types/Activity";
-import { getServiceLogger } from "../utils/serviceLogger";
-
-const logger = getServiceLogger("useActivityList");
+import { logErrorWithPlatform } from "../utils/platformLogger";
+import { dataSubscriptionLogger } from "../utils/dataSubscriptionLogger";
 
 interface UseActivityListReturn {
   activities: Activity[];
@@ -18,15 +17,33 @@ export const useActivityList = (): UseActivityListReturn => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [subscription, setSubscription] = useState<(() => void) | null>(null);
+  const lastActivityCountRef = useRef<number>(-1);
+  const lastSyncedRef = useRef<boolean | null>(null);
+  const lastLoggedStateRef = useRef<string>("");
 
   useEffect(() => {
     const sub = ActivityService.subscribeActivities((items, isSynced) => {
+      // Only log if activity count or sync status actually changed
+      const countChanged = items.length !== lastActivityCountRef.current;
+      const syncChanged = isSynced !== lastSyncedRef.current;
+
+      if (countChanged || syncChanged) {
+        // Use centralized logger to prevent duplicates across hook instances
+        dataSubscriptionLogger.logActivities(
+          items.map(a => ({
+            name: a.name,
+            title: a.title,
+            createdAt: a.createdAt,
+          })),
+          isSynced,
+          "useActivityList"
+        );
+        lastActivityCountRef.current = items.length;
+        lastSyncedRef.current = isSynced;
+      }
+
       setActivities(items);
       setLoading(false);
-      logger.debug("Activities updated", {
-        count: items.length,
-        synced: isSynced,
-      });
     });
     setSubscription(() => sub.unsubscribe);
 
@@ -41,7 +58,12 @@ export const useActivityList = (): UseActivityListReturn => {
     try {
       await ActivityService.deleteActivity(id);
     } catch (err) {
-      logger.error("Error deleting activity", err);
+      logErrorWithPlatform(
+        "",
+        "useActivityList",
+        "Error deleting activity",
+        err
+      );
       setError("Failed to delete activity.");
     }
   };
@@ -53,7 +75,12 @@ export const useActivityList = (): UseActivityListReturn => {
       setActivities(allActivities);
       setLoading(false);
     } catch (err) {
-      logger.error("Error refreshing activities", err);
+      logErrorWithPlatform(
+        "",
+        "useActivityList",
+        "Error refreshing activities",
+        err
+      );
       setError("Failed to refresh activities.");
       setLoading(false);
     }
