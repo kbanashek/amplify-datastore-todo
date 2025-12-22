@@ -6,14 +6,14 @@ import {
   Text,
   View,
 } from "react-native";
-import { GroupedTask } from "../hooks/useGroupedTasks";
 import { AppColors } from "../constants/AppColors";
+import { TestIds } from "../constants/testIds";
+import { GroupedTask } from "../hooks/useGroupedTasks";
 import { Appointment } from "../types/Appointment";
 import { Task } from "../types/Task";
 import { AppointmentCard } from "./AppointmentCard";
 import { TaskCard } from "./TaskCard";
 import { TranslatedText } from "./TranslatedText";
-import { TestIds } from "../constants/testIds";
 
 interface GroupedTasksViewProps {
   groupedTasks: GroupedTask[];
