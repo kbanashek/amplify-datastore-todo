@@ -5,7 +5,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useEffect, useMemo } from "react";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { TaskContainer } from "./src/components/TaskContainer";
 import { TranslationProvider } from "./src/contexts/TranslationContext";
 import QuestionsScreen from "./src/screens/QuestionsScreen";
@@ -61,13 +61,18 @@ export const TaskActivityModule: React.FC<TaskActivityModuleProps> = ({
   }, [navigationRef, resetSignal]);
 
   const navigationContent = (
-    <View style={{ flex: 1, minHeight: 1 }}>
+    <View style={styles.navigationWrapper}>
       <NavigationContainer
         ref={navigationRef}
         {...({ independent: true } as any)}
       >
         <Stack.Navigator
-          {...({ screenOptions: { headerShown: false } } as any)}
+          {...({
+            screenOptions: {
+              headerShown: false,
+              contentStyle: { margin: 0, padding: 0 },
+            },
+          } as any)}
         >
           <Stack.Screen name="TaskDashboard" component={TaskContainer as any} />
           <Stack.Screen name="TaskQuestions">
@@ -94,3 +99,15 @@ export const TaskActivityModule: React.FC<TaskActivityModuleProps> = ({
     </TranslationProvider>
   );
 };
+
+const styles = StyleSheet.create({
+  navigationWrapper: {
+    flex: 1,
+    minHeight: 1,
+    marginHorizontal: 0,
+    paddingHorizontal: 0,
+    marginTop: 0,
+    paddingTop: 0,
+    backgroundColor: "transparent",
+  },
+});

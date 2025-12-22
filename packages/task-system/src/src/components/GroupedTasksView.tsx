@@ -8,9 +8,11 @@ import {
 } from "react-native";
 import { AppColors } from "../constants/AppColors";
 import { TestIds } from "../constants/testIds";
+import { useTranslation } from "../contexts/TranslationContext";
 import { GroupedTask } from "../hooks/useGroupedTasks";
 import { Appointment } from "../types/Appointment";
 import { Task } from "../types/Task";
+import { getServiceLogger } from "../utils/serviceLogger";
 import { AppointmentCard } from "./AppointmentCard";
 import { TaskCard } from "./TaskCard";
 import { TranslatedText } from "./TranslatedText";
@@ -38,6 +40,56 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
   onAppointmentPress,
   appointmentTimezoneId,
 }) => {
+  const translationContext = useTranslation();
+  const { currentLanguage } = translationContext;
+  const loggerRef = React.useRef(getServiceLogger("GroupedTasksView"));
+  const prevLanguageRef = React.useRef<string>(currentLanguage);
+  const componentRenderCountRef = React.useRef<number>(0);
+
+  // Log EVERY render to see if component is re-rendering
+  React.useEffect(() => {
+    componentRenderCountRef.current += 1;
+    loggerRef.current.debug(
+      "GroupedTasksView rendered",
+      {
+        renderCount: componentRenderCountRef.current,
+        currentLanguage,
+        previousLanguage: prevLanguageRef.current,
+        languageChanged: prevLanguageRef.current !== currentLanguage,
+      },
+      undefined,
+      "📋"
+    );
+  });
+
+  // Log when language changes
+  React.useEffect(() => {
+    const languageChanged = prevLanguageRef.current !== currentLanguage;
+    const taskCount = groupedTasks.reduce(
+      (sum, group) =>
+        sum +
+        group.tasksWithoutTime.length +
+        group.timeGroups.reduce((s, tg) => s + tg.tasks.length, 0),
+      0
+    );
+    loggerRef.current.debug(
+      "GroupedTasksView language changed",
+      {
+        currentLanguage,
+        previousLanguage: prevLanguageRef.current,
+        languageChanged,
+        taskCount,
+        scrollViewKey: `scroll-${currentLanguage}`,
+        willRemountScrollView: languageChanged,
+        contextCurrentLanguage: translationContext.currentLanguage,
+        contextMatches: translationContext.currentLanguage === currentLanguage,
+      },
+      undefined,
+      "📋"
+    );
+    prevLanguageRef.current = currentLanguage;
+  }, [currentLanguage, groupedTasks, translationContext]);
+
   if (loading) {
     return (
       <View style={[styles.centerContainer, styles.fill]}>
@@ -69,6 +121,7 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
 
   return (
     <ScrollView
+      key={currentLanguage} // force re-render on language change
       style={styles.scroll}
       contentContainerStyle={styles.scrollContent}
       testID={TestIds.dashboardTasksGroupedView}
@@ -107,7 +160,10 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
         const showAppointments = isToday && todayAppointments.length > 0;
 
         return (
-          <View key={dayGroup.dayLabel} style={styles.dayGroup}>
+          <View
+            key={`${dayGroup.dayLabel}-${currentLanguage}`}
+            style={styles.dayGroup}
+          >
             {/* Date Header - hide if hideDateHeader is true and it's "Today" */}
             {!(hideDateHeader && dayGroup.dayLabel === "Today") && (
               <View style={styles.dayHeader}>
@@ -146,32 +202,41 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
             ) : null}
 
             {/* Tasks without due time (simple cards) */}
-            {dayGroup.tasksWithoutTime.map(task => (
-              <TaskCard
-                key={task.id}
-                task={task}
-                simple={true}
-                onPress={onTaskPress}
-                onDelete={onDelete}
-              />
-            ))}
+            <View key={`tasks-without-time-${currentLanguage}`}>
+              {dayGroup.tasksWithoutTime.map(task => (
+                <TaskCard
+                  key={`${task.id}-${currentLanguage}`}
+                  task={task}
+                  simple={true}
+                  onPress={onTaskPress}
+                  onDelete={onDelete}
+                />
+              ))}
+            </View>
 
             {/* Tasks grouped by time */}
             {dayGroup.timeGroups.map(timeGroup => (
-              <View key={timeGroup.time} style={styles.timeGroup}>
+              <View
+                key={`${timeGroup.time}-${currentLanguage}`}
+                style={styles.timeGroup}
+              >
                 <View style={styles.dueByRow}>
                   <TranslatedText text="DUE BY" style={styles.dueByHeader} />
                   <Text style={styles.dueByTime}>{timeGroup.time}</Text>
                 </View>
-                {timeGroup.tasks.map(task => (
-                  <TaskCard
-                    key={task.id}
-                    task={task}
-                    simple={false}
-                    onPress={onTaskPress}
-                    onDelete={onDelete}
-                  />
-                ))}
+                <View
+                  key={`time-group-tasks-${timeGroup.time}-${currentLanguage}`}
+                >
+                  {timeGroup.tasks.map(task => (
+                    <TaskCard
+                      key={`${task.id}-${currentLanguage}`}
+                      task={task}
+                      simple={false}
+                      onPress={onTaskPress}
+                      onDelete={onDelete}
+                    />
+                  ))}
+                </View>
               </View>
             ))}
           </View>
@@ -193,6 +258,8 @@ const styles = StyleSheet.create({
   },
   dayGroup: {
     marginBottom: 4,
+    marginTop: 20,
+    paddingHorizontal: 20,
   },
   dayHeader: {
     flexDirection: "row",

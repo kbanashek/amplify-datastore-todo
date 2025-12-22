@@ -89,7 +89,9 @@ const styles = StyleSheet.create({
   },
   moduleContainer: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 0,
+    paddingTop: 0,
+    paddingBottom: 20,
   },
   sectionTitle: {
     fontSize: 20,

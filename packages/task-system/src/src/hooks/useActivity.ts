@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ActivityService } from "../services/ActivityService";
 import { Activity } from "../types/Activity";
-import { logWithPlatform, logErrorWithPlatform } from "../utils/platformLogger";
+import { logErrorWithPlatform, logWithPlatform } from "../utils/platformLogger";
 
 interface UseActivityReturn {
   activity: Activity | null;
