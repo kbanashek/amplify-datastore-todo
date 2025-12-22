@@ -1,6 +1,6 @@
+import { NetworkStatus, SyncState, useAmplify } from "@orion/task-system";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { NetworkStatus, SyncState, useAmplify } from "@orion/task-system";
 
 export const SyncStatusBanner: React.FC = () => {
   const { networkStatus, syncState, conflictCount } = useAmplify();

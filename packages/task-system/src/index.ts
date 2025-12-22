@@ -28,6 +28,12 @@ export { ActivityService } from "./src/services/ActivityService";
 export { AppointmentService } from "./src/services/AppointmentService";
 export { ConflictResolution } from "./src/services/ConflictResolution";
 export { DataPointService } from "./src/services/DataPointService";
+export {
+  LoggingService,
+  initializeLoggingService,
+  getLoggingService,
+} from "./src/services/LoggingService";
+export type { LoggingConfig } from "./src/services/logging/types";
 export { QuestionService } from "./src/services/QuestionService";
 export { SeededDataCleanupService } from "./src/services/SeededDataCleanupService";
 export { TaskAnswerService } from "./src/services/TaskAnswerService";

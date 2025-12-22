@@ -3,44 +3,22 @@
  * All logs must include platform identification (iOS, Android, or Web)
  */
 
-import { getPlatform } from "./platform";
+import { getPlatformIcon } from "./platformIcons";
 
 /**
  * Get platform identifier for logging
- * @returns Platform identifier string (e.g., "iOS", "Android", "Web")
+ * @returns Platform identifier emoji (e.g., "🍎", "🤖", "🌐")
  */
 export function getPlatformId(): string {
-  const platform = getPlatform();
-
-  // Map platform to display format
-  if (platform === "ios") {
-    return "iOS";
-  }
-  if (platform === "android") {
-    return "Android";
-  }
-  if (platform === "web") {
-    // For web, try to get more specific info
-    const userAgent =
-      typeof navigator !== "undefined" ? navigator.userAgent : "";
-    if (userAgent.includes("iPhone") || userAgent.includes("iPad")) {
-      return "Web-iOS";
-    }
-    if (userAgent.includes("Android")) {
-      return "Web-Android";
-    }
-    return "Web";
-  }
-
-  // Fallback: capitalize first letter
-  return platform.charAt(0).toUpperCase() + platform.slice(1);
+  return getPlatformIcon();
 }
 
 /**
  * Create a log message with platform prefix
- * Format: [ICON] [PLATFORM] [STEP] ServiceName: message
+ * New format: [Platform:task-system:ServiceName - STEP] : icon message
+ * Or: [Platform:task-system:ServiceName] : icon message
  *
- * @param icon - Emoji icon for the log type
+ * @param icon - Emoji icon for the log type (will be inline in message)
  * @param step - Step identifier (e.g., "INIT-1", "DATA-1", or empty string)
  * @param serviceName - Name of the service/module logging
  * @param message - The log message
@@ -53,8 +31,17 @@ export function formatLogMessage(
   message: string
 ): string {
   const platform = getPlatformId();
-  const stepPart = step ? `[${step}] ` : "";
-  return `${icon} [${platform}] ${stepPart}${serviceName}: ${message}`;
+  const iconPart = icon ? `${icon} ` : "";
+  const messageWithIcon = `${iconPart}${message}`;
+  const source = "task-system"; // Package source
+
+  if (step) {
+    // Initialization/data flow logs: [Platform:task-system:ServiceName - STEP] : message
+    return `[${platform}:${source}:${serviceName} - ${step}] : ${messageWithIcon}`;
+  } else {
+    // Function logs: [Platform:task-system:ServiceName] : message
+    return `[${platform}:${source}:${serviceName}] : ${messageWithIcon}`;
+  }
 }
 
 /**
@@ -116,9 +103,18 @@ export function logErrorWithPlatform(
   // Use console directly - package is self-contained
   // Main app services should use the centralized logging service
   const platform = getPlatformId();
-  const stepPart = step ? `[${step}] ` : "";
+  const source = "task-system"; // Package source
   const errorMessage =
     error instanceof Error ? error.message : error ? String(error) : "";
-  const fullMessage = `❌ [${platform}] ${stepPart}${serviceName}: ${message}${errorMessage ? ` - ${errorMessage}` : ""}`;
-  console.error(fullMessage);
+  const fullMessage = `${message}${errorMessage ? ` - ${errorMessage}` : ""}`;
+
+  if (step) {
+    // Initialization/data flow logs: [Platform:task-system:ServiceName - STEP] : ❌ message
+    console.error(
+      `[${platform}:${source}:${serviceName} - ${step}] : ❌ ${fullMessage}`
+    );
+  } else {
+    // Function logs: [Platform:task-system:ServiceName] : ❌ message
+    console.error(`[${platform}:${source}:${serviceName}] : ❌ ${fullMessage}`);
+  }
 }

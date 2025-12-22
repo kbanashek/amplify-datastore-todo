@@ -14,8 +14,8 @@ import {
   LoggingService,
   initializeLoggingService,
   getLoggingService,
-} from "../services/LoggingService";
-import type { LoggingConfig } from "../services/logging/types";
+  type LoggingConfig,
+} from "@orion/task-system";
 
 interface LoggingContextType {
   logger: LoggingService;

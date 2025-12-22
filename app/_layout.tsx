@@ -22,6 +22,37 @@ import { bootstrapTaskSystem } from "../src/bootstrap/taskSystemBootstrap";
 import { LoggingProvider } from "../src/contexts/LoggingContext";
 import { useLogger } from "../src/hooks/useLogger";
 
+// Module-level deduplication for RootLayout logs
+const rootLayoutLogs = new Map<string, number>();
+const ROOT_LAYOUT_LOG_DEDUP_MS = 10000; // 10 second window (React Strict Mode)
+
+/**
+ * Deduplicated RootLayout logging
+ * Uses module-level cache to prevent duplicates even with React Strict Mode double renders
+ */
+function logRootLayout(logger: any, message: string, icon: string): void {
+  const signature = `rootlayout-${message}`;
+  const now = Date.now();
+  const lastLogTime = rootLayoutLogs.get(signature) || 0;
+
+  // Skip if logged within the deduplication window
+  if (now - lastLogTime < ROOT_LAYOUT_LOG_DEDUP_MS) {
+    return; // Skip duplicate
+  }
+
+  logger.info(message, undefined, "RootLayout", "", icon);
+  rootLayoutLogs.set(signature, now);
+
+  // Clean up old entries periodically
+  if (rootLayoutLogs.size > 50) {
+    const entries = Array.from(rootLayoutLogs.entries());
+    entries
+      .sort((a, b) => a[1] - b[1])
+      .slice(0, 25)
+      .forEach(([key]) => rootLayoutLogs.delete(key));
+  }
+}
+
 function RootLayoutContent() {
   const colorScheme = useColorScheme();
   const logger = useLogger();
@@ -38,20 +69,12 @@ function RootLayoutContent() {
 
     (async () => {
       try {
-        logger.info(
-          "Starting task system bootstrap",
-          undefined,
-          "RootLayout",
-          "",
-          "🚀"
-        );
+        logRootLayout(logger, "Starting task system bootstrap", "🚀");
         await bootstrapTaskSystem({ startDataStore: true });
         if (!cancelled) {
-          logger.info(
+          logRootLayout(
+            logger,
             "Task system bootstrap complete - app ready to render",
-            undefined,
-            "RootLayout",
-            "",
             "✅"
           );
         }

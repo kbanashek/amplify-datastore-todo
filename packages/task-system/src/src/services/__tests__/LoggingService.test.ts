@@ -59,18 +59,25 @@ describe("LoggingService", () => {
 
   describe("log level filtering", () => {
     it("should filter logs below minimum level", () => {
-      const service = new LoggingService({ minLevel: "warn" });
+      // Set up spies before creating service to catch INIT-0 log
       const consoleSpy = jest.spyOn(console, "log").mockImplementation();
       const warnSpy = jest.spyOn(console, "warn").mockImplementation();
+
+      const service = new LoggingService({ minLevel: "warn" });
+
+      // Clear INIT-0 log calls to test only the filtered messages
+      consoleSpy.mockClear();
 
       service.debug("Debug message");
       service.info("Info message");
       service.warn("Warn message");
 
-      // console.log is called for the initial log level message (INIT-0)
-      // but not for debug/info messages when minLevel is warn
-      expect(consoleSpy).toHaveBeenCalled(); // INIT-0 log level message
+      // After clearing, console.log should not be called for debug/info when minLevel is warn
+      expect(consoleSpy).not.toHaveBeenCalled();
       expect(warnSpy).toHaveBeenCalled();
+
+      consoleSpy.mockRestore();
+      warnSpy.mockRestore();
     });
   });
 

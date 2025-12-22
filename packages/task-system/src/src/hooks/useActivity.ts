@@ -34,14 +34,23 @@ export const useActivity = (activityId: string | null): UseActivityReturn => {
         activityId,
       });
       const activities = await ActivityService.getActivities();
+      // Format activities as readable list instead of JSON blob
+      const activityList = activities
+        .map(a => {
+          const name = a.name || a.title || "unnamed";
+          const createdDate = a.createdAt
+            ? new Date(a.createdAt).toISOString().split("T")[0]
+            : "no date";
+          return `  • ${name} (created: ${createdDate})`;
+        })
+        .join("\n");
+
       logWithPlatform(
         "📋",
         "",
         "useActivity",
-        `Found ${activities.length} activities in DataStore`,
-        {
-          activityIds: activities.map(a => ({ pk: a.pk, sk: a.sk, id: a.id })),
-        }
+        `Found ${activities.length} activities\n${activityList}`,
+        {}
       );
 
       // Match by pk, id, or activity ID in sk (format: "Activity#Activity.{activityId}")

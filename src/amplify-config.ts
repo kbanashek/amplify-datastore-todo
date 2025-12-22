@@ -42,11 +42,21 @@ export const configureAmplify = (): void => {
     Amplify.configure(config as any);
 
     const apiKeyPrefix = awsconfig.aws_appsync_apiKey?.substring(0, 10) + "...";
+
+    // Format metadata as readable list (like tasks/activities)
+    const configDetails = [
+      `  • endpoint: ${awsconfig.aws_appsync_graphqlEndpoint}`,
+      `  • region: ${awsconfig.aws_appsync_region}`,
+      `  • authType: ${awsconfig.aws_appsync_authenticationType}`,
+      `  • apiKeyPrefix: ${apiKeyPrefix}`,
+      `  • hasApiKey: ${!!awsconfig.aws_appsync_apiKey}`,
+    ].join("\n");
+
     logWithPlatform(
       "🔐",
-      "",
+      "INIT-1",
       "AmplifyConfig",
-      "Amplify configured with API_KEY authentication",
+      `Amplify configured with API_KEY authentication\n${configDetails}`,
       {
         endpoint: awsconfig.aws_appsync_graphqlEndpoint,
         region: awsconfig.aws_appsync_region,

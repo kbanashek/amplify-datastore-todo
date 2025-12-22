@@ -4,6 +4,7 @@ import { TaskService } from "../services/TaskService";
 import { Task, TaskFilters } from "../types/Task";
 import { NetworkStatus } from "./useAmplifyState";
 import { logWithPlatform, logErrorWithPlatform } from "../utils/platformLogger";
+import { dataSubscriptionLogger } from "../utils/dataSubscriptionLogger";
 
 interface UseTaskListReturn {
   tasks: Task[];
@@ -30,6 +31,7 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
   const lastTaskCountRef = useRef<number>(-1);
   const lastSyncedRef = useRef<boolean | null>(null);
   const hasLoggedInitRef = useRef<boolean>(false);
+  const lastLoggedStateRef = useRef<string>("");
 
   const initTasks = async (): Promise<void> => {
     try {
@@ -37,7 +39,7 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
       setError(null);
 
       if (!hasLoggedInitRef.current) {
-        logWithPlatform("📋", "", "useTaskList", "Subscribing to task data");
+        dataSubscriptionLogger.logSubscriptionStart("useTaskList", "task");
         hasLoggedInitRef.current = true;
       }
 
@@ -49,14 +51,15 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
         const syncChanged = synced !== lastSyncedRef.current;
 
         if (countChanged || syncChanged) {
-          logWithPlatform(
-            "📋",
-            "",
-            "useTaskList",
-            `Received ${items.length} tasks`,
-            {
-              status: synced ? "synced-with-cloud" : "local-only",
-            }
+          // Use centralized logger to prevent duplicates across hook instances
+          dataSubscriptionLogger.logTasks(
+            items.map(t => ({
+              title: t.title,
+              startTimeInMillSec: t.startTimeInMillSec,
+              expireTimeInMillSec: t.expireTimeInMillSec,
+            })),
+            synced,
+            "useTaskList"
           );
           lastTaskCountRef.current = items.length;
           lastSyncedRef.current = synced;

@@ -106,11 +106,19 @@ const hasGraphQLErrors = (resp: unknown): boolean => {
 export class TempAnswerSyncService {
   static configure(next: TempAnswerSyncConfig): void {
     config = next;
-    debugLog("⚙️", "", "Service configured", {
-      storageKey: next.storageKey ?? DEFAULT_STORAGE_KEY,
-      hasExecutor: !!next.executor,
-      hasMapper: !!next.mapper,
-    });
+
+    // Format metadata as readable list
+    const storageKey = next.storageKey ?? DEFAULT_STORAGE_KEY;
+    const hasExecutor = !!next.executor;
+    const hasMapper = !!next.mapper;
+    const metadataList = [
+      `  • hasExecutor: ${hasExecutor}`,
+      `  • hasMapper: ${hasMapper}`,
+      `  • storageKey: ${storageKey}`,
+    ].join("\n");
+
+    // Don't pass metadata object - it's already formatted in the message
+    debugLog("⚙️", "", `Service configured\n${metadataList}`);
   }
 
   static isConfigured(): boolean {
@@ -141,10 +149,17 @@ export class TempAnswerSyncService {
       const isOnline =
         state.isInternetReachable === true || state.isConnected === true;
       if (isOnline) {
+        // Format metadata as readable list
+        const metadataList = [
+          `  • isConnected: ${state.isConnected}`,
+          `  • isInternetReachable: ${state.isInternetReachable}`,
+          `  • trigger: auto-flush-on-network-online`,
+        ].join("\n");
+
         debugLog(
           "🔄",
           "",
-          "Network online detected → Auto-flushing queued temp answers (this is expected on app refresh if items are queued)",
+          `Network online detected → Auto-flushing queued temp answers (this is expected on app refresh if items are queued)\n${metadataList}`,
           {
             isConnected: state.isConnected,
             isInternetReachable: state.isInternetReachable,
@@ -377,20 +392,45 @@ export class TempAnswerSyncService {
       let flushed = 0;
       const nextOutbox: OutboxState = { ...outbox };
 
-      debugLog("🚀", "", "Starting flush of queued temp answers", {
-        storageKey,
-        queued: items.length,
-        source: "auto-flush-on-app-refresh-or-network-online",
-      });
+      // Format metadata as readable list
+      const flushMetadataList = [
+        `  • queued: ${items.length}`,
+        `  • source: auto-flush-on-app-refresh-or-network-online`,
+        `  • storageKey: ${storageKey}`,
+      ].join("\n");
+
+      debugLog(
+        "🚀",
+        "",
+        `Starting flush of queued temp answers\n${flushMetadataList}`,
+        {
+          storageKey,
+          queued: items.length,
+          source: "auto-flush-on-app-refresh-or-network-online",
+        }
+      );
 
       for (const item of items) {
         try {
-          debugLog("📤", "", "Attempting to sync queued temp answer", {
-            stableKey: item.stableKey,
-            updatedAt: item.updatedAt,
-            documentSnippet: item.document.slice(0, 80),
-            variableKeys: Object.keys(item.variables ?? {}),
-          });
+          // Format metadata as readable list
+          const syncMetadataList = [
+            `  • stableKey: ${item.stableKey}`,
+            `  • documentSnippet: ${item.document.slice(0, 80)}`,
+            `  • variableKeys: [${Object.keys(item.variables ?? {}).join(", ")}]`,
+            `  • updatedAt: ${item.updatedAt}`,
+          ].join("\n");
+
+          debugLog(
+            "📤",
+            "",
+            `Attempting to sync queued temp answer\n${syncMetadataList}`,
+            {
+              stableKey: item.stableKey,
+              updatedAt: item.updatedAt,
+              documentSnippet: item.document.slice(0, 80),
+              variableKeys: Object.keys(item.variables ?? {}),
+            }
+          );
 
           const resp = await executor.execute({
             document: item.document,

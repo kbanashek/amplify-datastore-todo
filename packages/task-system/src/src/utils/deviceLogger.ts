@@ -3,7 +3,7 @@
  * Helps identify which device/platform is performing operations
  */
 
-import { Platform } from "react-native";
+import { getPlatformIcon } from "./platformIcons";
 
 /**
  * Enable verbose debug logging only when explicitly opted-in.
@@ -28,26 +28,10 @@ function debugLogsEnabled(): boolean {
 
 /**
  * Get device/platform identifier for logging
- * @returns Device identifier string (e.g., "iOS", "Android", "Web")
+ * @returns Device identifier emoji (e.g., "🍎", "🤖", "🌐")
  */
 export function getDeviceId(): string {
-  const platform = Platform.OS;
-  const platformName = platform.charAt(0).toUpperCase() + platform.slice(1);
-
-  // For web, try to get more specific info
-  if (platform === "web") {
-    const userAgent =
-      typeof navigator !== "undefined" ? navigator.userAgent : "";
-    if (userAgent.includes("iPhone") || userAgent.includes("iPad")) {
-      return "Web-iOS";
-    }
-    if (userAgent.includes("Android")) {
-      return "Web-Android";
-    }
-    return "Web";
-  }
-
-  return platformName;
+  return getPlatformIcon();
 }
 
 /**
@@ -63,6 +47,7 @@ export function getLogPrefix(serviceName: string): string {
 
 /**
  * Log with device context
+ * Uses new standard format: [Platform:task-system:ServiceName] : message
  */
 export function logWithDevice(
   serviceName: string,
@@ -70,26 +55,34 @@ export function logWithDevice(
   data?: any
 ): void {
   if (!debugLogsEnabled()) return;
-  const prefix = getLogPrefix(serviceName);
+  const deviceId = getDeviceId();
+  const source = "task-system"; // Package source
+  const formattedMessage = `[${deviceId}:${source}:${serviceName}] : ${message}`;
   if (data) {
-    console.log(`${prefix} ${message}`, data);
+    console.log(formattedMessage, data);
   } else {
-    console.log(`${prefix} ${message}`);
+    console.log(formattedMessage);
   }
 }
 
 /**
  * Log error with device context
+ * Uses new standard format: [Platform:task-system:ServiceName] : ❌ message
  */
 export function logErrorWithDevice(
   serviceName: string,
   message: string,
   error?: any
 ): void {
-  const prefix = getLogPrefix(serviceName);
-  if (error) {
-    console.error(`${prefix} ${message}`, error);
+  const deviceId = getDeviceId();
+  const source = "task-system"; // Package source
+  const errorMsg =
+    error instanceof Error ? error.message : error ? String(error) : "";
+  const fullMessage = errorMsg ? `${message} - ${errorMsg}` : message;
+  const formattedMessage = `[${deviceId}:${source}:${serviceName}] : ❌ ${fullMessage}`;
+  if (error && errorMsg !== String(error)) {
+    console.error(formattedMessage, error);
   } else {
-    console.error(`${prefix} ${message}`);
+    console.error(formattedMessage);
   }
 }

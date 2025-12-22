@@ -3,30 +3,14 @@
  * Helps identify which device/platform is performing operations
  */
 
-import { Platform } from "react-native";
+import { getPlatformIcon } from "./platformIcons";
 
 /**
  * Get device/platform identifier for logging
- * @returns Device identifier string (e.g., "iOS", "Android", "Web")
+ * @returns Device identifier emoji (e.g., "🍎", "🤖", "🌐")
  */
 export function getDeviceId(): string {
-  const platform = Platform.OS;
-  const platformName = platform.charAt(0).toUpperCase() + platform.slice(1);
-
-  // For web, try to get more specific info
-  if (platform === "web") {
-    const userAgent =
-      typeof navigator !== "undefined" ? navigator.userAgent : "";
-    if (userAgent.includes("iPhone") || userAgent.includes("iPad")) {
-      return "Web-iOS";
-    }
-    if (userAgent.includes("Android")) {
-      return "Web-Android";
-    }
-    return "Web";
-  }
-
-  return platformName;
+  return getPlatformIcon();
 }
 
 /**

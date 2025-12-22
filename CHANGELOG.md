@@ -9,6 +9,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.24] - 2025-01-22
+
+### Changed
+
+- Moved logging service infrastructure to package for self-containment
+  - Moved `LoggingService`, providers (ConsoleProvider, NativeProvider, SentryProvider), types, and utils to `packages/task-system/src/src/services/logging/`
+  - Updated package exports to include `LoggingService`, `initializeLoggingService`, `getLoggingService`, and `LoggingConfig`
+  - Updated harness to import logging service from `@orion/task-system` package
+  - Updated package's `serviceLogger.ts` to use moved `LoggingService`
+  - Moved and updated all logging service tests to package
+  - Removed old logging files from harness (`src/services/logging/`)
+  - Package is now self-contained with its own logging infrastructure
+
+### Added
+
+- Added cursor rules for package architecture and testing requirements
+  - Created `.cursor/rules/package-architecture.mdc` to enforce self-containment principle
+  - Enhanced `.cursor/rules/testing.mdc` to require test updates when refactoring/moving code
+  - Rules require prompting user for architectural decisions about package vs harness placement
+
+### Fixed
+
+- Fixed duplicate log entries from ConsoleProvider and NativeProvider
+  - NativeProvider now skips logging when `react-native-logs` is not available
+  - Prevents duplicate console logs when both providers are enabled
+- Removed module-load-time logging from TranslationService to prevent early initialization issues
+
 ### Added
 
 - Updated question rendering logic to consume LX current activity JSON structure
@@ -33,6 +60,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Migrated all package component console logs to use centralized logging
   - Updated TranslationContext to use service logger with DEBUG_TRANSLATION_LOGS support
   - Migrated questionValidation utility to use service logger
+
+## [0.1.23] - 2025-01-22
+
+### Fixed
+
+- Fixed expo-doctor dependency version mismatches
+  - Updated Expo packages to match SDK 53 requirements (expo@53.0.25, expo-constants@17.1.8, expo-image@2.4.1, expo-image-picker@16.1.4, expo-router@5.1.10, expo-system-ui@5.0.11)
+  - Updated React Native to 0.79.6
+  - Downgraded community packages to match SDK requirements (@react-native-async-storage/async-storage@2.1.2, @react-native-community/datetimepicker@8.4.1, @react-native-community/slider@4.5.6)
+  - Fixed @expo/metro-config version mismatch (0.20.17 → 0.20.18)
+  - All expo-doctor checks now pass (17/17)
 
 ## [0.1.22] - 2025-12-21
 
