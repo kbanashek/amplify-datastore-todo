@@ -12,6 +12,7 @@ import {
 } from "../types/Task";
 import { logErrorWithDevice, logWithDevice } from "../utils/deviceLogger";
 import { getServiceLogger } from "../utils/serviceLogger";
+import { dataSubscriptionLogger } from "../utils/dataSubscriptionLogger";
 
 type TaskUpdateData = Omit<UpdateTaskInput, "id" | "_version">;
 
@@ -270,23 +271,24 @@ export class TaskService {
   static subscribeTasks(callback: (items: Task[], isSynced: boolean) => void): {
     unsubscribe: () => void;
   } {
-    const logger = getServiceLogger("TaskService");
-    logger.info(
+    // Use centralized logger to prevent duplicate subscription setup logs
+    dataSubscriptionLogger.logServiceSetup(
+      "TaskService",
       "Setting up AWS DataStore subscription for Task model",
-      undefined,
-      undefined,
       "☁️"
     );
+
+    const logger = getServiceLogger("TaskService");
 
     // CRITICAL: Do an initial query to ensure tasks are loaded immediately
     // observeQuery may not fire immediately, so we query first to populate the UI
     DataStore.query(DataStoreTask)
       .then(initialTasks => {
-        logger.info(
-          `Initial AWS DataStore query completed - ${initialTasks.length} tasks loaded`,
-          { count: initialTasks.length },
-          undefined,
-          "☁️"
+        // Use centralized logger to prevent duplicate initial query logs
+        dataSubscriptionLogger.logInitialQuery(
+          "TaskService",
+          "tasks",
+          initialTasks.length
         );
         // Call callback with initial data - assume synced if we got data
         callback(initialTasks as Task[], initialTasks.length > 0);

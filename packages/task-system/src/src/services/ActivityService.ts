@@ -6,6 +6,7 @@ import { Activity } from "../models";
 import { CreateActivityInput, UpdateActivityInput } from "../types/Activity";
 import { logErrorWithDevice, logWithDevice } from "../utils/deviceLogger";
 import { getServiceLogger } from "../utils/serviceLogger";
+import { dataSubscriptionLogger } from "../utils/dataSubscriptionLogger";
 
 type ActivityUpdateData = Omit<UpdateActivityInput, "id" | "_version">;
 
@@ -137,9 +138,11 @@ export class ActivityService {
   ): {
     unsubscribe: () => void;
   } {
-    logWithDevice(
+    // Use centralized logger to prevent duplicate subscription setup logs
+    dataSubscriptionLogger.logServiceSetup(
       "ActivityService",
-      "Setting up DataStore subscription for Activity"
+      "Setting up AWS DataStore subscription for Activity model",
+      "☁️"
     );
 
     const querySubscription = DataStore.observeQuery(Activity).subscribe(

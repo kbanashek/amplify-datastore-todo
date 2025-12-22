@@ -1,0 +1,104 @@
+---
+description: Package architecture and self-containment principles
+alwaysApply: true
+globs: ['packages/**/*', 'src/**/*']
+---
+
+# Package Architecture
+
+## Self-Containment Principle
+
+**ALWAYS implement new logic within the package (`packages/task-system/`) to be self-contained when it makes sense.**
+
+The `@orion/task-system` package is designed to be a **self-contained, reusable module** that can be embedded in other apps (like LX). Logic that is core to the package's functionality should live within the package, not in the harness (main app).
+
+## When to Implement in Package
+
+**✅ Implement in package when:**
+- Logic is core to the package's functionality (services, utilities, hooks, components)
+- Logic needs to be reusable across different host apps
+- Logic is part of the package's public API or internal implementation
+- Logic is domain-specific to tasks, activities, questions, etc.
+
+**Examples:**
+- ✅ Logging service (core infrastructure)
+- ✅ Translation service (package functionality)
+- ✅ Task/Activity services (package domain logic)
+- ✅ Data subscription utilities (package utilities)
+- ✅ Question components (package UI)
+
+## When to Implement in Harness
+
+**✅ Implement in harness (main app) when:**
+- Logic is specific to THIS app's use case
+- Logic is app-level configuration or setup
+- Logic is Expo Router specific (package doesn't use Expo Router)
+- Logic is harness-specific testing/debugging tools
+
+**Examples:**
+- ✅ App-level Amplify configuration
+- ✅ Expo Router navigation setup
+- ✅ Harness-specific test fixtures
+- ✅ App-level theme/styling configuration
+
+## Architectural Decision Protocol
+
+**CRITICAL: When making architectural decisions about where to place logic, ALWAYS prompt the user first.**
+
+**Prompt the user when:**
+- Moving existing logic between package and harness
+- Deciding whether new logic belongs in package or harness
+- Refactoring shared infrastructure (logging, services, utilities)
+- Making changes that affect package self-containment
+- Creating new shared services or utilities
+
+**Do NOT make architectural decisions autonomously.** Ask the user:
+- "Should this logic be in the package for self-containment, or in the harness?"
+- "This affects package architecture - should I move it to the package?"
+- "Is this package-level or harness-level functionality?"
+
+## Package Structure
+
+The package should be self-contained with:
+- **Services**: `packages/task-system/src/src/services/`
+- **Hooks**: `packages/task-system/src/src/hooks/`
+- **Components**: `packages/task-system/src/src/components/`
+- **Utils**: `packages/task-system/src/src/utils/`
+- **Runtime**: `packages/task-system/src/src/runtime/`
+
+## Harness Integration
+
+The harness (main app) should:
+- Configure the package (e.g., Amplify, logging)
+- Provide app-level context (e.g., LoggingProvider, TranslationProvider)
+- Mount the package components
+- Handle app-specific concerns (Expo Router, navigation, etc.)
+
+## Examples
+
+**✅ Good: Logging service in package**
+```typescript
+// packages/task-system/src/src/services/LoggingService.ts
+// Self-contained logging for the package
+```
+
+**✅ Good: Harness configures package**
+```typescript
+// src/contexts/LoggingContext.tsx
+// Harness provides logging context, package uses it
+```
+
+**❌ Bad: Core package logic in harness**
+```typescript
+// src/services/TaskService.ts
+// This should be in the package, not harness
+```
+
+## Migration Strategy
+
+When moving logic from harness to package:
+1. **Prompt user first** - "Should I move [X] to the package for self-containment?"
+2. Move the logic to appropriate package location
+3. Update imports in package to use moved logic
+4. Update harness to import from package if needed
+5. Ensure package remains self-contained

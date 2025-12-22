@@ -9,14 +9,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.24] - 2025-12-22
+
+### Changed
+
+- Moved logging service infrastructure to package for self-containment
+  - Moved `LoggingService`, providers (ConsoleProvider, NativeProvider, SentryProvider), types, and utils to `packages/task-system/src/src/services/logging/`
+  - Updated package exports to include `LoggingService`, `initializeLoggingService`, `getLoggingService`, and `LoggingConfig`
+  - Updated harness to import logging service from `@orion/task-system` package
+  - Updated package's `serviceLogger.ts` to use moved `LoggingService`
+  - Moved and updated all logging service tests to package
+  - Removed old logging files from harness (`src/services/logging/`)
+  - Package is now self-contained with its own logging infrastructure
+- Reorganized documentation structure
+  - Moved `UNUSED_FILES.md` to `DOCS/development/unused-files.md`
+  - Moved `e2e-testing.md` to `DOCS/development/e2e-testing.md`
+  - Removed duplicate files from `DOCS/` root (kept organized versions in subdirectories)
+  - Updated all references in `README.md`, `CHANGELOG.md`, and `DOCS/` files
+  - Root directory now only contains standard project files (`README.md`, `CHANGELOG.md`)
+  - All application-specific documentation organized in `DOCS/` subdirectories
+
 ### Added
 
+- Added cursor rules for package architecture and testing requirements
+  - Created `.cursor/rules/package-architecture.mdc` to enforce self-containment principle
+  - Enhanced `.cursor/rules/testing.mdc` to require test updates when refactoring/moving code
+  - Rules require prompting user for architectural decisions about package vs harness placement
 - Updated question rendering logic to consume LX current activity JSON structure
   - Added support for parsing `layouts` from POC JSON files to determine screen structure
   - Updated `convert-poc-json-to-fixture.ts` to preserve `layouts` data (was previously setting to null)
   - Enhanced `activityParser.ts` to match questions from `activityGroups` to screen elements by ID when layouts exist
   - Added helper functions `getScreensFromLayouts` and `matchQuestionsToScreens` to match LX behavior
   - Activities now correctly render with multiple pages matching LX's multi-page task structure
+- Updated test coverage configuration
+  - Updated `jest.config.js` to include package coverage (`packages/task-system/src/src/**/*.{ts,tsx}`)
+  - Updated GitHub Actions PR checks workflow to run tests with coverage and upload reports
+  - Added coverage summary generation and PR comment posting
+  - Created `DOCS/coverage-gaps.md` to track missing test coverage
 
 ### Fixed
 
@@ -25,6 +54,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Made configureAmplify() idempotent to prevent double configuration
   - Updated useAmplifyState and bootstrapTaskSystem to check isConfigured flag before calling getConfig()
   - Ensures Amplify is configured before any code that uses Amplify services runs
+- Fixed duplicate log entries from ConsoleProvider and NativeProvider
+  - NativeProvider now skips logging when `react-native-logs` is not available
+  - Prevents duplicate console logs when both providers are enabled
+- Removed module-load-time logging from TranslationService to prevent early initialization issues
+- Fixed `extractActivityIdFromTask` type safety issues
+  - Added explicit `typeof === "string"` checks before calling string methods
+  - Added validation to ensure extracted activity ID is non-empty before returning
+  - Created comprehensive unit tests covering happy path and edge cases
+- Fixed `ImageCaptureQuestion` test mock
+  - Created manual mock for `expo-image-picker` in `__mocks__` directory
+  - Updated test to use manual mock instead of inline mock
+  - Fixed mock setup to properly intercept require() calls in component
 
 ### Changed
 

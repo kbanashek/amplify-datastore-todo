@@ -18,30 +18,41 @@ export type TaskSystemInitOptions = {
 };
 
 let startInFlight: Promise<void> | null = null;
+const taskSystemLogs = new Map<string, number>();
+const TASK_SYSTEM_LOG_DEDUP_MS = 10000; // 10 second window (React Strict Mode)
+
+/**
+ * Deduplicated TaskSystem logging
+ */
+function logTaskSystem(icon: string, message: string): void {
+  const signature = `tasksystem-${message}`;
+  const now = Date.now();
+  const lastLogTime = taskSystemLogs.get(signature) || 0;
+
+  if (now - lastLogTime < TASK_SYSTEM_LOG_DEDUP_MS) {
+    return; // Skip duplicate
+  }
+
+  logWithPlatform(icon, "", "TaskSystem", message);
+  taskSystemLogs.set(signature, now);
+}
 
 export async function initTaskSystem(
   options: TaskSystemInitOptions = {}
 ): Promise<void> {
   // Safe to call multiple times; this does NOT call Amplify.configure().
-  logWithPlatform("⚙️", "", "TaskSystem", "Configuring conflict resolution");
+  logTaskSystem("⚙️", "Configuring conflict resolution");
   ConflictResolution.configure();
-  logWithPlatform("✅", "", "TaskSystem", "Conflict resolution configured");
+  logTaskSystem("✅", "Conflict resolution configured");
 
   if (options.startDataStore) {
-    logWithPlatform(
-      "☁️",
-      "",
-      "TaskSystem",
-      "Starting AWS DataStore (via initTaskSystem option)"
-    );
+    logTaskSystem("☁️", "Starting AWS DataStore (via initTaskSystem option)");
     // Only single-flight DataStore.start (avoid concurrent starts). Do not cache permanently.
     if (!startInFlight) {
       startInFlight = DataStore.start().finally(() => {
         startInFlight = null;
-        logWithPlatform(
+        logTaskSystem(
           "☁️",
-          "",
-          "TaskSystem",
           "AWS DataStore started (via initTaskSystem option)"
         );
       });

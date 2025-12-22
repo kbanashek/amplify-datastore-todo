@@ -1,9 +1,9 @@
 /**
  * Service logger utility for package services
- * Attempts to use main app's centralized logging service if available,
- * falls back to platformLogger if package is used standalone
+ * Uses the package's centralized logging service
  */
 
+import { getServiceLogger as getPackageServiceLogger } from "../services/logging/serviceLogger";
 import { logErrorWithPlatform, logWithPlatform } from "./platformLogger";
 
 type ServiceLogger = {
@@ -50,41 +50,16 @@ export function getServiceLogger(serviceName: string): ServiceLogger {
     return cached;
   }
 
-  // Try to use main app's centralized logging service if available
-  // Use a global variable approach to avoid Metro bundler module resolution errors
-  // The main app can set window.__ORION_LOGGER__ or global.__ORION_LOGGER__ if available
-  let logger: ServiceLogger;
-
-  // Check for injected logger from main app (avoids Metro require issues)
-  const getInjectedLogger = (): ServiceLogger | null => {
-    try {
-      // Check global scope for injected logger
-      const globalScope =
-        typeof global !== "undefined"
-          ? global
-          : typeof window !== "undefined"
-            ? window
-            : null;
-      if (globalScope && (globalScope as any).__ORION_LOGGER__) {
-        const injectedLogger = (globalScope as any).__ORION_LOGGER__;
-        if (typeof injectedLogger.getServiceLogger === "function") {
-          return injectedLogger.getServiceLogger(serviceName);
-        }
-      }
-    } catch {
-      // Ignore errors
-    }
-    return null;
-  };
-
-  const injectedLogger = getInjectedLogger();
-  if (injectedLogger) {
-    loggerCache.set(serviceName, injectedLogger);
-    return injectedLogger;
+  // Try to use package's centralized logging service first
+  try {
+    const packageLogger = getPackageServiceLogger(serviceName);
+    loggerCache.set(serviceName, packageLogger);
+    return packageLogger;
+  } catch {
+    // Logging service not initialized - fall back to platformLogger
   }
 
-  // Main app logging service not available - package used standalone
-  // Return a logger that uses platformLogger
+  // Package logging service not available - use platformLogger fallback
   logger = {
     debug: (
       message: string,

@@ -12,7 +12,7 @@
  * ```
  */
 
-import { getLoggingService } from "@orion/task-system";
+import { getLoggingService } from "../LoggingService";
 
 /**
  * Get a logger instance for a specific service
@@ -100,7 +100,7 @@ function formatMessage(
   // Use direct platform detection for fallback with emoji icons
   const platform = (() => {
     try {
-      const { getPlatformIcon } = require("../utils/platformIcons");
+      const { getPlatformIcon } = require("../../utils/platformIcons");
       return getPlatformIcon();
     } catch {
       return "❓"; // Unknown
@@ -109,7 +109,7 @@ function formatMessage(
 
   const iconPart = icon ? `${icon} ` : "";
   const messageWithIcon = `${iconPart}${message}`;
-  const source = "harness"; // Main app (test harness)
+  const source = "task-system"; // Package source
 
   if (step) {
     return `[${platform}:${source}:${serviceName} - ${step}] : ${messageWithIcon}`;

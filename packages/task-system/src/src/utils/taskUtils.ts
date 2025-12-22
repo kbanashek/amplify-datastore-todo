@@ -16,14 +16,18 @@ const logger = getServiceLogger("taskUtils");
  */
 export const extractActivityIdFromTask = (task: Task): string | null => {
   // Priority 1: Use entityId if present
-  if (task.entityId) {
+  // Validate that entityId is a string before calling string methods
+  if (task.entityId && typeof task.entityId === "string") {
     // Handle format: "Activity.{activityId}" or "Activity.{activityId}#{version}"
     const activityId = task.entityId.replace(/^Activity\./, "").split("#")[0];
-    logger.debug("Extracted activity ID from entityId", {
-      entityId: task.entityId,
-      extractedId: activityId,
-    });
-    return activityId;
+    // Validate that the extracted ID is non-empty before returning
+    if (activityId && activityId.trim().length > 0) {
+      logger.debug("Extracted activity ID from entityId", {
+        entityId: task.entityId,
+        extractedId: activityId,
+      });
+      return activityId;
+    }
   }
 
   // Priority 2: Parse actions JSON string
@@ -32,16 +36,20 @@ export const extractActivityIdFromTask = (task: Task): string | null => {
       const actions = JSON.parse(task.actions);
       if (Array.isArray(actions) && actions.length > 0) {
         const firstAction = actions[0];
-        if (firstAction?.entityId) {
+        // Validate that entityId exists and is a string before calling string methods
+        if (firstAction?.entityId && typeof firstAction.entityId === "string") {
           // Handle format: "Activity.{activityId}" or "Activity.{activityId}#{version}"
           const activityId = firstAction.entityId
             .replace(/^Activity\./, "")
             .split("#")[0];
-          logger.debug("Extracted activity ID from actions", {
-            actions: task.actions,
-            extractedId: activityId,
-          });
-          return activityId;
+          // Validate that the extracted ID is non-empty before returning
+          if (activityId && activityId.trim().length > 0) {
+            logger.debug("Extracted activity ID from actions", {
+              actions: task.actions,
+              extractedId: activityId,
+            });
+            return activityId;
+          }
         }
       }
     } catch (error) {

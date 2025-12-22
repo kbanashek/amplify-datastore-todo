@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Appointment, AppointmentData } from "../types/Appointment";
 import { parseAppointmentData } from "../utils/appointmentParser";
 import { getServiceLogger } from "../utils/serviceLogger";
+import { dataSubscriptionLogger } from "../utils/dataSubscriptionLogger";
 
 const APPOINTMENTS_STORAGE_KEY = "@appointments_data";
 
@@ -24,10 +25,11 @@ export class AppointmentService {
         const itemsCount =
           parsed.clinicPatientAppointments?.clinicAppointments?.items?.length ||
           0;
-        logger.info(
+        // Use centralized logger to prevent duplicate logs
+        dataSubscriptionLogger.logServiceOperation(
+          "AppointmentService",
           `Loaded ${itemsCount} appointments from AsyncStorage`,
           { timezone: parsed.siteTimezoneId },
-          undefined,
           "📅"
         );
         return parsed;
@@ -41,9 +43,10 @@ export class AppointmentService {
       const itemsCount =
         appointmentData.clinicPatientAppointments?.clinicAppointments?.items
           ?.length || 0;
-      logger.info(
+      // Use centralized logger to prevent duplicate logs
+      dataSubscriptionLogger.logServiceOperation(
+        "AppointmentService",
         `Loaded ${itemsCount} appointments from bundled JSON`,
-        undefined,
         undefined,
         "📅"
       );
@@ -159,11 +162,11 @@ export class AppointmentService {
         return isToday;
       });
 
-      const logger = getServiceLogger("AppointmentService");
-      logger.info(
+      // Use centralized logger to prevent duplicate logs
+      dataSubscriptionLogger.logServiceOperation(
+        "AppointmentService",
         `Filtered ${filtered.length} of ${allAppointments.length} appointments for today`,
         { filtered: filtered.length, total: allAppointments.length },
-        undefined,
         "📅"
       );
 
@@ -172,10 +175,11 @@ export class AppointmentService {
         const todayStr = `${todayStart.getFullYear()}-${
           todayStart.getMonth() + 1
         }-${todayStart.getDate()}`;
-        logger.warn(
+        // Use centralized logger for warnings too
+        dataSubscriptionLogger.logServiceOperation(
+          "AppointmentService",
           `No appointments found for today (${todayStr})`,
           { totalAvailable: allAppointments.length },
-          undefined,
           "⚠️"
         );
       }

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { AppointmentService } from "../services/AppointmentService";
 import { Appointment, AppointmentData } from "../types/Appointment";
-import { logWithPlatform, logErrorWithPlatform } from "../utils/platformLogger";
+import { logErrorWithPlatform } from "../utils/platformLogger";
+import { dataSubscriptionLogger } from "../utils/dataSubscriptionLogger";
 
 interface UseAppointmentListReturn {
   appointments: Appointment[];
@@ -31,39 +32,24 @@ export const useAppointmentList = (
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const lastAppointmentCountRef = useRef<number>(-1);
-  const hasLoggedLoadRef = useRef<boolean>(false);
 
   const loadAppointments = async (): Promise<void> => {
     try {
       setLoading(true);
       setError(null);
 
-      if (!hasLoggedLoadRef.current) {
-        logWithPlatform(
-          "📅",
-          "",
-          "useAppointmentList",
-          `Loading appointments${todayOnly ? " (today only)" : ""}`
-        );
-        hasLoggedLoadRef.current = true;
-      }
-
       const data = await AppointmentService.getAppointmentData();
       if (data) {
         setAppointmentData(data);
         const parsed = await AppointmentService.getAppointments(todayOnly);
 
-        // Only log if count changed
+        // Only log if count changed, using centralized logger to prevent duplicates
         if (parsed.length !== lastAppointmentCountRef.current) {
-          logWithPlatform(
-            "📅",
-            "",
-            "useAppointmentList",
-            `Loaded ${parsed.length} appointments`,
-            {
-              todayOnly,
-              timezone: data.siteTimezoneId,
-            }
+          dataSubscriptionLogger.logAppointments(
+            parsed.length,
+            todayOnly,
+            data.siteTimezoneId,
+            "useAppointmentList"
           );
           lastAppointmentCountRef.current = parsed.length;
         }
@@ -71,11 +57,11 @@ export const useAppointmentList = (
         setAppointments(parsed);
       } else {
         if (lastAppointmentCountRef.current !== 0) {
-          logWithPlatform(
-            "📅",
-            "",
-            "useAppointmentList",
-            "No appointment data available"
+          dataSubscriptionLogger.logAppointments(
+            0,
+            todayOnly,
+            undefined,
+            "useAppointmentList"
           );
           lastAppointmentCountRef.current = 0;
         }

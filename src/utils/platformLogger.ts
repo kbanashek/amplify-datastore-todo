@@ -7,7 +7,40 @@
  * New code should use useLogger() hook or getLoggingService() directly.
  */
 
-import { getLoggingService } from "../services/LoggingService";
+import { getLoggingService } from "@orion/task-system";
+import { getPlatformIcon } from "./platformIcons";
+
+/**
+ * Get platform identifier for logging (direct detection, no service dependency)
+ */
+function getPlatformIdDirect(): string {
+  return getPlatformIcon();
+}
+
+/**
+ * Format log message with new standard format
+ * Format: [Platform:harness:ServiceName - STEP] : message (with icon inline)
+ * Or: [Platform:harness:ServiceName] : message (with icon inline)
+ */
+function formatLogMessageNew(
+  platform: string,
+  serviceName: string,
+  step: string,
+  message: string,
+  icon?: string
+): string {
+  const iconPart = icon ? `${icon} ` : "";
+  const messageWithIcon = `${iconPart}${message}`;
+  const source = "harness"; // Main app (test harness)
+
+  if (step) {
+    // Initialization/data flow logs: [Platform:harness:ServiceName - STEP] : message
+    return `[${platform}:${source}:${serviceName} - ${step}] : ${messageWithIcon}`;
+  } else {
+    // Function logs: [Platform:harness:ServiceName] : message
+    return `[${platform}:${source}:${serviceName}] : ${messageWithIcon}`;
+  }
+}
 
 /**
  * Log with platform identification
@@ -35,7 +68,14 @@ export function logWithPlatform(
   } catch {
     // Fallback to console if logging service not initialized
     // This can happen during early initialization
-    const formattedMessage = `${icon} [Unknown] ${step ? `[${step}] ` : ""}${serviceName}: ${message}`;
+    const platform = getPlatformIdDirect();
+    const formattedMessage = formatLogMessageNew(
+      platform,
+      serviceName,
+      step,
+      message,
+      icon
+    );
     if (data) {
       console.log(formattedMessage, data);
     } else {
@@ -68,9 +108,17 @@ export function logErrorWithPlatform(
   } catch {
     // Fallback to console if logging service not initialized
     // This can happen during early initialization
+    const platform = getPlatformIdDirect();
     const errorMessage =
       error instanceof Error ? error.message : error ? String(error) : "";
-    const fullMessage = `❌ [Unknown] ${step ? `[${step}] ` : ""}${serviceName}: ${message}${errorMessage ? ` - ${errorMessage}` : ""}`;
-    console.error(fullMessage);
+    const fullMessage = `${message}${errorMessage ? ` - ${errorMessage}` : ""}`;
+    const formattedMessage = formatLogMessageNew(
+      platform,
+      serviceName,
+      step,
+      fullMessage,
+      "❌"
+    );
+    console.error(formattedMessage);
   }
 }

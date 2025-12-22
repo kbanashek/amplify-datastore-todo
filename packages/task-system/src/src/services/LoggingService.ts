@@ -3,7 +3,6 @@
  * Manages multiple log providers and routes logs to all active providers
  */
 
-import { Platform } from "react-native";
 import { ConsoleProvider } from "./logging/providers/ConsoleProvider";
 import { NativeProvider } from "./logging/providers/NativeProvider";
 import { SentryProvider } from "./logging/providers/SentryProvider";
@@ -15,32 +14,13 @@ import type {
 } from "./logging/types";
 import { LogLevel, LogLevelPreset } from "./logging/types";
 import { presetToLogLevel } from "./logging/utils";
+import { getPlatformIcon } from "../utils/platformIcons";
 
 /**
  * Get platform identifier for logging
  */
 function getPlatformId(): string {
-  const platform = Platform.OS;
-
-  if (platform === "ios") {
-    return "iOS";
-  }
-  if (platform === "android") {
-    return "Android";
-  }
-  if (platform === "web") {
-    const userAgent =
-      typeof navigator !== "undefined" ? navigator.userAgent : "";
-    if (userAgent.includes("iPhone") || userAgent.includes("iPad")) {
-      return "Web-iOS";
-    }
-    if (userAgent.includes("Android")) {
-      return "Web-Android";
-    }
-    return "Web";
-  }
-
-  return platform.charAt(0).toUpperCase() + platform.slice(1);
+  return getPlatformIcon();
 }
 
 /**
@@ -58,6 +38,7 @@ export class LoggingService {
   private providers: LogProvider[] = [];
   private config: LoggingConfig;
   private defaultServiceName: string = "App";
+  private static hasLoggedInitialLevel = false; // Module-level deduplication
 
   constructor(config: LoggingConfig = {}) {
     // Convert preset to LogLevel if needed
@@ -88,6 +69,7 @@ export class LoggingService {
     this.initializeDefaultProviders();
 
     // Log the configured log level as the first log (after providers are initialized)
+    // Only log once per app lifecycle (module-level deduplication prevents duplicates)
     this.logInitialLogLevel();
   }
 
@@ -95,18 +77,31 @@ export class LoggingService {
    * Log the current log level configuration
    * This is the first log that appears when the app initializes
    * Bypasses minLevel check to ensure it always appears
+   * Uses module-level deduplication to prevent duplicate logs
    */
   private logInitialLogLevel(): void {
+    // Prevent duplicate logs across multiple LoggingService instances
+    if (LoggingService.hasLoggedInitialLevel) {
+      return;
+    }
+    LoggingService.hasLoggedInitialLevel = true;
+
     const minLevel =
       this.config.minLevel ?? (__DEV__ ? LogLevel.INFO : LogLevel.WARN);
     const levelName = this.getLogLevelPreset();
     const platform = getPlatformId();
 
+    // Format metadata as readable list
+    const metadataList = [
+      `  • minLevel: ${levelName.toLowerCase()}`,
+      `  • preset: ${levelName}`,
+    ].join("\n");
+
     // Create log entry directly, bypassing minLevel check
     // This ensures the log level message always appears first
     const entry = this.createLogEntry(
       LogLevel.INFO, // Use INFO level but bypass filtering
-      `Log level: ${levelName}`,
+      `Log level set to ${levelName}\n${metadataList}`,
       { minLevel, preset: levelName },
       "LoggingService",
       "INIT-0",
@@ -122,7 +117,7 @@ export class LoggingService {
           // If provider fails, fall back to console
           if (__DEV__) {
             console.log(
-              `📊 [${platform}] [INIT-0] LoggingService: Log level set to ${levelName}`
+              `[${platform}::LoggingService - INIT-0] : 📊 Log level set to ${levelName}`
             );
           }
         }
