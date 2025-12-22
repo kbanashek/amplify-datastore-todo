@@ -11,52 +11,15 @@ jest.mock("../../../hooks/useTranslatedText", () => ({
   })),
 }));
 
-// Mock the require call in ImageCaptureQuestion
-jest.mock(
-  "expo-image-picker",
-  () => ({
-    __esModule: true,
-    requestCameraPermissionsAsync: jest.fn(() =>
-      Promise.resolve({ status: "granted" })
-    ),
-    launchCameraAsync: jest.fn(() =>
-      Promise.resolve({
-        canceled: false,
-        assets: [{ uri: "file://test-image.jpg" }],
-      })
-    ),
-    launchImageLibraryAsync: jest.fn(() =>
-      Promise.resolve({
-        canceled: false,
-        assets: [{ uri: "file://test-image.jpg" }],
-      })
-    ),
-    MediaTypeOptions: {
-      Images: "Images",
-    },
-    default: {
-      requestCameraPermissionsAsync: jest.fn(() =>
-        Promise.resolve({ status: "granted" })
-      ),
-      launchCameraAsync: jest.fn(() =>
-        Promise.resolve({
-          canceled: false,
-          assets: [{ uri: "file://test-image.jpg" }],
-        })
-      ),
-      launchImageLibraryAsync: jest.fn(() =>
-        Promise.resolve({
-          canceled: false,
-          assets: [{ uri: "file://test-image.jpg" }],
-        })
-      ),
-      MediaTypeOptions: {
-        Images: "Images",
-      },
-    },
-  }),
-  { virtual: true }
-);
+// Mock expo-image-picker - Jest will automatically use __mocks__/expo-image-picker.ts
+jest.mock("expo-image-picker");
+
+// Import the mocked functions for assertions
+import {
+  requestCameraPermissionsAsync as mockRequestCameraPermissionsAsync,
+  launchCameraAsync as mockLaunchCameraAsync,
+  launchImageLibraryAsync as mockLaunchImageLibraryAsync,
+} from "../../../__mocks__/expo-image-picker";
 
 describe("ImageCaptureQuestion", () => {
   const mockQuestion: Question = {
@@ -74,6 +37,16 @@ describe("ImageCaptureQuestion", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    // Reset mocks to return successful responses
+    mockRequestCameraPermissionsAsync.mockResolvedValue({ status: "granted" });
+    mockLaunchCameraAsync.mockResolvedValue({
+      canceled: false,
+      assets: [{ uri: "file://test-image.jpg" }],
+    });
+    mockLaunchImageLibraryAsync.mockResolvedValue({
+      canceled: false,
+      assets: [{ uri: "file://test-image.jpg" }],
+    });
   });
 
   it("renders capture button when no image", () => {
@@ -106,7 +79,6 @@ describe("ImageCaptureQuestion", () => {
   });
 
   it("calls onChange when image is captured", async () => {
-    const ImagePicker = require("expo-image-picker");
     const mockOnChange = jest.fn();
     const { getByTestId } = render(
       <ImageCaptureQuestion
@@ -122,8 +94,9 @@ describe("ImageCaptureQuestion", () => {
     fireEvent.press(captureButton);
 
     await waitFor(() => {
-      // Verify the mock was called (ImagePicker is mocked)
-      expect(ImagePicker.launchCameraAsync).toHaveBeenCalled();
+      // Verify the mock was called
+      expect(mockLaunchCameraAsync).toHaveBeenCalled();
+      expect(mockOnChange).toHaveBeenCalledWith("file://test-image.jpg");
     });
   });
 
