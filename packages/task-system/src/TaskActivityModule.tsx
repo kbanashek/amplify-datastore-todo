@@ -4,11 +4,14 @@ import {
   createNavigationContainerRef,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React, { useEffect, useMemo } from "react";
+import type { i18n } from "i18next";
+import React, { useContext, useEffect, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
-import { TaskContainer } from "./src/components/TaskContainer";
-import { TranslationProvider } from "./src/contexts/TranslationContext";
-import QuestionsScreen from "./src/screens/QuestionsScreen";
+import { TaskContainer } from "./components/TaskContainer";
+import QuestionsScreen from "./screens/QuestionsScreen";
+import { LanguageCode } from "./services/translationTypes";
+import { TranslationProvider } from "./translations";
+import { TranslationContext } from "./translations/TranslationProvider";
 
 export type TaskSystemStackParamList = {
   TaskDashboard: undefined;
@@ -29,6 +32,18 @@ export interface TaskActivityModuleProps {
    * Use this when embedding under a host header that already applies insets.
    */
   disableSafeAreaTopInset?: boolean;
+
+  /**
+   * Preferred language from LX app.
+   * If provided, this will be used as the initial language.
+   */
+  preferredLanguage?: LanguageCode;
+
+  /**
+   * Optional parent i18next instance for integration with LX app.
+   * If provided, the module will use the parent's i18next instance with namespace isolation.
+   */
+  parentI18n?: i18n;
 }
 
 /**
@@ -44,6 +59,8 @@ export interface TaskActivityModuleProps {
 export const TaskActivityModule: React.FC<TaskActivityModuleProps> = ({
   resetSignal,
   disableSafeAreaTopInset = false,
+  preferredLanguage,
+  parentI18n,
 }) => {
   const navigationRef = useMemo(
     () => createNavigationContainerRef<TaskSystemStackParamList>(),
@@ -87,15 +104,24 @@ export const TaskActivityModule: React.FC<TaskActivityModuleProps> = ({
     </View>
   );
 
+  const existingTranslationContext = useContext(TranslationContext);
+
+  const content = NavigationIndependentTree ? (
+    <NavigationIndependentTree>{navigationContent}</NavigationIndependentTree>
+  ) : (
+    navigationContent
+  );
+
+  if (existingTranslationContext) {
+    return content;
+  }
+
   return (
-    <TranslationProvider>
-      {NavigationIndependentTree ? (
-        <NavigationIndependentTree>
-          {navigationContent}
-        </NavigationIndependentTree>
-      ) : (
-        navigationContent
-      )}
+    <TranslationProvider
+      preferredLanguage={preferredLanguage}
+      parentI18n={parentI18n}
+    >
+      {content}
     </TranslationProvider>
   );
 };

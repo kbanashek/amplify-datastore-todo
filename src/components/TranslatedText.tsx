@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, TextProps } from "react-native";
-import { useTranslatedText, useTranslation } from "@orion/task-system";
+import { useTranslatedText, useTaskTranslation } from "@orion/task-system";
 
 interface TranslatedTextProps extends Omit<TextProps, "children"> {
   text: string;
@@ -19,7 +19,7 @@ export const TranslatedText: React.FC<TranslatedTextProps> = ({
   ...props
 }) => {
   const { translatedText } = useTranslatedText(text, sourceLanguage);
-  const { isRTL } = useTranslation();
+  const { isRTL } = useTaskTranslation();
 
   return (
     <Text style={[style, isRTL && { textAlign: "right" }]} {...props}>

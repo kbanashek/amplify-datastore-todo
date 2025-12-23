@@ -299,8 +299,8 @@ jest.mock('./models', () => ({
 }));
 
 // Mock package models - use the same mockModels
-// This matches the import path used in packages/task-system/src/src/hooks/useQuestionsScreen.ts
-jest.mock('./packages/task-system/src/src/models', () => ({
+// This matches the import path used in packages/task-system/src/hooks/useQuestionsScreen.ts
+jest.mock('./packages/task-system/src/models', () => ({
   ...mockModels,
   TaskType: {
     SCHEDULED: 'SCHEDULED',

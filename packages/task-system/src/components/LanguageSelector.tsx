@@ -1,15 +1,18 @@
-import { LanguageCode, useTaskTranslation } from "@orion/task-system";
 import React, { useState } from "react";
 import {
-  ActivityIndicator,
-  FlatList,
-  Modal,
-  StyleSheet,
+  View,
   Text,
   TouchableOpacity,
-  View,
+  StyleSheet,
+  Modal,
+  FlatList,
+  ActivityIndicator,
 } from "react-native";
-import { useLogger } from "../hooks/useLogger";
+import { useTaskTranslation } from "../translations";
+import type { LanguageCode } from "../translations";
+import { getServiceLogger } from "../utils/serviceLogger";
+
+const logger = getServiceLogger("LanguageSelector");
 
 interface LanguageSelectorProps {
   style?: object;
@@ -18,10 +21,8 @@ interface LanguageSelectorProps {
 export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   style,
 }) => {
-  const logger = useLogger();
   const { currentLanguage, setLanguage, supportedLanguages, ready } =
     useTaskTranslation();
-  const isTranslating = !ready;
   const [modalVisible, setModalVisible] = useState(false);
   const [changingLanguage, setChangingLanguage] = useState(false);
 
@@ -37,7 +38,6 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         currentLanguage,
         isSame: languageCode === currentLanguage,
       },
-      "LanguageSelector",
       undefined,
       "🌐"
     );
@@ -46,7 +46,6 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
       logger.debug(
         "Same language selected, closing modal",
         undefined,
-        "LanguageSelector",
         undefined,
         "🌐"
       );
@@ -54,13 +53,12 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
       return;
     }
 
-    logger.info(
-      "Changing language",
+    logger.debug(
+      "Changing language...",
       {
         from: currentLanguage,
         to: languageCode,
       },
-      "LanguageSelector",
       undefined,
       "🌐"
     );
@@ -72,19 +70,12 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         {
           newLanguage: languageCode,
         },
-        "LanguageSelector",
         undefined,
         "🌐"
       );
       setModalVisible(false);
     } catch (error) {
-      logger.error(
-        "Error changing language",
-        error,
-        "LanguageSelector",
-        undefined,
-        "🌐"
-      );
+      logger.error("Error changing language", error, undefined, "🌐");
     } finally {
       setChangingLanguage(false);
     }
@@ -95,9 +86,9 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
       <TouchableOpacity
         style={styles.selectorButton}
         onPress={() => setModalVisible(true)}
-        disabled={changingLanguage || isTranslating}
+        disabled={changingLanguage || !ready}
       >
-        {changingLanguage || isTranslating ? (
+        {changingLanguage || !ready ? (
           <ActivityIndicator size="small" color="#007AFF" />
         ) : (
           <Text style={styles.selectorText}>🌐 {currentLanguageName}</Text>

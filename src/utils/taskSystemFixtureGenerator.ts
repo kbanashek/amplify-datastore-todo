@@ -1,4 +1,4 @@
-import type { TaskSystemFixture } from "../../packages/task-system/src/src/fixtures/TaskSystemFixture";
+import type { TaskSystemFixture } from "../../packages/task-system/src/fixtures/TaskSystemFixture";
 
 export type BuildTaskSystemFixtureOptions = {
   /**

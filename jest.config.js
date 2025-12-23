@@ -14,13 +14,13 @@ module.exports = {
   ],
   collectCoverageFrom: [
     "src/**/*.{ts,tsx}",
-    "packages/task-system/src/src/**/*.{ts,tsx}",
+    "packages/task-system/src/**/*.{ts,tsx}",
     "!src/**/*.d.ts",
     "!src/**/__tests__/**",
     "!src/**/*.test.{ts,tsx}",
-    "!packages/task-system/src/src/**/*.d.ts",
-    "!packages/task-system/src/src/**/__tests__/**",
-    "!packages/task-system/src/src/**/*.test.{ts,tsx}",
+    "!packages/task-system/src/**/*.d.ts",
+    "!packages/task-system/src/**/__tests__/**",
+    "!packages/task-system/src/**/*.test.{ts,tsx}",
   ],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/$1",
