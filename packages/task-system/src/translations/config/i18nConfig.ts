@@ -9,8 +9,16 @@ const DEFAULT_NAMESPACE = "task-system";
 const DEFAULT_LOCALE = "en";
 
 /**
- * Initialize i18next instance for task-system module
- * Supports both standalone mode and integration with parent app's i18next
+ * Configure and return an i18next instance scoped for the task-system namespace.
+ *
+ * Initializes a new i18next instance or augments a provided parent instance with the task-system namespace and translations.
+ *
+ * @param config - Optional configuration for initialization
+ * @param config.parentI18n - Existing i18next instance to extend with the task-system namespace
+ * @param config.defaultLocale - Fallback locale to use when no preferred language is provided
+ * @param config.preferredLanguage - Language code to set as the active language
+ * @param config.debug - Enable i18next debug mode
+ * @returns The i18next instance configured with the "task-system" namespace (either the provided parent instance or a newly created instance)
  */
 export function initializeI18n(
   config: {
@@ -75,7 +83,9 @@ export function initializeI18n(
 }
 
 /**
- * Get the default namespace for task-system translations
+ * Get the default namespace used for task-system translations.
+ *
+ * @returns The default namespace string for the task-system module
  */
 export function getDefaultNamespace(): string {
   return DEFAULT_NAMESPACE;
