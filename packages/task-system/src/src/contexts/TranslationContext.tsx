@@ -5,6 +5,8 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
+  useRef,
   useState,
 } from "react";
 import { I18nManager } from "react-native";
@@ -43,6 +45,42 @@ export const useTranslation = (): TranslationContextType => {
   if (!context) {
     throw new Error("useTranslation must be used within a TranslationProvider");
   }
+
+  // Log when context is accessed to track if components are getting updates
+  // This runs on EVERY render to see if the hook is being called
+  const logger = getServiceLogger("useTranslation");
+  const prevContextRef = useRef<TranslationContextType | null>(null);
+  const renderCountRef = useRef<number>(0);
+
+  // Track every render - this runs synchronously on every render
+  renderCountRef.current += 1;
+  const contextChanged = prevContextRef.current !== context;
+  const languageChanged =
+    prevContextRef.current?.currentLanguage !== context.currentLanguage;
+
+  // Log on every render if context changed or first render
+  if (contextChanged || languageChanged || renderCountRef.current === 1) {
+    logger.debug(
+      "useTranslation hook - RENDER",
+      {
+        renderCount: renderCountRef.current,
+        currentLanguage: context.currentLanguage,
+        previousLanguage: prevContextRef.current?.currentLanguage,
+        contextChanged,
+        languageChanged,
+        contextValueReference:
+          context === prevContextRef.current ? "same" : "new",
+        willComponentRerender: contextChanged || languageChanged,
+      },
+      undefined,
+      "🌍"
+    );
+  }
+
+  useEffect(() => {
+    prevContextRef.current = context;
+  }, [context]);
+
   return context;
 };
 
@@ -164,32 +202,67 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
   // Save language preference when it changes
   const setLanguage = useCallback(
     async (language: LanguageCode) => {
-      if (DEBUG_TRANSLATION_LOGS) {
+      const willChange = language !== currentLanguage;
+
+      logger.debug(
+        "setLanguage() called",
+        {
+          newLanguage: language,
+          currentLanguage,
+          previousLanguage: currentLanguage,
+          willChange,
+          willTriggerStateUpdate: willChange,
+          willTriggerContextUpdate: willChange,
+          willTriggerRerenders: willChange,
+        },
+        undefined,
+        "🌍"
+      );
+
+      if (!willChange) {
         logger.debug(
-          "setLanguage() called",
+          "Language unchanged, skipping update",
+          { language },
+          undefined,
+          "🌍"
+        );
+        return;
+      }
+
+      try {
+        logger.debug(
+          "Saving language preference to AsyncStorage",
+          { language },
+          undefined,
+          "🌍"
+        );
+        await AsyncStorage.setItem(LANGUAGE_PREFERENCE_KEY, language);
+        logger.debug(
+          "Language preference saved to AsyncStorage",
+          { language },
+          undefined,
+          "🌍"
+        );
+
+        logger.debug(
+          "Calling setCurrentLanguage() - this will trigger state update",
           {
-            newLanguage: language,
-            currentLanguage,
-            willChange: language !== currentLanguage,
+            from: currentLanguage,
+            to: language,
+            willUpdateEffectiveLanguage: true,
+            willUpdateContextValue: true,
+            willTriggerRerenders: true,
           },
           undefined,
           "🌍"
         );
-      }
-      try {
-        await AsyncStorage.setItem(LANGUAGE_PREFERENCE_KEY, language);
-        if (DEBUG_TRANSLATION_LOGS) {
-          logger.debug(
-            "Language preference saved to AsyncStorage",
-            undefined,
-            undefined,
-            "🌍"
-          );
-        }
         setCurrentLanguage(language);
-        if (DEBUG_TRANSLATION_LOGS) {
-          logger.debug("Language state updated", { language }, undefined, "🌍");
-        }
+        logger.debug(
+          "setCurrentLanguage() called - state update should trigger soon",
+          { language },
+          undefined,
+          "🌍"
+        );
       } catch (error) {
         logger.error(
           "Error saving language preference",
@@ -293,33 +366,117 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
     return text;
   }, []);
 
-  const value: TranslationContextType = {
-    currentLanguage: effectiveLanguage,
+  // Force a version counter to ensure context value always gets a new reference
+  // when language changes, even if other dependencies don't change
+  const [contextVersion, setContextVersion] = useState<number>(0);
+  useEffect(() => {
+    if (prevEffectiveLanguageRef.current !== effectiveLanguage) {
+      setContextVersion(prev => {
+        const newVersion = prev + 1;
+        logger.debug(
+          "Language changed - incrementing context version",
+          {
+            previousLanguage: prevEffectiveLanguageRef.current,
+            newLanguage: effectiveLanguage,
+            newVersion,
+          },
+          undefined,
+          "🌍"
+        );
+        return newVersion;
+      });
+    }
+  }, [effectiveLanguage]);
+
+  // Memoize context value to ensure it updates when dependencies change
+  // This is critical for triggering re-renders in consuming components
+  // Note: isRTL is derived from effectiveLanguage, so it's included for completeness
+  // CRITICAL: Include contextVersion to force new reference when language changes
+  const value: TranslationContextType = useMemo(() => {
+    // Create a new object every time - this ensures React detects the change
+    logger.debug(
+      "Creating new context value",
+      {
+        currentLanguage: effectiveLanguage,
+        version: contextVersion,
+        willBeNewReference: true,
+      },
+      undefined,
+      "🌍"
+    );
+
+    return {
+      currentLanguage: effectiveLanguage,
+      setLanguage,
+      translate,
+      translateSync,
+      isTranslating,
+      isRTL,
+      supportedLanguages: SUPPORTED_LANGUAGES,
+      translationService,
+    };
+  }, [
+    effectiveLanguage,
     setLanguage,
     translate,
     translateSync,
     isTranslating,
     isRTL,
-    supportedLanguages: SUPPORTED_LANGUAGES,
     translationService,
-  };
+    contextVersion, // Include version to force update when language changes
+  ]);
+
+  const prevEffectiveLanguageRef = useRef<LanguageCode>(effectiveLanguage);
+  const prevValueRef = useRef<TranslationContextType | null>(null);
+  const valueCreationCountRef = useRef<number>(0);
 
   // Log when context value changes
   useEffect(() => {
-    if (DEBUG_TRANSLATION_LOGS) {
-      logger.debug(
-        "Context value updated",
-        {
-          currentLanguage: effectiveLanguage,
-          isTranslating,
-          supportedLanguagesCount: SUPPORTED_LANGUAGES.length,
-          isLoading: currentLanguage === null,
-        },
-        undefined,
-        "🌍"
-      );
+    const languageChanged =
+      prevEffectiveLanguageRef.current !== effectiveLanguage;
+    const valueChanged = prevValueRef.current !== value;
+    const valueReferenceSame = prevValueRef.current === value;
+
+    // Increment counter each time useMemo creates a new value
+    if (valueChanged) {
+      valueCreationCountRef.current += 1;
     }
-  }, [effectiveLanguage, isTranslating, currentLanguage]);
+
+    logger.debug(
+      "Context value updated",
+      {
+        currentLanguage: effectiveLanguage,
+        previousLanguage: prevEffectiveLanguageRef.current,
+        isTranslating,
+        supportedLanguagesCount: SUPPORTED_LANGUAGES.length,
+        isLoading: currentLanguage === null,
+        languageChanged,
+        valueChanged,
+        valueReferenceSame,
+        valueCreationCount: valueCreationCountRef.current,
+        willTriggerRerender: valueChanged,
+        contextValueKeys: valueChanged ? Object.keys(value) : [],
+        // Log all dependencies to see what's changing
+        effectiveLanguageChanged: languageChanged,
+        setLanguageReference:
+          setLanguage === prevValueRef.current?.setLanguage ? "same" : "new",
+        translateReference:
+          translate === prevValueRef.current?.translate ? "same" : "new",
+      },
+      undefined,
+      "🌍"
+    );
+
+    prevEffectiveLanguageRef.current = effectiveLanguage;
+    prevValueRef.current = value;
+  }, [
+    effectiveLanguage,
+    isTranslating,
+    currentLanguage,
+    value,
+    setLanguage,
+    translate,
+  ]);
 
   return (
     <TranslationContext.Provider value={value}>

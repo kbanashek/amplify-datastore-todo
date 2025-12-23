@@ -1,11 +1,13 @@
 import React, { useCallback } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useTranslation } from "../contexts/TranslationContext";
 import { useTranslatedText } from "../hooks/useTranslatedText";
 import { TaskService } from "../services/TaskService";
 import { Task, TaskStatus } from "../types/Task";
 import { getServiceLogger } from "../utils/serviceLogger";
 import { getTaskIcon } from "../utils/taskIcon";
 import { IconSymbol } from "./ui/IconSymbol";
+import { TranslatedText } from "./TranslatedText";
 
 const logger = getServiceLogger("TaskCard");
 
@@ -16,133 +18,185 @@ interface TaskCardProps {
   simple?: boolean; // If true, show simple card without BEGIN button
 }
 
-export const TaskCard: React.FC<TaskCardProps> = React.memo(
-  ({ task, onPress, onDelete, simple = false }: TaskCardProps) => {
-    // Translate task title
-    const { translatedText: translatedTitle } = useTranslatedText(
-      task.title || "Untitled Task"
+export const TaskCard: React.FC<TaskCardProps> = ({
+  task,
+  onPress,
+  onDelete,
+  simple = false,
+}: TaskCardProps) => {
+  const translationContext = useTranslation();
+  const { currentLanguage } = translationContext;
+  const prevLanguageRef = React.useRef<string>(currentLanguage);
+  const renderCountRef = React.useRef<number>(0);
+
+  // CRITICAL: Force re-render when language or context changes
+  // The issue is that React Context isn't triggering re-renders even though the value changes
+  // So we need to manually detect changes and force updates
+  const prevContextRef = React.useRef(translationContext);
+  const [updateKey, setUpdateKey] = React.useState(0);
+
+  // Use useEffect to detect context/language changes and force re-render
+  React.useEffect(() => {
+    const contextChanged = prevContextRef.current !== translationContext;
+    const languageChanged = prevLanguageRef.current !== currentLanguage;
+
+    if (contextChanged || languageChanged) {
+      logger.debug(
+        "TaskCard context/language changed - forcing update",
+        {
+          taskId: task.id,
+          previousLanguage: prevLanguageRef.current,
+          newLanguage: currentLanguage,
+          contextChanged,
+          languageChanged,
+        },
+        undefined,
+        "📋"
+      );
+      setUpdateKey(prev => prev + 1);
+      prevContextRef.current = translationContext;
+      prevLanguageRef.current = currentLanguage;
+    }
+  }, [translationContext, currentLanguage, task.id]);
+
+  // Use updateKey to ensure component re-renders - this is a workaround
+  // for React Context not triggering re-renders automatically
+  const _ = updateKey; // Reference to force re-render when key changes
+
+  // Log EVERY render to see if component is re-rendering
+  React.useEffect(() => {
+    renderCountRef.current += 1;
+    const languageChanged = prevLanguageRef.current !== currentLanguage;
+    logger.debug(
+      "TaskCard rendered",
+      {
+        renderCount: renderCountRef.current,
+        taskId: task.id,
+        taskTitle: task.title?.substring(0, 30),
+        currentLanguage,
+        previousLanguage: prevLanguageRef.current,
+        languageChanged,
+        willRemount: languageChanged,
+        contextCurrentLanguage: translationContext.currentLanguage,
+        contextMatches: translationContext.currentLanguage === currentLanguage,
+      },
+      undefined,
+      "📋"
     );
+  });
 
-    // Translate button text
-    const isStarted =
-      task.status === TaskStatus.STARTED ||
-      task.status === TaskStatus.INPROGRESS;
-    const { translatedText: beginButtonText } = useTranslatedText(
-      isStarted ? "RESUME" : "BEGIN"
-    );
-    const { translatedText: completedText } = useTranslatedText("COMPLETED");
+  // Translate button text
+  const isStarted =
+    task.status === TaskStatus.STARTED || task.status === TaskStatus.INPROGRESS;
+  const { translatedText: beginButtonText } = useTranslatedText(
+    isStarted ? "RESUME" : "BEGIN"
+  );
+  const { translatedText: completedText } = useTranslatedText("COMPLETED");
 
-    const icon = getTaskIcon(task);
+  const icon = getTaskIcon(task);
 
-    const handleBeginPress = useCallback(async () => {
-      try {
-        // If task is not started, update status to STARTED
-        if (
-          task.status !== TaskStatus.STARTED &&
-          task.status !== TaskStatus.INPROGRESS
-        ) {
-          const updated = await TaskService.updateTask(task.id, {
-            status: TaskStatus.STARTED,
-          });
-        }
-        // Call the onPress callback if provided
-        onPress?.(task);
-      } catch (error) {
-        logger.error("Error updating task status", error);
+  const handleBeginPress = useCallback(async () => {
+    try {
+      // If task is not started, update status to STARTED
+      if (
+        task.status !== TaskStatus.STARTED &&
+        task.status !== TaskStatus.INPROGRESS
+      ) {
+        const updated = await TaskService.updateTask(task.id, {
+          status: TaskStatus.STARTED,
+        });
       }
-    }, [task, onPress]);
+      // Call the onPress callback if provided
+      onPress?.(task);
+    } catch (error) {
+      logger.error("Error updating task status", error);
+    }
+  }, [task, onPress]);
 
-    const handleCardPress = useCallback(async () => {
-      const isCompleted = task.status === TaskStatus.COMPLETED;
-      if (isCompleted) return;
-
-      try {
-        // If task is not started, update status to STARTED when card is clicked
-        // This ensures the button text updates to "RESUME" when user returns to dashboard
-        if (
-          task.status !== TaskStatus.STARTED &&
-          task.status !== TaskStatus.INPROGRESS
-        ) {
-          await TaskService.updateTask(task.id, {
-            status: TaskStatus.STARTED,
-          });
-        }
-        // Call the onPress callback
-        onPress?.(task);
-      } catch (error) {
-        logger.error("Error updating task status on card press", error);
-        // Still navigate even if status update fails
-        onPress?.(task);
-      }
-    }, [task, onPress]);
-
+  const handleCardPress = useCallback(async () => {
     const isCompleted = task.status === TaskStatus.COMPLETED;
-    const isDisabled = isCompleted;
+    if (isCompleted) return;
 
-    return (
-      <TouchableOpacity
-        style={[styles.card, isDisabled && styles.cardDisabled]}
-        onPress={handleCardPress}
-        activeOpacity={isDisabled ? 1 : 0.7}
-        disabled={isDisabled}
-      >
-        <View style={styles.cardContent}>
-          <View
-            style={[styles.titleSection, simple && styles.titleSectionSimple]}
-          >
-            <View style={styles.titleRow}>
-              <View style={styles.iconContainer}>
-                <IconSymbol
-                  name={icon.name as any}
-                  size={24}
-                  color={icon.color}
-                />
-              </View>
-              <Text style={styles.title} numberOfLines={2}>
-                {translatedTitle}
-              </Text>
+    try {
+      // If task is not started, update status to STARTED when card is clicked
+      // This ensures the button text updates to "RESUME" when user returns to dashboard
+      if (
+        task.status !== TaskStatus.STARTED &&
+        task.status !== TaskStatus.INPROGRESS
+      ) {
+        await TaskService.updateTask(task.id, {
+          status: TaskStatus.STARTED,
+        });
+      }
+      // Call the onPress callback
+      onPress?.(task);
+    } catch (error) {
+      logger.error("Error updating task status on card press", error);
+      // Still navigate even if status update fails
+      onPress?.(task);
+    }
+  }, [task, onPress]);
+
+  const isCompleted = task.status === TaskStatus.COMPLETED;
+  const isDisabled = isCompleted;
+
+  return (
+    <TouchableOpacity
+      style={[styles.card, isDisabled && styles.cardDisabled]}
+      onPress={handleCardPress}
+      activeOpacity={isDisabled ? 1 : 0.7}
+      disabled={isDisabled}
+    >
+      <View style={styles.cardContent}>
+        <View
+          style={[styles.titleSection, simple && styles.titleSectionSimple]}
+        >
+          <View style={styles.titleRow}>
+            <View style={styles.iconContainer}>
+              <IconSymbol
+                name={icon.name as any}
+                size={24}
+                color={icon.color}
+              />
             </View>
+            <TranslatedText
+              text={task.title || "Untitled Task"}
+              style={styles.title}
+              numberOfLines={2}
+            />
           </View>
-
-          {!simple && (
-            <View style={styles.actionRow}>
-              {!isCompleted ? (
-                <>
-                  <TouchableOpacity
-                    style={styles.beginButton}
-                    onPress={handleBeginPress}
-                    activeOpacity={0.8}
-                  >
-                    <Text style={styles.beginButtonText}>
-                      {beginButtonText}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.arrowButton}
-                    onPress={() => onPress?.(task)}
-                    activeOpacity={0.7}
-                  >
-                    <IconSymbol
-                      name="chevron.right"
-                      size={20}
-                      color="#57606f"
-                    />
-                  </TouchableOpacity>
-                </>
-              ) : (
-                <View style={styles.completedBadge}>
-                  <Text style={styles.completedText}>{completedText}</Text>
-                </View>
-              )}
-            </View>
-          )}
         </View>
-      </TouchableOpacity>
-    );
-  }
-);
 
-TaskCard.displayName = "TaskCard";
+        {!simple && (
+          <View style={styles.actionRow}>
+            {!isCompleted ? (
+              <>
+                <TouchableOpacity
+                  style={styles.beginButton}
+                  onPress={handleBeginPress}
+                  activeOpacity={0.8}
+                >
+                  <Text style={styles.beginButtonText}>{beginButtonText}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.arrowButton}
+                  onPress={() => onPress?.(task)}
+                  activeOpacity={0.7}
+                >
+                  <IconSymbol name="chevron.right" size={20} color="#57606f" />
+                </TouchableOpacity>
+              </>
+            ) : (
+              <View style={styles.completedBadge}>
+                <Text style={styles.completedText}>{completedText}</Text>
+              </View>
+            )}
+          </View>
+        )}
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   card: {

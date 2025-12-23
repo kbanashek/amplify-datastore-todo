@@ -6,14 +6,13 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { IconSymbol } from "./ui/IconSymbol";
 import { Colors } from "../constants/Colors";
-import { useColorScheme } from "../hooks/useColorScheme";
-import { NetworkStatusIndicator } from "./NetworkStatusIndicator";
-import { LanguageSelector } from "./LanguageSelector";
-import { useTranslatedText } from "../hooks/useTranslatedText";
-import { useRTL } from "../hooks/useRTL";
 import { TestIds } from "../constants/testIds";
+import { useColorScheme } from "../hooks/useColorScheme";
+import { useRTL } from "../hooks/useRTL";
+import { useTranslatedText } from "../hooks/useTranslatedText";
+import { NetworkStatusIndicator } from "./NetworkStatusIndicator";
+import { IconSymbol } from "./ui/IconSymbol";
 
 interface GlobalHeaderProps {
   title: string;
@@ -21,7 +20,10 @@ interface GlobalHeaderProps {
   onMenuPress?: () => void;
   showBackButton?: boolean;
   onBackPress?: () => void;
+  showCloseButton?: boolean;
+  onClosePress?: () => void;
   rightAction?: React.ReactNode;
+  hideBottomSection?: boolean;
 }
 
 export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
@@ -30,7 +32,10 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
   onMenuPress,
   showBackButton = false,
   onBackPress,
+  showCloseButton = false,
+  onClosePress,
   rightAction,
+  hideBottomSection = false,
 }) => {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? "light"];
@@ -40,19 +45,31 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
   return (
     <View style={styles.header}>
       <View style={[styles.headerTop, rtlStyle(styles.headerTop) as ViewStyle]}>
+        {/* Left side: Back button */}
+        <View style={styles.headerLeft}>
+          {showBackButton && onBackPress && (
+            <BackButton onPress={onBackPress} />
+          )}
+        </View>
+
+        {/* Center: Title */}
         <Text style={[styles.headerTitle, isRTL && { textAlign: "right" }]}>
           {translatedTitle}
         </Text>
+
+        {/* Right side: Close button, menu, or custom action */}
         <View
           style={[
             styles.headerActions,
             rtlStyle(styles.headerActions) as ViewStyle,
           ]}
         >
-          {rightAction}
-          {showBackButton && onBackPress && (
-            <BackButton onPress={onBackPress} />
+          {showCloseButton && onClosePress && (
+            <TouchableOpacity onPress={onClosePress} style={styles.closeButton}>
+              <IconSymbol name="xmark" size={24} color="#6b7280" />
+            </TouchableOpacity>
           )}
+          {rightAction}
           {showMenuButton && onMenuPress && (
             <TouchableOpacity
               onPress={onMenuPress}
@@ -68,53 +85,65 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
           )}
         </View>
       </View>
-      <View
-        style={[
-          styles.headerBottom,
-          rtlStyle(styles.headerBottom) as ViewStyle,
-        ]}
-      >
-        <NetworkStatusIndicator />
-        <LanguageSelector />
-      </View>
+      {!hideBottomSection && (
+        <View
+          style={[
+            styles.headerBottom,
+            rtlStyle(styles.headerBottom) as ViewStyle,
+          ]}
+        >
+          <NetworkStatusIndicator />
+          {/* <LanguageSelector /> */}
+        </View>
+      )}
     </View>
   );
 };
 
-// Helper component for back button with translation
+// Helper component for back button with arrow icon
 const BackButton: React.FC<{ onPress: () => void }> = ({ onPress }) => {
-  const { translatedText } = useTranslatedText("Back");
   return (
     <TouchableOpacity style={styles.backButton} onPress={onPress}>
-      <Text style={styles.backButtonText}>{translatedText}</Text>
+      <IconSymbol name="chevron.left" size={24} color="#6b7280" />
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   header: {
-    paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: "#dfe4ea",
+    borderBottomColor: "#e5e7eb",
   },
   headerTop: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 12,
+    justifyContent: "space-between",
+    minHeight: 44,
+  },
+  headerLeft: {
+    width: 44,
+    alignItems: "flex-start",
+    justifyContent: "center",
   },
   headerTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#2f3542",
+    fontSize: 17,
+    fontWeight: "600",
+    color: "#1e40af",
     flex: 1,
+    textAlign: "center",
+    paddingHorizontal: 8,
   },
   headerActions: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    width: 44,
+    justifyContent: "flex-end",
+  },
+  closeButton: {
+    padding: 4,
   },
   headerBottom: {
     flexDirection: "row",
@@ -125,14 +154,6 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   backButton: {
-    backgroundColor: "#ecf0f1",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  backButtonText: {
-    color: "#57606f",
-    fontSize: 14,
-    fontWeight: "600",
+    padding: 4,
   },
 });

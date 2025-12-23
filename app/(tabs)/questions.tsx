@@ -3,7 +3,6 @@ import {
   ErrorState,
   IntroductionScreen,
   LoadingState,
-  ProgressIndicator,
   QuestionScreenContent,
   ReviewScreenContainer,
   useQuestionsScreen,
@@ -175,12 +174,6 @@ export default function QuestionsScreen() {
         activityData &&
         activityData.screens.length > 0 && (
           <View style={styles.questionContainer}>
-            {/* Progress Indicator */}
-            <ProgressIndicator
-              currentPage={currentScreenIndex + 1}
-              totalPages={activityData.screens.length}
-            />
-
             {/* Question Content - Scrollable with integrated navigation buttons */}
             <QuestionScreenContent
               activityData={activityData}
