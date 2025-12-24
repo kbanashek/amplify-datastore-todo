@@ -40,6 +40,7 @@ export {
   getLoggingService,
   initializeLoggingService,
 } from "./services/LoggingService";
+export type { LoggingConfig } from "./services/logging/types";
 export { QuestionService } from "./services/QuestionService";
 export { SeededDataCleanupService } from "./services/SeededDataCleanupService";
 export { TaskAnswerService } from "./services/TaskAnswerService";
@@ -52,7 +53,6 @@ export {
   TranslationService,
   getTranslationService,
 } from "./services/TranslationService";
-export type { LoggingConfig } from "./services/logging/types";
 export * from "./services/translationTypes";
 
 // Export all hooks - single source of truth
@@ -162,23 +162,23 @@ export { AmplifyProvider, useAmplify } from "./contexts/AmplifyContext";
 // Translation system (i18next-based - new architecture)
 export {
   TranslationProvider,
-  addTranslationBundle,
-  getDefaultNamespace,
-  getTranslationKey,
-  initializeTranslations,
-  isRTLMode,
-  loadDefaultTranslations,
-  safeTranslate,
   useTaskTranslation,
+  initializeTranslations,
+  addTranslationBundle,
+  isRTLMode,
+  getTranslationKey,
+  safeTranslate,
+  loadDefaultTranslations,
+  getDefaultNamespace,
 } from "./translations";
-// Note: SUPPORTED_LANGUAGES and isRTL are already exported via export * from "./services/translationTypes" on line 56
 export type {
-  ActivityTranslation,
-  TranslationBundle,
   TranslationConfig,
+  TranslationBundle,
+  ActivityTranslation,
   TranslationOptions,
+  LanguageCode,
 } from "./translations";
-// Note: LanguageCode, SUPPORTED_LANGUAGES, and isRTL are already exported via export * from "./services/translationTypes" on line 56
+export { SUPPORTED_LANGUAGES, isRTL } from "./translations";
 
 // Legacy translation system (deprecated - use new i18next-based system)
 // Keep old exports for backward compatibility during migration
