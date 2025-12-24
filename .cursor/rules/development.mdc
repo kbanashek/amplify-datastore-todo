@@ -311,12 +311,12 @@ logger.error("Failed to create task", error);
 
 ## Project Todos
 
-- **ALWAYS use `DOCS/todos.md` for tracking todos and future work**
+- **ALWAYS use `DOCS/planning/todos.md` for tracking todos and future work**
 - When identifying work that needs to be done:
-  - Add it to `DOCS/todos.md` with a clear description
+  - Add it to `DOCS/planning/todos.md` with a clear description
   - Group related todos under descriptive headings
   - Mark completed items with `[x]` instead of deleting them
   - Include file paths, code references, or context when relevant
 - **Do NOT** create separate todo files or track todos in code comments
-- **Do NOT** use TODO comments in code for tracking work - use `DOCS/todos.md` instead
+- **Do NOT** use TODO comments in code for tracking work - use `DOCS/planning/todos.md` instead
 - Format: `- [ ] Description of task` for incomplete, `- [x] Description` for complete
