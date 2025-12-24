@@ -2,6 +2,7 @@ import { TaskCard } from "@components/TaskCard";
 import { useTaskList } from "@hooks/useTaskList";
 import { Task, TaskFilters } from "@task-types/Task";
 import { getServiceLogger } from "@utils/serviceLogger";
+import { groupTasksByDate } from "@utils/taskGrouping";
 import React, { useMemo } from "react";
 import {
   ActivityIndicator,
@@ -18,72 +19,6 @@ interface TaskListProps {
   filters?: TaskFilters;
   onTaskPress?: (task: Task) => void;
 }
-
-interface GroupedTasks {
-  today: Task[];
-  upcoming: Task[];
-  past: Task[];
-}
-
-/**
- * Groups tasks by date.
- *
- * @param tasks - The tasks to group
- * @returns The grouped tasks
- */
-const groupTasksByDate = (tasks: Task[]): GroupedTasks => {
-  const now = new Date();
-  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const todayEnd = new Date(todayStart);
-  todayEnd.setDate(todayEnd.getDate() + 1);
-
-  const grouped: GroupedTasks = {
-    today: [],
-    upcoming: [],
-    past: [],
-  };
-
-  tasks.forEach(task => {
-    // If no startTimeInMillSec, put in upcoming
-    if (!task.startTimeInMillSec) {
-      logger.debug("Task without startTimeInMillSec", {
-        id: task.id,
-        title: task.title,
-      });
-      grouped.upcoming.push(task);
-      return;
-    }
-
-    const taskDate = new Date(task.startTimeInMillSec);
-    logger.debug("Task date", {
-      id: task.id,
-      date: taskDate.toISOString(),
-      todayStart: todayStart.toISOString(),
-      todayEnd: todayEnd.toISOString(),
-    });
-
-    if (taskDate >= todayStart && taskDate < todayEnd) {
-      grouped.today.push(task);
-    } else if (taskDate >= todayEnd) {
-      grouped.upcoming.push(task);
-    } else {
-      grouped.past.push(task);
-    }
-  });
-
-  // Sort each group by start time
-  const sortByStartTime = (a: Task, b: Task) => {
-    const aTime = a.startTimeInMillSec || 0;
-    const bTime = b.startTimeInMillSec || 0;
-    return aTime - bTime;
-  };
-
-  grouped.today.sort(sortByStartTime);
-  grouped.upcoming.sort(sortByStartTime);
-  grouped.past.sort(sortByStartTime);
-
-  return grouped;
-};
 
 /**
  * A list component for displaying tasks.
