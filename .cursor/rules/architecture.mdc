@@ -1,0 +1,266 @@
+---
+description: Component architecture, package structure, and code organization patterns
+alwaysApply: true
+globs: ["**/*.tsx", "src/components/**/*", "src/hooks/**/*", "packages/**/*"]
+---
+
+# Architecture & Code Organization
+
+## Component Architecture
+
+- **ALWAYS** separate component logic from presentation
+- **Components should be small and focused** - if a component exceeds ~200 lines, break it down into smaller sub-components
+- **All business logic, state management, and side effects should live in custom hooks** - components should only handle rendering and user interactions
+- **Pattern to follow:**
+  - Create a custom hook (e.g., `useComponentName`) that contains:
+    - All state (`useState`, `useReducer`)
+    - All side effects (`useEffect`, subscriptions)
+    - All business logic (validation, data transformation, API calls)
+    - All event handlers that contain logic
+  - The component should only:
+    - Call the hook to get state and handlers
+    - Render UI using smaller sub-components
+    - Pass props to sub-components
+- **Example structure:**
+
+  ```typescript
+  // ❌ Bad: Large component with all logic
+  export default function MyComponent() {
+    const [state, setState] = useState(...);
+    useEffect(() => { ... }, []);
+    const handleSubmit = async () => { ... };
+    // 500+ lines of logic and JSX
+  }
+
+  // ✅ Good: Hook contains logic, component renders
+  // src/hooks/useMyComponent.ts
+  export const useMyComponent = () => {
+    const [state, setState] = useState(...);
+    useEffect(() => { ... }, []);
+    const handleSubmit = async () => { ... };
+    return { state, handleSubmit, ... };
+  };
+
+  // app/(tabs)/my-component.tsx
+  export default function MyComponent() {
+    const { state, handleSubmit } = useMyComponent();
+    return <View>...</View>;
+  }
+  ```
+
+- **Sub-components should be created when:**
+  - A section of JSX is reusable
+  - A section has its own distinct purpose (e.g., header, footer, form section)
+  - A section is complex enough to warrant its own file
+- **File organization:**
+  - Hooks: `src/hooks/use*.ts`
+  - Sub-components: `src/components/[category]/*.tsx` (grouped by feature/category)
+  - Main components: `app/**/*.tsx`
+
+---
+
+## Standalone Functions as Utilities
+
+**Severity**: Error  
+**Applies to**: TypeScript, JavaScript, React Components
+
+Functions that can operate independently (pure functions, utility functions, helper functions) should **NOT** be defined inside components or other modules. They should be extracted into dedicated utility files with unit test coverage.
+
+### Why This Rule Exists
+
+- **Testability**: Standalone functions are easier to test in isolation
+- **Reusability**: Utilities can be shared across multiple components/modules
+- **Maintainability**: Centralized utilities are easier to find and update
+- **Separation of Concerns**: Components should focus on rendering and user interactions, not business logic
+- **Code Organization**: Utilities belong in `utils/` directories, not embedded in components
+
+### What Qualifies as a "Standalone Function"
+
+A function is considered standalone if it:
+- Takes inputs and returns outputs without side effects (pure function)
+- Does not depend on React hooks, component state, or component props (except as parameters)
+- Can be tested independently without rendering a component
+- Performs calculations, transformations, validations, or data processing
+- Does not directly manipulate the DOM or React elements
+
+### Examples
+
+**❌ Bad: Function Inside Component**
+
+```typescript
+// packages/task-system/src/components/TaskCard.tsx
+export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
+  // ❌ BAD: Standalone function inside component
+  const getTaskIcon = (task: Task): { name: string; color: string } => {
+    const title = (task.title || "").toLowerCase();
+    if (title.includes("medication")) {
+      return { name: "pills", color: "#3498db" };
+    }
+    // ... more logic
+  };
+
+  const icon = getTaskIcon(task);
+  return <View>...</View>;
+};
+```
+
+**✅ Good: Function in Utility File**
+
+```typescript
+// packages/task-system/src/utils/taskIcon.ts
+export const getTaskIcon = (task: Task): TaskIconConfig => {
+  const title = (task.title || "").toLowerCase();
+  if (title.includes("medication")) {
+    return { name: "pills", color: "#3498db" };
+  }
+  // ... more logic
+};
+
+// packages/task-system/src/components/TaskCard.tsx
+import { getTaskIcon } from "../utils/taskIcon";
+
+export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
+  const icon = getTaskIcon(task);
+  return <View>...</View>;
+};
+```
+
+**✅ Good: Function with Unit Tests**
+
+```typescript
+// packages/task-system/src/utils/__tests__/taskIcon.test.ts
+import { getTaskIcon } from "../taskIcon";
+
+describe("getTaskIcon", () => {
+  it("should return pills icon for medication tasks", () => {
+    const task = { title: "Medication Reminder", taskType: TaskType.SCHEDULED };
+    const icon = getTaskIcon(task);
+    expect(icon.name).toBe("pills");
+  });
+  // ... more tests
+});
+```
+
+### Exceptions
+
+Functions that **MUST** stay in components:
+- Event handlers that use component state or props (but should use `useCallback` for memoization)
+- Functions that use React hooks (`useState`, `useEffect`, etc.)
+- Functions that render JSX or React elements
+- Functions that are tightly coupled to component lifecycle
+
+### File Organization
+
+- **Utility files**: `packages/task-system/src/utils/[utility-name].ts`
+- **Test files**: `packages/task-system/src/utils/__tests__/[utility-name].test.ts`
+- **Export pattern**: Export named exports from utility files, import in components
+
+### Enforcement
+
+When you encounter a standalone function inside a component:
+1. Extract it to a new utility file in `packages/task-system/src/utils/`
+2. Create a corresponding test file in `packages/task-system/src/utils/__tests__/`
+3. Write comprehensive unit tests covering all edge cases
+4. Update the component to import and use the utility
+5. Remove the function from the component
+
+---
+
+## Package Architecture
+
+### Self-Containment Principle
+
+**ALWAYS implement new logic within the package (`packages/task-system/`) to be self-contained when it makes sense.**
+
+The `@orion/task-system` package is designed to be a **self-contained, reusable module** that can be embedded in other apps (like LX). Logic that is core to the package's functionality should live within the package, not in the harness (main app).
+
+### When to Implement in Package
+
+**✅ Implement in package when:**
+- Logic is core to the package's functionality (services, utilities, hooks, components)
+- Logic needs to be reusable across different host apps
+- Logic is part of the package's public API or internal implementation
+- Logic is domain-specific to tasks, activities, questions, etc.
+
+**Examples:**
+- ✅ Logging service (core infrastructure)
+- ✅ Translation service (package functionality)
+- ✅ Task/Activity services (package domain logic)
+- ✅ Data subscription utilities (package utilities)
+- ✅ Question components (package UI)
+
+### When to Implement in Harness
+
+**✅ Implement in harness (main app) when:**
+- Logic is specific to THIS app's use case
+- Logic is app-level configuration or setup
+- Logic is Expo Router specific (package doesn't use Expo Router)
+- Logic is harness-specific testing/debugging tools
+
+**Examples:**
+- ✅ App-level Amplify configuration
+- ✅ Expo Router navigation setup
+- ✅ Harness-specific test fixtures
+- ✅ App-level theme/styling configuration
+
+### Architectural Decision Protocol
+
+**CRITICAL: When making architectural decisions about where to place logic, ALWAYS prompt the user first.**
+
+**Prompt the user when:**
+- Moving existing logic between package and harness
+- Deciding whether new logic belongs in package or harness
+- Refactoring shared infrastructure (logging, services, utilities)
+- Making changes that affect package self-containment
+- Creating new shared services or utilities
+
+**Do NOT make architectural decisions autonomously.** Ask the user:
+- "Should this logic be in the package for self-containment, or in the harness?"
+- "This affects package architecture - should I move it to the package?"
+- "Is this package-level or harness-level functionality?"
+
+### Package Structure
+
+The package should be self-contained with:
+- **Services**: `packages/task-system/src/services/`
+- **Hooks**: `packages/task-system/src/hooks/`
+- **Components**: `packages/task-system/src/components/`
+- **Utils**: `packages/task-system/src/utils/`
+- **Runtime**: `packages/task-system/src/runtime/`
+
+### Harness Integration
+
+The harness (main app) should:
+- Configure the package (e.g., Amplify, logging)
+- Provide app-level context (e.g., LoggingProvider, TranslationProvider)
+- Mount the package components
+- Handle app-specific concerns (Expo Router, navigation, etc.)
+
+### Examples
+
+**✅ Good: Logging service in package**
+```typescript
+// packages/task-system/src/services/LoggingService.ts
+// Self-contained logging for the package
+```
+
+**✅ Good: Harness configures package**
+```typescript
+// src/contexts/LoggingContext.tsx
+// Harness provides logging context, package uses it
+```
+
+**❌ Bad: Core package logic in harness**
+```typescript
+// src/services/TaskService.ts
+// This should be in the package, not harness
+```
+
+### Migration Strategy
+
+When moving logic from harness to package:
+1. **Prompt user first** - "Should I move [X] to the package for self-containment?"
+2. Move the logic to appropriate package location
+3. Update imports in package to use moved logic
+4. Update harness to import from package if needed
+5. Ensure package remains self-contained

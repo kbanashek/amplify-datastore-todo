@@ -2,17 +2,26 @@
 
 This project uses modular cursor rules organized in the `.cursor/rules/` directory.
 
-## Rule Files
+## Rule Files (6 consolidated files)
 
-- `.cursor/rules/version-control.mdc` - Version control, commits, and push workflow
-- `.cursor/rules/typescript.mdc` - TypeScript best practices
-- `.cursor/rules/react-native.mdc` - React Native component patterns
-- `.cursor/rules/component-architecture.mdc` - Component architecture and separation of concerns
-- `.cursor/rules/testing.mdc` - Unit testing requirements
-- `.cursor/rules/aws-amplify.mdc` - AWS Amplify DataStore conventions
-- `.cursor/rules/documentation.mdc` - Documentation standards
-- `.cursor/rules/project-management.mdc` - Project todos and workflow
-- `.cursor/rules/ui-ux.mdc` - UI/UX design patterns
-- `.cursor/rules/logging.mdc` - Logging standards and sequential initialization visibility
+| File               | Description                                                     |
+| ------------------ | --------------------------------------------------------------- |
+| `code-style.mdc`   | TypeScript best practices, arrow functions, object map patterns |
+| `architecture.mdc` | Component architecture, package structure, utility extraction   |
+| `aws-amplify.mdc`  | AWS Amplify DataStore conventions, ModelName constants          |
+| `development.mdc`  | Testing, logging, documentation, and project todos              |
+| `workflow.mdc`     | Version control, GitHub Actions, CI/CD workflows                |
+| `react-native.mdc` | React Native component patterns, UI/UX conventions              |
 
 All rules are automatically applied. See individual rule files in `.cursor/rules/` for detailed guidelines.
+
+## Consolidation Summary
+
+These 6 files consolidate the previous 16 individual rule files:
+
+- **code-style.mdc** ← typescript + arrow-functions + object-map-pattern
+- **architecture.mdc** ← component-architecture + package-architecture + standalone-functions
+- **aws-amplify.mdc** ← aws-amplify + no-string-model-names
+- **development.mdc** ← testing + logging + documentation + project-management
+- **workflow.mdc** ← version-control + github-actions
+- **react-native.mdc** ← react-native + ui-ux
