@@ -1,5 +1,6 @@
 import { renderHook, waitFor, act } from "@testing-library/react-native";
 import { useTaskHistoryList } from "../useTaskHistoryList";
+import { createSubscriptionHolder } from "./testUtils";
 
 // Mock TaskHistoryService
 jest.mock("../../services/TaskHistoryService", () => ({
@@ -71,22 +72,16 @@ describe("useTaskHistoryList", () => {
     });
 
     it("updates task histories when subscription callback fires", async () => {
-      let subscriptionCallback: any = null;
+      const { holder, setCallback } =
+        createSubscriptionHolder<TaskHistoryModel>();
       mockSubscribeTaskHistories.mockImplementation(callback => {
-        subscriptionCallback = callback;
+        setCallback(callback);
         return { unsubscribe: jest.fn() };
       });
       const { result } = renderHook(() => useTaskHistoryList());
       expect(result.current.loading).toBe(true);
 
-      if (subscriptionCallback) {
-        (
-          subscriptionCallback as (
-            items: TaskHistoryModel[],
-            synced: boolean
-          ) => void
-        )(mockTaskHistories, true);
-      }
+      holder.callback?.(mockTaskHistories, true);
 
       await waitFor(() => {
         expect(result.current.taskHistories).toEqual(mockTaskHistories);

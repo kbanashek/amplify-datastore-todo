@@ -4,19 +4,20 @@ import { QuestionService } from "../QuestionService";
 
 jest.mock("@aws-amplify/datastore");
 
-const createMockQuestion = (overrides: Partial<any> = {}): any => ({
-  id: "test-question-id",
-  pk: "test-pk",
-  sk: "test-sk",
-  question: "Test Question",
-  questionId: "q1",
-  friendlyName: "Test Question",
-  controlType: "text",
-  type: "text",
-  version: 1,
-  index: 0,
-  ...overrides,
-});
+const createMockQuestion = (overrides: Partial<Question> = {}): Question =>
+  ({
+    id: "test-question-id",
+    pk: "test-pk",
+    sk: "test-sk",
+    question: "Test Question",
+    questionId: "q1",
+    friendlyName: "Test Question",
+    controlType: "text",
+    type: "text",
+    version: 1,
+    index: 0,
+    ...overrides,
+  }) as Question;
 
 describe("QuestionService", () => {
   beforeEach(() => {

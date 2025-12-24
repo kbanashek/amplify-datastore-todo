@@ -1,5 +1,6 @@
 import { renderHook, waitFor, act } from "@testing-library/react-native";
 import { useActivityList } from "../useActivityList";
+import { createSubscriptionHolder } from "./testUtils";
 
 // Mock ActivityService
 jest.mock("../../services/ActivityService", () => ({
@@ -73,22 +74,15 @@ describe("useActivityList", () => {
     });
 
     it("updates activities when subscription callback fires", async () => {
-      let subscriptionCallback: any = null;
+      const { holder, setCallback } = createSubscriptionHolder<ActivityModel>();
       mockSubscribeActivities.mockImplementation(callback => {
-        subscriptionCallback = callback;
+        setCallback(callback);
         return { unsubscribe: jest.fn() };
       });
       const { result } = renderHook(() => useActivityList());
       expect(result.current.loading).toBe(true);
 
-      if (subscriptionCallback) {
-        (
-          subscriptionCallback as (
-            items: ActivityModel[],
-            synced: boolean
-          ) => void
-        )(mockActivities, true);
-      }
+      holder.callback?.(mockActivities, true);
 
       await waitFor(() => {
         expect(result.current.activities).toEqual(mockActivities);
