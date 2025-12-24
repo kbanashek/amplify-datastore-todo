@@ -1,12 +1,12 @@
 import { renderHook, waitFor, act } from "@testing-library/react-native";
-import { useTaskContainer } from "../useTaskContainer";
-import { Task, TaskStatus, TaskType } from "../../types/Task";
+import { useTaskContainer } from "@hooks/useTaskContainer";
+import { Task, TaskStatus, TaskType } from "@task-types/Task";
 import {
   Appointment,
   AppointmentData,
   AppointmentStatus,
   AppointmentType,
-} from "../../types/Appointment";
+} from "@task-types/Appointment";
 import { Alert } from "react-native";
 
 // Mock react-navigation
@@ -15,34 +15,34 @@ jest.mock("@react-navigation/native", () => ({
 }));
 
 // Mock hooks
-jest.mock("../useTaskList", () => ({
+jest.mock("@hooks/useTaskList", () => ({
   useTaskList: jest.fn(),
 }));
 
-jest.mock("../useGroupedTasks", () => ({
+jest.mock("@hooks/useGroupedTasks", () => ({
   useGroupedTasks: jest.fn(),
 }));
 
-jest.mock("../useAppointmentList", () => ({
+jest.mock("@hooks/useAppointmentList", () => ({
   useAppointmentList: jest.fn(),
 }));
 
-jest.mock("../../utils/appointmentParser", () => ({
+jest.mock("@utils/appointmentParser", () => ({
   groupAppointmentsByDate: jest.fn(),
 }));
 
-jest.mock("../../services/NavigationService", () => ({
+jest.mock("@services/NavigationService", () => ({
   navigationService: {
     navigateToAppointmentDetails: jest.fn(),
   },
 }));
 
 import { useNavigation } from "@react-navigation/native";
-import { useTaskList } from "../useTaskList";
-import { useGroupedTasks } from "../useGroupedTasks";
-import { useAppointmentList } from "../useAppointmentList";
-import { groupAppointmentsByDate } from "../../utils/appointmentParser";
-import { navigationService } from "../../services/NavigationService";
+import { useTaskList } from "@hooks/useTaskList";
+import { useGroupedTasks } from "@hooks/useGroupedTasks";
+import { useAppointmentList } from "@hooks/useAppointmentList";
+import { groupAppointmentsByDate } from "@utils/appointmentParser";
+import { navigationService } from "@services/NavigationService";
 
 describe("useTaskContainer", () => {
   const mockNavigate = jest.fn();

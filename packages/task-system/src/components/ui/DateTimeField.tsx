@@ -10,9 +10,9 @@ import {
   ViewStyle,
 } from "react-native";
 
-import { useThemeColor } from "../../hooks/useThemeColor";
-import { isAndroid, isIOS } from "../../utils/platform";
-import { ThemedText } from "../ThemedText";
+import { useThemeColor } from "@hooks/useThemeColor";
+import { isAndroid, isIOS } from "@utils/platform";
+import { ThemedText } from "@components/ThemedText";
 
 export type DateTimeFieldMode = "date" | "time" | "datetime";
 

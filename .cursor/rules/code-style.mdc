@@ -49,8 +49,143 @@ globs: ["**/*.ts", "**/*.tsx"]
   - ✅ Good: `type UserUpdate = Partial<Pick<User, 'name' | 'email'>>;`
 - **Export types and interfaces** that are used across modules
   - ✅ Good: `export interface User { id: string; name: string; }`
-- **Use JSDoc comments** for complex types and public APIs
-  - ✅ Good: `/** Processes user data and returns formatted result */ function processUser(user: User): ProcessedUser { ... }`
+
+---
+
+## JSDoc Documentation Requirements
+
+**ALL functions, hooks, services, and components MUST have proper JSDoc documentation.**
+
+### What Requires JSDoc
+
+| Item | Required JSDoc |
+|------|----------------|
+| **React hooks** | Module-level + hook function + all returned functions |
+| **Services** | Class-level + all public methods |
+| **Utility functions** | Function-level with `@param` and `@returns` |
+| **React components** | Component-level describing purpose and props |
+| **Interfaces/Types** | For public APIs and complex types |
+
+### JSDoc Format
+
+**Basic function:**
+```typescript
+/**
+ * Calculates the total price including tax.
+ *
+ * @param items - Array of items with prices
+ * @param taxRate - Tax rate as a decimal (e.g., 0.08 for 8%)
+ * @returns The total price including tax
+ */
+export const calculateTotal = (items: Item[], taxRate: number): number => {
+  // ...
+};
+```
+
+**React hook:**
+```typescript
+/**
+ * React hook for managing task list with real-time synchronization.
+ *
+ * Provides reactive task data via DataStore subscriptions and
+ * task management operations.
+ *
+ * @param filters - Optional filters to apply to the task list
+ * @returns Object containing task data, loading states, and management operations
+ *
+ * @example
+ * ```tsx
+ * const { tasks, loading, handleDeleteTask } = useTaskList();
+ * ```
+ */
+export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
+  // ...
+};
+```
+
+**Service class:**
+```typescript
+/**
+ * Service for managing Task entities via AWS DataStore.
+ *
+ * Provides CRUD operations and real-time subscriptions for tasks.
+ *
+ * @example
+ * ```typescript
+ * const task = await TaskService.createTask({ title: "New Task" });
+ * ```
+ */
+export class TaskService {
+  /**
+   * Creates a new task in the DataStore.
+   *
+   * @param input - Task creation data
+   * @returns The created task
+   * @throws Error if creation fails
+   */
+  static async createTask(input: CreateTaskInput): Promise<Task> {
+    // ...
+  }
+}
+```
+
+**Interface with documentation:**
+```typescript
+/**
+ * Return type for the useTaskList hook.
+ */
+interface UseTaskListReturn {
+  /** List of all tasks */
+  tasks: Task[];
+  /** Whether initial data is still loading */
+  loading: boolean;
+  /** Error message, or null */
+  error: string | null;
+  /** Deletes a task by ID */
+  handleDeleteTask: (id: string) => Promise<void>;
+}
+```
+
+### Required JSDoc Tags
+
+| Tag | When to Use |
+|-----|-------------|
+| `@param` | For each function parameter |
+| `@returns` | For non-void return values |
+| `@throws` | When function can throw errors |
+| `@example` | For complex functions, hooks, and services |
+| `@see` | To reference related functions or docs |
+| `@template` | For generic type parameters |
+
+### Enforcement
+
+When creating or modifying code:
+1. **New functions** - Add JSDoc before implementation
+2. **Modified functions** - Update JSDoc if behavior changes
+3. **New hooks** - Document hook, return type interface, and all returned functions
+4. **New services** - Document class and all public methods
+5. **New components** - Document component purpose and props
+
+**❌ Bad (no documentation):**
+```typescript
+export const useTaskList = () => {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  // ...
+};
+```
+
+**✅ Good (properly documented):**
+```typescript
+/**
+ * React hook for fetching and managing a list of tasks.
+ *
+ * @returns Object containing tasks array and loading state
+ */
+export const useTaskList = (): UseTaskListReturn => {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  // ...
+};
+```
 
 ---
 
@@ -207,4 +342,89 @@ const ERROR_MESSAGES: Record<string, string> = {
   "E002": "Network error",
   "E003": "Timeout",
 } as const;
+```
+
+---
+
+## Path Aliases (Package Imports)
+
+**Within the `@orion/task-system` package**, use path aliases instead of relative imports for better readability and maintainability.
+
+### Available Aliases
+
+| Alias | Path |
+|-------|------|
+| `@components/*` | `packages/task-system/src/components/*` |
+| `@hooks/*` | `packages/task-system/src/hooks/*` |
+| `@services/*` | `packages/task-system/src/services/*` |
+| `@utils/*` | `packages/task-system/src/utils/*` |
+| `@task-types/*` | `packages/task-system/src/types/*` |
+| `@constants/*` | `packages/task-system/src/constants/*` |
+| `@contexts/*` | `packages/task-system/src/contexts/*` |
+| `@translations/*` | `packages/task-system/src/translations/*` |
+| `@models/*` | `packages/task-system/src/models/*` |
+| `@screens/*` | `packages/task-system/src/screens/*` |
+| `@fixtures/*` | `packages/task-system/src/fixtures/*` |
+| `@runtime/*` | `packages/task-system/src/runtime/*` |
+| `@test-utils/*` | `packages/task-system/src/hooks/__tests__/*` |
+
+**Note:** `@task-types` is used instead of `@types` because `@types/` is reserved by TypeScript for type definition packages.
+
+### Examples
+
+**❌ Bad (relative imports):**
+```typescript
+import { Task } from "../../types/Task";
+import { TaskService } from "../../../services/TaskService";
+import { getServiceLogger } from "../../utils/serviceLogger";
+```
+
+**✅ Good (path aliases):**
+```typescript
+import { Task } from "@task-types/Task";
+import { TaskService } from "@services/TaskService";
+import { getServiceLogger } from "@utils/serviceLogger";
+```
+
+### Jest Mocks with Path Aliases
+
+When using `jest.mock()`, use the same path aliases:
+
+**❌ Bad:**
+```typescript
+jest.mock("../../services/TaskService", () => ({
+  TaskService: { getTasks: jest.fn() },
+}));
+```
+
+**✅ Good:**
+```typescript
+jest.mock("@services/TaskService", () => ({
+  TaskService: { getTasks: jest.fn() },
+}));
+```
+
+### Configuration Files
+
+Path aliases are configured in:
+- `packages/task-system/tsconfig.json` - TypeScript resolution
+- `packages/task-system/tsconfig.build.json` - Build configuration
+- `jest.config.js` - Jest module resolution
+
+### When to Use Relative Imports
+
+Use relative imports only for:
+- Files in the **same directory** (e.g., `./styles`, `./types`)
+- Test mocks in `__mocks__/` directories
+- Special cases where relative path is clearer
+
+### Migration Script
+
+A conversion script is available at `scripts/convert-imports.js`:
+```bash
+# Dry run - show what would change
+node scripts/convert-imports.js --dry-run
+
+# Apply changes
+node scripts/convert-imports.js
 ```

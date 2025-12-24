@@ -1,19 +1,18 @@
-import { renderHook, waitFor, act } from "@testing-library/react-native";
-import { useTaskHistoryList } from "../useTaskHistoryList";
-import { createSubscriptionHolder } from "./testUtils";
+import { useTaskHistoryList } from "@hooks/useTaskHistoryList";
+import { createSubscriptionHolder } from "@test-utils/testUtils";
+import { act, renderHook, waitFor } from "@testing-library/react-native";
+
+import { TaskHistory as TaskHistoryModel } from "@models/index";
+import { TaskHistoryService } from "@services/TaskHistoryService";
 
 // Mock TaskHistoryService
-jest.mock("../../services/TaskHistoryService", () => ({
+jest.mock("@services/TaskHistoryService", () => ({
   TaskHistoryService: {
     subscribeTaskHistories: jest.fn(),
     getTaskHistories: jest.fn(),
     deleteTaskHistory: jest.fn(),
   },
 }));
-
-import { TaskHistoryService } from "../../services/TaskHistoryService";
-import { TaskHistory as TaskHistoryModel } from "../../models";
-import { TaskHistory } from "../../types/TaskHistory";
 
 describe("useTaskHistoryList", () => {
   const mockSubscribeTaskHistories =

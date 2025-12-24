@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TranslationService } from "../TranslationService";
-import { TranslationMemoryService } from "../TranslationMemoryService";
+import { TranslationService } from "@services/TranslationService";
+import { TranslationMemoryService } from "@services/TranslationMemoryService";
 import {
   TranslateClient,
   TranslateTextCommand,
@@ -15,7 +15,7 @@ jest.mock("@aws-sdk/client-translate", () => ({
 }));
 
 // Mock TranslationMemoryService
-jest.mock("../TranslationMemoryService", () => ({
+jest.mock("@services/TranslationMemoryService", () => ({
   TranslationMemoryService: {
     getTranslation: jest.fn(),
     storeTranslation: jest.fn(),

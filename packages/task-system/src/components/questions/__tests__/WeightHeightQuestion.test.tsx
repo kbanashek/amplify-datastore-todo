@@ -1,10 +1,10 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { WeightHeightQuestion } from "../WeightHeightQuestion";
-import { Question } from "../../../types/ActivityConfig";
+import { WeightHeightQuestion } from "@components/questions/WeightHeightQuestion";
+import { Question } from "@task-types/ActivityConfig";
 
 // Mock useTranslatedText
-jest.mock("../../../hooks/useTranslatedText", () => ({
+jest.mock("@hooks/useTranslatedText", () => ({
   useTranslatedText: jest.fn((text: string) => ({
     translatedText: text,
     isTranslating: false,

@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { CompletionScreen } from "../CompletionScreen";
-import { ActivityConfig } from "../../../types/ActivityConfig";
+import { CompletionScreen } from "@components/questions/CompletionScreen";
+import { ActivityConfig } from "@task-types/ActivityConfig";
 
 describe("CompletionScreen", () => {
   const mockActivityConfig: ActivityConfig = {

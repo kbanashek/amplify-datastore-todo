@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { NumericInput } from "../NumericInput";
+import { NumericInput } from "@components/ui/NumericInput";
 
 describe("NumericInput", () => {
   it("renders input field", () => {

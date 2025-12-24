@@ -1,17 +1,17 @@
 import { renderHook, waitFor } from "@testing-library/react-native";
 import { createMockTFunction } from "../../MOCKS/translationMocks";
-import type { LanguageCode } from "../../translations/translationTypes";
+import type { LanguageCode } from "@translations/translationTypes";
 
 // Mock useTaskTranslation hook BEFORE importing useTranslatedText
 const mockUseTaskTranslation = jest.fn();
 
-jest.mock("../../translations", () => ({
+jest.mock("@translations/index", () => ({
   ...jest.requireActual("../../translations"),
   useTaskTranslation: () => mockUseTaskTranslation(),
 }));
 
 // Import after mock setup
-import { useTranslatedText } from "../useTranslatedText";
+import { useTranslatedText } from "@hooks/useTranslatedText";
 
 describe("useTranslatedText", () => {
   beforeEach(() => {

@@ -24,6 +24,22 @@ module.exports = {
   ],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/$1",
+    // Package-internal aliases for @orion/task-system
+    "^@components/(.*)$": "<rootDir>/packages/task-system/src/components/$1",
+    "^@hooks/(.*)$": "<rootDir>/packages/task-system/src/hooks/$1",
+    "^@services/(.*)$": "<rootDir>/packages/task-system/src/services/$1",
+    "^@utils/(.*)$": "<rootDir>/packages/task-system/src/utils/$1",
+    "^@task-types/(.*)$": "<rootDir>/packages/task-system/src/types/$1",
+    "^@constants/(.*)$": "<rootDir>/packages/task-system/src/constants/$1",
+    "^@contexts/(.*)$": "<rootDir>/packages/task-system/src/contexts/$1",
+    "^@translations/(.*)$":
+      "<rootDir>/packages/task-system/src/translations/$1",
+    "^@models/(.*)$": "<rootDir>/packages/task-system/src/models/$1",
+    "^@screens/(.*)$": "<rootDir>/packages/task-system/src/screens/$1",
+    "^@fixtures/(.*)$": "<rootDir>/packages/task-system/src/fixtures/$1",
+    "^@runtime/(.*)$": "<rootDir>/packages/task-system/src/runtime/$1",
+    "^@test-utils/(.*)$":
+      "<rootDir>/packages/task-system/src/hooks/__tests__/$1",
   },
   coverageReporters: ["text", "text-summary", "html", "lcov"],
   coverageThreshold: {

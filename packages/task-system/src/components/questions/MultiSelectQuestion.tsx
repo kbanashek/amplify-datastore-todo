@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Choice, Question } from "../../types/ActivityConfig";
-import { useTaskTranslation } from "../../translations";
-import { getServiceLogger } from "../../utils/serviceLogger";
+import { Choice, Question } from "@task-types/ActivityConfig";
+import { useTaskTranslation } from "@translations/index";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("MultiSelectQuestion");
 

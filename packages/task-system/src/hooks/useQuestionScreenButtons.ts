@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { ViewStyle } from "react-native";
-import { ActivityConfig } from "../types/ActivityConfig";
-import { useRTL } from "./useRTL";
+import { ActivityConfig } from "@task-types/ActivityConfig";
+import { useRTL } from "@hooks/useRTL";
 
 interface UseQuestionScreenButtonsProps {
   displayProperties?: Record<string, string>;

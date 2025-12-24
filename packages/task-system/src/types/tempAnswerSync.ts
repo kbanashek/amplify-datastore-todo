@@ -1,5 +1,5 @@
-import type { Activity } from "./Activity";
-import type { Task } from "./Task";
+import type { Activity } from "@task-types/Activity";
+import type { Task } from "@task-types/Task";
 
 export type TaskSystemGraphQLExecutorRequest = {
   document: string;

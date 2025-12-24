@@ -3,9 +3,9 @@
  * Uses the package's centralized logging service
  */
 
-import { getServiceLogger as getPackageServiceLogger } from "../services/logging/serviceLogger";
-import type { LogMetadata } from "../services/logging/types";
-import { logErrorWithPlatform, logWithPlatform } from "./platformLogger";
+import { getServiceLogger as getPackageServiceLogger } from "@services/logging/serviceLogger";
+import type { LogMetadata } from "@services/logging/types";
+import { logErrorWithPlatform, logWithPlatform } from "@utils/platformLogger";
 
 type ServiceLogger = {
   debug: (

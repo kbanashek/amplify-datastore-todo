@@ -1,8 +1,8 @@
 import { renderHook, waitFor, act } from "@testing-library/react-native";
-import { useTaskAnswerList } from "../useTaskAnswerList";
+import { useTaskAnswerList } from "@hooks/useTaskAnswerList";
 
 // Mock TaskAnswerService
-jest.mock("../../services/TaskAnswerService", () => ({
+jest.mock("@services/TaskAnswerService", () => ({
   TaskAnswerService: {
     subscribeTaskAnswers: jest.fn(),
     getTaskAnswers: jest.fn(),
@@ -10,9 +10,9 @@ jest.mock("../../services/TaskAnswerService", () => ({
   },
 }));
 
-import { TaskAnswerService } from "../../services/TaskAnswerService";
-import { TaskAnswer as TaskAnswerModel } from "../../models";
-import { TaskAnswer } from "../../types/TaskAnswer";
+import { TaskAnswerService } from "@services/TaskAnswerService";
+import { TaskAnswer as TaskAnswerModel } from "@models/index";
+import { TaskAnswer } from "@task-types/TaskAnswer";
 
 describe("useTaskAnswerList", () => {
   const mockSubscribeTaskAnswers =

@@ -3,9 +3,12 @@
  * Outputs logs to the console (works in all environments)
  */
 
-import type { LogEntry, LogProvider } from "../types";
-import { LogLevel } from "../types";
-import { formatMetadataInline, formatSequenceDiagram } from "../utils";
+import type { LogEntry, LogProvider } from "@services/logging/types";
+import { LogLevel } from "@services/logging/types";
+import {
+  formatMetadataInline,
+  formatSequenceDiagram,
+} from "@services/logging/utils";
 
 interface ConsoleProviderConfig {
   singleLine?: boolean;

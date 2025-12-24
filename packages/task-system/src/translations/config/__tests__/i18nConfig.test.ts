@@ -1,4 +1,7 @@
-import { initializeI18n, getDefaultNamespace } from "../i18nConfig";
+import {
+  initializeI18n,
+  getDefaultNamespace,
+} from "@translations/config/i18nConfig";
 
 describe("i18nConfig", () => {
   describe("getDefaultNamespace", () => {

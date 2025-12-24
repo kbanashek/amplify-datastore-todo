@@ -1,10 +1,10 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
-import { ImageCaptureQuestion } from "../ImageCaptureQuestion";
-import { Question } from "../../../types/ActivityConfig";
+import { ImageCaptureQuestion } from "@components/questions/ImageCaptureQuestion";
+import { Question } from "@task-types/ActivityConfig";
 
 // Mock useTranslatedText
-jest.mock("../../../hooks/useTranslatedText", () => ({
+jest.mock("@hooks/useTranslatedText", () => ({
   useTranslatedText: jest.fn((text: string) => ({
     translatedText: text,
     isTranslating: false,

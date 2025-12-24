@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { NetworkStatusIndicator } from "../NetworkStatusIndicator";
+import { NetworkStatusIndicator } from "@components/NetworkStatusIndicator";
 
 interface ErrorStateProps {
   error: string;

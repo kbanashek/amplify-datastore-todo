@@ -1,24 +1,24 @@
 import { renderHook, waitFor } from "@testing-library/react-native";
-import { useActivityStartup } from "../useActivityStartup";
+import { useActivityStartup } from "@hooks/useActivityStartup";
 
 // Mock ActivityService
-jest.mock("../../services/ActivityService", () => ({
+jest.mock("@services/ActivityService", () => ({
   ActivityService: {
     subscribeActivities: jest.fn(),
   },
 }));
 
 // Mock dataSubscriptionLogger
-jest.mock("../../utils/dataSubscriptionLogger", () => ({
+jest.mock("@utils/dataSubscriptionLogger", () => ({
   dataSubscriptionLogger: {
     logActivities: jest.fn(),
   },
 }));
 
-import { ActivityService } from "../../services/ActivityService";
-import { dataSubscriptionLogger } from "../../utils/dataSubscriptionLogger";
-import { Activity as ActivityModel } from "../../models";
-import { Activity } from "../../types/Activity";
+import { ActivityService } from "@services/ActivityService";
+import { dataSubscriptionLogger } from "@utils/dataSubscriptionLogger";
+import { Activity as ActivityModel } from "@models/index";
+import { Activity } from "@task-types/Activity";
 
 describe("useActivityStartup", () => {
   const mockSubscribeActivities =

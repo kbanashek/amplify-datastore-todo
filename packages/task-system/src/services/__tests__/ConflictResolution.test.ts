@@ -1,5 +1,5 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
-import { ConflictResolution } from "../ConflictResolution";
+import { ConflictResolution } from "@services/ConflictResolution";
 
 jest.mock("@aws-amplify/datastore");
 

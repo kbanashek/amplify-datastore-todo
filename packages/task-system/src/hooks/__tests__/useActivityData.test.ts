@@ -1,26 +1,26 @@
 import { renderHook, waitFor } from "@testing-library/react-native";
-import { useActivityData } from "../useActivityData";
+import { useActivityData } from "@hooks/useActivityData";
 
 // Mock hooks
-jest.mock("../useActivity", () => ({
+jest.mock("@hooks/useActivity", () => ({
   useActivity: jest.fn(),
 }));
 
-jest.mock("../useTaskAnswer", () => ({
+jest.mock("@hooks/useTaskAnswer", () => ({
   useTaskAnswer: jest.fn(),
 }));
 
-jest.mock("../../utils/activityParser", () => ({
+jest.mock("@utils/activityParser", () => ({
   parseActivityConfig: jest.fn(),
 }));
 
-import { useActivity } from "../useActivity";
-import { useTaskAnswer } from "../useTaskAnswer";
-import { parseActivityConfig } from "../../utils/activityParser";
-import { Activity } from "../../types/Activity";
-import { ParsedActivityData } from "../../utils/activityParser";
-import { ActivityConfig } from "../../types/ActivityConfig";
-import { TaskAnswer } from "../../types/TaskAnswer";
+import { useActivity } from "@hooks/useActivity";
+import { useTaskAnswer } from "@hooks/useTaskAnswer";
+import { parseActivityConfig } from "@utils/activityParser";
+import { Activity } from "@task-types/Activity";
+import { ParsedActivityData } from "@utils/activityParser";
+import { ActivityConfig } from "@task-types/ActivityConfig";
+import { TaskAnswer } from "@task-types/TaskAnswer";
 
 describe("useActivityData", () => {
   const mockUseActivity = useActivity as jest.MockedFunction<

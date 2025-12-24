@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react-native";
 import React from "react";
-import { ProgressIndicator } from "../ProgressIndicator";
+import { ProgressIndicator } from "@components/questions/ProgressIndicator";
 
 describe("ProgressIndicator", () => {
   it("renders progress text", () => {

@@ -1,8 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Appointment, AppointmentData } from "../types/Appointment";
-import { parseAppointmentData } from "../utils/appointmentParser";
-import { getServiceLogger } from "../utils/serviceLogger";
-import { dataSubscriptionLogger } from "../utils/dataSubscriptionLogger";
+import { Appointment, AppointmentData } from "@task-types/Appointment";
+import { parseAppointmentData } from "@utils/appointmentParser";
+import { getServiceLogger } from "@utils/serviceLogger";
+import { dataSubscriptionLogger } from "@utils/dataSubscriptionLogger";
 
 const APPOINTMENTS_STORAGE_KEY = "@appointments_data";
 

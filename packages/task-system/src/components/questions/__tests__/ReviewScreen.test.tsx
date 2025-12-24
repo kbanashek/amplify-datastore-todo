@@ -1,10 +1,10 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { ReviewScreen } from "../ReviewScreen";
-import { ParsedScreen, ParsedElement } from "../../../types/ActivityConfig";
+import { ReviewScreen } from "@components/questions/ReviewScreen";
+import { ParsedScreen, ParsedElement } from "@task-types/ActivityConfig";
 
 // Mock useTranslatedText
-jest.mock("../../../hooks/useTranslatedText", () => ({
+jest.mock("@hooks/useTranslatedText", () => ({
   useTranslatedText: jest.fn((text: string) => ({
     translatedText: text,
     isTranslating: false,
@@ -12,14 +12,14 @@ jest.mock("../../../hooks/useTranslatedText", () => ({
 }));
 
 // Mock useRTL
-jest.mock("../../../hooks/useRTL", () => ({
+jest.mock("@hooks/useRTL", () => ({
   useRTL: jest.fn(() => ({
     rtlStyle: jest.fn((style: any) => style),
   })),
 }));
 
 // Mock IconSymbol
-jest.mock("../../ui/IconSymbol", () => {
+jest.mock("@components/ui/IconSymbol", () => {
   const React = require("react");
   const { View } = require("react-native");
   return {
@@ -28,7 +28,7 @@ jest.mock("../../ui/IconSymbol", () => {
 });
 
 // Mock platform utils
-jest.mock("../../../utils/platform", () => ({
+jest.mock("@utils/platform", () => ({
   isIOS: jest.fn(() => false),
 }));
 

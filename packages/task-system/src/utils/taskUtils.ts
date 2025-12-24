@@ -1,5 +1,5 @@
-import { Task } from "../types/Task";
-import { getServiceLogger } from "./serviceLogger";
+import { Task } from "@task-types/Task";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("taskUtils");
 

@@ -1,14 +1,14 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { QuestionScreenButtons } from "../QuestionScreenButtons";
-import { ActivityConfig } from "../../../types/ActivityConfig";
+import { QuestionScreenButtons } from "@components/questions/QuestionScreenButtons";
+import { ActivityConfig } from "@task-types/ActivityConfig";
 
 // Mock dependencies
-jest.mock("../../../hooks/useQuestionScreenButtons", () => ({
+jest.mock("@hooks/useQuestionScreenButtons", () => ({
   useQuestionScreenButtons: jest.fn(),
 }));
 
-jest.mock("../../TranslatedText", () => {
+jest.mock("@components/TranslatedText", () => {
   const React = require("react");
   const { Text } = require("react-native");
   return {
@@ -16,7 +16,7 @@ jest.mock("../../TranslatedText", () => {
   };
 });
 
-jest.mock("../../ui/Button", () => {
+jest.mock("@components/ui/Button", () => {
   const React = require("react");
   const { Pressable, Text, View } = require("react-native");
   return {
@@ -33,7 +33,7 @@ jest.mock("../../ui/Button", () => {
   };
 });
 
-import { useQuestionScreenButtons } from "../../../hooks/useQuestionScreenButtons";
+import { useQuestionScreenButtons } from "@hooks/useQuestionScreenButtons";
 
 describe("QuestionScreenButtons", () => {
   const mockOnPrevious = jest.fn();

@@ -1,35 +1,35 @@
 import { renderHook, act, waitFor } from "@testing-library/react-native";
-import { useQuestionSubmission } from "../useQuestionSubmission";
+import { useQuestionSubmission } from "@hooks/useQuestionSubmission";
 import { Alert } from "react-native";
-import { TaskStatus } from "../../types/Task";
-import { ParsedActivityData } from "../../utils/activityParser";
-import { ActivityConfig } from "../../types/ActivityConfig";
+import { TaskStatus } from "@task-types/Task";
+import { ParsedActivityData } from "@utils/activityParser";
+import { ActivityConfig } from "@task-types/ActivityConfig";
 
 // Mock hooks
-jest.mock("../useTaskAnswer", () => ({
+jest.mock("@hooks/useTaskAnswer", () => ({
   useTaskAnswer: jest.fn(),
 }));
 
-jest.mock("../useDataPointInstance", () => ({
+jest.mock("@hooks/useDataPointInstance", () => ({
   useDataPointInstance: jest.fn(),
 }));
 
-jest.mock("../useTaskUpdate", () => ({
+jest.mock("@hooks/useTaskUpdate", () => ({
   useTaskUpdate: jest.fn(),
 }));
 
 // Mock validation utilities
-jest.mock("../../utils/questionValidation", () => ({
+jest.mock("@utils/questionValidation", () => ({
   validateAllScreens: jest.fn(),
 }));
 
-import { useTaskAnswer } from "../useTaskAnswer";
-import { useDataPointInstance } from "../useDataPointInstance";
-import { useTaskUpdate } from "../useTaskUpdate";
-import { validateAllScreens } from "../../utils/questionValidation";
-import { TaskAnswer } from "../../types/TaskAnswer";
-import { DataPointInstance } from "../../types/DataPoint";
-import { Task } from "../../types/Task";
+import { useTaskAnswer } from "@hooks/useTaskAnswer";
+import { useDataPointInstance } from "@hooks/useDataPointInstance";
+import { useTaskUpdate } from "@hooks/useTaskUpdate";
+import { validateAllScreens } from "@utils/questionValidation";
+import { TaskAnswer } from "@task-types/TaskAnswer";
+import { DataPointInstance } from "@task-types/DataPoint";
+import { Task } from "@task-types/Task";
 
 describe("useQuestionSubmission", () => {
   const mockGetAnswerByQuestionId = jest.fn();

@@ -6,14 +6,14 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { Colors } from "../constants/Colors";
-import { TestIds } from "../constants/testIds";
-import { useColorScheme } from "../hooks/useColorScheme";
-import { useRTL } from "../hooks/useRTL";
-import { useTranslatedText } from "../hooks/useTranslatedText";
-import { NetworkStatusIndicator } from "./NetworkStatusIndicator";
-import { LanguageSelector } from "./LanguageSelector";
-import { IconSymbol } from "./ui/IconSymbol";
+import { Colors } from "@constants/Colors";
+import { TestIds } from "@constants/testIds";
+import { useColorScheme } from "@hooks/useColorScheme";
+import { useRTL } from "@hooks/useRTL";
+import { useTranslatedText } from "@hooks/useTranslatedText";
+import { NetworkStatusIndicator } from "@components/NetworkStatusIndicator";
+import { LanguageSelector } from "@components/LanguageSelector";
+import { IconSymbol } from "@components/ui/IconSymbol";
 
 interface GlobalHeaderProps {
   title: string;

@@ -1,15 +1,15 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { QuestionHeader } from "../components/QuestionHeader";
-import { CompletionScreen } from "../components/questions/CompletionScreen";
-import { ErrorState } from "../components/questions/ErrorState";
-import { IntroductionScreen } from "../components/questions/IntroductionScreen";
-import { LoadingState } from "../components/questions/LoadingState";
-import { QuestionScreenContent } from "../components/questions/QuestionScreenContent";
-import { ReviewScreenContainer } from "../components/questions/ReviewScreenContainer";
-import { useQuestionsScreen } from "../hooks/useQuestionsScreen";
-import { useTranslatedText } from "../hooks/useTranslatedText";
+import { QuestionHeader } from "@components/QuestionHeader";
+import { CompletionScreen } from "@components/questions/CompletionScreen";
+import { ErrorState } from "@components/questions/ErrorState";
+import { IntroductionScreen } from "@components/questions/IntroductionScreen";
+import { LoadingState } from "@components/questions/LoadingState";
+import { QuestionScreenContent } from "@components/questions/QuestionScreenContent";
+import { ReviewScreenContainer } from "@components/questions/ReviewScreenContainer";
+import { useQuestionsScreen } from "@hooks/useQuestionsScreen";
+import { useTranslatedText } from "@hooks/useTranslatedText";
 
 const CONTENT_PADDING = 20;
 

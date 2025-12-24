@@ -1,6 +1,6 @@
 import { DataStore } from "@aws-amplify/datastore";
 import type { PersistentModelConstructor } from "@aws-amplify/datastore";
-import { AppointmentService } from "./AppointmentService";
+import { AppointmentService } from "@services/AppointmentService";
 import {
   Activity,
   DataPoint,
@@ -11,8 +11,8 @@ import {
   TaskHistory,
   TaskResult,
   Todo,
-} from "../models";
-import { logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
+} from "@models/index";
+import { logWithDevice, logErrorWithDevice } from "@utils/deviceLogger";
 
 export interface ClearSeededDataResult {
   deleted: {

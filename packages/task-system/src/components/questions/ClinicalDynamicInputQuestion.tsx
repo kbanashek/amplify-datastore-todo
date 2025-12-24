@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import { Question } from "../../types/ActivityConfig";
-import { useTranslatedText } from "../../hooks/useTranslatedText";
+import { Question } from "@task-types/ActivityConfig";
+import { useTranslatedText } from "@hooks/useTranslatedText";
 
 interface ClinicalDynamicInputQuestionProps {
   question: Question;

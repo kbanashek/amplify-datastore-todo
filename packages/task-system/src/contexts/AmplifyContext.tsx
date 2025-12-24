@@ -1,5 +1,5 @@
 import React, { createContext, useContext, ReactNode } from "react";
-import { useAmplifyState, AmplifyState } from "../hooks/useAmplifyState";
+import { useAmplifyState, AmplifyState } from "@hooks/useAmplifyState";
 
 type AmplifyContextType = AmplifyState;
 

@@ -1,9 +1,9 @@
 import { DataStore } from "@aws-amplify/datastore";
-import { AppointmentService } from "../AppointmentService";
-import { SeededDataCleanupService } from "../SeededDataCleanupService";
+import { AppointmentService } from "@services/AppointmentService";
+import { SeededDataCleanupService } from "@services/SeededDataCleanupService";
 
 // Mock deviceLogger to prevent import issues during test teardown
-jest.mock("../../utils/deviceLogger", () => ({
+jest.mock("@utils/deviceLogger", () => ({
   logWithDevice: jest.fn(),
   logErrorWithDevice: jest.fn(),
 }));

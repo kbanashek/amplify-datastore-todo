@@ -1,12 +1,12 @@
 import React, { useCallback } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useTaskTranslation } from "../translations";
-import { TaskService } from "../services/TaskService";
-import { Task, TaskStatus } from "../types/Task";
-import { getServiceLogger } from "../utils/serviceLogger";
-import { getTaskIcon } from "../utils/taskIcon";
-import { IconSymbol } from "./ui/IconSymbol";
-import { TranslatedText } from "./TranslatedText";
+import { useTaskTranslation } from "@translations/index";
+import { TaskService } from "@services/TaskService";
+import { Task, TaskStatus } from "@task-types/Task";
+import { getServiceLogger } from "@utils/serviceLogger";
+import { getTaskIcon } from "@utils/taskIcon";
+import { IconSymbol } from "@components/ui/IconSymbol";
+import { TranslatedText } from "@components/TranslatedText";
 
 const logger = getServiceLogger("TaskCard");
 

@@ -16,9 +16,9 @@ import {
   SUPPORTED_LANGUAGES,
   isRTL,
   type TranslationConfig,
-} from "./translationTypes";
-import { initializeI18n } from "./config/i18nConfig";
-import { getServiceLogger } from "../utils/serviceLogger";
+} from "@translations/translationTypes";
+import { initializeI18n } from "@translations/config/i18nConfig";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("TranslationProvider");
 

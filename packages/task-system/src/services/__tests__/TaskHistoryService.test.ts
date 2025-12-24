@@ -1,7 +1,7 @@
 import { DataStore } from "@aws-amplify/datastore";
-import { TaskHistory } from "../../models";
-import { TaskHistoryService } from "../TaskHistoryService";
-import { CreateTaskHistoryInput } from "../../types/TaskHistory";
+import { TaskHistory } from "@models/index";
+import { TaskHistoryService } from "@services/TaskHistoryService";
+import { CreateTaskHistoryInput } from "@task-types/TaskHistory";
 
 jest.mock("@aws-amplify/datastore");
 

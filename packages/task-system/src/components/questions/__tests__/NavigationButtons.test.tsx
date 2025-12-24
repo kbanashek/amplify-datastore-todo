@@ -1,10 +1,10 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { NavigationButtons } from "../NavigationButtons";
-import { ActivityConfig } from "../../../types/ActivityConfig";
+import { NavigationButtons } from "@components/questions/NavigationButtons";
+import { ActivityConfig } from "@task-types/ActivityConfig";
 
 // Mock useTranslatedText
-jest.mock("../../../hooks/useTranslatedText", () => ({
+jest.mock("@hooks/useTranslatedText", () => ({
   useTranslatedText: jest.fn((text: string) => ({
     translatedText: text,
     isTranslating: false,
@@ -12,14 +12,14 @@ jest.mock("../../../hooks/useTranslatedText", () => ({
 }));
 
 // Mock useRTL
-jest.mock("../../../hooks/useRTL", () => ({
+jest.mock("@hooks/useRTL", () => ({
   useRTL: jest.fn(() => ({
     rtlStyle: jest.fn((style: any) => style),
   })),
 }));
 
 // Mock TranslatedText
-jest.mock("../../TranslatedText", () => {
+jest.mock("@components/TranslatedText", () => {
   const React = require("react");
   const { Text } = require("react-native");
   return {
@@ -28,7 +28,7 @@ jest.mock("../../TranslatedText", () => {
 });
 
 // Mock platform utils
-jest.mock("../../../utils/platform", () => ({
+jest.mock("@utils/platform", () => ({
   isIOS: jest.fn(() => false),
 }));
 

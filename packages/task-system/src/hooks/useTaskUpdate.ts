@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
-import { TaskService } from "../services/TaskService";
-import { Task, UpdateTaskInput } from "../types/Task";
-import { getServiceLogger } from "../utils/serviceLogger";
+import { TaskService } from "@services/TaskService";
+import { Task, UpdateTaskInput } from "@task-types/Task";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("useTaskUpdate");
 

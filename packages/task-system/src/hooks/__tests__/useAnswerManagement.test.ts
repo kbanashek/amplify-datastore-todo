@@ -1,13 +1,13 @@
 import { renderHook, act } from "@testing-library/react-native";
-import { useAnswerManagement } from "../useAnswerManagement";
-import { ParsedActivityData } from "../../utils/activityParser";
+import { useAnswerManagement } from "@hooks/useAnswerManagement";
+import { ParsedActivityData } from "@utils/activityParser";
 
 // Mock validation utilities
-jest.mock("../../utils/questionValidation", () => ({
+jest.mock("@utils/questionValidation", () => ({
   validateQuestionAnswer: jest.fn(),
 }));
 
-import { validateQuestionAnswer } from "../../utils/questionValidation";
+import { validateQuestionAnswer } from "@utils/questionValidation";
 
 describe("useAnswerManagement", () => {
   const mockValidateQuestionAnswer =

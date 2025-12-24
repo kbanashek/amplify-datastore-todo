@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { ActivityConfig } from "../../types/ActivityConfig";
+import { ActivityConfig } from "@task-types/ActivityConfig";
 
 interface CompletionScreenProps {
   activityConfig: ActivityConfig;

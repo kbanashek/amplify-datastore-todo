@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { ParsedActivityData } from "../../utils/activityParser";
-import { isAndroid } from "../../utils/platform";
-import { getServiceLogger } from "../../utils/serviceLogger";
-import { QuestionRenderer } from "./QuestionRenderer";
-import { QuestionScreenButtons } from "./QuestionScreenButtons";
+import { ParsedActivityData } from "@utils/activityParser";
+import { isAndroid } from "@utils/platform";
+import { getServiceLogger } from "@utils/serviceLogger";
+import { QuestionRenderer } from "@components/questions/QuestionRenderer";
+import { QuestionScreenButtons } from "@components/questions/QuestionScreenButtons";
 
 const logger = getServiceLogger("QuestionScreenContent");
 

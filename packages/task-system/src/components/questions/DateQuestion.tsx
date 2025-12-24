@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Question } from "../../types/ActivityConfig";
-import { DateTimeFieldMode } from "../ui/DateTimeField";
-import { DateTimeField } from "../ui/DateTimeField";
+import { Question } from "@task-types/ActivityConfig";
+import { DateTimeFieldMode } from "@components/ui/DateTimeField";
+import { DateTimeField } from "@components/ui/DateTimeField";
 
 interface DateQuestionProps {
   question: Question;

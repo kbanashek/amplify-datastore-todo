@@ -1,12 +1,12 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
 // @ts-ignore - Activity is exported from models/index.js at runtime
-import { ModelName } from "../constants/modelNames";
-import { OperationSource } from "../constants/operationSource";
-import { Activity } from "../models";
-import { CreateActivityInput, UpdateActivityInput } from "../types/Activity";
-import { logErrorWithDevice, logWithDevice } from "../utils/deviceLogger";
-import { getServiceLogger } from "../utils/serviceLogger";
-import { dataSubscriptionLogger } from "../utils/dataSubscriptionLogger";
+import { ModelName } from "@constants/modelNames";
+import { OperationSource } from "@constants/operationSource";
+import { Activity } from "@models/index";
+import { CreateActivityInput, UpdateActivityInput } from "@task-types/Activity";
+import { logErrorWithDevice, logWithDevice } from "@utils/deviceLogger";
+import { getServiceLogger } from "@utils/serviceLogger";
+import { dataSubscriptionLogger } from "@utils/dataSubscriptionLogger";
 
 type ActivityUpdateData = Omit<UpdateActivityInput, "id" | "_version">;
 

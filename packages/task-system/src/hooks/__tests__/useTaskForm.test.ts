@@ -1,16 +1,16 @@
 import { renderHook, act } from "@testing-library/react-native";
-import { useTaskForm } from "../useTaskForm";
-import { TaskStatus, TaskType } from "../../types/Task";
+import { useTaskForm } from "@hooks/useTaskForm";
+import { TaskStatus, TaskType } from "@task-types/Task";
 
 // Mock TaskService
-jest.mock("../../services/TaskService", () => ({
+jest.mock("@services/TaskService", () => ({
   TaskService: {
     createTask: jest.fn(),
   },
 }));
 
-import { TaskService } from "../../services/TaskService";
-import { Task } from "../../types/Task";
+import { TaskService } from "@services/TaskService";
+import { Task } from "@task-types/Task";
 
 describe("useTaskForm", () => {
   const mockCreateTask = TaskService.createTask as jest.MockedFunction<

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { ViewStyle, TextStyle } from "react-native";
-import { useTaskTranslation } from "../translations";
+import { useTaskTranslation } from "@translations/index";
 
 /**
  * Hook to get RTL-aware styles

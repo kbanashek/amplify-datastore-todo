@@ -1,19 +1,19 @@
 import React, { useCallback, useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { useTranslatedText } from "../../hooks/useTranslatedText";
-import { ParsedElement } from "../../types/ActivityConfig";
-import { QuestionType } from "../../types/activity-config-enums";
-import { BloodPressureQuestion } from "./BloodPressureQuestion";
-import { ClinicalDynamicInputQuestion } from "./ClinicalDynamicInputQuestion";
-import { DateQuestion } from "./DateQuestion";
-import { HorizontalVASQuestion } from "./HorizontalVASQuestion";
-import { ImageCaptureQuestion } from "./ImageCaptureQuestion";
-import { MultiSelectQuestion } from "./MultiSelectQuestion";
-import { NumberQuestion } from "./NumberQuestion";
-import { SingleSelectQuestion } from "./SingleSelectQuestion";
-import { TemperatureQuestion } from "./TemperatureQuestion";
-import { TextQuestion } from "./TextQuestion";
-import { WeightHeightQuestion } from "./WeightHeightQuestion";
+import { useTranslatedText } from "@hooks/useTranslatedText";
+import { ParsedElement } from "@task-types/ActivityConfig";
+import { QuestionType } from "@task-types/activity-config-enums";
+import { BloodPressureQuestion } from "@components/questions/BloodPressureQuestion";
+import { ClinicalDynamicInputQuestion } from "@components/questions/ClinicalDynamicInputQuestion";
+import { DateQuestion } from "@components/questions/DateQuestion";
+import { HorizontalVASQuestion } from "@components/questions/HorizontalVASQuestion";
+import { ImageCaptureQuestion } from "@components/questions/ImageCaptureQuestion";
+import { MultiSelectQuestion } from "@components/questions/MultiSelectQuestion";
+import { NumberQuestion } from "@components/questions/NumberQuestion";
+import { SingleSelectQuestion } from "@components/questions/SingleSelectQuestion";
+import { TemperatureQuestion } from "@components/questions/TemperatureQuestion";
+import { TextQuestion } from "@components/questions/TextQuestion";
+import { WeightHeightQuestion } from "@components/questions/WeightHeightQuestion";
 
 // Component to render a single error message (extracted to avoid hooks in map)
 // This must be a separate component because hooks cannot be called inside loops

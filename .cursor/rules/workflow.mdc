@@ -36,11 +36,46 @@ globs: [".github/**/*", "*.yml", "*.yaml"]
 - Always provide a meaningful commit message when bumping versions
 - The version-bump script will validate that commit messages are descriptive
 
+### Branch Creation
+
+**ALWAYS create feature branches from the latest `develop` branch:**
+
+```bash
+# Ensure you have the latest develop
+git fetch origin develop
+git checkout develop
+git pull origin develop
+
+# Create your feature branch
+git checkout -b kyle.banashek/feature/description-of-changes
+```
+
+**Branch naming convention:** `<username>/feature/<description>` or `<username>/<type>/<description>`
+- Examples: `kyle.banashek/feature/path-aliases`, `kyle.banashek/fix/login-bug`
+
+**Why this matters:**
+- Prevents merge conflicts when PRs are created
+- Ensures your changes are based on the latest code
+- Makes rebasing easier if conflicts do occur
+
+**If your branch has conflicts after PR creation:**
+1. Fetch latest develop: `git fetch origin develop`
+2. Rebase onto develop: `git rebase origin/develop`
+3. Resolve conflicts if any
+4. Force push: `git push --force-with-lease`
+
 ### Push Update Workflow
 
-- **When asked to "push update" or similar**, follow this workflow:
-  1. Create a new feature branch (e.g., `feature/description-of-changes`)
-  2. Fix any lint issues in modified files
+- **When asked to "push update", "@CMP", or similar**, follow this workflow:
+  1. **ALWAYS fetch and rebase from latest develop before creating a branch:**
+     ```bash
+     git fetch origin develop
+     git checkout develop
+     git pull origin develop
+     git checkout -b <branch-name>
+     ```
+  2. Create a new feature branch (e.g., `kyle.banashek/feature/description-of-changes`)
+  3. Fix any lint issues in modified files
   3. Bump the patch version in `package.json` (e.g., `0.1.1` → `0.1.2`)
   4. Update `CHANGELOG.md` with:
      - New version number and current date (format: `YYYY-MM-DD`)

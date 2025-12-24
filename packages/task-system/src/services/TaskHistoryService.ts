@@ -1,13 +1,13 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
-import { logWithDevice, logErrorWithDevice } from "../utils/deviceLogger";
-import { TaskHistory } from "../models";
-import { getServiceLogger } from "../utils/serviceLogger";
+import { logWithDevice, logErrorWithDevice } from "@utils/deviceLogger";
+import { TaskHistory } from "@models/index";
+import { getServiceLogger } from "@utils/serviceLogger";
 import {
   CreateTaskHistoryInput,
   UpdateTaskHistoryInput,
-} from "../types/TaskHistory";
-import { ModelName } from "../constants/modelNames";
-import { OperationSource } from "../constants/operationSource";
+} from "@task-types/TaskHistory";
+import { ModelName } from "@constants/modelNames";
+import { OperationSource } from "@constants/operationSource";
 
 type TaskHistoryUpdateData = Omit<UpdateTaskHistoryInput, "id" | "_version">;
 

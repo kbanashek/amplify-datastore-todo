@@ -6,16 +6,16 @@ import {
   Text,
   View,
 } from "react-native";
-import { AppColors } from "../constants/AppColors";
-import { TestIds } from "../constants/testIds";
-import { useTaskTranslation } from "../translations";
-import { GroupedTask } from "../hooks/useGroupedTasks";
-import { Appointment } from "../types/Appointment";
-import { Task } from "../types/Task";
-import { getServiceLogger } from "../utils/serviceLogger";
-import { AppointmentCard } from "./AppointmentCard";
-import { TaskCard } from "./TaskCard";
-import { TranslatedText } from "./TranslatedText";
+import { AppColors } from "@constants/AppColors";
+import { TestIds } from "@constants/testIds";
+import { useTaskTranslation } from "@translations/index";
+import { GroupedTask } from "@hooks/useGroupedTasks";
+import { Appointment } from "@task-types/Appointment";
+import { Task } from "@task-types/Task";
+import { getServiceLogger } from "@utils/serviceLogger";
+import { AppointmentCard } from "@components/AppointmentCard";
+import { TaskCard } from "@components/TaskCard";
+import { TranslatedText } from "@components/TranslatedText";
 
 interface GroupedTasksViewProps {
   groupedTasks: GroupedTask[];

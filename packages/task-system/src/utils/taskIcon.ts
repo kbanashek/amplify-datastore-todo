@@ -1,4 +1,4 @@
-import { Task, TaskType } from "../types/Task";
+import { Task, TaskType } from "@task-types/Task";
 
 /**
  * Icon configuration for task icons

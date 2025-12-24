@@ -8,9 +8,9 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import { useTaskTranslation } from "../translations";
-import type { LanguageCode } from "../translations";
-import { getServiceLogger } from "../utils/serviceLogger";
+import { useTaskTranslation } from "@translations/index";
+import type { LanguageCode } from "@translations/index";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("LanguageSelector");
 

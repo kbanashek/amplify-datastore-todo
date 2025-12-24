@@ -13,14 +13,14 @@ import { I18nManager } from "react-native";
 import {
   TranslationService,
   getTranslationService,
-} from "../services/TranslationService";
+} from "@services/TranslationService";
 import {
   LanguageCode,
   SUPPORTED_LANGUAGES,
   isRTL as isRTLanguage,
-} from "../services/translationTypes";
-import { DEBUG_TRANSLATION_LOGS } from "../utils/debug";
-import { getServiceLogger } from "../utils/serviceLogger";
+} from "@services/translationTypes";
+import { DEBUG_TRANSLATION_LOGS } from "@utils/debug";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("TranslationProvider");
 

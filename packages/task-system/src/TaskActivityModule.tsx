@@ -7,11 +7,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import type { i18n } from "i18next";
 import React, { useContext, useEffect, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
-import { TaskContainer } from "./components/TaskContainer";
-import QuestionsScreen from "./screens/QuestionsScreen";
-import { LanguageCode } from "./services/translationTypes";
-import { TranslationProvider } from "./translations";
-import { TranslationContext } from "./translations/TranslationProvider";
+import { TaskContainer } from "@components/TaskContainer";
+import QuestionsScreen from "@screens/QuestionsScreen";
+import { LanguageCode } from "@services/translationTypes";
+import { TranslationProvider } from "@translations/index";
+import { TranslationContext } from "@translations/TranslationProvider";
 
 export type TaskSystemStackParamList = {
   TaskDashboard: undefined;

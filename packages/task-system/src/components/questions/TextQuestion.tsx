@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
-import { Question } from "../../types/ActivityConfig";
-import { useTaskTranslation } from "../../translations";
-import { useTranslatedText } from "../../hooks/useTranslatedText";
-import { getServiceLogger } from "../../utils/serviceLogger";
+import { Question } from "@task-types/ActivityConfig";
+import { useTaskTranslation } from "@translations/index";
+import { useTranslatedText } from "@hooks/useTranslatedText";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("TextQuestion");
 

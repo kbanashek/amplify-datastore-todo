@@ -1,14 +1,14 @@
 import { renderHook, act } from "@testing-library/react-native";
-import { useQuestionValidation } from "../useQuestionValidation";
-import { ParsedActivityData } from "../../utils/activityParser";
+import { useQuestionValidation } from "@hooks/useQuestionValidation";
+import { ParsedActivityData } from "@utils/activityParser";
 
 // Mock validation utilities
-jest.mock("../../utils/questionValidation", () => ({
+jest.mock("@utils/questionValidation", () => ({
   isScreenValid: jest.fn(),
   validateScreen: jest.fn(),
 }));
 
-import { isScreenValid, validateScreen } from "../../utils/questionValidation";
+import { isScreenValid, validateScreen } from "@utils/questionValidation";
 
 describe("useQuestionValidation", () => {
   const mockIsScreenValid = isScreenValid as jest.MockedFunction<

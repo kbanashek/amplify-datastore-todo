@@ -1,18 +1,47 @@
 import { useState, useEffect } from "react";
-import { TaskAnswerService } from "../services/TaskAnswerService";
-import { TaskAnswer } from "../types/TaskAnswer";
-import { getServiceLogger } from "../utils/serviceLogger";
+import { TaskAnswerService } from "@services/TaskAnswerService";
+import { TaskAnswer } from "@task-types/TaskAnswer";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("useTaskAnswerList");
 
+/**
+ * Return type for the useTaskAnswerList hook.
+ */
 interface UseTaskAnswerListReturn {
+  /** List of all task answers */
   taskAnswers: TaskAnswer[];
+  /** Whether initial data is still loading */
   loading: boolean;
+  /** Error message from the most recent operation, or null */
   error: string | null;
+  /** Deletes a task answer by ID */
   handleDeleteTaskAnswer: (id: string) => Promise<void>;
+  /** Manually refreshes the task answer list */
   refreshTaskAnswers: () => Promise<void>;
 }
 
+/**
+ * React hook for managing task answers with real-time synchronization.
+ *
+ * Provides reactive task answer data via DataStore subscriptions and
+ * answer management operations. Task answers are automatically updated
+ * when changes occur in the DataStore.
+ *
+ * @returns Object containing task answer data, loading states, and management operations
+ *
+ * @example
+ * ```tsx
+ * const {
+ *   taskAnswers,
+ *   loading,
+ *   handleDeleteTaskAnswer,
+ * } = useTaskAnswerList();
+ *
+ * // Find answers for a specific task
+ * const answersForTask = taskAnswers.filter(a => a.taskId === taskId);
+ * ```
+ */
 export const useTaskAnswerList = (): UseTaskAnswerListReturn => {
   const [taskAnswers, setTaskAnswers] = useState<TaskAnswer[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

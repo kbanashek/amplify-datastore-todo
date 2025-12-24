@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { AppointmentService } from "../services/AppointmentService";
-import { Appointment, AppointmentData } from "../types/Appointment";
-import { logErrorWithPlatform } from "../utils/platformLogger";
-import { dataSubscriptionLogger } from "../utils/dataSubscriptionLogger";
+import { AppointmentService } from "@services/AppointmentService";
+import { Appointment, AppointmentData } from "@task-types/Appointment";
+import { logErrorWithPlatform } from "@utils/platformLogger";
+import { dataSubscriptionLogger } from "@utils/dataSubscriptionLogger";
 
 interface UseAppointmentListReturn {
   appointments: Appointment[];

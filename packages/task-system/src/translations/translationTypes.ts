@@ -3,7 +3,7 @@ import {
   LanguageCode,
   SUPPORTED_LANGUAGES,
   isRTL,
-} from "../services/translationTypes";
+} from "@services/translationTypes";
 
 // Re-export existing types and constants
 export { SUPPORTED_LANGUAGES, isRTL };

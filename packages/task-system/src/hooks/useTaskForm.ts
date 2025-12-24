@@ -1,35 +1,63 @@
 import { useState } from "react";
-import { TaskService } from "../services/TaskService";
-import { CreateTaskInput, Task, TaskStatus, TaskType } from "../types/Task";
-import { getServiceLogger } from "../utils/serviceLogger";
+import { TaskService } from "@services/TaskService";
+import { CreateTaskInput, Task, TaskStatus, TaskType } from "@task-types/Task";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("useTaskForm");
 
+/**
+ * Return type for the useTaskForm hook.
+ */
 interface UseTaskFormReturn {
+  /** Task title */
   title: string;
+  /** Set task title */
   setTitle: (title: string) => void;
+  /** Task description */
   description: string;
+  /** Set task description */
   setDescription: (description: string) => void;
+  /** Task type */
   taskType: TaskType;
+  /** Set task type */
   setTaskType: (type: TaskType) => void;
+  /** Task status */
   status: TaskStatus;
+  /** Set task status */
   setStatus: (status: TaskStatus) => void;
+  /** Primary key */
   pk: string;
+  /** Set primary key */
   setPk: (pk: string) => void;
+  /** Sort key */
   sk: string;
+  /** Set sort key */
   setSk: (sk: string) => void;
+  /** Due date (YYYY-MM-DD format) */
   dueDate: string;
+  /** Set due date */
   setDueDate: (date: string) => void;
+  /** Due time (HH:MM format) */
   dueTime: string;
+  /** Set due time */
   setDueTime: (time: string) => void;
+  /** Whether form is being submitted */
   isSubmitting: boolean;
+  /** Error message, or null */
   error: string | null;
+  /** Submit the form and create/update task */
   handleSubmit: () => Promise<Task | null>;
+  /** Reset form to initial values */
   reset: () => void;
 }
 
+/**
+ * Configuration options for the useTaskForm hook.
+ */
 interface UseTaskFormProps {
+  /** Callback when task is successfully created */
   onTaskCreated?: (task: Task) => void;
+  /** Initial task data for editing */
   initialTask?: Task;
 }
 
@@ -62,6 +90,36 @@ const combineDateAndTime = (dateStr: string, timeStr: string): number => {
   return date.getTime();
 };
 
+/**
+ * React hook for managing task creation/editing form state.
+ *
+ * Provides form field values, setters, validation, and submission
+ * handling for creating or editing tasks.
+ *
+ * @param options - Form configuration options
+ * @returns Object containing form state, setters, and submission handler
+ *
+ * @example
+ * ```tsx
+ * const {
+ *   title,
+ *   setTitle,
+ *   handleSubmit,
+ *   isSubmitting,
+ *   error,
+ * } = useTaskForm({
+ *   onTaskCreated: (task) => navigation.goBack(),
+ * });
+ *
+ * return (
+ *   <View>
+ *     <TextInput value={title} onChangeText={setTitle} />
+ *     <Button onPress={handleSubmit} disabled={isSubmitting} title="Save" />
+ *     {error && <Text style={{ color: 'red' }}>{error}</Text>}
+ *   </View>
+ * );
+ * ```
+ */
 export const useTaskForm = ({
   onTaskCreated,
   initialTask,

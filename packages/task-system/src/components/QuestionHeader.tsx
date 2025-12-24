@@ -6,9 +6,9 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { useRTL } from "../hooks/useRTL";
-import { useTranslatedText } from "../hooks/useTranslatedText";
-import { IconSymbol } from "./ui/IconSymbol";
+import { useRTL } from "@hooks/useRTL";
+import { useTranslatedText } from "@hooks/useTranslatedText";
+import { IconSymbol } from "@components/ui/IconSymbol";
 
 interface QuestionHeaderProps {
   title: string;

@@ -2,8 +2,8 @@
  * Unit tests for ConsoleProvider
  */
 
-import { ConsoleProvider } from "../ConsoleProvider";
-import { LogLevel } from "../../types";
+import { ConsoleProvider } from "@services/logging/providers/ConsoleProvider";
+import { LogLevel } from "@services/logging/types";
 
 describe("ConsoleProvider", () => {
   let provider: ConsoleProvider;

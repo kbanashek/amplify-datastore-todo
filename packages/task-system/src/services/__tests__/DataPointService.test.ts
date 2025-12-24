@@ -1,10 +1,10 @@
 import { DataStore } from "@aws-amplify/datastore";
-import { DataPoint, DataPointInstance } from "../../models";
-import { DataPointService } from "../DataPointService";
+import { DataPoint, DataPointInstance } from "@models/index";
+import { DataPointService } from "@services/DataPointService";
 import {
   CreateDataPointInput,
   CreateDataPointInstanceInput,
-} from "../../types/DataPoint";
+} from "@task-types/DataPoint";
 
 jest.mock("@aws-amplify/datastore");
 

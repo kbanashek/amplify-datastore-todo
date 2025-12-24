@@ -1,7 +1,7 @@
 import React from "react";
 import { ActivityIndicator, StyleProp, View, ViewStyle } from "react-native";
 
-import { useThemeColor } from "../../hooks/useThemeColor";
+import { useThemeColor } from "@hooks/useThemeColor";
 
 export interface LoadingSpinnerProps {
   size?: "small" | "large";

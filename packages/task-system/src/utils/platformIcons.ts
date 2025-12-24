@@ -3,7 +3,7 @@
  * Centralized platform identification with emoji icons
  */
 
-import { getPlatform } from "./platform";
+import { getPlatform } from "@utils/platform";
 
 /**
  * Platform icon map - maps platform OS to emoji icon

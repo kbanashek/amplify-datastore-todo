@@ -1,13 +1,13 @@
 import { renderHook } from "@testing-library/react-native";
-import { useNetworkStatus } from "../useNetworkStatus";
-import { NetworkStatus, SyncState } from "../useAmplifyState";
+import { useNetworkStatus } from "@hooks/useNetworkStatus";
+import { NetworkStatus, SyncState } from "@hooks/useAmplifyState";
 
 // Mock AmplifyContext
-jest.mock("../../contexts/AmplifyContext", () => ({
+jest.mock("@contexts/AmplifyContext", () => ({
   useAmplify: jest.fn(),
 }));
 
-import { useAmplify } from "../../contexts/AmplifyContext";
+import { useAmplify } from "@contexts/AmplifyContext";
 
 describe("useNetworkStatus", () => {
   const mockUseAmplify = useAmplify as jest.MockedFunction<typeof useAmplify>;

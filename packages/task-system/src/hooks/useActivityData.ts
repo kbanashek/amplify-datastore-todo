@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
-import { ActivityConfig } from "../types/ActivityConfig";
-import {
-  ParsedActivityData,
-  parseActivityConfig,
-} from "../utils/activityParser";
-import { getServiceLogger } from "../utils/serviceLogger";
-import { useActivity } from "./useActivity";
-import { useTaskAnswer } from "./useTaskAnswer";
-import type { Activity } from "../types/Activity";
+import { ActivityConfig } from "@task-types/ActivityConfig";
+import { ParsedActivityData, parseActivityConfig } from "@utils/activityParser";
+import { getServiceLogger } from "@utils/serviceLogger";
+import { useActivity } from "@hooks/useActivity";
+import { useTaskAnswer } from "@hooks/useTaskAnswer";
+import type { Activity } from "@task-types/Activity";
 
 const logger = getServiceLogger("useActivityData");
 

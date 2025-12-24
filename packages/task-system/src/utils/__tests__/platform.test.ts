@@ -1,4 +1,4 @@
-import { isAndroid, isIOS, getPlatform } from "../platform";
+import { isAndroid, isIOS, getPlatform } from "@utils/platform";
 
 // Mock Platform module
 jest.mock("react-native", () => ({

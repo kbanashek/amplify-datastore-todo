@@ -1,6 +1,6 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
-import { ModelName } from "../constants/modelNames";
-import { getServiceLogger } from "../utils/serviceLogger";
+import { ModelName } from "@constants/modelNames";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 function ensurePkSk(model: any, fallback?: any): any {
   if (!model) return model;

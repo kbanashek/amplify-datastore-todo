@@ -4,7 +4,7 @@
  */
 
 import type { i18n, TFunction } from "i18next";
-import type { LanguageCode } from "../translations/translationTypes";
+import type { LanguageCode } from "@translations/translationTypes";
 
 /**
  * Mock i18next instance for testing

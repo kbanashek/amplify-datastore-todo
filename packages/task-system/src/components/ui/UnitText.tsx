@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { useTranslatedText } from "../../hooks/useTranslatedText";
+import { useTranslatedText } from "@hooks/useTranslatedText";
 
 interface UnitTextProps {
   unit: string;

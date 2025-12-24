@@ -1,4 +1,4 @@
-import { logWithPlatform } from "./platformLogger";
+import { logWithPlatform } from "@utils/platformLogger";
 
 /**
  * Centralized logging manager for data subscriptions

@@ -5,17 +5,17 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Task as DataStoreTask } from "../models";
-import { TaskService } from "../services/TaskService";
-import { TempAnswerSyncService } from "../services/TempAnswerSyncService";
-import { Task, TaskStatus } from "../types/Task";
-import { getServiceLogger } from "../utils/serviceLogger";
-import { extractActivityIdFromTask } from "../utils/taskUtils";
-import { useActivityData } from "./useActivityData";
-import { useAnswerManagement } from "./useAnswerManagement";
-import { useQuestionNavigation } from "./useQuestionNavigation";
-import { useQuestionSubmission } from "./useQuestionSubmission";
-import { useQuestionValidation } from "./useQuestionValidation";
+import { Task as DataStoreTask } from "@models/index";
+import { TaskService } from "@services/TaskService";
+import { TempAnswerSyncService } from "@services/TempAnswerSyncService";
+import { Task, TaskStatus } from "@task-types/Task";
+import { getServiceLogger } from "@utils/serviceLogger";
+import { extractActivityIdFromTask } from "@utils/taskUtils";
+import { useActivityData } from "@hooks/useActivityData";
+import { useAnswerManagement } from "@hooks/useAnswerManagement";
+import { useQuestionNavigation } from "@hooks/useQuestionNavigation";
+import { useQuestionSubmission } from "@hooks/useQuestionSubmission";
+import { useQuestionValidation } from "@hooks/useQuestionValidation";
 
 const logger = getServiceLogger("useQuestionsScreen");
 

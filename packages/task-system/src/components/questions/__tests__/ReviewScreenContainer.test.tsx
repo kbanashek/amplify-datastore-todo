@@ -1,10 +1,10 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
-import { ReviewScreenContainer } from "../ReviewScreenContainer";
-import { ParsedActivityData } from "../../../utils/activityParser";
+import { ReviewScreenContainer } from "@components/questions/ReviewScreenContainer";
+import { ParsedActivityData } from "@utils/activityParser";
 
 // Mock ReviewScreen
-jest.mock("../ReviewScreen", () => {
+jest.mock("@components/questions/ReviewScreen", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {

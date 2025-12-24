@@ -1,13 +1,13 @@
 import { useCallback, useState } from "react";
 import { Alert } from "react-native";
-import { ActivityConfig } from "../types/ActivityConfig";
-import { TaskStatus } from "../types/Task";
-import { ParsedActivityData } from "../utils/activityParser";
-import { validateAllScreens } from "../utils/questionValidation";
-import { getServiceLogger } from "../utils/serviceLogger";
-import { useDataPointInstance } from "./useDataPointInstance";
-import { useTaskAnswer } from "./useTaskAnswer";
-import { useTaskUpdate } from "./useTaskUpdate";
+import { ActivityConfig } from "@task-types/ActivityConfig";
+import { TaskStatus } from "@task-types/Task";
+import { ParsedActivityData } from "@utils/activityParser";
+import { validateAllScreens } from "@utils/questionValidation";
+import { getServiceLogger } from "@utils/serviceLogger";
+import { useDataPointInstance } from "@hooks/useDataPointInstance";
+import { useTaskAnswer } from "@hooks/useTaskAnswer";
+import { useTaskUpdate } from "@hooks/useTaskUpdate";
 
 const logger = getServiceLogger("useQuestionSubmission");
 

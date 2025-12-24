@@ -1,11 +1,11 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { AppColors } from "../../constants/AppColors";
-import { Shadows } from "../../constants/AppStyles";
-import { useQuestionScreenButtons } from "../../hooks/useQuestionScreenButtons";
-import { ActivityConfig } from "../../types/ActivityConfig";
-import { TranslatedText } from "../TranslatedText";
-import { Button } from "../ui/Button";
+import { AppColors } from "@constants/AppColors";
+import { Shadows } from "@constants/AppStyles";
+import { useQuestionScreenButtons } from "@hooks/useQuestionScreenButtons";
+import { ActivityConfig } from "@task-types/ActivityConfig";
+import { TranslatedText } from "@components/TranslatedText";
+import { Button } from "@components/ui/Button";
 
 interface QuestionScreenButtonsProps {
   currentScreenIndex: number;

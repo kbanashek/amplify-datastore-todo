@@ -6,11 +6,11 @@ import {
   TranslateTextCommand,
 } from "@aws-sdk/client-translate";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AWSErrorName } from "../constants/awsErrors";
-import { getServiceLogger } from "../utils/serviceLogger";
-import { simpleHash } from "../utils/simpleHash";
-import { TranslationMemoryService } from "./TranslationMemoryService";
-import type { LanguageCode } from "./translationTypes";
+import { AWSErrorName } from "@constants/awsErrors";
+import { getServiceLogger } from "@utils/serviceLogger";
+import { simpleHash } from "@utils/simpleHash";
+import { TranslationMemoryService } from "@services/TranslationMemoryService";
+import type { LanguageCode } from "@services/translationTypes";
 
 // Try to load credentials from config file (created by load-aws-credentials script)
 let awsCredentials: {

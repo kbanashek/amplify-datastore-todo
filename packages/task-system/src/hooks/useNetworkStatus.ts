@@ -1,11 +1,41 @@
-import { useAmplify } from "../contexts/AmplifyContext";
-import { NetworkStatus, SyncState } from "./useAmplifyState";
+import { useAmplify } from "@contexts/AmplifyContext";
+import { NetworkStatus, SyncState } from "@hooks/useAmplifyState";
 
+/**
+ * Return type for the useNetworkStatus hook.
+ */
 interface NetworkStatusInfo {
+  /** Color code for the status indicator (hex format) */
   statusColor: string;
+  /** Human-readable status text */
   statusText: string;
 }
 
+/**
+ * React hook for getting network and sync status display information.
+ *
+ * Provides color-coded status information based on the current
+ * network connectivity and DataStore sync state.
+ *
+ * Status colors:
+ * - Red (`#ff6b6b`): Offline or sync error
+ * - Yellow (`#feca57`): Syncing in progress
+ * - Green (`#1dd1a1`): Online and synced
+ * - Gray (`#a5b1c2`): Unknown/connecting
+ *
+ * @returns Object containing status color and text for display
+ *
+ * @example
+ * ```tsx
+ * const { statusColor, statusText } = useNetworkStatus();
+ *
+ * return (
+ *   <View style={{ backgroundColor: statusColor }}>
+ *     <Text>{statusText}</Text>
+ *   </View>
+ * );
+ * ```
+ */
 export const useNetworkStatus = (): NetworkStatusInfo => {
   const { networkStatus, syncState } = useAmplify();
 

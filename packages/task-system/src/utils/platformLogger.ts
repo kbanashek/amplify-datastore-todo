@@ -3,7 +3,7 @@
  * All logs must include platform identification (iOS, Android, or Web)
  */
 
-import { getPlatformIcon } from "./platformIcons";
+import { getPlatformIcon } from "@utils/platformIcons";
 
 /**
  * Get platform identifier for logging

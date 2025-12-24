@@ -1,44 +1,104 @@
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useCallback } from "react";
 import { Alert } from "react-native";
-import { ActivityConfig } from "../types/ActivityConfig";
-import { ParsedActivityData } from "../utils/activityParser";
-import { getServiceLogger } from "../utils/serviceLogger";
-import { useTranslatedText } from "./useTranslatedText";
+import { ActivityConfig } from "@task-types/ActivityConfig";
+import { ParsedActivityData } from "@utils/activityParser";
+import { getServiceLogger } from "@utils/serviceLogger";
+import { useTranslatedText } from "@hooks/useTranslatedText";
 
 const logger = getServiceLogger("useQuestionNavigation");
 
+/**
+ * Return type for the useQuestionNavigation hook.
+ */
 export interface UseQuestionNavigationReturn {
+  /** Navigate to the next screen or back to review if editing */
   handleNext: () => void;
+  /** Navigate to the previous screen */
   handlePrevious: () => void;
+  /** Start the questionnaire from the introduction screen */
   handleBegin: () => void;
+  /** Return from review screen to the last question screen */
   handleBackToQuestions: () => void;
+  /** Navigate to edit a specific question from the review screen */
   handleEditQuestion: (questionId: string) => void;
+  /** Show review screen or submit directly based on config */
   handleReviewOrSubmit: () => void;
+  /** Navigate away after completion (reset to dashboard) */
   handleCompletionDone: () => void;
+  /** Handle back button press with review flow awareness */
   handleBack: () => void;
 }
 
+/**
+ * Configuration options for the useQuestionNavigation hook.
+ */
 export interface UseQuestionNavigationOptions {
+  /** Parsed activity data containing screens and questions */
   activityData: ParsedActivityData | null;
+  /** Activity configuration including summary screen settings */
   activityConfig: ActivityConfig | null;
+  /** Current screen index in the question flow */
   currentScreenIndex: number;
+  /** Whether user navigated here from the review screen */
   cameFromReview: boolean;
+  /** Whether the current screen passes validation */
   currentScreenValid: boolean;
+  /** Function to validate the current screen */
   validateCurrentScreen: () => boolean;
+  /** Async function to submit all answers */
   onSubmit: () => Promise<void>;
+  /** Optional callback when leaving the current screen */
   onLeaveScreen?: () => void;
+  /** Setter for validation errors */
   setErrors: (errors: Record<string, string[]>) => void;
+  /** Setter for current screen index */
   setCurrentScreenIndex: React.Dispatch<React.SetStateAction<number>>;
+  /** Setter for introduction screen visibility */
   setShowIntroduction: React.Dispatch<React.SetStateAction<boolean>>;
+  /** Setter for review screen visibility */
   setShowReview: React.Dispatch<React.SetStateAction<boolean>>;
+  /** Setter for completion screen visibility */
   setShowCompletion: React.Dispatch<React.SetStateAction<boolean>>;
+  /** Setter for review flow tracking */
   setCameFromReview: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 /**
- * Hook for managing question screen navigation
- * Handles screen transitions, review flow, and navigation state
+ * React hook for managing question screen navigation and flow control.
+ *
+ * Handles all navigation logic for the question flow including:
+ * - Forward/backward navigation between screens
+ * - Introduction → Questions → Review → Completion flow
+ * - Edit mode from review screen (tracks `cameFromReview` state)
+ * - Validation before navigation
+ * - Alert dialogs for validation errors
+ *
+ * @param options - Navigation configuration and state setters
+ * @returns Object containing navigation handler functions
+ *
+ * @example
+ * ```tsx
+ * const {
+ *   handleNext,
+ *   handlePrevious,
+ *   handleReviewOrSubmit,
+ * } = useQuestionNavigation({
+ *   activityData,
+ *   activityConfig,
+ *   currentScreenIndex,
+ *   cameFromReview,
+ *   currentScreenValid,
+ *   validateCurrentScreen,
+ *   onSubmit: handleSubmitAnswers,
+ *   setErrors,
+ *   setCurrentScreenIndex,
+ *   setShowIntroduction,
+ *   setShowReview,
+ *   setShowCompletion,
+ *   setCameFromReview,
+ * });
+ * ```
  */
 export const useQuestionNavigation = ({
   activityData,

@@ -1,15 +1,12 @@
-import { IconSymbol } from "./ui/IconSymbol";
+import { IconSymbol } from "@components/ui/IconSymbol";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { AppColors } from "../constants/AppColors";
-import { Shadows, TextStyles } from "../constants/AppStyles";
-import { useRTL } from "../hooks/useRTL";
-import { useTranslatedText } from "../hooks/useTranslatedText";
-import { Appointment, AppointmentType } from "../types/Appointment";
-import {
-  formatTime,
-  getTimezoneAbbreviation,
-} from "../utils/appointmentParser";
+import { AppColors } from "@constants/AppColors";
+import { Shadows, TextStyles } from "@constants/AppStyles";
+import { useRTL } from "@hooks/useRTL";
+import { useTranslatedText } from "@hooks/useTranslatedText";
+import { Appointment, AppointmentType } from "@task-types/Appointment";
+import { formatTime, getTimezoneAbbreviation } from "@utils/appointmentParser";
 
 interface AppointmentCardProps {
   appointment: Appointment;

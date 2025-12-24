@@ -1,9 +1,9 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
-import { UnitText } from "../UnitText";
+import { UnitText } from "@components/ui/UnitText";
 
 // Mock useTranslatedText
-jest.mock("../../../hooks/useTranslatedText", () => ({
+jest.mock("@hooks/useTranslatedText", () => ({
   useTranslatedText: jest.fn((text: string) => ({
     translatedText: text,
     isTranslating: false,

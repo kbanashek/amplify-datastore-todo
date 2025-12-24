@@ -1,6 +1,20 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@services/*": ["src/services/*"],
+      "@utils/*": ["src/utils/*"],
+      "@task-types/*": ["src/types/*"],
+      "@constants/*": ["src/constants/*"],
+      "@contexts/*": ["src/contexts/*"],
+      "@translations/*": ["src/translations/*"],
+      "@models/*": ["src/models/*"],
+      "@screens/*": ["src/screens/*"],
+      "@fixtures/*": ["src/fixtures/*"],
+      "@runtime/*": ["src/runtime/*"]
+    },
     "rootDir": "./src",
     "outDir": "./dist",
     "declaration": true,

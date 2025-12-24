@@ -1,8 +1,8 @@
 import { renderHook, waitFor, act } from "@testing-library/react-native";
-import { useDataPointList } from "../useDataPointList";
+import { useDataPointList } from "@hooks/useDataPointList";
 
 // Mock DataPointService
-jest.mock("../../services/DataPointService", () => ({
+jest.mock("@services/DataPointService", () => ({
   DataPointService: {
     subscribeDataPoints: jest.fn(),
     subscribeDataPointInstances: jest.fn(),
@@ -13,12 +13,12 @@ jest.mock("../../services/DataPointService", () => ({
   },
 }));
 
-import { DataPointService } from "../../services/DataPointService";
+import { DataPointService } from "@services/DataPointService";
 import {
   DataPoint as DataPointModel,
   DataPointInstance as DataPointInstanceModel,
-} from "../../models";
-import { DataPoint, DataPointInstance } from "../../types/DataPoint";
+} from "@models/index";
+import { DataPoint, DataPointInstance } from "@task-types/DataPoint";
 
 describe("useDataPointList", () => {
   const mockSubscribeDataPoints =

@@ -1,21 +1,21 @@
 import { renderHook, waitFor, act } from "@testing-library/react-native";
-import { useAppointmentList } from "../useAppointmentList";
+import { useAppointmentList } from "@hooks/useAppointmentList";
 
 // Mock AppointmentService
-jest.mock("../../services/AppointmentService", () => ({
+jest.mock("@services/AppointmentService", () => ({
   AppointmentService: {
     getAppointmentData: jest.fn(),
     getAppointments: jest.fn(),
   },
 }));
 
-import { AppointmentService } from "../../services/AppointmentService";
+import { AppointmentService } from "@services/AppointmentService";
 import {
   Appointment,
   AppointmentData,
   AppointmentStatus,
   AppointmentType,
-} from "../../types/Appointment";
+} from "@task-types/Appointment";
 
 describe("useAppointmentList", () => {
   const mockGetAppointmentData =

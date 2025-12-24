@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Question } from "../../types/ActivityConfig";
-import { useTranslatedText } from "../../hooks/useTranslatedText";
+import { Question } from "@task-types/ActivityConfig";
+import { useTranslatedText } from "@hooks/useTranslatedText";
 
 interface TemperatureQuestionProps {
   question: Question;

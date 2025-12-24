@@ -6,9 +6,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useTranslatedText } from "../../hooks/useTranslatedText";
-import { ActivityConfig } from "../../types/ActivityConfig";
-import { Task, TaskStatus } from "../../types/Task";
+import { useTranslatedText } from "@hooks/useTranslatedText";
+import { ActivityConfig } from "@task-types/ActivityConfig";
+import { Task, TaskStatus } from "@task-types/Task";
 
 interface IntroductionScreenProps {
   activityConfig: ActivityConfig;

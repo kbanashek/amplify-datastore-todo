@@ -3,7 +3,7 @@
  * Shared utilities for log level mappings and conversions
  */
 
-import { LogLevel, LogLevelPreset } from "./types";
+import { LogLevel, LogLevelPreset } from "@services/logging/types";
 
 /**
  * Sentry severity level constants

@@ -1,9 +1,9 @@
 import { renderHook, waitFor, act } from "@testing-library/react-native";
-import { useQuestionList } from "../useQuestionList";
-import { createSubscriptionHolder } from "./testUtils";
+import { useQuestionList } from "@hooks/useQuestionList";
+import { createSubscriptionHolder } from "@test-utils/testUtils";
 
 // Mock QuestionService
-jest.mock("../../services/QuestionService", () => ({
+jest.mock("@services/QuestionService", () => ({
   QuestionService: {
     subscribeQuestions: jest.fn(),
     getQuestions: jest.fn(),
@@ -11,9 +11,9 @@ jest.mock("../../services/QuestionService", () => ({
   },
 }));
 
-import { QuestionService } from "../../services/QuestionService";
-import { Question as QuestionModel } from "../../models";
-import { Question } from "../../types/Question";
+import { QuestionService } from "@services/QuestionService";
+import { Question as QuestionModel } from "@models/index";
+import { Question } from "@task-types/Question";
 
 describe("useQuestionList", () => {
   const mockSubscribeQuestions =

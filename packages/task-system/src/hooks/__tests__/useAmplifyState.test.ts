@@ -1,10 +1,14 @@
 import { renderHook, waitFor } from "@testing-library/react-native";
-import { NetworkStatus, SyncState, useAmplifyState } from "../useAmplifyState";
+import {
+  NetworkStatus,
+  SyncState,
+  useAmplifyState,
+} from "@hooks/useAmplifyState";
 
 import { Hub } from "@aws-amplify/core";
 import { DataStore } from "@aws-amplify/datastore";
 import NetInfo from "@react-native-community/netinfo";
-import { ConflictResolution } from "../../services/ConflictResolution";
+import { ConflictResolution } from "@services/ConflictResolution";
 
 // Mock AWS Amplify
 jest.mock("@aws-amplify/core", () => ({
@@ -32,7 +36,7 @@ jest.mock("@react-native-community/netinfo", () => ({
 }));
 
 // Mock ConflictResolution
-jest.mock("../../services/ConflictResolution", () => ({
+jest.mock("@services/ConflictResolution", () => ({
   ConflictResolution: {
     configure: jest.fn(),
   },

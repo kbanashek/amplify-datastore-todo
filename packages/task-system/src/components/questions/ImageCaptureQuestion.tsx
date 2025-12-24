@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Question } from "../../types/ActivityConfig";
-import { useTranslatedText } from "../../hooks/useTranslatedText";
-import { getServiceLogger } from "../../utils/serviceLogger";
+import { Question } from "@task-types/ActivityConfig";
+import { useTranslatedText } from "@hooks/useTranslatedText";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("ImageCaptureQuestion");
 

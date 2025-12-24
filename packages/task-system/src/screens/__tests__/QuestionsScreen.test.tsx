@@ -1,13 +1,13 @@
 import React from "react";
 // @ts-ignore - react-test-renderer types not available
 import renderer from "react-test-renderer";
-import QuestionsScreen from "../QuestionsScreen";
+import QuestionsScreen from "@screens/QuestionsScreen";
 
 jest.mock("react-native-safe-area-context", () => ({
   useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
 }));
 
-jest.mock("../../hooks/useQuestionsScreen", () => ({
+jest.mock("@hooks/useQuestionsScreen", () => ({
   useQuestionsScreen: () => ({
     loading: false,
     error: null,
@@ -36,7 +36,7 @@ jest.mock("../../hooks/useQuestionsScreen", () => ({
   }),
 }));
 
-jest.mock("../../hooks/useTranslatedText", () => ({
+jest.mock("@hooks/useTranslatedText", () => ({
   useTranslatedText: (text: string) => ({ translatedText: text }),
 }));
 

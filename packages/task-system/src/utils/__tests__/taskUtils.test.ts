@@ -1,5 +1,5 @@
-import { extractActivityIdFromTask } from "../taskUtils";
-import { Task } from "../../types/Task";
+import { extractActivityIdFromTask } from "@utils/taskUtils";
+import { Task } from "@task-types/Task";
 
 describe("extractActivityIdFromTask", () => {
   describe("Happy path - entityId", () => {

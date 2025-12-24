@@ -7,10 +7,10 @@ import {
   Text,
   View,
 } from "react-native";
-import { useTaskList } from "../hooks/useTaskList";
-import { Task, TaskFilters } from "../types/Task";
-import { getServiceLogger } from "../utils/serviceLogger";
-import { TaskCard } from "./TaskCard";
+import { useTaskList } from "@hooks/useTaskList";
+import { Task, TaskFilters } from "@task-types/Task";
+import { getServiceLogger } from "@utils/serviceLogger";
+import { TaskCard } from "@components/TaskCard";
 
 const logger = getServiceLogger("TaskList");
 

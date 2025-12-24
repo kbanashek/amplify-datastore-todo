@@ -1,7 +1,7 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
-import { ModelName } from "../constants/modelNames";
-import { OperationSource } from "../constants/operationSource";
-import { Task as DataStoreTask } from "../models";
+import { ModelName } from "@constants/modelNames";
+import { OperationSource } from "@constants/operationSource";
+import { Task as DataStoreTask } from "@models/index";
 import {
   CreateTaskInput,
   Task,
@@ -9,10 +9,10 @@ import {
   TaskStatus,
   TaskType,
   UpdateTaskInput,
-} from "../types/Task";
-import { logErrorWithDevice, logWithDevice } from "../utils/deviceLogger";
-import { getServiceLogger } from "../utils/serviceLogger";
-import { dataSubscriptionLogger } from "../utils/dataSubscriptionLogger";
+} from "@task-types/Task";
+import { logErrorWithDevice, logWithDevice } from "@utils/deviceLogger";
+import { getServiceLogger } from "@utils/serviceLogger";
+import { dataSubscriptionLogger } from "@utils/dataSubscriptionLogger";
 
 type TaskUpdateData = Omit<UpdateTaskInput, "id" | "_version">;
 

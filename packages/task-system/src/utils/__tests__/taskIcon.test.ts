@@ -1,5 +1,5 @@
-import { getTaskIcon } from "../taskIcon";
-import { Task, TaskType } from "../../types/Task";
+import { getTaskIcon } from "@utils/taskIcon";
+import { Task, TaskType } from "@task-types/Task";
 
 describe("getTaskIcon", () => {
   const createMockTask = (

@@ -7,7 +7,7 @@ import {
   ParsedScreen,
   Question,
   Screen,
-} from "../types/ActivityConfig";
+} from "@task-types/ActivityConfig";
 
 export interface ParsedActivityData {
   screens: ParsedScreen[];

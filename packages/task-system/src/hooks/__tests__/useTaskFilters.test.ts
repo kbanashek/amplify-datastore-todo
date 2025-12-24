@@ -1,6 +1,6 @@
 import { renderHook, act } from "@testing-library/react-native";
-import { useTaskFilters } from "../useTaskFilters";
-import { TaskStatus, TaskType } from "../../types/Task";
+import { useTaskFilters } from "@hooks/useTaskFilters";
+import { TaskStatus, TaskType } from "@task-types/Task";
 
 describe("useTaskFilters", () => {
   it("initializes with empty filters", () => {

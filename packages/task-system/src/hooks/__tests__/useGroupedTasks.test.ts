@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react-native";
-import { useGroupedTasks } from "../useGroupedTasks";
-import { Task, TaskStatus, TaskType } from "../../types/Task";
+import { useGroupedTasks } from "@hooks/useGroupedTasks";
+import { Task, TaskStatus, TaskType } from "@task-types/Task";
 
 describe("useGroupedTasks", () => {
   const now = new Date();

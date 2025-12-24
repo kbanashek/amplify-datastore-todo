@@ -1,9 +1,9 @@
 import { renderHook, waitFor, act } from "@testing-library/react-native";
-import { useActivityList } from "../useActivityList";
-import { createSubscriptionHolder } from "./testUtils";
+import { useActivityList } from "@hooks/useActivityList";
+import { createSubscriptionHolder } from "@test-utils/testUtils";
 
 // Mock ActivityService
-jest.mock("../../services/ActivityService", () => ({
+jest.mock("@services/ActivityService", () => ({
   ActivityService: {
     subscribeActivities: jest.fn(),
     getActivities: jest.fn(),
@@ -11,9 +11,9 @@ jest.mock("../../services/ActivityService", () => ({
   },
 }));
 
-import { ActivityService } from "../../services/ActivityService";
-import { Activity as ActivityModel } from "../../models";
-import { Activity } from "../../types/Activity";
+import { ActivityService } from "@services/ActivityService";
+import { Activity as ActivityModel } from "@models/index";
+import { Activity } from "@task-types/Activity";
 
 describe("useActivityList", () => {
   const mockSubscribeActivities =

@@ -1,14 +1,14 @@
 import Slider from "@react-native-community/slider";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import { useTranslatedText } from "../../hooks/useTranslatedText";
-import { Question } from "../../types/ActivityConfig";
+import { useTranslatedText } from "@hooks/useTranslatedText";
+import { Question } from "@task-types/ActivityConfig";
 import {
   QuestionType,
   ValidationType,
-} from "../../types/activity-config-enums";
-import { getServiceLogger } from "../../utils/serviceLogger";
-import { getUnitDisplayLabel } from "../../utils/unitLabel";
+} from "@task-types/activity-config-enums";
+import { getServiceLogger } from "@utils/serviceLogger";
+import { getUnitDisplayLabel } from "@utils/unitLabel";
 
 const logger = getServiceLogger("NumberQuestion");
 
