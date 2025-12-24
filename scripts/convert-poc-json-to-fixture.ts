@@ -18,13 +18,13 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import { TaskSystemFixture } from "../packages/task-system/src/src/fixtures/TaskSystemFixture";
-import { CreateActivityInput } from "../packages/task-system/src/src/types/Activity";
+import { TaskSystemFixture } from "../packages/task-system/src/fixtures/TaskSystemFixture";
+import { CreateActivityInput } from "../packages/task-system/src/types/Activity";
 import {
   CreateTaskInput,
   TaskType,
   TaskStatus,
-} from "../packages/task-system/src/src/types/Task";
+} from "../packages/task-system/src/types/Task";
 
 const POC_BASE_PATH = path.join(
   process.env.HOME || process.env.USERPROFILE || "",

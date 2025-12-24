@@ -9,9 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Reorganized package directory structure
+  - Removed nested `packages/task-system/src/src/` directory structure
+  - Updated all import paths from `src/src/` to correct relative paths
+  - Fixed Metro bundler path resolution issues after directory reorganization
+  - Updated `packages/task-system/tsconfig.build.json` to reference `../../src/` instead of `src/src/`
+  - Fixed `appointments.json` import path in `AppointmentService.ts`
+  - Created `metro.config.js` for proper workspace package resolution
+  - Updated `jest.config.js` to reflect new package structure
+
 ### Fixed
 
 - Fixed question header display issue
+- Fixed Metro bundler error: "The 'to' argument must be of type string. Received undefined" caused by broken import paths
 
 ## [0.1.24] - 2025-12-22
 

@@ -1,0 +1,53 @@
+/**
+ * Default English translations for task-system module
+ * Organized by namespaces for better organization and type safety
+ */
+const en_US = {
+  task: {
+    dueBy: "DUE BY",
+    begin: "BEGIN",
+    resume: "RESUME",
+    completed: "COMPLETED",
+    expired: "Expired",
+    loading: "Loading tasks...",
+    noTasks: "No tasks",
+    today: "Today",
+    dashboard: "Dashboard",
+    startsAt: "starts at",
+  },
+  activity: {
+    required: "Required",
+    noAnswerProvided: "No answer provided",
+    notAnswered: "Not answered",
+    answerQuestions: "Answer Questions",
+  },
+  common: {
+    ok: "OK",
+    cancel: "CANCEL",
+    back: "Back",
+    next: "Next",
+    previous: "Previous",
+    submit: "Submit",
+    review: "Review",
+    save: "Save",
+    delete: "Delete",
+    edit: "Edit",
+    close: "Close",
+    loading: "Loading...",
+  },
+  questions: {
+    validationError: "Validation Error",
+    required: "This field is required.",
+    invalidFormat: "Value does not match required format",
+    outOfRange: "Value is out of range",
+    pleaseAnswerRequired:
+      "Please answer all required questions before continuing.",
+    pleaseAnswerRequiredReview:
+      "Please answer all required questions before reviewing.",
+    notAnswered: "Not answered",
+    addPhoto: "Add Photo",
+    editPhoto: "Edit Photo",
+  },
+} as const;
+
+export default en_US;

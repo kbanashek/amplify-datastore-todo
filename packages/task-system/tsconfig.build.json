@@ -31,24 +31,24 @@
     "**/*.test.ts",
     "**/*.test.tsx",
 
-    "src/src/amplify-config.*",
-    "src/src/amplify-init.*",
-    "src/src/amplify-init-sync.*",
-    "src/src/amplifyconfiguration.json",
-    "src/src/aws-exports.*",
-    "src/src/API.ts",
-    "src/src/graphql/**",
+    "../../src/amplify-config.*",
+    "../../src/amplify-init.*",
+    "../../src/amplify-init-sync.*",
+    "../../src/amplifyconfiguration.json",
+    "../../src/aws-exports.*",
+    "../../src/API.ts",
+    "../../src/graphql/**",
 
     // Exclude app-only screens/views that aren't part of the embeddable module build.
     // These currently have type issues / missing hook modules and are not required by TaskActivityModule.
-    "src/src/components/TaskList.tsx",
-    "src/src/components/TasksView.tsx",
+    "../../src/components/TaskList.tsx",
+    "../../src/components/TasksView.tsx",
 
     // Exclude list screens/hooks not used by the module embed path.
-    "src/src/hooks/useActivityList.ts",
-    "src/src/hooks/useQuestionList.ts",
-    "src/src/hooks/useTaskAnswerList.ts",
-    "src/src/hooks/useTaskHistoryList.ts",
-    "src/src/hooks/useTaskResultList.ts"
+    "../../src/hooks/useActivityList.ts",
+    "../../src/hooks/useQuestionList.ts",
+    "../../src/hooks/useTaskAnswerList.ts",
+    "../../src/hooks/useTaskHistoryList.ts",
+    "../../src/hooks/useTaskResultList.ts"
   ]
 }
