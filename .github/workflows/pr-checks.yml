@@ -277,6 +277,23 @@ jobs:
           fi
         continue-on-error: false
 
+      - name: Create aws-exports stub for type checking
+        run: |
+          # Create a stub aws-exports.js file for CI (the real file is gitignored)
+          cat > aws-exports.js << 'EOF'
+          /* eslint-disable */
+          // CI stub for type checking - not used at runtime
+          const awsmobile = {
+            aws_project_region: "us-east-1",
+            aws_appsync_graphqlEndpoint: "https://example.appsync-api.us-east-1.amazonaws.com/graphql",
+            aws_appsync_region: "us-east-1",
+            aws_appsync_authenticationType: "API_KEY",
+            aws_appsync_apiKey: "da2-xxxxxxxxxxxxxxxxxxxxxxxxxx",
+          };
+          export default awsmobile;
+          EOF
+          echo "Created aws-exports.js stub for type checking"
+
       - name: Run TypeScript type check
         run: yarn check:types
 

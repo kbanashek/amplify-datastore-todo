@@ -1,10 +1,12 @@
 ---
-description: React Native and TypeScript component patterns
+description: React Native component patterns and UI/UX design conventions
 alwaysApply: true
-globs: ['**/*.tsx', 'app/**/*.tsx', 'src/components/**/*.tsx']
+globs: ["**/*.tsx", "app/**/*.tsx", "src/components/**/*.tsx"]
 ---
 
-# TypeScript/React Native
+# React Native & UI/UX
+
+## Component Patterns
 
 - Use TypeScript for type safety
 - Prefer functional components with hooks
@@ -20,3 +22,14 @@ globs: ['**/*.tsx', 'app/**/*.tsx', 'src/components/**/*.tsx']
 - **Use proper types for hooks**
   - ✅ Good: `const [count, setCount] = useState<number>(0);`
   - ✅ Good: `const data = useMemo<ProcessedData>(() => process(rawData), [rawData]);`
+
+---
+
+## UI/UX Design Patterns
+
+### Task Display
+
+- Tasks should be grouped by day, then by time
+- Use distinct icons for different task types
+- Show "BEGIN" for new tasks, "RESUME" for started tasks
+- Match design specifications exactly

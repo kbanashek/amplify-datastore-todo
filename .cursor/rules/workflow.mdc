@@ -1,17 +1,70 @@
 ---
-description: GitHub Actions workflow standards and conventions
+description: Version control, GitHub Actions, and operational workflows
 alwaysApply: true
+globs: [".github/**/*", "*.yml", "*.yaml"]
 ---
 
-# GitHub Actions Workflow Standards
+# Workflow & Operations
 
-## PR Checks Workflow
+## Version Control
+
+### Pre-Commit Checks
+
+- **NEVER allow commits with yarn integrity issues**
+  - Pre-commit hook automatically runs `yarn check --integrity`
+  - If integrity check fails, commit is blocked
+  - Fix by running `yarn install` to sync dependencies
+  - This prevents committing with broken dependencies or lockfile mismatches
+
+### Commit Messages
+
+- **ALWAYS** provide meaningful commit messages when using version-bump command
+- Commit messages are **REQUIRED** and must be descriptive
+- Good examples:
+  - "Add task grouping by date and time with icons"
+  - "Fix DataStore sync issue for questions"
+  - "Update task card UI to match design specifications"
+- Bad examples (will be rejected):
+  - "update"
+  - "changes"
+  - "fix"
+  - Empty or whitespace-only messages
+
+### Version Bumping
+
+- Use semantic versioning (major.minor.patch)
+- Always provide a meaningful commit message when bumping versions
+- The version-bump script will validate that commit messages are descriptive
+
+### Push Update Workflow
+
+- **When asked to "push update" or similar**, follow this workflow:
+  1. Create a new feature branch (e.g., `feature/description-of-changes`)
+  2. Fix any lint issues in modified files
+  3. Bump the patch version in `package.json` (e.g., `0.1.1` → `0.1.2`)
+  4. Update `CHANGELOG.md` with:
+     - New version number and current date (format: `YYYY-MM-DD`)
+     - Added/Changed/Fixed sections as appropriate
+     - Descriptive entries for all changes
+  5. Stage all changes (`git add -A`)
+  6. Commit with a meaningful message describing all changes
+  7. Push the branch to remote (`git push -u origin <branch-name>`)
+  8. Add any requested cursor rules to `.cursor/rules/` directory if specified
+- **Always verify lint issues are resolved** before committing
+- **Always use the current date** when updating CHANGELOG.md
+- **Commit messages must be descriptive** - summarize all changes in the commit
+
+---
+
+## GitHub Actions Workflow Standards
+
+### PR Checks Workflow
 
 **File:** `.github/workflows/pr-checks.yml`
 
 **Purpose:** Run essential checks on all pull requests to ensure code quality before merging.
 
-### Structure
+#### Structure
 
 The PR checks workflow consists of **two separate jobs** that run in parallel:
 
@@ -26,7 +79,7 @@ The PR checks workflow consists of **two separate jobs** that run in parallel:
    - Skips AWS-dependent tests in CI environment
    - May continue on error (non-blocking for merge)
 
-### Naming Convention
+#### Naming Convention
 
 **ALWAYS use clear, descriptive job names:**
 - ✅ Good: `name: Lint` (clear what it does)
@@ -39,7 +92,7 @@ The PR checks workflow consists of **two separate jobs** that run in parallel:
 - ✅ Good: `name: PR Checks` (indicates it's for PR validation)
 - ❌ Bad: `name: PR Tests` (misleading if it also runs lint)
 
-### Job Separation
+#### Job Separation
 
 **ALWAYS separate lint and tests into different jobs:**
 - Allows parallel execution (faster CI)
@@ -50,7 +103,7 @@ The PR checks workflow consists of **two separate jobs** that run in parallel:
 - ❌ Bad: Single job that runs both `yarn lint` and `yarn test`
 - ✅ Good: Separate `lint` and `unit-tests` jobs
 
-### Trigger Configuration
+#### Trigger Configuration
 
 **PR checks should trigger on:**
 ```yaml
@@ -66,7 +119,7 @@ on:
 - PR checks are only needed for pull requests
 - Push events should use separate workflows (e.g., test-coverage.yml)
 
-### Error Handling
+#### Error Handling
 
 **Lint job:**
 - Must fail the workflow if lint errors are found
@@ -76,14 +129,14 @@ on:
 - May use `continue-on-error: true` if tests are non-critical
 - Should still report test results even if some tests fail
 
-### Coverage
+#### Coverage
 
 **Coverage is included in the unit-tests job:**
 - Use `--coverage` flag in test command
 - Upload coverage reports as artifacts (optional)
 - Coverage reporting is handled by separate `test-coverage.yml` workflow for push events
 
-## Test Coverage Workflow
+### Test Coverage Workflow
 
 **File:** `.github/workflows/test-coverage.yml`
 
@@ -93,33 +146,33 @@ on:
 - Push to `main` or `develop` branches
 - **NOT** on pull requests (coverage is included in PR checks)
 
-## Best Practices
+### Best Practices
 
-### Job Names
+#### Job Names
 
 - Use clear, action-oriented names
 - Avoid redundancy (don't say "Run" when it's implied)
 - Match the actual command being executed
 
-### Workflow Organization
+#### Workflow Organization
 
 - One workflow per purpose (PR checks, coverage, deployment, etc.)
 - Keep workflows focused and single-purpose
 - Use descriptive workflow names
 
-### Parallel Execution
+#### Parallel Execution
 
 - Separate independent checks into separate jobs
 - Jobs run in parallel by default (faster CI)
 - Use `needs:` only when jobs must run sequentially
 
-### CodeArtifact Authentication
+#### CodeArtifact Authentication
 
 - Always configure AWS credentials with `continue-on-error: true`
 - Fall back to public npm registry if CodeArtifact auth fails
 - Ensure dependencies install successfully even without AWS credentials
 
-### Example Structure
+#### Example Structure
 
 ```yaml
 name: PR Checks
@@ -149,13 +202,13 @@ jobs:
       - run: yarn test --coverage --watchAll=false
 ```
 
-## Auto Merge Workflow
+### Auto Merge Workflow
 
 **File:** `.github/workflows/auto-merge.yml`
 
 **Purpose:** Automatically merge pull requests when all required checks pass and conditions are met.
 
-### How It Works
+#### How It Works
 
 1. **Triggers on:**
    - PR opened, synchronized, reopened, or marked ready for review
@@ -172,7 +225,7 @@ jobs:
    - Automatically deletes the source branch after merge
    - Adds a comment to the PR when auto-merge is enabled
 
-### Configuration
+#### Configuration
 
 The workflow uses `peter-evans/enable-pull-request-automerge@v3` which:
 - Automatically waits for all required checks to pass
@@ -180,21 +233,21 @@ The workflow uses `peter-evans/enable-pull-request-automerge@v3` which:
 - Handles merge conflicts gracefully
 - Only enables auto-merge when PR is ready
 
-### Merge Method
+#### Merge Method
 
 Currently configured to use **squash merge**:
 - Creates a single commit from all PR commits
 - Keeps commit history clean
 - Can be changed to `merge` or `rebase` if needed
 
-### Notes
+#### Notes
 
 - Auto-merge respects branch protection rules (required approvals, status checks, etc.)
 - If checks fail, auto-merge will not be enabled
 - The workflow will retry when checks complete
 - PRs can still be manually merged if needed
 
-## Common Mistakes to Avoid
+### Common Mistakes to Avoid
 
 1. **Misleading job names** - "Run Unit Tests" when it also runs lint
 2. **Combining checks** - Running lint and tests in the same job

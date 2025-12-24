@@ -1,0 +1,210 @@
+---
+description: TypeScript best practices, code patterns, and style conventions
+alwaysApply: true
+globs: ["**/*.ts", "**/*.tsx"]
+---
+
+# Code Style & Patterns
+
+## TypeScript Best Practices
+
+- **ALWAYS use TypeScript** - Never use JavaScript (.js) files. All new files must be `.ts` or `.tsx`
+- **NEVER use `any` type** - Use proper types, `unknown`, or generics instead
+  - ❌ Bad: `function process(data: any) { ... }`
+  - ✅ Good: `function process<T>(data: T): T { ... }`
+  - ✅ Good: `function process(data: unknown): ProcessedData { ... }`
+  - **Error handling**: Always use `unknown` for catch clauses, then narrow with type guards
+    - ❌ Bad: `catch (error: any) { console.log(error.message); }`
+    - ✅ Good: `catch (error: unknown) { const message = error instanceof Error ? error.message : String(error); }`
+- **Use explicit return types** for functions, especially public APIs
+  - ✅ Good: `function calculateTotal(items: Item[]): number { ... }`
+  - ✅ Good: `const getItems = (): Promise<Item[]> => { ... }`
+- **Prefer interfaces over type aliases** for object shapes (interfaces are extendable)
+  - ✅ Good: `interface User { id: string; name: string; }`
+  - Use type aliases for unions, intersections, or computed types
+- **Use strict null checks** - Always handle `null` and `undefined` explicitly
+  - ✅ Good: `const name: string | undefined = user?.name;`
+  - ✅ Good: `if (value !== null && value !== undefined) { ... }`
+- **Avoid type assertions (`as`)** - Prefer type guards or proper type narrowing
+  - ❌ Bad: `const value = data as string;`
+  - ✅ Good: `if (typeof data === 'string') { const value = data; ... }`
+- **Use readonly for immutable data**
+  - ✅ Good: `interface Config { readonly apiKey: string; readonly timeout: number; }`
+- **Prefer const assertions** for literal types
+  - ✅ Good: `const statuses = ['active', 'inactive'] as const;`
+- **Use enums or const objects** instead of magic strings
+  - ✅ Good: `enum TaskStatus { OPEN = 'OPEN', COMPLETED = 'COMPLETED' }`
+  - ✅ Good: `const TaskStatus = { OPEN: 'OPEN', COMPLETED: 'COMPLETED' } as const;`
+- **Type all function parameters and return values**
+  - ❌ Bad: `function process(data) { return data.value; }`
+  - ✅ Good: `function process(data: InputData): OutputData { return data.value; }`
+- **Use generics for reusable code** instead of `any`
+  - ✅ Good: `function identity<T>(value: T): T { return value; }`
+- **Prefer optional chaining and nullish coalescing**
+  - ✅ Good: `const name = user?.profile?.name ?? 'Unknown';`
+- **Use discriminated unions** for type-safe state management
+  - ✅ Good: `type State = { status: 'loading' } | { status: 'success'; data: Data } | { status: 'error'; error: Error };`
+- **Avoid `@ts-ignore` and `@ts-expect-error`** - Fix the underlying type issues instead
+- **Use utility types** (`Partial`, `Pick`, `Omit`, `Record`, etc.) when appropriate
+  - ✅ Good: `type UserUpdate = Partial<Pick<User, 'name' | 'email'>>;`
+- **Export types and interfaces** that are used across modules
+  - ✅ Good: `export interface User { id: string; name: string; }`
+- **Use JSDoc comments** for complex types and public APIs
+  - ✅ Good: `/** Processes user data and returns formatted result */ function processUser(user: User): ProcessedUser { ... }`
+
+---
+
+## Arrow Functions
+
+Prefer **arrow functions** for:
+- **React components**
+- **hooks** (custom hooks and hook callbacks)
+- **event handlers** and callbacks
+- **small utilities** and one-off helpers
+
+Prefer **const-assigned arrows** for exported APIs:
+- ✅ Good: `export const buildPayload = (input: Input): Output => { ... }`
+
+### React Components
+
+- ✅ Preferred:
+
+```ts
+export const MyComponent: React.FC<MyProps> = ({ title }) => {
+  return <View />;
+};
+```
+
+- ✅ Also acceptable (if it reads cleaner):
+
+```ts
+export const MyComponent = ({ title }: MyProps): React.ReactElement => {
+  return <View />;
+};
+```
+
+### When `function` is acceptable
+
+Use `function` declarations when they provide a concrete benefit:
+- **Function overloads** (often clearer with `function`)
+- **Generators** (`function*`)
+- **Hoisting is required** (rare; prefer re-ordering instead)
+- **Very large utilities** where `function name()` reads materially better
+
+---
+
+## Object Map Pattern
+
+**ALWAYS prefer object maps over switch statements or if-else chains** when mapping values to other values.
+
+### When to Use Object Maps
+
+Use object maps when:
+- Mapping one value to another (e.g., status codes to messages, platform to icons, error codes to messages)
+- The mapping is static and doesn't require complex logic
+- You have 3+ cases to handle
+- The logic is a simple lookup/transformation
+
+### Pattern
+
+**❌ Bad (switch statement):**
+```typescript
+function getStatusMessage(status: string): string {
+  switch (status) {
+    case "pending":
+      return "Processing";
+    case "completed":
+      return "Done";
+    case "failed":
+      return "Error";
+    default:
+      return "Unknown";
+  }
+}
+```
+
+**❌ Bad (if-else chain):**
+```typescript
+function getPlatformIcon(platform: string): string {
+  if (platform === "ios") {
+    return "🍎";
+  } else if (platform === "android") {
+    return "🤖";
+  } else if (platform === "web") {
+    return "🌐";
+  }
+  return "❓";
+}
+```
+
+**✅ Good (object map):**
+```typescript
+const STATUS_MESSAGES: Record<string, string> = {
+  pending: "Processing",
+  completed: "Done",
+  failed: "Error",
+} as const;
+
+function getStatusMessage(status: string): string {
+  return STATUS_MESSAGES[status] ?? "Unknown";
+}
+```
+
+**✅ Good (object map with function for complex cases):**
+```typescript
+const PLATFORM_ICONS: Record<string, string> = {
+  ios: "🍎",
+  android: "🤖",
+  web: "🌐",
+} as const;
+
+function getPlatformIcon(platform: string): string {
+  const baseIcon = PLATFORM_ICONS[platform];
+  if (baseIcon) {
+    // Handle special cases if needed
+    if (platform === "web") {
+      // Additional logic for web
+    }
+    return baseIcon;
+  }
+  return "❓"; // Fallback
+}
+```
+
+### Benefits
+
+1. **More readable** - Clear mapping at a glance
+2. **Easier to maintain** - Add/remove mappings by editing the object
+3. **Type-safe** - TypeScript can infer types from `as const`
+4. **Testable** - Easy to test the map separately
+5. **Performance** - Object lookup is O(1) vs O(n) for if-else chains
+
+### When NOT to Use Object Maps
+
+Don't use object maps when:
+- You need complex logic in each case (use functions or switch)
+- You need fall-through behavior (use switch)
+- You have only 1-2 cases (if-else is fine)
+- The mapping requires side effects (use switch or if-else)
+
+### Examples
+
+**Status mapping:**
+```typescript
+const LOG_LEVEL_NAMES: Record<LogLevel, string> = {
+  [LogLevel.VERBOSE]: "VERBOSE",
+  [LogLevel.DEBUG]: "DEBUG",
+  [LogLevel.INFO]: "INFO",
+  [LogLevel.WARN]: "WARN",
+  [LogLevel.ERROR]: "ERROR",
+} as const;
+```
+
+**Error code mapping:**
+```typescript
+const ERROR_MESSAGES: Record<string, string> = {
+  "E001": "Invalid input",
+  "E002": "Network error",
+  "E003": "Timeout",
+} as const;
+```

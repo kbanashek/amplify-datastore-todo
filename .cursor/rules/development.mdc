@@ -1,17 +1,74 @@
 ---
-description: Logging standards and conventions for sequential initialization and data flow visibility
+description: Development practices including testing, logging, and documentation standards
 alwaysApply: true
+globs: ["**/*.ts", "**/*.tsx", "**/*.test.ts", "**/*.test.tsx", "**/__tests__/**/*", "DOCS/**/*.md", "README.md"]
 ---
 
-# Logging Standards
+# Development Practices
 
-## Sequential Initialization Logging
+## Unit Testing Requirements
+
+- **ALWAYS create unit tests** for any new hooks, services, and components
+- **Test files must be created alongside the source files** - not as an afterthought
+- **Test file naming convention:**
+  - Hooks: `src/hooks/__tests__/useHookName.test.ts`
+  - Services: `src/services/__tests__/ServiceName.test.ts`
+  - Components: `src/components/__tests__/ComponentName.test.tsx` or `src/components/[category]/__tests__/ComponentName.test.tsx`
+- **Test coverage requirements:**
+  - **Hooks**: Test all return values, state changes, side effects, and edge cases
+  - **Services**: Test all public methods, error handling, and data transformations
+  - **Components**: Test rendering, user interactions, props handling, and conditional rendering
+- **Testing patterns:**
+  - Use Jest and React Testing Library for all tests
+  - Mock external dependencies (DataStore, APIs, AsyncStorage, etc.)
+  - Test user interactions (clicks, input changes, form submissions)
+  - Test error states and loading states
+  - Test edge cases (empty data, null values, invalid inputs)
+- **When creating new code:**
+  1. Create the hook/service/component/utility
+  2. **IMMEDIATELY create the corresponding test file** - tests are REQUIRED, not optional
+  3. Write tests covering the main functionality
+  4. Ensure tests pass before considering the feature complete
+- **When refactoring or moving code:**
+  1. **ALWAYS update or create unit tests** for moved/refactored code
+  2. Update test file paths to match new locations
+  3. Update test imports to reflect new module structure
+  4. Ensure all existing tests still pass after the move
+  5. Add new tests if functionality changes during refactoring
+  6. **NO EXCEPTIONS** - refactoring without updating tests is incomplete
+- **CRITICAL: ALL new files must have unit tests**
+  - **Hooks**: `src/hooks/__tests__/useHookName.test.ts`
+  - **Components**: `src/components/__tests__/ComponentName.test.tsx` or `src/components/[category]/__tests__/ComponentName.test.tsx`
+  - **Services**: `src/services/__tests__/ServiceName.test.ts`
+  - **Utils**: `src/utils/__tests__/utilityName.test.ts`
+  - **NO EXCEPTIONS** - if you create a new file, you MUST create its test file immediately
+- **Examples:**
+  - ✅ Good: Create `src/hooks/useAppointmentList.ts` → Create `src/hooks/__tests__/useAppointmentList.test.ts` immediately
+  - ✅ Good: Create `src/services/AppointmentService.ts` → Create `src/services/__tests__/AppointmentService.test.ts` immediately
+  - ✅ Good: Create `src/components/AppointmentCard.tsx` → Create `src/components/__tests__/AppointmentCard.test.tsx` immediately
+  - ❌ Bad: Create hook/service/component without corresponding test file
+  - ❌ Bad: "I'll add tests later" - tests must be created with the code
+- **Test structure:**
+  - Use `describe` blocks to group related tests
+  - Use descriptive test names that explain what is being tested
+  - Follow Arrange-Act-Assert pattern
+  - Clean up after tests (clear mocks, reset state, etc.)
+- **Required test scenarios:**
+  - **Hooks**: Initial state, state updates, side effects, cleanup, error handling
+  - **Services**: Method calls, return values, error cases, edge cases (empty arrays, null values)
+  - **Components**: Rendering with props, user interactions, conditional rendering, error states, loading states
+
+---
+
+## Logging Standards
+
+### Sequential Initialization Logging
 
 **Purpose:** Provide 100% visibility into app initialization and data loading flow.
 
 **Format:** `[INIT-N]` or `[DATA-N]` prefix with icons and concise messages.
 
-### Initialization Steps (INIT)
+#### Initialization Steps (INIT)
 
 - **INIT-1**: Amplify configuration (synchronous)
 - **INIT-2**: RootLayout bootstrap start
@@ -21,13 +78,13 @@ alwaysApply: true
 - **INIT-6**: Auto-flush service start
 - **INIT-7**: All initialization complete
 
-### Data Loading Steps (DATA)
+#### Data Loading Steps (DATA)
 
 - **DATA-1**: Task data subscription and loading
 - **DATA-2**: Appointment data loading
 - **DATA-3**: Other data model loading (Questions, Activities, etc.)
 
-## Icon Conventions
+### Icon Conventions
 
 **ALWAYS use icons to identify log sources:**
 
@@ -46,7 +103,7 @@ alwaysApply: true
 - **📥** - Receiving/downloading
 - **🗑️** - Deletion/cleanup
 
-## Log Message Format
+### Log Message Format
 
 **Format:** `[ICON] [PLATFORM] [STEP] ServiceName: Concise message`
 
@@ -60,9 +117,9 @@ alwaysApply: true
 - ❌ Bad: `[TaskService] Setting up DataStore subscription` (no icon, no platform, no step)
 - ❌ Bad: `Task created` (no context, no service name, no platform)
 
-## Logging Rules
+### Logging Rules
 
-### DO
+#### DO
 
 - **ALWAYS include platform** (`[iOS]`, `[Android]`, or `[Web]`) in every log message
 - **Use step numbers** (`[INIT-N]`, `[DATA-N]`) for sequential operations
@@ -73,7 +130,7 @@ alwaysApply: true
 - **Include status indicators**: `synced-with-cloud`, `local-only`, `queued-for-retry`
 - **Use `platformLogger.ts` utilities** (`logWithPlatform`, `logErrorWithPlatform`) for consistent formatting
 
-### DON'T
+#### DON'T
 
 - **Don't log without platform identification** - every log must include `[iOS]`, `[Android]`, or `[Web]`
 - **Don't use raw `console.log`** - use `logWithPlatform` or `logErrorWithPlatform` from `platformLogger.ts`
@@ -83,7 +140,7 @@ alwaysApply: true
 - **Don't use generic icons** - use specific icons for context
 - **Don't log without step numbers** for initialization/data flow
 
-## Readable JSON Formatting in Logs
+### Readable JSON Formatting in Logs
 
 **NEVER log JSON blobs directly** - format data as human-readable text instead.
 
@@ -121,15 +178,6 @@ logWithPlatform(
 );
 ```
 
-**Output:**
-```
-📋 [Android] useTaskList: Received 12 tasks (synced-with-cloud)
-  • All Question Types Test (Fixture) (start: 2025-12-21)
-  • Multi Page (3 screens) Test (Fixture) (start: 2025-12-21)
-  • Sample Task 3 (Fixture) (start: 2025-12-21)
-  ...
-```
-
 **Guidelines:**
 - Use bullet points (`•`) or dashes (`-`) for list items
 - Indent list items with 2 spaces for readability
@@ -137,59 +185,7 @@ logWithPlatform(
 - Keep metadata objects small (max 3-4 key-value pairs)
 - For large arrays (>10 items), consider showing summary + sample items
 
-## Concise Logging Examples
-
-**Before (verbose):**
-```typescript
-console.log("[AppointmentService] Parsed AsyncStorage data", {
-  hasClinicPatientAppointments: !!parsed.clinicPatientAppointments,
-  hasClinicAppointments: !!parsed.clinicPatientAppointments?.clinicAppointments,
-  itemsCount: parsed.clinicPatientAppointments?.clinicAppointments?.items?.length || 0,
-  siteTimezoneId: parsed.siteTimezoneId,
-  sampleItems: parsed.clinicPatientAppointments?.clinicAppointments?.items?.slice(0, 2).map(...),
-});
-```
-
-**After (concise with platform):**
-```typescript
-import { logWithPlatform } from "../utils/platformLogger";
-
-const itemsCount = parsed.clinicPatientAppointments?.clinicAppointments?.items?.length || 0;
-logWithPlatform("📅", "DATA-2", "AppointmentService", `Loaded ${itemsCount} appointments from AsyncStorage`, {
-  timezone: parsed.siteTimezoneId
-});
-```
-
-## Sequential Flow Example
-
-```
-🚀 [iOS] [INIT-1] AmplifyInit: Starting Amplify configuration (synchronous)
-🔐 [iOS] [INIT-1] AmplifyConfig: Amplify configured with API_KEY authentication
-✅ [iOS] [INIT-1] AmplifyConfig: Amplify configuration complete
-🚀 [iOS] [INIT-2] RootLayout: Starting task system bootstrap
-🚀 [iOS] [INIT-3] Bootstrap: Initializing task-system runtime
-⚙️ [iOS] [INIT-3.1] TaskSystem: Configuring conflict resolution
-✅ [iOS] [INIT-3.1] TaskSystem: Conflict resolution configured
-✅ [iOS] [INIT-3] Bootstrap: Task-system runtime initialized
-☁️ [iOS] [INIT-4] Bootstrap: Starting AWS DataStore
-☁️ [iOS] [INIT-4] Bootstrap: AWS DataStore started - ready for cloud sync
-🚀 [iOS] [INIT-5] Bootstrap: Configuring temp answer sync service
-💾 [iOS] TempAnswerSyncService: Service configured
-✅ [iOS] [INIT-5] Bootstrap: Temp answer sync service configured
-🚀 [iOS] [INIT-6] Bootstrap: Starting auto-flush for queued temp answers
-✅ [iOS] [INIT-6] Bootstrap: Auto-flush started - will retry queued items on network online
-✅ [iOS] [INIT-7] Bootstrap: All initialization complete - data services ready
-✅ [iOS] [INIT-2] RootLayout: Task system bootstrap complete - app ready to render
-📋 [iOS] [DATA-1] useTaskList: Subscribing to task data
-☁️ [iOS] [DATA-1.1] TaskService: Setting up AWS DataStore subscription for Task model
-☁️ [iOS] [DATA-1.1] TaskService: Initial AWS DataStore query completed - 3 tasks loaded
-📋 [iOS] [DATA-1] useTaskList: Received 3 tasks (synced-with-cloud)
-📅 [iOS] [DATA-2] useAppointmentList: Loading appointments (today only)
-📅 [iOS] [DATA-2] AppointmentService: Loaded 2 appointments from AsyncStorage
-📅 [iOS] [DATA-2] useAppointmentList: Loaded 2 appointments (todayOnly: true)
-```
-
-## Error Logging
+### Error Logging
 
 **Format:** `❌ [PLATFORM] [STEP] ServiceName: Failed to [action] - error message`
 
@@ -204,7 +200,7 @@ logWithPlatform("📅", "DATA-2", "AppointmentService", `Loaded ${itemsCount} ap
 - ❌ Bad: `error` (logs full stack trace and object)
 - ❌ Bad: `console.error("Error:", error)` (missing platform, missing format)
 
-## Centralized Logging Service
+### Centralized Logging Service
 
 **ALWAYS use the centralized logging service** via the `useLogger` hook to ensure platform identification and consistent formatting:
 
@@ -255,11 +251,72 @@ logger.error("Failed to create task", error);
 - Type-safe TypeScript interfaces
 - Extensible provider architecture
 
-**Migration from platformLogger:**
-- During migration, `platformLogger` utilities are still available for backward compatibility
-- New code should use `useLogger` hook or `getLoggingService()`
-- Existing code can be gradually migrated
-
 **NEVER use raw `console.log` or `console.error`** - always use the centralized logging service.
 
 📖 **For detailed documentation**, see [Logging Service Documentation](DOCS/development/logging-service.md)
+
+---
+
+## Documentation Standards
+
+### Technical Documentation
+
+- **ALWAYS create detailed technical documentation in `DOCS/` directory** for:
+  - AWS service configurations and conventions
+  - Complex technical concepts that need deep explanation
+  - Architecture decisions and patterns
+  - Integration details and troubleshooting guides
+  - Any content that would make the README too long or cluttered
+- **Keep README concise** - Provide brief summaries in README and link to detailed docs in `DOCS/`
+- **File naming**: Use descriptive, kebab-case names (e.g., `aws-technical-details.md`, `architecture-decisions.md`)
+- **Structure**: Include a table of contents for longer documents
+- **Cross-references**: Link from README to detailed docs using markdown links: `[Link Text](DOCS/filename.md#section)`
+- **Examples**:
+  - ✅ Good: Brief summary in README → "📖 **For detailed information**, see [AWS Technical Details](DOCS/aws-technical-details.md#section)"
+  - ❌ Bad: 50+ lines of detailed technical content directly in README
+  - ✅ Good: `DOCS/aws-technical-details.md` with comprehensive AWS information
+  - ❌ Bad: All documentation crammed into README.md
+
+### Diagrams
+
+- **ALWAYS use Mermaid diagrams** for architecture, data flow, and system diagrams in documentation
+- **NEVER use ASCII art** for diagrams (no box-drawing characters like ┌, │, └, ├, etc.)
+- Mermaid diagrams are:
+  - More maintainable and readable
+  - Render properly in GitHub, GitLab, and most markdown viewers
+  - Easier to update and modify
+  - Support interactive features in some viewers
+- Use appropriate Mermaid diagram types:
+  - `graph` or `flowchart` for architecture and data flow diagrams
+  - `sequenceDiagram` for interaction sequences
+  - `classDiagram` for class relationships
+  - `stateDiagram` for state machines
+  - `erDiagram` for database schemas
+- Include styling for better visual clarity:
+
+  ```mermaid
+  graph TB
+      A[Component] --> B[Service]
+      style A fill:#e1f5ff
+      style B fill:#fff4e1
+  ```
+
+- Examples:
+  - ✅ Good: Mermaid flowchart showing component relationships
+  - ❌ Bad: ASCII art with box-drawing characters
+  - ✅ Good: Mermaid sequence diagram for API interactions
+  - ❌ Bad: ASCII art showing request/response flow
+
+---
+
+## Project Todos
+
+- **ALWAYS use `DOCS/todos.md` for tracking todos and future work**
+- When identifying work that needs to be done:
+  - Add it to `DOCS/todos.md` with a clear description
+  - Group related todos under descriptive headings
+  - Mark completed items with `[x]` instead of deleting them
+  - Include file paths, code references, or context when relevant
+- **Do NOT** create separate todo files or track todos in code comments
+- **Do NOT** use TODO comments in code for tracking work - use `DOCS/todos.md` instead
+- Format: `- [ ] Description of task` for incomplete, `- [x] Description` for complete

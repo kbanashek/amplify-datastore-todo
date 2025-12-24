@@ -9,6 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.26] - 2025-12-23
+
+### Changed
+
+- Consolidated cursor rules from 16 individual files into 6 themed files for better organization
+  - `code-style.mdc` - TypeScript best practices, arrow functions, object map patterns (merged from: typescript, arrow-functions, object-map-pattern)
+  - `architecture.mdc` - Component architecture, package structure, utility extraction (merged from: component-architecture, package-architecture, standalone-functions)
+  - `aws-amplify.mdc` - AWS Amplify DataStore conventions, ModelName constants (merged from: aws-amplify, no-string-model-names)
+  - `development.mdc` - Testing, logging, documentation, project todos (merged from: testing, logging, documentation, project-management)
+  - `workflow.mdc` - Version control, GitHub Actions, CI/CD workflows (merged from: version-control, github-actions)
+  - `react-native.mdc` - React Native component patterns, UI/UX conventions (merged from: react-native, ui-ux)
+- Updated `.cursorrules` index file with new consolidated structure and mapping
+
+### Removed
+
+- Removed 14 individual cursor rule files that were consolidated into themed files:
+  - arrow-functions.mdc, typescript.mdc, object-map-pattern.mdc
+  - component-architecture.mdc, package-architecture.mdc, standalone-functions.mdc
+  - no-string-model-names.mdc, testing.mdc, logging.mdc, documentation.mdc
+  - project-management.mdc, version-control.mdc, github-actions.mdc, ui-ux.mdc
+
 ## [0.1.25] - 2025-12-23
 
 ### Fixed
