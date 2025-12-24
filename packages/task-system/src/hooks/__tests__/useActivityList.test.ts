@@ -11,6 +11,7 @@ jest.mock("../../services/ActivityService", () => ({
 }));
 
 import { ActivityService } from "../../services/ActivityService";
+import { Activity as ActivityModel } from "../../models";
 import { Activity } from "../../types/Activity";
 
 describe("useActivityList", () => {
@@ -27,7 +28,7 @@ describe("useActivityList", () => {
       typeof ActivityService.deleteActivity
     >;
 
-  const mockActivities: Activity[] = [
+  const mockActivities = [
     {
       id: "1",
       pk: "ACTIVITY-1",
@@ -46,7 +47,7 @@ describe("useActivityList", () => {
       description: "Description 2",
       type: "QUESTIONNAIRE",
     },
-  ];
+  ] as ActivityModel[];
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -72,9 +73,7 @@ describe("useActivityList", () => {
     });
 
     it("updates activities when subscription callback fires", async () => {
-      let subscriptionCallback:
-        | ((items: Activity[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       mockSubscribeActivities.mockImplementation(callback => {
         subscriptionCallback = callback;
         return { unsubscribe: jest.fn() };
@@ -83,7 +82,12 @@ describe("useActivityList", () => {
       expect(result.current.loading).toBe(true);
 
       if (subscriptionCallback) {
-        subscriptionCallback(mockActivities, true);
+        (
+          subscriptionCallback as (
+            items: ActivityModel[],
+            synced: boolean
+          ) => void
+        )(mockActivities, true);
       }
 
       await waitFor(() => {
@@ -128,7 +132,7 @@ describe("useActivityList", () => {
       mockSubscribeActivities.mockReturnValue({
         unsubscribe: jest.fn(),
       });
-      mockGetActivities.mockResolvedValue(mockActivities);
+      mockGetActivities.mockResolvedValue(mockActivities as ActivityModel[]);
       const { result } = renderHook(() => useActivityList());
 
       await act(async () => {

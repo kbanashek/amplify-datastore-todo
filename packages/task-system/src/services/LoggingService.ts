@@ -244,7 +244,13 @@ export class LoggingService {
     // Check if log level meets minimum threshold from configuration
     const minLevel = this.config.minLevel;
     if (minLevel) {
-      const minPriority = LOG_LEVEL_PRIORITY[minLevel];
+      // Convert preset to LogLevel if needed
+      const minLevelValue: LogLevel = Object.values(LogLevelPreset).includes(
+        minLevel as LogLevelPreset
+      )
+        ? presetToLogLevel(minLevel as LogLevelPreset)
+        : (minLevel as LogLevel);
+      const minPriority = LOG_LEVEL_PRIORITY[minLevelValue];
       const logPriority = LOG_LEVEL_PRIORITY[level];
       if (logPriority < minPriority) {
         return; // Log level is below configured minimum, ignore

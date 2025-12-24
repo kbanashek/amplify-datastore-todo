@@ -19,12 +19,12 @@ describe("useQuestionValidation", () => {
   >;
 
   const mockActivityData: ParsedActivityData = {
+    questions: [],
     screens: [
       {
         id: "screen-1",
         name: "Screen 1",
         order: 1,
-        text: "Screen 1",
         elements: [
           {
             id: "q1",
@@ -39,16 +39,15 @@ describe("useQuestionValidation", () => {
               choices: [],
               dataMappers: [],
             },
-            displayProperties: [],
+            displayProperties: {},
           },
         ],
-        displayProperties: [],
+        displayProperties: {},
       },
       {
         id: "screen-2",
         name: "Screen 2",
         order: 2,
-        text: "Screen 2",
         elements: [
           {
             id: "q2",
@@ -63,10 +62,10 @@ describe("useQuestionValidation", () => {
               choices: [],
               dataMappers: [],
             },
-            displayProperties: [],
+            displayProperties: {},
           },
         ],
-        displayProperties: [],
+        displayProperties: {},
       },
     ],
   };
@@ -147,7 +146,7 @@ describe("useQuestionValidation", () => {
     it("updates when answers change", () => {
       mockIsScreenValid.mockReturnValueOnce(false).mockReturnValueOnce(true);
       const { result, rerender } = renderHook(
-        ({ answers }) =>
+        ({ answers }: { answers: Record<string, any> }) =>
           useQuestionValidation({
             activityData: mockActivityData,
             currentScreenIndex: 0,
@@ -155,7 +154,10 @@ describe("useQuestionValidation", () => {
             setErrors: mockSetErrors,
           }),
         { initialProps: { answers: {} } }
-      );
+      ) as {
+        result: { current: ReturnType<typeof useQuestionValidation> };
+        rerender: (props: { answers: Record<string, any> }) => void;
+      };
       expect(result.current.currentScreenValid).toBe(false);
       rerender({ answers: { q1: "Answer 1" } });
       expect(result.current.currentScreenValid).toBe(true);

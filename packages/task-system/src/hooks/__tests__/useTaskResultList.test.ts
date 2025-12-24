@@ -11,6 +11,7 @@ jest.mock("../../services/TaskResultService", () => ({
 }));
 
 import { TaskResultService } from "../../services/TaskResultService";
+import { TaskResult as TaskResultModel } from "../../models";
 import { TaskResult } from "../../types/TaskResult";
 
 describe("useTaskResultList", () => {
@@ -27,22 +28,22 @@ describe("useTaskResultList", () => {
       typeof TaskResultService.deleteTaskResult
     >;
 
-  const mockTaskResults: TaskResult[] = [
+  const mockTaskResults = [
     {
       id: "1",
       pk: "RESULT-1",
       sk: "SK-1",
       taskInstanceId: "TASK-1",
-      result: "Result 1",
+      status: "COMPLETED",
     },
     {
       id: "2",
       pk: "RESULT-2",
       sk: "SK-2",
       taskInstanceId: "TASK-2",
-      result: "Result 2",
+      status: "STARTED",
     },
-  ];
+  ] as TaskResultModel[];
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -68,9 +69,7 @@ describe("useTaskResultList", () => {
     });
 
     it("updates task results when subscription callback fires", async () => {
-      let subscriptionCallback:
-        | ((items: TaskResult[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       mockSubscribeTaskResults.mockImplementation(callback => {
         subscriptionCallback = callback;
         return { unsubscribe: jest.fn() };
@@ -79,7 +78,12 @@ describe("useTaskResultList", () => {
       expect(result.current.loading).toBe(true);
 
       if (subscriptionCallback) {
-        subscriptionCallback(mockTaskResults, true);
+        (
+          subscriptionCallback as (
+            items: TaskResultModel[],
+            synced: boolean
+          ) => void
+        )(mockTaskResults, true);
       }
 
       await waitFor(() => {
@@ -124,7 +128,9 @@ describe("useTaskResultList", () => {
       mockSubscribeTaskResults.mockReturnValue({
         unsubscribe: jest.fn(),
       });
-      mockGetTaskResults.mockResolvedValue(mockTaskResults);
+      mockGetTaskResults.mockResolvedValue(
+        mockTaskResults as TaskResultModel[]
+      );
       const { result } = renderHook(() => useTaskResultList());
 
       await act(async () => {

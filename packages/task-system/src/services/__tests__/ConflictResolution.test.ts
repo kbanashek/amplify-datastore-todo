@@ -130,7 +130,7 @@ describe("ConflictResolution", () => {
         modelConstructor: { name: "Question" },
         localModel,
         remoteModel,
-        operation: OpType.CREATE,
+        operation: OpType.INSERT,
         attempts: 1,
       });
 

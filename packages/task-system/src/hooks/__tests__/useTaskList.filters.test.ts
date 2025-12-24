@@ -54,6 +54,8 @@ describe.skip("useTaskList - Filters", () => {
     },
   ];
 
+  const unmountHooks: Array<() => void> = [];
+
   beforeEach(() => {
     jest.clearAllMocks();
     mockUseAmplify.mockReturnValue({
@@ -62,6 +64,11 @@ describe.skip("useTaskList - Filters", () => {
       isReady: true,
       conflictCount: 0,
     } as any);
+  });
+
+  afterEach(() => {
+    unmountHooks.forEach(unmount => unmount());
+    unmountHooks.length = 0;
   });
 
   it("filters by status", async () => {

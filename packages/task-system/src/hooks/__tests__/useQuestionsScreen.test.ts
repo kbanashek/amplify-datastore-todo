@@ -110,14 +110,14 @@ describe("useQuestionsScreen", () => {
   };
 
   const mockActivityData: ParsedActivityData = {
+    questions: [],
     screens: [
       {
         id: "screen-1",
         name: "Screen 1",
         order: 1,
-        text: "Screen 1",
         elements: [],
-        displayProperties: [],
+        displayProperties: {},
       },
     ],
   };
@@ -366,7 +366,7 @@ describe("useQuestionsScreen", () => {
       };
 
       if (subscriptionCallback) {
-        subscriptionCallback({
+        (subscriptionCallback as any)({
           element: updatedTask,
           opType: "UPDATE",
         });
@@ -397,7 +397,7 @@ describe("useQuestionsScreen", () => {
       };
 
       if (subscriptionCallback) {
-        subscriptionCallback({
+        (subscriptionCallback as any)({
           element: otherTask,
           opType: "UPDATE",
         });
@@ -422,12 +422,13 @@ describe("useQuestionsScreen", () => {
       mockUseActivityData.mockReturnValue({
         loading: false,
         error: null,
+        activity: null,
         activityData: mockActivityData,
         activityConfig: mockActivityConfig,
         initialAnswers: { q1: "Answer 1" },
       });
       const { rerender } = renderHook(() => useQuestionsScreen());
-      rerender();
+      rerender(undefined);
       expect(setAnswers).toHaveBeenCalledWith({ q1: "Answer 1" });
     });
   });

@@ -14,6 +14,10 @@ jest.mock("../../services/DataPointService", () => ({
 }));
 
 import { DataPointService } from "../../services/DataPointService";
+import {
+  DataPoint as DataPointModel,
+  DataPointInstance as DataPointInstanceModel,
+} from "../../models";
 import { DataPoint, DataPointInstance } from "../../types/DataPoint";
 
 describe("useDataPointList", () => {
@@ -42,17 +46,15 @@ describe("useDataPointList", () => {
       typeof DataPointService.deleteDataPointInstance
     >;
 
-  const mockDataPoints: DataPoint[] = [
+  const mockDataPoints = [
     {
       id: "1",
       pk: "DATAPOINT-1",
       sk: "SK-1",
-      activityId: "ACTIVITY-1",
-      questionId: "QUESTION-1",
     },
-  ];
+  ] as DataPointModel[];
 
-  const mockInstances: DataPointInstance[] = [
+  const mockInstances = [
     {
       id: "1",
       pk: "INSTANCE-1",
@@ -61,7 +63,7 @@ describe("useDataPointList", () => {
       questionId: "QUESTION-1",
       answers: "Answer 1",
     },
-  ];
+  ] as DataPointInstanceModel[];
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -96,9 +98,7 @@ describe("useDataPointList", () => {
     });
 
     it("updates data points when subscription callback fires", async () => {
-      let subscriptionCallback:
-        | ((items: DataPoint[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       mockSubscribeDataPoints.mockImplementation(callback => {
         subscriptionCallback = callback;
         return { unsubscribe: jest.fn() };
@@ -110,7 +110,12 @@ describe("useDataPointList", () => {
       expect(result.current.loading).toBe(true);
 
       if (subscriptionCallback) {
-        subscriptionCallback(mockDataPoints, true);
+        (
+          subscriptionCallback as (
+            items: DataPointModel[],
+            synced: boolean
+          ) => void
+        )(mockDataPoints, true);
       }
 
       await waitFor(() => {
@@ -120,9 +125,7 @@ describe("useDataPointList", () => {
     });
 
     it("updates instances when subscription callback fires", async () => {
-      let subscriptionCallback:
-        | ((items: DataPointInstance[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       mockSubscribeDataPoints.mockReturnValue({
         unsubscribe: jest.fn(),
       });
@@ -133,7 +136,12 @@ describe("useDataPointList", () => {
       const { result } = renderHook(() => useDataPointList());
 
       if (subscriptionCallback) {
-        subscriptionCallback(mockInstances, true);
+        (
+          subscriptionCallback as (
+            items: DataPointInstanceModel[],
+            synced: boolean
+          ) => void
+        )(mockInstances, true);
       }
 
       await waitFor(() => {
@@ -222,8 +230,10 @@ describe("useDataPointList", () => {
       mockSubscribeDataPointInstances.mockReturnValue({
         unsubscribe: jest.fn(),
       });
-      mockGetDataPoints.mockResolvedValue(mockDataPoints);
-      mockGetDataPointInstances.mockResolvedValue(mockInstances);
+      mockGetDataPoints.mockResolvedValue(mockDataPoints as DataPointModel[]);
+      mockGetDataPointInstances.mockResolvedValue(
+        mockInstances as DataPointInstanceModel[]
+      );
       const { result } = renderHook(() => useDataPointList());
 
       await act(async () => {

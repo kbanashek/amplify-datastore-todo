@@ -8,9 +8,13 @@ const createMockQuestion = (overrides: Partial<any> = {}): any => ({
   id: "test-question-id",
   pk: "test-pk",
   sk: "test-sk",
-  text: "Test Question",
+  question: "Test Question",
+  questionId: "q1",
+  friendlyName: "Test Question",
+  controlType: "text",
   type: "text",
-  required: false,
+  version: 1,
+  index: 0,
   ...overrides,
 });
 
@@ -25,9 +29,13 @@ describe("QuestionService", () => {
       const input = {
         pk: "test-pk",
         sk: "test-sk",
-        text: "Test Question",
+        question: "Test Question",
+        questionId: "q1",
+        friendlyName: "Test Question",
+        controlType: "text",
         type: "text",
-        required: false,
+        version: 1,
+        index: 0,
       };
 
       (DataStore.save as jest.Mock).mockResolvedValue(mockQuestion);
@@ -42,9 +50,13 @@ describe("QuestionService", () => {
       const input = {
         pk: "test-pk",
         sk: "test-sk",
-        text: "Test Question",
+        question: "Test Question",
+        questionId: "q1",
+        friendlyName: "Test Question",
+        controlType: "text",
         type: "text",
-        required: false,
+        version: 1,
+        index: 0,
       };
 
       const error = new Error("Create failed");
@@ -95,30 +107,30 @@ describe("QuestionService", () => {
     it("should update a question successfully", async () => {
       const originalQuestion = createMockQuestion({
         id: "test-id",
-        text: "Original",
+        question: "Original",
       });
       const updatedQuestion = createMockQuestion({
         id: "test-id",
-        text: "Updated",
+        question: "Updated",
       });
 
       (DataStore.query as jest.Mock).mockResolvedValue(originalQuestion);
       (DataStore.save as jest.Mock).mockResolvedValue(updatedQuestion);
 
       const result = await QuestionService.updateQuestion("test-id", {
-        text: "Updated",
+        question: "Updated",
       });
 
       expect(DataStore.query).toHaveBeenCalledWith(Question, "test-id");
       expect(DataStore.save).toHaveBeenCalled();
-      expect(result.text).toBe("Updated");
+      expect(result.question).toBe("Updated");
     });
 
     it("should throw error if question not found", async () => {
       (DataStore.query as jest.Mock).mockResolvedValue(null);
 
       await expect(
-        QuestionService.updateQuestion("non-existent", { text: "Updated" })
+        QuestionService.updateQuestion("non-existent", { question: "Updated" })
       ).rejects.toThrow("Question with id non-existent not found");
     });
   });

@@ -17,6 +17,7 @@ jest.mock("../../utils/dataSubscriptionLogger", () => ({
 
 import { ActivityService } from "../../services/ActivityService";
 import { dataSubscriptionLogger } from "../../utils/dataSubscriptionLogger";
+import { Activity as ActivityModel } from "../../models";
 import { Activity } from "../../types/Activity";
 
 describe("useActivityStartup", () => {
@@ -29,7 +30,7 @@ describe("useActivityStartup", () => {
       typeof dataSubscriptionLogger.logActivities
     >;
 
-  const mockActivities: Activity[] = [
+  const mockActivities = [
     {
       id: "1",
       pk: "ACTIVITY-1",
@@ -50,7 +51,7 @@ describe("useActivityStartup", () => {
       type: "QUESTIONNAIRE",
       createdAt: "2025-12-22T11:00:00Z",
     },
-  ];
+  ] as ActivityModel[];
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -75,17 +76,15 @@ describe("useActivityStartup", () => {
         unsubscribe,
       });
       const { rerender } = renderHook(() => useActivityStartup());
-      rerender();
-      rerender();
+      rerender(undefined);
+      rerender(undefined);
       expect(mockSubscribeActivities).toHaveBeenCalledTimes(1);
     });
   });
 
   describe("logging behavior", () => {
     it("logs activities when count changes", () => {
-      let subscriptionCallback:
-        | ((items: Activity[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       const unsubscribe = jest.fn();
       mockSubscribeActivities.mockImplementation(callback => {
         subscriptionCallback = callback;
@@ -96,7 +95,12 @@ describe("useActivityStartup", () => {
 
       // First call with activities
       if (subscriptionCallback) {
-        subscriptionCallback(mockActivities, true);
+        (
+          subscriptionCallback as (
+            items: ActivityModel[],
+            synced: boolean
+          ) => void
+        )(mockActivities, true);
       }
 
       expect(mockLogActivities).toHaveBeenCalledTimes(1);
@@ -119,9 +123,7 @@ describe("useActivityStartup", () => {
     });
 
     it("logs activities when sync status changes", () => {
-      let subscriptionCallback:
-        | ((items: Activity[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       const unsubscribe = jest.fn();
       mockSubscribeActivities.mockImplementation(callback => {
         subscriptionCallback = callback;
@@ -132,7 +134,12 @@ describe("useActivityStartup", () => {
 
       // First call with synced=true
       if (subscriptionCallback) {
-        subscriptionCallback(mockActivities, true);
+        (
+          subscriptionCallback as (
+            items: ActivityModel[],
+            synced: boolean
+          ) => void
+        )(mockActivities, true);
       }
 
       expect(mockLogActivities).toHaveBeenCalledTimes(1);
@@ -140,7 +147,12 @@ describe("useActivityStartup", () => {
 
       // Second call with same count but synced=false
       if (subscriptionCallback) {
-        subscriptionCallback(mockActivities, false);
+        (
+          subscriptionCallback as (
+            items: ActivityModel[],
+            synced: boolean
+          ) => void
+        )(mockActivities, false);
       }
 
       expect(mockLogActivities).toHaveBeenCalledTimes(1);
@@ -163,9 +175,7 @@ describe("useActivityStartup", () => {
     });
 
     it("does not log when neither count nor sync status changes", () => {
-      let subscriptionCallback:
-        | ((items: Activity[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       const unsubscribe = jest.fn();
       mockSubscribeActivities.mockImplementation(callback => {
         subscriptionCallback = callback;
@@ -176,7 +186,12 @@ describe("useActivityStartup", () => {
 
       // First call
       if (subscriptionCallback) {
-        subscriptionCallback(mockActivities, true);
+        (
+          subscriptionCallback as (
+            items: ActivityModel[],
+            synced: boolean
+          ) => void
+        )(mockActivities, true);
       }
 
       expect(mockLogActivities).toHaveBeenCalledTimes(1);
@@ -184,7 +199,12 @@ describe("useActivityStartup", () => {
 
       // Second call with same count and same sync status
       if (subscriptionCallback) {
-        subscriptionCallback(mockActivities, true);
+        (
+          subscriptionCallback as (
+            items: ActivityModel[],
+            synced: boolean
+          ) => void
+        )(mockActivities, true);
       }
 
       // Should not log again
@@ -192,9 +212,7 @@ describe("useActivityStartup", () => {
     });
 
     it("logs when activity count increases", () => {
-      let subscriptionCallback:
-        | ((items: Activity[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       const unsubscribe = jest.fn();
       mockSubscribeActivities.mockImplementation(callback => {
         subscriptionCallback = callback;
@@ -205,14 +223,19 @@ describe("useActivityStartup", () => {
 
       // First call with 2 activities
       if (subscriptionCallback) {
-        subscriptionCallback(mockActivities, true);
+        (
+          subscriptionCallback as (
+            items: ActivityModel[],
+            synced: boolean
+          ) => void
+        )(mockActivities, true);
       }
 
       expect(mockLogActivities).toHaveBeenCalledTimes(1);
       mockLogActivities.mockClear();
 
       // Second call with 3 activities
-      const newActivity: Activity = {
+      const newActivity = {
         id: "3",
         pk: "ACTIVITY-3",
         sk: "SK-3",
@@ -221,10 +244,15 @@ describe("useActivityStartup", () => {
         description: "Description 3",
         type: "QUESTIONNAIRE",
         createdAt: "2025-12-22T12:00:00Z",
-      };
+      } as ActivityModel;
 
       if (subscriptionCallback) {
-        subscriptionCallback([...mockActivities, newActivity], true);
+        (
+          subscriptionCallback as (
+            items: ActivityModel[],
+            synced: boolean
+          ) => void
+        )([...mockActivities, newActivity], true);
       }
 
       expect(mockLogActivities).toHaveBeenCalledTimes(1);
@@ -252,9 +280,7 @@ describe("useActivityStartup", () => {
     });
 
     it("logs when activity count decreases", () => {
-      let subscriptionCallback:
-        | ((items: Activity[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       const unsubscribe = jest.fn();
       mockSubscribeActivities.mockImplementation(callback => {
         subscriptionCallback = callback;
@@ -265,7 +291,12 @@ describe("useActivityStartup", () => {
 
       // First call with 2 activities
       if (subscriptionCallback) {
-        subscriptionCallback(mockActivities, true);
+        (
+          subscriptionCallback as (
+            items: ActivityModel[],
+            synced: boolean
+          ) => void
+        )(mockActivities, true);
       }
 
       expect(mockLogActivities).toHaveBeenCalledTimes(1);
@@ -273,7 +304,12 @@ describe("useActivityStartup", () => {
 
       // Second call with 1 activity
       if (subscriptionCallback) {
-        subscriptionCallback([mockActivities[0]], true);
+        (
+          subscriptionCallback as (
+            items: ActivityModel[],
+            synced: boolean
+          ) => void
+        )([mockActivities[0]], true);
       }
 
       expect(mockLogActivities).toHaveBeenCalledTimes(1);
@@ -291,9 +327,7 @@ describe("useActivityStartup", () => {
     });
 
     it("handles activities with missing name or title", () => {
-      let subscriptionCallback:
-        | ((items: Activity[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       const unsubscribe = jest.fn();
       mockSubscribeActivities.mockImplementation(callback => {
         subscriptionCallback = callback;
@@ -302,7 +336,7 @@ describe("useActivityStartup", () => {
 
       renderHook(() => useActivityStartup());
 
-      const activityWithoutName: Activity = {
+      const activityWithoutName = {
         id: "1",
         pk: "ACTIVITY-1",
         sk: "SK-1",
@@ -310,9 +344,9 @@ describe("useActivityStartup", () => {
         description: "Description",
         type: "QUESTIONNAIRE",
         createdAt: "2025-12-22T10:00:00Z",
-      };
+      } as ActivityModel;
 
-      const activityWithoutTitle: Activity = {
+      const activityWithoutTitle = {
         id: "2",
         pk: "ACTIVITY-2",
         sk: "SK-2",
@@ -320,19 +354,24 @@ describe("useActivityStartup", () => {
         description: "Description",
         type: "QUESTIONNAIRE",
         createdAt: "2025-12-22T11:00:00Z",
-      };
+      } as ActivityModel;
 
-      const activityWithoutBoth: Activity = {
+      const activityWithoutBoth = {
         id: "3",
         pk: "ACTIVITY-3",
         sk: "SK-3",
         description: "Description",
         type: "QUESTIONNAIRE",
         createdAt: "2025-12-22T12:00:00Z",
-      };
+      } as ActivityModel;
 
       if (subscriptionCallback) {
-        subscriptionCallback(
+        (
+          subscriptionCallback as (
+            items: ActivityModel[],
+            synced: boolean
+          ) => void
+        )(
           [activityWithoutName, activityWithoutTitle, activityWithoutBoth],
           true
         );
@@ -362,9 +401,7 @@ describe("useActivityStartup", () => {
     });
 
     it("handles empty activities array", () => {
-      let subscriptionCallback:
-        | ((items: Activity[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       const unsubscribe = jest.fn();
       mockSubscribeActivities.mockImplementation(callback => {
         subscriptionCallback = callback;
@@ -374,7 +411,12 @@ describe("useActivityStartup", () => {
       renderHook(() => useActivityStartup());
 
       if (subscriptionCallback) {
-        subscriptionCallback([], true);
+        (
+          subscriptionCallback as (
+            items: ActivityModel[],
+            synced: boolean
+          ) => void
+        )([], true);
       }
 
       expect(mockLogActivities).toHaveBeenCalledTimes(1);
@@ -409,9 +451,7 @@ describe("useActivityStartup", () => {
 
   describe("edge cases", () => {
     it("handles initial state correctly (no activities)", () => {
-      let subscriptionCallback:
-        | ((items: Activity[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       const unsubscribe = jest.fn();
       mockSubscribeActivities.mockImplementation(callback => {
         subscriptionCallback = callback;
@@ -422,7 +462,12 @@ describe("useActivityStartup", () => {
 
       // Initial call with empty array
       if (subscriptionCallback) {
-        subscriptionCallback([], false);
+        (
+          subscriptionCallback as (
+            items: ActivityModel[],
+            synced: boolean
+          ) => void
+        )([], false);
       }
 
       // Should log the initial empty state
@@ -435,9 +480,7 @@ describe("useActivityStartup", () => {
     });
 
     it("handles activities with null createdAt", () => {
-      let subscriptionCallback:
-        | ((items: Activity[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       const unsubscribe = jest.fn();
       mockSubscribeActivities.mockImplementation(callback => {
         subscriptionCallback = callback;
@@ -446,7 +489,7 @@ describe("useActivityStartup", () => {
 
       renderHook(() => useActivityStartup());
 
-      const activityWithoutDate: Activity = {
+      const activityWithoutDate = {
         id: "1",
         pk: "ACTIVITY-1",
         sk: "SK-1",
@@ -455,10 +498,15 @@ describe("useActivityStartup", () => {
         description: "Description",
         type: "QUESTIONNAIRE",
         createdAt: null,
-      };
+      } as ActivityModel;
 
       if (subscriptionCallback) {
-        subscriptionCallback([activityWithoutDate], true);
+        (
+          subscriptionCallback as (
+            items: ActivityModel[],
+            synced: boolean
+          ) => void
+        )([activityWithoutDate], true);
       }
 
       expect(mockLogActivities).toHaveBeenCalledWith(

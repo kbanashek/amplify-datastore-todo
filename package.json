@@ -1,7 +1,7 @@
 {
   "name": "task-system-poc",
   "main": "./entry.js",
-  "version": "0.1.24",
+  "version": "0.1.25",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",

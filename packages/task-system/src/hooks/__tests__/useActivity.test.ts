@@ -10,6 +10,7 @@ jest.mock("../../services/ActivityService", () => ({
 }));
 
 import { ActivityService } from "../../services/ActivityService";
+import { Activity as ActivityModel } from "../../models";
 import { Activity } from "../../types/Activity";
 
 describe("useActivity", () => {
@@ -32,7 +33,7 @@ describe("useActivity", () => {
     type: "QUESTIONNAIRE",
   };
 
-  const mockActivities: Activity[] = [mockActivity];
+  const mockActivities = [mockActivity] as ActivityModel[];
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -109,9 +110,7 @@ describe("useActivity", () => {
 
   describe("subscription updates", () => {
     it("updates activity when subscription fires", async () => {
-      let subscriptionCallback:
-        | ((items: Activity[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       mockGetActivities.mockResolvedValue(mockActivities);
       mockSubscribeActivities.mockImplementation(callback => {
         subscriptionCallback = callback;
@@ -123,13 +122,18 @@ describe("useActivity", () => {
         expect(result.current.activity).toEqual(mockActivity);
       });
 
-      const updatedActivity: Activity = {
+      const updatedActivity = {
         ...mockActivity,
         title: "Updated Title",
-      };
+      } as ActivityModel;
 
       if (subscriptionCallback) {
-        subscriptionCallback([updatedActivity], true);
+        (
+          subscriptionCallback as (
+            items: ActivityModel[],
+            synced: boolean
+          ) => void
+        )([updatedActivity], true);
       }
 
       await waitFor(() => {
@@ -138,9 +142,7 @@ describe("useActivity", () => {
     });
 
     it("does not update when subscription fires with different activityId", async () => {
-      let subscriptionCallback:
-        | ((items: Activity[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       mockGetActivities.mockResolvedValue(mockActivities);
       mockSubscribeActivities.mockImplementation(callback => {
         subscriptionCallback = callback;
@@ -152,7 +154,7 @@ describe("useActivity", () => {
         expect(result.current.activity).toEqual(mockActivity);
       });
 
-      const otherActivity: Activity = {
+      const otherActivity = {
         id: "2",
         pk: "ACTIVITY-2",
         sk: "SK-2",
@@ -160,10 +162,15 @@ describe("useActivity", () => {
         title: "Other Title",
         description: "Other Description",
         type: "QUESTIONNAIRE",
-      };
+      } as ActivityModel;
 
       if (subscriptionCallback) {
-        subscriptionCallback([otherActivity], true);
+        (
+          subscriptionCallback as (
+            items: ActivityModel[],
+            synced: boolean
+          ) => void
+        )([otherActivity], true);
       }
 
       await waitFor(() => {
@@ -184,10 +191,10 @@ describe("useActivity", () => {
         expect(result.current.activity).toEqual(mockActivity);
       });
 
-      const updatedActivity: Activity = {
+      const updatedActivity = {
         ...mockActivity,
         title: "Refreshed Title",
-      };
+      } as ActivityModel;
       mockGetActivities.mockResolvedValue([updatedActivity]);
 
       await act(async () => {

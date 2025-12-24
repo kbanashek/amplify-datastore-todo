@@ -2,11 +2,11 @@ import React from "react";
 import { Text } from "react-native";
 import { fireEvent, render } from "@testing-library/react-native";
 
-import { Button } from "@/components/ui/Button";
+import { Button } from "@orion/task-system";
 
 describe("UI/Button", () => {
   it("renders label", () => {
-    const { getByText } = render(<Button label="Save" />);
+    const { getByText } = render(<Button label="Save" onPress={() => {}} />);
     expect(getByText("Save")).toBeTruthy();
   });
 
@@ -30,7 +30,7 @@ describe("UI/Button", () => {
 
   it("renders spinner when loading", () => {
     const { getByTestId, queryByText } = render(
-      <Button testID="btn" label="Save" loading />
+      <Button testID="btn" label="Save" loading onPress={() => {}} />
     );
     expect(getByTestId("btn-spinner")).toBeTruthy();
     expect(queryByText("Save")).toBeNull();
@@ -38,7 +38,7 @@ describe("UI/Button", () => {
 
   it("renders children when provided", () => {
     const { getByText } = render(
-      <Button>
+      <Button onPress={() => {}} testID="btn">
         <Text>Custom</Text>
       </Button>
     );

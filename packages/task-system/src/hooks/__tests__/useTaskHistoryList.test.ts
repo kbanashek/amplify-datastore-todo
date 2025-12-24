@@ -11,6 +11,7 @@ jest.mock("../../services/TaskHistoryService", () => ({
 }));
 
 import { TaskHistoryService } from "../../services/TaskHistoryService";
+import { TaskHistory as TaskHistoryModel } from "../../models";
 import { TaskHistory } from "../../types/TaskHistory";
 
 describe("useTaskHistoryList", () => {
@@ -27,7 +28,7 @@ describe("useTaskHistoryList", () => {
       typeof TaskHistoryService.deleteTaskHistory
     >;
 
-  const mockTaskHistories: TaskHistory[] = [
+  const mockTaskHistories = [
     {
       id: "1",
       pk: "HISTORY-1",
@@ -44,7 +45,7 @@ describe("useTaskHistoryList", () => {
       status: "STARTED",
       details: "Task started",
     },
-  ];
+  ] as TaskHistoryModel[];
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -70,9 +71,7 @@ describe("useTaskHistoryList", () => {
     });
 
     it("updates task histories when subscription callback fires", async () => {
-      let subscriptionCallback:
-        | ((items: TaskHistory[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       mockSubscribeTaskHistories.mockImplementation(callback => {
         subscriptionCallback = callback;
         return { unsubscribe: jest.fn() };
@@ -81,7 +80,12 @@ describe("useTaskHistoryList", () => {
       expect(result.current.loading).toBe(true);
 
       if (subscriptionCallback) {
-        subscriptionCallback(mockTaskHistories, true);
+        (
+          subscriptionCallback as (
+            items: TaskHistoryModel[],
+            synced: boolean
+          ) => void
+        )(mockTaskHistories, true);
       }
 
       await waitFor(() => {
@@ -126,7 +130,9 @@ describe("useTaskHistoryList", () => {
       mockSubscribeTaskHistories.mockReturnValue({
         unsubscribe: jest.fn(),
       });
-      mockGetTaskHistories.mockResolvedValue(mockTaskHistories);
+      mockGetTaskHistories.mockResolvedValue(
+        mockTaskHistories as TaskHistoryModel[]
+      );
       const { result } = renderHook(() => useTaskHistoryList());
 
       await act(async () => {

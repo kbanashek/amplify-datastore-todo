@@ -8,6 +8,7 @@ import {
   QuestionType,
   ValidationType,
 } from "../types/activity-config-enums";
+import { getServiceLogger } from "./serviceLogger";
 
 /**
  * Validates a single question answer
@@ -100,12 +101,12 @@ export const validateQuestionAnswer = (
           const logger = getServiceLogger("questionValidation");
           logger.warn(
             "Invalid regex pattern in validation",
-            error,
-            undefined,
-            undefined,
             {
+              error: error instanceof Error ? error.message : String(error),
               pattern: validation.value,
-            }
+            },
+            undefined,
+            "⚠️"
           );
         }
       }

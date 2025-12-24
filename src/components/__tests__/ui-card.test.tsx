@@ -2,12 +2,12 @@ import React from "react";
 import { Text } from "react-native";
 import { render } from "@testing-library/react-native";
 
-import { Card } from "@/components/ui/Card";
+import { Card } from "@orion/task-system";
 
 describe("UI/Card", () => {
   it("renders children", () => {
     const { getByText } = render(
-      <Card>
+      <Card testID="card">
         <Text>Inside</Text>
       </Card>
     );

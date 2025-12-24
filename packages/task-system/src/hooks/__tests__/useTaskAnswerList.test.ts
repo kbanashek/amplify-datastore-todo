@@ -11,6 +11,7 @@ jest.mock("../../services/TaskAnswerService", () => ({
 }));
 
 import { TaskAnswerService } from "../../services/TaskAnswerService";
+import { TaskAnswer as TaskAnswerModel } from "../../models";
 import { TaskAnswer } from "../../types/TaskAnswer";
 
 describe("useTaskAnswerList", () => {
@@ -27,7 +28,7 @@ describe("useTaskAnswerList", () => {
       typeof TaskAnswerService.deleteTaskAnswer
     >;
 
-  const mockTaskAnswers: TaskAnswer[] = [
+  const mockTaskAnswers = [
     {
       id: "1",
       pk: "ANSWER-1",
@@ -44,7 +45,7 @@ describe("useTaskAnswerList", () => {
       questionId: "QUESTION-2",
       answer: "Answer 2",
     },
-  ];
+  ] as TaskAnswerModel[];
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -70,9 +71,7 @@ describe("useTaskAnswerList", () => {
     });
 
     it("updates task answers when subscription callback fires", async () => {
-      let subscriptionCallback:
-        | ((items: TaskAnswer[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       mockSubscribeTaskAnswers.mockImplementation(callback => {
         subscriptionCallback = callback;
         return { unsubscribe: jest.fn() };
@@ -81,7 +80,12 @@ describe("useTaskAnswerList", () => {
       expect(result.current.loading).toBe(true);
 
       if (subscriptionCallback) {
-        subscriptionCallback(mockTaskAnswers, true);
+        (
+          subscriptionCallback as (
+            items: TaskAnswerModel[],
+            synced: boolean
+          ) => void
+        )(mockTaskAnswers, true);
       }
 
       await waitFor(() => {
@@ -126,7 +130,9 @@ describe("useTaskAnswerList", () => {
       mockSubscribeTaskAnswers.mockReturnValue({
         unsubscribe: jest.fn(),
       });
-      mockGetTaskAnswers.mockResolvedValue(mockTaskAnswers);
+      mockGetTaskAnswers.mockResolvedValue(
+        mockTaskAnswers as TaskAnswerModel[]
+      );
       const { result } = renderHook(() => useTaskAnswerList());
 
       await act(async () => {

@@ -1,4 +1,5 @@
 import React from "react";
+// @ts-ignore - react-test-renderer types not available
 import renderer from "react-test-renderer";
 import QuestionsScreen from "../QuestionsScreen";
 

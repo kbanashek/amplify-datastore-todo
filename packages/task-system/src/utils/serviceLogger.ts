@@ -4,24 +4,25 @@
  */
 
 import { getServiceLogger as getPackageServiceLogger } from "../services/logging/serviceLogger";
+import type { LogMetadata } from "../services/logging/types";
 import { logErrorWithPlatform, logWithPlatform } from "./platformLogger";
 
 type ServiceLogger = {
   debug: (
     message: string,
-    metadata?: unknown,
+    metadata?: LogMetadata | unknown,
     step?: string,
     icon?: string
   ) => void;
   info: (
     message: string,
-    metadata?: unknown,
+    metadata?: LogMetadata | unknown,
     step?: string,
     icon?: string
   ) => void;
   warn: (
     message: string,
-    metadata?: unknown,
+    metadata?: LogMetadata | unknown,
     step?: string,
     icon?: string
   ) => void;
@@ -53,14 +54,14 @@ export function getServiceLogger(serviceName: string): ServiceLogger {
   // Try to use package's centralized logging service first
   try {
     const packageLogger = getPackageServiceLogger(serviceName);
-    loggerCache.set(serviceName, packageLogger);
-    return packageLogger;
+    loggerCache.set(serviceName, packageLogger as ServiceLogger);
+    return packageLogger as ServiceLogger;
   } catch {
     // Logging service not initialized - fall back to platformLogger
   }
 
   // Package logging service not available - use platformLogger fallback
-  logger = {
+  const logger = {
     debug: (
       message: string,
       metadata?: unknown,
@@ -111,6 +112,6 @@ export function getServiceLogger(serviceName: string): ServiceLogger {
   };
 
   // Cache the logger
-  loggerCache.set(serviceName, logger);
-  return logger;
+  loggerCache.set(serviceName, logger as ServiceLogger);
+  return logger as ServiceLogger;
 }

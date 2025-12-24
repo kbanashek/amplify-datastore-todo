@@ -11,6 +11,7 @@ jest.mock("../../services/QuestionService", () => ({
 }));
 
 import { QuestionService } from "../../services/QuestionService";
+import { Question as QuestionModel } from "../../models";
 import { Question } from "../../types/Question";
 
 describe("useQuestionList", () => {
@@ -26,7 +27,7 @@ describe("useQuestionList", () => {
       typeof QuestionService.deleteQuestion
     >;
 
-  const mockQuestions: Question[] = [
+  const mockQuestions = [
     {
       id: "1",
       pk: "QUESTION-1",
@@ -35,7 +36,7 @@ describe("useQuestionList", () => {
       friendlyName: "Question 1",
       type: "text",
       required: true,
-      validations: [],
+      validations: null,
       choices: [],
       dataMappers: [],
     },
@@ -47,7 +48,7 @@ describe("useQuestionList", () => {
       friendlyName: "Question 2",
       type: "number",
       required: false,
-      validations: [],
+      validations: null,
       choices: [],
       dataMappers: [],
     },
@@ -77,9 +78,7 @@ describe("useQuestionList", () => {
     });
 
     it("updates questions when subscription callback fires", async () => {
-      let subscriptionCallback:
-        | ((items: Question[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       mockSubscribeQuestions.mockImplementation(callback => {
         subscriptionCallback = callback;
         return { unsubscribe: jest.fn() };
@@ -88,7 +87,12 @@ describe("useQuestionList", () => {
       expect(result.current.loading).toBe(true);
 
       if (subscriptionCallback) {
-        subscriptionCallback(mockQuestions, true);
+        (
+          subscriptionCallback as (
+            items: QuestionModel[],
+            synced: boolean
+          ) => void
+        )(mockQuestions as unknown as QuestionModel[], true);
       }
 
       await waitFor(() => {
@@ -133,7 +137,9 @@ describe("useQuestionList", () => {
       mockSubscribeQuestions.mockReturnValue({
         unsubscribe: jest.fn(),
       });
-      mockGetQuestions.mockResolvedValue(mockQuestions);
+      mockGetQuestions.mockResolvedValue(
+        mockQuestions as unknown as QuestionModel[]
+      );
       const { result } = renderHook(() => useQuestionList());
 
       await act(async () => {

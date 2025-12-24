@@ -65,7 +65,9 @@ export default function QuestionsScreen() {
     } catch (error) {
       logger.warn(
         "Failed to navigate back with router, using fallback",
-        error,
+        {
+          error: error instanceof Error ? error.message : String(error),
+        },
         "QuestionsScreen"
       );
       originalHandleBack();
@@ -80,7 +82,9 @@ export default function QuestionsScreen() {
     } catch (error) {
       logger.warn(
         "Failed to navigate with router, using fallback",
-        error,
+        {
+          error: error instanceof Error ? error.message : String(error),
+        },
         "QuestionsScreen"
       );
       // Fallback to original handler

@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.25] - 2025-12-23
+
+### Fixed
+
+- Fixed all TypeScript compilation errors (167 errors resolved)
+  - Fixed `LogMetadata` type issues in `app/(tabs)/questions.tsx` by wrapping errors in metadata objects
+  - Fixed `IconSymbol` unsupported `weight` property in `components/Collapsible.tsx`
+  - Fixed missing `translatedText` property on `Choice` type in `MultiSelectQuestion.tsx` and `SingleSelectQuestion.tsx` by adding `TranslatedChoice` interface
+  - Fixed `LazyActivity` vs `Activity` type mismatches in test files by importing concrete model types
+  - Fixed subscription callback type issues in test files by explicitly typing callbacks
+  - Fixed `Record<string, string>` vs `never[]` type issues in test mocks
+  - Fixed missing properties in test mocks (`questions` in `ParsedActivityData`, full `Appointment` properties)
+  - Fixed component import paths in test files to use `@orion/task-system` package
+  - Fixed enum usage in test files (`AppointmentType`, `AppointmentStatus`, `LogLevelPreset`)
+  - Fixed `OpType.CREATE` to `OpType.INSERT` in `ConflictResolution.test.ts`
+  - Fixed `LogLevel` type issues in `LoggingService.ts` and test files
+  - Fixed `react-test-renderer` type issues by adding type reference
+  - Fixed potentially undefined/null values before `JSON.parse` in fixture generator tests
+  - All TypeScript errors resolved - codebase now passes type checking with zero errors
+
 ### Changed
 
 - Reorganized package directory structure
@@ -145,7 +165,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Updated logging on app initialization to remove step identifiers
-  - Removed all INIT-_ and DATA-_ step identifiers from log messages
+  - Removed all INIT-_and DATA-_ step identifiers from log messages
   - Logs now use format: `[ICON] [PLATFORM] ServiceName: message`
   - All logs now include platform identification (iOS, Android, or Web)
   - Reduced redundant logging by only logging on actual state changes

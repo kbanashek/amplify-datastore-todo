@@ -1,6 +1,12 @@
 import { renderHook, waitFor, act } from "@testing-library/react-native";
 import { useTaskContainer } from "../useTaskContainer";
 import { Task, TaskStatus, TaskType } from "../../types/Task";
+import {
+  Appointment,
+  AppointmentData,
+  AppointmentStatus,
+  AppointmentType,
+} from "../../types/Appointment";
 import { Alert } from "react-native";
 
 // Mock react-navigation
@@ -81,19 +87,32 @@ describe("useTaskContainer", () => {
     },
   ];
 
-  const mockAppointments = [
+  const mockAppointments: Appointment[] = [
     {
-      id: "1",
       appointmentId: "APT-1",
+      eventId: "EVENT-1",
+      patientId: "PATIENT-1",
+      siteId: "SITE-1",
       title: "Appointment 1",
-      startAt: new Date(),
-      endAt: new Date(),
-      status: "SCHEDULED",
-      type: "IN_PERSON",
+      startAt: new Date().toISOString(),
+      endAt: new Date().toISOString(),
+      appointmentType: AppointmentType.ONSITE,
+      status: AppointmentStatus.SCHEDULED,
+      isDeleted: 0,
+      rescheduled: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      version: 1,
+      __typename: "Appointment",
     },
   ];
 
-  const mockAppointmentData = {
+  const mockAppointmentData: AppointmentData = {
+    clinicPatientAppointments: {
+      clinicAppointments: {
+        items: [],
+      },
+    },
     siteTimezoneId: "America/New_York",
   };
 
@@ -123,6 +142,7 @@ describe("useTaskContainer", () => {
     });
     mockGroupAppointmentsByDate.mockReturnValue([
       {
+        date: "2025-12-23",
         dateLabel: "Today",
         appointments: mockAppointments,
       },
@@ -193,6 +213,7 @@ describe("useTaskContainer", () => {
     it("returns all appointments if Today group not found", () => {
       mockGroupAppointmentsByDate.mockReturnValue([
         {
+          date: "2025-12-24",
           dateLabel: "Tomorrow",
           appointments: [],
         },
