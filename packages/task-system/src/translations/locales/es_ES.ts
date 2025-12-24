@@ -14,6 +14,7 @@ const es_ES = {
     today: "Hoy",
     dashboard: "Tablero",
     startsAt: "comienza a las",
+    untitled: "Tarea Sin Título",
   },
   activity: {
     required: "Requerido",

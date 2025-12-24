@@ -10,9 +10,9 @@ import {
   ViewStyle,
 } from "react-native";
 
+import { ThemedText } from "@components/ThemedText";
 import { useThemeColor } from "@hooks/useThemeColor";
 import { isAndroid, isIOS } from "@utils/platform";
-import { ThemedText } from "@components/ThemedText";
 
 export type DateTimeFieldMode = "date" | "time" | "datetime";
 
@@ -28,6 +28,12 @@ export interface DateTimeFieldProps {
   style?: StyleProp<ViewStyle>;
 }
 
+/**
+ * A component for selecting dates and times.
+ *
+ * @param props - The properties for the DateTimeField component
+ * @returns A DateTimeField component configured for date and time selection
+ */
 export const DateTimeField: React.FC<DateTimeFieldProps> = ({
   mode,
   value,

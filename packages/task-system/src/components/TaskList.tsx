@@ -1,3 +1,7 @@
+import { TaskCard } from "@components/TaskCard";
+import { useTaskList } from "@hooks/useTaskList";
+import { Task, TaskFilters } from "@task-types/Task";
+import { getServiceLogger } from "@utils/serviceLogger";
 import React, { useMemo } from "react";
 import {
   ActivityIndicator,
@@ -7,10 +11,6 @@ import {
   Text,
   View,
 } from "react-native";
-import { useTaskList } from "@hooks/useTaskList";
-import { Task, TaskFilters } from "@task-types/Task";
-import { getServiceLogger } from "@utils/serviceLogger";
-import { TaskCard } from "@components/TaskCard";
 
 const logger = getServiceLogger("TaskList");
 
@@ -25,6 +25,12 @@ interface GroupedTasks {
   past: Task[];
 }
 
+/**
+ * Groups tasks by date.
+ *
+ * @param tasks - The tasks to group
+ * @returns The grouped tasks
+ */
 const groupTasksByDate = (tasks: Task[]): GroupedTasks => {
   const now = new Date();
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -79,6 +85,13 @@ const groupTasksByDate = (tasks: Task[]): GroupedTasks => {
   return grouped;
 };
 
+/**
+ * A list component for displaying tasks.
+ *
+ * @param filters - The filters to apply to the tasks
+ * @param onTaskPress - Callback function when a task is pressed
+ * @returns A list component with the provided configuration
+ */
 export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
   const { tasks, loading, error, isSynced, handleDeleteTask, refreshTasks } =
     useTaskList(filters);

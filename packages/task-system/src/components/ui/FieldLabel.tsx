@@ -1,6 +1,6 @@
+import { useTranslatedText } from "@hooks/useTranslatedText";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { useTranslatedText } from "@hooks/useTranslatedText";
 
 interface FieldLabelProps {
   label: string;
@@ -25,6 +25,14 @@ interface FieldLabelProps {
 /**
  * Reusable component for displaying field labels
  * Automatically translates label text and shows required indicator
+ *
+ * @param label - The label text to display
+ * @param fontSize - The font size of the label (default: 14)
+ * @param fontWeight - The font weight of the label (default: 500)
+ * @param color - The color of the label (default: #2f3542)
+ * @param required - Whether the field is required (default: false)
+ * @param style - Additional styles to apply to the container
+ * @returns A themed field label component with the provided label and required indicator
  */
 export const FieldLabel: React.FC<FieldLabelProps> = ({
   label,

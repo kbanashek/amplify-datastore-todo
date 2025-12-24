@@ -1,6 +1,6 @@
+import { useTranslatedText } from "@hooks/useTranslatedText";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { useTranslatedText } from "@hooks/useTranslatedText";
 
 interface UnitTextProps {
   unit: string;
@@ -24,6 +24,13 @@ interface UnitTextProps {
 /**
  * Reusable component for displaying unit text (e.g., "kg", "mmHg", "°C")
  * Automatically translates unit text if translation key is provided
+ *
+ * @param unit - The unit text to display
+ * @param fontSize - The font size of the unit text (default: 14)
+ * @param fontWeight - The font weight of the unit text (default: 600)
+ * @param color - The color of the unit text (default: #57606f)
+ * @param style - Additional styles to apply to the container
+ * @returns A themed unit text component with the provided unit text
  */
 export const UnitText: React.FC<UnitTextProps> = ({
   unit,

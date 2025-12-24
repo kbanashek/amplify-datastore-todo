@@ -1,3 +1,12 @@
+import { LanguageSelector } from "@components/LanguageSelector";
+import { NetworkStatusIndicator } from "@components/NetworkStatusIndicator";
+import { IconSymbol } from "@components/ui/IconSymbol";
+import { AppColors } from "@constants/AppColors";
+import { Colors } from "@constants/Colors";
+import { TestIds } from "@constants/testIds";
+import { useColorScheme } from "@hooks/useColorScheme";
+import { useRTL } from "@hooks/useRTL";
+import { useTranslatedText } from "@hooks/useTranslatedText";
 import React from "react";
 import {
   StyleSheet,
@@ -6,15 +15,6 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { AppColors } from "@constants/AppColors";
-import { Colors } from "@constants/Colors";
-import { TestIds } from "@constants/testIds";
-import { useColorScheme } from "@hooks/useColorScheme";
-import { useRTL } from "@hooks/useRTL";
-import { useTranslatedText } from "@hooks/useTranslatedText";
-import { NetworkStatusIndicator } from "@components/NetworkStatusIndicator";
-import { LanguageSelector } from "@components/LanguageSelector";
-import { IconSymbol } from "@components/ui/IconSymbol";
 
 interface GlobalHeaderProps {
   title: string;
@@ -28,6 +28,20 @@ interface GlobalHeaderProps {
   hideBottomSection?: boolean;
 }
 
+/**
+ * A header component for the global navigation.
+ *
+ * @param title - The title to display in the header
+ * @param showMenuButton - Whether to show the menu button
+ * @param onMenuPress - Callback function when the menu button is pressed
+ * @param showBackButton - Whether to show the back button
+ * @param onBackPress - Callback function when the back button is pressed
+ * @param showCloseButton - Whether to show the close button
+ * @param onClosePress - Callback function when the close button is pressed
+ * @param rightAction - Optional custom action to display on the right side
+ * @param hideBottomSection - Whether to hide the bottom section
+ * @returns A header component with the provided configuration
+ */
 export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
   title,
   showMenuButton = false,

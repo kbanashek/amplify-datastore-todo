@@ -1,12 +1,13 @@
-import React, { useCallback } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useTaskTranslation } from "@translations/index";
+import { TranslatedText } from "@components/TranslatedText";
+import { IconSymbol } from "@components/ui/IconSymbol";
+import { AppColors } from "@constants/AppColors";
 import { TaskService } from "@services/TaskService";
 import { Task, TaskStatus } from "@task-types/Task";
+import { useTaskTranslation } from "@translations/index";
 import { getServiceLogger } from "@utils/serviceLogger";
 import { getTaskIcon } from "@utils/taskIcon";
-import { IconSymbol } from "@components/ui/IconSymbol";
-import { TranslatedText } from "@components/TranslatedText";
+import React, { useCallback } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const logger = getServiceLogger("TaskCard");
 
@@ -17,21 +18,28 @@ interface TaskCardProps {
   simple?: boolean; // If true, show simple card without BEGIN button
 }
 
+/**
+ * A card component for displaying task information.
+ *
+ * @param task - The task to display
+ * @param onPress - Optional callback function when the card is pressed
+ * @param onDelete - Optional callback function when the delete button is pressed
+ * @param simple - Whether to show a simple card without the BEGIN button
+ * @returns A themed task card component with the provided task information
+ */
 export const TaskCard: React.FC<TaskCardProps> = ({
   task,
   onPress,
   onDelete,
   simple = false,
 }: TaskCardProps) => {
-  const { t, currentLanguage } = useTaskTranslation();
+  const { t } = useTaskTranslation();
 
   // Translate button text using new i18next API
   const isStarted =
     task.status === TaskStatus.STARTED || task.status === TaskStatus.INPROGRESS;
-  const beginButtonText = t(isStarted ? "task.resume" : "task.begin", {
-    fallback: isStarted ? "RESUME" : "BEGIN",
-  });
-  const completedText = t("task.completed", { fallback: "COMPLETED" });
+  const beginButtonText = t(isStarted ? "task.resume" : "task.begin");
+  const completedText = t("task.completed");
 
   const icon = getTaskIcon(task);
 
@@ -42,7 +50,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
         task.status !== TaskStatus.STARTED &&
         task.status !== TaskStatus.INPROGRESS
       ) {
-        const updated = await TaskService.updateTask(task.id, {
+        await TaskService.updateTask(task.id, {
           status: TaskStatus.STARTED,
         });
       }
@@ -100,7 +108,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
               />
             </View>
             <TranslatedText
-              text={task.title || "Untitled Task"}
+              text={task.title || t("task.untitled")}
               style={styles.title}
               numberOfLines={2}
             />
@@ -123,7 +131,11 @@ export const TaskCard: React.FC<TaskCardProps> = ({
                   onPress={() => onPress?.(task)}
                   activeOpacity={0.7}
                 >
-                  <IconSymbol name="chevron.right" size={20} color="#57606f" />
+                  <IconSymbol
+                    name="chevron.right"
+                    size={20}
+                    color={AppColors.darkGray}
+                  />
                 </TouchableOpacity>
               </>
             ) : (
@@ -140,10 +152,10 @@ export const TaskCard: React.FC<TaskCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: AppColors.white,
     borderRadius: 8,
     marginBottom: 12,
-    shadowColor: "#000",
+    shadowColor: AppColors.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -175,7 +187,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#1a1a1a",
+    color: AppColors.almostBlack,
     lineHeight: 26,
     flex: 1,
   },
@@ -185,7 +197,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   beginButton: {
-    backgroundColor: "#3498db",
+    backgroundColor: AppColors.legacy.primary,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 6,
@@ -193,7 +205,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   beginButtonText: {
-    color: "#fff",
+    color: AppColors.white,
     fontSize: 14,
     fontWeight: "bold",
     letterSpacing: 0.5,
@@ -207,12 +219,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginBottom: 12,
     padding: 8,
-    backgroundColor: "#e74c3c",
+    backgroundColor: AppColors.legacy.danger,
     borderRadius: 4,
     alignItems: "center",
   },
   deleteButtonText: {
-    color: "#fff",
+    color: AppColors.white,
     fontWeight: "bold",
     fontSize: 14,
   },
@@ -220,7 +232,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   completedBadge: {
-    backgroundColor: "#27ae60",
+    backgroundColor: AppColors.successGreen,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 6,
@@ -228,7 +240,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   completedText: {
-    color: "#fff",
+    color: AppColors.white,
     fontSize: 14,
     fontWeight: "bold",
     letterSpacing: 0.5,

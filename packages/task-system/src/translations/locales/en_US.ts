@@ -14,6 +14,7 @@ const en_US = {
     today: "Today",
     dashboard: "Dashboard",
     startsAt: "starts at",
+    untitled: "Untitled Task",
   },
   activity: {
     required: "Required",

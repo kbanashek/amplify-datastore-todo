@@ -20,7 +20,9 @@ export const AppColors = {
   // Neutral Colors - Text
   gray: "#333333",
   mediumDarkGray: "#666666",
+  darkGray: "#57606f",
   approxNero: "#232323",
+  almostBlack: "#1a1a1a",
 
   // Neutral Colors - Backgrounds & Borders
   lightGray: "#E5E5E5",
@@ -37,6 +39,7 @@ export const AppColors = {
   statusSyncing: "#feca57",
   statusSynced: "#1dd1a1",
   statusUnknown: "#a5b1c2",
+  successGreen: "#27ae60",
 
   // Opacity Variants
   CINavyHalfOpacity: "#1E376C50",

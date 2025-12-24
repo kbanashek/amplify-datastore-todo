@@ -1,12 +1,12 @@
 import { IconSymbol } from "@components/ui/IconSymbol";
-import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AppColors } from "@constants/AppColors";
 import { Shadows, TextStyles } from "@constants/AppStyles";
 import { useRTL } from "@hooks/useRTL";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import { Appointment, AppointmentType } from "@task-types/Appointment";
 import { formatTime, getTimezoneAbbreviation } from "@utils/appointmentParser";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface AppointmentCardProps {
   appointment: Appointment;
@@ -14,6 +14,14 @@ interface AppointmentCardProps {
   timezoneId?: string;
 }
 
+/**
+ * A card component for displaying appointment information.
+ *
+ * @param appointment - The appointment to display
+ * @param onPress - Optional callback function when the card is pressed
+ * @param timezoneId - The timezone ID to use for formatting the time
+ * @returns A themed appointment card component with the provided appointment information
+ */
 export const AppointmentCard: React.FC<AppointmentCardProps> = ({
   appointment,
   onPress,
