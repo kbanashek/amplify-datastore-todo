@@ -6,6 +6,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
+import { AppColors } from "@constants/AppColors";
 import { Colors } from "@constants/Colors";
 import { TestIds } from "@constants/testIds";
 import { useColorScheme } from "@hooks/useColorScheme";
@@ -67,7 +68,7 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
         >
           {showCloseButton && onClosePress && (
             <TouchableOpacity onPress={onClosePress} style={styles.closeButton}>
-              <IconSymbol name="xmark" size={24} color="#6b7280" />
+              <IconSymbol name="xmark" size={24} color={AppColors.iconGray} />
             </TouchableOpacity>
           )}
           {rightAction}
@@ -105,7 +106,7 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
 const BackButton: React.FC<{ onPress: () => void }> = ({ onPress }) => {
   return (
     <TouchableOpacity style={styles.backButton} onPress={onPress}>
-      <IconSymbol name="chevron.left" size={24} color="#6b7280" />
+      <IconSymbol name="chevron.left" size={24} color={AppColors.iconGray} />
     </TouchableOpacity>
   );
 };
@@ -114,9 +115,9 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: "#fff",
+    backgroundColor: AppColors.white,
     borderBottomWidth: 1,
-    borderBottomColor: "#e5e7eb",
+    borderBottomColor: AppColors.borderGray,
   },
   headerTop: {
     flexDirection: "row",
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 17,
     fontWeight: "600",
-    color: "#1e40af",
+    color: AppColors.headerBlue,
     flex: 1,
     textAlign: "center",
     paddingHorizontal: 8,

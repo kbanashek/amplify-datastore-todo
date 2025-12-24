@@ -20,6 +20,20 @@ export interface TextFieldProps extends Omit<TextInputProps, "style"> {
   testID?: string;
 }
 
+/**
+ * A customizable text input field component with optional label and helper/error text.
+ *
+ * @param label - Optional label text displayed above the input
+ * @param helperText - Optional helper text displayed below the input
+ * @param errorText - Optional error text displayed below the input (takes precedence over helperText)
+ * @param containerStyle - Additional styles for the container View
+ * @param inputStyle - Additional styles for the TextInput
+ * @param testID - Test identifier for the component
+ * @param editable - Whether the text input is editable (defaults to true)
+ * @param inputProps - Additional props passed to the TextInput component
+ *
+ * @returns A styled text field component with optional label and helper/error text
+ */
 export const TextField: React.FC<TextFieldProps> = ({
   label,
   helperText,

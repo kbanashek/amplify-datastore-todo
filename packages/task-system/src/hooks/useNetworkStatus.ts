@@ -1,13 +1,15 @@
+import { AppColors } from "@constants/AppColors";
 import { useAmplify } from "@contexts/AmplifyContext";
 import { NetworkStatus, SyncState } from "@hooks/useAmplifyState";
+import { useTaskTranslation } from "@translations/useTaskTranslation";
 
 /**
  * Return type for the useNetworkStatus hook.
  */
 interface NetworkStatusInfo {
-  /** Color code for the status indicator (hex format) */
+  /** Color code for the status indicator (from AppColors) */
   statusColor: string;
-  /** Human-readable status text */
+  /** Human-readable, translated status text */
   statusText: string;
 }
 
@@ -15,13 +17,14 @@ interface NetworkStatusInfo {
  * React hook for getting network and sync status display information.
  *
  * Provides color-coded status information based on the current
- * network connectivity and DataStore sync state.
+ * network connectivity and DataStore sync state. Uses centralized
+ * colors from AppColors and translated strings.
  *
- * Status colors:
- * - Red (`#ff6b6b`): Offline or sync error
- * - Yellow (`#feca57`): Syncing in progress
- * - Green (`#1dd1a1`): Online and synced
- * - Gray (`#a5b1c2`): Unknown/connecting
+ * Status colors (from AppColors):
+ * - statusOffline: Offline or sync error
+ * - statusSyncing: Syncing in progress
+ * - statusSynced: Online and synced
+ * - statusUnknown: Unknown/connecting
  *
  * @returns Object containing status color and text for display
  *
@@ -38,21 +41,34 @@ interface NetworkStatusInfo {
  */
 export const useNetworkStatus = (): NetworkStatusInfo => {
   const { networkStatus, syncState } = useAmplify();
+  const { t } = useTaskTranslation();
+
+  const SYNC_STATE_COLORS: Record<SyncState, string> = {
+    [SyncState.Syncing]: AppColors.statusSyncing,
+    [SyncState.Synced]: AppColors.statusSynced,
+    [SyncState.Error]: AppColors.statusOffline,
+    [SyncState.NotSynced]: AppColors.statusUnknown,
+  } as const;
+
+  const SYNC_STATE_TEXTS: Record<SyncState, string> = {
+    [SyncState.Syncing]: t("status.syncing"),
+    [SyncState.Synced]: t("status.synced"),
+    [SyncState.Error]: t("status.syncError"),
+    [SyncState.NotSynced]: t("status.connecting"),
+  } as const;
 
   const getStatusColor = (): string => {
-    if (networkStatus === NetworkStatus.Offline) return "#ff6b6b"; // Red for offline
-    if (syncState === SyncState.Syncing) return "#feca57"; // Yellow for syncing
-    if (syncState === SyncState.Synced) return "#1dd1a1"; // Green for synced
-    if (syncState === SyncState.Error) return "#ff6b6b"; // Red for error
-    return "#a5b1c2"; // Gray for unknown
+    if (networkStatus === NetworkStatus.Offline) {
+      return AppColors.statusOffline;
+    }
+    return SYNC_STATE_COLORS[syncState] ?? AppColors.statusUnknown;
   };
 
   const getStatusText = (): string => {
-    if (networkStatus === NetworkStatus.Offline) return "Offline";
-    if (syncState === SyncState.Syncing) return "Syncing...";
-    if (syncState === SyncState.Synced) return "Online & Synced";
-    if (syncState === SyncState.Error) return "Sync Error";
-    return "Connecting...";
+    if (networkStatus === NetworkStatus.Offline) {
+      return t("status.offline");
+    }
+    return SYNC_STATE_TEXTS[syncState] ?? t("status.connecting");
   };
 
   return {

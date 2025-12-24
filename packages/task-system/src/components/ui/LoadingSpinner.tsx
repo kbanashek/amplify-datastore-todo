@@ -9,6 +9,14 @@ export interface LoadingSpinnerProps {
   testID?: string;
 }
 
+/**
+ * A loading spinner component that displays an activity indicator.
+ *
+ * @param size - The size of the spinner. Can be 'small' or 'large'. Defaults to 'small'.
+ * @param style - Optional styles to apply to the container view.
+ * @param testID - Optional test ID for testing purposes.
+ * @returns A loading spinner component.
+ */
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   size = "small",
   style,

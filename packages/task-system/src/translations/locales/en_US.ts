@@ -35,6 +35,13 @@ const en_US = {
     close: "Close",
     loading: "Loading...",
   },
+  status: {
+    offline: "Offline",
+    syncing: "Syncing...",
+    synced: "Online & Synced",
+    syncError: "Sync Error",
+    connecting: "Connecting...",
+  },
   questions: {
     validationError: "Validation Error",
     required: "This field is required.",

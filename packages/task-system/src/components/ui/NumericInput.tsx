@@ -16,6 +16,18 @@ interface NumericInputProps {
  * Reusable numeric input component with configurable border styles
  * Used for clinical measurements like blood pressure, temperature, etc.
  */
+/**
+ * A customizable numeric input component for capturing numeric values.
+ *
+ * @param value - The current input value
+ * @param onChange - Callback function when value changes
+ * @param placeholder - Placeholder text when input is empty (default: "---")
+ * @param maxLength - Maximum number of characters allowed (default: 3)
+ * @param borderStyle - Visual style of the input border: "line", "rectangle", or "oval" (default: "line")
+ * @param error - Whether to show error styling (default: false)
+ * @param testID - Test identifier for testing frameworks
+ * @param style - Additional style properties to apply to the container
+ */
 export const NumericInput: React.FC<NumericInputProps> = ({
   value,
   onChange,

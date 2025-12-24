@@ -35,6 +35,13 @@ const es_ES = {
     close: "Cerrar",
     loading: "Cargando...",
   },
+  status: {
+    offline: "Sin conexión",
+    syncing: "Sincronizando...",
+    synced: "En línea y sincronizado",
+    syncError: "Error de sincronización",
+    connecting: "Conectando...",
+  },
   questions: {
     validationError: "Error de Validación",
     required: "Este campo es obligatorio.",
