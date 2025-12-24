@@ -165,7 +165,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Updated logging on app initialization to remove step identifiers
-  - Removed all INIT-_ and DATA-_ step identifiers from log messages
+  - Removed all INIT-_and DATA-_ step identifiers from log messages
   - Logs now use format: `[ICON] [PLATFORM] ServiceName: message`
   - All logs now include platform identification (iOS, Android, or Web)
   - Reduced redundant logging by only logging on actual state changes
