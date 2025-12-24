@@ -16,6 +16,10 @@ const es_ES = {
     startsAt: "comienza a las",
     untitled: "Tarea Sin Título",
   },
+  appointment: {
+    telehealth: "Telesalud",
+    onsiteVisit: "Visita en Sitio",
+  },
   activity: {
     required: "Requerido",
     noAnswerProvided: "No se proporcionó respuesta",

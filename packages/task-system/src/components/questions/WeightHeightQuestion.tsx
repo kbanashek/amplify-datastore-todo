@@ -1,3 +1,6 @@
+import { Question } from "@task-types/ActivityConfig";
+import { useTranslatedText } from "@hooks/useTranslatedText";
+import { getBorderStyle } from "@utils/borderStyleHelper";
 import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
@@ -6,8 +9,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Question } from "@task-types/ActivityConfig";
-import { useTranslatedText } from "@hooks/useTranslatedText";
 
 interface WeightHeightQuestionProps {
   question: Question;
@@ -137,17 +138,7 @@ export const WeightHeightQuestion: React.FC<WeightHeightQuestionProps> = ({
     }
   };
 
-  const getBorderStyle = () => {
-    const displayStyle = othersStyle.fieldDisplayStyle || "line";
-    switch (displayStyle) {
-      case "oval":
-        return styles.ovalBorder;
-      case "rectangle":
-        return styles.rectangleBorder;
-      default:
-        return styles.lineBorder;
-    }
-  };
+  const fieldDisplayStyle = othersStyle.fieldDisplayStyle || "line";
 
   return (
     <View style={styles.container}>
@@ -155,7 +146,7 @@ export const WeightHeightQuestion: React.FC<WeightHeightQuestionProps> = ({
         <TextInput
           style={[
             styles.input,
-            getBorderStyle(),
+            getBorderStyle(fieldDisplayStyle, styles as any) as any,
             errors.length > 0 && styles.inputError,
           ]}
           value={mainValue}
@@ -212,7 +203,7 @@ export const WeightHeightQuestion: React.FC<WeightHeightQuestionProps> = ({
             <TextInput
               style={[
                 styles.input,
-                getBorderStyle(),
+                getBorderStyle(fieldDisplayStyle, styles as any) as any,
                 errors.length > 0 && styles.inputError,
               ]}
               value={secondaryValue}

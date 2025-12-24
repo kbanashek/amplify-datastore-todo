@@ -1,3 +1,6 @@
+import { Question } from "@task-types/ActivityConfig";
+import { useTranslatedText } from "@hooks/useTranslatedText";
+import { getBorderStyle } from "@utils/borderStyleHelper";
 import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
@@ -6,8 +9,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Question } from "@task-types/ActivityConfig";
-import { useTranslatedText } from "@hooks/useTranslatedText";
 
 interface TemperatureQuestionProps {
   question: Question;
@@ -72,24 +73,13 @@ export const TemperatureQuestion: React.FC<TemperatureQuestionProps> = ({
     }
   };
 
-  const getBorderStyle = () => {
-    switch (fieldDisplayStyle) {
-      case "oval":
-        return styles.ovalBorder;
-      case "rectangle":
-        return styles.rectangleBorder;
-      default:
-        return styles.lineBorder;
-    }
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.inputRow}>
         <TextInput
           style={[
             styles.input,
-            getBorderStyle(),
+            getBorderStyle(fieldDisplayStyle, styles as any) as any,
             errors.length > 0 && styles.inputError,
           ]}
           value={temperature}

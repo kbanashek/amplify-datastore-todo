@@ -16,6 +16,10 @@ const en_US = {
     startsAt: "starts at",
     untitled: "Untitled Task",
   },
+  appointment: {
+    telehealth: "Telehealth",
+    onsiteVisit: "Onsite Visit",
+  },
   activity: {
     required: "Required",
     noAnswerProvided: "No answer provided",

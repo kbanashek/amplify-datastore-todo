@@ -1,3 +1,4 @@
+import { getBorderStyle } from "@utils/borderStyleHelper";
 import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 
@@ -38,21 +39,14 @@ export const NumericInput: React.FC<NumericInputProps> = ({
   testID,
   style,
 }) => {
-  const getBorderStyle = () => {
-    switch (borderStyle) {
-      case "oval":
-        return styles.ovalBorder;
-      case "rectangle":
-        return styles.rectangleBorder;
-      default:
-        return styles.lineBorder;
-    }
-  };
-
   return (
     <View style={style}>
       <TextInput
-        style={[styles.input, getBorderStyle(), error && styles.inputError]}
+        style={[
+          styles.input,
+          getBorderStyle(borderStyle, styles as any) as any,
+          error && styles.inputError,
+        ]}
         value={value}
         onChangeText={onChange}
         keyboardType="numeric"
