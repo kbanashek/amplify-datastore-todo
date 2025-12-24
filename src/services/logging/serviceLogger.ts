@@ -100,6 +100,7 @@ function formatMessage(
   // Use direct platform detection for fallback with emoji icons
   const platform = (() => {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const { getPlatformIcon } = require("../utils/platformIcons");
       return getPlatformIcon();
     } catch {

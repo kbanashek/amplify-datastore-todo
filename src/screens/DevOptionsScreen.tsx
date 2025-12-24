@@ -11,7 +11,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { SyncStatusBanner } from "../components/SyncStatusBanner";
-import { GlobalHeader } from "../components/GlobalHeader";
+import { GlobalHeader } from "@orion/task-system";
 import { TestIds } from "../constants/testIds";
 import { useDevOptions } from "../hooks/useDevOptions";
 

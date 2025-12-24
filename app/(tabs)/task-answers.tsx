@@ -1,4 +1,8 @@
-import { TaskAnswerService, useTaskAnswerList } from "@orion/task-system";
+import {
+  NetworkStatusIndicator,
+  TaskAnswerService,
+  useTaskAnswerList,
+} from "@orion/task-system";
 import React, { useState } from "react";
 import {
   ActivityIndicator,
@@ -10,7 +14,6 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { NetworkStatusIndicator } from "../../src/components/NetworkStatusIndicator";
 import { useLogger } from "../../src/hooks/useLogger";
 
 export default function TaskAnswersScreen() {

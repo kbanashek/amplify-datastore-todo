@@ -30,6 +30,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "check:circular": "madge --circular --extensions ts,tsx,js,jsx src app",
+    "check:types": "tsc --noEmit && yarn build:task-system",
     "prepare": "husky install || true",
     "build:task-system": "yarn --cwd packages/task-system build",
     "apply-native-fixes": "./scripts/apply-native-fixes.sh",

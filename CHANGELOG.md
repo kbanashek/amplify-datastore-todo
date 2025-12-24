@@ -20,6 +20,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Created `metro.config.js` for proper workspace package resolution
   - Updated `jest.config.js` to reflect new package structure
 
+### Removed
+
+- Removed duplicate UI components from root `components/ui/` directory
+  - Removed duplicate TypeScript components (Button, Card, DatePicker, DateTimeField, DateTimePicker, IconSymbol, LoadingSpinner, TabBarBackground, TextField)
+  - These components are now only available from the task-system package
+  - Updated all imports across the codebase to use components from the package
+- Removed duplicate components from `src/components/` directory
+  - Removed duplicate `GlobalHeader.tsx` (now using package version)
+  - Removed duplicate `LanguageSelector.tsx` (functionality moved to package)
+  - Removed duplicate `NetworkStatusIndicator.tsx` (functionality moved to package)
+  - Removed duplicate `TranslatedText.tsx` (now using package version)
+  - Updated all references to use package components
+
+### Added
+
+- Added `docs/code_reviews/` directory for storing code review documentation
+  - Moved CodeRabbit PR review comments to organized location
+
 ### Fixed
 
 - Fixed question header display issue

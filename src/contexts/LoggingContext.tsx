@@ -3,17 +3,10 @@
  * Provides centralized logging service to all components via React context
  */
 
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  ReactNode,
-} from "react";
+import React, { createContext, useContext, useMemo, ReactNode } from "react";
 import {
   LoggingService,
   initializeLoggingService,
-  getLoggingService,
   type LoggingConfig,
 } from "@orion/task-system";
 
@@ -68,7 +61,8 @@ export const LoggingProvider: React.FC<LoggingProviderProps> = ({
     }
 
     return service;
-  }, []); // Only initialize once
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only initialize once - config changes don't require re-initialization
 
   // Don't try to initialize Sentry provider automatically
   // SentryProvider will remain disabled until explicitly enabled

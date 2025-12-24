@@ -1,7 +1,7 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
 
-import { TextField } from "@/components/ui/TextField";
+import { TextField } from "@orion/task-system";
 
 describe("UI/TextField", () => {
   it("renders label", () => {

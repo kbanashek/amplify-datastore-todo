@@ -11,7 +11,7 @@ jest.mock("../../components/SyncStatusBanner", () => ({
   SyncStatusBanner: () => null,
 }));
 
-jest.mock("../../components/GlobalHeader", () => ({
+jest.mock("@orion/task-system", () => ({
   GlobalHeader: ({ title }: { title: string }) => {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const React = require("react");

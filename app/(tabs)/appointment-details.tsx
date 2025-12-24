@@ -1,10 +1,11 @@
-import { IconSymbol } from "@/components/ui/IconSymbol";
 import {
   Appointment,
   AppointmentStatus,
   AppointmentType,
   formatTime,
   getTimezoneAbbreviation,
+  GlobalHeader,
+  IconSymbol,
   useRTL,
   useTranslatedText,
 } from "@orion/task-system";
@@ -18,7 +19,6 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { GlobalHeader } from "../../src/components/GlobalHeader";
 import { AppColors } from "../../src/constants/AppColors";
 import { useLogger } from "../../src/hooks/useLogger";
 
