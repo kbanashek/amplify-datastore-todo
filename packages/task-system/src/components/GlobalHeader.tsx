@@ -12,6 +12,7 @@ import { useColorScheme } from "../hooks/useColorScheme";
 import { useRTL } from "../hooks/useRTL";
 import { useTranslatedText } from "../hooks/useTranslatedText";
 import { NetworkStatusIndicator } from "./NetworkStatusIndicator";
+import { LanguageSelector } from "./LanguageSelector";
 import { IconSymbol } from "./ui/IconSymbol";
 
 interface GlobalHeaderProps {
@@ -93,7 +94,7 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
           ]}
         >
           <NetworkStatusIndicator />
-          {/* <LanguageSelector /> */}
+          <LanguageSelector />
         </View>
       )}
     </View>

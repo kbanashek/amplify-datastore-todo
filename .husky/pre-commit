@@ -67,6 +67,15 @@ yarn check:circular || {
 }
 
 echo "✅ No circular dependencies found!"
+
+echo "🔷 Running TypeScript type check..."
+yarn check:types || {
+  echo "❌ TypeScript compilation failed. Please fix type errors before committing."
+  echo "💡 Run 'yarn check:types' to see the full error output."
+  exit 1
+}
+
+echo "✅ TypeScript type check passed!"
 echo "✅ All pre-commit checks passed!"
 
 

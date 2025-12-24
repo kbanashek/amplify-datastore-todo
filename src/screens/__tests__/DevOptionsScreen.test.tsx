@@ -1,5 +1,5 @@
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
 
 import { DevOptionsScreen } from "../DevOptionsScreen";
 
@@ -11,7 +11,7 @@ jest.mock("../../components/SyncStatusBanner", () => ({
   SyncStatusBanner: () => null,
 }));
 
-jest.mock("../../components/GlobalHeader", () => ({
+jest.mock("@orion/task-system", () => ({
   GlobalHeader: ({ title }: { title: string }) => {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const React = require("react");

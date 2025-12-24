@@ -1,16 +1,19 @@
+import {
+  NetworkStatusIndicator,
+  TaskHistoryService,
+  useTaskHistoryList,
+} from "@orion/task-system";
 import React, { useState } from "react";
 import {
-  StyleSheet,
-  View,
+  ActivityIndicator,
   ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  ActivityIndicator,
+  View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useTaskHistoryList, TaskHistoryService } from "@orion/task-system";
-import { NetworkStatusIndicator } from "../../src/components/NetworkStatusIndicator";
 import { useLogger } from "../../src/hooks/useLogger";
 
 export default function TaskHistoryScreen() {

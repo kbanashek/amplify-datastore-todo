@@ -1,6 +1,7 @@
 import {
   CompletionScreen,
   ErrorState,
+  GlobalHeader,
   IntroductionScreen,
   LoadingState,
   QuestionScreenContent,
@@ -12,7 +13,6 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useCallback } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { GlobalHeader } from "../../src/components/GlobalHeader";
 import { useLogger } from "../../src/hooks/useLogger";
 
 export default function QuestionsScreen() {

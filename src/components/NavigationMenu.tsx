@@ -1,6 +1,5 @@
-import { IconSymbol } from "@/components/ui/IconSymbol";
+import { IconSymbol, useColorScheme } from "@orion/task-system";
 import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@orion/task-system";
 import { useRouter } from "expo-router";
 import React from "react";
 import {

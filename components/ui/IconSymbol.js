@@ -1,16 +1,16 @@
+"use strict";
+const __importDefault =
+  (this && this.__importDefault) ||
+  function (mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.IconSymbol = IconSymbol;
+const jsx_runtime_1 = require("react/jsx-runtime");
 // Fallback for using MaterialIcons on Android and web.
-
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { SymbolWeight, SymbolViewProps } from "expo-symbols";
-import { ComponentProps } from "react";
-import { OpaqueColorValue, type StyleProp, type TextStyle } from "react-native";
-
-type IconMapping = Record<
-  SymbolViewProps["name"],
-  ComponentProps<typeof MaterialIcons>["name"]
->;
-type IconSymbolName = keyof typeof MAPPING;
-
+const MaterialIcons_1 = __importDefault(
+  require("@expo/vector-icons/MaterialIcons")
+);
 /**
  * Add your SF Symbols to Material Icons mappings here.
  * - see Material Icons in the [Icons Directory](https://icons.expo.fyi).
@@ -38,31 +38,18 @@ const MAPPING = {
   calendar: "calendar-today",
   repeat: "repeat",
   "doc.text": "description",
-} as IconMapping;
-
+};
 /**
  * An icon component that uses native SF Symbols on iOS, and Material Icons on Android and web.
  * This ensures a consistent look across platforms, and optimal resource usage.
  * Icon `name`s are based on SF Symbols and require manual mapping to Material Icons.
  */
-export function IconSymbol({
-  name,
-  size = 24,
-  color,
-  style,
-}: {
-  name: IconSymbolName;
-  size?: number;
-  color: string | OpaqueColorValue;
-  style?: StyleProp<TextStyle>;
-  weight?: SymbolWeight;
-}) {
-  return (
-    <MaterialIcons
-      color={color}
-      size={size}
-      name={MAPPING[name]}
-      style={style}
-    />
-  );
+function IconSymbol({ name, size = 24, color, style }) {
+  return (0, jsx_runtime_1.jsx)(MaterialIcons_1.default, {
+    color: color,
+    size: size,
+    name: MAPPING[name],
+    style: style,
+  });
 }
+//# sourceMappingURL=IconSymbol.js.map

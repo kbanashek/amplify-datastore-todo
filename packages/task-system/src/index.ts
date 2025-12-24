@@ -4,6 +4,13 @@ export { TaskActivityModule } from "./TaskActivityModule";
 export { GroupedTasksView } from "./components/GroupedTasksView";
 export { TaskContainer } from "./components/TaskContainer";
 
+// App-level components (harness/test app use)
+export { GlobalHeader } from "./components/GlobalHeader";
+export { LanguageSelector } from "./components/LanguageSelector";
+export { NavigationMenu } from "./components/NavigationMenu";
+export { NetworkStatusIndicator } from "./components/NetworkStatusIndicator";
+export { TranslatedText } from "./components/TranslatedText";
+
 // Runtime initialization (LX-style: host owns Amplify.configure)
 export { initTaskSystem } from "./runtime/taskSystem";
 export type { TaskSystemInitOptions } from "./runtime/taskSystem";
@@ -30,10 +37,9 @@ export { ConflictResolution } from "./services/ConflictResolution";
 export { DataPointService } from "./services/DataPointService";
 export {
   LoggingService,
-  initializeLoggingService,
   getLoggingService,
+  initializeLoggingService,
 } from "./services/LoggingService";
-export type { LoggingConfig } from "./services/logging/types";
 export { QuestionService } from "./services/QuestionService";
 export { SeededDataCleanupService } from "./services/SeededDataCleanupService";
 export { TaskAnswerService } from "./services/TaskAnswerService";
@@ -46,6 +52,7 @@ export {
   TranslationService,
   getTranslationService,
 } from "./services/TranslationService";
+export type { LoggingConfig } from "./services/logging/types";
 export * from "./services/translationTypes";
 
 // Export all hooks - single source of truth
@@ -155,23 +162,22 @@ export { AmplifyProvider, useAmplify } from "./contexts/AmplifyContext";
 // Translation system (i18next-based - new architecture)
 export {
   TranslationProvider,
-  useTaskTranslation,
-  initializeTranslations,
   addTranslationBundle,
-  isRTLMode,
-  getTranslationKey,
-  safeTranslate,
-  loadDefaultTranslations,
   getDefaultNamespace,
+  getTranslationKey,
+  initializeTranslations,
+  isRTLMode,
+  loadDefaultTranslations,
+  safeTranslate,
+  useTaskTranslation,
 } from "./translations";
 export type {
-  TranslationConfig,
-  TranslationBundle,
   ActivityTranslation,
+  TranslationBundle,
+  TranslationConfig,
   TranslationOptions,
-  LanguageCode,
 } from "./translations";
-export { SUPPORTED_LANGUAGES, isRTL } from "./translations";
+// Note: SUPPORTED_LANGUAGES, isRTL, and LanguageCode are already exported via export * from "./services/translationTypes" on line 56
 
 // Legacy translation system (deprecated - use new i18next-based system)
 // Keep old exports for backward compatibility during migration
