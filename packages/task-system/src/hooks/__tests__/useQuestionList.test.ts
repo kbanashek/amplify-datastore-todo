@@ -1,5 +1,6 @@
 import { renderHook, waitFor, act } from "@testing-library/react-native";
 import { useQuestionList } from "../useQuestionList";
+import { createSubscriptionHolder } from "./testUtils";
 
 // Mock QuestionService
 jest.mock("../../services/QuestionService", () => ({
@@ -78,22 +79,15 @@ describe("useQuestionList", () => {
     });
 
     it("updates questions when subscription callback fires", async () => {
-      let subscriptionCallback: any = null;
+      const { holder, setCallback } = createSubscriptionHolder<QuestionModel>();
       mockSubscribeQuestions.mockImplementation(callback => {
-        subscriptionCallback = callback;
+        setCallback(callback);
         return { unsubscribe: jest.fn() };
       });
       const { result } = renderHook(() => useQuestionList());
       expect(result.current.loading).toBe(true);
 
-      if (subscriptionCallback) {
-        (
-          subscriptionCallback as (
-            items: QuestionModel[],
-            synced: boolean
-          ) => void
-        )(mockQuestions as unknown as QuestionModel[], true);
-      }
+      holder.callback?.(mockQuestions as unknown as QuestionModel[], true);
 
       await waitFor(() => {
         expect(result.current.questions).toEqual(mockQuestions);

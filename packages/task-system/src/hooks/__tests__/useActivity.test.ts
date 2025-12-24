@@ -1,5 +1,6 @@
 import { renderHook, waitFor, act } from "@testing-library/react-native";
 import { useActivity } from "../useActivity";
+import { createSubscriptionHolder } from "./testUtils";
 
 // Mock ActivityService
 jest.mock("../../services/ActivityService", () => ({
@@ -110,10 +111,10 @@ describe("useActivity", () => {
 
   describe("subscription updates", () => {
     it("updates activity when subscription fires", async () => {
-      let subscriptionCallback: any = null;
+      const { holder, setCallback } = createSubscriptionHolder<ActivityModel>();
       mockGetActivities.mockResolvedValue(mockActivities);
       mockSubscribeActivities.mockImplementation(callback => {
-        subscriptionCallback = callback;
+        setCallback(callback);
         return { unsubscribe: jest.fn() };
       });
       const { result } = renderHook(() => useActivity("ACTIVITY-1"));
@@ -127,14 +128,7 @@ describe("useActivity", () => {
         title: "Updated Title",
       } as ActivityModel;
 
-      if (subscriptionCallback) {
-        (
-          subscriptionCallback as (
-            items: ActivityModel[],
-            synced: boolean
-          ) => void
-        )([updatedActivity], true);
-      }
+      holder.callback?.([updatedActivity], true);
 
       await waitFor(() => {
         expect(result.current.activity?.title).toBe("Updated Title");
@@ -142,10 +136,10 @@ describe("useActivity", () => {
     });
 
     it("does not update when subscription fires with different activityId", async () => {
-      let subscriptionCallback: any = null;
+      const { holder, setCallback } = createSubscriptionHolder<ActivityModel>();
       mockGetActivities.mockResolvedValue(mockActivities);
       mockSubscribeActivities.mockImplementation(callback => {
-        subscriptionCallback = callback;
+        setCallback(callback);
         return { unsubscribe: jest.fn() };
       });
       const { result } = renderHook(() => useActivity("ACTIVITY-1"));
@@ -164,14 +158,7 @@ describe("useActivity", () => {
         type: "QUESTIONNAIRE",
       } as ActivityModel;
 
-      if (subscriptionCallback) {
-        (
-          subscriptionCallback as (
-            items: ActivityModel[],
-            synced: boolean
-          ) => void
-        )([otherActivity], true);
-      }
+      holder.callback?.([otherActivity], true);
 
       await waitFor(() => {
         expect(result.current.activity).toEqual(mockActivity);
