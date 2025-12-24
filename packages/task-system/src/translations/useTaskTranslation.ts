@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import type { TFunction } from "i18next";
-import { useTaskTranslationContext } from "./TranslationProvider";
-import { getDefaultNamespace } from "./config/i18nConfig";
-import type { TranslationOptions } from "./translationTypes";
+import { useTaskTranslationContext } from "@translations/TranslationProvider";
+import { getDefaultNamespace } from "@translations/config/i18nConfig";
+import type { TranslationOptions } from "@translations/translationTypes";
 
 /**
  * Hook to access translation functionality with activity-specific support

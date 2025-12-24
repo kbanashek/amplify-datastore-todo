@@ -1,3 +1,12 @@
+import { LanguageSelector } from "@components/LanguageSelector";
+import { NetworkStatusIndicator } from "@components/NetworkStatusIndicator";
+import { IconSymbol } from "@components/ui/IconSymbol";
+import { AppColors } from "@constants/AppColors";
+import { Colors } from "@constants/Colors";
+import { TestIds } from "@constants/testIds";
+import { useColorScheme } from "@hooks/useColorScheme";
+import { useRTL } from "@hooks/useRTL";
+import { useTranslatedText } from "@hooks/useTranslatedText";
 import React from "react";
 import {
   StyleSheet,
@@ -6,14 +15,6 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { Colors } from "../constants/Colors";
-import { TestIds } from "../constants/testIds";
-import { useColorScheme } from "../hooks/useColorScheme";
-import { useRTL } from "../hooks/useRTL";
-import { useTranslatedText } from "../hooks/useTranslatedText";
-import { NetworkStatusIndicator } from "./NetworkStatusIndicator";
-import { LanguageSelector } from "./LanguageSelector";
-import { IconSymbol } from "./ui/IconSymbol";
 
 interface GlobalHeaderProps {
   title: string;
@@ -27,6 +28,20 @@ interface GlobalHeaderProps {
   hideBottomSection?: boolean;
 }
 
+/**
+ * A header component for the global navigation.
+ *
+ * @param title - The title to display in the header
+ * @param showMenuButton - Whether to show the menu button
+ * @param onMenuPress - Callback function when the menu button is pressed
+ * @param showBackButton - Whether to show the back button
+ * @param onBackPress - Callback function when the back button is pressed
+ * @param showCloseButton - Whether to show the close button
+ * @param onClosePress - Callback function when the close button is pressed
+ * @param rightAction - Optional custom action to display on the right side
+ * @param hideBottomSection - Whether to hide the bottom section
+ * @returns A header component with the provided configuration
+ */
 export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
   title,
   showMenuButton = false,
@@ -67,7 +82,7 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
         >
           {showCloseButton && onClosePress && (
             <TouchableOpacity onPress={onClosePress} style={styles.closeButton}>
-              <IconSymbol name="xmark" size={24} color="#6b7280" />
+              <IconSymbol name="xmark" size={24} color={AppColors.iconGray} />
             </TouchableOpacity>
           )}
           {rightAction}
@@ -105,7 +120,7 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
 const BackButton: React.FC<{ onPress: () => void }> = ({ onPress }) => {
   return (
     <TouchableOpacity style={styles.backButton} onPress={onPress}>
-      <IconSymbol name="chevron.left" size={24} color="#6b7280" />
+      <IconSymbol name="chevron.left" size={24} color={AppColors.iconGray} />
     </TouchableOpacity>
   );
 };
@@ -114,9 +129,9 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: "#fff",
+    backgroundColor: AppColors.white,
     borderBottomWidth: 1,
-    borderBottomColor: "#e5e7eb",
+    borderBottomColor: AppColors.borderGray,
   },
   headerTop: {
     flexDirection: "row",
@@ -132,7 +147,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 17,
     fontWeight: "600",
-    color: "#1e40af",
+    color: AppColors.headerBlue,
     flex: 1,
     textAlign: "center",
     paddingHorizontal: 8,

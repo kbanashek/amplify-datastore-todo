@@ -1,42 +1,74 @@
-import { useState, useCallback, useEffect } from "react";
-import { DataPointService } from "../services/DataPointService";
+import { DataPointService } from "@services/DataPointService";
 import {
-  DataPointInstance,
   CreateDataPointInstanceInput,
+  DataPointInstance,
   UpdateDataPointInstanceInput,
-} from "../types/DataPoint";
-import { getServiceLogger } from "../utils/serviceLogger";
+} from "@task-types/DataPoint";
+import { getServiceLogger } from "@utils/serviceLogger";
+import { useCallback, useEffect, useState } from "react";
 
 const logger = getServiceLogger("useDataPointInstance");
 
+/**
+ * Return type for the useDataPointInstance hook.
+ */
 interface UseDataPointInstanceReturn {
-  // Get instances by activityId
+  /** Filters instances by activity ID */
   getInstancesByActivityId: (activityId: string) => DataPointInstance[];
-  // Get instance by questionId for a specific activity
+  /** Finds a specific instance by activity and question ID */
   getInstanceByQuestionId: (
     activityId: string,
     questionId: string
   ) => DataPointInstance | undefined;
-  // Create a new data point instance
+  /** Creates a new data point instance in DataStore */
   createDataPointInstance: (
     input: CreateDataPointInstanceInput
   ) => Promise<DataPointInstance | null>;
-  // Update an existing data point instance
+  /** Updates an existing data point instance */
   updateDataPointInstance: (
     id: string,
     data: Omit<UpdateDataPointInstanceInput, "id" | "_version">
   ) => Promise<DataPointInstance | null>;
-  // Get all instances (reactive)
+  /** All data point instances (reactively updated via subscription) */
   instances: DataPointInstance[];
+  /** Whether initial data is still loading */
   loading: boolean;
+  /** Error message from the most recent operation, or null */
   error: string | null;
+  /** Whether a create operation is in progress */
   isCreating: boolean;
+  /** Whether an update operation is in progress */
   isUpdating: boolean;
 }
 
 /**
- * Hook for managing data point instances reactively
- * Provides reactive updates, filtering, and CRUD operations
+ * React hook for managing data point instances with real-time synchronization.
+ *
+ * Provides reactive updates via DataStore subscriptions, filtering utilities,
+ * and CRUD operations for data point instances. Instances are automatically
+ * updated when changes occur in the DataStore.
+ *
+ * @returns Object containing instance data, loading states, and CRUD operations
+ *
+ * @example
+ * ```tsx
+ * const {
+ *   instances,
+ *   loading,
+ *   getInstancesByActivityId,
+ *   createDataPointInstance,
+ * } = useDataPointInstance();
+ *
+ * // Get instances for a specific activity
+ * const activityInstances = getInstancesByActivityId("activity-123");
+ *
+ * // Create a new instance
+ * const newInstance = await createDataPointInstance({
+ *   activityId: "activity-123",
+ *   questionId: "question-456",
+ *   value: "42",
+ * });
+ * ```
  */
 export const useDataPointInstance = (): UseDataPointInstanceReturn => {
   const [instances, setInstances] = useState<DataPointInstance[]>([]);

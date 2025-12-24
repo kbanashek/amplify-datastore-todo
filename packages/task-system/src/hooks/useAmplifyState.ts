@@ -1,9 +1,9 @@
 import { Amplify, Hub } from "@aws-amplify/core";
 import NetInfo from "@react-native-community/netinfo";
 import { useEffect, useState } from "react";
-import { initTaskSystem } from "../runtime/taskSystem";
-import { logWithDevice } from "../utils/deviceLogger";
-import { getServiceLogger } from "../utils/serviceLogger";
+import { initTaskSystem } from "@runtime/taskSystem";
+import { logWithDevice } from "@utils/deviceLogger";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("useAmplifyState");
 

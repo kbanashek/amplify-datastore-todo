@@ -1,7 +1,7 @@
 import { DataStore } from "@aws-amplify/datastore";
-import { TaskResult } from "../../models";
-import { TaskResultService } from "../TaskResultService";
-import { CreateTaskResultInput } from "../../types/TaskResult";
+import { TaskResult } from "@models/index";
+import { TaskResultService } from "@services/TaskResultService";
+import { CreateTaskResultInput } from "@task-types/TaskResult";
 
 jest.mock("@aws-amplify/datastore");
 

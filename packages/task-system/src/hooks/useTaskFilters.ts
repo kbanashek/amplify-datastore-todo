@@ -1,16 +1,53 @@
 import { useState, useMemo } from "react";
-import { TaskFilters, TaskStatus, TaskType } from "../types/Task";
+import { TaskFilters, TaskStatus, TaskType } from "@task-types/Task";
 
+/**
+ * Return type for the useTaskFilters hook.
+ */
 interface UseTaskFiltersReturn {
+  /** Current filter object to pass to useTaskList */
   filters: TaskFilters;
+  /** Set status filter (multiple statuses allowed) */
   setStatusFilter: (statuses: TaskStatus[]) => void;
+  /** Set task type filter (multiple types allowed) */
   setTaskTypeFilter: (types: TaskType[]) => void;
+  /** Set date range filter */
   setDateRange: (from: Date | undefined, to: Date | undefined) => void;
+  /** Set search text for title/description matching */
   setSearchText: (text: string) => void;
+  /** Reset all filters to defaults */
   clearFilters: () => void;
+  /** Whether any filters are currently active */
   hasActiveFilters: boolean;
 }
 
+/**
+ * React hook for managing task filter state.
+ *
+ * Provides filter setters and a computed filters object that can be
+ * passed to useTaskList for filtering tasks.
+ *
+ * @returns Object containing filter state and setter functions
+ *
+ * @example
+ * ```tsx
+ * const {
+ *   filters,
+ *   setStatusFilter,
+ *   clearFilters,
+ *   hasActiveFilters,
+ * } = useTaskFilters();
+ *
+ * // Apply filters to task list
+ * const { tasks } = useTaskList(filters);
+ *
+ * // Filter by status
+ * setStatusFilter([TaskStatus.OPEN, TaskStatus.INPROGRESS]);
+ *
+ * // Show clear button when filters are active
+ * {hasActiveFilters && <Button onPress={clearFilters} title="Clear" />}
+ * ```
+ */
 export const useTaskFilters = (): UseTaskFiltersReturn => {
   const [statusFilter, setStatusFilter] = useState<TaskStatus[]>([]);
   const [taskTypeFilter, setTaskTypeFilter] = useState<TaskType[]>([]);

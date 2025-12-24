@@ -1,9 +1,9 @@
 import Slider from "@react-native-community/slider";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Question } from "../../types/ActivityConfig";
-import { useTranslatedText } from "../../hooks/useTranslatedText";
-import { ValidationType } from "../../types/activity-config-enums";
+import { Question } from "@task-types/ActivityConfig";
+import { useTranslatedText } from "@hooks/useTranslatedText";
+import { ValidationType } from "@task-types/activity-config-enums";
 
 interface HorizontalVASQuestionProps {
   question: Question;

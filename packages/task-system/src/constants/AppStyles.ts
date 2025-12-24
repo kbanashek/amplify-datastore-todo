@@ -4,7 +4,7 @@
  */
 
 import { StyleSheet, ViewStyle, TextStyle } from "react-native";
-import { AppColors } from "./AppColors";
+import { AppColors } from "@constants/AppColors";
 
 /**
  * Common shadow styles

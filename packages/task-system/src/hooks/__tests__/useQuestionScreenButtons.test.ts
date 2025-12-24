@@ -1,13 +1,13 @@
 import { renderHook } from "@testing-library/react-native";
-import { useQuestionScreenButtons } from "../useQuestionScreenButtons";
-import { ActivityConfig } from "../../types/ActivityConfig";
+import { useQuestionScreenButtons } from "@hooks/useQuestionScreenButtons";
+import { ActivityConfig } from "@task-types/ActivityConfig";
 
 // Mock useRTL hook
-jest.mock("../useRTL", () => ({
+jest.mock("@hooks/useRTL", () => ({
   useRTL: jest.fn(),
 }));
 
-import { useRTL } from "../useRTL";
+import { useRTL } from "@hooks/useRTL";
 
 describe("useQuestionScreenButtons", () => {
   const mockRtlStyle = jest.fn(style => style);

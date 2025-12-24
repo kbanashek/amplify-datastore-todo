@@ -1,7 +1,7 @@
-import type { AppointmentData } from "../types/Appointment";
-import type { CreateActivityInput } from "../types/Activity";
-import type { CreateQuestionInput } from "../types/Question";
-import type { CreateTaskInput } from "../types/Task";
+import type { AppointmentData } from "@task-types/Appointment";
+import type { CreateActivityInput } from "@task-types/Activity";
+import type { CreateQuestionInput } from "@task-types/Question";
+import type { CreateTaskInput } from "@task-types/Task";
 
 export type TaskSystemFixtureVersion = 1;
 

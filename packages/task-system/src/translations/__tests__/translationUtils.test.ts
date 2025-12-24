@@ -3,7 +3,7 @@ import {
   getTranslationKey,
   safeTranslate,
   getDefaultNamespace,
-} from "../translationUtils";
+} from "@translations/translationUtils";
 import type { TFunction } from "i18next";
 
 describe("translationUtils", () => {

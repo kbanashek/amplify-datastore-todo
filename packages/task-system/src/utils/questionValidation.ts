@@ -2,13 +2,13 @@ import {
   ParsedElement,
   ParsedScreen,
   Validation,
-} from "../types/ActivityConfig";
+} from "@task-types/ActivityConfig";
 import {
   CompareFact,
   QuestionType,
   ValidationType,
-} from "../types/activity-config-enums";
-import { getServiceLogger } from "./serviceLogger";
+} from "@task-types/activity-config-enums";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 /**
  * Validates a single question answer

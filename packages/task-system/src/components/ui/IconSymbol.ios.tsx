@@ -8,6 +8,17 @@ import type { OpaqueColorValue, StyleProp, TextStyle } from "react-native";
 type IconMapping = Record<string, ComponentProps<typeof MaterialIcons>["name"]>;
 type IconSymbolName = keyof typeof MAPPING;
 
+/**
+ * A cross-platform icon component that maps iOS SF Symbols to Material Icons.
+ * This is the iOS implementation that uses MaterialIcons as a fallback.
+ *
+ * @param name - The name of the icon from the MAPPING object
+ * @param size - The size of the icon (default: 24)
+ * @param color - The color of the icon
+ * @param style - Additional text style properties
+ * @param weight - Ignored in iOS implementation, kept for API compatibility
+ * @returns A MaterialIcons component with the mapped icon name
+ */
 export function IconSymbol({
   name,
   size = 24,

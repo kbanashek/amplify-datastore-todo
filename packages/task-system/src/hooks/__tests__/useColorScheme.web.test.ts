@@ -1,5 +1,5 @@
 import { renderHook, waitFor, act } from "@testing-library/react-native";
-import { useColorScheme } from "../useColorScheme.web";
+import { useColorScheme } from "@hooks/useColorScheme.web";
 
 // Mock react-native's useColorScheme
 jest.mock("react-native", () => ({

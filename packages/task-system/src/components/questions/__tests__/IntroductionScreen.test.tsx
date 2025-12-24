@@ -1,11 +1,11 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { IntroductionScreen } from "../IntroductionScreen";
-import { ActivityConfig } from "../../../types/ActivityConfig";
-import { TaskStatus } from "../../../types/Task";
+import { IntroductionScreen } from "@components/questions/IntroductionScreen";
+import { ActivityConfig } from "@task-types/ActivityConfig";
+import { TaskStatus } from "@task-types/Task";
 
 // Mock useTranslatedText
-jest.mock("../../../hooks/useTranslatedText", () => ({
+jest.mock("@hooks/useTranslatedText", () => ({
   useTranslatedText: jest.fn((text: string) => ({
     translatedText: text,
     isTranslating: false,

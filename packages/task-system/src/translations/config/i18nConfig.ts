@@ -1,9 +1,9 @@
 import type { i18n as I18nType } from "i18next";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import en_US from "../locales/en_US";
-import es_ES from "../locales/es_ES";
-import { LanguageCode } from "../translationTypes";
+import en_US from "@translations/locales/en_US";
+import es_ES from "@translations/locales/es_ES";
+import { LanguageCode } from "@translations/translationTypes";
 
 const DEFAULT_NAMESPACE = "task-system";
 const DEFAULT_LOCALE = "en";

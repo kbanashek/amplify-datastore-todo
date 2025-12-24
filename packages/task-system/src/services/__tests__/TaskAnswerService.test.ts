@@ -1,7 +1,7 @@
 import { DataStore } from "@aws-amplify/datastore";
-import { TaskAnswer } from "../../models";
-import { TaskAnswerService } from "../TaskAnswerService";
-import { CreateTaskAnswerInput } from "../../types/TaskAnswer";
+import { TaskAnswer } from "@models/index";
+import { TaskAnswerService } from "@services/TaskAnswerService";
+import { CreateTaskAnswerInput } from "@task-types/TaskAnswer";
 
 jest.mock("@aws-amplify/datastore");
 

@@ -1,5 +1,6 @@
-import { getTaskIcon } from "../taskIcon";
-import { Task, TaskType } from "../../types/Task";
+import { AppColors } from "@constants/AppColors";
+import { getTaskIcon } from "@utils/taskIcon";
+import { Task, TaskType } from "@task-types/Task";
 
 describe("getTaskIcon", () => {
   const createMockTask = (
@@ -21,77 +22,77 @@ describe("getTaskIcon", () => {
       const task = createMockTask("Medication Reminder");
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("pills");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
 
     it("should return pills icon for diary tasks", () => {
       const task = createMockTask("Daily Diary Entry");
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("pills");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
 
     it("should return questionmark.circle icon for survey tasks", () => {
       const task = createMockTask("Health Survey");
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("questionmark.circle");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
 
     it("should return questionmark.circle icon for health tasks", () => {
       const task = createMockTask("Health Assessment");
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("questionmark.circle");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
 
     it("should return list.clipboard icon for quality tasks", () => {
       const task = createMockTask("Quality of Life Assessment");
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("list.clipboard");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
 
     it("should return list.clipboard icon for life tasks", () => {
       const task = createMockTask("Life Assessment");
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("list.clipboard");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
 
     it("should return bell icon for recall tasks", () => {
       const task = createMockTask("Memory Recall Test");
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("bell");
-      expect(icon.color).toBe("#f39c12");
+      expect(icon.color).toBe(AppColors.legacy.warning);
     });
 
     it("should return bell icon for recognition tasks", () => {
       const task = createMockTask("Recognition Task");
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("bell");
-      expect(icon.color).toBe("#f39c12");
+      expect(icon.color).toBe(AppColors.legacy.warning);
     });
 
     it("should return questionmark.circle icon for symptom tasks", () => {
       const task = createMockTask("Symptom Tracker");
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("questionmark.circle");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
 
     it("should return questionmark.circle icon for pain tasks", () => {
       const task = createMockTask("Pain Assessment");
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("questionmark.circle");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
 
     it("should return questionmark.circle icon for neuropathic tasks", () => {
       const task = createMockTask("Neuropathic Pain Scale");
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("questionmark.circle");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
 
     it("should be case-insensitive for keywords", () => {
@@ -112,28 +113,28 @@ describe("getTaskIcon", () => {
       const task = createMockTask("Regular Task", TaskType.SCHEDULED);
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("calendar");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
 
     it("should return clock icon for TIMED tasks when no keywords match", () => {
       const task = createMockTask("Timed Activity", TaskType.TIMED);
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("clock");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
 
     it("should return repeat icon for EPISODIC tasks when no keywords match", () => {
       const task = createMockTask("Episodic Event", TaskType.EPISODIC);
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("repeat");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
 
     it("should return doc.text icon for unknown task types", () => {
       const task = createMockTask("Unknown Task", "UNKNOWN" as TaskType);
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("doc.text");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
   });
 
@@ -143,14 +144,14 @@ describe("getTaskIcon", () => {
       const task = createMockTask("Medication Schedule", TaskType.SCHEDULED);
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("pills");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
 
     it("should use task type when no keywords match", () => {
       const task = createMockTask("Generic Task", TaskType.TIMED);
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("clock");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
   });
 
@@ -159,7 +160,7 @@ describe("getTaskIcon", () => {
       const task = createMockTask("", TaskType.SCHEDULED);
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("calendar");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
 
     it("should handle null title", () => {
@@ -169,7 +170,7 @@ describe("getTaskIcon", () => {
       };
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("calendar");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
 
     it("should handle undefined title", () => {
@@ -179,7 +180,7 @@ describe("getTaskIcon", () => {
       };
       const icon = getTaskIcon(task);
       expect(icon.name).toBe("calendar");
-      expect(icon.color).toBe("#3498db");
+      expect(icon.color).toBe(AppColors.legacy.primary);
     });
 
     it("should handle tasks with multiple matching keywords (first match wins)", () => {

@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TranslationMemoryService } from "../TranslationMemoryService";
+import { TranslationMemoryService } from "@services/TranslationMemoryService";
 
 // Mock AsyncStorage
 jest.mock("@react-native-async-storage/async-storage", () => ({
@@ -10,7 +10,7 @@ jest.mock("@react-native-async-storage/async-storage", () => ({
 }));
 
 // Mock translations to prevent seed loading
-jest.mock("../../translations", () => ({
+jest.mock("@translations/index", () => ({
   seedTranslationMemories: [],
 }));
 

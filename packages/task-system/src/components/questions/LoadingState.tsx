@@ -1,6 +1,6 @@
 import React from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import { NetworkStatusIndicator } from "../NetworkStatusIndicator";
+import { NetworkStatusIndicator } from "@components/NetworkStatusIndicator";
 
 interface LoadingStateProps {
   taskId?: string;

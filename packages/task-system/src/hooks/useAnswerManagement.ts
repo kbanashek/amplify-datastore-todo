@@ -1,24 +1,66 @@
 import { useCallback, useState } from "react";
-import { ParsedActivityData } from "../utils/activityParser";
-import { validateQuestionAnswer } from "../utils/questionValidation";
+import { ParsedActivityData } from "@utils/activityParser";
+import { validateQuestionAnswer } from "@utils/questionValidation";
 
+/**
+ * Return type for the useAnswerManagement hook.
+ */
 export interface UseAnswerManagementReturn {
-  answers: Record<string, any>;
+  /** Current answers keyed by question ID */
+  answers: Record<string, unknown>;
+  /** Validation errors keyed by question ID */
   errors: Record<string, string[]>;
-  setAnswers: React.Dispatch<React.SetStateAction<Record<string, any>>>;
+  /** Setter for answers state */
+  setAnswers: React.Dispatch<React.SetStateAction<Record<string, unknown>>>;
+  /** Setter for errors state */
   setErrors: React.Dispatch<React.SetStateAction<Record<string, string[]>>>;
-  handleAnswerChange: (questionId: string, answer: any) => void;
-}
-
-export interface UseAnswerManagementOptions {
-  activityData: ParsedActivityData | null;
-  currentScreenIndex: number;
-  initialAnswers?: Record<string, any>;
+  /** Handler for answer changes with immediate validation */
+  handleAnswerChange: (questionId: string, answer: unknown) => void;
 }
 
 /**
- * Hook for managing answer state and real-time validation
- * Handles answer changes and triggers immediate validation
+ * Configuration options for the useAnswerManagement hook.
+ */
+export interface UseAnswerManagementOptions {
+  /** Parsed activity data containing questions and validation rules */
+  activityData: ParsedActivityData | null;
+  /** Current screen index in the question flow */
+  currentScreenIndex: number;
+  /** Optional initial answers to pre-populate */
+  initialAnswers?: Record<string, unknown>;
+}
+
+/**
+ * React hook for managing answer state and real-time validation.
+ *
+ * Handles answer changes and triggers immediate validation against
+ * the question's validation rules. Errors are cleared when answers
+ * become valid.
+ *
+ * @param options - Configuration including activity data and current screen
+ * @returns Object containing answers, errors, and change handlers
+ *
+ * @example
+ * ```tsx
+ * const {
+ *   answers,
+ *   errors,
+ *   handleAnswerChange,
+ * } = useAnswerManagement({
+ *   activityData,
+ *   currentScreenIndex,
+ *   initialAnswers: previousAnswers,
+ * });
+ *
+ * // Handle a text input change
+ * <TextInput
+ *   value={answers["question-1"] as string}
+ *   onChangeText={(text) => handleAnswerChange("question-1", text)}
+ * />
+ *
+ * // Display validation errors
+ * {errors["question-1"]?.map(err => <ErrorText key={err}>{err}</ErrorText>)}
+ * ```
  */
 export const useAnswerManagement = ({
   activityData,

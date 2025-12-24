@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useTaskForm } from "../hooks/useTaskForm";
-import { Task, TaskStatus, TaskType } from "../types/Task";
+import { useTaskForm } from "@hooks/useTaskForm";
+import { Task, TaskStatus, TaskType } from "@task-types/Task";
 
 interface TaskFormProps {
   onTaskCreated?: (task: Task) => void;

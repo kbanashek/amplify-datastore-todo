@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { AppColors } from "../../constants/AppColors";
-import { ReviewScreen } from "./ReviewScreen";
-import { ParsedActivityData } from "../../utils/activityParser";
+import { AppColors } from "@constants/AppColors";
+import { ReviewScreen } from "@components/questions/ReviewScreen";
+import { ParsedActivityData } from "@utils/activityParser";
 
 interface ReviewScreenContainerProps {
   activityData: ParsedActivityData;

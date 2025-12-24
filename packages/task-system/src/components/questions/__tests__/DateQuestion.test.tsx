@@ -1,10 +1,10 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { DateQuestion } from "../DateQuestion";
-import { Question } from "../../../types/ActivityConfig";
+import { DateQuestion } from "@components/questions/DateQuestion";
+import { Question } from "@task-types/ActivityConfig";
 
 // Mock DateTimeField
-jest.mock("../../ui/DateTimeField", () => {
+jest.mock("@components/ui/DateTimeField", () => {
   const React = require("react");
   const { View, Text, TouchableOpacity } = require("react-native");
   return {

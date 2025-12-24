@@ -1,10 +1,10 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { MultiSelectQuestion } from "../MultiSelectQuestion";
-import { Question } from "../../../types/ActivityConfig";
+import { MultiSelectQuestion } from "@components/questions/MultiSelectQuestion";
+import { Question } from "@task-types/ActivityConfig";
 
 // Mock useTaskTranslation
-jest.mock("../../../translations", () => ({
+jest.mock("@translations/index", () => ({
   useTaskTranslation: jest.fn(() => ({
     t: jest.fn((key: string) => key),
     currentLanguage: "en",

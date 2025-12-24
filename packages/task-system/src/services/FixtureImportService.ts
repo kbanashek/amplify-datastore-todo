@@ -3,7 +3,7 @@ import {
   ImportTaskSystemFixtureOptions,
   ImportTaskSystemFixtureResult,
   TaskSystemFixture,
-} from "../fixtures/TaskSystemFixture";
+} from "@fixtures/TaskSystemFixture";
 import {
   Activity,
   DataPoint,
@@ -13,22 +13,59 @@ import {
   TaskAnswer,
   TaskHistory,
   TaskResult,
-} from "../models";
-import { ActivityService } from "./ActivityService";
-import { AppointmentService } from "./AppointmentService";
-import { QuestionService } from "./QuestionService";
-import { TaskService } from "./TaskService";
+} from "@models/index";
+import { ActivityService } from "@services/ActivityService";
+import { AppointmentService } from "@services/AppointmentService";
+import { QuestionService } from "@services/QuestionService";
+import { TaskService } from "@services/TaskService";
 
-function applyDefined(target: any, source: any, omitKeys: string[] = []): void {
-  Object.keys(source || {}).forEach(key => {
+/**
+ * Applies defined values from source to target object, optionally omitting specified keys.
+ *
+ * @param target - Object to apply values to
+ * @param source - Object to copy values from
+ * @param omitKeys - Keys to skip during copy
+ */
+function applyDefined(
+  target: unknown,
+  source: unknown,
+  omitKeys: string[] = []
+): void {
+  Object.keys((source as Record<string, unknown>) || {}).forEach(key => {
     if (omitKeys.includes(key)) return;
-    const value = source[key];
+    const value = (source as Record<string, unknown>)[key];
     if (value !== undefined) {
-      target[key] = value;
+      (target as Record<string, unknown>)[key] = value;
     }
   });
 }
 
+/**
+ * Service for importing TaskSystemFixture data into AWS DataStore.
+ *
+ * Handles bulk import of activities, questions, tasks, and related entities
+ * from a structured fixture format. Supports updating existing records
+ * and pruning non-fixture data.
+ *
+ * @example
+ * ```typescript
+ * import { TaskSystemFixture } from "@fixtures/TaskSystemFixture";
+ *
+ * const fixture: TaskSystemFixture = {
+ *   version: 1,
+ *   activities: [...],
+ *   tasks: [...],
+ *   questions: [...],
+ * };
+ *
+ * const result = await FixtureImportService.importTaskSystemFixture(fixture, {
+ *   updateExisting: true,
+ *   pruneNonFixture: false,
+ * });
+ *
+ * console.log(`Imported ${result.activitiesCreated} activities`);
+ * ```
+ */
 export class FixtureImportService {
   static async importTaskSystemFixture(
     fixture: TaskSystemFixture,

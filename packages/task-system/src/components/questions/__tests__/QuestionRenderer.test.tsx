@@ -1,10 +1,10 @@
 import { render } from "@testing-library/react-native";
 import React from "react";
-import { ParsedElement } from "../../../types/ActivityConfig";
-import { QuestionRenderer } from "../QuestionRenderer";
+import { ParsedElement } from "@task-types/ActivityConfig";
+import { QuestionRenderer } from "@components/questions/QuestionRenderer";
 
 // Mock all question components
-jest.mock("../TextQuestion", () => {
+jest.mock("@components/questions/TextQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
@@ -16,7 +16,7 @@ jest.mock("../TextQuestion", () => {
   };
 });
 
-jest.mock("../NumberQuestion", () => {
+jest.mock("@components/questions/NumberQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
@@ -28,7 +28,7 @@ jest.mock("../NumberQuestion", () => {
   };
 });
 
-jest.mock("../SingleSelectQuestion", () => {
+jest.mock("@components/questions/SingleSelectQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
@@ -40,7 +40,7 @@ jest.mock("../SingleSelectQuestion", () => {
   };
 });
 
-jest.mock("../MultiSelectQuestion", () => {
+jest.mock("@components/questions/MultiSelectQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
@@ -52,7 +52,7 @@ jest.mock("../MultiSelectQuestion", () => {
   };
 });
 
-jest.mock("../DateQuestion", () => {
+jest.mock("@components/questions/DateQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
@@ -64,7 +64,7 @@ jest.mock("../DateQuestion", () => {
   };
 });
 
-jest.mock("../BloodPressureQuestion", () => {
+jest.mock("@components/questions/BloodPressureQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
@@ -76,7 +76,7 @@ jest.mock("../BloodPressureQuestion", () => {
   };
 });
 
-jest.mock("../TemperatureQuestion", () => {
+jest.mock("@components/questions/TemperatureQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
@@ -88,7 +88,7 @@ jest.mock("../TemperatureQuestion", () => {
   };
 });
 
-jest.mock("../ClinicalDynamicInputQuestion", () => {
+jest.mock("@components/questions/ClinicalDynamicInputQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
@@ -100,7 +100,7 @@ jest.mock("../ClinicalDynamicInputQuestion", () => {
   };
 });
 
-jest.mock("../HorizontalVASQuestion", () => {
+jest.mock("@components/questions/HorizontalVASQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
@@ -112,7 +112,7 @@ jest.mock("../HorizontalVASQuestion", () => {
   };
 });
 
-jest.mock("../ImageCaptureQuestion", () => {
+jest.mock("@components/questions/ImageCaptureQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
@@ -124,7 +124,7 @@ jest.mock("../ImageCaptureQuestion", () => {
   };
 });
 
-jest.mock("../WeightHeightQuestion", () => {
+jest.mock("@components/questions/WeightHeightQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
@@ -137,7 +137,7 @@ jest.mock("../WeightHeightQuestion", () => {
 });
 
 // Mock useTranslatedText
-jest.mock("../../../hooks/useTranslatedText", () => ({
+jest.mock("@hooks/useTranslatedText", () => ({
   useTranslatedText: jest.fn((text: string) => ({
     translatedText: text,
     isTranslating: false,

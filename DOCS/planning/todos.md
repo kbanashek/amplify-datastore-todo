@@ -1,5 +1,37 @@
 # Project Todos
 
+## Code Quality Improvements (Identified During Path Alias Refactor)
+
+**Status:** 📝 To Do - Low Priority
+
+These improvement opportunities were identified during the path alias migration but intentionally not implemented to keep the refactor focused:
+
+### Test File Improvements
+
+- [ ] **Replace `any` types in test subscription callbacks** - Many test files use `let subscriptionCallback: any = null` pattern. The `testUtils.ts` helper (`createSubscriptionHolder`) was created to address this. Remaining files to update:
+  - `useActivityStartup.test.ts` (9 occurrences)
+  - `useTaskAnswer.test.ts` (5 occurrences)
+  - `useDataPointInstance.test.ts` (5 occurrences)
+  - `useDataPointList.test.ts` (2 occurrences)
+  - `useTaskResultList.test.ts` (1 occurrence)
+  - `useTaskAnswerList.test.ts` (1 occurrence)
+
+- [ ] **Remove redundant type casts** - Some test files have redundant casts like `mockData as TypeModel[]` when the mock is already typed
+
+- [ ] **Consolidate translation mock helpers** - `createMockTFunction` exists in `MOCKS/translationMocks.ts` but could be moved to a more discoverable location
+
+### Component Structure
+
+- [ ] **Extract shared translation logic** - `SingleSelectQuestion.tsx` and `MultiSelectQuestion.tsx` have identical translation logic that could be extracted to a shared `useTranslatedChoices` hook
+
+### Logging Improvements
+
+- [ ] **Review logging utils location** - `services/logging/utils.ts` contains formatting utilities that might be better placed in `utils/` directory
+
+### Type Safety
+
+- [ ] **Add stricter types to Question components** - Some question components could benefit from more specific prop types instead of broad interfaces
+
 ## Priority #1: Package-Owned Temp Answer GraphQL Mutation
 
 **Status:** 🔴 Critical - Blocking Feature

@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useTaskTranslation } from "../../translations";
-import { Choice, Question } from "../../types/ActivityConfig";
-import { getServiceLogger } from "../../utils/serviceLogger";
+import { useTaskTranslation } from "@translations/index";
+import { Choice, Question } from "@task-types/ActivityConfig";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("SingleSelectQuestion");
 

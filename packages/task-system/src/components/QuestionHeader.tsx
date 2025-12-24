@@ -1,3 +1,6 @@
+import { IconSymbol } from "@components/ui/IconSymbol";
+import { useRTL } from "@hooks/useRTL";
+import { useTranslatedText } from "@hooks/useTranslatedText";
 import React from "react";
 import {
   StyleSheet,
@@ -6,9 +9,6 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { useRTL } from "../hooks/useRTL";
-import { useTranslatedText } from "../hooks/useTranslatedText";
-import { IconSymbol } from "./ui/IconSymbol";
 
 interface QuestionHeaderProps {
   title: string;
@@ -18,6 +18,16 @@ interface QuestionHeaderProps {
   onClosePress?: () => void;
 }
 
+/**
+ * A header component for displaying question information.
+ *
+ * @param title - The title of the question
+ * @param showBackButton - Whether to show the back button
+ * @param onBackPress - Callback function when the back button is pressed
+ * @param showCloseButton - Whether to show the close button
+ * @param onClosePress - Callback function when the close button is pressed
+ * @returns A header component with the provided configuration
+ */
 export const QuestionHeader: React.FC<QuestionHeaderProps> = ({
   title,
   showBackButton = false,

@@ -1,8 +1,8 @@
 import { DataStore } from "@aws-amplify/datastore";
-import { FixtureImportService } from "../FixtureImportService";
+import { FixtureImportService } from "@services/FixtureImportService";
 
 jest.mock("@aws-amplify/datastore");
-jest.mock("../../models", () => ({
+jest.mock("@models/index", () => ({
   Activity: { copyOf: (_: any, mutator: any) => mutator({}) },
   Task: { copyOf: (_: any, mutator: any) => mutator({}) },
   Question: { copyOf: (_: any, mutator: any) => mutator({}) },
@@ -16,22 +16,22 @@ jest.mock("../../models", () => ({
 const mockCreateActivity = jest.fn();
 const mockCreateTask = jest.fn();
 const mockCreateQuestion = jest.fn();
-jest.mock("../ActivityService", () => ({
+jest.mock("@services/ActivityService", () => ({
   ActivityService: {
     createActivity: (...args: any[]) => mockCreateActivity(...args),
   },
 }));
-jest.mock("../TaskService", () => ({
+jest.mock("@services/TaskService", () => ({
   TaskService: { createTask: (...args: any[]) => mockCreateTask(...args) },
 }));
-jest.mock("../QuestionService", () => ({
+jest.mock("@services/QuestionService", () => ({
   QuestionService: {
     createQuestion: (...args: any[]) => mockCreateQuestion(...args),
   },
 }));
 
 const mockSaveAppointments = jest.fn();
-jest.mock("../AppointmentService", () => ({
+jest.mock("@services/AppointmentService", () => ({
   AppointmentService: {
     saveAppointments: (...args: any[]) => mockSaveAppointments(...args),
   },

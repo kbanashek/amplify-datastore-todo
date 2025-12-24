@@ -1,10 +1,10 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { TextQuestion } from "../TextQuestion";
-import { Question } from "../../../types/ActivityConfig";
+import { TextQuestion } from "@components/questions/TextQuestion";
+import { Question } from "@task-types/ActivityConfig";
 
 // Mock useTranslatedText
-jest.mock("../../../hooks/useTranslatedText", () => ({
+jest.mock("@hooks/useTranslatedText", () => ({
   useTranslatedText: jest.fn((text: string) => ({
     translatedText: text,
     isTranslating: false,
@@ -12,7 +12,7 @@ jest.mock("../../../hooks/useTranslatedText", () => ({
 }));
 
 // Mock useTaskTranslation
-jest.mock("../../../translations", () => ({
+jest.mock("@translations/index", () => ({
   useTaskTranslation: jest.fn(() => ({
     translate: jest.fn(),
     currentLanguage: "en",

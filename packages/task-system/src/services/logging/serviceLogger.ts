@@ -4,7 +4,7 @@
  *
  * Usage in services:
  * ```typescript
- * import { getServiceLogger } from "../services/logging/serviceLogger";
+ * import { getServiceLogger } from "@utils/serviceLogger";
  *
  * const logger = getServiceLogger("TaskService");
  * logger.info("Task created", { taskId: "123" });
@@ -12,7 +12,7 @@
  * ```
  */
 
-import { getLoggingService } from "../LoggingService";
+import { getLoggingService } from "@services/LoggingService";
 
 /**
  * Get a logger instance for a specific service
@@ -91,6 +91,19 @@ export function getServiceLogger(serviceName: string) {
   }
 }
 
+/**
+ * Formats a log message with platform, source, service name, and optional step/icon.
+ *
+ * @param serviceName - Name of the service generating the log
+ * @param message - The log message content
+ * @param step - Optional step identifier (e.g., "INIT-1", "DATA-2")
+ * @param icon - Optional emoji icon to prefix the message
+ * @returns Formatted log message string
+ *
+ * @example
+ * formatMessage("TaskService", "Task created", "DATA-1", "📋")
+ * // Returns: "[🍎:task-system:TaskService - DATA-1] : 📋 Task created"
+ */
 function formatMessage(
   serviceName: string,
   message: string,

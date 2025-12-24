@@ -1,9 +1,9 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { ErrorState } from "../ErrorState";
+import { ErrorState } from "@components/questions/ErrorState";
 
 // Mock NetworkStatusIndicator
-jest.mock("../../NetworkStatusIndicator", () => {
+jest.mock("@components/NetworkStatusIndicator", () => {
   const React = require("react");
   const { View } = require("react-native");
   return {

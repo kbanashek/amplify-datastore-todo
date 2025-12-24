@@ -1,6 +1,6 @@
 import { renderHook, waitFor, act } from "@testing-library/react-native";
-import { useQuestionsScreen } from "../useQuestionsScreen";
-import { TaskStatus, TaskType } from "../../types/Task";
+import { useQuestionsScreen } from "@hooks/useQuestionsScreen";
+import { TaskStatus, TaskType } from "@task-types/Task";
 
 // Mock react-navigation
 jest.mock("@react-navigation/native", () => ({
@@ -19,7 +19,7 @@ jest.mock("@aws-amplify/datastore", () => ({
 }));
 
 // Mock TaskService
-jest.mock("../../services/TaskService", () => ({
+jest.mock("@services/TaskService", () => ({
   TaskService: {
     getTaskById: jest.fn(),
     updateTask: jest.fn(),
@@ -27,27 +27,27 @@ jest.mock("../../services/TaskService", () => ({
 }));
 
 // Mock hooks
-jest.mock("../useActivityData", () => ({
+jest.mock("@hooks/useActivityData", () => ({
   useActivityData: jest.fn(),
 }));
 
-jest.mock("../useAnswerManagement", () => ({
+jest.mock("@hooks/useAnswerManagement", () => ({
   useAnswerManagement: jest.fn(),
 }));
 
-jest.mock("../useQuestionValidation", () => ({
+jest.mock("@hooks/useQuestionValidation", () => ({
   useQuestionValidation: jest.fn(),
 }));
 
-jest.mock("../useQuestionNavigation", () => ({
+jest.mock("@hooks/useQuestionNavigation", () => ({
   useQuestionNavigation: jest.fn(),
 }));
 
-jest.mock("../useQuestionSubmission", () => ({
+jest.mock("@hooks/useQuestionSubmission", () => ({
   useQuestionSubmission: jest.fn(),
 }));
 
-jest.mock("../../services/TempAnswerSyncService", () => ({
+jest.mock("@services/TempAnswerSyncService", () => ({
   TempAnswerSyncService: {
     syncTempAnswers: jest.fn(),
   },
@@ -55,16 +55,16 @@ jest.mock("../../services/TempAnswerSyncService", () => ({
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { DataStore } from "@aws-amplify/datastore";
-import { TaskService } from "../../services/TaskService";
-import { useActivityData } from "../useActivityData";
-import { useAnswerManagement } from "../useAnswerManagement";
-import { useQuestionValidation } from "../useQuestionValidation";
-import { useQuestionNavigation } from "../useQuestionNavigation";
-import { useQuestionSubmission } from "../useQuestionSubmission";
-import { TempAnswerSyncService } from "../../services/TempAnswerSyncService";
-import { Task } from "../../types/Task";
-import { ParsedActivityData } from "../../utils/activityParser";
-import { ActivityConfig } from "../../types/ActivityConfig";
+import { TaskService } from "@services/TaskService";
+import { useActivityData } from "@hooks/useActivityData";
+import { useAnswerManagement } from "@hooks/useAnswerManagement";
+import { useQuestionValidation } from "@hooks/useQuestionValidation";
+import { useQuestionNavigation } from "@hooks/useQuestionNavigation";
+import { useQuestionSubmission } from "@hooks/useQuestionSubmission";
+import { TempAnswerSyncService } from "@services/TempAnswerSyncService";
+import { Task } from "@task-types/Task";
+import { ParsedActivityData } from "@utils/activityParser";
+import { ActivityConfig } from "@task-types/ActivityConfig";
 
 describe("useQuestionsScreen", () => {
   const mockNavigate = jest.fn();

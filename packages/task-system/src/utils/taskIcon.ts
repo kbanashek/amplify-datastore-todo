@@ -1,4 +1,5 @@
-import { Task, TaskType } from "../types/Task";
+import { AppColors } from "@constants/AppColors";
+import { Task, TaskType } from "@task-types/Task";
 
 /**
  * Icon configuration for task icons
@@ -21,7 +22,7 @@ export interface TaskIconConfig {
  * @example
  * ```typescript
  * const icon = getTaskIcon({ title: "Medication Reminder", taskType: TaskType.SCHEDULED });
- * // Returns: { name: "pills", color: "#3498db" }
+ * // Returns: { name: "pills", color: AppColors.legacy.primary }
  * ```
  */
 export const getTaskIcon = (task: Task): TaskIconConfig => {
@@ -29,34 +30,34 @@ export const getTaskIcon = (task: Task): TaskIconConfig => {
 
   // Check for specific keywords in title
   if (title.includes("medication") || title.includes("diary")) {
-    return { name: "pills", color: "#3498db" };
+    return { name: "pills", color: AppColors.legacy.primary };
   }
   if (title.includes("survey") || title.includes("health")) {
-    return { name: "questionmark.circle", color: "#3498db" };
+    return { name: "questionmark.circle", color: AppColors.legacy.primary };
   }
   if (title.includes("quality") || title.includes("life")) {
-    return { name: "list.clipboard", color: "#3498db" };
+    return { name: "list.clipboard", color: AppColors.legacy.primary };
   }
   if (title.includes("recall") || title.includes("recognition")) {
-    return { name: "bell", color: "#f39c12" };
+    return { name: "bell", color: AppColors.legacy.warning };
   }
   if (
     title.includes("symptom") ||
     title.includes("pain") ||
     title.includes("neuropathic")
   ) {
-    return { name: "questionmark.circle", color: "#3498db" };
+    return { name: "questionmark.circle", color: AppColors.legacy.primary };
   }
 
   // Default based on task type
   switch (task.taskType) {
     case TaskType.SCHEDULED:
-      return { name: "calendar", color: "#3498db" };
+      return { name: "calendar", color: AppColors.legacy.primary };
     case TaskType.TIMED:
-      return { name: "clock", color: "#3498db" };
+      return { name: "clock", color: AppColors.legacy.primary };
     case TaskType.EPISODIC:
-      return { name: "repeat", color: "#3498db" };
+      return { name: "repeat", color: AppColors.legacy.primary };
     default:
-      return { name: "doc.text", color: "#3498db" };
+      return { name: "doc.text", color: AppColors.legacy.primary };
   }
 };

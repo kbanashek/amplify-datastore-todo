@@ -9,10 +9,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Colors } from "../constants/Colors";
-import { useColorScheme } from "../hooks/useColorScheme";
-import { getServiceLogger } from "../utils/serviceLogger";
-import { IconSymbol } from "./ui/IconSymbol";
+import { Colors } from "@constants/Colors";
+import { useColorScheme } from "@hooks/useColorScheme";
+import { getServiceLogger } from "@utils/serviceLogger";
+import { IconSymbol } from "@components/ui/IconSymbol";
 
 const logger = getServiceLogger("NavigationMenu");
 

@@ -3,18 +3,18 @@
  * Manages multiple log providers and routes logs to all active providers
  */
 
-import { ConsoleProvider } from "./logging/providers/ConsoleProvider";
-import { NativeProvider } from "./logging/providers/NativeProvider";
-import { SentryProvider } from "./logging/providers/SentryProvider";
+import { ConsoleProvider } from "@services/logging/providers/ConsoleProvider";
+import { NativeProvider } from "@services/logging/providers/NativeProvider";
+import { SentryProvider } from "@services/logging/providers/SentryProvider";
 import type {
   LogEntry,
   LogMetadata,
   LogProvider,
   LoggingConfig,
-} from "./logging/types";
-import { LogLevel, LogLevelPreset } from "./logging/types";
-import { presetToLogLevel } from "./logging/utils";
-import { getPlatformIcon } from "../utils/platformIcons";
+} from "@services/logging/types";
+import { LogLevel, LogLevelPreset } from "@services/logging/types";
+import { presetToLogLevel } from "@services/logging/utils";
+import { getPlatformIcon } from "@utils/platformIcons";
 
 /**
  * Get platform identifier for logging

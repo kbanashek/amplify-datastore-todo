@@ -1,18 +1,50 @@
 import { useState, useEffect } from "react";
-import { QuestionService } from "../services/QuestionService";
-import { Question } from "../types/Question";
-import { getServiceLogger } from "../utils/serviceLogger";
+import { QuestionService } from "@services/QuestionService";
+import { Question } from "@task-types/Question";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("useQuestionList");
 
+/**
+ * Return type for the useQuestionList hook.
+ */
 interface UseQuestionListReturn {
+  /** List of all questions */
   questions: Question[];
+  /** Whether initial data is still loading */
   loading: boolean;
+  /** Error message from the most recent operation, or null */
   error: string | null;
+  /** Deletes a question by ID */
   handleDeleteQuestion: (id: string) => Promise<void>;
+  /** Manually refreshes the question list */
   refreshQuestions: () => Promise<void>;
 }
 
+/**
+ * React hook for managing questions with real-time synchronization.
+ *
+ * Provides reactive question data via DataStore subscriptions and
+ * question management operations. Questions are automatically updated
+ * when changes occur in the DataStore.
+ *
+ * @returns Object containing question data, loading states, and management operations
+ *
+ * @example
+ * ```tsx
+ * const {
+ *   questions,
+ *   loading,
+ *   handleDeleteQuestion,
+ * } = useQuestionList();
+ *
+ * // Display questions
+ * questions.map(q => <QuestionCard key={q.id} question={q} />);
+ *
+ * // Delete a question
+ * await handleDeleteQuestion("question-123");
+ * ```
+ */
 export const useQuestionList = (): UseQuestionListReturn => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useMemo } from "react";
-import { useTaskTranslation } from "../translations";
-import { getServiceLogger } from "../utils/serviceLogger";
+import { useTaskTranslation } from "@translations/index";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("useTranslatedText");
 
@@ -38,10 +38,32 @@ const TEXT_TO_KEY_MAP: Record<string, string> = {
 };
 
 /**
- * Hook to translate text with loading state (compatibility wrapper for new i18next system)
- * Returns the translated text when ready, or original text while translating
+ * React hook to translate text with loading state awareness.
  *
- * Note: With i18next, translations are synchronous, so this mainly provides API compatibility
+ * Provides a compatibility wrapper for the i18next translation system.
+ * Maps common text strings to translation keys and falls back to dynamic
+ * translation for unmapped strings.
+ *
+ * With i18next, translations are synchronous after initialization,
+ * so `isTranslating` is mainly for API compatibility and initial load.
+ *
+ * @param text - The text to translate (can be a key or literal text)
+ * @param sourceLanguage - Optional source language code (currently unused, for API compatibility)
+ * @returns Object containing:
+ *   - `translatedText`: The translated string (or original if translation unavailable)
+ *   - `isTranslating`: Whether translation is still loading
+ *
+ * @example
+ * ```tsx
+ * // Translate a button label
+ * const { translatedText } = useTranslatedText("Submit");
+ * return <Button title={translatedText} />;
+ *
+ * // With loading awareness
+ * const { translatedText, isTranslating } = useTranslatedText("Loading tasks...");
+ * if (isTranslating) return <Skeleton />;
+ * return <Text>{translatedText}</Text>;
+ * ```
  */
 export const useTranslatedText = (
   text: string,

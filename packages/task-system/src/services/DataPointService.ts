@@ -1,22 +1,53 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
-import { ModelName } from "../constants/modelNames";
-import { OperationSource } from "../constants/operationSource";
-import { DataPoint, DataPointInstance } from "../models";
+import { ModelName } from "@constants/modelNames";
+import { OperationSource } from "@constants/operationSource";
+import { DataPoint, DataPointInstance } from "@models/index";
 import {
   CreateDataPointInput,
   CreateDataPointInstanceInput,
   UpdateDataPointInput,
   UpdateDataPointInstanceInput,
-} from "../types/DataPoint";
-import { logErrorWithDevice, logWithDevice } from "../utils/deviceLogger";
-import { getServiceLogger } from "../utils/serviceLogger";
+} from "@task-types/DataPoint";
+import { logErrorWithDevice, logWithDevice } from "@utils/deviceLogger";
+import { getServiceLogger } from "@utils/serviceLogger";
 
+/** Data for updating a DataPoint (excludes id and version) */
 type DataPointUpdateData = Omit<UpdateDataPointInput, "id" | "_version">;
+
+/** Data for updating a DataPointInstance (excludes id and version) */
 type DataPointInstanceUpdateData = Omit<
   UpdateDataPointInstanceInput,
   "id" | "_version"
 >;
 
+/**
+ * Service for managing DataPoint and DataPointInstance entities via AWS DataStore.
+ *
+ * Provides CRUD operations and real-time subscriptions for both data point
+ * definitions and their instances (values). Handles conflict resolution
+ * for concurrent updates.
+ *
+ * @example
+ * ```typescript
+ * // Create a data point definition
+ * const dataPoint = await DataPointService.createDataPoint({
+ *   pk: "DP-001",
+ *   sk: "v1",
+ *   name: "Blood Pressure",
+ *   unit: "mmHg",
+ * });
+ *
+ * // Subscribe to instance changes
+ * const subscription = DataPointService.subscribeDataPointInstances(
+ *   (instances, synced) => {
+ *     console.log(`${instances.length} instances, synced: ${synced}`);
+ *   }
+ * );
+ *
+ * // Cleanup
+ * subscription.unsubscribe();
+ * ```
+ */
 export class DataPointService {
   static configureConflictResolution() {
     DataStore.configure({

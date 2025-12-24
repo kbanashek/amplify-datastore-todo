@@ -1,6 +1,6 @@
 import { DataStore } from "@aws-amplify/datastore";
-import { Activity } from "../../models";
-import { ActivityService } from "../ActivityService";
+import { Activity } from "@models/index";
+import { ActivityService } from "@services/ActivityService";
 
 jest.mock("@aws-amplify/datastore");
 

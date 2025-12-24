@@ -1,10 +1,10 @@
 import type { TFunction, i18n } from "i18next";
-import { getDefaultNamespace } from "./config/i18nConfig";
+import { getDefaultNamespace } from "@translations/config/i18nConfig";
 import {
   LanguageCode,
   isRTL,
   type TranslationBundle,
-} from "./translationTypes";
+} from "@translations/translationTypes";
 
 // Re-export getDefaultNamespace for convenience
 export { getDefaultNamespace };

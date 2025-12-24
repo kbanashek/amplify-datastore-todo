@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native";
-import { useRTL } from "../../hooks/useRTL";
-import { useTranslatedText } from "../../hooks/useTranslatedText";
-import { ActivityConfig } from "../../types/ActivityConfig";
-import { isIOS } from "../../utils/platform";
-import { TranslatedText } from "../TranslatedText";
+import { useRTL } from "@hooks/useRTL";
+import { useTranslatedText } from "@hooks/useTranslatedText";
+import { ActivityConfig } from "@task-types/ActivityConfig";
+import { isIOS } from "@utils/platform";
+import { TranslatedText } from "@components/TranslatedText";
 
 interface NavigationButtonsProps {
   currentScreenIndex: number;

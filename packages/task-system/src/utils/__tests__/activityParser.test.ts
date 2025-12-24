@@ -1,5 +1,5 @@
-import { parseActivityConfig } from "../activityParser";
-import type { ActivityConfig } from "../../types/ActivityConfig";
+import { parseActivityConfig } from "@utils/activityParser";
+import type { ActivityConfig } from "@task-types/ActivityConfig";
 
 describe("parseActivityConfig", () => {
   it("does not crash when activityGroups is a single object (fixture/import shape) and maps element.id to question", () => {

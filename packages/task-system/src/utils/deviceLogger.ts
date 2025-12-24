@@ -3,7 +3,7 @@
  * Helps identify which device/platform is performing operations
  */
 
-import { getPlatformIcon } from "./platformIcons";
+import { getPlatformIcon } from "@utils/platformIcons";
 
 /**
  * Enable verbose debug logging only when explicitly opted-in.

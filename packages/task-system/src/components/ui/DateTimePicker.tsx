@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleProp, ViewStyle } from "react-native";
 
-import { DateTimeField } from "./DateTimeField";
+import { DateTimeField } from "@components/ui/DateTimeField";
 
 export interface DateTimePickerProps {
   value: Date | null;
@@ -14,6 +14,12 @@ export interface DateTimePickerProps {
   style?: StyleProp<ViewStyle>;
 }
 
+/**
+ * A component for selecting dates and times.
+ *
+ * @param props - The properties for the DateTimePicker component
+ * @returns A DateTimeField component configured for date and time selection
+ */
 export const DateTimePicker: React.FC<DateTimePickerProps> = props => {
   return <DateTimeField {...props} mode="datetime" />;
 };

@@ -6,9 +6,9 @@ import type {
   TaskSystemGraphQLExecutor,
   TaskSystemSaveTempAnswersMapper,
   TempAnswerSyncConfig,
-} from "../types/tempAnswerSync";
-import { DEBUG_TEMP_ANSWER_SYNC_LOGS } from "../utils/debug";
-import { logWithPlatform } from "../utils/platformLogger";
+} from "@task-types/tempAnswerSync";
+import { DEBUG_TEMP_ANSWER_SYNC_LOGS } from "@utils/debug";
+import { logWithPlatform } from "@utils/platformLogger";
 
 type OutboxItem = {
   stableKey: string;

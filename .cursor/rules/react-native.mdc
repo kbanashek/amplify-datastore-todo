@@ -25,6 +25,105 @@ globs: ["**/*.tsx", "app/**/*.tsx", "src/components/**/*.tsx"]
 
 ---
 
+## No Hardcoded Colors or User-Facing Strings
+
+**NEVER hardcode colors or user-facing text strings in components or hooks.**
+
+### Colors
+
+All colors MUST come from the centralized color system:
+- `@constants/AppColors` - Primary color system (preferred)
+- `@constants/Colors` - Theme-aware colors (light/dark mode)
+
+**❌ Bad (hardcoded colors):**
+```typescript
+const getStatusColor = (): string => {
+  if (status === "error") return "#ff6b6b"; // Hardcoded hex
+  if (status === "success") return "#1dd1a1";
+  return "#a5b1c2";
+};
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#F3F7FA", // Hardcoded hex
+    borderColor: "rgba(0, 0, 0, 0.1)", // Hardcoded rgba
+  },
+});
+```
+
+**✅ Good (using color constants):**
+```typescript
+import { AppColors } from "@constants/AppColors";
+
+const getStatusColor = (): string => {
+  if (status === "error") return AppColors.errorRed;
+  if (status === "success") return AppColors.CIBlue;
+  return AppColors.mediumDarkGray;
+};
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: AppColors.powderGray,
+    borderColor: AppColors.blackShadow10,
+  },
+});
+```
+
+### User-Facing Strings
+
+All user-facing text MUST use the translation system (i18next):
+
+**❌ Bad (hardcoded strings):**
+```typescript
+const getStatusText = (): string => {
+  if (status === "offline") return "Offline";
+  if (status === "syncing") return "Syncing...";
+  return "Online & Synced";
+};
+
+<Text>Loading...</Text>
+<Button title="Submit" />
+```
+
+**✅ Good (using translations):**
+```typescript
+import { useTaskTranslation } from "@hooks/useTaskTranslation";
+
+const { t } = useTaskTranslation();
+
+const getStatusText = (): string => {
+  if (status === "offline") return t("status.offline");
+  if (status === "syncing") return t("status.syncing");
+  return t("status.synced");
+};
+
+<Text>{t("common.loading")}</Text>
+<Button title={t("common.submit")} />
+```
+
+### Adding New Colors
+
+If a color doesn't exist in `AppColors`:
+1. Check if an existing color can be used
+2. If truly new, add it to `@constants/AppColors.ts` with a semantic name
+3. Document why the new color is needed
+
+### Adding New Translations
+
+If a translation key doesn't exist:
+1. Add to `@translations/en.json` (English is the source)
+2. Use semantic, hierarchical keys: `feature.component.element`
+3. Example: `status.network.offline`, `questions.validation.required`
+
+### Exceptions
+
+Hardcoded values are acceptable ONLY in:
+- Test files (`__tests__/`) for assertions
+- Color constant definition files (`Colors.ts`, `AppColors.ts`)
+- One-off debugging (must be removed before commit)
+
+---
+
 ## UI/UX Design Patterns
 
 ### Task Display

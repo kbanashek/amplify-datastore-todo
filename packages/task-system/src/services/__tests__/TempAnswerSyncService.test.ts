@@ -1,8 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo, { NetInfoState } from "@react-native-community/netinfo";
 
-import { TempAnswerSyncService } from "../TempAnswerSyncService";
-import { createCallbackHolder } from "../../hooks/__tests__/testUtils";
+import { TempAnswerSyncService } from "@services/TempAnswerSyncService";
+import { createCallbackHolder } from "@test-utils/testUtils";
 
 jest.mock("@react-native-async-storage/async-storage", () => ({
   getItem: jest.fn(),

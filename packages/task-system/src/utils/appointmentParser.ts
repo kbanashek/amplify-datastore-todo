@@ -2,7 +2,7 @@ import {
   Appointment,
   AppointmentData,
   GroupedAppointment,
-} from "../types/Appointment";
+} from "@task-types/Appointment";
 
 /**
  * Parse appointment data from JSON structure

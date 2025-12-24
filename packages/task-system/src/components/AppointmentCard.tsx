@@ -1,15 +1,14 @@
-import { IconSymbol } from "./ui/IconSymbol";
+import { IconSymbol } from "@components/ui/IconSymbol";
+import { AppColors } from "@constants/AppColors";
+import { Shadows, TextStyles } from "@constants/AppStyles";
+import { useRTL } from "@hooks/useRTL";
+import { useTranslatedText } from "@hooks/useTranslatedText";
+import { Appointment } from "@task-types/Appointment";
+import { useTaskTranslation } from "@translations/index";
+import { getAppointmentIconConfig } from "@utils/appointmentIcon";
+import { formatTime, getTimezoneAbbreviation } from "@utils/appointmentParser";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { AppColors } from "../constants/AppColors";
-import { Shadows, TextStyles } from "../constants/AppStyles";
-import { useRTL } from "../hooks/useRTL";
-import { useTranslatedText } from "../hooks/useTranslatedText";
-import { Appointment, AppointmentType } from "../types/Appointment";
-import {
-  formatTime,
-  getTimezoneAbbreviation,
-} from "../utils/appointmentParser";
 
 interface AppointmentCardProps {
   appointment: Appointment;
@@ -17,33 +16,28 @@ interface AppointmentCardProps {
   timezoneId?: string;
 }
 
+/**
+ * A card component for displaying appointment information.
+ *
+ * @param appointment - The appointment to display
+ * @param onPress - Optional callback function when the card is pressed
+ * @param timezoneId - The timezone ID to use for formatting the time
+ * @returns A themed appointment card component with the provided appointment information
+ */
 export const AppointmentCard: React.FC<AppointmentCardProps> = ({
   appointment,
   onPress,
   timezoneId,
 }) => {
   const { rtlStyle, isRTL } = useRTL();
+  const { t } = useTaskTranslation();
   const { translatedText: title } = useTranslatedText(appointment.title);
 
-  const isTelehealth =
-    appointment.appointmentType === AppointmentType.TELEVISIT;
   const startTime = new Date(appointment.startAt);
   const formattedTime = formatTime(startTime, timezoneId);
   const timezoneAbbr = getTimezoneAbbreviation(timezoneId);
 
-  const getAppointmentIcon = () => {
-    if (isTelehealth) {
-      return "video.fill";
-    }
-    return "building.2.fill";
-  };
-
-  const getAppointmentTypeLabel = () => {
-    if (isTelehealth) {
-      return "Telehealth";
-    }
-    return "Onsite Visit";
-  };
+  const iconConfig = getAppointmentIconConfig(appointment.appointmentType);
 
   // Format: "Visit X starts at [time] [timezone]"
   const { translatedText: startsAtText } = useTranslatedText("starts at");
@@ -51,9 +45,7 @@ export const AppointmentCard: React.FC<AppointmentCardProps> = ({
     timezoneAbbr ? ` ${timezoneAbbr}` : ""
   }`;
 
-  const { translatedText: typeLabel } = useTranslatedText(
-    getAppointmentTypeLabel()
-  );
+  const typeLabel = t(iconConfig.translationKey);
 
   const cardContent = (
     <View style={[styles.card, rtlStyle(styles.card) as any]}>
@@ -62,7 +54,7 @@ export const AppointmentCard: React.FC<AppointmentCardProps> = ({
         style={[styles.iconContainer, rtlStyle(styles.iconContainer) as any]}
       >
         <IconSymbol
-          name={getAppointmentIcon() as any}
+          name={iconConfig.iconName as any}
           size={24}
           color={AppColors.white}
         />

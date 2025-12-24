@@ -1,17 +1,50 @@
 import { useState, useEffect, useRef } from "react";
-import { ActivityService } from "../services/ActivityService";
-import { Activity } from "../types/Activity";
-import { logErrorWithPlatform } from "../utils/platformLogger";
-import { dataSubscriptionLogger } from "../utils/dataSubscriptionLogger";
+import { ActivityService } from "@services/ActivityService";
+import { Activity } from "@task-types/Activity";
+import { logErrorWithPlatform } from "@utils/platformLogger";
+import { dataSubscriptionLogger } from "@utils/dataSubscriptionLogger";
 
+/**
+ * Return type for the useActivityList hook.
+ */
 interface UseActivityListReturn {
+  /** List of all activities */
   activities: Activity[];
+  /** Whether initial data is still loading */
   loading: boolean;
+  /** Error message from the most recent operation, or null */
   error: string | null;
+  /** Deletes an activity by ID */
   handleDeleteActivity: (id: string) => Promise<void>;
+  /** Manually refreshes the activity list */
   refreshActivities: () => Promise<void>;
 }
 
+/**
+ * React hook for managing activities with real-time synchronization.
+ *
+ * Provides reactive activity data via DataStore subscriptions and
+ * activity management operations. Activities are automatically updated
+ * when changes occur in the DataStore.
+ *
+ * @returns Object containing activity data, loading states, and management operations
+ *
+ * @example
+ * ```tsx
+ * const {
+ *   activities,
+ *   loading,
+ *   error,
+ *   handleDeleteActivity,
+ * } = useActivityList();
+ *
+ * // Display activities
+ * activities.map(activity => <ActivityCard key={activity.id} activity={activity} />);
+ *
+ * // Delete an activity
+ * await handleDeleteActivity("activity-123");
+ * ```
+ */
 export const useActivityList = (): UseActivityListReturn => {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

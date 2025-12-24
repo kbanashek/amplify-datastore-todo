@@ -2,7 +2,13 @@
  * Review screen component that displays all answers before submission
  */
 
-import { IconSymbol } from "../ui/IconSymbol";
+import { IconSymbol } from "@components/ui/IconSymbol";
+import { AppColors } from "@constants/AppColors";
+import { useRTL } from "@hooks/useRTL";
+import { useTranslatedText } from "@hooks/useTranslatedText";
+import { ParsedElement, ParsedScreen } from "@task-types/ActivityConfig";
+import { formatAnswer } from "@utils/answerFormatting";
+import { isIOS } from "@utils/platform";
 import React from "react";
 import {
   ActivityIndicator,
@@ -12,11 +18,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { AppColors } from "../../constants/AppColors";
-import { useRTL } from "../../hooks/useRTL";
-import { useTranslatedText } from "../../hooks/useTranslatedText";
-import { ParsedElement, ParsedScreen } from "../../types/ActivityConfig";
-import { isIOS } from "../../utils/platform";
 
 // Component for screen section with translated title
 const ScreenSection: React.FC<{
@@ -128,42 +129,6 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
     (isIOS() ? Math.max(tabBarHeight || 60, 60) : 0) +
     20;
 
-  const formatAnswer = (element: ParsedElement, answer: any): string => {
-    if (answer === null || answer === undefined || answer === "") {
-      return notAnsweredText;
-    }
-
-    const question = element.question;
-
-    // Handle different question types
-    if (question.type === "multiselect" && Array.isArray(answer)) {
-      if (answer.length === 0) return notAnsweredText;
-      // Find choice texts
-      const choiceTexts = answer
-        .map(val => {
-          const choice = question.choices?.find(
-            c => c.value === val || c.id === val
-          );
-          return choice?.text || val;
-        })
-        .filter(Boolean);
-      return choiceTexts.join(", ");
-    }
-
-    if (question.type === "singleselect") {
-      const choice = question.choices?.find(
-        c => c.value === answer || c.id === answer
-      );
-      return choice?.text || String(answer);
-    }
-
-    if (typeof answer === "string" && answer.length > 100) {
-      return answer.substring(0, 100) + "...";
-    }
-
-    return String(answer);
-  };
-
   return (
     <ScrollView
       style={styles.container}
@@ -187,7 +152,9 @@ export const ReviewScreen: React.FC<ReviewScreenProps> = ({
             screen={screen}
             answers={answers}
             onEditQuestion={onEditQuestion}
-            formatAnswer={formatAnswer}
+            formatAnswer={(element, answer) =>
+              formatAnswer(element, answer, notAnsweredText)
+            }
             notAnsweredText={notAnsweredText}
           />
         );

@@ -1,23 +1,60 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useAmplify } from "../contexts/AmplifyContext";
-import { TaskService } from "../services/TaskService";
-import { Task, TaskFilters } from "../types/Task";
-import { NetworkStatus } from "./useAmplifyState";
-import { logWithPlatform, logErrorWithPlatform } from "../utils/platformLogger";
-import { dataSubscriptionLogger } from "../utils/dataSubscriptionLogger";
+import { useAmplify } from "@contexts/AmplifyContext";
+import { TaskService } from "@services/TaskService";
+import { Task, TaskFilters } from "@task-types/Task";
+import { NetworkStatus } from "@hooks/useAmplifyState";
+import { logWithPlatform, logErrorWithPlatform } from "@utils/platformLogger";
+import { dataSubscriptionLogger } from "@utils/dataSubscriptionLogger";
 
+/**
+ * Return type for the useTaskList hook.
+ */
 interface UseTaskListReturn {
+  /** Filtered list of tasks based on provided filters */
   tasks: Task[];
+  /** Whether initial data is still loading */
   loading: boolean;
+  /** Error message from the most recent operation, or null */
   error: string | null;
+  /** Whether data is synchronized with the cloud */
   isSynced: boolean;
+  /** Whether the device is online */
   isOnline: boolean;
+  /** Deletes a task by ID */
   handleDeleteTask: (id: string) => Promise<void>;
+  /** Retries loading after an error */
   retryLoading: () => void;
+  /** Clears all data from the local DataStore */
   clearDataStore: () => Promise<void>;
+  /** Manually refreshes the task list */
   refreshTasks: () => Promise<void>;
 }
 
+/**
+ * React hook for managing tasks with real-time synchronization and filtering.
+ *
+ * Provides reactive task data via DataStore subscriptions, filtering capabilities,
+ * and task management operations. Tasks are automatically updated when changes
+ * occur in the DataStore.
+ *
+ * @param filters - Optional filters to apply to the task list (status, date range, etc.)
+ * @returns Object containing task data, loading states, and management operations
+ *
+ * @example
+ * ```tsx
+ * // Basic usage
+ * const { tasks, loading, error } = useTaskList();
+ *
+ * // With filters
+ * const { tasks } = useTaskList({
+ *   status: TaskStatus.OPEN,
+ *   startDate: new Date(),
+ * });
+ *
+ * // Delete a task
+ * await handleDeleteTask("task-123");
+ * ```
+ */
 export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
   const [allTasks, setAllTasks] = useState<Task[]>([]); // Store unfiltered tasks
   const [loading, setLoading] = useState<boolean>(true);

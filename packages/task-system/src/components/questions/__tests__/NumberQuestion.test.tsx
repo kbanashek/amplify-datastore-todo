@@ -1,11 +1,11 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { NumberQuestion } from "../NumberQuestion";
-import { Question } from "../../../types/ActivityConfig";
-import { ValidationType } from "../../../types/activity-config-enums";
+import { NumberQuestion } from "@components/questions/NumberQuestion";
+import { Question } from "@task-types/ActivityConfig";
+import { ValidationType } from "@task-types/activity-config-enums";
 
 // Mock useTranslatedText
-jest.mock("../../../hooks/useTranslatedText", () => ({
+jest.mock("@hooks/useTranslatedText", () => ({
   useTranslatedText: jest.fn((text: string) => ({
     translatedText: text,
     isTranslating: false,
@@ -13,7 +13,7 @@ jest.mock("../../../hooks/useTranslatedText", () => ({
 }));
 
 // Mock getUnitDisplayLabel
-jest.mock("../../../utils/unitLabel", () => ({
+jest.mock("@utils/unitLabel", () => ({
   getUnitDisplayLabel: jest.fn((text: string) => text || ""),
 }));
 

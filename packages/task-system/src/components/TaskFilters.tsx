@@ -10,7 +10,7 @@ import {
   TaskStatus,
   TaskType,
   TaskFilters as TaskFiltersType,
-} from "../types/Task";
+} from "@task-types/Task";
 
 interface TaskFiltersProps {
   filters: TaskFiltersType;

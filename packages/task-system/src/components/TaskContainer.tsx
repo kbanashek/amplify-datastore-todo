@@ -1,8 +1,13 @@
+import { GroupedTasksView } from "@components/GroupedTasksView";
+import { useActivityStartup } from "@hooks/useActivityStartup";
+import { useTaskContainer } from "@hooks/useTaskContainer";
 import React from "react";
-import { useTaskContainer } from "../hooks/useTaskContainer";
-import { useActivityStartup } from "../hooks/useActivityStartup";
-import { GroupedTasksView } from "./GroupedTasksView";
 
+/**
+ * A container component for displaying tasks and appointments.
+ *
+ * @returns A container component with the provided configuration
+ */
 export const TaskContainer: React.FC = () => {
   // Subscribe to activities on startup to log them
   useActivityStartup();

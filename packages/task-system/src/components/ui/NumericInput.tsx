@@ -1,3 +1,4 @@
+import { getBorderStyle } from "@utils/borderStyleHelper";
 import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 
@@ -16,6 +17,18 @@ interface NumericInputProps {
  * Reusable numeric input component with configurable border styles
  * Used for clinical measurements like blood pressure, temperature, etc.
  */
+/**
+ * A customizable numeric input component for capturing numeric values.
+ *
+ * @param value - The current input value
+ * @param onChange - Callback function when value changes
+ * @param placeholder - Placeholder text when input is empty (default: "---")
+ * @param maxLength - Maximum number of characters allowed (default: 3)
+ * @param borderStyle - Visual style of the input border: "line", "rectangle", or "oval" (default: "line")
+ * @param error - Whether to show error styling (default: false)
+ * @param testID - Test identifier for testing frameworks
+ * @param style - Additional style properties to apply to the container
+ */
 export const NumericInput: React.FC<NumericInputProps> = ({
   value,
   onChange,
@@ -26,21 +39,14 @@ export const NumericInput: React.FC<NumericInputProps> = ({
   testID,
   style,
 }) => {
-  const getBorderStyle = () => {
-    switch (borderStyle) {
-      case "oval":
-        return styles.ovalBorder;
-      case "rectangle":
-        return styles.rectangleBorder;
-      default:
-        return styles.lineBorder;
-    }
-  };
-
   return (
     <View style={style}>
       <TextInput
-        style={[styles.input, getBorderStyle(), error && styles.inputError]}
+        style={[
+          styles.input,
+          getBorderStyle(borderStyle, styles as any) as any,
+          error && styles.inputError,
+        ]}
         value={value}
         onChangeText={onChange}
         keyboardType="numeric"

@@ -1,18 +1,42 @@
 import { useCallback, useEffect, useState } from "react";
-import { ActivityService } from "../services/ActivityService";
-import { Activity } from "../types/Activity";
-import { logErrorWithPlatform, logWithPlatform } from "../utils/platformLogger";
+import { ActivityService } from "@services/ActivityService";
+import { Activity } from "@task-types/Activity";
+import { logErrorWithPlatform, logWithPlatform } from "@utils/platformLogger";
 
+/**
+ * Return type for the useActivity hook.
+ */
 interface UseActivityReturn {
+  /** The fetched activity, or null if not found/loading */
   activity: Activity | null;
+  /** Whether the activity is still loading */
   loading: boolean;
+  /** Error message from the fetch operation, or null */
   error: string | null;
+  /** Manually refresh the activity data */
   refresh: () => Promise<void>;
 }
 
 /**
- * Hook for fetching and reactively managing a single activity by ID
- * Provides reactive updates when the activity changes
+ * React hook for fetching and reactively managing a single activity by ID.
+ *
+ * Looks up an activity by either its `pk` (primary key) or `id` field.
+ * Subscribes to DataStore changes to reactively update when the activity is modified.
+ *
+ * @param activityId - The activity ID (pk or id) to fetch, or null to skip fetching
+ * @returns Object containing the activity, loading state, error, and refresh function
+ *
+ * @example
+ * ```tsx
+ * // Fetch an activity by ID
+ * const { activity, loading, error } = useActivity("ACTIVITY-123");
+ *
+ * if (loading) return <LoadingSpinner />;
+ * if (error) return <ErrorMessage message={error} />;
+ * if (!activity) return <NotFound />;
+ *
+ * return <ActivityDetails activity={activity} />;
+ * ```
  */
 export const useActivity = (activityId: string | null): UseActivityReturn => {
   const [activity, setActivity] = useState<Activity | null>(null);

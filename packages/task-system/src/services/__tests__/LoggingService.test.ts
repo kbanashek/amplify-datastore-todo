@@ -2,11 +2,11 @@
  * Unit tests for LoggingService
  */
 
-import { LoggingService } from "../LoggingService";
-import { ConsoleProvider } from "../logging/providers/ConsoleProvider";
-import { NativeProvider } from "../logging/providers/NativeProvider";
-import { SentryProvider } from "../logging/providers/SentryProvider";
-import { LogLevel, LogLevelPreset } from "../logging/types";
+import { LoggingService } from "@services/LoggingService";
+import { ConsoleProvider } from "@services/logging/providers/ConsoleProvider";
+import { NativeProvider } from "@services/logging/providers/NativeProvider";
+import { SentryProvider } from "@services/logging/providers/SentryProvider";
+import { LogLevel, LogLevelPreset } from "@services/logging/types";
 
 describe("LoggingService", () => {
   let service: LoggingService;

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
-import { useTaskTranslation } from "../translations";
-import { TranslatedText } from "./TranslatedText";
+import { useTaskTranslation } from "@translations/index";
+import { TranslatedText } from "@components/TranslatedText";
 
 /**
  * Simple test component to verify translation system works

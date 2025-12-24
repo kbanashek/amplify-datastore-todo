@@ -14,6 +14,11 @@ const en_US = {
     today: "Today",
     dashboard: "Dashboard",
     startsAt: "starts at",
+    untitled: "Untitled Task",
+  },
+  appointment: {
+    telehealth: "Telehealth",
+    onsiteVisit: "Onsite Visit",
   },
   activity: {
     required: "Required",
@@ -34,6 +39,13 @@ const en_US = {
     edit: "Edit",
     close: "Close",
     loading: "Loading...",
+  },
+  status: {
+    offline: "Offline",
+    syncing: "Syncing...",
+    synced: "Online & Synced",
+    syncError: "Sync Error",
+    connecting: "Connecting...",
   },
   questions: {
     validationError: "Validation Error",

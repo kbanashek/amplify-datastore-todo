@@ -3,9 +3,9 @@
  * Will integrate with @sentry/react-native when configured
  */
 
-import type { LogEntry, LogProvider } from "../types";
-import { LogLevel } from "../types";
-import { mapLogLevelToSentrySeverity } from "../utils";
+import type { LogEntry, LogProvider } from "@services/logging/types";
+import { LogLevel } from "@services/logging/types";
+import { mapLogLevelToSentrySeverity } from "@services/logging/utils";
 
 export class SentryProvider implements LogProvider {
   private enabled: boolean = false;

@@ -1,10 +1,10 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { HorizontalVASQuestion } from "../HorizontalVASQuestion";
-import { Question } from "../../../types/ActivityConfig";
+import { HorizontalVASQuestion } from "@components/questions/HorizontalVASQuestion";
+import { Question } from "@task-types/ActivityConfig";
 
 // Mock useTranslatedText
-jest.mock("../../../hooks/useTranslatedText", () => ({
+jest.mock("@hooks/useTranslatedText", () => ({
   useTranslatedText: jest.fn((text: string) => ({
     translatedText: text || "",
     isTranslating: false,

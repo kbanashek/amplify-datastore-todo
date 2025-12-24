@@ -7,12 +7,12 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from "react-native";
-import { Task, TaskStatus, TaskType } from "../types/Task";
-import { useTaskList } from "../hooks/useTaskList";
-import { getServiceLogger } from "../utils/serviceLogger";
-import { TaskCard } from "./TaskCard";
+import { Task, TaskStatus, TaskType } from "@task-types/Task";
+import { useTaskList } from "@hooks/useTaskList";
+import { getServiceLogger } from "@utils/serviceLogger";
+import { TaskCard } from "@components/TaskCard";
 
-import { TaskFilters } from "../types/Task";
+import { TaskFilters } from "@task-types/Task";
 
 const logger = getServiceLogger("TasksView");
 

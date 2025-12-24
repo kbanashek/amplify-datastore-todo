@@ -1,9 +1,9 @@
-import { AppointmentService } from "../AppointmentService";
+import { AppointmentService } from "@services/AppointmentService";
 import {
   AppointmentData,
   AppointmentType,
   AppointmentStatus,
-} from "../../types/Appointment";
+} from "@task-types/Appointment";
 
 const mockAppointmentData: AppointmentData = {
   clinicPatientAppointments: {
@@ -59,7 +59,7 @@ const mockAppointmentData: AppointmentData = {
 
 // Mock appointmentParser
 const mockParseAppointmentData = jest.fn();
-jest.mock("../../utils/appointmentParser", () => ({
+jest.mock("@utils/appointmentParser", () => ({
   parseAppointmentData: (...args: unknown[]) =>
     mockParseAppointmentData(...args),
 }));

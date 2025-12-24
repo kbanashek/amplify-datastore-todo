@@ -10,13 +10,13 @@
  * - Formats messages according to react-native-logs best practices
  */
 
-import type { LogEntry, LogProvider } from "../types";
-import { LogLevel } from "../types";
+import type { LogEntry, LogProvider } from "@services/logging/types";
+import { LogLevel } from "@services/logging/types";
 import {
   formatMetadataInline,
   formatSequenceDiagram,
   mapLogLevelToNativeSeverity,
-} from "../utils";
+} from "@services/logging/utils";
 
 interface NativeProviderConfig {
   singleLine?: boolean;

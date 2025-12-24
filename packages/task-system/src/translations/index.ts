@@ -7,8 +7,8 @@
 export {
   TranslationProvider,
   useTaskTranslationContext,
-} from "./TranslationProvider";
-export { useTaskTranslation } from "./useTaskTranslation";
+} from "@translations/TranslationProvider";
+export { useTaskTranslation } from "@translations/useTaskTranslation";
 
 // Utilities
 export {
@@ -18,7 +18,7 @@ export {
   getTranslationKey,
   safeTranslate,
   loadDefaultTranslations,
-} from "./translationUtils";
+} from "@translations/translationUtils";
 
 // Types
 export type {
@@ -31,20 +31,20 @@ export type {
   CommonTranslationKeys,
   QuestionTranslationKeys,
   TaskSystemTranslations,
-} from "./translationTypes";
+} from "@translations/translationTypes";
 
 // Re-export language types and constants
-export type { LanguageCode } from "./translationTypes";
-export { SUPPORTED_LANGUAGES, isRTL } from "./translationTypes";
+export type { LanguageCode } from "@translations/translationTypes";
+export { SUPPORTED_LANGUAGES, isRTL } from "@translations/translationTypes";
 
 // Default translations
-export { en_US } from "./locales/index";
+export { en_US } from "@translations/locales/index";
 
 // Configuration
-export { getDefaultNamespace } from "./config/i18nConfig";
+export { getDefaultNamespace } from "@translations/config/i18nConfig";
 
 // Compatibility: Export seedTranslationMemories for old TranslationMemoryService
 // This is a temporary compatibility layer for the old AWS Translate system
-import enEsMemory from "./memory.en-es.json";
+import enEsMemory from "@translations/memory.en-es.json";
 
 export const seedTranslationMemories = [enEsMemory] as const;

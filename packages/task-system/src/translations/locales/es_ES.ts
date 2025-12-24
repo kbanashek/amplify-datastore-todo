@@ -14,6 +14,11 @@ const es_ES = {
     today: "Hoy",
     dashboard: "Tablero",
     startsAt: "comienza a las",
+    untitled: "Tarea Sin Título",
+  },
+  appointment: {
+    telehealth: "Telesalud",
+    onsiteVisit: "Visita en Sitio",
   },
   activity: {
     required: "Requerido",
@@ -34,6 +39,13 @@ const es_ES = {
     edit: "Editar",
     close: "Cerrar",
     loading: "Cargando...",
+  },
+  status: {
+    offline: "Sin conexión",
+    syncing: "Sincronizando...",
+    synced: "En línea y sincronizado",
+    syncError: "Error de sincronización",
+    connecting: "Conectando...",
   },
   questions: {
     validationError: "Error de Validación",

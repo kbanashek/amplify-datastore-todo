@@ -1,18 +1,46 @@
 import { useState, useEffect } from "react";
-import { TaskResultService } from "../services/TaskResultService";
-import { TaskResult } from "../types/TaskResult";
-import { getServiceLogger } from "../utils/serviceLogger";
+import { TaskResultService } from "@services/TaskResultService";
+import { TaskResult } from "@task-types/TaskResult";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("useTaskResultList");
 
+/**
+ * Return type for the useTaskResultList hook.
+ */
 interface UseTaskResultListReturn {
+  /** List of all task results */
   taskResults: TaskResult[];
+  /** Whether initial data is still loading */
   loading: boolean;
+  /** Error message from the most recent operation, or null */
   error: string | null;
+  /** Deletes a task result by ID */
   handleDeleteTaskResult: (id: string) => Promise<void>;
+  /** Manually refreshes the task result list */
   refreshTaskResults: () => Promise<void>;
 }
 
+/**
+ * React hook for managing task results with real-time synchronization.
+ *
+ * Provides reactive task result data via DataStore subscriptions.
+ * Task results contain the outcomes/submissions of completed tasks.
+ *
+ * @returns Object containing task result data, loading states, and management operations
+ *
+ * @example
+ * ```tsx
+ * const {
+ *   taskResults,
+ *   loading,
+ *   handleDeleteTaskResult,
+ * } = useTaskResultList();
+ *
+ * // Find results for a specific task
+ * const resultsForTask = taskResults.filter(r => r.taskId === taskId);
+ * ```
+ */
 export const useTaskResultList = (): UseTaskResultListReturn => {
   const [taskResults, setTaskResults] = useState<TaskResult[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

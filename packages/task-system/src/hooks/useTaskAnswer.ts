@@ -1,11 +1,11 @@
 import { useState, useCallback, useEffect } from "react";
-import { TaskAnswerService } from "../services/TaskAnswerService";
+import { TaskAnswerService } from "@services/TaskAnswerService";
 import {
   TaskAnswer,
   CreateTaskAnswerInput,
   UpdateTaskAnswerInput,
-} from "../types/TaskAnswer";
-import { getServiceLogger } from "../utils/serviceLogger";
+} from "@task-types/TaskAnswer";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("useTaskAnswer");
 

@@ -1,13 +1,30 @@
 import { renderHook } from "@testing-library/react-native";
-import { useNetworkStatus } from "../useNetworkStatus";
-import { NetworkStatus, SyncState } from "../useAmplifyState";
+import { AppColors } from "@constants/AppColors";
+import { useNetworkStatus } from "@hooks/useNetworkStatus";
+import { NetworkStatus, SyncState } from "@hooks/useAmplifyState";
 
 // Mock AmplifyContext
-jest.mock("../../contexts/AmplifyContext", () => ({
+jest.mock("@contexts/AmplifyContext", () => ({
   useAmplify: jest.fn(),
 }));
 
-import { useAmplify } from "../../contexts/AmplifyContext";
+// Mock translation hook
+jest.mock("@translations/useTaskTranslation", () => ({
+  useTaskTranslation: () => ({
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        "status.offline": "Offline",
+        "status.syncing": "Syncing...",
+        "status.synced": "Online & Synced",
+        "status.syncError": "Sync Error",
+        "status.connecting": "Connecting...",
+      };
+      return translations[key] ?? key;
+    },
+  }),
+}));
+
+import { useAmplify } from "@contexts/AmplifyContext";
 
 describe("useNetworkStatus", () => {
   const mockUseAmplify = useAmplify as jest.MockedFunction<typeof useAmplify>;
@@ -17,7 +34,7 @@ describe("useNetworkStatus", () => {
   });
 
   describe("status color", () => {
-    it("returns red for offline status", () => {
+    it("returns statusOffline color for offline status", () => {
       mockUseAmplify.mockReturnValue({
         networkStatus: NetworkStatus.Offline,
         syncState: SyncState.NotSynced,
@@ -25,10 +42,10 @@ describe("useNetworkStatus", () => {
         conflictCount: 0,
       } as any);
       const { result } = renderHook(() => useNetworkStatus());
-      expect(result.current.statusColor).toBe("#ff6b6b");
+      expect(result.current.statusColor).toBe(AppColors.statusOffline);
     });
 
-    it("returns yellow for syncing state", () => {
+    it("returns statusSyncing color for syncing state", () => {
       mockUseAmplify.mockReturnValue({
         networkStatus: NetworkStatus.Online,
         syncState: SyncState.Syncing,
@@ -36,10 +53,10 @@ describe("useNetworkStatus", () => {
         conflictCount: 0,
       } as any);
       const { result } = renderHook(() => useNetworkStatus());
-      expect(result.current.statusColor).toBe("#feca57");
+      expect(result.current.statusColor).toBe(AppColors.statusSyncing);
     });
 
-    it("returns green for synced state", () => {
+    it("returns statusSynced color for synced state", () => {
       mockUseAmplify.mockReturnValue({
         networkStatus: NetworkStatus.Online,
         syncState: SyncState.Synced,
@@ -47,10 +64,10 @@ describe("useNetworkStatus", () => {
         conflictCount: 0,
       } as any);
       const { result } = renderHook(() => useNetworkStatus());
-      expect(result.current.statusColor).toBe("#1dd1a1");
+      expect(result.current.statusColor).toBe(AppColors.statusSynced);
     });
 
-    it("returns red for error state", () => {
+    it("returns statusOffline color for error state", () => {
       mockUseAmplify.mockReturnValue({
         networkStatus: NetworkStatus.Online,
         syncState: SyncState.Error,
@@ -58,10 +75,10 @@ describe("useNetworkStatus", () => {
         conflictCount: 0,
       } as any);
       const { result } = renderHook(() => useNetworkStatus());
-      expect(result.current.statusColor).toBe("#ff6b6b");
+      expect(result.current.statusColor).toBe(AppColors.statusOffline);
     });
 
-    it("returns gray for unknown state", () => {
+    it("returns statusUnknown color for unknown state", () => {
       mockUseAmplify.mockReturnValue({
         networkStatus: NetworkStatus.Online,
         syncState: SyncState.NotSynced,
@@ -69,7 +86,7 @@ describe("useNetworkStatus", () => {
         conflictCount: 0,
       } as any);
       const { result } = renderHook(() => useNetworkStatus());
-      expect(result.current.statusColor).toBe("#a5b1c2");
+      expect(result.current.statusColor).toBe(AppColors.statusUnknown);
     });
   });
 
@@ -139,7 +156,7 @@ describe("useNetworkStatus", () => {
         conflictCount: 0,
       } as any);
       const { result } = renderHook(() => useNetworkStatus());
-      expect(result.current.statusColor).toBe("#ff6b6b");
+      expect(result.current.statusColor).toBe(AppColors.statusOffline);
       expect(result.current.statusText).toBe("Offline");
     });
   });

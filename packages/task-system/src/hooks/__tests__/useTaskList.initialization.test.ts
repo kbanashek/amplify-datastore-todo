@@ -1,9 +1,9 @@
 import { renderHook, waitFor, act } from "@testing-library/react-native";
-import { useTaskList } from "../useTaskList";
-import { TaskStatus, TaskType } from "../../types/Task";
+import { useTaskList } from "@hooks/useTaskList";
+import { TaskStatus, TaskType } from "@task-types/Task";
 
 // Mock TaskService
-jest.mock("../../services/TaskService", () => ({
+jest.mock("@services/TaskService", () => ({
   TaskService: {
     subscribeTasks: jest.fn(),
     getTasks: jest.fn(),
@@ -13,13 +13,13 @@ jest.mock("../../services/TaskService", () => ({
 }));
 
 // Mock AmplifyContext
-jest.mock("../../contexts/AmplifyContext", () => ({
+jest.mock("@contexts/AmplifyContext", () => ({
   useAmplify: jest.fn(),
 }));
 
-import { TaskService } from "../../services/TaskService";
-import { useAmplify } from "../../contexts/AmplifyContext";
-import { NetworkStatus } from "../useAmplifyState";
+import { TaskService } from "@services/TaskService";
+import { useAmplify } from "@contexts/AmplifyContext";
+import { NetworkStatus } from "@hooks/useAmplifyState";
 
 describe("useTaskList - Initialization", () => {
   const mockSubscribeTasks = TaskService.subscribeTasks as jest.MockedFunction<

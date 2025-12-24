@@ -1,13 +1,51 @@
 import React from "react";
-import { Task, TaskStatus } from "../types/Task";
+import { Task, TaskStatus } from "@task-types/Task";
 
+/**
+ * Represents a group of tasks organized by day and time.
+ */
 export interface GroupedTask {
+  /** Human-readable day label (e.g., "Today", "Tomorrow", "Monday") */
   dayLabel: string;
+  /** Date string in YYYY-MM-DD format */
   dayDate: string;
+  /** Tasks without a specific start time */
   tasksWithoutTime: Task[];
+  /** Tasks grouped by their start time */
   timeGroups: { time: string; tasks: Task[] }[];
 }
 
+/**
+ * React hook for grouping tasks by day and time.
+ *
+ * Groups tasks into a hierarchical structure organized by:
+ * 1. Day (Today, Tomorrow, or weekday name)
+ * 2. Time within each day
+ *
+ * Tasks are filtered to exclude expired tasks (unless they have active status)
+ * and sorted chronologically.
+ *
+ * @param tasks - Array of tasks to group
+ * @returns Array of grouped task objects, one per day
+ *
+ * @example
+ * ```tsx
+ * const groupedTasks = useGroupedTasks(tasks);
+ *
+ * // Render grouped tasks
+ * groupedTasks.map(group => (
+ *   <View key={group.dayDate}>
+ *     <Text>{group.dayLabel}</Text>
+ *     {group.timeGroups.map(timeGroup => (
+ *       <View key={timeGroup.time}>
+ *         <Text>{timeGroup.time}</Text>
+ *         {timeGroup.tasks.map(task => <TaskCard task={task} />)}
+ *       </View>
+ *     ))}
+ *   </View>
+ * ));
+ * ```
+ */
 export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
   return React.useMemo(() => {
     const now = new Date();

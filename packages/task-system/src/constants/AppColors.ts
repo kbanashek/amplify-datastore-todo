@@ -13,21 +13,33 @@ export const AppColors = {
   // Primary Brand Colors
   CINavy: "#1E376C",
   CIBlue: "#237cb8",
+  headerBlue: "#1e40af",
   punch: "#D93D23",
   errorRed: "#F44336",
 
   // Neutral Colors - Text
   gray: "#333333",
   mediumDarkGray: "#666666",
+  darkGray: "#57606f",
   approxNero: "#232323",
+  almostBlack: "#1a1a1a",
 
   // Neutral Colors - Backgrounds & Borders
   lightGray: "#E5E5E5",
   ltGray: "#EEEEEE",
   powderGray: "#F3F7FA",
+  borderGray: "#e5e7eb",
+  iconGray: "#6b7280",
 
   // Accent Colors
   lightYellow: "#FFD85E",
+
+  // Status Colors
+  statusOffline: "#ff6b6b",
+  statusSyncing: "#feca57",
+  statusSynced: "#1dd1a1",
+  statusUnknown: "#a5b1c2",
+  successGreen: "#27ae60",
 
   // Opacity Variants
   CINavyHalfOpacity: "#1E376C50",
