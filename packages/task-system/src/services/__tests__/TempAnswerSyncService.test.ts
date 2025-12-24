@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import NetInfo, { NetInfoState } from "@react-native-community/netinfo";
 
 import { TempAnswerSyncService } from "../TempAnswerSyncService";
+import { createCallbackHolder } from "../../hooks/__tests__/testUtils";
 
 jest.mock("@react-native-async-storage/async-storage", () => ({
   getItem: jest.fn(),
@@ -101,18 +102,16 @@ describe("TempAnswerSyncService", () => {
       .spyOn(TempAnswerSyncService, "flush")
       .mockResolvedValue({ flushed: 0, remaining: 0 });
 
-    const listenerHolder: { fn: ((state: NetInfoState) => void) | null } = {
-      fn: null,
-    };
+    const { holder, setCallback } = createCallbackHolder<[NetInfoState]>();
     (NetInfo.addEventListener as jest.Mock).mockImplementation(cb => {
-      listenerHolder.fn = cb;
+      setCallback(cb);
       return () => {};
     });
 
     TempAnswerSyncService.startAutoFlush();
     expect(NetInfo.addEventListener).toHaveBeenCalled();
 
-    listenerHolder.fn?.({ isConnected: true } as NetInfoState);
+    holder.callback?.({ isConnected: true } as NetInfoState);
     expect(flushSpy).toHaveBeenCalled();
   });
 });
