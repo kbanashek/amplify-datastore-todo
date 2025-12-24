@@ -10,7 +10,12 @@ jest.mock("../../services/AppointmentService", () => ({
 }));
 
 import { AppointmentService } from "../../services/AppointmentService";
-import { Appointment, AppointmentData } from "../../types/Appointment";
+import {
+  Appointment,
+  AppointmentData,
+  AppointmentStatus,
+  AppointmentType,
+} from "../../types/Appointment";
 
 describe("useAppointmentList", () => {
   const mockGetAppointmentData =
@@ -23,26 +28,31 @@ describe("useAppointmentList", () => {
     >;
 
   const mockAppointmentData: AppointmentData = {
-    appointments: [
-      {
-        id: "1",
-        title: "Appointment 1",
-        startAt: new Date().toISOString(),
-        endAt: new Date().toISOString(),
-        status: "SCHEDULED",
-        type: "IN_PERSON",
+    clinicPatientAppointments: {
+      clinicAppointments: {
+        items: [],
       },
-    ],
+    },
+    siteTimezoneId: "America/New_York",
   };
 
   const mockAppointments: Appointment[] = [
     {
-      id: "1",
+      appointmentId: "1",
+      eventId: "EVENT-1",
+      patientId: "PATIENT-1",
+      siteId: "SITE-1",
       title: "Appointment 1",
-      startAt: new Date(),
-      endAt: new Date(),
-      status: "SCHEDULED",
-      type: "IN_PERSON",
+      startAt: new Date().toISOString(),
+      endAt: new Date().toISOString(),
+      appointmentType: AppointmentType.ONSITE,
+      status: AppointmentStatus.SCHEDULED,
+      isDeleted: 0,
+      rescheduled: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      version: 1,
+      __typename: "Appointment",
     },
   ];
 
@@ -127,12 +137,21 @@ describe("useAppointmentList", () => {
       const updatedAppointments: Appointment[] = [
         ...mockAppointments,
         {
-          id: "2",
+          appointmentId: "2",
+          eventId: "EVENT-2",
+          patientId: "PATIENT-2",
+          siteId: "SITE-2",
           title: "Appointment 2",
-          startAt: new Date(),
-          endAt: new Date(),
-          status: "SCHEDULED",
-          type: "IN_PERSON",
+          startAt: new Date().toISOString(),
+          endAt: new Date().toISOString(),
+          appointmentType: AppointmentType.ONSITE,
+          status: AppointmentStatus.SCHEDULED,
+          isDeleted: 0,
+          rescheduled: 0,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          version: 1,
+          __typename: "Appointment",
         },
       ];
       mockGetAppointments.mockResolvedValue(updatedAppointments);

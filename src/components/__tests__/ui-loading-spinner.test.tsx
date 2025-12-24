@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
 
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { LoadingSpinner } from "@orion/task-system";
 
 describe("UI/LoadingSpinner", () => {
   it("renders ActivityIndicator", () => {

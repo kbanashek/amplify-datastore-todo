@@ -110,7 +110,9 @@ describe("TempAnswerSyncService", () => {
     TempAnswerSyncService.startAutoFlush();
     expect(NetInfo.addEventListener).toHaveBeenCalled();
 
-    listener?.({ isConnected: true });
+    if (listener) {
+      (listener as any)({ isConnected: true });
+    }
     expect(flushSpy).toHaveBeenCalled();
   });
 });

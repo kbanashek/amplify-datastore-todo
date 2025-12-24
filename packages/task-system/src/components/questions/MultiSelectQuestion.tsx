@@ -1,10 +1,14 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Question } from "../../types/ActivityConfig";
+import { Choice, Question } from "../../types/ActivityConfig";
 import { useTaskTranslation } from "../../translations";
 import { getServiceLogger } from "../../utils/serviceLogger";
 
 const logger = getServiceLogger("MultiSelectQuestion");
+
+interface TranslatedChoice extends Choice {
+  translatedText?: string;
+}
 
 interface MultiSelectQuestionProps {
   question: Question;
@@ -25,7 +29,7 @@ export const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
   const choices = question.choices || [];
 
   // Translate choices synchronously using i18next
-  const translatedChoices = React.useMemo(() => {
+  const translatedChoices = React.useMemo<TranslatedChoice[]>(() => {
     if (currentLanguage === "en") {
       return choices;
     }

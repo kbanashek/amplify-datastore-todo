@@ -27,7 +27,7 @@ describe("buildTaskSystemFixtureV1", () => {
       (a: any) => a.pk === "ACTIVITY-MULTI-PAGE-FIXTURE-1"
     );
     expect(multiActivity).toBeTruthy();
-    const parsedLayouts = JSON.parse(multiActivity.layouts);
+    const parsedLayouts = JSON.parse(multiActivity?.layouts || "{}");
     expect(parsedLayouts[0].screens).toHaveLength(3);
 
     // 8:00–8:30 AM local on 2025-12-19

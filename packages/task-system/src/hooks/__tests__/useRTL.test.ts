@@ -138,7 +138,7 @@ describe("useRTL", () => {
         textAlign: "left",
       };
       const rtlStyle = result.current.rtlStyle(style);
-      expect(rtlStyle.textAlign).toBe("right");
+      expect((rtlStyle as TextStyle).textAlign).toBe("right");
     });
 
     it("flips textAlign right to left", () => {
@@ -147,7 +147,7 @@ describe("useRTL", () => {
         textAlign: "right",
       };
       const rtlStyle = result.current.rtlStyle(style);
-      expect(rtlStyle.textAlign).toBe("left");
+      expect((rtlStyle as TextStyle).textAlign).toBe("left");
     });
 
     it("handles createRTLStyles with multiple styles", () => {

@@ -11,6 +11,7 @@ jest.mock("../../services/DataPointService", () => ({
 }));
 
 import { DataPointService } from "../../services/DataPointService";
+import { DataPointInstance as DataPointInstanceModel } from "../../models";
 import {
   DataPointInstance,
   CreateDataPointInstanceInput,
@@ -30,7 +31,7 @@ describe("useDataPointInstance", () => {
       typeof DataPointService.updateDataPointInstance
     >;
 
-  const mockInstances: DataPointInstance[] = [
+  const mockInstances = [
     {
       id: "1",
       pk: "INSTANCE-1",
@@ -55,7 +56,7 @@ describe("useDataPointInstance", () => {
       questionId: "QUESTION-1",
       answers: "Answer 3",
     },
-  ];
+  ] as DataPointInstanceModel[];
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -83,9 +84,7 @@ describe("useDataPointInstance", () => {
     });
 
     it("updates instances when subscription callback fires", async () => {
-      let subscriptionCallback:
-        | ((items: DataPointInstance[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       mockSubscribeDataPointInstances.mockImplementation(callback => {
         subscriptionCallback = callback;
         return { unsubscribe: jest.fn() };
@@ -94,7 +93,12 @@ describe("useDataPointInstance", () => {
       expect(result.current.loading).toBe(true);
 
       if (subscriptionCallback) {
-        subscriptionCallback(mockInstances, true);
+        (
+          subscriptionCallback as (
+            items: DataPointInstanceModel[],
+            synced: boolean
+          ) => void
+        )(mockInstances, true);
       }
 
       await waitFor(() => {
@@ -106,9 +110,7 @@ describe("useDataPointInstance", () => {
 
   describe("getInstancesByActivityId", () => {
     it("filters instances by activity ID", async () => {
-      let subscriptionCallback:
-        | ((items: DataPointInstance[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       mockSubscribeDataPointInstances.mockImplementation(callback => {
         subscriptionCallback = callback;
         return { unsubscribe: jest.fn() };
@@ -116,7 +118,12 @@ describe("useDataPointInstance", () => {
       const { result } = renderHook(() => useDataPointInstance());
 
       if (subscriptionCallback) {
-        subscriptionCallback(mockInstances, true);
+        (
+          subscriptionCallback as (
+            items: DataPointInstanceModel[],
+            synced: boolean
+          ) => void
+        )(mockInstances, true);
       }
 
       await waitFor(() => {
@@ -132,9 +139,7 @@ describe("useDataPointInstance", () => {
     });
 
     it("returns empty array when no instances for activity", async () => {
-      let subscriptionCallback:
-        | ((items: DataPointInstance[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       mockSubscribeDataPointInstances.mockImplementation(callback => {
         subscriptionCallback = callback;
         return { unsubscribe: jest.fn() };
@@ -142,7 +147,12 @@ describe("useDataPointInstance", () => {
       const { result } = renderHook(() => useDataPointInstance());
 
       if (subscriptionCallback) {
-        subscriptionCallback(mockInstances, true);
+        (
+          subscriptionCallback as (
+            items: DataPointInstanceModel[],
+            synced: boolean
+          ) => void
+        )(mockInstances, true);
       }
 
       await waitFor(() => {
@@ -157,9 +167,7 @@ describe("useDataPointInstance", () => {
 
   describe("getInstanceByQuestionId", () => {
     it("finds instance by activity ID and question ID", async () => {
-      let subscriptionCallback:
-        | ((items: DataPointInstance[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       mockSubscribeDataPointInstances.mockImplementation(callback => {
         subscriptionCallback = callback;
         return { unsubscribe: jest.fn() };
@@ -167,7 +175,12 @@ describe("useDataPointInstance", () => {
       const { result } = renderHook(() => useDataPointInstance());
 
       if (subscriptionCallback) {
-        subscriptionCallback(mockInstances, true);
+        (
+          subscriptionCallback as (
+            items: DataPointInstanceModel[],
+            synced: boolean
+          ) => void
+        )(mockInstances, true);
       }
 
       await waitFor(() => {
@@ -184,9 +197,7 @@ describe("useDataPointInstance", () => {
     });
 
     it("returns undefined when instance not found", async () => {
-      let subscriptionCallback:
-        | ((items: DataPointInstance[], synced: boolean) => void)
-        | null = null;
+      let subscriptionCallback: any = null;
       mockSubscribeDataPointInstances.mockImplementation(callback => {
         subscriptionCallback = callback;
         return { unsubscribe: jest.fn() };
@@ -194,7 +205,12 @@ describe("useDataPointInstance", () => {
       const { result } = renderHook(() => useDataPointInstance());
 
       if (subscriptionCallback) {
-        subscriptionCallback(mockInstances, true);
+        (
+          subscriptionCallback as (
+            items: DataPointInstanceModel[],
+            synced: boolean
+          ) => void
+        )(mockInstances, true);
       }
 
       await waitFor(() => {
@@ -214,14 +230,14 @@ describe("useDataPointInstance", () => {
       mockSubscribeDataPointInstances.mockReturnValue({
         unsubscribe: jest.fn(),
       });
-      const newInstance: DataPointInstance = {
+      const newInstance = {
         id: "4",
         pk: "INSTANCE-4",
         sk: "SK-4",
         activityId: "ACTIVITY-1",
         questionId: "QUESTION-3",
         answers: "New Answer",
-      };
+      } as DataPointInstanceModel;
       mockCreateDataPointInstance.mockResolvedValue(newInstance);
       const { result } = renderHook(() => useDataPointInstance());
 
@@ -306,10 +322,10 @@ describe("useDataPointInstance", () => {
       mockSubscribeDataPointInstances.mockReturnValue({
         unsubscribe: jest.fn(),
       });
-      const updatedInstance: DataPointInstance = {
+      const updatedInstance = {
         ...mockInstances[0],
         answers: "Updated Answer",
-      };
+      } as DataPointInstanceModel;
       mockUpdateDataPointInstance.mockResolvedValue(updatedInstance);
       const { result } = renderHook(() => useDataPointInstance());
 

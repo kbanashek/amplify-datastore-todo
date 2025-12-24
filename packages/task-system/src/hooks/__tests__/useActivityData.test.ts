@@ -57,11 +57,11 @@ describe("useActivityData", () => {
         id: "screen-1",
         name: "Screen 1",
         order: 1,
-        text: "Screen 1",
         elements: [],
-        displayProperties: [],
+        displayProperties: {},
       },
     ],
+    questions: [],
   };
 
   const mockActivityConfig: ActivityConfig = {

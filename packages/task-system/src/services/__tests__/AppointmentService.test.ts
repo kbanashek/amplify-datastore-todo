@@ -1,5 +1,9 @@
 import { AppointmentService } from "../AppointmentService";
-import { AppointmentData } from "../../types/Appointment";
+import {
+  AppointmentData,
+  AppointmentType,
+  AppointmentStatus,
+} from "../../types/Appointment";
 
 const mockAppointmentData: AppointmentData = {
   clinicPatientAppointments: {
@@ -7,13 +11,13 @@ const mockAppointmentData: AppointmentData = {
       items: [
         {
           telehealthMeetingId: "meeting-123",
-          appointmentType: "TELEVISIT",
+          appointmentType: AppointmentType.TELEVISIT,
           title: "Follow-up Consultation",
           siteId: "Site.UUID-12345",
           data: "{}",
           isDeleted: 0,
           patientId: "Patient.UUID-67890",
-          status: "SCHEDULED",
+          status: AppointmentStatus.SCHEDULED,
           description: "Regular follow-up appointment",
           startAt: "2025-12-12T14:00:00.000Z",
           endAt: "2025-12-12T15:00:00.000Z",
@@ -28,13 +32,13 @@ const mockAppointmentData: AppointmentData = {
         },
         {
           telehealthMeetingId: null,
-          appointmentType: "ONSITE",
+          appointmentType: AppointmentType.ONSITE,
           title: "Lab Work Appointment",
           siteId: "Site.UUID-12345",
           data: "{}",
           isDeleted: 1, // This should be filtered out
           patientId: "Patient.UUID-67890",
-          status: "SCHEDULED",
+          status: AppointmentStatus.SCHEDULED,
           description: "Blood work and lab tests",
           startAt: "2025-12-12T10:00:00.000Z",
           endAt: "2025-12-12T10:30:00.000Z",
@@ -88,7 +92,7 @@ describe("AppointmentService", () => {
         {
           appointmentId: "Appointment.UUID-abc123",
           title: "Follow-up Consultation",
-          appointmentType: "TELEVISIT",
+          appointmentType: AppointmentType.TELEVISIT,
         },
       ];
 

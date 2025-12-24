@@ -1,10 +1,14 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Question } from "../../types/ActivityConfig";
 import { useTaskTranslation } from "../../translations";
+import { Choice, Question } from "../../types/ActivityConfig";
 import { getServiceLogger } from "../../utils/serviceLogger";
 
 const logger = getServiceLogger("SingleSelectQuestion");
+
+interface TranslatedChoice extends Choice {
+  translatedText?: string;
+}
 
 interface SingleSelectQuestionProps {
   question: Question;
@@ -26,7 +30,7 @@ export const SingleSelectQuestion: React.FC<SingleSelectQuestionProps> = ({
   const optionPlacement = displayProperties.optionPlacement || "below";
 
   // Translate choices synchronously using i18next
-  const translatedChoices = React.useMemo(() => {
+  const translatedChoices = React.useMemo<TranslatedChoice[]>(() => {
     if (currentLanguage === "en") {
       return choices;
     }

@@ -250,7 +250,7 @@ describe("useTaskForm", () => {
         result.current.setSk("SK-1");
       });
 
-      let submitPromise: Promise<void>;
+      let submitPromise: Promise<Task | null>;
       act(() => {
         submitPromise = result.current.handleSubmit();
       });

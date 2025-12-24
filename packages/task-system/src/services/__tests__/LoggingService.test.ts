@@ -6,7 +6,7 @@ import { LoggingService } from "../LoggingService";
 import { ConsoleProvider } from "../logging/providers/ConsoleProvider";
 import { NativeProvider } from "../logging/providers/NativeProvider";
 import { SentryProvider } from "../logging/providers/SentryProvider";
-import { LogLevel } from "../logging/types";
+import { LogLevel, LogLevelPreset } from "../logging/types";
 
 describe("LoggingService", () => {
   let service: LoggingService;
@@ -14,7 +14,7 @@ describe("LoggingService", () => {
 
   beforeEach(() => {
     service = new LoggingService({
-      minLevel: "debug",
+      minLevel: LogLevel.DEBUG,
       includePlatform: true,
       includeTimestamp: true,
     });
@@ -28,7 +28,7 @@ describe("LoggingService", () => {
 
     it("should initialize with custom config", () => {
       const customService = new LoggingService({
-        minLevel: "warn",
+        minLevel: LogLevel.WARN,
         defaultServiceName: "TestApp",
       });
       expect(customService.getProvider("ConsoleProvider")).toBeDefined();
@@ -63,7 +63,7 @@ describe("LoggingService", () => {
       const consoleSpy = jest.spyOn(console, "log").mockImplementation();
       const warnSpy = jest.spyOn(console, "warn").mockImplementation();
 
-      const service = new LoggingService({ minLevel: "warn" });
+      const service = new LoggingService({ minLevel: LogLevelPreset.WARN });
 
       // Clear INIT-0 log calls to test only the filtered messages
       consoleSpy.mockClear();

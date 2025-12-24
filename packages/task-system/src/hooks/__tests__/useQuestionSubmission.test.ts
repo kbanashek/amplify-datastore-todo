@@ -54,12 +54,12 @@ describe("useQuestionSubmission", () => {
   >;
 
   const mockActivityData: ParsedActivityData = {
+    questions: [],
     screens: [
       {
         id: "screen-1",
         name: "Screen 1",
         order: 1,
-        text: "Screen 1",
         elements: [
           {
             id: "q1",
@@ -74,10 +74,10 @@ describe("useQuestionSubmission", () => {
               choices: [],
               dataMappers: [],
             },
-            displayProperties: [],
+            displayProperties: {},
           },
         ],
-        displayProperties: [],
+        displayProperties: {},
       },
     ],
   };

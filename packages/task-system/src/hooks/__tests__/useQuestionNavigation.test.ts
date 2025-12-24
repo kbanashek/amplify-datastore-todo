@@ -42,12 +42,12 @@ describe("useQuestionNavigation", () => {
   >;
 
   const mockActivityData: ParsedActivityData = {
+    questions: [],
     screens: [
       {
         id: "screen-1",
         name: "Screen 1",
         order: 1,
-        text: "Screen 1",
         elements: [
           {
             id: "q1",
@@ -62,16 +62,15 @@ describe("useQuestionNavigation", () => {
               choices: [],
               dataMappers: [],
             },
-            displayProperties: [],
+            displayProperties: {},
           },
         ],
-        displayProperties: [],
+        displayProperties: {},
       },
       {
         id: "screen-2",
         name: "Screen 2",
         order: 2,
-        text: "Screen 2",
         elements: [
           {
             id: "q2",
@@ -86,10 +85,10 @@ describe("useQuestionNavigation", () => {
               choices: [],
               dataMappers: [],
             },
-            displayProperties: [],
+            displayProperties: {},
           },
         ],
-        displayProperties: [],
+        displayProperties: {},
       },
     ],
   };
