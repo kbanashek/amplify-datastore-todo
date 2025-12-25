@@ -78,8 +78,8 @@ describe("NavigationMenu", () => {
       const { queryByTestId } = render(
         <NavigationMenu visible={false} onClose={mockOnClose} />
       );
-      // Modal might still be in tree but not visible
-      expect(queryByTestId("navigation-menu-modal")).toBeTruthy();
+      // Modal should not be visible when visible=false
+      expect(queryByTestId("navigation-menu-modal")).toBeFalsy();
     });
 
     it("renders with menu items", () => {
