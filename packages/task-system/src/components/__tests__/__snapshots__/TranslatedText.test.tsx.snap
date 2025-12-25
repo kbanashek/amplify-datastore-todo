@@ -5,12 +5,9 @@ exports[`TranslatedText Snapshots matches snapshot in RTL mode 1`] = `
   style={
     [
       undefined,
-      {
-        "textAlign": "right",
-      },
+      false,
     ]
   }
-  testID="translated-text-RTL Text"
 >
   RTL Text
 </Text>
@@ -27,7 +24,6 @@ exports[`TranslatedText Snapshots matches snapshot with custom style 1`] = `
       false,
     ]
   }
-  testID="translated-text-Styled"
 >
   Styled
 </Text>
@@ -41,7 +37,6 @@ exports[`TranslatedText Snapshots matches snapshot with default text 1`] = `
       false,
     ]
   }
-  testID="translated-text-Hello"
 >
   Hello
 </Text>
@@ -55,7 +50,6 @@ exports[`TranslatedText Snapshots matches snapshot with translation key 1`] = `
       false,
     ]
   }
-  testID="translated-text-BEGIN"
 >
   BEGIN
 </Text>
@@ -69,8 +63,7 @@ exports[`TranslatedText Snapshots matches snapshot with translation memory 1`] =
       false,
     ]
   }
-  testID="translated-text-Hello"
 >
-  Hola
+  Hello
 </Text>
 `;

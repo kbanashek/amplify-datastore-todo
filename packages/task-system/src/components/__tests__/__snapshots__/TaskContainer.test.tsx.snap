@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TaskContainer Snapshots matches snapshot when loading 1`] = `
-<View
-  testID="task-container"
->
+<View>
   <Text
     testID="grouped-tasks-view-mock"
   >
@@ -13,9 +11,7 @@ exports[`TaskContainer Snapshots matches snapshot when loading 1`] = `
 `;
 
 exports[`TaskContainer Snapshots matches snapshot with default props 1`] = `
-<View
-  testID="task-container"
->
+<View>
   <Text
     testID="grouped-tasks-view-mock"
   >
@@ -25,9 +21,7 @@ exports[`TaskContainer Snapshots matches snapshot with default props 1`] = `
 `;
 
 exports[`TaskContainer Snapshots matches snapshot with error 1`] = `
-<View
-  testID="task-container"
->
+<View>
   <Text
     testID="grouped-tasks-view-mock"
   >

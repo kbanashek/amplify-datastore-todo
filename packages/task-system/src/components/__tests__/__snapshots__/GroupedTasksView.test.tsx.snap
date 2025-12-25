@@ -13,7 +13,6 @@ exports[`GroupedTasksView Snapshots matches snapshot in RTL mode 1`] = `
       },
     ]
   }
-  testID="grouped-tasks-view-empty"
 >
   <Text
     style={
@@ -23,7 +22,6 @@ exports[`GroupedTasksView Snapshots matches snapshot in RTL mode 1`] = `
         "textAlign": "center",
       }
     }
-    testID="grouped-tasks-view-empty-text"
   >
     No tasks available.
   </Text>
@@ -56,7 +54,6 @@ exports[`GroupedTasksView Snapshots matches snapshot with appointments 1`] = `
           "paddingHorizontal": 20,
         }
       }
-      testID="grouped-tasks-view-appointments-only"
     >
       <View
         style={
@@ -67,7 +64,6 @@ exports[`GroupedTasksView Snapshots matches snapshot with appointments 1`] = `
             "marginBottom": 16,
           }
         }
-        testID="grouped-tasks-view-appointments-header"
       >
         <Text
           style={
@@ -88,7 +84,6 @@ exports[`GroupedTasksView Snapshots matches snapshot with appointments 1`] = `
               "fontWeight": "400",
             }
           }
-          testID="grouped-tasks-view-appointments-date"
         >
           Wed, Dec 24
         </Text>
@@ -99,7 +94,6 @@ exports[`GroupedTasksView Snapshots matches snapshot with appointments 1`] = `
             "marginBottom": 16,
           }
         }
-        testID="grouped-tasks-view-appointments-container"
       >
         <View
           testID="appointment-card-appt-1"
@@ -129,7 +123,6 @@ exports[`GroupedTasksView Snapshots matches snapshot with default props 1`] = `
       },
     ]
   }
-  testID="grouped-tasks-view-empty"
 >
   <Text
     style={
@@ -139,7 +132,6 @@ exports[`GroupedTasksView Snapshots matches snapshot with default props 1`] = `
         "textAlign": "center",
       }
     }
-    testID="grouped-tasks-view-empty-text"
   >
     No tasks available.
   </Text>
@@ -159,7 +151,6 @@ exports[`GroupedTasksView Snapshots matches snapshot with error state 1`] = `
       },
     ]
   }
-  testID="grouped-tasks-view-error"
 >
   <Text
     style={
@@ -169,7 +160,6 @@ exports[`GroupedTasksView Snapshots matches snapshot with error state 1`] = `
         "textAlign": "center",
       }
     }
-    testID="grouped-tasks-view-error-text"
   >
     Failed to load tasks
   </Text>
@@ -202,7 +192,6 @@ exports[`GroupedTasksView Snapshots matches snapshot with grouped tasks 1`] = `
           "paddingHorizontal": 20,
         }
       }
-      testID="grouped-tasks-view-day-group-Today"
     >
       <View
         style={
@@ -213,7 +202,6 @@ exports[`GroupedTasksView Snapshots matches snapshot with grouped tasks 1`] = `
             "marginBottom": 16,
           }
         }
-        testID="grouped-tasks-view-day-header-Today"
       >
         <Text
           style={
@@ -234,14 +222,11 @@ exports[`GroupedTasksView Snapshots matches snapshot with grouped tasks 1`] = `
               "fontWeight": "400",
             }
           }
-          testID="grouped-tasks-view-day-date-Today"
         >
-          2025-12-24
+          2025-12-25
         </Text>
       </View>
-      <View
-        testID="grouped-tasks-view-tasks-without-time-Today"
-      />
+      <View />
     </View>
   </View>
 </RCTScrollView>
@@ -260,12 +245,10 @@ exports[`GroupedTasksView Snapshots matches snapshot with loading state 1`] = `
       },
     ]
   }
-  testID="grouped-tasks-view-loading"
 >
   <ActivityIndicator
     color="#237cb8"
     size="large"
-    testID="grouped-tasks-view-loading-spinner"
   />
   <Text
     style={
@@ -275,7 +258,6 @@ exports[`GroupedTasksView Snapshots matches snapshot with loading state 1`] = `
         "marginTop": 12,
       }
     }
-    testID="grouped-tasks-view-loading-text"
   >
     Loading tasks...
   </Text>

@@ -10,11 +10,8 @@ exports[`LanguageSelector Snapshots matches snapshot when loading 1`] = `
       undefined,
     ]
   }
-  testID="language-selector"
 >
   <View
-    accessibilityLabel="Current language: English"
-    accessibilityRole="button"
     accessibilityState={
       {
         "busy": undefined,
@@ -53,12 +50,10 @@ exports[`LanguageSelector Snapshots matches snapshot when loading 1`] = `
         "paddingVertical": 8,
       }
     }
-    testID="language-selector-button"
   >
     <ActivityIndicator
       color="#007AFF"
       size="small"
-      testID="language-selector-loading"
     />
   </View>
 </View>
@@ -74,11 +69,8 @@ exports[`LanguageSelector Snapshots matches snapshot with RTL language 1`] = `
       undefined,
     ]
   }
-  testID="language-selector"
 >
   <View
-    accessibilityLabel="Current language: Arabic"
-    accessibilityRole="button"
     accessibilityState={
       {
         "busy": undefined,
@@ -117,7 +109,6 @@ exports[`LanguageSelector Snapshots matches snapshot with RTL language 1`] = `
         "paddingVertical": 8,
       }
     }
-    testID="language-selector-button"
   >
     <Text
       style={
@@ -127,7 +118,6 @@ exports[`LanguageSelector Snapshots matches snapshot with RTL language 1`] = `
           "fontWeight": "500",
         }
       }
-      testID="language-selector-text"
     >
       🌐 
       Arabic
@@ -148,11 +138,8 @@ exports[`LanguageSelector Snapshots matches snapshot with custom style 1`] = `
       },
     ]
   }
-  testID="language-selector"
 >
   <View
-    accessibilityLabel="Current language: English"
-    accessibilityRole="button"
     accessibilityState={
       {
         "busy": undefined,
@@ -191,7 +178,6 @@ exports[`LanguageSelector Snapshots matches snapshot with custom style 1`] = `
         "paddingVertical": 8,
       }
     }
-    testID="language-selector-button"
   >
     <Text
       style={
@@ -201,7 +187,6 @@ exports[`LanguageSelector Snapshots matches snapshot with custom style 1`] = `
           "fontWeight": "500",
         }
       }
-      testID="language-selector-text"
     >
       🌐 
       English
@@ -220,11 +205,8 @@ exports[`LanguageSelector Snapshots matches snapshot with default props 1`] = `
       undefined,
     ]
   }
-  testID="language-selector"
 >
   <View
-    accessibilityLabel="Current language: English"
-    accessibilityRole="button"
     accessibilityState={
       {
         "busy": undefined,
@@ -263,7 +245,6 @@ exports[`LanguageSelector Snapshots matches snapshot with default props 1`] = `
         "paddingVertical": 8,
       }
     }
-    testID="language-selector-button"
   >
     <Text
       style={
@@ -273,7 +254,6 @@ exports[`LanguageSelector Snapshots matches snapshot with default props 1`] = `
           "fontWeight": "500",
         }
       }
-      testID="language-selector-text"
     >
       🌐 
       English

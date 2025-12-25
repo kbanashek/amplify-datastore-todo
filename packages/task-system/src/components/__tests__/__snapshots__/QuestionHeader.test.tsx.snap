@@ -11,7 +11,6 @@ exports[`QuestionHeader Snapshots matches snapshot in RTL mode 1`] = `
       "width": "100%",
     }
   }
-  testID="question-header"
 >
   <View
     style={
@@ -34,7 +33,6 @@ exports[`QuestionHeader Snapshots matches snapshot in RTL mode 1`] = `
         },
       ]
     }
-    testID="question-header-top"
   >
     <View
       style={
@@ -45,7 +43,6 @@ exports[`QuestionHeader Snapshots matches snapshot in RTL mode 1`] = `
           "width": 44,
         }
       }
-      testID="question-header-left"
     >
       <View
         style={
@@ -53,7 +50,6 @@ exports[`QuestionHeader Snapshots matches snapshot in RTL mode 1`] = `
             "width": 44,
           }
         }
-        testID="question-header-placeholder"
       />
     </View>
     <Text
@@ -73,7 +69,6 @@ exports[`QuestionHeader Snapshots matches snapshot in RTL mode 1`] = `
           },
         ]
       }
-      testID="question-header-title"
     >
       Question Title
     </Text>
@@ -88,7 +83,6 @@ exports[`QuestionHeader Snapshots matches snapshot in RTL mode 1`] = `
           "paddingRight": 16,
         }
       }
-      testID="question-header-right"
     />
   </View>
 </View>
@@ -105,7 +99,6 @@ exports[`QuestionHeader Snapshots matches snapshot with back button 1`] = `
       "width": "100%",
     }
   }
-  testID="question-header"
 >
   <View
     style={
@@ -128,7 +121,6 @@ exports[`QuestionHeader Snapshots matches snapshot with back button 1`] = `
         },
       ]
     }
-    testID="question-header-top"
   >
     <View
       style={
@@ -139,11 +131,8 @@ exports[`QuestionHeader Snapshots matches snapshot with back button 1`] = `
           "width": 44,
         }
       }
-      testID="question-header-left"
     >
       <View
-        accessibilityLabel="Go back"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -177,7 +166,6 @@ exports[`QuestionHeader Snapshots matches snapshot with back button 1`] = `
             "padding": 4,
           }
         }
-        testID="question-header-back-button"
       >
         <Text
           testID="icon-chevron.left"
@@ -201,7 +189,6 @@ exports[`QuestionHeader Snapshots matches snapshot with back button 1`] = `
           false,
         ]
       }
-      testID="question-header-title"
     >
       Question Title
     </Text>
@@ -216,7 +203,6 @@ exports[`QuestionHeader Snapshots matches snapshot with back button 1`] = `
           "paddingRight": 16,
         }
       }
-      testID="question-header-right"
     />
   </View>
 </View>
@@ -233,7 +219,6 @@ exports[`QuestionHeader Snapshots matches snapshot with both buttons 1`] = `
       "width": "100%",
     }
   }
-  testID="question-header"
 >
   <View
     style={
@@ -256,7 +241,6 @@ exports[`QuestionHeader Snapshots matches snapshot with both buttons 1`] = `
         },
       ]
     }
-    testID="question-header-top"
   >
     <View
       style={
@@ -267,11 +251,8 @@ exports[`QuestionHeader Snapshots matches snapshot with both buttons 1`] = `
           "width": 44,
         }
       }
-      testID="question-header-left"
     >
       <View
-        accessibilityLabel="Go back"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -305,7 +286,6 @@ exports[`QuestionHeader Snapshots matches snapshot with both buttons 1`] = `
             "padding": 4,
           }
         }
-        testID="question-header-back-button"
       >
         <Text
           testID="icon-chevron.left"
@@ -329,7 +309,6 @@ exports[`QuestionHeader Snapshots matches snapshot with both buttons 1`] = `
           false,
         ]
       }
-      testID="question-header-title"
     >
       Question Title
     </Text>
@@ -344,11 +323,8 @@ exports[`QuestionHeader Snapshots matches snapshot with both buttons 1`] = `
           "paddingRight": 16,
         }
       }
-      testID="question-header-right"
     >
       <View
-        accessibilityLabel="Close"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -382,7 +358,6 @@ exports[`QuestionHeader Snapshots matches snapshot with both buttons 1`] = `
             "padding": 4,
           }
         }
-        testID="question-header-close-button"
       >
         <Text
           testID="icon-xmark"
@@ -406,7 +381,6 @@ exports[`QuestionHeader Snapshots matches snapshot with close button 1`] = `
       "width": "100%",
     }
   }
-  testID="question-header"
 >
   <View
     style={
@@ -429,7 +403,6 @@ exports[`QuestionHeader Snapshots matches snapshot with close button 1`] = `
         },
       ]
     }
-    testID="question-header-top"
   >
     <View
       style={
@@ -440,7 +413,6 @@ exports[`QuestionHeader Snapshots matches snapshot with close button 1`] = `
           "width": 44,
         }
       }
-      testID="question-header-left"
     >
       <View
         style={
@@ -448,7 +420,6 @@ exports[`QuestionHeader Snapshots matches snapshot with close button 1`] = `
             "width": 44,
           }
         }
-        testID="question-header-placeholder"
       />
     </View>
     <Text
@@ -466,7 +437,6 @@ exports[`QuestionHeader Snapshots matches snapshot with close button 1`] = `
           false,
         ]
       }
-      testID="question-header-title"
     >
       Question Title
     </Text>
@@ -481,11 +451,8 @@ exports[`QuestionHeader Snapshots matches snapshot with close button 1`] = `
           "paddingRight": 16,
         }
       }
-      testID="question-header-right"
     >
       <View
-        accessibilityLabel="Close"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -519,7 +486,6 @@ exports[`QuestionHeader Snapshots matches snapshot with close button 1`] = `
             "padding": 4,
           }
         }
-        testID="question-header-close-button"
       >
         <Text
           testID="icon-xmark"
@@ -543,7 +509,6 @@ exports[`QuestionHeader Snapshots matches snapshot with default props 1`] = `
       "width": "100%",
     }
   }
-  testID="question-header"
 >
   <View
     style={
@@ -566,7 +531,6 @@ exports[`QuestionHeader Snapshots matches snapshot with default props 1`] = `
         },
       ]
     }
-    testID="question-header-top"
   >
     <View
       style={
@@ -577,7 +541,6 @@ exports[`QuestionHeader Snapshots matches snapshot with default props 1`] = `
           "width": 44,
         }
       }
-      testID="question-header-left"
     >
       <View
         style={
@@ -585,7 +548,6 @@ exports[`QuestionHeader Snapshots matches snapshot with default props 1`] = `
             "width": 44,
           }
         }
-        testID="question-header-placeholder"
       />
     </View>
     <Text
@@ -603,7 +565,6 @@ exports[`QuestionHeader Snapshots matches snapshot with default props 1`] = `
           false,
         ]
       }
-      testID="question-header-title"
     >
       Question Title
     </Text>
@@ -618,7 +579,6 @@ exports[`QuestionHeader Snapshots matches snapshot with default props 1`] = `
           "paddingRight": 16,
         }
       }
-      testID="question-header-right"
     />
   </View>
 </View>

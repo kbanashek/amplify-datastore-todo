@@ -8,7 +8,6 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
       "padding": 20,
     }
   }
-  testID="translation-test"
 >
   <Text
     style={
@@ -18,7 +17,6 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
         "marginBottom": 20,
       }
     }
-    testID="translation-test-title"
   >
     Translation Test
   </Text>
@@ -29,7 +27,6 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
         "marginBottom": 10,
       }
     }
-    testID="translation-test-current-language"
   >
     Current Language: 
     es
@@ -41,7 +38,6 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
         "marginBottom": 10,
       }
     }
-    testID="translation-test-i18n-language"
   >
     i18n.language: 
     es
@@ -55,7 +51,6 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
         "padding": 10,
       }
     }
-    testID="translation-test-t-function-section"
   >
     <Text
       style={
@@ -65,7 +60,6 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
           "marginBottom": 10,
         }
       }
-      testID="translation-test-t-label"
     >
       Using t() function:
     </Text>
@@ -76,7 +70,6 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
           "marginVertical": 5,
         }
       }
-      testID="translation-test-begin"
     >
       BEGIN
     </Text>
@@ -87,7 +80,6 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
           "marginVertical": 5,
         }
       }
-      testID="translation-test-resume"
     >
       RESUME
     </Text>
@@ -98,7 +90,6 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
           "marginVertical": 5,
         }
       }
-      testID="translation-test-ok"
     >
       OK
     </Text>
@@ -112,7 +103,6 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
         "padding": 10,
       }
     }
-    testID="translation-test-component-section"
   >
     <Text
       style={
@@ -122,28 +112,19 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
           "marginBottom": 10,
         }
       }
-      testID="translation-test-component-label"
     >
       Using TranslatedText component:
     </Text>
-    <Text
-      testID="translation-test-component-begin"
-    >
+    <Text>
       BEGIN
     </Text>
-    <Text
-      testID="translation-test-component-resume"
-    >
+    <Text>
       RESUME
     </Text>
-    <Text
-      testID="translation-test-component-ok"
-    >
+    <Text>
       OK
     </Text>
-    <Text
-      testID="translation-test-component-episodic"
-    >
+    <Text>
       Episodic Task 01 (All required)
     </Text>
   </View>
@@ -155,7 +136,6 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
         "marginTop": 20,
       }
     }
-    testID="translation-test-buttons"
   >
     <View
       accessibilityRole="button"
@@ -191,7 +171,6 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
           "opacity": 1,
         }
       }
-      testID="translation-test-button-en"
     >
       <View
         style={
@@ -250,7 +229,6 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
           "opacity": 1,
         }
       }
-      testID="translation-test-button-es"
     >
       <View
         style={
@@ -309,7 +287,6 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
           "opacity": 1,
         }
       }
-      testID="translation-test-button-fr"
     >
       <View
         style={
@@ -346,7 +323,6 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
       "padding": 20,
     }
   }
-  testID="translation-test"
 >
   <Text
     style={
@@ -356,7 +332,6 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
         "marginBottom": 20,
       }
     }
-    testID="translation-test-title"
   >
     Translation Test
   </Text>
@@ -367,7 +342,6 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
         "marginBottom": 10,
       }
     }
-    testID="translation-test-current-language"
   >
     Current Language: 
     en
@@ -379,7 +353,6 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
         "marginBottom": 10,
       }
     }
-    testID="translation-test-i18n-language"
   >
     i18n.language: 
     en
@@ -393,7 +366,6 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
         "padding": 10,
       }
     }
-    testID="translation-test-t-function-section"
   >
     <Text
       style={
@@ -403,7 +375,6 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
           "marginBottom": 10,
         }
       }
-      testID="translation-test-t-label"
     >
       Using t() function:
     </Text>
@@ -414,7 +385,6 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
           "marginVertical": 5,
         }
       }
-      testID="translation-test-begin"
     >
       BEGIN
     </Text>
@@ -425,7 +395,6 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
           "marginVertical": 5,
         }
       }
-      testID="translation-test-resume"
     >
       RESUME
     </Text>
@@ -436,7 +405,6 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
           "marginVertical": 5,
         }
       }
-      testID="translation-test-ok"
     >
       OK
     </Text>
@@ -450,7 +418,6 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
         "padding": 10,
       }
     }
-    testID="translation-test-component-section"
   >
     <Text
       style={
@@ -460,28 +427,19 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
           "marginBottom": 10,
         }
       }
-      testID="translation-test-component-label"
     >
       Using TranslatedText component:
     </Text>
-    <Text
-      testID="translation-test-component-begin"
-    >
+    <Text>
       BEGIN
     </Text>
-    <Text
-      testID="translation-test-component-resume"
-    >
+    <Text>
       RESUME
     </Text>
-    <Text
-      testID="translation-test-component-ok"
-    >
+    <Text>
       OK
     </Text>
-    <Text
-      testID="translation-test-component-episodic"
-    >
+    <Text>
       Episodic Task 01 (All required)
     </Text>
   </View>
@@ -493,7 +451,6 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
         "marginTop": 20,
       }
     }
-    testID="translation-test-buttons"
   >
     <View
       accessibilityRole="button"
@@ -529,7 +486,6 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
           "opacity": 1,
         }
       }
-      testID="translation-test-button-en"
     >
       <View
         style={
@@ -588,7 +544,6 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
           "opacity": 1,
         }
       }
-      testID="translation-test-button-es"
     >
       <View
         style={
@@ -647,7 +602,6 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
           "opacity": 1,
         }
       }
-      testID="translation-test-button-fr"
     >
       <View
         style={

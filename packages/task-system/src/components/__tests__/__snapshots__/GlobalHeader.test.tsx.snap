@@ -11,7 +11,6 @@ exports[`GlobalHeader Snapshots matches snapshot in RTL mode 1`] = `
       "paddingVertical": 12,
     }
   }
-  testID="global-header"
 >
   <View
     style={
@@ -30,7 +29,6 @@ exports[`GlobalHeader Snapshots matches snapshot in RTL mode 1`] = `
         },
       ]
     }
-    testID="global-header-top"
   >
     <View
       style={
@@ -40,7 +38,6 @@ exports[`GlobalHeader Snapshots matches snapshot in RTL mode 1`] = `
           "width": 44,
         }
       }
-      testID="global-header-left"
     />
     <Text
       style={
@@ -58,7 +55,6 @@ exports[`GlobalHeader Snapshots matches snapshot in RTL mode 1`] = `
           },
         ]
       }
-      testID="global-header-title"
     >
       Title
     </Text>
@@ -79,7 +75,6 @@ exports[`GlobalHeader Snapshots matches snapshot in RTL mode 1`] = `
           },
         ]
       }
-      testID="global-header-actions"
     />
   </View>
   <View
@@ -97,7 +92,6 @@ exports[`GlobalHeader Snapshots matches snapshot in RTL mode 1`] = `
         },
       ]
     }
-    testID="global-header-bottom"
   >
     <View
       testID="network-status-indicator"
@@ -120,7 +114,6 @@ exports[`GlobalHeader Snapshots matches snapshot with all buttons 1`] = `
       "paddingVertical": 12,
     }
   }
-  testID="global-header"
 >
   <View
     style={
@@ -139,7 +132,6 @@ exports[`GlobalHeader Snapshots matches snapshot with all buttons 1`] = `
         },
       ]
     }
-    testID="global-header-top"
   >
     <View
       style={
@@ -149,11 +141,8 @@ exports[`GlobalHeader Snapshots matches snapshot with all buttons 1`] = `
           "width": 44,
         }
       }
-      testID="global-header-left"
     >
       <View
-        accessibilityLabel="Go back"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -187,7 +176,6 @@ exports[`GlobalHeader Snapshots matches snapshot with all buttons 1`] = `
             "padding": 4,
           }
         }
-        testID="global-header-back-button"
       >
         <Text
           testID="icon-chevron.left"
@@ -210,7 +198,6 @@ exports[`GlobalHeader Snapshots matches snapshot with all buttons 1`] = `
           false,
         ]
       }
-      testID="global-header-title"
     >
       Title
     </Text>
@@ -231,11 +218,8 @@ exports[`GlobalHeader Snapshots matches snapshot with all buttons 1`] = `
           },
         ]
       }
-      testID="global-header-actions"
     >
       <View
-        accessibilityLabel="Close"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -269,7 +253,6 @@ exports[`GlobalHeader Snapshots matches snapshot with all buttons 1`] = `
             "padding": 4,
           }
         }
-        testID="global-header-close-button"
       >
         <Text
           testID="icon-xmark"
@@ -278,8 +261,6 @@ exports[`GlobalHeader Snapshots matches snapshot with all buttons 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Menu"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -338,7 +319,6 @@ exports[`GlobalHeader Snapshots matches snapshot with all buttons 1`] = `
         },
       ]
     }
-    testID="global-header-bottom"
   >
     <View
       testID="network-status-indicator"
@@ -361,7 +341,6 @@ exports[`GlobalHeader Snapshots matches snapshot with default props 1`] = `
       "paddingVertical": 12,
     }
   }
-  testID="global-header"
 >
   <View
     style={
@@ -380,7 +359,6 @@ exports[`GlobalHeader Snapshots matches snapshot with default props 1`] = `
         },
       ]
     }
-    testID="global-header-top"
   >
     <View
       style={
@@ -390,7 +368,6 @@ exports[`GlobalHeader Snapshots matches snapshot with default props 1`] = `
           "width": 44,
         }
       }
-      testID="global-header-left"
     />
     <Text
       style={
@@ -406,7 +383,6 @@ exports[`GlobalHeader Snapshots matches snapshot with default props 1`] = `
           false,
         ]
       }
-      testID="global-header-title"
     >
       Header Title
     </Text>
@@ -427,7 +403,6 @@ exports[`GlobalHeader Snapshots matches snapshot with default props 1`] = `
           },
         ]
       }
-      testID="global-header-actions"
     />
   </View>
   <View
@@ -445,7 +420,6 @@ exports[`GlobalHeader Snapshots matches snapshot with default props 1`] = `
         },
       ]
     }
-    testID="global-header-bottom"
   >
     <View
       testID="network-status-indicator"
@@ -468,7 +442,6 @@ exports[`GlobalHeader Snapshots matches snapshot with hideBottomSection 1`] = `
       "paddingVertical": 12,
     }
   }
-  testID="global-header"
 >
   <View
     style={
@@ -487,7 +460,6 @@ exports[`GlobalHeader Snapshots matches snapshot with hideBottomSection 1`] = `
         },
       ]
     }
-    testID="global-header-top"
   >
     <View
       style={
@@ -497,7 +469,6 @@ exports[`GlobalHeader Snapshots matches snapshot with hideBottomSection 1`] = `
           "width": 44,
         }
       }
-      testID="global-header-left"
     />
     <Text
       style={
@@ -513,7 +484,6 @@ exports[`GlobalHeader Snapshots matches snapshot with hideBottomSection 1`] = `
           false,
         ]
       }
-      testID="global-header-title"
     >
       Title
     </Text>
@@ -534,7 +504,6 @@ exports[`GlobalHeader Snapshots matches snapshot with hideBottomSection 1`] = `
           },
         ]
       }
-      testID="global-header-actions"
     />
   </View>
 </View>
@@ -551,7 +520,6 @@ exports[`GlobalHeader Snapshots matches snapshot with rightAction 1`] = `
       "paddingVertical": 12,
     }
   }
-  testID="global-header"
 >
   <View
     style={
@@ -570,7 +538,6 @@ exports[`GlobalHeader Snapshots matches snapshot with rightAction 1`] = `
         },
       ]
     }
-    testID="global-header-top"
   >
     <View
       style={
@@ -580,7 +547,6 @@ exports[`GlobalHeader Snapshots matches snapshot with rightAction 1`] = `
           "width": 44,
         }
       }
-      testID="global-header-left"
     />
     <Text
       style={
@@ -596,7 +562,6 @@ exports[`GlobalHeader Snapshots matches snapshot with rightAction 1`] = `
           false,
         ]
       }
-      testID="global-header-title"
     >
       Title
     </Text>
@@ -617,7 +582,6 @@ exports[`GlobalHeader Snapshots matches snapshot with rightAction 1`] = `
           },
         ]
       }
-      testID="global-header-actions"
     >
       <Text>
         Action
@@ -639,7 +603,6 @@ exports[`GlobalHeader Snapshots matches snapshot with rightAction 1`] = `
         },
       ]
     }
-    testID="global-header-bottom"
   >
     <View
       testID="network-status-indicator"

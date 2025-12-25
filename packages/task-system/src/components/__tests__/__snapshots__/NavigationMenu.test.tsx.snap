@@ -7,7 +7,6 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
   animationType="slide"
   hardwareAccelerated={false}
   onRequestClose={[MockFunction]}
-  testID="navigation-menu-modal"
   transparent={true}
   visible={true}
 >
@@ -18,7 +17,6 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
         "justifyContent": "flex-end",
       }
     }
-    testID="navigation-menu-overlay-container"
   >
     <View
       accessibilityState={
@@ -60,7 +58,6 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
           "top": 0,
         }
       }
-      testID="navigation-menu-overlay"
     />
     <View
       accessibilityState={
@@ -111,7 +108,6 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
           "shadowRadius": 10,
         }
       }
-      testID="navigation-menu-container"
     >
       <View
         style={
@@ -125,7 +121,6 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
             "padding": 20,
           }
         }
-        testID="navigation-menu-header"
       >
         <Text
           style={
@@ -135,13 +130,10 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
               "fontWeight": "bold",
             }
           }
-          testID="navigation-menu-title"
         >
           Navigation
         </Text>
         <View
-          accessibilityLabel="Close navigation menu"
-          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -175,7 +167,6 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
               "padding": 4,
             }
           }
-          testID="navigation-menu-close-button"
         >
           <Text
             testID="icon-xmark.circle.fill"
@@ -197,7 +188,6 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
             "flexShrink": 1,
           }
         }
-        testID="navigation-menu-list"
       >
         <View>
           <View
@@ -207,7 +197,6 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
                 "padding": 40,
               }
             }
-            testID="navigation-menu-empty-state"
           >
             <Text
               style={
@@ -216,7 +205,6 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
                   "fontSize": 16,
                 }
               }
-              testID="navigation-menu-empty-text"
             >
               No navigation options available
             </Text>
@@ -233,7 +221,6 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
   animationType="slide"
   hardwareAccelerated={false}
   onRequestClose={[MockFunction]}
-  testID="navigation-menu-modal"
   transparent={true}
   visible={true}
 >
@@ -244,7 +231,6 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
         "justifyContent": "flex-end",
       }
     }
-    testID="navigation-menu-overlay-container"
   >
     <View
       accessibilityState={
@@ -286,7 +272,6 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
           "top": 0,
         }
       }
-      testID="navigation-menu-overlay"
     />
     <View
       accessibilityState={
@@ -337,7 +322,6 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
           "shadowRadius": 10,
         }
       }
-      testID="navigation-menu-container"
     >
       <View
         style={
@@ -351,7 +335,6 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
             "padding": 20,
           }
         }
-        testID="navigation-menu-header"
       >
         <Text
           style={
@@ -361,13 +344,10 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
               "fontWeight": "bold",
             }
           }
-          testID="navigation-menu-title"
         >
           Navigation
         </Text>
         <View
-          accessibilityLabel="Close navigation menu"
-          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -401,7 +381,6 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
               "padding": 4,
             }
           }
-          testID="navigation-menu-close-button"
         >
           <Text
             testID="icon-xmark.circle.fill"
@@ -423,7 +402,6 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
             "flexShrink": 1,
           }
         }
-        testID="navigation-menu-list"
       >
         <View>
           <View
@@ -433,7 +411,6 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
                 "padding": 40,
               }
             }
-            testID="navigation-menu-empty-state"
           >
             <Text
               style={
@@ -442,7 +419,6 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
                   "fontSize": 16,
                 }
               }
-              testID="navigation-menu-empty-text"
             >
               No navigation options available
             </Text>
@@ -459,7 +435,6 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
   animationType="slide"
   hardwareAccelerated={false}
   onRequestClose={[MockFunction]}
-  testID="navigation-menu-modal"
   transparent={true}
   visible={true}
 >
@@ -470,7 +445,6 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
         "justifyContent": "flex-end",
       }
     }
-    testID="navigation-menu-overlay-container"
   >
     <View
       accessibilityState={
@@ -512,7 +486,6 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
           "top": 0,
         }
       }
-      testID="navigation-menu-overlay"
     />
     <View
       accessibilityState={
@@ -563,7 +536,6 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
           "shadowRadius": 10,
         }
       }
-      testID="navigation-menu-container"
     >
       <View
         style={
@@ -577,7 +549,6 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
             "padding": 20,
           }
         }
-        testID="navigation-menu-header"
       >
         <Text
           style={
@@ -587,13 +558,10 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
               "fontWeight": "bold",
             }
           }
-          testID="navigation-menu-title"
         >
           Navigation
         </Text>
         <View
-          accessibilityLabel="Close navigation menu"
-          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -627,7 +595,6 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
               "padding": 4,
             }
           }
-          testID="navigation-menu-close-button"
         >
           <Text
             testID="icon-xmark.circle.fill"
@@ -649,12 +616,9 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
             "flexShrink": 1,
           }
         }
-        testID="navigation-menu-list"
       >
         <View>
           <View
-            accessibilityLabel="Go to dashboard"
-            accessibilityRole="button"
             accessibilityState={
               {
                 "busy": undefined,
@@ -692,7 +656,6 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
                 "padding": 16,
               }
             }
-            testID="navigation-menu-item-dashboard"
           >
             <View
               style={
@@ -706,7 +669,6 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
                   "width": 40,
                 }
               }
-              testID="navigation-menu-item-icon-dashboard"
             >
               <Text
                 testID="icon-house.fill"
@@ -720,7 +682,6 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
                   "flex": 1,
                 }
               }
-              testID="navigation-menu-item-content-dashboard"
             >
               <Text
                 style={
@@ -735,7 +696,6 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
                     },
                   ]
                 }
-                testID="navigation-menu-item-title-dashboard"
               >
                 Dashboard
               </Text>
@@ -750,7 +710,6 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
                     },
                   ]
                 }
-                testID="navigation-menu-item-description-dashboard"
               >
                 Go to dashboard
               </Text>
@@ -762,8 +721,6 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
             </Text>
           </View>
           <View
-            accessibilityLabel="Go to settings"
-            accessibilityRole="button"
             accessibilityState={
               {
                 "busy": undefined,
@@ -801,7 +758,6 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
                 "padding": 16,
               }
             }
-            testID="navigation-menu-item-settings"
           >
             <View
               style={
@@ -815,7 +771,6 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
                   "width": 40,
                 }
               }
-              testID="navigation-menu-item-icon-settings"
             >
               <Text
                 testID="icon-gear"
@@ -829,7 +784,6 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
                   "flex": 1,
                 }
               }
-              testID="navigation-menu-item-content-settings"
             >
               <Text
                 style={
@@ -844,7 +798,6 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
                     },
                   ]
                 }
-                testID="navigation-menu-item-title-settings"
               >
                 Settings
               </Text>
@@ -859,7 +812,6 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
                     },
                   ]
                 }
-                testID="navigation-menu-item-description-settings"
               >
                 Go to settings
               </Text>

@@ -18,7 +18,6 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       "shadowRadius": 4,
     }
   }
-  testID="task-filters"
 >
   <View
     style={
@@ -29,7 +28,6 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         "marginBottom": 16,
       }
     }
-    testID="task-filters-header"
   >
     <Text
       style={
@@ -39,13 +37,11 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
           "fontWeight": "bold",
         }
       }
-      testID="task-filters-title"
     >
       Filters
     </Text>
   </View>
   <TextInput
-    accessibilityLabel="Search tasks"
     autoCapitalize="none"
     autoCorrect={false}
     onChangeText={[MockFunction]}
@@ -60,7 +56,6 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         "padding": 12,
       }
     }
-    testID="task-filters-search-input"
     value=""
   />
   <Text
@@ -73,7 +68,6 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         "marginTop": 8,
       }
     }
-    testID="task-filters-status-title"
   >
     Status
   </Text>
@@ -86,18 +80,15 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         "marginBottom": 8,
       }
     }
-    testID="task-filters-status-row"
   >
     <View
-      accessibilityLabel="Filter by OPEN status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -131,7 +122,6 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-OPEN"
     >
       <Text
         style={
@@ -149,15 +139,13 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by VISIBLE status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -191,7 +179,6 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-VISIBLE"
     >
       <Text
         style={
@@ -209,15 +196,13 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by STARTED status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -251,7 +236,6 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-STARTED"
     >
       <Text
         style={
@@ -269,15 +253,13 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by INPROGRESS status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -311,7 +293,6 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-INPROGRESS"
     >
       <Text
         style={
@@ -329,15 +310,13 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by COMPLETED status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -371,7 +350,6 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-COMPLETED"
     >
       <Text
         style={
@@ -389,15 +367,13 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by EXPIRED status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -431,7 +407,6 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-EXPIRED"
     >
       <Text
         style={
@@ -449,15 +424,13 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by RECALLED status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -491,7 +464,6 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-RECALLED"
     >
       <Text
         style={
@@ -519,7 +491,6 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         "marginTop": 8,
       }
     }
-    testID="task-filters-type-title"
   >
     Task Type
   </Text>
@@ -532,18 +503,15 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         "marginBottom": 8,
       }
     }
-    testID="task-filters-type-row"
   >
     <View
-      accessibilityLabel="Filter by SCHEDULED type"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -577,7 +545,6 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-type-SCHEDULED"
     >
       <Text
         style={
@@ -595,15 +562,13 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by TIMED type"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -637,7 +602,6 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-type-TIMED"
     >
       <Text
         style={
@@ -655,15 +619,13 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by EPISODIC type"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -697,7 +659,6 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-type-EPISODIC"
     >
       <Text
         style={
@@ -736,7 +697,6 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       "shadowRadius": 4,
     }
   }
-  testID="task-filters"
 >
   <View
     style={
@@ -747,7 +707,6 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         "marginBottom": 16,
       }
     }
-    testID="task-filters-header"
   >
     <Text
       style={
@@ -757,13 +716,10 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
           "fontWeight": "bold",
         }
       }
-      testID="task-filters-title"
     >
       Filters
     </Text>
     <View
-      accessibilityLabel="Clear all filters"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
@@ -800,7 +756,6 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-clear-button"
     >
       <Text
         style={
@@ -816,7 +771,6 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
     </View>
   </View>
   <TextInput
-    accessibilityLabel="Search tasks"
     autoCapitalize="none"
     autoCorrect={false}
     onChangeText={[MockFunction]}
@@ -831,7 +785,6 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         "padding": 12,
       }
     }
-    testID="task-filters-search-input"
     value="test search"
   />
   <Text
@@ -844,7 +797,6 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         "marginTop": 8,
       }
     }
-    testID="task-filters-status-title"
   >
     Status
   </Text>
@@ -857,18 +809,15 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         "marginBottom": 8,
       }
     }
-    testID="task-filters-status-row"
   >
     <View
-      accessibilityLabel="Filter by OPEN status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": true,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -902,7 +851,6 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-OPEN"
     >
       <Text
         style={
@@ -922,15 +870,13 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by VISIBLE status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -964,7 +910,6 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-VISIBLE"
     >
       <Text
         style={
@@ -982,15 +927,13 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by STARTED status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -1024,7 +967,6 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-STARTED"
     >
       <Text
         style={
@@ -1042,15 +984,13 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by INPROGRESS status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -1084,7 +1024,6 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-INPROGRESS"
     >
       <Text
         style={
@@ -1102,15 +1041,13 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by COMPLETED status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": true,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -1144,7 +1081,6 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-COMPLETED"
     >
       <Text
         style={
@@ -1164,15 +1100,13 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by EXPIRED status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -1206,7 +1140,6 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-EXPIRED"
     >
       <Text
         style={
@@ -1224,15 +1157,13 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by RECALLED status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -1266,7 +1197,6 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-RECALLED"
     >
       <Text
         style={
@@ -1294,7 +1224,6 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         "marginTop": 8,
       }
     }
-    testID="task-filters-type-title"
   >
     Task Type
   </Text>
@@ -1307,18 +1236,15 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         "marginBottom": 8,
       }
     }
-    testID="task-filters-type-row"
   >
     <View
-      accessibilityLabel="Filter by SCHEDULED type"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": true,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -1352,7 +1278,6 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-type-SCHEDULED"
     >
       <Text
         style={
@@ -1372,15 +1297,13 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by TIMED type"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -1414,7 +1337,6 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-type-TIMED"
     >
       <Text
         style={
@@ -1432,15 +1354,13 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by EPISODIC type"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -1474,7 +1394,6 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-type-EPISODIC"
     >
       <Text
         style={
@@ -1513,7 +1432,6 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       "shadowRadius": 4,
     }
   }
-  testID="task-filters"
 >
   <View
     style={
@@ -1524,7 +1442,6 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         "marginBottom": 16,
       }
     }
-    testID="task-filters-header"
   >
     <Text
       style={
@@ -1534,13 +1451,11 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
           "fontWeight": "bold",
         }
       }
-      testID="task-filters-title"
     >
       Filters
     </Text>
   </View>
   <TextInput
-    accessibilityLabel="Search tasks"
     autoCapitalize="none"
     autoCorrect={false}
     onChangeText={[MockFunction]}
@@ -1555,7 +1470,6 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         "padding": 12,
       }
     }
-    testID="task-filters-search-input"
     value=""
   />
   <Text
@@ -1568,7 +1482,6 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         "marginTop": 8,
       }
     }
-    testID="task-filters-status-title"
   >
     Status
   </Text>
@@ -1581,18 +1494,15 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         "marginBottom": 8,
       }
     }
-    testID="task-filters-status-row"
   >
     <View
-      accessibilityLabel="Filter by OPEN status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -1626,7 +1536,6 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-OPEN"
     >
       <Text
         style={
@@ -1644,15 +1553,13 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by VISIBLE status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -1686,7 +1593,6 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-VISIBLE"
     >
       <Text
         style={
@@ -1704,15 +1610,13 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by STARTED status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -1746,7 +1650,6 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-STARTED"
     >
       <Text
         style={
@@ -1764,15 +1667,13 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by INPROGRESS status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -1806,7 +1707,6 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-INPROGRESS"
     >
       <Text
         style={
@@ -1824,15 +1724,13 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by COMPLETED status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -1866,7 +1764,6 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-COMPLETED"
     >
       <Text
         style={
@@ -1884,15 +1781,13 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by EXPIRED status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -1926,7 +1821,6 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-EXPIRED"
     >
       <Text
         style={
@@ -1944,15 +1838,13 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by RECALLED status"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -1986,7 +1878,6 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-status-RECALLED"
     >
       <Text
         style={
@@ -2014,7 +1905,6 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         "marginTop": 8,
       }
     }
-    testID="task-filters-type-title"
   >
     Task Type
   </Text>
@@ -2027,18 +1917,15 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         "marginBottom": 8,
       }
     }
-    testID="task-filters-type-row"
   >
     <View
-      accessibilityLabel="Filter by SCHEDULED type"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -2072,7 +1959,6 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-type-SCHEDULED"
     >
       <Text
         style={
@@ -2090,15 +1976,13 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by TIMED type"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -2132,7 +2016,6 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-type-TIMED"
     >
       <Text
         style={
@@ -2150,15 +2033,13 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by EPISODIC type"
-      accessibilityRole="button"
       accessibilityState={
         {
           "busy": undefined,
           "checked": undefined,
           "disabled": undefined,
           "expanded": undefined,
-          "selected": false,
+          "selected": undefined,
         }
       }
       accessibilityValue={
@@ -2192,7 +2073,6 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
           "paddingVertical": 6,
         }
       }
-      testID="task-filters-type-EPISODIC"
     >
       <Text
         style={

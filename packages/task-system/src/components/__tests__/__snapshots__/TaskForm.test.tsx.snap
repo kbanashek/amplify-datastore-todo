@@ -19,7 +19,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
       "shadowRadius": 4,
     }
   }
-  testID="task-form"
 >
   <View>
     <Text
@@ -31,12 +30,10 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "marginBottom": 16,
         }
       }
-      testID="task-form-title"
     >
       Create New Task for today
     </Text>
     <TextInput
-      accessibilityLabel="Task title"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -55,11 +52,9 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "padding": 12,
         }
       }
-      testID="task-form-title-input"
       value=""
     />
     <TextInput
-      accessibilityLabel="Task description"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -86,7 +81,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           },
         ]
       }
-      testID="task-form-description-input"
       textAlignVertical="top"
       value=""
     />
@@ -100,7 +94,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "marginTop": 4,
         }
       }
-      testID="task-form-type-label"
     >
       Task Type *
     </Text>
@@ -113,18 +106,15 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "marginBottom": 16,
         }
       }
-      testID="task-form-type-group"
     >
       <View
-        accessibilityLabel="Select SCHEDULED task type"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": true,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -158,7 +148,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-type-SCHEDULED"
       >
         <Text
           style={
@@ -178,15 +167,13 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select TIMED task type"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -220,7 +207,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-type-TIMED"
       >
         <Text
           style={
@@ -238,15 +224,13 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select EPISODIC task type"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -280,7 +264,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-type-EPISODIC"
       >
         <Text
           style={
@@ -308,7 +291,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "marginTop": 4,
         }
       }
-      testID="task-form-status-label"
     >
       Status *
     </Text>
@@ -321,18 +303,15 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "marginBottom": 16,
         }
       }
-      testID="task-form-status-group"
     >
       <View
-        accessibilityLabel="Select OPEN status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": true,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -366,7 +345,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-OPEN"
       >
         <Text
           style={
@@ -386,15 +364,13 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select VISIBLE status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -428,7 +404,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-VISIBLE"
       >
         <Text
           style={
@@ -446,15 +421,13 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select STARTED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -488,7 +461,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-STARTED"
       >
         <Text
           style={
@@ -506,15 +478,13 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select INPROGRESS status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -548,7 +518,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-INPROGRESS"
       >
         <Text
           style={
@@ -566,15 +535,13 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select COMPLETED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -608,7 +575,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-COMPLETED"
       >
         <Text
           style={
@@ -626,15 +592,13 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select EXPIRED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -668,7 +632,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-EXPIRED"
       >
         <Text
           style={
@@ -686,15 +649,13 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select RECALLED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -728,7 +689,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-RECALLED"
       >
         <Text
           style={
@@ -747,7 +707,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
       </View>
     </View>
     <TextInput
-      accessibilityLabel="Partition key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -763,11 +722,9 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "padding": 12,
         }
       }
-      testID="task-form-pk-input"
       value=""
     />
     <TextInput
-      accessibilityLabel="Sort key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -783,7 +740,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "padding": 12,
         }
       }
-      testID="task-form-sk-input"
       value=""
     />
     <View
@@ -794,11 +750,8 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "marginTop": 8,
         }
       }
-      testID="task-form-buttons"
     >
       <View
-        accessibilityLabel="Reset form"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -837,7 +790,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "padding": 14,
           }
         }
-        testID="task-form-reset-button"
       >
         <Text
           style={
@@ -852,8 +804,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Create task"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -892,7 +842,6 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "padding": 14,
           }
         }
-        testID="task-form-submit-button"
       >
         <Text
           style={
@@ -930,7 +879,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
       "shadowRadius": 4,
     }
   }
-  testID="task-form"
 >
   <View>
     <Text
@@ -942,12 +890,10 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "marginBottom": 16,
         }
       }
-      testID="task-form-title"
     >
       Create New Task for today
     </Text>
     <TextInput
-      accessibilityLabel="Task title"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -966,11 +912,9 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "padding": 12,
         }
       }
-      testID="task-form-title-input"
       value=""
     />
     <TextInput
-      accessibilityLabel="Task description"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -997,7 +941,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           },
         ]
       }
-      testID="task-form-description-input"
       textAlignVertical="top"
       value=""
     />
@@ -1011,7 +954,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "marginTop": 4,
         }
       }
-      testID="task-form-type-label"
     >
       Task Type *
     </Text>
@@ -1024,18 +966,15 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "marginBottom": 16,
         }
       }
-      testID="task-form-type-group"
     >
       <View
-        accessibilityLabel="Select SCHEDULED task type"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": true,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -1069,7 +1008,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-type-SCHEDULED"
       >
         <Text
           style={
@@ -1089,15 +1027,13 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select TIMED task type"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -1131,7 +1067,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-type-TIMED"
       >
         <Text
           style={
@@ -1149,15 +1084,13 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select EPISODIC task type"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -1191,7 +1124,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-type-EPISODIC"
       >
         <Text
           style={
@@ -1219,7 +1151,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "marginTop": 4,
         }
       }
-      testID="task-form-status-label"
     >
       Status *
     </Text>
@@ -1232,18 +1163,15 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "marginBottom": 16,
         }
       }
-      testID="task-form-status-group"
     >
       <View
-        accessibilityLabel="Select OPEN status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": true,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -1277,7 +1205,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-OPEN"
       >
         <Text
           style={
@@ -1297,15 +1224,13 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select VISIBLE status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -1339,7 +1264,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-VISIBLE"
       >
         <Text
           style={
@@ -1357,15 +1281,13 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select STARTED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -1399,7 +1321,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-STARTED"
       >
         <Text
           style={
@@ -1417,15 +1338,13 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select INPROGRESS status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -1459,7 +1378,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-INPROGRESS"
       >
         <Text
           style={
@@ -1477,15 +1395,13 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select COMPLETED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -1519,7 +1435,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-COMPLETED"
       >
         <Text
           style={
@@ -1537,15 +1452,13 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select EXPIRED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -1579,7 +1492,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-EXPIRED"
       >
         <Text
           style={
@@ -1597,15 +1509,13 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select RECALLED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -1639,7 +1549,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-RECALLED"
       >
         <Text
           style={
@@ -1658,7 +1567,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
       </View>
     </View>
     <TextInput
-      accessibilityLabel="Partition key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={false}
@@ -1674,11 +1582,9 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "padding": 12,
         }
       }
-      testID="task-form-pk-input"
       value=""
     />
     <TextInput
-      accessibilityLabel="Sort key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={false}
@@ -1694,7 +1600,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "padding": 12,
         }
       }
-      testID="task-form-sk-input"
       value=""
     />
     <View
@@ -1705,11 +1610,8 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "marginTop": 8,
         }
       }
-      testID="task-form-buttons"
     >
       <View
-        accessibilityLabel="Reset form"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -1748,7 +1650,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "padding": 14,
           }
         }
-        testID="task-form-reset-button"
       >
         <Text
           style={
@@ -1763,8 +1664,6 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Create task"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -1803,12 +1702,10 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "padding": 14,
           }
         }
-        testID="task-form-submit-button"
       >
         <ActivityIndicator
           color="#fff"
           size="small"
-          testID="task-form-submit-loading"
         />
       </View>
     </View>
@@ -1835,7 +1732,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
       "shadowRadius": 4,
     }
   }
-  testID="task-form"
 >
   <View>
     <Text
@@ -1847,12 +1743,10 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "marginBottom": 16,
         }
       }
-      testID="task-form-title"
     >
       Create New Task for today
     </Text>
     <TextInput
-      accessibilityLabel="Task title"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -1871,11 +1765,9 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "padding": 12,
         }
       }
-      testID="task-form-title-input"
       value=""
     />
     <TextInput
-      accessibilityLabel="Task description"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -1902,7 +1794,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           },
         ]
       }
-      testID="task-form-description-input"
       textAlignVertical="top"
       value=""
     />
@@ -1916,7 +1807,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "marginTop": 4,
         }
       }
-      testID="task-form-type-label"
     >
       Task Type *
     </Text>
@@ -1929,18 +1819,15 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "marginBottom": 16,
         }
       }
-      testID="task-form-type-group"
     >
       <View
-        accessibilityLabel="Select SCHEDULED task type"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": true,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -1974,7 +1861,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-type-SCHEDULED"
       >
         <Text
           style={
@@ -1994,15 +1880,13 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select TIMED task type"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -2036,7 +1920,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-type-TIMED"
       >
         <Text
           style={
@@ -2054,15 +1937,13 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select EPISODIC task type"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -2096,7 +1977,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-type-EPISODIC"
       >
         <Text
           style={
@@ -2124,7 +2004,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "marginTop": 4,
         }
       }
-      testID="task-form-status-label"
     >
       Status *
     </Text>
@@ -2137,18 +2016,15 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "marginBottom": 16,
         }
       }
-      testID="task-form-status-group"
     >
       <View
-        accessibilityLabel="Select OPEN status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": true,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -2182,7 +2058,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-OPEN"
       >
         <Text
           style={
@@ -2202,15 +2077,13 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select VISIBLE status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -2244,7 +2117,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-VISIBLE"
       >
         <Text
           style={
@@ -2262,15 +2134,13 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select STARTED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -2304,7 +2174,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-STARTED"
       >
         <Text
           style={
@@ -2322,15 +2191,13 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select INPROGRESS status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -2364,7 +2231,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-INPROGRESS"
       >
         <Text
           style={
@@ -2382,15 +2248,13 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select COMPLETED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -2424,7 +2288,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-COMPLETED"
       >
         <Text
           style={
@@ -2442,15 +2305,13 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select EXPIRED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -2484,7 +2345,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-EXPIRED"
       >
         <Text
           style={
@@ -2502,15 +2362,13 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select RECALLED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -2544,7 +2402,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-RECALLED"
       >
         <Text
           style={
@@ -2563,7 +2420,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
       </View>
     </View>
     <TextInput
-      accessibilityLabel="Partition key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -2579,11 +2435,9 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "padding": 12,
         }
       }
-      testID="task-form-pk-input"
       value=""
     />
     <TextInput
-      accessibilityLabel="Sort key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -2599,7 +2453,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "padding": 12,
         }
       }
-      testID="task-form-sk-input"
       value=""
     />
     <View
@@ -2610,11 +2463,8 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "marginTop": 8,
         }
       }
-      testID="task-form-buttons"
     >
       <View
-        accessibilityLabel="Reset form"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -2653,7 +2503,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "padding": 14,
           }
         }
-        testID="task-form-reset-button"
       >
         <Text
           style={
@@ -2668,8 +2517,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Create task"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -2708,7 +2555,6 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "padding": 14,
           }
         }
-        testID="task-form-submit-button"
       >
         <Text
           style={
@@ -2746,7 +2592,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
       "shadowRadius": 4,
     }
   }
-  testID="task-form"
 >
   <View>
     <Text
@@ -2758,7 +2603,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "marginBottom": 16,
         }
       }
-      testID="task-form-title"
     >
       Create New Task for today
     </Text>
@@ -2770,12 +2614,10 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "marginBottom": 12,
         }
       }
-      testID="task-form-error"
     >
       Validation error
     </Text>
     <TextInput
-      accessibilityLabel="Task title"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -2794,11 +2636,9 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "padding": 12,
         }
       }
-      testID="task-form-title-input"
       value=""
     />
     <TextInput
-      accessibilityLabel="Task description"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -2825,7 +2665,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           },
         ]
       }
-      testID="task-form-description-input"
       textAlignVertical="top"
       value=""
     />
@@ -2839,7 +2678,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "marginTop": 4,
         }
       }
-      testID="task-form-type-label"
     >
       Task Type *
     </Text>
@@ -2852,18 +2690,15 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "marginBottom": 16,
         }
       }
-      testID="task-form-type-group"
     >
       <View
-        accessibilityLabel="Select SCHEDULED task type"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": true,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -2897,7 +2732,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-type-SCHEDULED"
       >
         <Text
           style={
@@ -2917,15 +2751,13 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select TIMED task type"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -2959,7 +2791,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-type-TIMED"
       >
         <Text
           style={
@@ -2977,15 +2808,13 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select EPISODIC task type"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -3019,7 +2848,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-type-EPISODIC"
       >
         <Text
           style={
@@ -3047,7 +2875,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "marginTop": 4,
         }
       }
-      testID="task-form-status-label"
     >
       Status *
     </Text>
@@ -3060,18 +2887,15 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "marginBottom": 16,
         }
       }
-      testID="task-form-status-group"
     >
       <View
-        accessibilityLabel="Select OPEN status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": true,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -3105,7 +2929,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-OPEN"
       >
         <Text
           style={
@@ -3125,15 +2948,13 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select VISIBLE status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -3167,7 +2988,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-VISIBLE"
       >
         <Text
           style={
@@ -3185,15 +3005,13 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select STARTED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -3227,7 +3045,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-STARTED"
       >
         <Text
           style={
@@ -3245,15 +3062,13 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select INPROGRESS status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -3287,7 +3102,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-INPROGRESS"
       >
         <Text
           style={
@@ -3305,15 +3119,13 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select COMPLETED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -3347,7 +3159,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-COMPLETED"
       >
         <Text
           style={
@@ -3365,15 +3176,13 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select EXPIRED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -3407,7 +3216,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-EXPIRED"
       >
         <Text
           style={
@@ -3425,15 +3233,13 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select RECALLED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -3467,7 +3273,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-RECALLED"
       >
         <Text
           style={
@@ -3486,7 +3291,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
       </View>
     </View>
     <TextInput
-      accessibilityLabel="Partition key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -3502,11 +3306,9 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "padding": 12,
         }
       }
-      testID="task-form-pk-input"
       value=""
     />
     <TextInput
-      accessibilityLabel="Sort key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -3522,7 +3324,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "padding": 12,
         }
       }
-      testID="task-form-sk-input"
       value=""
     />
     <View
@@ -3533,11 +3334,8 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "marginTop": 8,
         }
       }
-      testID="task-form-buttons"
     >
       <View
-        accessibilityLabel="Reset form"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -3576,7 +3374,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "padding": 14,
           }
         }
-        testID="task-form-reset-button"
       >
         <Text
           style={
@@ -3591,8 +3388,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Create task"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -3631,7 +3426,6 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "padding": 14,
           }
         }
-        testID="task-form-submit-button"
       >
         <Text
           style={
@@ -3669,7 +3463,6 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
       "shadowRadius": 4,
     }
   }
-  testID="task-form"
 >
   <View>
     <Text
@@ -3681,12 +3474,10 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "marginBottom": 16,
         }
       }
-      testID="task-form-title"
     >
       Create New Task for today
     </Text>
     <TextInput
-      accessibilityLabel="Task title"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -3705,11 +3496,9 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "padding": 12,
         }
       }
-      testID="task-form-title-input"
       value="Test Task"
     />
     <TextInput
-      accessibilityLabel="Task description"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -3736,7 +3525,6 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           },
         ]
       }
-      testID="task-form-description-input"
       textAlignVertical="top"
       value="Test Description"
     />
@@ -3750,7 +3538,6 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "marginTop": 4,
         }
       }
-      testID="task-form-type-label"
     >
       Task Type *
     </Text>
@@ -3763,18 +3550,15 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "marginBottom": 16,
         }
       }
-      testID="task-form-type-group"
     >
       <View
-        accessibilityLabel="Select SCHEDULED task type"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -3808,7 +3592,6 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-type-SCHEDULED"
       >
         <Text
           style={
@@ -3826,401 +3609,13 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select TIMED task type"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          {
-            "backgroundColor": "#fff",
-            "borderColor": "#dfe4ea",
-            "borderRadius": 4,
-            "borderWidth": 1,
-            "marginBottom": 8,
-            "marginRight": 8,
-            "opacity": 1,
-            "paddingHorizontal": 12,
-            "paddingVertical": 8,
-          }
-        }
-        testID="task-form-type-TIMED"
-      >
-        <Text
-          style={
-            [
-              {
-                "color": "#57606f",
-                "fontSize": 12,
-                "fontWeight": "600",
-              },
-              false,
-            ]
-          }
-        >
-          TIMED
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="Select EPISODIC task type"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": false,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          {
-            "backgroundColor": "#fff",
-            "borderColor": "#dfe4ea",
-            "borderRadius": 4,
-            "borderWidth": 1,
-            "marginBottom": 8,
-            "marginRight": 8,
-            "opacity": 1,
-            "paddingHorizontal": 12,
-            "paddingVertical": 8,
-          }
-        }
-        testID="task-form-type-EPISODIC"
-      >
-        <Text
-          style={
-            [
-              {
-                "color": "#57606f",
-                "fontSize": 12,
-                "fontWeight": "600",
-              },
-              false,
-            ]
-          }
-        >
-          EPISODIC
-        </Text>
-      </View>
-    </View>
-    <Text
-      style={
-        {
-          "color": "#2f3542",
-          "fontSize": 14,
-          "fontWeight": "600",
-          "marginBottom": 8,
-          "marginTop": 4,
-        }
-      }
-      testID="task-form-status-label"
-    >
-      Status *
-    </Text>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-          "flexWrap": "wrap",
-          "gap": 8,
-          "marginBottom": 16,
-        }
-      }
-      testID="task-form-status-group"
-    >
-      <View
-        accessibilityLabel="Select OPEN status"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": false,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          {
-            "backgroundColor": "#fff",
-            "borderColor": "#dfe4ea",
-            "borderRadius": 4,
-            "borderWidth": 1,
-            "marginBottom": 8,
-            "marginRight": 8,
-            "opacity": 1,
-            "paddingHorizontal": 12,
-            "paddingVertical": 8,
-          }
-        }
-        testID="task-form-status-OPEN"
-      >
-        <Text
-          style={
-            [
-              {
-                "color": "#57606f",
-                "fontSize": 12,
-                "fontWeight": "600",
-              },
-              false,
-            ]
-          }
-        >
-          OPEN
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="Select VISIBLE status"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": false,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          {
-            "backgroundColor": "#fff",
-            "borderColor": "#dfe4ea",
-            "borderRadius": 4,
-            "borderWidth": 1,
-            "marginBottom": 8,
-            "marginRight": 8,
-            "opacity": 1,
-            "paddingHorizontal": 12,
-            "paddingVertical": 8,
-          }
-        }
-        testID="task-form-status-VISIBLE"
-      >
-        <Text
-          style={
-            [
-              {
-                "color": "#57606f",
-                "fontSize": 12,
-                "fontWeight": "600",
-              },
-              false,
-            ]
-          }
-        >
-          VISIBLE
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="Select STARTED status"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": false,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          {
-            "backgroundColor": "#fff",
-            "borderColor": "#dfe4ea",
-            "borderRadius": 4,
-            "borderWidth": 1,
-            "marginBottom": 8,
-            "marginRight": 8,
-            "opacity": 1,
-            "paddingHorizontal": 12,
-            "paddingVertical": 8,
-          }
-        }
-        testID="task-form-status-STARTED"
-      >
-        <Text
-          style={
-            [
-              {
-                "color": "#57606f",
-                "fontSize": 12,
-                "fontWeight": "600",
-              },
-              false,
-            ]
-          }
-        >
-          STARTED
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="Select INPROGRESS status"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": false,
-          }
-        }
-        accessibilityValue={
-          {
-            "max": undefined,
-            "min": undefined,
-            "now": undefined,
-            "text": undefined,
-          }
-        }
-        accessible={true}
-        collapsable={false}
-        focusable={true}
-        onClick={[Function]}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          {
-            "backgroundColor": "#fff",
-            "borderColor": "#dfe4ea",
-            "borderRadius": 4,
-            "borderWidth": 1,
-            "marginBottom": 8,
-            "marginRight": 8,
-            "opacity": 1,
-            "paddingHorizontal": 12,
-            "paddingVertical": 8,
-          }
-        }
-        testID="task-form-status-INPROGRESS"
-      >
-        <Text
-          style={
-            [
-              {
-                "color": "#57606f",
-                "fontSize": 12,
-                "fontWeight": "600",
-              },
-              false,
-            ]
-          }
-        >
-          INPROGRESS
-        </Text>
-      </View>
-      <View
-        accessibilityLabel="Select COMPLETED status"
-        accessibilityRole="button"
-        accessibilityState={
-          {
-            "busy": undefined,
-            "checked": undefined,
-            "disabled": false,
-            "expanded": undefined,
-            "selected": true,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -4254,7 +3649,374 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-COMPLETED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              {
+                "color": "#fff",
+              },
+            ]
+          }
+        >
+          TIMED
+        </Text>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          EPISODIC
+        </Text>
+      </View>
+    </View>
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 14,
+          "fontWeight": "600",
+          "marginBottom": 8,
+          "marginTop": 4,
+        }
+      }
+    >
+      Status *
+    </Text>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+          "gap": 8,
+          "marginBottom": 16,
+        }
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          OPEN
+        </Text>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          VISIBLE
+        </Text>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          STARTED
+        </Text>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          INPROGRESS
+        </Text>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#3498db",
+            "borderColor": "#3498db",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
       >
         <Text
           style={
@@ -4274,15 +4036,13 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select EXPIRED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -4316,7 +4076,6 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-EXPIRED"
       >
         <Text
           style={
@@ -4334,15 +4093,13 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Select RECALLED status"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
             "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": false,
+            "selected": undefined,
           }
         }
         accessibilityValue={
@@ -4376,7 +4133,6 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "paddingVertical": 8,
           }
         }
-        testID="task-form-status-RECALLED"
       >
         <Text
           style={
@@ -4395,7 +4151,6 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
       </View>
     </View>
     <TextInput
-      accessibilityLabel="Partition key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -4411,11 +4166,9 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "padding": 12,
         }
       }
-      testID="task-form-pk-input"
       value="USER#123"
     />
     <TextInput
-      accessibilityLabel="Sort key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -4431,7 +4184,6 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "padding": 12,
         }
       }
-      testID="task-form-sk-input"
       value="TASK#456"
     />
     <View
@@ -4442,11 +4194,8 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "marginTop": 8,
         }
       }
-      testID="task-form-buttons"
     >
       <View
-        accessibilityLabel="Reset form"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -4485,7 +4234,6 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "padding": 14,
           }
         }
-        testID="task-form-reset-button"
       >
         <Text
           style={
@@ -4500,8 +4248,6 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Create task"
-        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -4540,7 +4286,6 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "padding": 14,
           }
         }
-        testID="task-form-submit-button"
       >
         <Text
           style={
