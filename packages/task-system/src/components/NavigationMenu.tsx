@@ -75,6 +75,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
           style={styles.overlay}
           onPress={onClose}
           android_disableSound={true}
+          testID="navigation-menu-overlay"
         />
         <Pressable
           style={styles.menuContainer}
@@ -85,7 +86,13 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
         >
           <View style={styles.header}>
             <Text style={styles.headerTitle}>Navigation</Text>
-            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+            <TouchableOpacity
+              onPress={onClose}
+              style={styles.closeButton}
+              testID="navigation-menu-close-button"
+              accessibilityRole="button"
+              accessibilityLabel="Close menu"
+            >
               <IconSymbol
                 name="xmark.circle.fill"
                 size={28}
@@ -100,7 +107,10 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             contentContainerStyle={styles.menuListContent}
           >
             {items.length === 0 ? (
-              <View style={styles.emptyState}>
+              <View
+                style={styles.emptyState}
+                testID="navigation-menu-empty-state"
+              >
                 <Text style={styles.emptyStateText}>
                   No navigation options available
                 </Text>

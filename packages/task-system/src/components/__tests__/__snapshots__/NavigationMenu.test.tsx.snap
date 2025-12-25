@@ -59,6 +59,7 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
           "top": 0,
         }
       }
+      testID="navigation-menu-overlay"
     />
     <View
       accessibilityState={
@@ -136,6 +137,8 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
           Navigation
         </Text>
         <View
+          accessibilityLabel="Close menu"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -169,6 +172,7 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
               "padding": 4,
             }
           }
+          testID="navigation-menu-close-button"
         >
           <Text
             testID="icon-xmark.circle.fill"
@@ -199,6 +203,7 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
                 "padding": 40,
               }
             }
+            testID="navigation-menu-empty-state"
           >
             <Text
               style={
@@ -275,6 +280,7 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
           "top": 0,
         }
       }
+      testID="navigation-menu-overlay"
     />
     <View
       accessibilityState={
@@ -352,6 +358,8 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
           Navigation
         </Text>
         <View
+          accessibilityLabel="Close menu"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -385,6 +393,7 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
               "padding": 4,
             }
           }
+          testID="navigation-menu-close-button"
         >
           <Text
             testID="icon-xmark.circle.fill"
@@ -415,6 +424,7 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
                 "padding": 40,
               }
             }
+            testID="navigation-menu-empty-state"
           >
             <Text
               style={
@@ -491,6 +501,7 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
           "top": 0,
         }
       }
+      testID="navigation-menu-overlay"
     />
     <View
       accessibilityState={
@@ -568,6 +579,8 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
           Navigation
         </Text>
         <View
+          accessibilityLabel="Close menu"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -601,6 +614,7 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
               "padding": 4,
             }
           }
+          testID="navigation-menu-close-button"
         >
           <Text
             testID="icon-xmark.circle.fill"
