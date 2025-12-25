@@ -198,17 +198,29 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
 
   // Show loading state if loading and no tasks yet
   if (loading && tasks.length === 0) {
-    return renderEmpty();
+    return (
+      <View style={styles.container} testID="task-list">
+        {renderEmpty()}
+      </View>
+    );
   }
 
   // Show error state if error exists
   if (error && tasks.length === 0) {
-    return renderEmpty();
+    return (
+      <View style={styles.container} testID="task-list">
+        {renderEmpty()}
+      </View>
+    );
   }
 
   // Show empty state only if no tasks and not loading
   if (tasks.length === 0 && !loading && !error) {
-    return renderEmpty();
+    return (
+      <View style={styles.container} testID="task-list">
+        {renderEmpty()}
+      </View>
+    );
   }
 
   // Debug: Always show tasks even if sections are empty
@@ -227,8 +239,9 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
       { title: "Today's Tasks", data: tasks, highlight: true },
     ];
     return (
-      <View style={styles.container}>
+      <View style={styles.container} testID="task-list">
         <SectionList
+          testID="task-list-section-list"
           sections={fallbackSections}
           renderItem={renderTask}
           renderSectionHeader={renderSectionHeader}

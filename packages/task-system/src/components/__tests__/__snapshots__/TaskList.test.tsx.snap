@@ -4,27 +4,37 @@ exports[`TaskList Snapshots matches snapshot with default props 1`] = `
 <View
   style={
     {
-      "alignItems": "center",
+      "backgroundColor": "#f5f6fa",
       "flex": 1,
-      "justifyContent": "center",
-      "minHeight": 200,
-      "padding": 32,
     }
   }
-  testID="task-list-empty"
+  testID="task-list"
 >
-  <Text
+  <View
     style={
       {
-        "color": "#747d8c",
-        "fontSize": 16,
-        "marginTop": 16,
-        "textAlign": "center",
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+        "minHeight": 200,
+        "padding": 32,
       }
     }
+    testID="task-list-empty"
   >
-    No tasks yet. Create one!
-  </Text>
+    <Text
+      style={
+        {
+          "color": "#747d8c",
+          "fontSize": 16,
+          "marginTop": 16,
+          "textAlign": "center",
+        }
+      }
+    >
+      No tasks yet. Create one!
+    </Text>
+  </View>
 </View>
 `;
 
@@ -32,39 +42,49 @@ exports[`TaskList Snapshots matches snapshot with error state 1`] = `
 <View
   style={
     {
-      "alignItems": "center",
+      "backgroundColor": "#f5f6fa",
       "flex": 1,
-      "justifyContent": "center",
-      "minHeight": 200,
-      "padding": 32,
     }
   }
-  testID="task-list-empty-error"
+  testID="task-list"
 >
-  <Text
+  <View
     style={
       {
-        "color": "#e74c3c",
-        "fontSize": 14,
-        "marginBottom": 8,
-        "textAlign": "center",
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+        "minHeight": 200,
+        "padding": 32,
       }
     }
+    testID="task-list-empty-error"
   >
-    Failed to load tasks
-  </Text>
-  <Text
-    style={
-      {
-        "color": "#747d8c",
-        "fontSize": 16,
-        "marginTop": 16,
-        "textAlign": "center",
+    <Text
+      style={
+        {
+          "color": "#e74c3c",
+          "fontSize": 14,
+          "marginBottom": 8,
+          "textAlign": "center",
+        }
       }
-    }
-  >
-    Pull to refresh
-  </Text>
+    >
+      Failed to load tasks
+    </Text>
+    <Text
+      style={
+        {
+          "color": "#747d8c",
+          "fontSize": 16,
+          "marginTop": 16,
+          "textAlign": "center",
+        }
+      }
+    >
+      Pull to refresh
+    </Text>
+  </View>
 </View>
 `;
 
@@ -72,31 +92,41 @@ exports[`TaskList Snapshots matches snapshot with loading state 1`] = `
 <View
   style={
     {
-      "alignItems": "center",
+      "backgroundColor": "#f5f6fa",
       "flex": 1,
-      "justifyContent": "center",
-      "minHeight": 200,
-      "padding": 32,
     }
   }
-  testID="task-list-empty-loading"
+  testID="task-list"
 >
-  <ActivityIndicator
-    color="#3498db"
-    size="large"
-  />
-  <Text
+  <View
     style={
       {
-        "color": "#747d8c",
-        "fontSize": 16,
-        "marginTop": 16,
-        "textAlign": "center",
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+        "minHeight": 200,
+        "padding": 32,
       }
     }
+    testID="task-list-empty-loading"
   >
-    Loading tasks...
-  </Text>
+    <ActivityIndicator
+      color="#3498db"
+      size="large"
+    />
+    <Text
+      style={
+        {
+          "color": "#747d8c",
+          "fontSize": 16,
+          "marginTop": 16,
+          "textAlign": "center",
+        }
+      }
+    >
+      Loading tasks...
+    </Text>
+  </View>
 </View>
 `;
 
@@ -104,26 +134,36 @@ exports[`TaskList Snapshots matches snapshot with sync indicator 1`] = `
 <View
   style={
     {
-      "alignItems": "center",
+      "backgroundColor": "#f5f6fa",
       "flex": 1,
-      "justifyContent": "center",
-      "minHeight": 200,
-      "padding": 32,
     }
   }
-  testID="task-list-empty"
+  testID="task-list"
 >
-  <Text
+  <View
     style={
       {
-        "color": "#747d8c",
-        "fontSize": 16,
-        "marginTop": 16,
-        "textAlign": "center",
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+        "minHeight": 200,
+        "padding": 32,
       }
     }
+    testID="task-list-empty"
   >
-    No tasks yet. Create one!
-  </Text>
+    <Text
+      style={
+        {
+          "color": "#747d8c",
+          "fontSize": 16,
+          "marginTop": 16,
+          "textAlign": "center",
+        }
+      }
+    >
+      No tasks yet. Create one!
+    </Text>
+  </View>
 </View>
 `;
