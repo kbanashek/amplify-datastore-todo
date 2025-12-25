@@ -68,6 +68,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
       transparent={true}
       animationType="slide"
       onRequestClose={onClose}
+      testID="navigation-menu-modal"
     >
       <View style={styles.overlayContainer}>
         <Pressable
@@ -77,6 +78,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
         />
         <Pressable
           style={styles.menuContainer}
+          testID="navigation-menu-container"
           onPress={e => {
             e.stopPropagation();
           }}
@@ -111,6 +113,9 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
                     style={styles.menuItem}
                     onPress={() => handlePressItem(item)}
                     activeOpacity={0.7}
+                    testID={`navigation-menu-item-${item.key}`}
+                    accessibilityRole="button"
+                    accessibilityLabel={item.name}
                   >
                     <View style={styles.menuItemIcon}>
                       <IconSymbol
