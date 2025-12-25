@@ -1,0 +1,2214 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#fff",
+      "borderRadius": 8,
+      "elevation": 2,
+      "marginBottom": 16,
+      "padding": 16,
+      "shadowColor": "#000",
+      "shadowOffset": {
+        "height": 2,
+        "width": 0,
+      },
+      "shadowOpacity": 0.1,
+      "shadowRadius": 4,
+    }
+  }
+  testID="task-filters"
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginBottom": 16,
+      }
+    }
+    testID="task-filters-header"
+  >
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 18,
+          "fontWeight": "bold",
+        }
+      }
+      testID="task-filters-title"
+    >
+      Filters
+    </Text>
+  </View>
+  <TextInput
+    accessibilityLabel="Search tasks"
+    autoCapitalize="none"
+    autoCorrect={false}
+    onChangeText={[MockFunction]}
+    placeholder="Search tasks..."
+    style={
+      {
+        "borderColor": "#dfe4ea",
+        "borderRadius": 4,
+        "borderWidth": 1,
+        "fontSize": 16,
+        "marginBottom": 16,
+        "padding": 12,
+      }
+    }
+    testID="task-filters-search-input"
+    value=""
+  />
+  <Text
+    style={
+      {
+        "color": "#2f3542",
+        "fontSize": 14,
+        "fontWeight": "600",
+        "marginBottom": 8,
+        "marginTop": 8,
+      }
+    }
+    testID="task-filters-status-title"
+  >
+    Status
+  </Text>
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "flexWrap": "wrap",
+        "gap": 8,
+        "marginBottom": 8,
+      }
+    }
+    testID="task-filters-status-row"
+  >
+    <View
+      accessibilityLabel="Filter by OPEN status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-OPEN"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        OPEN
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by VISIBLE status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-VISIBLE"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        VISIBLE
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by STARTED status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-STARTED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        STARTED
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by INPROGRESS status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-INPROGRESS"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        INPROGRESS
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by COMPLETED status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-COMPLETED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        COMPLETED
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by EXPIRED status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-EXPIRED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        EXPIRED
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by RECALLED status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-RECALLED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        RECALLED
+      </Text>
+    </View>
+  </View>
+  <Text
+    style={
+      {
+        "color": "#2f3542",
+        "fontSize": 14,
+        "fontWeight": "600",
+        "marginBottom": 8,
+        "marginTop": 8,
+      }
+    }
+    testID="task-filters-type-title"
+  >
+    Task Type
+  </Text>
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "flexWrap": "wrap",
+        "gap": 8,
+        "marginBottom": 8,
+      }
+    }
+    testID="task-filters-type-row"
+  >
+    <View
+      accessibilityLabel="Filter by SCHEDULED type"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-type-SCHEDULED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        SCHEDULED
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by TIMED type"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-type-TIMED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        TIMED
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by EPISODIC type"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-type-EPISODIC"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        EPISODIC
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#fff",
+      "borderRadius": 8,
+      "elevation": 2,
+      "marginBottom": 16,
+      "padding": 16,
+      "shadowColor": "#000",
+      "shadowOffset": {
+        "height": 2,
+        "width": 0,
+      },
+      "shadowOpacity": 0.1,
+      "shadowRadius": 4,
+    }
+  }
+  testID="task-filters"
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginBottom": 16,
+      }
+    }
+    testID="task-filters-header"
+  >
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 18,
+          "fontWeight": "bold",
+        }
+      }
+      testID="task-filters-title"
+    >
+      Filters
+    </Text>
+    <View
+      accessibilityLabel="Clear all filters"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#e74c3c",
+          "borderRadius": 4,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-clear-button"
+    >
+      <Text
+        style={
+          {
+            "color": "#fff",
+            "fontSize": 12,
+            "fontWeight": "600",
+          }
+        }
+      >
+        Clear All
+      </Text>
+    </View>
+  </View>
+  <TextInput
+    accessibilityLabel="Search tasks"
+    autoCapitalize="none"
+    autoCorrect={false}
+    onChangeText={[MockFunction]}
+    placeholder="Search tasks..."
+    style={
+      {
+        "borderColor": "#dfe4ea",
+        "borderRadius": 4,
+        "borderWidth": 1,
+        "fontSize": 16,
+        "marginBottom": 16,
+        "padding": 12,
+      }
+    }
+    testID="task-filters-search-input"
+    value="test search"
+  />
+  <Text
+    style={
+      {
+        "color": "#2f3542",
+        "fontSize": 14,
+        "fontWeight": "600",
+        "marginBottom": 8,
+        "marginTop": 8,
+      }
+    }
+    testID="task-filters-status-title"
+  >
+    Status
+  </Text>
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "flexWrap": "wrap",
+        "gap": 8,
+        "marginBottom": 8,
+      }
+    }
+    testID="task-filters-status-row"
+  >
+    <View
+      accessibilityLabel="Filter by OPEN status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": true,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#3498db",
+          "borderColor": "#3498db",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-OPEN"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            {
+              "color": "#fff",
+            },
+          ]
+        }
+      >
+        OPEN
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by VISIBLE status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-VISIBLE"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        VISIBLE
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by STARTED status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-STARTED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        STARTED
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by INPROGRESS status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-INPROGRESS"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        INPROGRESS
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by COMPLETED status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": true,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#3498db",
+          "borderColor": "#3498db",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-COMPLETED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            {
+              "color": "#fff",
+            },
+          ]
+        }
+      >
+        COMPLETED
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by EXPIRED status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-EXPIRED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        EXPIRED
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by RECALLED status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-RECALLED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        RECALLED
+      </Text>
+    </View>
+  </View>
+  <Text
+    style={
+      {
+        "color": "#2f3542",
+        "fontSize": 14,
+        "fontWeight": "600",
+        "marginBottom": 8,
+        "marginTop": 8,
+      }
+    }
+    testID="task-filters-type-title"
+  >
+    Task Type
+  </Text>
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "flexWrap": "wrap",
+        "gap": 8,
+        "marginBottom": 8,
+      }
+    }
+    testID="task-filters-type-row"
+  >
+    <View
+      accessibilityLabel="Filter by SCHEDULED type"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": true,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#3498db",
+          "borderColor": "#3498db",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-type-SCHEDULED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            {
+              "color": "#fff",
+            },
+          ]
+        }
+      >
+        SCHEDULED
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by TIMED type"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-type-TIMED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        TIMED
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by EPISODIC type"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-type-EPISODIC"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        EPISODIC
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#fff",
+      "borderRadius": 8,
+      "elevation": 2,
+      "marginBottom": 16,
+      "padding": 16,
+      "shadowColor": "#000",
+      "shadowOffset": {
+        "height": 2,
+        "width": 0,
+      },
+      "shadowOpacity": 0.1,
+      "shadowRadius": 4,
+    }
+  }
+  testID="task-filters"
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "marginBottom": 16,
+      }
+    }
+    testID="task-filters-header"
+  >
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 18,
+          "fontWeight": "bold",
+        }
+      }
+      testID="task-filters-title"
+    >
+      Filters
+    </Text>
+  </View>
+  <TextInput
+    accessibilityLabel="Search tasks"
+    autoCapitalize="none"
+    autoCorrect={false}
+    onChangeText={[MockFunction]}
+    placeholder="Search tasks..."
+    style={
+      {
+        "borderColor": "#dfe4ea",
+        "borderRadius": 4,
+        "borderWidth": 1,
+        "fontSize": 16,
+        "marginBottom": 16,
+        "padding": 12,
+      }
+    }
+    testID="task-filters-search-input"
+    value=""
+  />
+  <Text
+    style={
+      {
+        "color": "#2f3542",
+        "fontSize": 14,
+        "fontWeight": "600",
+        "marginBottom": 8,
+        "marginTop": 8,
+      }
+    }
+    testID="task-filters-status-title"
+  >
+    Status
+  </Text>
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "flexWrap": "wrap",
+        "gap": 8,
+        "marginBottom": 8,
+      }
+    }
+    testID="task-filters-status-row"
+  >
+    <View
+      accessibilityLabel="Filter by OPEN status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-OPEN"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        OPEN
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by VISIBLE status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-VISIBLE"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        VISIBLE
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by STARTED status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-STARTED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        STARTED
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by INPROGRESS status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-INPROGRESS"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        INPROGRESS
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by COMPLETED status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-COMPLETED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        COMPLETED
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by EXPIRED status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-EXPIRED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        EXPIRED
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by RECALLED status"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-status-RECALLED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        RECALLED
+      </Text>
+    </View>
+  </View>
+  <Text
+    style={
+      {
+        "color": "#2f3542",
+        "fontSize": 14,
+        "fontWeight": "600",
+        "marginBottom": 8,
+        "marginTop": 8,
+      }
+    }
+    testID="task-filters-type-title"
+  >
+    Task Type
+  </Text>
+  <View
+    style={
+      {
+        "flexDirection": "row",
+        "flexWrap": "wrap",
+        "gap": 8,
+        "marginBottom": 8,
+      }
+    }
+    testID="task-filters-type-row"
+  >
+    <View
+      accessibilityLabel="Filter by SCHEDULED type"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-type-SCHEDULED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        SCHEDULED
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by TIMED type"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-type-TIMED"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        TIMED
+      </Text>
+    </View>
+    <View
+      accessibilityLabel="Filter by EPISODIC type"
+      accessibilityRole="button"
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": false,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#f8f9fa",
+          "borderColor": "#dfe4ea",
+          "borderRadius": 16,
+          "borderWidth": 1,
+          "marginBottom": 8,
+          "marginRight": 8,
+          "opacity": 1,
+          "paddingHorizontal": 12,
+          "paddingVertical": 6,
+        }
+      }
+      testID="task-filters-type-EPISODIC"
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#57606f",
+              "fontSize": 12,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        EPISODIC
+      </Text>
+    </View>
+  </View>
+</View>
+`;

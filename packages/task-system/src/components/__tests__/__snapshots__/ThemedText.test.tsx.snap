@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ThemedText Snapshots matches snapshot with custom colors 1`] = `
+<Text
+  style={
+    [
+      {
+        "color": "#000000",
+      },
+      {
+        "fontSize": 16,
+        "lineHeight": 24,
+      },
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+    ]
+  }
+>
+  Colored Text
+</Text>
+`;
+
+exports[`ThemedText Snapshots matches snapshot with custom style 1`] = `
+<Text
+  style={
+    [
+      {
+        "color": "#000000",
+      },
+      {
+        "fontSize": 16,
+        "lineHeight": 24,
+      },
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      {
+        "fontSize": 20,
+        "fontWeight": "bold",
+      },
+    ]
+  }
+>
+  Styled Text
+</Text>
+`;
+
+exports[`ThemedText Snapshots matches snapshot with default type 1`] = `
+<Text
+  style={
+    [
+      {
+        "color": "#000000",
+      },
+      {
+        "fontSize": 16,
+        "lineHeight": 24,
+      },
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+    ]
+  }
+>
+  Default Text
+</Text>
+`;
+
+exports[`ThemedText Snapshots matches snapshot with link type 1`] = `
+<Text
+  style={
+    [
+      {
+        "color": "#000000",
+      },
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      {
+        "color": "#0a7ea4",
+        "fontSize": 16,
+        "lineHeight": 30,
+      },
+      undefined,
+    ]
+  }
+>
+  Link Text
+</Text>
+`;
+
+exports[`ThemedText Snapshots matches snapshot with subtitle type 1`] = `
+<Text
+  style={
+    [
+      {
+        "color": "#000000",
+      },
+      undefined,
+      undefined,
+      undefined,
+      {
+        "fontSize": 20,
+        "fontWeight": "bold",
+      },
+      undefined,
+      undefined,
+    ]
+  }
+>
+  Subtitle Text
+</Text>
+`;
+
+exports[`ThemedText Snapshots matches snapshot with title type 1`] = `
+<Text
+  style={
+    [
+      {
+        "color": "#000000",
+      },
+      undefined,
+      {
+        "fontSize": 32,
+        "fontWeight": "bold",
+        "lineHeight": 32,
+      },
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+    ]
+  }
+>
+  Title Text
+</Text>
+`;

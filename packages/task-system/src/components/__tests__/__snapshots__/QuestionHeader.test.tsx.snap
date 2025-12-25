@@ -1,0 +1,625 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QuestionHeader Snapshots matches snapshot in RTL mode 1`] = `
+<View
+  style={
+    {
+      "alignSelf": "stretch",
+      "backgroundColor": "#fff",
+      "borderBottomColor": "#e5e7eb",
+      "borderBottomWidth": 1,
+      "width": "100%",
+    }
+  }
+  testID="question-header"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "minHeight": 44,
+          "paddingHorizontal": 0,
+          "paddingVertical": 12,
+        },
+        {
+          "alignItems": "center",
+          "flexDirection": "row-reverse",
+          "justifyContent": "space-between",
+          "minHeight": 44,
+          "paddingHorizontal": 0,
+          "paddingVertical": 12,
+        },
+      ]
+    }
+    testID="question-header-top"
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "paddingLeft": 16,
+          "width": 44,
+        }
+      }
+      testID="question-header-left"
+    >
+      <View
+        style={
+          {
+            "width": 44,
+          }
+        }
+        testID="question-header-placeholder"
+      />
+    </View>
+    <Text
+      style={
+        [
+          {
+            "color": "#1e40af",
+            "flex": 1,
+            "flexWrap": "wrap",
+            "fontSize": 17,
+            "fontWeight": "600",
+            "paddingHorizontal": 8,
+            "textAlign": "center",
+          },
+          {
+            "textAlign": "right",
+          },
+        ]
+      }
+      testID="question-header-title"
+    >
+      Question Title
+    </Text>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 8,
+          "justifyContent": "flex-end",
+          "minWidth": 44,
+          "paddingRight": 16,
+        }
+      }
+      testID="question-header-right"
+    />
+  </View>
+</View>
+`;
+
+exports[`QuestionHeader Snapshots matches snapshot with back button 1`] = `
+<View
+  style={
+    {
+      "alignSelf": "stretch",
+      "backgroundColor": "#fff",
+      "borderBottomColor": "#e5e7eb",
+      "borderBottomWidth": 1,
+      "width": "100%",
+    }
+  }
+  testID="question-header"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "minHeight": 44,
+          "paddingHorizontal": 0,
+          "paddingVertical": 12,
+        },
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "minHeight": 44,
+          "paddingHorizontal": 0,
+          "paddingVertical": 12,
+        },
+      ]
+    }
+    testID="question-header-top"
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "paddingLeft": 16,
+          "width": 44,
+        }
+      }
+      testID="question-header-left"
+    >
+      <View
+        accessibilityLabel="Go back"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+            "padding": 4,
+          }
+        }
+        testID="question-header-back-button"
+      >
+        <Text
+          testID="icon-chevron.left"
+        >
+          chevron.left
+        </Text>
+      </View>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "color": "#1e40af",
+            "flex": 1,
+            "flexWrap": "wrap",
+            "fontSize": 17,
+            "fontWeight": "600",
+            "paddingHorizontal": 8,
+            "textAlign": "center",
+          },
+          false,
+        ]
+      }
+      testID="question-header-title"
+    >
+      Question Title
+    </Text>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 8,
+          "justifyContent": "flex-end",
+          "minWidth": 44,
+          "paddingRight": 16,
+        }
+      }
+      testID="question-header-right"
+    />
+  </View>
+</View>
+`;
+
+exports[`QuestionHeader Snapshots matches snapshot with both buttons 1`] = `
+<View
+  style={
+    {
+      "alignSelf": "stretch",
+      "backgroundColor": "#fff",
+      "borderBottomColor": "#e5e7eb",
+      "borderBottomWidth": 1,
+      "width": "100%",
+    }
+  }
+  testID="question-header"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "minHeight": 44,
+          "paddingHorizontal": 0,
+          "paddingVertical": 12,
+        },
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "minHeight": 44,
+          "paddingHorizontal": 0,
+          "paddingVertical": 12,
+        },
+      ]
+    }
+    testID="question-header-top"
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "paddingLeft": 16,
+          "width": 44,
+        }
+      }
+      testID="question-header-left"
+    >
+      <View
+        accessibilityLabel="Go back"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+            "padding": 4,
+          }
+        }
+        testID="question-header-back-button"
+      >
+        <Text
+          testID="icon-chevron.left"
+        >
+          chevron.left
+        </Text>
+      </View>
+    </View>
+    <Text
+      style={
+        [
+          {
+            "color": "#1e40af",
+            "flex": 1,
+            "flexWrap": "wrap",
+            "fontSize": 17,
+            "fontWeight": "600",
+            "paddingHorizontal": 8,
+            "textAlign": "center",
+          },
+          false,
+        ]
+      }
+      testID="question-header-title"
+    >
+      Question Title
+    </Text>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 8,
+          "justifyContent": "flex-end",
+          "minWidth": 44,
+          "paddingRight": 16,
+        }
+      }
+      testID="question-header-right"
+    >
+      <View
+        accessibilityLabel="Close"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+            "padding": 4,
+          }
+        }
+        testID="question-header-close-button"
+      >
+        <Text
+          testID="icon-xmark"
+        >
+          xmark
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`QuestionHeader Snapshots matches snapshot with close button 1`] = `
+<View
+  style={
+    {
+      "alignSelf": "stretch",
+      "backgroundColor": "#fff",
+      "borderBottomColor": "#e5e7eb",
+      "borderBottomWidth": 1,
+      "width": "100%",
+    }
+  }
+  testID="question-header"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "minHeight": 44,
+          "paddingHorizontal": 0,
+          "paddingVertical": 12,
+        },
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "minHeight": 44,
+          "paddingHorizontal": 0,
+          "paddingVertical": 12,
+        },
+      ]
+    }
+    testID="question-header-top"
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "paddingLeft": 16,
+          "width": 44,
+        }
+      }
+      testID="question-header-left"
+    >
+      <View
+        style={
+          {
+            "width": 44,
+          }
+        }
+        testID="question-header-placeholder"
+      />
+    </View>
+    <Text
+      style={
+        [
+          {
+            "color": "#1e40af",
+            "flex": 1,
+            "flexWrap": "wrap",
+            "fontSize": 17,
+            "fontWeight": "600",
+            "paddingHorizontal": 8,
+            "textAlign": "center",
+          },
+          false,
+        ]
+      }
+      testID="question-header-title"
+    >
+      Question Title
+    </Text>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 8,
+          "justifyContent": "flex-end",
+          "minWidth": 44,
+          "paddingRight": 16,
+        }
+      }
+      testID="question-header-right"
+    >
+      <View
+        accessibilityLabel="Close"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "opacity": 1,
+            "padding": 4,
+          }
+        }
+        testID="question-header-close-button"
+      >
+        <Text
+          testID="icon-xmark"
+        >
+          xmark
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`QuestionHeader Snapshots matches snapshot with default props 1`] = `
+<View
+  style={
+    {
+      "alignSelf": "stretch",
+      "backgroundColor": "#fff",
+      "borderBottomColor": "#e5e7eb",
+      "borderBottomWidth": 1,
+      "width": "100%",
+    }
+  }
+  testID="question-header"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "minHeight": 44,
+          "paddingHorizontal": 0,
+          "paddingVertical": 12,
+        },
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "minHeight": 44,
+          "paddingHorizontal": 0,
+          "paddingVertical": 12,
+        },
+      ]
+    }
+    testID="question-header-top"
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "paddingLeft": 16,
+          "width": 44,
+        }
+      }
+      testID="question-header-left"
+    >
+      <View
+        style={
+          {
+            "width": 44,
+          }
+        }
+        testID="question-header-placeholder"
+      />
+    </View>
+    <Text
+      style={
+        [
+          {
+            "color": "#1e40af",
+            "flex": 1,
+            "flexWrap": "wrap",
+            "fontSize": 17,
+            "fontWeight": "600",
+            "paddingHorizontal": 8,
+            "textAlign": "center",
+          },
+          false,
+        ]
+      }
+      testID="question-header-title"
+    >
+      Question Title
+    </Text>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "gap": 8,
+          "justifyContent": "flex-end",
+          "minWidth": 44,
+          "paddingRight": 16,
+        }
+      }
+      testID="question-header-right"
+    />
+  </View>
+</View>
+`;
