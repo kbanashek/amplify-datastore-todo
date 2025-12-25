@@ -89,10 +89,14 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         disabled={changingLanguage || !ready}
         testID="language-selector-button"
         accessibilityRole="button"
-        accessibilityLabel={`Change language, current: ${currentLanguageName}`}
+        accessibilityLabel={`Current language: ${currentLanguageName}`}
       >
         {changingLanguage || !ready ? (
-          <ActivityIndicator size="small" color="#007AFF" />
+          <ActivityIndicator
+            size="small"
+            color="#007AFF"
+            testID="language-selector-loading"
+          />
         ) : (
           <Text style={styles.selectorText}>🌐 {currentLanguageName}</Text>
         )}
@@ -109,6 +113,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
           style={styles.modalOverlay}
           activeOpacity={1}
           onPress={() => setModalVisible(false)}
+          testID="language-selector-modal-overlay"
         >
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
@@ -116,6 +121,9 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
               <TouchableOpacity
                 style={styles.closeButton}
                 onPress={() => setModalVisible(false)}
+                testID="language-selector-modal-close"
+                accessibilityRole="button"
+                accessibilityLabel="Close language selector"
               >
                 <Text style={styles.closeButtonText}>✕</Text>
               </TouchableOpacity>
@@ -134,7 +142,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
                     ]}
                     onPress={() => handleLanguageSelect(item.code)}
                     disabled={changingLanguage}
-                    testID={`language-option-${item.code}`}
+                    testID={`language-selector-item-${item.code}`}
                     accessibilityRole="button"
                     accessibilityLabel={`Select ${item.name}`}
                     accessibilityState={{ selected: isSelected }}
