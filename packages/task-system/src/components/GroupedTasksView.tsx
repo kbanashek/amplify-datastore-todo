@@ -112,7 +112,11 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
           color={AppColors.CIBlue}
           testID="grouped-tasks-view-loading-spinner"
         />
-        <TranslatedText text="Loading tasks..." style={styles.loadingText} />
+        <TranslatedText
+          text="Loading tasks..."
+          style={styles.loadingText}
+          testID="grouped-tasks-view-loading-text"
+        />
       </View>
     );
   }
@@ -123,7 +127,9 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
         style={[styles.centerContainer, styles.fill]}
         testID="grouped-tasks-view-error"
       >
-        <Text style={styles.errorText}>{error}</Text>
+        <Text style={styles.errorText} testID="grouped-tasks-view-error-text">
+          {error}
+        </Text>
       </View>
     );
   }
@@ -138,7 +144,11 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
         style={[styles.centerContainer, styles.fill]}
         testID="grouped-tasks-view-empty"
       >
-        <TranslatedText text="No tasks available." style={styles.emptyText} />
+        <TranslatedText
+          text="No tasks available."
+          style={styles.emptyText}
+          testID="grouped-tasks-view-empty-text"
+        />
       </View>
     );
   }

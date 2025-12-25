@@ -23,6 +23,7 @@ exports[`GroupedTasksView Snapshots matches snapshot in RTL mode 1`] = `
         "textAlign": "center",
       }
     }
+    testID="grouped-tasks-view-empty-text"
   >
     No tasks available.
   </Text>
@@ -135,6 +136,7 @@ exports[`GroupedTasksView Snapshots matches snapshot with default props 1`] = `
         "textAlign": "center",
       }
     }
+    testID="grouped-tasks-view-empty-text"
   >
     No tasks available.
   </Text>
@@ -164,6 +166,7 @@ exports[`GroupedTasksView Snapshots matches snapshot with error state 1`] = `
         "textAlign": "center",
       }
     }
+    testID="grouped-tasks-view-error-text"
   >
     Failed to load tasks
   </Text>
@@ -265,6 +268,7 @@ exports[`GroupedTasksView Snapshots matches snapshot with loading state 1`] = `
         "marginTop": 12,
       }
     }
+    testID="grouped-tasks-view-loading-text"
   >
     Loading tasks...
   </Text>
