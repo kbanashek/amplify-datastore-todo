@@ -22,11 +22,11 @@ jest.mock("@translations/index", () => ({
 }));
 
 // Mock TranslationMemoryService
-const mockGetTranslationSync = jest.fn(() => null);
+const mockGetTranslationSync = jest.fn((text: string) => null as string | null);
 
 jest.mock("@services/TranslationMemoryService", () => ({
   TranslationMemoryService: {
-    getTranslationSync: (text: string) => mockGetTranslationSync(text),
+    getTranslationSync: mockGetTranslationSync,
   },
 }));
 
@@ -202,9 +202,7 @@ describe("TranslatedText", () => {
     });
 
     it("handles text not in TEXT_TO_KEY_MAP", () => {
-      const { getByText } = render(
-        <TranslatedText text="Unknown Text" />
-      );
+      const { getByText } = render(<TranslatedText text="Unknown Text" />);
       expect(getByText("Unknown Text")).toBeTruthy();
     });
 
@@ -371,10 +369,13 @@ describe("TranslatedText", () => {
     });
 
     it("generates testID for long text (truncated)", () => {
-      const longText = "This is a very long text that will be truncated in testID";
+      const longText =
+        "This is a very long text that will be truncated in testID";
       const { getByTestId } = render(<TranslatedText text={longText} />);
       // TestID should be truncated to first 20 chars
-      expect(getByTestId(`translated-text-${longText.substring(0, 20)}`)).toBeTruthy();
+      expect(
+        getByTestId(`translated-text-${longText.substring(0, 20)}`)
+      ).toBeTruthy();
     });
   });
 });

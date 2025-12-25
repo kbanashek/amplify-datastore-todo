@@ -11,7 +11,8 @@ const mockUseThemeColor = jest.fn((_props, colorName: string) => {
 });
 
 jest.mock("@hooks/useThemeColor", () => ({
-  useThemeColor: (_props: any, colorName: string) => mockUseThemeColor(_props, colorName),
+  useThemeColor: (_props: any, colorName: string) =>
+    mockUseThemeColor(_props, colorName),
 }));
 
 describe("ThemedText", () => {
@@ -218,9 +219,7 @@ describe("ThemedText", () => {
     });
 
     it("matches snapshot with link type", () => {
-      const { toJSON } = render(
-        <ThemedText type="link">Link Text</ThemedText>
-      );
+      const { toJSON } = render(<ThemedText type="link">Link Text</ThemedText>);
       expect(toJSON()).toMatchSnapshot();
     });
 

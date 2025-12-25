@@ -13,7 +13,8 @@ export const IconNames = {
   /** Send/paper plane icon */
   PAPERPLANE_FILL: "paperplane.fill" as IconSymbolName,
   /** Code/chevron icon */
-  CHEVRON_LEFT_FORWARDSLASH_CHEVRON_RIGHT: "chevron.left.forwardslash.chevron.right" as IconSymbolName,
+  CHEVRON_LEFT_FORWARDSLASH_CHEVRON_RIGHT:
+    "chevron.left.forwardslash.chevron.right" as IconSymbolName,
   /** Left chevron icon */
   CHEVRON_LEFT: "chevron.left" as IconSymbolName,
   /** Right chevron icon */
@@ -37,7 +38,8 @@ export const IconNames = {
   /** Chat bubble filled icon */
   TEXT_BUBBLE_FILL: "text.bubble.fill" as IconSymbolName,
   /** List bullet rectangle portrait filled icon */
-  LIST_BULLET_RECTANGLE_PORTRAIT_FILL: "list.bullet.rectangle.portrait.fill" as IconSymbolName,
+  LIST_BULLET_RECTANGLE_PORTRAIT_FILL:
+    "list.bullet.rectangle.portrait.fill" as IconSymbolName,
   /** Clipboard/list icon */
   LIST_CLIPBOARD: "list.clipboard" as IconSymbolName,
   /** Clock filled icon */
@@ -59,5 +61,3 @@ export const IconNames = {
   /** Building icon (for onsite appointments) */
   BUILDING_2_FILL: "building.2.fill" as IconSymbolName,
 } as const;
-
-

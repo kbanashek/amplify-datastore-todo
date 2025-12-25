@@ -52,7 +52,11 @@ describe("DatePicker", () => {
   it("passes value to DateTimeField", () => {
     const testDate = new Date("2024-01-15");
     const { getByTestId } = render(
-      <DatePicker value={testDate} onChange={mockOnChange} testID="date-picker" />
+      <DatePicker
+        value={testDate}
+        onChange={mockOnChange}
+        testID="date-picker"
+      />
     );
     expect(getByTestId("date-picker-value").props.children).toBe(
       testDate.toISOString()
@@ -134,5 +138,3 @@ describe("DatePicker", () => {
     expect(getByTestId("custom-picker")).toBeTruthy();
   });
 });
-
-

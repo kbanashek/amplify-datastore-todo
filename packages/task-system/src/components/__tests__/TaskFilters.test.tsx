@@ -1,7 +1,11 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import { TaskFilters } from "@components/TaskFilters";
-import { TaskStatus, TaskType, TaskFilters as TaskFiltersType } from "@task-types/Task";
+import {
+  TaskStatus,
+  TaskType,
+  TaskFilters as TaskFiltersType,
+} from "@task-types/Task";
 
 // Mock useRTL
 const mockRtlStyle = jest.fn((style: any) => style);
@@ -120,7 +124,9 @@ describe("TaskFilters", () => {
       const styles = Array.isArray(openChip.props.style)
         ? openChip.props.style
         : [openChip.props.style];
-      const hasSelectedStyle = styles.some((style: any) => style?.backgroundColor === "#3498db");
+      const hasSelectedStyle = styles.some(
+        (style: any) => style?.backgroundColor === "#3498db"
+      );
       expect(hasSelectedStyle).toBe(true);
     });
 
@@ -132,11 +138,15 @@ describe("TaskFilters", () => {
       const { getByTestId } = render(
         <TaskFilters {...defaultProps} filters={filtersWithType} />
       );
-      const scheduledChip = getByTestId(`task-filters-type-${TaskType.SCHEDULED}`);
+      const scheduledChip = getByTestId(
+        `task-filters-type-${TaskType.SCHEDULED}`
+      );
       const styles = Array.isArray(scheduledChip.props.style)
         ? scheduledChip.props.style
         : [scheduledChip.props.style];
-      const hasSelectedStyle = styles.some((style: any) => style?.backgroundColor === "#3498db");
+      const hasSelectedStyle = styles.some(
+        (style: any) => style?.backgroundColor === "#3498db"
+      );
       expect(hasSelectedStyle).toBe(true);
     });
   });
@@ -180,7 +190,9 @@ describe("TaskFilters", () => {
       const { getByTestId } = render(
         <TaskFilters {...defaultProps} filters={filtersWithStatus} />
       );
-      const completedChip = getByTestId(`task-filters-status-${TaskStatus.COMPLETED}`);
+      const completedChip = getByTestId(
+        `task-filters-status-${TaskStatus.COMPLETED}`
+      );
       fireEvent.press(completedChip);
       expect(mockOnStatusFilterChange).toHaveBeenCalledWith([
         TaskStatus.OPEN,
@@ -190,9 +202,13 @@ describe("TaskFilters", () => {
 
     it("calls onTaskTypeFilterChange when task type chip is pressed", () => {
       const { getByTestId } = render(<TaskFilters {...defaultProps} />);
-      const scheduledChip = getByTestId(`task-filters-type-${TaskType.SCHEDULED}`);
+      const scheduledChip = getByTestId(
+        `task-filters-type-${TaskType.SCHEDULED}`
+      );
       fireEvent.press(scheduledChip);
-      expect(mockOnTaskTypeFilterChange).toHaveBeenCalledWith([TaskType.SCHEDULED]);
+      expect(mockOnTaskTypeFilterChange).toHaveBeenCalledWith([
+        TaskType.SCHEDULED,
+      ]);
       expect(mockOnTaskTypeFilterChange).toHaveBeenCalledTimes(1);
     });
 
@@ -204,7 +220,9 @@ describe("TaskFilters", () => {
       const { getByTestId } = render(
         <TaskFilters {...defaultProps} filters={filtersWithType} />
       );
-      const scheduledChip = getByTestId(`task-filters-type-${TaskType.SCHEDULED}`);
+      const scheduledChip = getByTestId(
+        `task-filters-type-${TaskType.SCHEDULED}`
+      );
       fireEvent.press(scheduledChip);
       expect(mockOnTaskTypeFilterChange).toHaveBeenCalledWith([]);
     });
@@ -334,9 +352,13 @@ describe("TaskFilters", () => {
       const { getByTestId } = render(
         <TaskFilters {...defaultProps} filters={filtersWithUndefinedType} />
       );
-      const scheduledChip = getByTestId(`task-filters-type-${TaskType.SCHEDULED}`);
+      const scheduledChip = getByTestId(
+        `task-filters-type-${TaskType.SCHEDULED}`
+      );
       fireEvent.press(scheduledChip);
-      expect(mockOnTaskTypeFilterChange).toHaveBeenCalledWith([TaskType.SCHEDULED]);
+      expect(mockOnTaskTypeFilterChange).toHaveBeenCalledWith([
+        TaskType.SCHEDULED,
+      ]);
     });
   });
 
@@ -351,13 +373,17 @@ describe("TaskFilters", () => {
     it("has proper accessibility labels on status chips", () => {
       const { getByTestId } = render(<TaskFilters {...defaultProps} />);
       const openChip = getByTestId(`task-filters-status-${TaskStatus.OPEN}`);
-      expect(openChip.props.accessibilityLabel).toBe(`Filter by ${TaskStatus.OPEN} status`);
+      expect(openChip.props.accessibilityLabel).toBe(
+        `Filter by ${TaskStatus.OPEN} status`
+      );
       expect(openChip.props.accessibilityRole).toBe("button");
     });
 
     it("has proper accessibility labels on task type chips", () => {
       const { getByTestId } = render(<TaskFilters {...defaultProps} />);
-      const scheduledChip = getByTestId(`task-filters-type-${TaskType.SCHEDULED}`);
+      const scheduledChip = getByTestId(
+        `task-filters-type-${TaskType.SCHEDULED}`
+      );
       expect(scheduledChip.props.accessibilityLabel).toBe(
         `Filter by ${TaskType.SCHEDULED} type`
       );
@@ -400,7 +426,11 @@ describe("TaskFilters", () => {
         searchText: "test search",
       };
       const { toJSON } = render(
-        <TaskFilters {...defaultProps} filters={filtersWithValues} hasActiveFilters={true} />
+        <TaskFilters
+          {...defaultProps}
+          filters={filtersWithValues}
+          hasActiveFilters={true}
+        />
       );
       expect(toJSON()).toMatchSnapshot();
     });
@@ -473,4 +503,3 @@ describe("TaskFilters", () => {
     });
   });
 });
-

@@ -46,12 +46,18 @@ jest.mock("@components/TaskCard", () => {
       <View testID={`task-card-${task.id}`}>
         <Text testID={`task-card-title-${task.id}`}>{task.title}</Text>
         {onPress && (
-          <Text testID={`task-card-press-${task.id}`} onPress={() => onPress(task)}>
+          <Text
+            testID={`task-card-press-${task.id}`}
+            onPress={() => onPress(task)}
+          >
             Press
           </Text>
         )}
         {onDelete && (
-          <Text testID={`task-card-delete-${task.id}`} onPress={() => onDelete(task.id)}>
+          <Text
+            testID={`task-card-delete-${task.id}`}
+            onPress={() => onDelete(task.id)}
+          >
             Delete
           </Text>
         )}
@@ -97,7 +103,11 @@ describe("GroupedTasksView", () => {
   const mockOnDelete = jest.fn();
   const mockOnAppointmentPress = jest.fn();
 
-  const createMockTask = (id: string, title: string, startTime?: number): Task => ({
+  const createMockTask = (
+    id: string,
+    title: string,
+    startTime?: number
+  ): Task => ({
     id,
     pk: `PK-${id}`,
     sk: `SK-${id}`,
@@ -109,14 +119,13 @@ describe("GroupedTasksView", () => {
     updatedAt: new Date().toISOString(),
   });
 
-  const createMockAppointment = (id: string, title: string): Appointment => ({
-    appointmentId: id,
-    pk: "APPT",
-    sk: id,
-    title,
-    startAt: new Date().toISOString(),
-    appointmentType: AppointmentType.ONSITE,
-  });
+  const createMockAppointment = (id: string, title: string): Appointment =>
+    ({
+      appointmentId: id,
+      title,
+      startAt: new Date().toISOString(),
+      appointmentType: AppointmentType.ONSITE,
+    }) as Appointment;
 
   const createMockGroupedTask = (
     dayLabel: string,
@@ -186,7 +195,9 @@ describe("GroupedTasksView", () => {
     });
 
     it("renders loading state", () => {
-      const { getByTestId } = render(<GroupedTasksView {...defaultProps} loading={true} />);
+      const { getByTestId } = render(
+        <GroupedTasksView {...defaultProps} loading={true} />
+      );
       expect(getByTestId("grouped-tasks-view-loading")).toBeTruthy();
       expect(getByTestId("grouped-tasks-view-loading-spinner")).toBeTruthy();
       expect(getByTestId("grouped-tasks-view-loading-text")).toBeTruthy();
@@ -234,7 +245,11 @@ describe("GroupedTasksView", () => {
 
     it("renders time groups", () => {
       const today = new Date();
-      const taskWithTime = createMockTask("task-1", "Timed Task", today.getTime());
+      const taskWithTime = createMockTask(
+        "task-1",
+        "Timed Task",
+        today.getTime()
+      );
       const groupedTask = createMockGroupedTask("Today", [taskWithTime]);
       const { getByTestId } = render(
         <GroupedTasksView {...defaultProps} groupedTasks={[groupedTask]} />
@@ -244,8 +259,12 @@ describe("GroupedTasksView", () => {
         hour: "numeric",
         minute: "2-digit",
       });
-      expect(getByTestId(`grouped-tasks-view-time-group-${timeString}`)).toBeTruthy();
-      expect(getByTestId(`grouped-tasks-view-due-by-${timeString}`)).toBeTruthy();
+      expect(
+        getByTestId(`grouped-tasks-view-time-group-${timeString}`)
+      ).toBeTruthy();
+      expect(
+        getByTestId(`grouped-tasks-view-due-by-${timeString}`)
+      ).toBeTruthy();
     });
 
     it("renders appointments when provided", () => {
@@ -406,10 +425,7 @@ describe("GroupedTasksView", () => {
     it("handles appointments without today group", () => {
       const appointment = createMockAppointment("appt-1", "Doctor Visit");
       const { getByTestId } = render(
-        <GroupedTasksView
-          {...defaultProps}
-          todayAppointments={[appointment]}
-        />
+        <GroupedTasksView {...defaultProps} todayAppointments={[appointment]} />
       );
       expect(getByTestId("grouped-tasks-view-appointments-only")).toBeTruthy();
       expect(getByTestId("appointment-card-appt-1")).toBeTruthy();
@@ -443,9 +459,17 @@ describe("GroupedTasksView", () => {
     });
 
     it("handles tasks with and without time in same group", () => {
-      const taskWithTime = createMockTask("task-1", "Timed Task", new Date().getTime());
+      const taskWithTime = createMockTask(
+        "task-1",
+        "Timed Task",
+        new Date().getTime()
+      );
       const taskWithoutTime = createMockTask("task-2", "No Time Task");
-      const groupedTask = createMockGroupedTask("Today", [taskWithTime], [taskWithoutTime]);
+      const groupedTask = createMockGroupedTask(
+        "Today",
+        [taskWithTime],
+        [taskWithoutTime]
+      );
       const { getByTestId } = render(
         <GroupedTasksView {...defaultProps} groupedTasks={[groupedTask]} />
       );
@@ -455,7 +479,11 @@ describe("GroupedTasksView", () => {
 
     it("handles multiple time groups", () => {
       const task1 = createMockTask("task-1", "Task 1", new Date().getTime());
-      const task2 = createMockTask("task-2", "Task 2", new Date().getTime() + 3600000);
+      const task2 = createMockTask(
+        "task-2",
+        "Task 2",
+        new Date().getTime() + 3600000
+      );
       const groupedTask: GroupedTask = {
         dayLabel: "Today",
         dayDate: new Date().toISOString().split("T")[0],
@@ -468,8 +496,12 @@ describe("GroupedTasksView", () => {
       const { getByTestId } = render(
         <GroupedTasksView {...defaultProps} groupedTasks={[groupedTask]} />
       );
-      expect(getByTestId("grouped-tasks-view-time-group-10:00 AM")).toBeTruthy();
-      expect(getByTestId("grouped-tasks-view-time-group-11:00 AM")).toBeTruthy();
+      expect(
+        getByTestId("grouped-tasks-view-time-group-10:00 AM")
+      ).toBeTruthy();
+      expect(
+        getByTestId("grouped-tasks-view-time-group-11:00 AM")
+      ).toBeTruthy();
       expect(getByTestId("task-card-task-1")).toBeTruthy();
       expect(getByTestId("task-card-task-2")).toBeTruthy();
     });
@@ -498,7 +530,9 @@ describe("GroupedTasksView", () => {
         <GroupedTasksView {...defaultProps} groupedTasks={[groupedTask]} />
       );
       const scrollView = getByTestId("dashboard_tasks_grouped_view");
-      expect(scrollView.props.accessibilityLabel).toBe("dashboard_tasks_grouped_view");
+      expect(scrollView.props.accessibilityLabel).toBe(
+        "dashboard_tasks_grouped_view"
+      );
     });
   });
 
@@ -518,7 +552,9 @@ describe("GroupedTasksView", () => {
     });
 
     it("matches snapshot with loading state", () => {
-      const { toJSON } = render(<GroupedTasksView {...defaultProps} loading={true} />);
+      const { toJSON } = render(
+        <GroupedTasksView {...defaultProps} loading={true} />
+      );
       expect(toJSON()).toMatchSnapshot();
     });
 
@@ -584,12 +620,16 @@ describe("GroupedTasksView", () => {
         <GroupedTasksView {...defaultProps} groupedTasks={[groupedTask]} />
       );
       // Time group testID includes the time string
-      const timeString = new Date(task.startTimeInMillSec!).toLocaleTimeString("en-US", {
-        hour: "numeric",
-        minute: "2-digit",
-      });
-      expect(getByTestId(`grouped-tasks-view-time-group-${timeString}`)).toBeTruthy();
+      const timeString = new Date(task.startTimeInMillSec!).toLocaleTimeString(
+        "en-US",
+        {
+          hour: "numeric",
+          minute: "2-digit",
+        }
+      );
+      expect(
+        getByTestId(`grouped-tasks-view-time-group-${timeString}`)
+      ).toBeTruthy();
     });
   });
 });
-

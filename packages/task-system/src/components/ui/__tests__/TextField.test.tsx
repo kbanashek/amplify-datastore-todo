@@ -62,11 +62,7 @@ describe("TextField", () => {
 
   it("calls onChangeText when text changes", () => {
     const { getByTestId } = render(
-      <TextField
-        testID="text-field"
-        onChangeText={mockOnChangeText}
-        value=""
-      />
+      <TextField testID="text-field" onChangeText={mockOnChangeText} value="" />
     );
     const input = getByTestId("text-field-input");
     fireEvent.changeText(input, "New text");
@@ -138,7 +134,11 @@ describe("TextField", () => {
 
   it("uses label as accessibilityLabel when not provided", () => {
     const { getByLabelText } = render(
-      <TextField label="Email" onChangeText={mockOnChangeText} testID="text-field" />
+      <TextField
+        label="Email"
+        onChangeText={mockOnChangeText}
+        testID="text-field"
+      />
     );
     expect(getByLabelText("Email")).toBeTruthy();
   });
@@ -169,5 +169,3 @@ describe("TextField", () => {
     expect(input.props.autoCapitalize).toBe("none");
   });
 });
-
-

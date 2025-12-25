@@ -25,13 +25,17 @@ describe("LoadingSpinner", () => {
   });
 
   it("renders with small size when specified", () => {
-    const { getByTestId } = render(<LoadingSpinner size="small" testID="spinner" />);
+    const { getByTestId } = render(
+      <LoadingSpinner size="small" testID="spinner" />
+    );
     const indicator = getByTestId("spinner-indicator");
     expect(indicator.props.size).toBe("small");
   });
 
   it("renders with large size when specified", () => {
-    const { getByTestId } = render(<LoadingSpinner size="large" testID="spinner" />);
+    const { getByTestId } = render(
+      <LoadingSpinner size="large" testID="spinner" />
+    );
     const indicator = getByTestId("spinner-indicator");
     expect(indicator.props.size).toBe("large");
   });
@@ -48,5 +52,3 @@ describe("LoadingSpinner", () => {
     expect(UNSAFE_getByType).toBeDefined();
   });
 });
-
-

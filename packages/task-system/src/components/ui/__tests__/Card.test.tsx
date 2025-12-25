@@ -1,5 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
+import { Text } from "react-native";
 import { Card } from "@components/ui/Card";
 
 // Mock useThemeColor
@@ -70,9 +71,12 @@ describe("Card", () => {
     expect(card).toBeTruthy();
   });
 
-  it("renders empty card", () => {
-    const { getByTestId } = render(<Card testID="empty-card" />);
+  it("renders card with minimal content", () => {
+    const { getByTestId } = render(
+      <Card testID="empty-card">
+        <Text>Test</Text>
+      </Card>
+    );
     expect(getByTestId("empty-card")).toBeTruthy();
   });
 });
-

@@ -12,7 +12,8 @@ const mockUseThemeColor = jest.fn((_props, colorName: string) => {
 });
 
 jest.mock("@hooks/useThemeColor", () => ({
-  useThemeColor: (_props: any, colorName: string) => mockUseThemeColor(_props, colorName),
+  useThemeColor: (_props: any, colorName: string) =>
+    mockUseThemeColor(_props, colorName),
 }));
 
 describe("ThemedView", () => {
@@ -67,16 +68,8 @@ describe("ThemedView", () => {
 
   // 2. User Interactions
   describe("User Interactions", () => {
-    it("handles onPress when provided", () => {
-      const mockOnPress = jest.fn();
-      const { Text } = require("react-native");
-      const { getByText } = render(
-        <ThemedView onPress={mockOnPress}>
-          <Text>Pressable View</Text>
-        </ThemedView>
-      );
-      expect(getByText("Pressable View")).toBeTruthy();
-    });
+    // Note: ThemedView doesn't support onPress - it's a View component
+    // If press functionality is needed, wrap in TouchableOpacity
 
     it("handles touch events", () => {
       const mockOnTouchStart = jest.fn();
@@ -131,9 +124,7 @@ describe("ThemedView", () => {
     });
 
     it("handles undefined children", () => {
-      const { UNSAFE_getByType } = render(
-        <ThemedView>{undefined}</ThemedView>
-      );
+      const { UNSAFE_getByType } = render(<ThemedView>{undefined}</ThemedView>);
       expect(UNSAFE_getByType).toBeDefined();
     });
 

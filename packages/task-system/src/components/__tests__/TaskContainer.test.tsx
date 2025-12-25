@@ -3,8 +3,8 @@ import { render } from "@testing-library/react-native";
 import { TaskContainer } from "@components/TaskContainer";
 
 // Mock hooks
-const mockGroupedTasks = [];
-const mockTodayAppointments = [];
+const mockGroupedTasks: any[] = [];
+const mockTodayAppointments: any[] = [];
 const mockHandleDeleteTask = jest.fn();
 const mockHandleTaskPress = jest.fn();
 const mockHandleAppointmentPress = jest.fn();
@@ -12,10 +12,10 @@ const mockHandleAppointmentPress = jest.fn();
 const mockUseTaskContainer = jest.fn(() => ({
   groupedTasks: mockGroupedTasks,
   loading: false,
-  error: null,
+  error: null as string | null,
   handleDeleteTask: mockHandleDeleteTask,
   todayAppointments: mockTodayAppointments,
-  appointmentTimezoneId: "America/New_York",
+  appointmentTimezoneId: "America/New_York" as string | undefined,
   handleTaskPress: mockHandleTaskPress,
   handleAppointmentPress: mockHandleAppointmentPress,
 }));
@@ -63,7 +63,9 @@ describe("TaskContainer", () => {
 
     it("passes groupedTasks to GroupedTasksView", () => {
       mockUseTaskContainer.mockReturnValueOnce({
-        groupedTasks: [{ dayLabel: "Today", tasksWithoutTime: [], timeGroups: [] }],
+        groupedTasks: [
+          { dayLabel: "Today", tasksWithoutTime: [], timeGroups: [] },
+        ],
         loading: false,
         error: null,
         handleDeleteTask: mockHandleDeleteTask,
@@ -243,5 +245,3 @@ describe("TaskContainer", () => {
     });
   });
 });
-
-

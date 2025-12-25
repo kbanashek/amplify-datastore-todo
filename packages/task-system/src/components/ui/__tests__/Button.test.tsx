@@ -55,7 +55,12 @@ describe("Button", () => {
 
   it("does not call onPress when loading", () => {
     const { getByTestId } = render(
-      <Button label="Click me" onPress={mockOnPress} loading testID="loading-button" />
+      <Button
+        label="Click me"
+        onPress={mockOnPress}
+        loading
+        testID="loading-button"
+      />
     );
     fireEvent.press(getByTestId("loading-button"));
     expect(mockOnPress).not.toHaveBeenCalled();
@@ -75,7 +80,9 @@ describe("Button", () => {
   });
 
   it("renders with secondary variant", () => {
-    const { getByText } = render(<Button label="Secondary" variant="secondary" />);
+    const { getByText } = render(
+      <Button label="Secondary" variant="secondary" />
+    );
     expect(getByText("Secondary")).toBeTruthy();
   });
 
@@ -141,4 +148,3 @@ describe("Button", () => {
     expect(getByLabelText("Button Label")).toBeTruthy();
   });
 });
-

@@ -65,9 +65,7 @@ describe("AppointmentCard", () => {
     title: "Doctor Visit",
     startAt: "2024-01-15T10:00:00Z",
     appointmentType: AppointmentType.ONSITE,
-    pk: "APPT",
-    sk: "appt-1",
-  };
+  } as Appointment;
 
   const mockOnPress = jest.fn();
 

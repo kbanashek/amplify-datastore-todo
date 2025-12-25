@@ -37,14 +37,22 @@ describe("DateTimePicker", () => {
 
   it("renders DateTimePicker", () => {
     const { getByText } = render(
-      <DateTimePicker value={null} onChange={mockOnChange} testID="datetime-picker" />
+      <DateTimePicker
+        value={null}
+        onChange={mockOnChange}
+        testID="datetime-picker"
+      />
     );
     expect(getByText("Select Date/Time")).toBeTruthy();
   });
 
   it("passes mode='datetime' to DateTimeField", () => {
     const { getByTestId } = render(
-      <DateTimePicker value={null} onChange={mockOnChange} testID="datetime-picker" />
+      <DateTimePicker
+        value={null}
+        onChange={mockOnChange}
+        testID="datetime-picker"
+      />
     );
     expect(getByTestId("datetime-picker-mode").props.children).toBe("datetime");
   });
@@ -65,14 +73,22 @@ describe("DateTimePicker", () => {
 
   it("passes null value to DateTimeField", () => {
     const { getByTestId } = render(
-      <DateTimePicker value={null} onChange={mockOnChange} testID="datetime-picker" />
+      <DateTimePicker
+        value={null}
+        onChange={mockOnChange}
+        testID="datetime-picker"
+      />
     );
     expect(getByTestId("datetime-picker-value").props.children).toBe("null");
   });
 
   it("calls onChange when date/time is selected", () => {
     const { getByTestId } = render(
-      <DateTimePicker value={null} onChange={mockOnChange} testID="datetime-picker" />
+      <DateTimePicker
+        value={null}
+        onChange={mockOnChange}
+        testID="datetime-picker"
+      />
     );
     fireEvent.press(getByTestId("datetime-picker-button"));
     expect(mockOnChange).toHaveBeenCalledWith(new Date("2024-01-15T10:30:00"));
@@ -94,5 +110,3 @@ describe("DateTimePicker", () => {
     expect(getByTestId("custom-datetime-picker")).toBeTruthy();
   });
 });
-
-

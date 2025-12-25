@@ -27,13 +27,13 @@ const mockUseTaskForm = jest.fn(() => ({
   sk: "",
   setSk: mockSetSk,
   isSubmitting: false,
-  error: null,
+  error: null as string | null,
   handleSubmit: mockHandleSubmit,
   reset: mockReset,
 }));
 
 jest.mock("@hooks/useTaskForm", () => ({
-  useTaskForm: (props: any) => mockUseTaskForm(props),
+  useTaskForm: () => mockUseTaskForm(),
 }));
 
 // Mock useRTL
@@ -85,7 +85,9 @@ describe("TaskForm", () => {
     });
 
     it("renders with onTaskCreated callback", () => {
-      const { getByTestId } = render(<TaskForm onTaskCreated={mockOnTaskCreated} />);
+      const { getByTestId } = render(
+        <TaskForm onTaskCreated={mockOnTaskCreated} />
+      );
       expect(getByTestId("task-form")).toBeTruthy();
     });
 
@@ -175,7 +177,9 @@ describe("TaskForm", () => {
       const styles = Array.isArray(timedButton.props.style)
         ? timedButton.props.style
         : [timedButton.props.style];
-      const hasSelectedStyle = styles.some((style: any) => style?.backgroundColor === "#3498db");
+      const hasSelectedStyle = styles.some(
+        (style: any) => style?.backgroundColor === "#3498db"
+      );
       expect(hasSelectedStyle).toBe(true);
     });
 
@@ -185,11 +189,15 @@ describe("TaskForm", () => {
         status: TaskStatus.COMPLETED,
       });
       const { getByTestId } = render(<TaskForm />);
-      const completedButton = getByTestId(`task-form-status-${TaskStatus.COMPLETED}`);
+      const completedButton = getByTestId(
+        `task-form-status-${TaskStatus.COMPLETED}`
+      );
       const styles = Array.isArray(completedButton.props.style)
         ? completedButton.props.style
         : [completedButton.props.style];
-      const hasSelectedStyle = styles.some((style: any) => style?.backgroundColor === "#3498db");
+      const hasSelectedStyle = styles.some(
+        (style: any) => style?.backgroundColor === "#3498db"
+      );
       expect(hasSelectedStyle).toBe(true);
     });
 
@@ -257,7 +265,9 @@ describe("TaskForm", () => {
 
     it("calls setStatus when status button is pressed", () => {
       const { getByTestId } = render(<TaskForm />);
-      const completedButton = getByTestId(`task-form-status-${TaskStatus.COMPLETED}`);
+      const completedButton = getByTestId(
+        `task-form-status-${TaskStatus.COMPLETED}`
+      );
       fireEvent.press(completedButton);
       expect(mockSetStatus).toHaveBeenCalledWith(TaskStatus.COMPLETED);
       expect(mockSetStatus).toHaveBeenCalledTimes(1);
@@ -427,7 +437,9 @@ describe("TaskForm", () => {
       expect(titleInput.props.accessibilityLabel).toBe("Task title");
 
       const descriptionInput = getByTestId("task-form-description-input");
-      expect(descriptionInput.props.accessibilityLabel).toBe("Task description");
+      expect(descriptionInput.props.accessibilityLabel).toBe(
+        "Task description"
+      );
 
       const pkInput = getByTestId("task-form-pk-input");
       expect(pkInput.props.accessibilityLabel).toBe("Partition key");
@@ -438,7 +450,9 @@ describe("TaskForm", () => {
 
     it("has proper accessibility labels on task type buttons", () => {
       const { getByTestId } = render(<TaskForm />);
-      const scheduledButton = getByTestId(`task-form-type-${TaskType.SCHEDULED}`);
+      const scheduledButton = getByTestId(
+        `task-form-type-${TaskType.SCHEDULED}`
+      );
       expect(scheduledButton.props.accessibilityLabel).toBe(
         `Select ${TaskType.SCHEDULED} task type`
       );
@@ -448,7 +462,9 @@ describe("TaskForm", () => {
     it("has proper accessibility labels on status buttons", () => {
       const { getByTestId } = render(<TaskForm />);
       const openButton = getByTestId(`task-form-status-${TaskStatus.OPEN}`);
-      expect(openButton.props.accessibilityLabel).toBe(`Select ${TaskStatus.OPEN} status`);
+      expect(openButton.props.accessibilityLabel).toBe(
+        `Select ${TaskStatus.OPEN} status`
+      );
       expect(openButton.props.accessibilityRole).toBe("button");
     });
 
@@ -458,8 +474,12 @@ describe("TaskForm", () => {
         taskType: TaskType.SCHEDULED,
       });
       const { getByTestId } = render(<TaskForm />);
-      const scheduledButton = getByTestId(`task-form-type-${TaskType.SCHEDULED}`);
-      expect(scheduledButton.props.accessibilityState).toEqual({ selected: true });
+      const scheduledButton = getByTestId(
+        `task-form-type-${TaskType.SCHEDULED}`
+      );
+      expect(scheduledButton.props.accessibilityState).toEqual({
+        selected: true,
+      });
     });
 
     it("has proper accessibility state for selected status", () => {
@@ -578,4 +598,3 @@ describe("TaskForm", () => {
     });
   });
 });
-

@@ -83,21 +83,33 @@ describe("GlobalHeader", () => {
 
     it("renders with showMenuButton", () => {
       const { getByTestId } = render(
-        <GlobalHeader title="Title" showMenuButton onMenuPress={mockOnMenuPress} />
+        <GlobalHeader
+          title="Title"
+          showMenuButton
+          onMenuPress={mockOnMenuPress}
+        />
       );
       expect(getByTestId("global-header-menu-button")).toBeTruthy();
     });
 
     it("renders with showBackButton", () => {
       const { getByTestId } = render(
-        <GlobalHeader title="Title" showBackButton onBackPress={mockOnBackPress} />
+        <GlobalHeader
+          title="Title"
+          showBackButton
+          onBackPress={mockOnBackPress}
+        />
       );
       expect(getByTestId("global-header-back-button")).toBeTruthy();
     });
 
     it("renders with showCloseButton", () => {
       const { getByTestId } = render(
-        <GlobalHeader title="Title" showCloseButton onClosePress={mockOnClosePress} />
+        <GlobalHeader
+          title="Title"
+          showCloseButton
+          onClosePress={mockOnClosePress}
+        />
       );
       expect(getByTestId("global-header-close-button")).toBeTruthy();
     });
@@ -127,7 +139,11 @@ describe("GlobalHeader", () => {
   describe("User Interactions", () => {
     it("calls onMenuPress when menu button is pressed", () => {
       const { getByTestId } = render(
-        <GlobalHeader title="Title" showMenuButton onMenuPress={mockOnMenuPress} />
+        <GlobalHeader
+          title="Title"
+          showMenuButton
+          onMenuPress={mockOnMenuPress}
+        />
       );
       fireEvent.press(getByTestId("global-header-menu-button"));
       expect(mockOnMenuPress).toHaveBeenCalledTimes(1);
@@ -135,7 +151,11 @@ describe("GlobalHeader", () => {
 
     it("calls onBackPress when back button is pressed", () => {
       const { getByTestId } = render(
-        <GlobalHeader title="Title" showBackButton onBackPress={mockOnBackPress} />
+        <GlobalHeader
+          title="Title"
+          showBackButton
+          onBackPress={mockOnBackPress}
+        />
       );
       fireEvent.press(getByTestId("global-header-back-button"));
       expect(mockOnBackPress).toHaveBeenCalledTimes(1);
@@ -143,7 +163,11 @@ describe("GlobalHeader", () => {
 
     it("calls onClosePress when close button is pressed", () => {
       const { getByTestId } = render(
-        <GlobalHeader title="Title" showCloseButton onClosePress={mockOnClosePress} />
+        <GlobalHeader
+          title="Title"
+          showCloseButton
+          onClosePress={mockOnClosePress}
+        />
       );
       fireEvent.press(getByTestId("global-header-close-button"));
       expect(mockOnClosePress).toHaveBeenCalledTimes(1);
@@ -229,7 +253,8 @@ describe("GlobalHeader", () => {
   // 4. Edge Cases
   describe("Edge Cases", () => {
     it("handles long title", () => {
-      const longTitle = "This is a very long header title that should be displayed correctly";
+      const longTitle =
+        "This is a very long header title that should be displayed correctly";
       const { getByText } = render(<GlobalHeader title={longTitle} />);
       expect(getByText(longTitle)).toBeTruthy();
     });
@@ -288,7 +313,11 @@ describe("GlobalHeader", () => {
   describe("Accessibility", () => {
     it("has proper accessibility label on menu button", () => {
       const { getByTestId } = render(
-        <GlobalHeader title="Title" showMenuButton onMenuPress={mockOnMenuPress} />
+        <GlobalHeader
+          title="Title"
+          showMenuButton
+          onMenuPress={mockOnMenuPress}
+        />
       );
       const button = getByTestId("global-header-menu-button");
       expect(button.props.accessibilityRole).toBe("button");
@@ -297,7 +326,11 @@ describe("GlobalHeader", () => {
 
     it("has proper accessibility label on back button", () => {
       const { getByTestId } = render(
-        <GlobalHeader title="Title" showBackButton onBackPress={mockOnBackPress} />
+        <GlobalHeader
+          title="Title"
+          showBackButton
+          onBackPress={mockOnBackPress}
+        />
       );
       const button = getByTestId("global-header-back-button");
       expect(button.props.accessibilityRole).toBe("button");
@@ -306,7 +339,11 @@ describe("GlobalHeader", () => {
 
     it("has proper accessibility label on close button", () => {
       const { getByTestId } = render(
-        <GlobalHeader title="Title" showCloseButton onClosePress={mockOnClosePress} />
+        <GlobalHeader
+          title="Title"
+          showCloseButton
+          onClosePress={mockOnClosePress}
+        />
       );
       const button = getByTestId("global-header-close-button");
       expect(button.props.accessibilityRole).toBe("button");
@@ -379,21 +416,33 @@ describe("GlobalHeader", () => {
 
     it("has testId on menu button", () => {
       const { getByTestId } = render(
-        <GlobalHeader title="Title" showMenuButton onMenuPress={mockOnMenuPress} />
+        <GlobalHeader
+          title="Title"
+          showMenuButton
+          onMenuPress={mockOnMenuPress}
+        />
       );
       expect(getByTestId("global-header-menu-button")).toBeTruthy();
     });
 
     it("has testId on back button", () => {
       const { getByTestId } = render(
-        <GlobalHeader title="Title" showBackButton onBackPress={mockOnBackPress} />
+        <GlobalHeader
+          title="Title"
+          showBackButton
+          onBackPress={mockOnBackPress}
+        />
       );
       expect(getByTestId("global-header-back-button")).toBeTruthy();
     });
 
     it("has testId on close button", () => {
       const { getByTestId } = render(
-        <GlobalHeader title="Title" showCloseButton onClosePress={mockOnClosePress} />
+        <GlobalHeader
+          title="Title"
+          showCloseButton
+          onClosePress={mockOnClosePress}
+        />
       );
       expect(getByTestId("global-header-close-button")).toBeTruthy();
     });
@@ -407,5 +456,3 @@ describe("GlobalHeader", () => {
     });
   });
 });
-
-

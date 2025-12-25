@@ -8,16 +8,16 @@ const mockHandleDeleteTask = jest.fn();
 const mockRefreshTasks = jest.fn();
 
 const mockUseTaskList = jest.fn(() => ({
-  tasks: [],
+  tasks: [] as Task[],
   loading: false,
-  error: null,
+  error: null as string | null,
   isSynced: false,
   handleDeleteTask: mockHandleDeleteTask,
   refreshTasks: mockRefreshTasks,
 }));
 
 jest.mock("@hooks/useTaskList", () => ({
-  useTaskList: (filters?: any) => mockUseTaskList(filters),
+  useTaskList: () => mockUseTaskList(),
 }));
 
 // Mock TaskCard
@@ -29,12 +29,18 @@ jest.mock("@components/TaskCard", () => {
       <View testID={`task-card-${task.id}`}>
         <Text testID={`task-card-title-${task.id}`}>{task.title}</Text>
         {onPress && (
-          <Text testID={`task-card-press-${task.id}`} onPress={() => onPress(task)}>
+          <Text
+            testID={`task-card-press-${task.id}`}
+            onPress={() => onPress(task)}
+          >
             Press
           </Text>
         )}
         {onDelete && (
-          <Text testID={`task-card-delete-${task.id}`} onPress={() => onDelete(task.id)}>
+          <Text
+            testID={`task-card-delete-${task.id}`}
+            onPress={() => onDelete(task.id)}
+          >
             Delete
           </Text>
         )}
@@ -63,7 +69,11 @@ jest.mock("@services/TaskService", () => ({
 describe("TasksView", () => {
   const mockOnTaskPress = jest.fn();
 
-  const createMockTask = (id: string, title: string, startTime?: number): Task => ({
+  const createMockTask = (
+    id: string,
+    title: string,
+    startTime?: number
+  ): Task => ({
     id,
     pk: `PK-${id}`,
     sk: `SK-${id}`,
@@ -95,7 +105,9 @@ describe("TasksView", () => {
     });
 
     it("renders with onTaskPress callback", () => {
-      const { getByTestId } = render(<TasksView onTaskPress={mockOnTaskPress} />);
+      const { getByTestId } = render(
+        <TasksView onTaskPress={mockOnTaskPress} />
+      );
       expect(getByTestId("tasks-view")).toBeTruthy();
     });
 
@@ -163,7 +175,11 @@ describe("TasksView", () => {
     it("renders upcoming tasks section", () => {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
-      const upcomingTask = createMockTask("task-2", "Upcoming Task", tomorrow.getTime());
+      const upcomingTask = createMockTask(
+        "task-2",
+        "Upcoming Task",
+        tomorrow.getTime()
+      );
       mockUseTaskList.mockReturnValueOnce({
         ...mockUseTaskList(),
         tasks: [upcomingTask],
@@ -176,7 +192,11 @@ describe("TasksView", () => {
     it("renders past tasks section", () => {
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
-      const pastTask = createMockTask("task-3", "Past Task", yesterday.getTime());
+      const pastTask = createMockTask(
+        "task-3",
+        "Past Task",
+        yesterday.getTime()
+      );
       mockUseTaskList.mockReturnValueOnce({
         ...mockUseTaskList(),
         tasks: [pastTask],
@@ -214,7 +234,9 @@ describe("TasksView", () => {
         ...mockUseTaskList(),
         tasks: [todayTask],
       });
-      const { getByTestId } = render(<TasksView onTaskPress={mockOnTaskPress} />);
+      const { getByTestId } = render(
+        <TasksView onTaskPress={mockOnTaskPress} />
+      );
       const pressButton = getByTestId("task-card-press-task-1");
       fireEvent.press(pressButton);
       expect(mockOnTaskPress).toHaveBeenCalledWith(todayTask);
@@ -292,8 +314,16 @@ describe("TasksView", () => {
       yesterday.setDate(yesterday.getDate() - 1);
 
       const todayTask = createMockTask("task-1", "Today", today.getTime());
-      const tomorrowTask = createMockTask("task-2", "Tomorrow", tomorrow.getTime());
-      const yesterdayTask = createMockTask("task-3", "Yesterday", yesterday.getTime());
+      const tomorrowTask = createMockTask(
+        "task-2",
+        "Tomorrow",
+        tomorrow.getTime()
+      );
+      const yesterdayTask = createMockTask(
+        "task-3",
+        "Yesterday",
+        yesterday.getTime()
+      );
 
       mockUseTaskList.mockReturnValueOnce({
         ...mockUseTaskList(),
@@ -392,4 +422,3 @@ describe("TasksView", () => {
     });
   });
 });
-

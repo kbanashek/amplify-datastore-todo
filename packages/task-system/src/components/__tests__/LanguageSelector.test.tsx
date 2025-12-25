@@ -237,7 +237,9 @@ describe("LanguageSelector", () => {
       fireEvent.press(getByTestId("language-selector-button"));
       const closeButton = getByTestId("language-selector-modal-close");
       expect(closeButton.props.accessibilityRole).toBe("button");
-      expect(closeButton.props.accessibilityLabel).toBe("Close language selector");
+      expect(closeButton.props.accessibilityLabel).toBe(
+        "Close language selector"
+      );
     });
 
     it("has proper accessibility state on language items", () => {
@@ -322,4 +324,3 @@ describe("LanguageSelector", () => {
     });
   });
 });
-

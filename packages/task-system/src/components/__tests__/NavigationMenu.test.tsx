@@ -84,7 +84,11 @@ describe("NavigationMenu", () => {
 
     it("renders with menu items", () => {
       const { getByTestId } = render(
-        <NavigationMenu visible={true} onClose={mockOnClose} items={mockItems} />
+        <NavigationMenu
+          visible={true}
+          onClose={mockOnClose}
+          items={mockItems}
+        />
       );
       expect(getByTestId("navigation-menu-item-dashboard")).toBeTruthy();
       expect(getByTestId("navigation-menu-item-settings")).toBeTruthy();
@@ -221,7 +225,11 @@ describe("NavigationMenu", () => {
 
     it("handles undefined items", () => {
       const { getByTestId } = render(
-        <NavigationMenu visible={true} onClose={mockOnClose} items={undefined} />
+        <NavigationMenu
+          visible={true}
+          onClose={mockOnClose}
+          items={undefined}
+        />
       );
       expect(getByTestId("navigation-menu-empty-state")).toBeTruthy();
     });
@@ -309,7 +317,11 @@ describe("NavigationMenu", () => {
 
     it("has proper accessibility label on menu items", () => {
       const { getByTestId } = render(
-        <NavigationMenu visible={true} onClose={mockOnClose} items={mockItems} />
+        <NavigationMenu
+          visible={true}
+          onClose={mockOnClose}
+          items={mockItems}
+        />
       );
       const item = getByTestId("navigation-menu-item-dashboard");
       expect(item.props.accessibilityRole).toBe("button");
@@ -347,7 +359,11 @@ describe("NavigationMenu", () => {
 
     it("matches snapshot with items", () => {
       const { toJSON } = render(
-        <NavigationMenu visible={true} onClose={mockOnClose} items={mockItems} />
+        <NavigationMenu
+          visible={true}
+          onClose={mockOnClose}
+          items={mockItems}
+        />
       );
       expect(toJSON()).toMatchSnapshot();
     });
@@ -385,7 +401,11 @@ describe("NavigationMenu", () => {
 
     it("has testId on menu items", () => {
       const { getByTestId } = render(
-        <NavigationMenu visible={true} onClose={mockOnClose} items={mockItems} />
+        <NavigationMenu
+          visible={true}
+          onClose={mockOnClose}
+          items={mockItems}
+        />
       );
       expect(getByTestId("navigation-menu-item-dashboard")).toBeTruthy();
       expect(getByTestId("navigation-menu-item-settings")).toBeTruthy();
@@ -400,7 +420,11 @@ describe("NavigationMenu", () => {
 
     it("has testIds on all sections", () => {
       const { getByTestId } = render(
-        <NavigationMenu visible={true} onClose={mockOnClose} items={mockItems} />
+        <NavigationMenu
+          visible={true}
+          onClose={mockOnClose}
+          items={mockItems}
+        />
       );
       expect(getByTestId("navigation-menu-header")).toBeTruthy();
       expect(getByTestId("navigation-menu-list")).toBeTruthy();
@@ -408,5 +432,3 @@ describe("NavigationMenu", () => {
     });
   });
 });
-
-

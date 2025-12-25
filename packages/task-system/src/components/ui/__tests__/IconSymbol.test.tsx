@@ -90,5 +90,3 @@ describe("IconSymbol", () => {
     expect(getByText("medication")).toBeTruthy();
   });
 });
-
-

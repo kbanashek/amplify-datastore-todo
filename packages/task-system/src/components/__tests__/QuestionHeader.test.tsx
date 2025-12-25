@@ -44,30 +44,34 @@ describe("QuestionHeader", () => {
   // 1. Basic Rendering
   describe("Rendering", () => {
     it("renders with required props", () => {
-      const { getByTestId } = render(
-        <QuestionHeader title="Question Title" />
-      );
+      const { getByTestId } = render(<QuestionHeader title="Question Title" />);
       expect(getByTestId("question-header")).toBeTruthy();
       expect(getByTestId("question-header-title")).toBeTruthy();
     });
 
     it("renders title text", () => {
-      const { getByText } = render(
-        <QuestionHeader title="Question Title" />
-      );
+      const { getByText } = render(<QuestionHeader title="Question Title" />);
       expect(getByText("Question Title")).toBeTruthy();
     });
 
     it("renders with optional showBackButton", () => {
       const { getByTestId } = render(
-        <QuestionHeader title="Question Title" showBackButton onBackPress={mockOnBackPress} />
+        <QuestionHeader
+          title="Question Title"
+          showBackButton
+          onBackPress={mockOnBackPress}
+        />
       );
       expect(getByTestId("question-header-back-button")).toBeTruthy();
     });
 
     it("renders with optional showCloseButton", () => {
       const { getByTestId } = render(
-        <QuestionHeader title="Question Title" showCloseButton onClosePress={mockOnClosePress} />
+        <QuestionHeader
+          title="Question Title"
+          showCloseButton
+          onClosePress={mockOnClosePress}
+        />
       );
       expect(getByTestId("question-header-close-button")).toBeTruthy();
     });
@@ -147,9 +151,7 @@ describe("QuestionHeader", () => {
         isRTL: false,
       });
 
-      const { getByTestId } = render(
-        <QuestionHeader title="Question Title" />
-      );
+      const { getByTestId } = render(<QuestionHeader title="Question Title" />);
       expect(getByTestId("question-header")).toBeTruthy();
     });
 
@@ -164,9 +166,7 @@ describe("QuestionHeader", () => {
         isRTL: true,
       });
 
-      const { getByTestId } = render(
-        <QuestionHeader title="Question Title" />
-      );
+      const { getByTestId } = render(<QuestionHeader title="Question Title" />);
       expect(getByTestId("question-header")).toBeTruthy();
       expect(rtlStyleFn).toHaveBeenCalled();
     });
@@ -177,9 +177,7 @@ describe("QuestionHeader", () => {
         isRTL: true,
       });
 
-      const { getByTestId } = render(
-        <QuestionHeader title="Question Title" />
-      );
+      const { getByTestId } = render(<QuestionHeader title="Question Title" />);
       const title = getByTestId("question-header-title");
       expect(title).toBeTruthy();
     });
@@ -203,7 +201,8 @@ describe("QuestionHeader", () => {
   // 4. Edge Cases
   describe("Edge Cases", () => {
     it("handles long title text", () => {
-      const longTitle = "This is a very long question title that should wrap to multiple lines properly";
+      const longTitle =
+        "This is a very long question title that should wrap to multiple lines properly";
       const { getByTestId, getByText } = render(
         <QuestionHeader title={longTitle} />
       );
@@ -218,9 +217,7 @@ describe("QuestionHeader", () => {
 
     it("handles special characters in title", () => {
       const specialTitle = "Question with special chars: <>&\"'";
-      const { getByText } = render(
-        <QuestionHeader title={specialTitle} />
-      );
+      const { getByText } = render(<QuestionHeader title={specialTitle} />);
       expect(getByText(specialTitle)).toBeTruthy();
     });
 
@@ -278,8 +275,12 @@ describe("QuestionHeader", () => {
           onClosePress={mockOnClosePress}
         />
       );
-      expect(getByTestId("question-header-back-button").props.accessibilityRole).toBe("button");
-      expect(getByTestId("question-header-close-button").props.accessibilityRole).toBe("button");
+      expect(
+        getByTestId("question-header-back-button").props.accessibilityRole
+      ).toBe("button");
+      expect(
+        getByTestId("question-header-close-button").props.accessibilityRole
+      ).toBe("button");
     });
   });
 
@@ -353,14 +354,22 @@ describe("QuestionHeader", () => {
 
     it("has testId on back button", () => {
       const { getByTestId } = render(
-        <QuestionHeader title="Title" showBackButton onBackPress={mockOnBackPress} />
+        <QuestionHeader
+          title="Title"
+          showBackButton
+          onBackPress={mockOnBackPress}
+        />
       );
       expect(getByTestId("question-header-back-button")).toBeTruthy();
     });
 
     it("has testId on close button", () => {
       const { getByTestId } = render(
-        <QuestionHeader title="Title" showCloseButton onClosePress={mockOnClosePress} />
+        <QuestionHeader
+          title="Title"
+          showCloseButton
+          onClosePress={mockOnClosePress}
+        />
       );
       expect(getByTestId("question-header-close-button")).toBeTruthy();
     });

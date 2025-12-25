@@ -246,7 +246,9 @@ describe("DateTimeField", () => {
     });
 
     it("opens Android picker when button is pressed", () => {
-      const { DateTimePickerAndroid } = require("@react-native-community/datetimepicker");
+      const {
+        DateTimePickerAndroid,
+      } = require("@react-native-community/datetimepicker");
       const { getByTestId } = render(
         <DateTimeField
           mode="date"
@@ -334,4 +336,3 @@ describe("DateTimeField", () => {
     });
   });
 });
-
