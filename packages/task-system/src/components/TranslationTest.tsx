@@ -23,7 +23,9 @@ export const TranslationTest: React.FC = () => {
       </Text>
 
       <View style={styles.section} testID="translation-test-t-function-section">
-        <Text style={styles.label}>Using t() function:</Text>
+        <Text style={styles.label} testID="translation-test-t-label">
+          Using t() function:
+        </Text>
         <Text style={styles.result} testID="translation-test-begin">
           {t("task.begin", { fallback: "BEGIN" })}
         </Text>
@@ -36,7 +38,9 @@ export const TranslationTest: React.FC = () => {
       </View>
 
       <View style={styles.section} testID="translation-test-component-section">
-        <Text style={styles.label}>Using TranslatedText component:</Text>
+        <Text style={styles.label} testID="translation-test-component-label">
+          Using TranslatedText component:
+        </Text>
         <TranslatedText
           text="BEGIN"
           testID="translation-test-component-begin"

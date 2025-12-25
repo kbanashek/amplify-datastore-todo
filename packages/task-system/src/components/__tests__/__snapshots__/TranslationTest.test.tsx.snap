@@ -65,6 +65,7 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
           "marginBottom": 10,
         }
       }
+      testID="translation-test-t-label"
     >
       Using t() function:
     </Text>
@@ -121,6 +122,7 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
           "marginBottom": 10,
         }
       }
+      testID="translation-test-component-label"
     >
       Using TranslatedText component:
     </Text>
@@ -410,6 +412,7 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
           "marginBottom": 10,
         }
       }
+      testID="translation-test-t-label"
     >
       Using t() function:
     </Text>
@@ -466,6 +469,7 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
           "marginBottom": 10,
         }
       }
+      testID="translation-test-component-label"
     >
       Using TranslatedText component:
     </Text>
