@@ -59,7 +59,7 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
   const { isRTL, rtlStyle } = useRTL();
 
   return (
-    <View style={styles.header}>
+    <View style={styles.header} testID="global-header">
       <View style={[styles.headerTop, rtlStyle(styles.headerTop) as ViewStyle]}>
         {/* Left side: Back button */}
         <View style={styles.headerLeft}>
@@ -69,7 +69,10 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
         </View>
 
         {/* Center: Title */}
-        <Text style={[styles.headerTitle, isRTL && { textAlign: "right" }]}>
+        <Text
+          style={[styles.headerTitle, isRTL && { textAlign: "right" }]}
+          testID="global-header-title"
+        >
           {translatedTitle}
         </Text>
 
@@ -81,7 +84,13 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
           ]}
         >
           {showCloseButton && onClosePress && (
-            <TouchableOpacity onPress={onClosePress} style={styles.closeButton}>
+            <TouchableOpacity
+              onPress={onClosePress}
+              style={styles.closeButton}
+              testID="global-header-close-button"
+              accessibilityRole="button"
+              accessibilityLabel="Close"
+            >
               <IconSymbol name="xmark" size={24} color={AppColors.iconGray} />
             </TouchableOpacity>
           )}
@@ -90,7 +99,9 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
             <TouchableOpacity
               onPress={onMenuPress}
               style={styles.menuButton}
-              testID={TestIds.globalHeaderMenuButton}
+              testID="global-header-menu-button"
+              accessibilityRole="button"
+              accessibilityLabel="Open menu"
             >
               <IconSymbol
                 name="line.3.horizontal"
@@ -107,6 +118,7 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
             styles.headerBottom,
             rtlStyle(styles.headerBottom) as ViewStyle,
           ]}
+          testID="global-header-bottom"
         >
           <NetworkStatusIndicator />
           <LanguageSelector />
@@ -119,7 +131,13 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
 // Helper component for back button with arrow icon
 const BackButton: React.FC<{ onPress: () => void }> = ({ onPress }) => {
   return (
-    <TouchableOpacity style={styles.backButton} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.backButton}
+      onPress={onPress}
+      testID="global-header-back-button"
+      accessibilityRole="button"
+      accessibilityLabel="Go back"
+    >
       <IconSymbol name="chevron.left" size={24} color={AppColors.iconGray} />
     </TouchableOpacity>
   );

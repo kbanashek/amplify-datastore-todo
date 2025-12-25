@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ThemedView Snapshots matches snapshot in RTL mode 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      {
+        "flexDirection": "row-reverse",
+      },
+    ]
+  }
+>
+  <Text>
+    RTL Content
+  </Text>
+</View>
+`;
+
+exports[`ThemedView Snapshots matches snapshot with children 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Content
+  </Text>
+</View>
+`;
+
+exports[`ThemedView Snapshots matches snapshot with custom dark color 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Dark View
+  </Text>
+</View>
+`;
+
+exports[`ThemedView Snapshots matches snapshot with custom light color 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Colored View
+  </Text>
+</View>
+`;
+
+exports[`ThemedView Snapshots matches snapshot with custom style 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      {
+        "borderRadius": 8,
+        "padding": 20,
+      },
+    ]
+  }
+>
+  <Text>
+    Styled View
+  </Text>
+</View>
+`;
+
+exports[`ThemedView Snapshots matches snapshot with multiple children 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text>
+    First
+  </Text>
+  <Text>
+    Second
+  </Text>
+  <Text>
+    Third
+  </Text>
+</View>
+`;

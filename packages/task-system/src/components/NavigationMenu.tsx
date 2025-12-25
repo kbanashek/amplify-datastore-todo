@@ -1,4 +1,8 @@
+import { IconSymbol } from "@components/ui/IconSymbol";
+import { Colors } from "@constants/Colors";
+import { useColorScheme } from "@hooks/useColorScheme";
 import { useNavigation } from "@react-navigation/native";
+import { getServiceLogger } from "@utils/serviceLogger";
 import React from "react";
 import {
   Modal,
@@ -9,10 +13,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Colors } from "@constants/Colors";
-import { useColorScheme } from "@hooks/useColorScheme";
-import { getServiceLogger } from "@utils/serviceLogger";
-import { IconSymbol } from "@components/ui/IconSymbol";
 
 const logger = getServiceLogger("NavigationMenu");
 
@@ -68,6 +68,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
       transparent={true}
       animationType="slide"
       onRequestClose={onClose}
+      testID="navigation-menu-modal"
     >
       <View style={styles.overlayContainer}>
         <Pressable
@@ -77,6 +78,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
         />
         <Pressable
           style={styles.menuContainer}
+          testID="navigation-menu-container"
           onPress={e => {
             e.stopPropagation();
           }}
@@ -111,6 +113,9 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
                     style={styles.menuItem}
                     onPress={() => handlePressItem(item)}
                     activeOpacity={0.7}
+                    testID={`navigation-menu-item-${item.key}`}
+                    accessibilityRole="button"
+                    accessibilityLabel={item.name}
                   >
                     <View style={styles.menuItemIcon}>
                       <IconSymbol

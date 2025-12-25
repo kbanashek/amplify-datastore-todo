@@ -9,7 +9,7 @@ type IconMapping = Record<
   SymbolViewProps["name"],
   ComponentProps<typeof MaterialIcons>["name"]
 >;
-type IconSymbolName = keyof typeof MAPPING;
+export type IconSymbolName = keyof typeof MAPPING;
 
 /**
  * Add your SF Symbols to Material Icons mappings here.
@@ -40,6 +40,8 @@ const MAPPING = {
   calendar: "calendar-today",
   repeat: "repeat",
   "doc.text": "description",
+  "video.fill": "videocam",
+  "building.2.fill": "business",
 } as IconMapping;
 
 interface IconSymbolProps {

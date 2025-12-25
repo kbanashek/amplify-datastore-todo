@@ -48,10 +48,14 @@ export const AppointmentCard: React.FC<AppointmentCardProps> = ({
   const typeLabel = t(iconConfig.translationKey);
 
   const cardContent = (
-    <View style={[styles.card, rtlStyle(styles.card) as any]}>
+    <View
+      style={[styles.card, rtlStyle(styles.card) as any]}
+      testID="appointment-card"
+    >
       {/* Icon on left */}
       <View
         style={[styles.iconContainer, rtlStyle(styles.iconContainer) as any]}
+        testID="appointment-card-icon-container"
       >
         <IconSymbol
           name={iconConfig.iconName as any}
@@ -65,10 +69,14 @@ export const AppointmentCard: React.FC<AppointmentCardProps> = ({
         <Text
           style={[styles.mainText, isRTL && styles.mainTextRTL]}
           numberOfLines={2}
+          testID="appointment-card-title"
         >
           {mainText}
         </Text>
-        <Text style={[styles.typeLabel, isRTL && styles.typeLabelRTL]}>
+        <Text
+          style={[styles.typeLabel, isRTL && styles.typeLabelRTL]}
+          testID="appointment-card-type-label"
+        >
           {typeLabel}
         </Text>
       </View>
@@ -79,6 +87,7 @@ export const AppointmentCard: React.FC<AppointmentCardProps> = ({
           styles.chevronContainer,
           rtlStyle(styles.chevronContainer) as any,
         ]}
+        testID="appointment-card-chevron"
       >
         <IconSymbol
           name={isRTL ? "chevron.left" : "chevron.right"}
@@ -94,6 +103,9 @@ export const AppointmentCard: React.FC<AppointmentCardProps> = ({
       <TouchableOpacity
         onPress={() => onPress(appointment)}
         activeOpacity={0.7}
+        testID="appointment-card-button"
+        accessibilityRole="button"
+        accessibilityLabel={`${title} ${startsAtText} ${formattedTime}`}
       >
         {cardContent}
       </TouchableOpacity>

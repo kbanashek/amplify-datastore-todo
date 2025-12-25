@@ -1,0 +1,4481 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="handled"
+  style={
+    {
+      "backgroundColor": "#fff",
+      "borderRadius": 8,
+      "elevation": 2,
+      "marginBottom": 16,
+      "padding": 16,
+      "shadowColor": "#000",
+      "shadowOffset": {
+        "height": 2,
+        "width": 0,
+      },
+      "shadowOpacity": 0.1,
+      "shadowRadius": 4,
+    }
+  }
+  testID="task-form"
+>
+  <View>
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 18,
+          "fontWeight": "bold",
+          "marginBottom": 16,
+        }
+      }
+    >
+      Create New Task for today
+    </Text>
+    <TextInput
+      accessibilityLabel="Task title"
+      autoCapitalize="sentences"
+      autoCorrect={true}
+      autoFocus={false}
+      editable={true}
+      keyboardType="default"
+      onChangeText={[MockFunction]}
+      placeholder="Task title *"
+      returnKeyType="next"
+      style={
+        {
+          "borderColor": "#dfe4ea",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "fontSize": 16,
+          "marginBottom": 12,
+          "padding": 12,
+        }
+      }
+      testID="task-form-title-input"
+      value=""
+    />
+    <TextInput
+      accessibilityLabel="Task description"
+      autoCapitalize="sentences"
+      autoCorrect={true}
+      autoFocus={false}
+      editable={true}
+      keyboardType="default"
+      multiline={true}
+      numberOfLines={3}
+      onChangeText={[MockFunction]}
+      placeholder="Description (optional)"
+      returnKeyType="done"
+      style={
+        [
+          {
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "fontSize": 16,
+            "marginBottom": 12,
+            "padding": 12,
+          },
+          {
+            "minHeight": 80,
+            "textAlignVertical": "top",
+          },
+        ]
+      }
+      testID="task-form-description-input"
+      textAlignVertical="top"
+      value=""
+    />
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 14,
+          "fontWeight": "600",
+          "marginBottom": 8,
+          "marginTop": 4,
+        }
+      }
+    >
+      Task Type *
+    </Text>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+          "gap": 8,
+          "marginBottom": 16,
+        }
+      }
+    >
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": true,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#3498db",
+            "borderColor": "#3498db",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-type-SCHEDULED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              {
+                "color": "#fff",
+              },
+            ]
+          }
+        >
+          SCHEDULED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-type-TIMED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          TIMED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-type-EPISODIC"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          EPISODIC
+        </Text>
+      </View>
+    </View>
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 14,
+          "fontWeight": "600",
+          "marginBottom": 8,
+          "marginTop": 4,
+        }
+      }
+    >
+      Status *
+    </Text>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+          "gap": 8,
+          "marginBottom": 16,
+        }
+      }
+    >
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": true,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#3498db",
+            "borderColor": "#3498db",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-OPEN"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              {
+                "color": "#fff",
+              },
+            ]
+          }
+        >
+          OPEN
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-VISIBLE"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          VISIBLE
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-STARTED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          STARTED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-INPROGRESS"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          INPROGRESS
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-COMPLETED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          COMPLETED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-EXPIRED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          EXPIRED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-RECALLED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          RECALLED
+        </Text>
+      </View>
+    </View>
+    <TextInput
+      accessibilityLabel="Partition Key"
+      autoCapitalize="none"
+      autoCorrect={false}
+      editable={true}
+      onChangeText={[MockFunction]}
+      placeholder="PK (Partition Key) *"
+      style={
+        {
+          "borderColor": "#dfe4ea",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "fontSize": 16,
+          "marginBottom": 12,
+          "padding": 12,
+        }
+      }
+      testID="task-form-pk-input"
+      value=""
+    />
+    <TextInput
+      accessibilityLabel="Sort Key"
+      autoCapitalize="none"
+      autoCorrect={false}
+      editable={true}
+      onChangeText={[MockFunction]}
+      placeholder="SK (Sort Key) *"
+      style={
+        {
+          "borderColor": "#dfe4ea",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "fontSize": 16,
+          "marginBottom": 12,
+          "padding": 12,
+        }
+      }
+      testID="task-form-sk-input"
+      value=""
+    />
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "gap": 12,
+          "marginTop": 8,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="Reset form"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#95a5a6",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "opacity": 1,
+            "padding": 14,
+          }
+        }
+        testID="task-form-reset-button"
+      >
+        <Text
+          style={
+            {
+              "color": "#fff",
+              "fontSize": 16,
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Reset
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Submit task"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#3498db",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "opacity": 1,
+            "padding": 14,
+          }
+        }
+        testID="task-form-submit-button"
+      >
+        <Text
+          style={
+            {
+              "color": "#fff",
+              "fontSize": 16,
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Create Task
+        </Text>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="handled"
+  style={
+    {
+      "backgroundColor": "#fff",
+      "borderRadius": 8,
+      "elevation": 2,
+      "marginBottom": 16,
+      "padding": 16,
+      "shadowColor": "#000",
+      "shadowOffset": {
+        "height": 2,
+        "width": 0,
+      },
+      "shadowOpacity": 0.1,
+      "shadowRadius": 4,
+    }
+  }
+  testID="task-form"
+>
+  <View>
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 18,
+          "fontWeight": "bold",
+          "marginBottom": 16,
+        }
+      }
+    >
+      Create New Task for today
+    </Text>
+    <TextInput
+      accessibilityLabel="Task title"
+      autoCapitalize="sentences"
+      autoCorrect={true}
+      autoFocus={false}
+      editable={false}
+      keyboardType="default"
+      onChangeText={[MockFunction]}
+      placeholder="Task title *"
+      returnKeyType="next"
+      style={
+        {
+          "borderColor": "#dfe4ea",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "fontSize": 16,
+          "marginBottom": 12,
+          "padding": 12,
+        }
+      }
+      testID="task-form-title-input"
+      value=""
+    />
+    <TextInput
+      accessibilityLabel="Task description"
+      autoCapitalize="sentences"
+      autoCorrect={true}
+      autoFocus={false}
+      editable={false}
+      keyboardType="default"
+      multiline={true}
+      numberOfLines={3}
+      onChangeText={[MockFunction]}
+      placeholder="Description (optional)"
+      returnKeyType="done"
+      style={
+        [
+          {
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "fontSize": 16,
+            "marginBottom": 12,
+            "padding": 12,
+          },
+          {
+            "minHeight": 80,
+            "textAlignVertical": "top",
+          },
+        ]
+      }
+      testID="task-form-description-input"
+      textAlignVertical="top"
+      value=""
+    />
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 14,
+          "fontWeight": "600",
+          "marginBottom": 8,
+          "marginTop": 4,
+        }
+      }
+    >
+      Task Type *
+    </Text>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+          "gap": 8,
+          "marginBottom": 16,
+        }
+      }
+    >
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": true,
+            "disabled": true,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={false}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#3498db",
+            "borderColor": "#3498db",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-type-SCHEDULED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              {
+                "color": "#fff",
+              },
+            ]
+          }
+        >
+          SCHEDULED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": true,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={false}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-type-TIMED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          TIMED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": true,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={false}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-type-EPISODIC"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          EPISODIC
+        </Text>
+      </View>
+    </View>
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 14,
+          "fontWeight": "600",
+          "marginBottom": 8,
+          "marginTop": 4,
+        }
+      }
+    >
+      Status *
+    </Text>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+          "gap": 8,
+          "marginBottom": 16,
+        }
+      }
+    >
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": true,
+            "disabled": true,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={false}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#3498db",
+            "borderColor": "#3498db",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-OPEN"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              {
+                "color": "#fff",
+              },
+            ]
+          }
+        >
+          OPEN
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": true,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={false}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-VISIBLE"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          VISIBLE
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": true,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={false}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-STARTED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          STARTED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": true,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={false}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-INPROGRESS"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          INPROGRESS
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": true,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={false}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-COMPLETED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          COMPLETED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": true,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={false}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-EXPIRED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          EXPIRED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": true,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={false}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-RECALLED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          RECALLED
+        </Text>
+      </View>
+    </View>
+    <TextInput
+      accessibilityLabel="Partition Key"
+      autoCapitalize="none"
+      autoCorrect={false}
+      editable={false}
+      onChangeText={[MockFunction]}
+      placeholder="PK (Partition Key) *"
+      style={
+        {
+          "borderColor": "#dfe4ea",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "fontSize": 16,
+          "marginBottom": 12,
+          "padding": 12,
+        }
+      }
+      testID="task-form-pk-input"
+      value=""
+    />
+    <TextInput
+      accessibilityLabel="Sort Key"
+      autoCapitalize="none"
+      autoCorrect={false}
+      editable={false}
+      onChangeText={[MockFunction]}
+      placeholder="SK (Sort Key) *"
+      style={
+        {
+          "borderColor": "#dfe4ea",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "fontSize": 16,
+          "marginBottom": 12,
+          "padding": 12,
+        }
+      }
+      testID="task-form-sk-input"
+      value=""
+    />
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "gap": 12,
+          "marginTop": 8,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="Reset form"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": true,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={false}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#95a5a6",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "opacity": 1,
+            "padding": 14,
+          }
+        }
+        testID="task-form-reset-button"
+      >
+        <Text
+          style={
+            {
+              "color": "#fff",
+              "fontSize": 16,
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Reset
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Submit task"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": true,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={false}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#95a5a6",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "opacity": 1,
+            "padding": 14,
+          }
+        }
+        testID="task-form-submit-button"
+      >
+        <ActivityIndicator
+          color="#fff"
+          size="small"
+        />
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="handled"
+  style={
+    {
+      "backgroundColor": "#fff",
+      "borderRadius": 8,
+      "elevation": 2,
+      "marginBottom": 16,
+      "padding": 16,
+      "shadowColor": "#000",
+      "shadowOffset": {
+        "height": 2,
+        "width": 0,
+      },
+      "shadowOpacity": 0.1,
+      "shadowRadius": 4,
+    }
+  }
+  testID="task-form"
+>
+  <View>
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 18,
+          "fontWeight": "bold",
+          "marginBottom": 16,
+        }
+      }
+    >
+      Create New Task for today
+    </Text>
+    <TextInput
+      accessibilityLabel="Task title"
+      autoCapitalize="sentences"
+      autoCorrect={true}
+      autoFocus={false}
+      editable={true}
+      keyboardType="default"
+      onChangeText={[MockFunction]}
+      placeholder="Task title *"
+      returnKeyType="next"
+      style={
+        {
+          "borderColor": "#dfe4ea",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "fontSize": 16,
+          "marginBottom": 12,
+          "padding": 12,
+        }
+      }
+      testID="task-form-title-input"
+      value=""
+    />
+    <TextInput
+      accessibilityLabel="Task description"
+      autoCapitalize="sentences"
+      autoCorrect={true}
+      autoFocus={false}
+      editable={true}
+      keyboardType="default"
+      multiline={true}
+      numberOfLines={3}
+      onChangeText={[MockFunction]}
+      placeholder="Description (optional)"
+      returnKeyType="done"
+      style={
+        [
+          {
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "fontSize": 16,
+            "marginBottom": 12,
+            "padding": 12,
+          },
+          {
+            "minHeight": 80,
+            "textAlignVertical": "top",
+          },
+        ]
+      }
+      testID="task-form-description-input"
+      textAlignVertical="top"
+      value=""
+    />
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 14,
+          "fontWeight": "600",
+          "marginBottom": 8,
+          "marginTop": 4,
+        }
+      }
+    >
+      Task Type *
+    </Text>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+          "gap": 8,
+          "marginBottom": 16,
+        }
+      }
+    >
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": true,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#3498db",
+            "borderColor": "#3498db",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-type-SCHEDULED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              {
+                "color": "#fff",
+              },
+            ]
+          }
+        >
+          SCHEDULED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-type-TIMED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          TIMED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-type-EPISODIC"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          EPISODIC
+        </Text>
+      </View>
+    </View>
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 14,
+          "fontWeight": "600",
+          "marginBottom": 8,
+          "marginTop": 4,
+        }
+      }
+    >
+      Status *
+    </Text>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+          "gap": 8,
+          "marginBottom": 16,
+        }
+      }
+    >
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": true,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#3498db",
+            "borderColor": "#3498db",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-OPEN"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              {
+                "color": "#fff",
+              },
+            ]
+          }
+        >
+          OPEN
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-VISIBLE"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          VISIBLE
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-STARTED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          STARTED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-INPROGRESS"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          INPROGRESS
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-COMPLETED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          COMPLETED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-EXPIRED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          EXPIRED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-RECALLED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          RECALLED
+        </Text>
+      </View>
+    </View>
+    <TextInput
+      accessibilityLabel="Partition Key"
+      autoCapitalize="none"
+      autoCorrect={false}
+      editable={true}
+      onChangeText={[MockFunction]}
+      placeholder="PK (Partition Key) *"
+      style={
+        {
+          "borderColor": "#dfe4ea",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "fontSize": 16,
+          "marginBottom": 12,
+          "padding": 12,
+        }
+      }
+      testID="task-form-pk-input"
+      value=""
+    />
+    <TextInput
+      accessibilityLabel="Sort Key"
+      autoCapitalize="none"
+      autoCorrect={false}
+      editable={true}
+      onChangeText={[MockFunction]}
+      placeholder="SK (Sort Key) *"
+      style={
+        {
+          "borderColor": "#dfe4ea",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "fontSize": 16,
+          "marginBottom": 12,
+          "padding": 12,
+        }
+      }
+      testID="task-form-sk-input"
+      value=""
+    />
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "gap": 12,
+          "marginTop": 8,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="Reset form"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#95a5a6",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "opacity": 1,
+            "padding": 14,
+          }
+        }
+        testID="task-form-reset-button"
+      >
+        <Text
+          style={
+            {
+              "color": "#fff",
+              "fontSize": 16,
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Reset
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Submit task"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#3498db",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "opacity": 1,
+            "padding": 14,
+          }
+        }
+        testID="task-form-submit-button"
+      >
+        <Text
+          style={
+            {
+              "color": "#fff",
+              "fontSize": 16,
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Create Task
+        </Text>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`TaskForm Snapshots matches snapshot with error 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="handled"
+  style={
+    {
+      "backgroundColor": "#fff",
+      "borderRadius": 8,
+      "elevation": 2,
+      "marginBottom": 16,
+      "padding": 16,
+      "shadowColor": "#000",
+      "shadowOffset": {
+        "height": 2,
+        "width": 0,
+      },
+      "shadowOpacity": 0.1,
+      "shadowRadius": 4,
+    }
+  }
+  testID="task-form"
+>
+  <View>
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 18,
+          "fontWeight": "bold",
+          "marginBottom": 16,
+        }
+      }
+    >
+      Create New Task for today
+    </Text>
+    <Text
+      style={
+        {
+          "color": "#e74c3c",
+          "fontSize": 14,
+          "marginBottom": 12,
+        }
+      }
+      testID="task-form-error-text"
+    >
+      Validation error
+    </Text>
+    <TextInput
+      accessibilityLabel="Task title"
+      autoCapitalize="sentences"
+      autoCorrect={true}
+      autoFocus={false}
+      editable={true}
+      keyboardType="default"
+      onChangeText={[MockFunction]}
+      placeholder="Task title *"
+      returnKeyType="next"
+      style={
+        {
+          "borderColor": "#dfe4ea",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "fontSize": 16,
+          "marginBottom": 12,
+          "padding": 12,
+        }
+      }
+      testID="task-form-title-input"
+      value=""
+    />
+    <TextInput
+      accessibilityLabel="Task description"
+      autoCapitalize="sentences"
+      autoCorrect={true}
+      autoFocus={false}
+      editable={true}
+      keyboardType="default"
+      multiline={true}
+      numberOfLines={3}
+      onChangeText={[MockFunction]}
+      placeholder="Description (optional)"
+      returnKeyType="done"
+      style={
+        [
+          {
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "fontSize": 16,
+            "marginBottom": 12,
+            "padding": 12,
+          },
+          {
+            "minHeight": 80,
+            "textAlignVertical": "top",
+          },
+        ]
+      }
+      testID="task-form-description-input"
+      textAlignVertical="top"
+      value=""
+    />
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 14,
+          "fontWeight": "600",
+          "marginBottom": 8,
+          "marginTop": 4,
+        }
+      }
+    >
+      Task Type *
+    </Text>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+          "gap": 8,
+          "marginBottom": 16,
+        }
+      }
+    >
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": true,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#3498db",
+            "borderColor": "#3498db",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-type-SCHEDULED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              {
+                "color": "#fff",
+              },
+            ]
+          }
+        >
+          SCHEDULED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-type-TIMED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          TIMED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-type-EPISODIC"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          EPISODIC
+        </Text>
+      </View>
+    </View>
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 14,
+          "fontWeight": "600",
+          "marginBottom": 8,
+          "marginTop": 4,
+        }
+      }
+    >
+      Status *
+    </Text>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+          "gap": 8,
+          "marginBottom": 16,
+        }
+      }
+    >
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": true,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#3498db",
+            "borderColor": "#3498db",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-OPEN"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              {
+                "color": "#fff",
+              },
+            ]
+          }
+        >
+          OPEN
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-VISIBLE"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          VISIBLE
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-STARTED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          STARTED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-INPROGRESS"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          INPROGRESS
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-COMPLETED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          COMPLETED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-EXPIRED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          EXPIRED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-RECALLED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          RECALLED
+        </Text>
+      </View>
+    </View>
+    <TextInput
+      accessibilityLabel="Partition Key"
+      autoCapitalize="none"
+      autoCorrect={false}
+      editable={true}
+      onChangeText={[MockFunction]}
+      placeholder="PK (Partition Key) *"
+      style={
+        {
+          "borderColor": "#dfe4ea",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "fontSize": 16,
+          "marginBottom": 12,
+          "padding": 12,
+        }
+      }
+      testID="task-form-pk-input"
+      value=""
+    />
+    <TextInput
+      accessibilityLabel="Sort Key"
+      autoCapitalize="none"
+      autoCorrect={false}
+      editable={true}
+      onChangeText={[MockFunction]}
+      placeholder="SK (Sort Key) *"
+      style={
+        {
+          "borderColor": "#dfe4ea",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "fontSize": 16,
+          "marginBottom": 12,
+          "padding": 12,
+        }
+      }
+      testID="task-form-sk-input"
+      value=""
+    />
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "gap": 12,
+          "marginTop": 8,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="Reset form"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#95a5a6",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "opacity": 1,
+            "padding": 14,
+          }
+        }
+        testID="task-form-reset-button"
+      >
+        <Text
+          style={
+            {
+              "color": "#fff",
+              "fontSize": 16,
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Reset
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Submit task"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#3498db",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "opacity": 1,
+            "padding": 14,
+          }
+        }
+        testID="task-form-submit-button"
+      >
+        <Text
+          style={
+            {
+              "color": "#fff",
+              "fontSize": 16,
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Create Task
+        </Text>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`TaskForm Snapshots matches snapshot with values 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="handled"
+  style={
+    {
+      "backgroundColor": "#fff",
+      "borderRadius": 8,
+      "elevation": 2,
+      "marginBottom": 16,
+      "padding": 16,
+      "shadowColor": "#000",
+      "shadowOffset": {
+        "height": 2,
+        "width": 0,
+      },
+      "shadowOpacity": 0.1,
+      "shadowRadius": 4,
+    }
+  }
+  testID="task-form"
+>
+  <View>
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 18,
+          "fontWeight": "bold",
+          "marginBottom": 16,
+        }
+      }
+    >
+      Create New Task for today
+    </Text>
+    <TextInput
+      accessibilityLabel="Task title"
+      autoCapitalize="sentences"
+      autoCorrect={true}
+      autoFocus={false}
+      editable={true}
+      keyboardType="default"
+      onChangeText={[MockFunction]}
+      placeholder="Task title *"
+      returnKeyType="next"
+      style={
+        {
+          "borderColor": "#dfe4ea",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "fontSize": 16,
+          "marginBottom": 12,
+          "padding": 12,
+        }
+      }
+      testID="task-form-title-input"
+      value="Test Task"
+    />
+    <TextInput
+      accessibilityLabel="Task description"
+      autoCapitalize="sentences"
+      autoCorrect={true}
+      autoFocus={false}
+      editable={true}
+      keyboardType="default"
+      multiline={true}
+      numberOfLines={3}
+      onChangeText={[MockFunction]}
+      placeholder="Description (optional)"
+      returnKeyType="done"
+      style={
+        [
+          {
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "fontSize": 16,
+            "marginBottom": 12,
+            "padding": 12,
+          },
+          {
+            "minHeight": 80,
+            "textAlignVertical": "top",
+          },
+        ]
+      }
+      testID="task-form-description-input"
+      textAlignVertical="top"
+      value="Test Description"
+    />
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 14,
+          "fontWeight": "600",
+          "marginBottom": 8,
+          "marginTop": 4,
+        }
+      }
+    >
+      Task Type *
+    </Text>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+          "gap": 8,
+          "marginBottom": 16,
+        }
+      }
+    >
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-type-SCHEDULED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          SCHEDULED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": true,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#3498db",
+            "borderColor": "#3498db",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-type-TIMED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              {
+                "color": "#fff",
+              },
+            ]
+          }
+        >
+          TIMED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-type-EPISODIC"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          EPISODIC
+        </Text>
+      </View>
+    </View>
+    <Text
+      style={
+        {
+          "color": "#2f3542",
+          "fontSize": 14,
+          "fontWeight": "600",
+          "marginBottom": 8,
+          "marginTop": 4,
+        }
+      }
+    >
+      Status *
+    </Text>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "flexWrap": "wrap",
+          "gap": 8,
+          "marginBottom": 16,
+        }
+      }
+    >
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-OPEN"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          OPEN
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-VISIBLE"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          VISIBLE
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-STARTED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          STARTED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-INPROGRESS"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          INPROGRESS
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": true,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#3498db",
+            "borderColor": "#3498db",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-COMPLETED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              {
+                "color": "#fff",
+              },
+            ]
+          }
+        >
+          COMPLETED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-EXPIRED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          EXPIRED
+        </Text>
+      </View>
+      <View
+        accessibilityRole="radio"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": false,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "#fff",
+            "borderColor": "#dfe4ea",
+            "borderRadius": 4,
+            "borderWidth": 1,
+            "marginBottom": 8,
+            "marginRight": 8,
+            "opacity": 1,
+            "paddingHorizontal": 12,
+            "paddingVertical": 8,
+          }
+        }
+        testID="task-form-status-RECALLED"
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#57606f",
+                "fontSize": 12,
+                "fontWeight": "600",
+              },
+              false,
+            ]
+          }
+        >
+          RECALLED
+        </Text>
+      </View>
+    </View>
+    <TextInput
+      accessibilityLabel="Partition Key"
+      autoCapitalize="none"
+      autoCorrect={false}
+      editable={true}
+      onChangeText={[MockFunction]}
+      placeholder="PK (Partition Key) *"
+      style={
+        {
+          "borderColor": "#dfe4ea",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "fontSize": 16,
+          "marginBottom": 12,
+          "padding": 12,
+        }
+      }
+      testID="task-form-pk-input"
+      value="USER#123"
+    />
+    <TextInput
+      accessibilityLabel="Sort Key"
+      autoCapitalize="none"
+      autoCorrect={false}
+      editable={true}
+      onChangeText={[MockFunction]}
+      placeholder="SK (Sort Key) *"
+      style={
+        {
+          "borderColor": "#dfe4ea",
+          "borderRadius": 4,
+          "borderWidth": 1,
+          "fontSize": 16,
+          "marginBottom": 12,
+          "padding": 12,
+        }
+      }
+      testID="task-form-sk-input"
+      value="TASK#456"
+    />
+    <View
+      style={
+        {
+          "flexDirection": "row",
+          "gap": 12,
+          "marginTop": 8,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="Reset form"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#95a5a6",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "opacity": 1,
+            "padding": 14,
+          }
+        }
+        testID="task-form-reset-button"
+      >
+        <Text
+          style={
+            {
+              "color": "#fff",
+              "fontSize": 16,
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Reset
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Submit task"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#3498db",
+            "borderRadius": 4,
+            "flex": 1,
+            "justifyContent": "center",
+            "opacity": 1,
+            "padding": 14,
+          }
+        }
+        testID="task-form-submit-button"
+      >
+        <Text
+          style={
+            {
+              "color": "#fff",
+              "fontSize": 16,
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Create Task
+        </Text>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;

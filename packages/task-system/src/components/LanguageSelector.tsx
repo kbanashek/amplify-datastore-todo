@@ -82,11 +82,14 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   };
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style]} testID="language-selector">
       <TouchableOpacity
         style={styles.selectorButton}
         onPress={() => setModalVisible(true)}
         disabled={changingLanguage || !ready}
+        testID="language-selector-button"
+        accessibilityRole="button"
+        accessibilityLabel={`Change language, current: ${currentLanguageName}`}
       >
         {changingLanguage || !ready ? (
           <ActivityIndicator size="small" color="#007AFF" />
@@ -100,6 +103,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         transparent={true}
         animationType="slide"
         onRequestClose={() => setModalVisible(false)}
+        testID="language-selector-modal"
       >
         <TouchableOpacity
           style={styles.modalOverlay}
@@ -130,6 +134,10 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
                     ]}
                     onPress={() => handleLanguageSelect(item.code)}
                     disabled={changingLanguage}
+                    testID={`language-option-${item.code}`}
+                    accessibilityRole="button"
+                    accessibilityLabel={`Select ${item.name}`}
+                    accessibilityState={{ selected: isSelected }}
                   >
                     <Text
                       style={[

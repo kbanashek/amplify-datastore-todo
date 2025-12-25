@@ -1,0 +1,1190 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TaskCard Snapshots matches snapshot with completed task 1`] = `
+<View
+  accessibilityLabel="Test Task"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": true,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={false}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 8,
+      "elevation": 2,
+      "marginBottom": 12,
+      "opacity": 0.6,
+      "overflow": "hidden",
+      "shadowColor": "#000000",
+      "shadowOffset": {
+        "height": 2,
+        "width": 0,
+      },
+      "shadowOpacity": 0.1,
+      "shadowRadius": 4,
+    }
+  }
+  testID="task-card"
+>
+  <View
+    style={
+      {
+        "padding": 16,
+      }
+    }
+    testID="task-card-content"
+  >
+    <View
+      style={
+        [
+          {
+            "marginBottom": 16,
+          },
+          false,
+        ]
+      }
+      testID="task-card-icon-container"
+    >
+      <View
+        style={
+          {
+            "alignItems": "flex-start",
+            "flexDirection": "row",
+            "gap": 12,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "borderRadius": 8,
+              "flexShrink": 0,
+              "height": 40,
+              "justifyContent": "center",
+              "width": 40,
+            }
+          }
+        >
+          <Text
+            testID="icon-pills"
+          >
+            pills
+          </Text>
+        </View>
+        <Text
+          numberOfLines={2}
+          style={
+            {
+              "color": "#1a1a1a",
+              "flex": 1,
+              "fontSize": 20,
+              "fontWeight": "bold",
+              "lineHeight": 26,
+            }
+          }
+          testID="task-card-title"
+        >
+          Test Task
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+      testID="task-card-action-row"
+    >
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#27ae60",
+            "borderRadius": 6,
+            "minWidth": 100,
+            "paddingHorizontal": 20,
+            "paddingVertical": 10,
+          }
+        }
+        testID="task-card-completed-badge"
+      >
+        <Text
+          style={
+            {
+              "color": "#FFFFFF",
+              "fontSize": 14,
+              "fontWeight": "bold",
+              "letterSpacing": 0.5,
+            }
+          }
+        >
+          task.completed
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`TaskCard Snapshots matches snapshot with default props 1`] = `
+<View
+  accessibilityLabel="Test Task"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 8,
+      "elevation": 2,
+      "marginBottom": 12,
+      "opacity": 1,
+      "overflow": "hidden",
+      "shadowColor": "#000000",
+      "shadowOffset": {
+        "height": 2,
+        "width": 0,
+      },
+      "shadowOpacity": 0.1,
+      "shadowRadius": 4,
+    }
+  }
+  testID="task-card"
+>
+  <View
+    style={
+      {
+        "padding": 16,
+      }
+    }
+    testID="task-card-content"
+  >
+    <View
+      style={
+        [
+          {
+            "marginBottom": 16,
+          },
+          false,
+        ]
+      }
+      testID="task-card-icon-container"
+    >
+      <View
+        style={
+          {
+            "alignItems": "flex-start",
+            "flexDirection": "row",
+            "gap": 12,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "borderRadius": 8,
+              "flexShrink": 0,
+              "height": 40,
+              "justifyContent": "center",
+              "width": 40,
+            }
+          }
+        >
+          <Text
+            testID="icon-pills"
+          >
+            pills
+          </Text>
+        </View>
+        <Text
+          numberOfLines={2}
+          style={
+            {
+              "color": "#1a1a1a",
+              "flex": 1,
+              "fontSize": 20,
+              "fontWeight": "bold",
+              "lineHeight": 26,
+            }
+          }
+          testID="task-card-title"
+        >
+          Test Task
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+      testID="task-card-action-row"
+    >
+      <View
+        accessibilityLabel="task.begin"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#3498db",
+            "borderRadius": 6,
+            "minWidth": 100,
+            "opacity": 1,
+            "paddingHorizontal": 20,
+            "paddingVertical": 10,
+          }
+        }
+        testID="task-card-begin-button"
+      >
+        <Text
+          style={
+            {
+              "color": "#FFFFFF",
+              "fontSize": 14,
+              "fontWeight": "bold",
+              "letterSpacing": 0.5,
+            }
+          }
+        >
+          task.begin
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Navigate to task"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "marginLeft": 8,
+            "opacity": 1,
+            "padding": 8,
+          }
+        }
+        testID="task-card-arrow-button"
+      >
+        <Text
+          testID="icon-chevron.right"
+        >
+          chevron.right
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`TaskCard Snapshots matches snapshot with long title 1`] = `
+<View
+  accessibilityLabel="This is a very long task title that should be truncated"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 8,
+      "elevation": 2,
+      "marginBottom": 12,
+      "opacity": 1,
+      "overflow": "hidden",
+      "shadowColor": "#000000",
+      "shadowOffset": {
+        "height": 2,
+        "width": 0,
+      },
+      "shadowOpacity": 0.1,
+      "shadowRadius": 4,
+    }
+  }
+  testID="task-card"
+>
+  <View
+    style={
+      {
+        "padding": 16,
+      }
+    }
+    testID="task-card-content"
+  >
+    <View
+      style={
+        [
+          {
+            "marginBottom": 16,
+          },
+          false,
+        ]
+      }
+      testID="task-card-icon-container"
+    >
+      <View
+        style={
+          {
+            "alignItems": "flex-start",
+            "flexDirection": "row",
+            "gap": 12,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "borderRadius": 8,
+              "flexShrink": 0,
+              "height": 40,
+              "justifyContent": "center",
+              "width": 40,
+            }
+          }
+        >
+          <Text
+            testID="icon-pills"
+          >
+            pills
+          </Text>
+        </View>
+        <Text
+          numberOfLines={2}
+          style={
+            {
+              "color": "#1a1a1a",
+              "flex": 1,
+              "fontSize": 20,
+              "fontWeight": "bold",
+              "lineHeight": 26,
+            }
+          }
+          testID="task-card-title"
+        >
+          This is a very long task title that should be truncated
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+      testID="task-card-action-row"
+    >
+      <View
+        accessibilityLabel="task.begin"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#3498db",
+            "borderRadius": 6,
+            "minWidth": 100,
+            "opacity": 1,
+            "paddingHorizontal": 20,
+            "paddingVertical": 10,
+          }
+        }
+        testID="task-card-begin-button"
+      >
+        <Text
+          style={
+            {
+              "color": "#FFFFFF",
+              "fontSize": 14,
+              "fontWeight": "bold",
+              "letterSpacing": 0.5,
+            }
+          }
+        >
+          task.begin
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Navigate to task"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "marginLeft": 8,
+            "opacity": 1,
+            "padding": 8,
+          }
+        }
+        testID="task-card-arrow-button"
+      >
+        <Text
+          testID="icon-chevron.right"
+        >
+          chevron.right
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`TaskCard Snapshots matches snapshot with onPress 1`] = `
+<View
+  accessibilityLabel="Test Task"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 8,
+      "elevation": 2,
+      "marginBottom": 12,
+      "opacity": 1,
+      "overflow": "hidden",
+      "shadowColor": "#000000",
+      "shadowOffset": {
+        "height": 2,
+        "width": 0,
+      },
+      "shadowOpacity": 0.1,
+      "shadowRadius": 4,
+    }
+  }
+  testID="task-card"
+>
+  <View
+    style={
+      {
+        "padding": 16,
+      }
+    }
+    testID="task-card-content"
+  >
+    <View
+      style={
+        [
+          {
+            "marginBottom": 16,
+          },
+          false,
+        ]
+      }
+      testID="task-card-icon-container"
+    >
+      <View
+        style={
+          {
+            "alignItems": "flex-start",
+            "flexDirection": "row",
+            "gap": 12,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "borderRadius": 8,
+              "flexShrink": 0,
+              "height": 40,
+              "justifyContent": "center",
+              "width": 40,
+            }
+          }
+        >
+          <Text
+            testID="icon-pills"
+          >
+            pills
+          </Text>
+        </View>
+        <Text
+          numberOfLines={2}
+          style={
+            {
+              "color": "#1a1a1a",
+              "flex": 1,
+              "fontSize": 20,
+              "fontWeight": "bold",
+              "lineHeight": 26,
+            }
+          }
+          testID="task-card-title"
+        >
+          Test Task
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+      testID="task-card-action-row"
+    >
+      <View
+        accessibilityLabel="task.begin"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#3498db",
+            "borderRadius": 6,
+            "minWidth": 100,
+            "opacity": 1,
+            "paddingHorizontal": 20,
+            "paddingVertical": 10,
+          }
+        }
+        testID="task-card-begin-button"
+      >
+        <Text
+          style={
+            {
+              "color": "#FFFFFF",
+              "fontSize": 14,
+              "fontWeight": "bold",
+              "letterSpacing": 0.5,
+            }
+          }
+        >
+          task.begin
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Navigate to task"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "marginLeft": 8,
+            "opacity": 1,
+            "padding": 8,
+          }
+        }
+        testID="task-card-arrow-button"
+      >
+        <Text
+          testID="icon-chevron.right"
+        >
+          chevron.right
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`TaskCard Snapshots matches snapshot with simple prop 1`] = `
+<View
+  accessibilityLabel="Test Task"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 8,
+      "elevation": 2,
+      "marginBottom": 12,
+      "opacity": 1,
+      "overflow": "hidden",
+      "shadowColor": "#000000",
+      "shadowOffset": {
+        "height": 2,
+        "width": 0,
+      },
+      "shadowOpacity": 0.1,
+      "shadowRadius": 4,
+    }
+  }
+  testID="task-card"
+>
+  <View
+    style={
+      {
+        "padding": 16,
+      }
+    }
+    testID="task-card-content"
+  >
+    <View
+      style={
+        [
+          {
+            "marginBottom": 16,
+          },
+          {
+            "marginBottom": 0,
+          },
+        ]
+      }
+      testID="task-card-icon-container"
+    >
+      <View
+        style={
+          {
+            "alignItems": "flex-start",
+            "flexDirection": "row",
+            "gap": 12,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "borderRadius": 8,
+              "flexShrink": 0,
+              "height": 40,
+              "justifyContent": "center",
+              "width": 40,
+            }
+          }
+        >
+          <Text
+            testID="icon-pills"
+          >
+            pills
+          </Text>
+        </View>
+        <Text
+          numberOfLines={2}
+          style={
+            {
+              "color": "#1a1a1a",
+              "flex": 1,
+              "fontSize": 20,
+              "fontWeight": "bold",
+              "lineHeight": 26,
+            }
+          }
+          testID="task-card-title"
+        >
+          Test Task
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`TaskCard Snapshots matches snapshot with started task 1`] = `
+<View
+  accessibilityLabel="Test Task"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": false,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 8,
+      "elevation": 2,
+      "marginBottom": 12,
+      "opacity": 1,
+      "overflow": "hidden",
+      "shadowColor": "#000000",
+      "shadowOffset": {
+        "height": 2,
+        "width": 0,
+      },
+      "shadowOpacity": 0.1,
+      "shadowRadius": 4,
+    }
+  }
+  testID="task-card"
+>
+  <View
+    style={
+      {
+        "padding": 16,
+      }
+    }
+    testID="task-card-content"
+  >
+    <View
+      style={
+        [
+          {
+            "marginBottom": 16,
+          },
+          false,
+        ]
+      }
+      testID="task-card-icon-container"
+    >
+      <View
+        style={
+          {
+            "alignItems": "flex-start",
+            "flexDirection": "row",
+            "gap": 12,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "borderRadius": 8,
+              "flexShrink": 0,
+              "height": 40,
+              "justifyContent": "center",
+              "width": 40,
+            }
+          }
+        >
+          <Text
+            testID="icon-pills"
+          >
+            pills
+          </Text>
+        </View>
+        <Text
+          numberOfLines={2}
+          style={
+            {
+              "color": "#1a1a1a",
+              "flex": 1,
+              "fontSize": 20,
+              "fontWeight": "bold",
+              "lineHeight": 26,
+            }
+          }
+          testID="task-card-title"
+        >
+          Test Task
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+        }
+      }
+      testID="task-card-action-row"
+    >
+      <View
+        accessibilityLabel="task.resume"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "alignItems": "center",
+            "backgroundColor": "#3498db",
+            "borderRadius": 6,
+            "minWidth": 100,
+            "opacity": 1,
+            "paddingHorizontal": 20,
+            "paddingVertical": 10,
+          }
+        }
+        testID="task-card-begin-button"
+      >
+        <Text
+          style={
+            {
+              "color": "#FFFFFF",
+              "fontSize": 14,
+              "fontWeight": "bold",
+              "letterSpacing": 0.5,
+            }
+          }
+        >
+          task.resume
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="Navigate to task"
+        accessibilityRole="button"
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "marginLeft": 8,
+            "opacity": 1,
+            "padding": 8,
+          }
+        }
+        testID="task-card-arrow-button"
+      >
+        <Text
+          testID="icon-chevron.right"
+        >
+          chevron.right
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

@@ -1,0 +1,272 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GroupedTasksView Snapshots matches snapshot in RTL mode 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": "center",
+        "padding": 32,
+      },
+      {
+        "flex": 1,
+      },
+    ]
+  }
+  testID="grouped-tasks-view-empty"
+>
+  <Text
+    style={
+      {
+        "color": "#666666",
+        "fontSize": 16,
+        "textAlign": "center",
+      }
+    }
+  >
+    No tasks available.
+  </Text>
+</View>
+`;
+
+exports[`GroupedTasksView Snapshots matches snapshot with appointments 1`] = `
+<RCTScrollView
+  accessibilityLabel="dashboard_tasks_grouped_view"
+  contentContainerStyle={
+    {
+      "paddingBottom": 28,
+    }
+  }
+  keyboardShouldPersistTaps="handled"
+  nestedScrollEnabled={true}
+  style={
+    {
+      "flex": 1,
+    }
+  }
+  testID="dashboard_tasks_grouped_view"
+>
+  <View>
+    <View
+      style={
+        {
+          "marginBottom": 4,
+          "marginTop": 20,
+          "paddingHorizontal": 20,
+        }
+      }
+      testID="grouped-tasks-view-appointments-only"
+    >
+      <View
+        style={
+          {
+            "alignItems": "baseline",
+            "flexDirection": "row",
+            "gap": 12,
+            "marginBottom": 16,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#1E376C",
+              "fontSize": 24,
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Today
+        </Text>
+        <Text
+          style={
+            {
+              "color": "#666666",
+              "fontSize": 16,
+              "fontWeight": "400",
+            }
+          }
+        >
+          Wed, Dec 24
+        </Text>
+      </View>
+      <View
+        style={
+          {
+            "marginBottom": 16,
+          }
+        }
+      >
+        <View
+          testID="appointment-card-appt-1"
+        >
+          <Text
+            testID="appointment-card-title-appt-1"
+          >
+            Doctor Visit
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`GroupedTasksView Snapshots matches snapshot with default props 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": "center",
+        "padding": 32,
+      },
+      {
+        "flex": 1,
+      },
+    ]
+  }
+  testID="grouped-tasks-view-empty"
+>
+  <Text
+    style={
+      {
+        "color": "#666666",
+        "fontSize": 16,
+        "textAlign": "center",
+      }
+    }
+  >
+    No tasks available.
+  </Text>
+</View>
+`;
+
+exports[`GroupedTasksView Snapshots matches snapshot with error state 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": "center",
+        "padding": 32,
+      },
+      {
+        "flex": 1,
+      },
+    ]
+  }
+  testID="grouped-tasks-view-error"
+>
+  <Text
+    style={
+      {
+        "color": "#F44336",
+        "fontSize": 14,
+        "textAlign": "center",
+      }
+    }
+  >
+    Failed to load tasks
+  </Text>
+</View>
+`;
+
+exports[`GroupedTasksView Snapshots matches snapshot with grouped tasks 1`] = `
+<RCTScrollView
+  accessibilityLabel="dashboard_tasks_grouped_view"
+  contentContainerStyle={
+    {
+      "paddingBottom": 28,
+    }
+  }
+  keyboardShouldPersistTaps="handled"
+  nestedScrollEnabled={true}
+  style={
+    {
+      "flex": 1,
+    }
+  }
+  testID="dashboard_tasks_grouped_view"
+>
+  <View>
+    <View
+      style={
+        {
+          "marginBottom": 4,
+          "marginTop": 20,
+          "paddingHorizontal": 20,
+        }
+      }
+      testID="grouped-tasks-view-day-group-Today"
+    >
+      <View
+        style={
+          {
+            "alignItems": "baseline",
+            "flexDirection": "row",
+            "gap": 12,
+            "marginBottom": 16,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#1E376C",
+              "fontSize": 24,
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Today
+        </Text>
+        <Text
+          style={
+            {
+              "color": "#666666",
+              "fontSize": 16,
+              "fontWeight": "400",
+            }
+          }
+        >
+          2025-12-25
+        </Text>
+      </View>
+      <View />
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`GroupedTasksView Snapshots matches snapshot with loading state 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": "center",
+        "padding": 32,
+      },
+      {
+        "flex": 1,
+      },
+    ]
+  }
+  testID="grouped-tasks-view-loading"
+>
+  <ActivityIndicator
+    color="#237cb8"
+    size="large"
+    testID="grouped-tasks-view-loading-spinner"
+  />
+  <Text
+    style={
+      {
+        "color": "#57606f",
+        "fontSize": 14,
+        "marginTop": 12,
+      }
+    }
+  >
+    Loading tasks...
+  </Text>
+</View>
+`;

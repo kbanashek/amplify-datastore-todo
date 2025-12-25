@@ -1,0 +1,760 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppointmentCard Snapshots matches snapshot in RTL mode 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": "center",
+        "backgroundColor": "#237cb8",
+        "borderRadius": 12,
+        "elevation": 4,
+        "flexDirection": "row",
+        "marginBottom": 12,
+        "padding": 16,
+        "shadowColor": "#000000",
+        "shadowOffset": {
+          "height": 2,
+          "width": 0,
+        },
+        "shadowOpacity": 0.05,
+        "shadowRadius": 4,
+      },
+      {
+        "alignItems": "center",
+        "backgroundColor": "#237cb8",
+        "borderRadius": 12,
+        "elevation": 4,
+        "flexDirection": "row-reverse",
+        "marginBottom": 12,
+        "padding": 16,
+        "shadowColor": "#000000",
+        "shadowOffset": {
+          "height": 2,
+          "width": 0,
+        },
+        "shadowOpacity": 0.05,
+        "shadowRadius": 4,
+      },
+    ]
+  }
+  testID="appointment-card"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexShrink": 0,
+          "height": 32,
+          "justifyContent": "center",
+          "marginRight": 12,
+          "width": 32,
+        },
+        {
+          "alignItems": "center",
+          "flexDirection": "row-reverse",
+          "flexShrink": 0,
+          "height": 32,
+          "justifyContent": "center",
+          "marginRight": 12,
+          "width": 32,
+        },
+      ]
+    }
+    testID="appointment-card-icon-container"
+  >
+    <Text
+      testID="icon-building.2.fill"
+    >
+      building.2.fill
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "flex": 1,
+        "flexDirection": "column",
+        "marginRight": 12,
+      }
+    }
+  >
+    <Text
+      numberOfLines={2}
+      style={
+        [
+          {
+            "color": "#FFFFFF",
+            "fontSize": 16,
+            "fontWeight": "600",
+            "lineHeight": 22,
+            "marginBottom": 4,
+          },
+          {
+            "textAlign": "right",
+          },
+        ]
+      }
+      testID="appointment-card-title"
+    >
+      Doctor Visit starts at 10:00 AM
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#FFFFFF",
+            "fontSize": 14,
+            "fontWeight": "400",
+            "opacity": 0.9,
+          },
+          {
+            "textAlign": "right",
+          },
+        ]
+      }
+      testID="appointment-card-type-label"
+    >
+      appointment.onsiteVisit
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexShrink": 0,
+          "height": 24,
+          "justifyContent": "center",
+          "width": 24,
+        },
+        {
+          "alignItems": "center",
+          "flexDirection": "row-reverse",
+          "flexShrink": 0,
+          "height": 24,
+          "justifyContent": "center",
+          "width": 24,
+        },
+      ]
+    }
+    testID="appointment-card-chevron"
+  >
+    <Text
+      testID="icon-chevron.left"
+    >
+      chevron.left
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`AppointmentCard Snapshots matches snapshot with default props 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": "center",
+        "backgroundColor": "#237cb8",
+        "borderRadius": 12,
+        "elevation": 4,
+        "flexDirection": "row",
+        "marginBottom": 12,
+        "padding": 16,
+        "shadowColor": "#000000",
+        "shadowOffset": {
+          "height": 2,
+          "width": 0,
+        },
+        "shadowOpacity": 0.05,
+        "shadowRadius": 4,
+      },
+      {
+        "alignItems": "center",
+        "backgroundColor": "#237cb8",
+        "borderRadius": 12,
+        "elevation": 4,
+        "flexDirection": "row",
+        "marginBottom": 12,
+        "padding": 16,
+        "shadowColor": "#000000",
+        "shadowOffset": {
+          "height": 2,
+          "width": 0,
+        },
+        "shadowOpacity": 0.05,
+        "shadowRadius": 4,
+      },
+    ]
+  }
+  testID="appointment-card"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexShrink": 0,
+          "height": 32,
+          "justifyContent": "center",
+          "marginRight": 12,
+          "width": 32,
+        },
+        {
+          "alignItems": "center",
+          "flexShrink": 0,
+          "height": 32,
+          "justifyContent": "center",
+          "marginRight": 12,
+          "width": 32,
+        },
+      ]
+    }
+    testID="appointment-card-icon-container"
+  >
+    <Text
+      testID="icon-building.2.fill"
+    >
+      building.2.fill
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "flex": 1,
+        "flexDirection": "column",
+        "marginRight": 12,
+      }
+    }
+  >
+    <Text
+      numberOfLines={2}
+      style={
+        [
+          {
+            "color": "#FFFFFF",
+            "fontSize": 16,
+            "fontWeight": "600",
+            "lineHeight": 22,
+            "marginBottom": 4,
+          },
+          false,
+        ]
+      }
+      testID="appointment-card-title"
+    >
+      Doctor Visit starts at 10:00 AM
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#FFFFFF",
+            "fontSize": 14,
+            "fontWeight": "400",
+            "opacity": 0.9,
+          },
+          false,
+        ]
+      }
+      testID="appointment-card-type-label"
+    >
+      appointment.onsiteVisit
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexShrink": 0,
+          "height": 24,
+          "justifyContent": "center",
+          "width": 24,
+        },
+        {
+          "alignItems": "center",
+          "flexShrink": 0,
+          "height": 24,
+          "justifyContent": "center",
+          "width": 24,
+        },
+      ]
+    }
+    testID="appointment-card-chevron"
+  >
+    <Text
+      testID="icon-chevron.right"
+    >
+      chevron.right
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`AppointmentCard Snapshots matches snapshot with onPress handler 1`] = `
+<View
+  accessibilityLabel="Doctor Visit starts at 10:00 AM"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "opacity": 1,
+    }
+  }
+  testID="appointment-card-button"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "backgroundColor": "#237cb8",
+          "borderRadius": 12,
+          "elevation": 4,
+          "flexDirection": "row",
+          "marginBottom": 12,
+          "padding": 16,
+          "shadowColor": "#000000",
+          "shadowOffset": {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 0.05,
+          "shadowRadius": 4,
+        },
+        {
+          "alignItems": "center",
+          "backgroundColor": "#237cb8",
+          "borderRadius": 12,
+          "elevation": 4,
+          "flexDirection": "row",
+          "marginBottom": 12,
+          "padding": 16,
+          "shadowColor": "#000000",
+          "shadowOffset": {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 0.05,
+          "shadowRadius": 4,
+        },
+      ]
+    }
+    testID="appointment-card"
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexShrink": 0,
+            "height": 32,
+            "justifyContent": "center",
+            "marginRight": 12,
+            "width": 32,
+          },
+          {
+            "alignItems": "center",
+            "flexShrink": 0,
+            "height": 32,
+            "justifyContent": "center",
+            "marginRight": 12,
+            "width": 32,
+          },
+        ]
+      }
+      testID="appointment-card-icon-container"
+    >
+      <Text
+        testID="icon-building.2.fill"
+      >
+        building.2.fill
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "flex": 1,
+          "flexDirection": "column",
+          "marginRight": 12,
+        }
+      }
+    >
+      <Text
+        numberOfLines={2}
+        style={
+          [
+            {
+              "color": "#FFFFFF",
+              "fontSize": 16,
+              "fontWeight": "600",
+              "lineHeight": 22,
+              "marginBottom": 4,
+            },
+            false,
+          ]
+        }
+        testID="appointment-card-title"
+      >
+        Doctor Visit starts at 10:00 AM
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#FFFFFF",
+              "fontSize": 14,
+              "fontWeight": "400",
+              "opacity": 0.9,
+            },
+            false,
+          ]
+        }
+        testID="appointment-card-type-label"
+      >
+        appointment.onsiteVisit
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "flexShrink": 0,
+            "height": 24,
+            "justifyContent": "center",
+            "width": 24,
+          },
+          {
+            "alignItems": "center",
+            "flexShrink": 0,
+            "height": 24,
+            "justifyContent": "center",
+            "width": 24,
+          },
+        ]
+      }
+      testID="appointment-card-chevron"
+    >
+      <Text
+        testID="icon-chevron.right"
+      >
+        chevron.right
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`AppointmentCard Snapshots matches snapshot with telehealth appointment 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": "center",
+        "backgroundColor": "#237cb8",
+        "borderRadius": 12,
+        "elevation": 4,
+        "flexDirection": "row",
+        "marginBottom": 12,
+        "padding": 16,
+        "shadowColor": "#000000",
+        "shadowOffset": {
+          "height": 2,
+          "width": 0,
+        },
+        "shadowOpacity": 0.05,
+        "shadowRadius": 4,
+      },
+      {
+        "alignItems": "center",
+        "backgroundColor": "#237cb8",
+        "borderRadius": 12,
+        "elevation": 4,
+        "flexDirection": "row",
+        "marginBottom": 12,
+        "padding": 16,
+        "shadowColor": "#000000",
+        "shadowOffset": {
+          "height": 2,
+          "width": 0,
+        },
+        "shadowOpacity": 0.05,
+        "shadowRadius": 4,
+      },
+    ]
+  }
+  testID="appointment-card"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexShrink": 0,
+          "height": 32,
+          "justifyContent": "center",
+          "marginRight": 12,
+          "width": 32,
+        },
+        {
+          "alignItems": "center",
+          "flexShrink": 0,
+          "height": 32,
+          "justifyContent": "center",
+          "marginRight": 12,
+          "width": 32,
+        },
+      ]
+    }
+    testID="appointment-card-icon-container"
+  >
+    <Text
+      testID="icon-video.fill"
+    >
+      video.fill
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "flex": 1,
+        "flexDirection": "column",
+        "marginRight": 12,
+      }
+    }
+  >
+    <Text
+      numberOfLines={2}
+      style={
+        [
+          {
+            "color": "#FFFFFF",
+            "fontSize": 16,
+            "fontWeight": "600",
+            "lineHeight": 22,
+            "marginBottom": 4,
+          },
+          false,
+        ]
+      }
+      testID="appointment-card-title"
+    >
+      Doctor Visit starts at 10:00 AM
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#FFFFFF",
+            "fontSize": 14,
+            "fontWeight": "400",
+            "opacity": 0.9,
+          },
+          false,
+        ]
+      }
+      testID="appointment-card-type-label"
+    >
+      appointment.telehealth
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexShrink": 0,
+          "height": 24,
+          "justifyContent": "center",
+          "width": 24,
+        },
+        {
+          "alignItems": "center",
+          "flexShrink": 0,
+          "height": 24,
+          "justifyContent": "center",
+          "width": 24,
+        },
+      ]
+    }
+    testID="appointment-card-chevron"
+  >
+    <Text
+      testID="icon-chevron.right"
+    >
+      chevron.right
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`AppointmentCard Snapshots matches snapshot with timezone 1`] = `
+<View
+  style={
+    [
+      {
+        "alignItems": "center",
+        "backgroundColor": "#237cb8",
+        "borderRadius": 12,
+        "elevation": 4,
+        "flexDirection": "row",
+        "marginBottom": 12,
+        "padding": 16,
+        "shadowColor": "#000000",
+        "shadowOffset": {
+          "height": 2,
+          "width": 0,
+        },
+        "shadowOpacity": 0.05,
+        "shadowRadius": 4,
+      },
+      {
+        "alignItems": "center",
+        "backgroundColor": "#237cb8",
+        "borderRadius": 12,
+        "elevation": 4,
+        "flexDirection": "row",
+        "marginBottom": 12,
+        "padding": 16,
+        "shadowColor": "#000000",
+        "shadowOffset": {
+          "height": 2,
+          "width": 0,
+        },
+        "shadowOpacity": 0.05,
+        "shadowRadius": 4,
+      },
+    ]
+  }
+  testID="appointment-card"
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexShrink": 0,
+          "height": 32,
+          "justifyContent": "center",
+          "marginRight": 12,
+          "width": 32,
+        },
+        {
+          "alignItems": "center",
+          "flexShrink": 0,
+          "height": 32,
+          "justifyContent": "center",
+          "marginRight": 12,
+          "width": 32,
+        },
+      ]
+    }
+    testID="appointment-card-icon-container"
+  >
+    <Text
+      testID="icon-building.2.fill"
+    >
+      building.2.fill
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "flex": 1,
+        "flexDirection": "column",
+        "marginRight": 12,
+      }
+    }
+  >
+    <Text
+      numberOfLines={2}
+      style={
+        [
+          {
+            "color": "#FFFFFF",
+            "fontSize": 16,
+            "fontWeight": "600",
+            "lineHeight": 22,
+            "marginBottom": 4,
+          },
+          false,
+        ]
+      }
+      testID="appointment-card-title"
+    >
+      Doctor Visit starts at 10:00 AM EST
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#FFFFFF",
+            "fontSize": 14,
+            "fontWeight": "400",
+            "opacity": 0.9,
+          },
+          false,
+        ]
+      }
+      testID="appointment-card-type-label"
+    >
+      appointment.onsiteVisit
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "flexShrink": 0,
+          "height": 24,
+          "justifyContent": "center",
+          "width": 24,
+        },
+        {
+          "alignItems": "center",
+          "flexShrink": 0,
+          "height": 24,
+          "justifyContent": "center",
+          "width": 24,
+        },
+      ]
+    }
+    testID="appointment-card-chevron"
+  >
+    <Text
+      testID="icon-chevron.right"
+    >
+      chevron.right
+    </Text>
+  </View>
+</View>
+`;

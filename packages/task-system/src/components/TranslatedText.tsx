@@ -14,6 +14,7 @@ interface TranslatedTextProps extends Omit<TextProps, "children"> {
    * If not provided, will attempt to find key from text or use text as-is
    */
   translationKey?: string;
+  testID?: string;
 }
 
 /**
@@ -59,6 +60,7 @@ export const TranslatedText: React.FC<TranslatedTextProps> = ({
   text,
   sourceLanguage,
   translationKey,
+  testID,
   style,
   ...props
 }) => {
@@ -112,6 +114,7 @@ export const TranslatedText: React.FC<TranslatedTextProps> = ({
       key={`translated-${lang}-${text?.substring(0, 20)}`}
       style={[style, isRTL && { textAlign: "right" }]}
       {...props}
+      testID={testID}
     >
       {translatedText}
     </Text>

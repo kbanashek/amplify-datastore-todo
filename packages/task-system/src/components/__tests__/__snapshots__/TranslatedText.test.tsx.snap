@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TranslatedText Snapshots matches snapshot in RTL mode 1`] = `
+<Text
+  style={
+    [
+      undefined,
+      false,
+    ]
+  }
+>
+  RTL Text
+</Text>
+`;
+
+exports[`TranslatedText Snapshots matches snapshot with custom style 1`] = `
+<Text
+  style={
+    [
+      {
+        "color": "red",
+        "fontSize": 20,
+      },
+      false,
+    ]
+  }
+>
+  Styled
+</Text>
+`;
+
+exports[`TranslatedText Snapshots matches snapshot with default text 1`] = `
+<Text
+  style={
+    [
+      undefined,
+      false,
+    ]
+  }
+>
+  Hello
+</Text>
+`;
+
+exports[`TranslatedText Snapshots matches snapshot with translation key 1`] = `
+<Text
+  style={
+    [
+      undefined,
+      false,
+    ]
+  }
+>
+  BEGIN
+</Text>
+`;
+
+exports[`TranslatedText Snapshots matches snapshot with translation memory 1`] = `
+<Text
+  style={
+    [
+      undefined,
+      false,
+    ]
+  }
+>
+  Hello
+</Text>
+`;

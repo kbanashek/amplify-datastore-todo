@@ -109,18 +109,28 @@ export const TasksView: React.FC<TasksViewProps> = ({
 
   if (loading && !refreshing) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color="#3498db" />
-        <Text style={styles.loadingText}>Loading tasks...</Text>
+      <View style={styles.container} testID="tasks-view">
+        <ActivityIndicator
+          size="large"
+          color="#3498db"
+          testID="tasks-view-loading-spinner"
+        />
+        <Text style={styles.loadingText} testID="tasks-view-loading-text">
+          Loading tasks...
+        </Text>
       </View>
     );
   }
 
   if (error) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.errorText}>{error}</Text>
-        <Text style={styles.emptyText}>Pull to refresh</Text>
+      <View style={styles.container} testID="tasks-view">
+        <Text style={styles.errorText} testID="tasks-view-error-text">
+          {error}
+        </Text>
+        <Text style={styles.emptyText} testID="tasks-view-error-hint">
+          Pull to refresh
+        </Text>
       </View>
     );
   }
@@ -142,9 +152,10 @@ export const TasksView: React.FC<TasksViewProps> = ({
           colors={["#3498db"]}
         />
       }
+      testID="tasks-view"
     >
       {isSynced && (
-        <View style={styles.syncIndicator}>
+        <View style={styles.syncIndicator} testID="tasks-view-sync-indicator">
           <View style={styles.syncDot} />
           <Text style={styles.syncText}>Synced</Text>
         </View>
@@ -236,8 +247,10 @@ export const TasksView: React.FC<TasksViewProps> = ({
       )}
 
       {tasks.length === 0 && !loading && (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>No tasks yet. Create one!</Text>
+        <View style={styles.emptyContainer} testID="tasks-view-empty">
+          <Text style={styles.emptyText} testID="tasks-view-empty-text">
+            No tasks yet. Create one!
+          </Text>
         </View>
       )}
     </ScrollView>
