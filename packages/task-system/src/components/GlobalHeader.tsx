@@ -60,7 +60,10 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
 
   return (
     <View style={styles.header} testID="global-header">
-      <View style={[styles.headerTop, rtlStyle(styles.headerTop) as ViewStyle]}>
+      <View
+        style={[styles.headerTop, rtlStyle(styles.headerTop) as ViewStyle]}
+        testID="global-header-top"
+      >
         {/* Left side: Back button */}
         <View style={styles.headerLeft}>
           {showBackButton && onBackPress && (
@@ -101,7 +104,7 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
               style={styles.menuButton}
               testID="global-header-menu-button"
               accessibilityRole="button"
-              accessibilityLabel="Open menu"
+              accessibilityLabel="Menu"
             >
               <IconSymbol
                 name="line.3.horizontal"
