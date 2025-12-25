@@ -109,7 +109,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
 
   if (loading && !refreshing) {
     return (
-      <View style={styles.container} testID="tasks-view">
+      <View style={styles.container} testID="tasks-view-loading">
         <ActivityIndicator
           size="large"
           color="#3498db"
@@ -124,7 +124,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
 
   if (error) {
     return (
-      <View style={styles.container} testID="tasks-view">
+      <View style={styles.container} testID="tasks-view-error">
         <Text style={styles.errorText} testID="tasks-view-error-text">
           {error}
         </Text>
@@ -165,19 +165,33 @@ export const TasksView: React.FC<TasksViewProps> = ({
       {(() => {
         logger.debug("RENDERING TODAY SECTION");
         return (
-          <View style={styles.todaySection}>
-            <View style={styles.todaySectionHeader}>
-              <Text style={styles.todaySectionTitle}>
+          <View style={styles.todaySection} testID="tasks-view-today-section">
+            <View
+              style={styles.todaySectionHeader}
+              testID="tasks-view-today-header"
+            >
+              <Text
+                style={styles.todaySectionTitle}
+                testID="tasks-view-today-title"
+              >
                 📅 TODAY&apos;S TASKS
               </Text>
               <View style={styles.todaySectionBadge}>
-                <Text style={styles.todaySectionCount}>
+                <Text
+                  style={styles.todaySectionCount}
+                  testID="tasks-view-today-count"
+                >
                   {todayTasks.length}
                 </Text>
               </View>
             </View>
             {todayTasks.length === 0 ? (
-              <Text style={styles.emptySectionText}>No tasks for today</Text>
+              <Text
+                style={styles.emptySectionText}
+                testID="tasks-view-today-empty"
+              >
+                No tasks for today
+              </Text>
             ) : (
               todayTasks.map(task => {
                 logger.debug("Rendering TODAY task with TaskCard", {
@@ -200,10 +214,23 @@ export const TasksView: React.FC<TasksViewProps> = ({
 
       {/* UPCOMING TASKS */}
       {upcomingTasks.length > 0 && (
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Upcoming</Text>
-            <Text style={styles.sectionCount}>({upcomingTasks.length})</Text>
+        <View style={styles.section} testID="tasks-view-upcoming-section">
+          <View
+            style={styles.sectionHeader}
+            testID="tasks-view-upcoming-header"
+          >
+            <Text
+              style={styles.sectionTitle}
+              testID="tasks-view-upcoming-title"
+            >
+              Upcoming
+            </Text>
+            <Text
+              style={styles.sectionCount}
+              testID="tasks-view-upcoming-count"
+            >
+              ({upcomingTasks.length})
+            </Text>
           </View>
           {upcomingTasks.map(task => {
             logger.debug("Rendering UPCOMING task with TaskCard", {
@@ -224,10 +251,14 @@ export const TasksView: React.FC<TasksViewProps> = ({
 
       {/* PAST TASKS */}
       {pastTasks.length > 0 && (
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Past</Text>
-            <Text style={styles.sectionCount}>({pastTasks.length})</Text>
+        <View style={styles.section} testID="tasks-view-past-section">
+          <View style={styles.sectionHeader} testID="tasks-view-past-header">
+            <Text style={styles.sectionTitle} testID="tasks-view-past-title">
+              Past
+            </Text>
+            <Text style={styles.sectionCount} testID="tasks-view-past-count">
+              ({pastTasks.length})
+            </Text>
           </View>
           {pastTasks.map(task => {
             logger.debug("Rendering PAST task with TaskCard", {

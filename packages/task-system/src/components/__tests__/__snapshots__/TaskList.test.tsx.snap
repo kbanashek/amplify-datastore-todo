@@ -31,6 +31,7 @@ exports[`TaskList Snapshots matches snapshot with default props 1`] = `
           "textAlign": "center",
         }
       }
+      testID="task-list-empty-text"
     >
       No tasks yet. Create one!
     </Text>
@@ -69,6 +70,7 @@ exports[`TaskList Snapshots matches snapshot with error state 1`] = `
           "textAlign": "center",
         }
       }
+      testID="task-list-error-text"
     >
       Failed to load tasks
     </Text>
@@ -81,6 +83,7 @@ exports[`TaskList Snapshots matches snapshot with error state 1`] = `
           "textAlign": "center",
         }
       }
+      testID="task-list-error-hint"
     >
       Pull to refresh
     </Text>
@@ -113,6 +116,7 @@ exports[`TaskList Snapshots matches snapshot with loading state 1`] = `
     <ActivityIndicator
       color="#3498db"
       size="large"
+      testID="task-list-loading-spinner"
     />
     <Text
       style={
@@ -123,6 +127,7 @@ exports[`TaskList Snapshots matches snapshot with loading state 1`] = `
           "textAlign": "center",
         }
       }
+      testID="task-list-loading-text"
     >
       Loading tasks...
     </Text>
@@ -161,6 +166,7 @@ exports[`TaskList Snapshots matches snapshot with sync indicator 1`] = `
           "textAlign": "center",
         }
       }
+      testID="task-list-empty-text"
     >
       No tasks yet. Create one!
     </Text>

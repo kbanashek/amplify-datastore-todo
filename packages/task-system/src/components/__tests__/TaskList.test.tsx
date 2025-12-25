@@ -22,6 +22,7 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import { TaskList } from "@components/TaskList";
 import { Task, TaskStatus, TaskType } from "@task-types/Task";
+import { createMockTask } from "../../__mocks__/Task.mock";
 
 // Mock useTaskList hook
 const mockHandleDeleteTask = jest.fn();
@@ -108,22 +109,6 @@ jest.mock("@utils/taskGrouping", () => ({
 describe("TaskList", () => {
   const mockOnTaskPress = jest.fn();
 
-  const createMockTask = (
-    id: string,
-    title: string,
-    startTime?: number
-  ): Task => ({
-    id,
-    pk: `PK-${id}`,
-    sk: `SK-${id}`,
-    title,
-    taskType: TaskType.SCHEDULED,
-    status: TaskStatus.OPEN,
-    startTimeInMillSec: startTime,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  });
-
   beforeEach(() => {
     jest.clearAllMocks();
     mockUseTaskList.mockReturnValue({
@@ -157,6 +142,12 @@ describe("TaskList", () => {
     });
 
     it("renders SectionList", () => {
+      const today = new Date();
+      const todayTask = createMockTask("task-1", "Today Task", today.getTime());
+      mockUseTaskList.mockReturnValueOnce({
+        ...mockUseTaskList(),
+        tasks: [todayTask],
+      });
       const { getByTestId } = render(<TaskList />);
       expect(getByTestId("task-list-section-list")).toBeTruthy();
     });
@@ -190,8 +181,11 @@ describe("TaskList", () => {
     });
 
     it("renders sync indicator when synced", () => {
+      const today = new Date();
+      const todayTask = createMockTask("task-1", "Today Task", today.getTime());
       mockUseTaskList.mockReturnValueOnce({
         ...mockUseTaskList(),
+        tasks: [todayTask],
         isSynced: true,
       });
       const { getByTestId } = render(<TaskList />);
@@ -296,6 +290,12 @@ describe("TaskList", () => {
     });
 
     it("calls refreshTasks on pull to refresh", () => {
+      const today = new Date();
+      const todayTask = createMockTask("task-1", "Today Task", today.getTime());
+      mockUseTaskList.mockReturnValueOnce({
+        ...mockUseTaskList(),
+        tasks: [todayTask],
+      });
       mockRefreshTasks.mockResolvedValueOnce(undefined);
       const { getByTestId } = render(<TaskList />);
       const sectionList = getByTestId("task-list-section-list");
@@ -468,13 +468,22 @@ describe("TaskList", () => {
     });
 
     it("has testId on SectionList", () => {
+      const today = new Date();
+      const todayTask = createMockTask("task-1", "Today Task", today.getTime());
+      mockUseTaskList.mockReturnValueOnce({
+        ...mockUseTaskList(),
+        tasks: [todayTask],
+      });
       const { getByTestId } = render(<TaskList />);
       expect(getByTestId("task-list-section-list")).toBeTruthy();
     });
 
     it("has testId on sync indicator", () => {
+      const today = new Date();
+      const todayTask = createMockTask("task-1", "Today Task", today.getTime());
       mockUseTaskList.mockReturnValueOnce({
         ...mockUseTaskList(),
+        tasks: [todayTask],
         isSynced: true,
       });
       const { getByTestId } = render(<TaskList />);

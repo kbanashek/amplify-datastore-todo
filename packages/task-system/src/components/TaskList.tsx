@@ -174,8 +174,14 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
     if (loading) {
       return (
         <View style={styles.emptyContainer} testID="task-list-empty-loading">
-          <ActivityIndicator size="large" color="#3498db" />
-          <Text style={styles.emptyText}>Loading tasks...</Text>
+          <ActivityIndicator
+            size="large"
+            color="#3498db"
+            testID="task-list-loading-spinner"
+          />
+          <Text style={styles.emptyText} testID="task-list-loading-text">
+            Loading tasks...
+          </Text>
         </View>
       );
     }
@@ -183,15 +189,21 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
     if (error) {
       return (
         <View style={styles.emptyContainer} testID="task-list-empty-error">
-          <Text style={styles.errorText}>{error}</Text>
-          <Text style={styles.emptyText}>Pull to refresh</Text>
+          <Text style={styles.errorText} testID="task-list-error-text">
+            {error}
+          </Text>
+          <Text style={styles.emptyText} testID="task-list-error-hint">
+            Pull to refresh
+          </Text>
         </View>
       );
     }
 
     return (
       <View style={styles.emptyContainer} testID="task-list-empty">
-        <Text style={styles.emptyText}>No tasks yet. Create one!</Text>
+        <Text style={styles.emptyText} testID="task-list-empty-text">
+          No tasks yet. Create one!
+        </Text>
       </View>
     );
   };
