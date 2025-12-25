@@ -13,6 +13,7 @@ exports[`GroupedTasksView Snapshots matches snapshot in RTL mode 1`] = `
       },
     ]
   }
+  testID="grouped-tasks-view-empty"
 >
   <Text
     style={
@@ -54,6 +55,7 @@ exports[`GroupedTasksView Snapshots matches snapshot with appointments 1`] = `
           "paddingHorizontal": 20,
         }
       }
+      testID="grouped-tasks-view-appointments-only"
     >
       <View
         style={
@@ -123,6 +125,7 @@ exports[`GroupedTasksView Snapshots matches snapshot with default props 1`] = `
       },
     ]
   }
+  testID="grouped-tasks-view-empty"
 >
   <Text
     style={
@@ -151,6 +154,7 @@ exports[`GroupedTasksView Snapshots matches snapshot with error state 1`] = `
       },
     ]
   }
+  testID="grouped-tasks-view-error"
 >
   <Text
     style={
@@ -192,6 +196,7 @@ exports[`GroupedTasksView Snapshots matches snapshot with grouped tasks 1`] = `
           "paddingHorizontal": 20,
         }
       }
+      testID="grouped-tasks-view-day-group-Today"
     >
       <View
         style={
@@ -245,10 +250,12 @@ exports[`GroupedTasksView Snapshots matches snapshot with loading state 1`] = `
       },
     ]
   }
+  testID="grouped-tasks-view-loading"
 >
   <ActivityIndicator
     color="#237cb8"
     size="large"
+    testID="grouped-tasks-view-loading-spinner"
   />
   <Text
     style={

@@ -8,6 +8,7 @@ exports[`TasksView Snapshots matches snapshot with error state 1`] = `
       "flex": 1,
     }
   }
+  testID="tasks-view"
 >
   <Text
     style={
@@ -18,6 +19,7 @@ exports[`TasksView Snapshots matches snapshot with error state 1`] = `
         "textAlign": "center",
       }
     }
+    testID="tasks-view-error-text"
   >
     Failed to load tasks
   </Text>
@@ -29,6 +31,7 @@ exports[`TasksView Snapshots matches snapshot with error state 1`] = `
         "textAlign": "center",
       }
     }
+    testID="tasks-view-error-hint"
   >
     Pull to refresh
   </Text>
@@ -43,10 +46,12 @@ exports[`TasksView Snapshots matches snapshot with loading state 1`] = `
       "flex": 1,
     }
   }
+  testID="tasks-view"
 >
   <ActivityIndicator
     color="#3498db"
     size="large"
+    testID="tasks-view-loading-spinner"
   />
   <Text
     style={
@@ -58,6 +63,7 @@ exports[`TasksView Snapshots matches snapshot with loading state 1`] = `
         "textAlign": "center",
       }
     }
+    testID="tasks-view-loading-text"
   >
     Loading tasks...
   </Text>

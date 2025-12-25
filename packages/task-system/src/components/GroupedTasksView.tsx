@@ -103,8 +103,15 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
 
   if (loading) {
     return (
-      <View style={[styles.centerContainer, styles.fill]}>
-        <ActivityIndicator size="large" color={AppColors.CIBlue} />
+      <View
+        style={[styles.centerContainer, styles.fill]}
+        testID="grouped-tasks-view-loading"
+      >
+        <ActivityIndicator
+          size="large"
+          color={AppColors.CIBlue}
+          testID="grouped-tasks-view-loading-spinner"
+        />
         <TranslatedText text="Loading tasks..." style={styles.loadingText} />
       </View>
     );
@@ -112,7 +119,10 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
 
   if (error) {
     return (
-      <View style={[styles.centerContainer, styles.fill]}>
+      <View
+        style={[styles.centerContainer, styles.fill]}
+        testID="grouped-tasks-view-error"
+      >
         <Text style={styles.errorText}>{error}</Text>
       </View>
     );
@@ -124,7 +134,10 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
 
   if (groupedTasks.length === 0 && !shouldShowAppointments) {
     return (
-      <View style={[styles.centerContainer, styles.fill]}>
+      <View
+        style={[styles.centerContainer, styles.fill]}
+        testID="grouped-tasks-view-empty"
+      >
         <TranslatedText text="No tasks available." style={styles.emptyText} />
       </View>
     );
@@ -142,7 +155,10 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
     >
       {/* Show appointments for today if they exist and there's no "Today" task group */}
       {shouldShowAppointments && !hasTodayGroup && (
-        <View style={styles.dayGroup}>
+        <View
+          style={styles.dayGroup}
+          testID="grouped-tasks-view-appointments-only"
+        >
           <View style={styles.dayHeader}>
             <TranslatedText text="Today" style={styles.dayLabel} />
             <Text style={styles.dayDate}>
@@ -174,6 +190,7 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
           <View
             key={`${dayGroup.dayLabel}-${currentLanguage}`}
             style={styles.dayGroup}
+            testID={`grouped-tasks-view-day-group-${dayGroup.dayLabel}`}
           >
             {/* Date Header - hide if hideDateHeader is true and it's "Today" */}
             {!(hideDateHeader && dayGroup.dayLabel === "Today") && (
@@ -230,6 +247,7 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
               <View
                 key={`${timeGroup.time}-${currentLanguage}`}
                 style={styles.timeGroup}
+                testID={`grouped-tasks-view-time-group-${timeGroup.time}`}
               >
                 <View style={styles.dueByRow}>
                   <TranslatedText text="DUE BY" style={styles.dueByHeader} />

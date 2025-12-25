@@ -19,6 +19,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
       "shadowRadius": 4,
     }
   }
+  testID="task-form"
 >
   <View>
     <Text
@@ -34,6 +35,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
       Create New Task for today
     </Text>
     <TextInput
+      accessibilityLabel="Task title"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -52,9 +54,11 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "padding": 12,
         }
       }
+      testID="task-form-title-input"
       value=""
     />
     <TextInput
+      accessibilityLabel="Task description"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -81,6 +85,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           },
         ]
       }
+      testID="task-form-description-input"
       textAlignVertical="top"
       value=""
     />
@@ -108,10 +113,11 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
       }
     >
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": true,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -148,6 +154,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-type-SCHEDULED"
       >
         <Text
           style={
@@ -167,10 +174,11 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -207,6 +215,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-type-TIMED"
       >
         <Text
           style={
@@ -224,10 +233,11 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -264,6 +274,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-type-EPISODIC"
       >
         <Text
           style={
@@ -305,10 +316,11 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
       }
     >
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": true,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -345,6 +357,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-OPEN"
       >
         <Text
           style={
@@ -364,10 +377,11 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -404,6 +418,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-VISIBLE"
       >
         <Text
           style={
@@ -421,10 +436,11 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -461,6 +477,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-STARTED"
       >
         <Text
           style={
@@ -478,10 +495,11 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -518,6 +536,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-INPROGRESS"
       >
         <Text
           style={
@@ -535,10 +554,11 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -575,6 +595,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-COMPLETED"
       >
         <Text
           style={
@@ -592,10 +613,11 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -632,6 +654,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-EXPIRED"
       >
         <Text
           style={
@@ -649,10 +672,11 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -689,6 +713,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-RECALLED"
       >
         <Text
           style={
@@ -707,6 +732,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
       </View>
     </View>
     <TextInput
+      accessibilityLabel="Partition Key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -722,9 +748,11 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "padding": 12,
         }
       }
+      testID="task-form-pk-input"
       value=""
     />
     <TextInput
+      accessibilityLabel="Sort Key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -740,6 +768,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "padding": 12,
         }
       }
+      testID="task-form-sk-input"
       value=""
     />
     <View
@@ -752,6 +781,8 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
       }
     >
       <View
+        accessibilityLabel="Reset form"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -790,6 +821,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "padding": 14,
           }
         }
+        testID="task-form-reset-button"
       >
         <Text
           style={
@@ -804,6 +836,8 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
+        accessibilityLabel="Submit task"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -842,6 +876,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "padding": 14,
           }
         }
+        testID="task-form-submit-button"
       >
         <Text
           style={
@@ -879,6 +914,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
       "shadowRadius": 4,
     }
   }
+  testID="task-form"
 >
   <View>
     <Text
@@ -894,6 +930,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
       Create New Task for today
     </Text>
     <TextInput
+      accessibilityLabel="Task title"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -912,9 +949,11 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "padding": 12,
         }
       }
+      testID="task-form-title-input"
       value=""
     />
     <TextInput
+      accessibilityLabel="Task description"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -941,6 +980,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           },
         ]
       }
+      testID="task-form-description-input"
       textAlignVertical="top"
       value=""
     />
@@ -968,10 +1008,11 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
       }
     >
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": true,
             "disabled": true,
             "expanded": undefined,
             "selected": undefined,
@@ -1008,6 +1049,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-type-SCHEDULED"
       >
         <Text
           style={
@@ -1027,10 +1069,11 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": true,
             "expanded": undefined,
             "selected": undefined,
@@ -1067,6 +1110,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-type-TIMED"
       >
         <Text
           style={
@@ -1084,10 +1128,11 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": true,
             "expanded": undefined,
             "selected": undefined,
@@ -1124,6 +1169,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-type-EPISODIC"
       >
         <Text
           style={
@@ -1165,10 +1211,11 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
       }
     >
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": true,
             "disabled": true,
             "expanded": undefined,
             "selected": undefined,
@@ -1205,6 +1252,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-OPEN"
       >
         <Text
           style={
@@ -1224,10 +1272,11 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": true,
             "expanded": undefined,
             "selected": undefined,
@@ -1264,6 +1313,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-VISIBLE"
       >
         <Text
           style={
@@ -1281,10 +1331,11 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": true,
             "expanded": undefined,
             "selected": undefined,
@@ -1321,6 +1372,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-STARTED"
       >
         <Text
           style={
@@ -1338,10 +1390,11 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": true,
             "expanded": undefined,
             "selected": undefined,
@@ -1378,6 +1431,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-INPROGRESS"
       >
         <Text
           style={
@@ -1395,10 +1449,11 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": true,
             "expanded": undefined,
             "selected": undefined,
@@ -1435,6 +1490,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-COMPLETED"
       >
         <Text
           style={
@@ -1452,10 +1508,11 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": true,
             "expanded": undefined,
             "selected": undefined,
@@ -1492,6 +1549,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-EXPIRED"
       >
         <Text
           style={
@@ -1509,10 +1567,11 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": true,
             "expanded": undefined,
             "selected": undefined,
@@ -1549,6 +1608,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-RECALLED"
       >
         <Text
           style={
@@ -1567,6 +1627,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
       </View>
     </View>
     <TextInput
+      accessibilityLabel="Partition Key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={false}
@@ -1582,9 +1643,11 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "padding": 12,
         }
       }
+      testID="task-form-pk-input"
       value=""
     />
     <TextInput
+      accessibilityLabel="Sort Key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={false}
@@ -1600,6 +1663,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "padding": 12,
         }
       }
+      testID="task-form-sk-input"
       value=""
     />
     <View
@@ -1612,6 +1676,8 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
       }
     >
       <View
+        accessibilityLabel="Reset form"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -1650,6 +1716,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "padding": 14,
           }
         }
+        testID="task-form-reset-button"
       >
         <Text
           style={
@@ -1664,6 +1731,8 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
+        accessibilityLabel="Submit task"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -1702,6 +1771,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "padding": 14,
           }
         }
+        testID="task-form-submit-button"
       >
         <ActivityIndicator
           color="#fff"
@@ -1732,6 +1802,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
       "shadowRadius": 4,
     }
   }
+  testID="task-form"
 >
   <View>
     <Text
@@ -1747,6 +1818,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
       Create New Task for today
     </Text>
     <TextInput
+      accessibilityLabel="Task title"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -1765,9 +1837,11 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "padding": 12,
         }
       }
+      testID="task-form-title-input"
       value=""
     />
     <TextInput
+      accessibilityLabel="Task description"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -1794,6 +1868,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           },
         ]
       }
+      testID="task-form-description-input"
       textAlignVertical="top"
       value=""
     />
@@ -1821,10 +1896,11 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
       }
     >
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": true,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -1861,6 +1937,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-type-SCHEDULED"
       >
         <Text
           style={
@@ -1880,10 +1957,11 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -1920,6 +1998,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-type-TIMED"
       >
         <Text
           style={
@@ -1937,10 +2016,11 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -1977,6 +2057,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-type-EPISODIC"
       >
         <Text
           style={
@@ -2018,10 +2099,11 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
       }
     >
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": true,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -2058,6 +2140,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-OPEN"
       >
         <Text
           style={
@@ -2077,10 +2160,11 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -2117,6 +2201,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-VISIBLE"
       >
         <Text
           style={
@@ -2134,10 +2219,11 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -2174,6 +2260,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-STARTED"
       >
         <Text
           style={
@@ -2191,10 +2278,11 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -2231,6 +2319,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-INPROGRESS"
       >
         <Text
           style={
@@ -2248,10 +2337,11 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -2288,6 +2378,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-COMPLETED"
       >
         <Text
           style={
@@ -2305,10 +2396,11 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -2345,6 +2437,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-EXPIRED"
       >
         <Text
           style={
@@ -2362,10 +2455,11 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -2402,6 +2496,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-RECALLED"
       >
         <Text
           style={
@@ -2420,6 +2515,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
       </View>
     </View>
     <TextInput
+      accessibilityLabel="Partition Key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -2435,9 +2531,11 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "padding": 12,
         }
       }
+      testID="task-form-pk-input"
       value=""
     />
     <TextInput
+      accessibilityLabel="Sort Key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -2453,6 +2551,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "padding": 12,
         }
       }
+      testID="task-form-sk-input"
       value=""
     />
     <View
@@ -2465,6 +2564,8 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
       }
     >
       <View
+        accessibilityLabel="Reset form"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -2503,6 +2604,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "padding": 14,
           }
         }
+        testID="task-form-reset-button"
       >
         <Text
           style={
@@ -2517,6 +2619,8 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
+        accessibilityLabel="Submit task"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -2555,6 +2659,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "padding": 14,
           }
         }
+        testID="task-form-submit-button"
       >
         <Text
           style={
@@ -2592,6 +2697,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
       "shadowRadius": 4,
     }
   }
+  testID="task-form"
 >
   <View>
     <Text
@@ -2614,10 +2720,12 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "marginBottom": 12,
         }
       }
+      testID="task-form-error-text"
     >
       Validation error
     </Text>
     <TextInput
+      accessibilityLabel="Task title"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -2636,9 +2744,11 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "padding": 12,
         }
       }
+      testID="task-form-title-input"
       value=""
     />
     <TextInput
+      accessibilityLabel="Task description"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -2665,6 +2775,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           },
         ]
       }
+      testID="task-form-description-input"
       textAlignVertical="top"
       value=""
     />
@@ -2692,10 +2803,11 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
       }
     >
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": true,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -2732,6 +2844,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-type-SCHEDULED"
       >
         <Text
           style={
@@ -2751,10 +2864,11 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -2791,6 +2905,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-type-TIMED"
       >
         <Text
           style={
@@ -2808,10 +2923,11 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -2848,6 +2964,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-type-EPISODIC"
       >
         <Text
           style={
@@ -2889,10 +3006,11 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
       }
     >
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": true,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -2929,6 +3047,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-OPEN"
       >
         <Text
           style={
@@ -2948,10 +3067,11 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -2988,6 +3108,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-VISIBLE"
       >
         <Text
           style={
@@ -3005,10 +3126,11 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -3045,6 +3167,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-STARTED"
       >
         <Text
           style={
@@ -3062,10 +3185,11 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -3102,6 +3226,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-INPROGRESS"
       >
         <Text
           style={
@@ -3119,10 +3244,11 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -3159,6 +3285,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-COMPLETED"
       >
         <Text
           style={
@@ -3176,10 +3303,11 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -3216,6 +3344,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-EXPIRED"
       >
         <Text
           style={
@@ -3233,10 +3362,11 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -3273,6 +3403,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-RECALLED"
       >
         <Text
           style={
@@ -3291,6 +3422,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
       </View>
     </View>
     <TextInput
+      accessibilityLabel="Partition Key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -3306,9 +3438,11 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "padding": 12,
         }
       }
+      testID="task-form-pk-input"
       value=""
     />
     <TextInput
+      accessibilityLabel="Sort Key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -3324,6 +3458,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "padding": 12,
         }
       }
+      testID="task-form-sk-input"
       value=""
     />
     <View
@@ -3336,6 +3471,8 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
       }
     >
       <View
+        accessibilityLabel="Reset form"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -3374,6 +3511,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "padding": 14,
           }
         }
+        testID="task-form-reset-button"
       >
         <Text
           style={
@@ -3388,6 +3526,8 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
+        accessibilityLabel="Submit task"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -3426,6 +3566,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "padding": 14,
           }
         }
+        testID="task-form-submit-button"
       >
         <Text
           style={
@@ -3463,6 +3604,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
       "shadowRadius": 4,
     }
   }
+  testID="task-form"
 >
   <View>
     <Text
@@ -3478,6 +3620,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
       Create New Task for today
     </Text>
     <TextInput
+      accessibilityLabel="Task title"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -3496,9 +3639,11 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "padding": 12,
         }
       }
+      testID="task-form-title-input"
       value="Test Task"
     />
     <TextInput
+      accessibilityLabel="Task description"
       autoCapitalize="sentences"
       autoCorrect={true}
       autoFocus={false}
@@ -3525,6 +3670,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           },
         ]
       }
+      testID="task-form-description-input"
       textAlignVertical="top"
       value="Test Description"
     />
@@ -3552,10 +3698,11 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
       }
     >
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -3592,6 +3739,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-type-SCHEDULED"
       >
         <Text
           style={
@@ -3609,10 +3757,11 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": true,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -3649,6 +3798,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-type-TIMED"
       >
         <Text
           style={
@@ -3668,10 +3818,11 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -3708,6 +3859,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-type-EPISODIC"
       >
         <Text
           style={
@@ -3749,10 +3901,11 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
       }
     >
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -3789,6 +3942,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-OPEN"
       >
         <Text
           style={
@@ -3806,10 +3960,11 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -3846,6 +4001,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-VISIBLE"
       >
         <Text
           style={
@@ -3863,10 +4019,11 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -3903,6 +4060,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-STARTED"
       >
         <Text
           style={
@@ -3920,10 +4078,11 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -3960,6 +4119,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-INPROGRESS"
       >
         <Text
           style={
@@ -3977,10 +4137,11 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": true,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -4017,6 +4178,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-COMPLETED"
       >
         <Text
           style={
@@ -4036,10 +4198,11 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -4076,6 +4239,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-EXPIRED"
       >
         <Text
           style={
@@ -4093,10 +4257,11 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
+        accessibilityRole="radio"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": undefined,
+            "checked": false,
             "disabled": false,
             "expanded": undefined,
             "selected": undefined,
@@ -4133,6 +4298,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "paddingVertical": 8,
           }
         }
+        testID="task-form-status-RECALLED"
       >
         <Text
           style={
@@ -4151,6 +4317,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
       </View>
     </View>
     <TextInput
+      accessibilityLabel="Partition Key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -4166,9 +4333,11 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "padding": 12,
         }
       }
+      testID="task-form-pk-input"
       value="USER#123"
     />
     <TextInput
+      accessibilityLabel="Sort Key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -4184,6 +4353,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "padding": 12,
         }
       }
+      testID="task-form-sk-input"
       value="TASK#456"
     />
     <View
@@ -4196,6 +4366,8 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
       }
     >
       <View
+        accessibilityLabel="Reset form"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -4234,6 +4406,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "padding": 14,
           }
         }
+        testID="task-form-reset-button"
       >
         <Text
           style={
@@ -4248,6 +4421,8 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
+        accessibilityLabel="Submit task"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -4286,6 +4461,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "padding": 14,
           }
         }
+        testID="task-form-submit-button"
       >
         <Text
           style={

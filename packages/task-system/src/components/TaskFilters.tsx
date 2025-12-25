@@ -48,11 +48,17 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="task-filters">
       <View style={styles.header}>
         <Text style={styles.title}>Filters</Text>
         {hasActiveFilters && (
-          <TouchableOpacity onPress={onClearFilters} style={styles.clearButton}>
+          <TouchableOpacity
+            onPress={onClearFilters}
+            style={styles.clearButton}
+            testID="task-filters-clear-button"
+            accessibilityRole="button"
+            accessibilityLabel="Clear all filters"
+          >
             <Text style={styles.clearButtonText}>Clear All</Text>
           </TouchableOpacity>
         )}
@@ -65,9 +71,13 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
         onChangeText={onSearchTextChange}
         autoCapitalize="none"
         autoCorrect={false}
+        testID="task-filters-search-input"
+        accessibilityLabel="Search tasks"
       />
 
-      <Text style={styles.sectionTitle}>Status</Text>
+      <Text style={styles.sectionTitle} testID="task-filters-status-title">
+        Status
+      </Text>
       <View style={styles.filterRow}>
         {Object.values(TaskStatus).map(status => {
           const isSelected = filters.status?.includes(status);
@@ -79,6 +89,10 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
                 isSelected && styles.filterChipSelected,
               ]}
               onPress={() => toggleStatus(status)}
+              testID={`task-filters-status-${status}`}
+              accessibilityRole="button"
+              accessibilityLabel={`Filter by ${status}`}
+              accessibilityState={{ selected: isSelected }}
             >
               <Text
                 style={[
@@ -93,7 +107,9 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
         })}
       </View>
 
-      <Text style={styles.sectionTitle}>Task Type</Text>
+      <Text style={styles.sectionTitle} testID="task-filters-type-title">
+        Task Type
+      </Text>
       <View style={styles.filterRow}>
         {Object.values(TaskType).map(type => {
           const isSelected = filters.taskType?.includes(type);
@@ -105,6 +121,10 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
                 isSelected && styles.filterChipSelected,
               ]}
               onPress={() => toggleTaskType(type)}
+              testID={`task-filters-type-${type}`}
+              accessibilityRole="button"
+              accessibilityLabel={`Filter by ${type}`}
+              accessibilityState={{ selected: isSelected }}
             >
               <Text
                 style={[

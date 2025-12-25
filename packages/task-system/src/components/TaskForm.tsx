@@ -36,10 +36,18 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
   } = useTaskForm({ onTaskCreated });
 
   return (
-    <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
+    <ScrollView
+      style={styles.container}
+      keyboardShouldPersistTaps="handled"
+      testID="task-form"
+    >
       <Text style={styles.title}>Create New Task for today</Text>
 
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {error && (
+        <Text style={styles.errorText} testID="task-form-error-text">
+          {error}
+        </Text>
+      )}
 
       <TextInput
         style={styles.input}
@@ -52,6 +60,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         autoCapitalize="sentences"
         keyboardType="default"
         returnKeyType="next"
+        testID="task-form-title-input"
+        accessibilityLabel="Task title"
       />
 
       <TextInput
@@ -68,6 +78,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         keyboardType="default"
         returnKeyType="done"
         textAlignVertical="top"
+        testID="task-form-description-input"
+        accessibilityLabel="Task description"
       />
 
       <Text style={styles.label}>Task Type *</Text>
@@ -81,6 +93,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
             ]}
             onPress={() => setTaskType(type)}
             disabled={isSubmitting}
+            testID={`task-form-type-${type}`}
+            accessibilityRole="radio"
+            accessibilityState={{ checked: taskType === type }}
           >
             <Text
               style={[
@@ -105,6 +120,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
             ]}
             onPress={() => setStatus(stat)}
             disabled={isSubmitting}
+            testID={`task-form-status-${stat}`}
+            accessibilityRole="radio"
+            accessibilityState={{ checked: status === stat }}
           >
             <Text
               style={[
@@ -126,6 +144,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         editable={!isSubmitting}
         autoCapitalize="none"
         autoCorrect={false}
+        testID="task-form-pk-input"
+        accessibilityLabel="Partition Key"
       />
 
       <TextInput
@@ -136,6 +156,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         editable={!isSubmitting}
         autoCapitalize="none"
         autoCorrect={false}
+        testID="task-form-sk-input"
+        accessibilityLabel="Sort Key"
       />
 
       <View style={styles.buttonRow}>
@@ -143,6 +165,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
           style={[styles.button, styles.secondaryButton]}
           onPress={reset}
           disabled={isSubmitting}
+          testID="task-form-reset-button"
+          accessibilityRole="button"
+          accessibilityLabel="Reset form"
         >
           <Text style={styles.secondaryButtonText}>Reset</Text>
         </TouchableOpacity>
@@ -151,6 +176,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
           style={[styles.button, isSubmitting && styles.disabledButton]}
           onPress={handleSubmit}
           disabled={isSubmitting}
+          testID="task-form-submit-button"
+          accessibilityRole="button"
+          accessibilityLabel="Submit task"
         >
           {isSubmitting ? (
             <ActivityIndicator color="#fff" size="small" />

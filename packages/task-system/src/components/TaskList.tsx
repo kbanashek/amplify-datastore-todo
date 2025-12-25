@@ -122,7 +122,10 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
     if (section.highlight) {
       logger.debug("RENDERING HIGHLIGHTED SECTION (Today's Tasks)");
       return (
-        <View style={styles.todaySectionHeader}>
+        <View
+          style={styles.todaySectionHeader}
+          testID={`task-list-section-${section.title}`}
+        >
           <View style={styles.todaySectionContent}>
             <Text style={styles.todaySectionTitle}>📅 {section.title}</Text>
             <View style={styles.todaySectionBadge}>
@@ -138,7 +141,10 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
     // Regular section headers
     logger.debug("RENDERING REGULAR SECTION", { title: section.title });
     return (
-      <View style={styles.sectionHeader}>
+      <View
+        style={styles.sectionHeader}
+        testID={`task-list-section-${section.title}`}
+      >
         <Text style={styles.sectionTitle}>{section.title}</Text>
         <View style={styles.sectionCountBadge}>
           <Text style={styles.sectionCount}>{section.data.length}</Text>
@@ -167,7 +173,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
   const renderEmpty = () => {
     if (loading) {
       return (
-        <View style={styles.emptyContainer}>
+        <View style={styles.emptyContainer} testID="task-list-loading">
           <ActivityIndicator size="large" color="#3498db" />
           <Text style={styles.emptyText}>Loading tasks...</Text>
         </View>
@@ -176,7 +182,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
 
     if (error) {
       return (
-        <View style={styles.emptyContainer}>
+        <View style={styles.emptyContainer} testID="task-list-error">
           <Text style={styles.errorText}>{error}</Text>
           <Text style={styles.emptyText}>Pull to refresh</Text>
         </View>
@@ -184,7 +190,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
     }
 
     return (
-      <View style={styles.emptyContainer}>
+      <View style={styles.emptyContainer} testID="task-list-empty">
         <Text style={styles.emptyText}>No tasks yet. Create one!</Text>
       </View>
     );
@@ -232,9 +238,9 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
   });
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="task-list">
       {isSynced && (
-        <View style={styles.syncIndicator}>
+        <View style={styles.syncIndicator} testID="task-list-sync-indicator">
           <View style={styles.syncDot} />
           <Text style={styles.syncText}>Synced</Text>
         </View>
