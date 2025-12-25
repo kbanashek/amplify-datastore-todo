@@ -38,6 +38,7 @@ exports[`AppointmentCard Snapshots matches snapshot in RTL mode 1`] = `
       },
     ]
   }
+  testID="appointment-card"
 >
   <View
     style={
@@ -61,6 +62,7 @@ exports[`AppointmentCard Snapshots matches snapshot in RTL mode 1`] = `
         },
       ]
     }
+    testID="appointment-card-icon-container"
   >
     <Text
       testID="icon-building.2.fill"
@@ -93,6 +95,7 @@ exports[`AppointmentCard Snapshots matches snapshot in RTL mode 1`] = `
           },
         ]
       }
+      testID="appointment-card-title"
     >
       Doctor Visit starts at 10:00 AM
     </Text>
@@ -110,6 +113,7 @@ exports[`AppointmentCard Snapshots matches snapshot in RTL mode 1`] = `
           },
         ]
       }
+      testID="appointment-card-type-label"
     >
       appointment.onsiteVisit
     </Text>
@@ -134,6 +138,7 @@ exports[`AppointmentCard Snapshots matches snapshot in RTL mode 1`] = `
         },
       ]
     }
+    testID="appointment-card-chevron"
   >
     <Text
       testID="icon-chevron.left"
@@ -182,6 +187,7 @@ exports[`AppointmentCard Snapshots matches snapshot with default props 1`] = `
       },
     ]
   }
+  testID="appointment-card"
 >
   <View
     style={
@@ -204,6 +210,7 @@ exports[`AppointmentCard Snapshots matches snapshot with default props 1`] = `
         },
       ]
     }
+    testID="appointment-card-icon-container"
   >
     <Text
       testID="icon-building.2.fill"
@@ -234,6 +241,7 @@ exports[`AppointmentCard Snapshots matches snapshot with default props 1`] = `
           false,
         ]
       }
+      testID="appointment-card-title"
     >
       Doctor Visit starts at 10:00 AM
     </Text>
@@ -249,6 +257,7 @@ exports[`AppointmentCard Snapshots matches snapshot with default props 1`] = `
           false,
         ]
       }
+      testID="appointment-card-type-label"
     >
       appointment.onsiteVisit
     </Text>
@@ -272,6 +281,7 @@ exports[`AppointmentCard Snapshots matches snapshot with default props 1`] = `
         },
       ]
     }
+    testID="appointment-card-chevron"
   >
     <Text
       testID="icon-chevron.right"
@@ -284,6 +294,8 @@ exports[`AppointmentCard Snapshots matches snapshot with default props 1`] = `
 
 exports[`AppointmentCard Snapshots matches snapshot with onPress handler 1`] = `
 <View
+  accessibilityLabel="Doctor Visit starts at 10:00 AM"
+  accessibilityRole="button"
   accessibilityState={
     {
       "busy": undefined,
@@ -316,6 +328,7 @@ exports[`AppointmentCard Snapshots matches snapshot with onPress handler 1`] = `
       "opacity": 1,
     }
   }
+  testID="appointment-card-button"
 >
   <View
     style={
@@ -354,6 +367,7 @@ exports[`AppointmentCard Snapshots matches snapshot with onPress handler 1`] = `
         },
       ]
     }
+    testID="appointment-card"
   >
     <View
       style={
@@ -376,6 +390,7 @@ exports[`AppointmentCard Snapshots matches snapshot with onPress handler 1`] = `
           },
         ]
       }
+      testID="appointment-card-icon-container"
     >
       <Text
         testID="icon-building.2.fill"
@@ -406,6 +421,7 @@ exports[`AppointmentCard Snapshots matches snapshot with onPress handler 1`] = `
             false,
           ]
         }
+        testID="appointment-card-title"
       >
         Doctor Visit starts at 10:00 AM
       </Text>
@@ -421,6 +437,7 @@ exports[`AppointmentCard Snapshots matches snapshot with onPress handler 1`] = `
             false,
           ]
         }
+        testID="appointment-card-type-label"
       >
         appointment.onsiteVisit
       </Text>
@@ -444,6 +461,7 @@ exports[`AppointmentCard Snapshots matches snapshot with onPress handler 1`] = `
           },
         ]
       }
+      testID="appointment-card-chevron"
     >
       <Text
         testID="icon-chevron.right"
@@ -493,6 +511,7 @@ exports[`AppointmentCard Snapshots matches snapshot with telehealth appointment 
       },
     ]
   }
+  testID="appointment-card"
 >
   <View
     style={
@@ -515,6 +534,7 @@ exports[`AppointmentCard Snapshots matches snapshot with telehealth appointment 
         },
       ]
     }
+    testID="appointment-card-icon-container"
   >
     <Text
       testID="icon-video.fill"
@@ -545,6 +565,7 @@ exports[`AppointmentCard Snapshots matches snapshot with telehealth appointment 
           false,
         ]
       }
+      testID="appointment-card-title"
     >
       Doctor Visit starts at 10:00 AM
     </Text>
@@ -560,6 +581,7 @@ exports[`AppointmentCard Snapshots matches snapshot with telehealth appointment 
           false,
         ]
       }
+      testID="appointment-card-type-label"
     >
       appointment.telehealth
     </Text>
@@ -583,6 +605,7 @@ exports[`AppointmentCard Snapshots matches snapshot with telehealth appointment 
         },
       ]
     }
+    testID="appointment-card-chevron"
   >
     <Text
       testID="icon-chevron.right"
@@ -631,6 +654,7 @@ exports[`AppointmentCard Snapshots matches snapshot with timezone 1`] = `
       },
     ]
   }
+  testID="appointment-card"
 >
   <View
     style={
@@ -653,6 +677,7 @@ exports[`AppointmentCard Snapshots matches snapshot with timezone 1`] = `
         },
       ]
     }
+    testID="appointment-card-icon-container"
   >
     <Text
       testID="icon-building.2.fill"
@@ -683,6 +708,7 @@ exports[`AppointmentCard Snapshots matches snapshot with timezone 1`] = `
           false,
         ]
       }
+      testID="appointment-card-title"
     >
       Doctor Visit starts at 10:00 AM EST
     </Text>
@@ -698,6 +724,7 @@ exports[`AppointmentCard Snapshots matches snapshot with timezone 1`] = `
           false,
         ]
       }
+      testID="appointment-card-type-label"
     >
       appointment.onsiteVisit
     </Text>
@@ -721,6 +748,7 @@ exports[`AppointmentCard Snapshots matches snapshot with timezone 1`] = `
         },
       ]
     }
+    testID="appointment-card-chevron"
   >
     <Text
       testID="icon-chevron.right"

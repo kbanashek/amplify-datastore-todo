@@ -39,28 +39,49 @@ export const QuestionHeader: React.FC<QuestionHeaderProps> = ({
   const { isRTL, rtlStyle } = useRTL();
 
   return (
-    <View style={styles.header}>
-      <View style={[styles.headerTop, rtlStyle(styles.headerTop) as ViewStyle]}>
+    <View style={styles.header} testID="question-header">
+      <View
+        style={[styles.headerTop, rtlStyle(styles.headerTop) as ViewStyle]}
+        testID="question-header-top"
+      >
         {/* Left side: Back button */}
-        <View style={styles.headerLeft}>
+        <View style={styles.headerLeft} testID="question-header-left">
           {showBackButton && onBackPress ? (
-            <TouchableOpacity onPress={onBackPress} style={styles.backButton}>
+            <TouchableOpacity
+              onPress={onBackPress}
+              style={styles.backButton}
+              testID="question-header-back-button"
+              accessibilityRole="button"
+              accessibilityLabel="Go back"
+            >
               <IconSymbol name="chevron.left" size={24} color="#6b7280" />
             </TouchableOpacity>
           ) : (
-            <View style={styles.placeholder} />
+            <View
+              style={styles.placeholder}
+              testID="question-header-placeholder"
+            />
           )}
         </View>
 
         {/* Center: Title - can wrap to multiple lines */}
-        <Text style={[styles.headerTitle, isRTL && { textAlign: "right" }]}>
+        <Text
+          style={[styles.headerTitle, isRTL && { textAlign: "right" }]}
+          testID="question-header-title"
+        >
           {translatedTitle}
         </Text>
 
         {/* Right side: Close button and Language selector */}
-        <View style={styles.headerRight}>
+        <View style={styles.headerRight} testID="question-header-right">
           {showCloseButton && onClosePress && (
-            <TouchableOpacity onPress={onClosePress} style={styles.closeButton}>
+            <TouchableOpacity
+              onPress={onClosePress}
+              style={styles.closeButton}
+              testID="question-header-close-button"
+              accessibilityRole="button"
+              accessibilityLabel="Close"
+            >
               <IconSymbol name="xmark" size={24} color="#6b7280" />
             </TouchableOpacity>
           )}

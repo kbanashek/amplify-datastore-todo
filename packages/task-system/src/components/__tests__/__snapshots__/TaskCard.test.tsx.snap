@@ -2,6 +2,8 @@
 
 exports[`TaskCard Snapshots matches snapshot with completed task 1`] = `
 <View
+  accessibilityLabel="Test Task"
+  accessibilityRole="button"
   accessibilityState={
     {
       "busy": undefined,
@@ -46,6 +48,7 @@ exports[`TaskCard Snapshots matches snapshot with completed task 1`] = `
       "shadowRadius": 4,
     }
   }
+  testID="task-card"
 >
   <View
     style={
@@ -53,6 +56,7 @@ exports[`TaskCard Snapshots matches snapshot with completed task 1`] = `
         "padding": 16,
       }
     }
+    testID="task-card-content"
   >
     <View
       style={
@@ -63,6 +67,7 @@ exports[`TaskCard Snapshots matches snapshot with completed task 1`] = `
           false,
         ]
       }
+      testID="task-card-icon-container"
     >
       <View
         style={
@@ -102,6 +107,7 @@ exports[`TaskCard Snapshots matches snapshot with completed task 1`] = `
               "lineHeight": 26,
             }
           }
+          testID="task-card-title"
         >
           Test Task
         </Text>
@@ -115,6 +121,7 @@ exports[`TaskCard Snapshots matches snapshot with completed task 1`] = `
           "justifyContent": "space-between",
         }
       }
+      testID="task-card-action-row"
     >
       <View
         style={
@@ -127,6 +134,7 @@ exports[`TaskCard Snapshots matches snapshot with completed task 1`] = `
             "paddingVertical": 10,
           }
         }
+        testID="task-card-completed-badge"
       >
         <Text
           style={
@@ -148,6 +156,8 @@ exports[`TaskCard Snapshots matches snapshot with completed task 1`] = `
 
 exports[`TaskCard Snapshots matches snapshot with default props 1`] = `
 <View
+  accessibilityLabel="Test Task"
+  accessibilityRole="button"
   accessibilityState={
     {
       "busy": undefined,
@@ -192,6 +202,7 @@ exports[`TaskCard Snapshots matches snapshot with default props 1`] = `
       "shadowRadius": 4,
     }
   }
+  testID="task-card"
 >
   <View
     style={
@@ -199,6 +210,7 @@ exports[`TaskCard Snapshots matches snapshot with default props 1`] = `
         "padding": 16,
       }
     }
+    testID="task-card-content"
   >
     <View
       style={
@@ -209,6 +221,7 @@ exports[`TaskCard Snapshots matches snapshot with default props 1`] = `
           false,
         ]
       }
+      testID="task-card-icon-container"
     >
       <View
         style={
@@ -248,6 +261,7 @@ exports[`TaskCard Snapshots matches snapshot with default props 1`] = `
               "lineHeight": 26,
             }
           }
+          testID="task-card-title"
         >
           Test Task
         </Text>
@@ -261,8 +275,11 @@ exports[`TaskCard Snapshots matches snapshot with default props 1`] = `
           "justifyContent": "space-between",
         }
       }
+      testID="task-card-action-row"
     >
       <View
+        accessibilityLabel="task.begin"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -301,6 +318,7 @@ exports[`TaskCard Snapshots matches snapshot with default props 1`] = `
             "paddingVertical": 10,
           }
         }
+        testID="task-card-begin-button"
       >
         <Text
           style={
@@ -316,6 +334,8 @@ exports[`TaskCard Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
+        accessibilityLabel="Navigate to task"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -350,6 +370,7 @@ exports[`TaskCard Snapshots matches snapshot with default props 1`] = `
             "padding": 8,
           }
         }
+        testID="task-card-arrow-button"
       >
         <Text
           testID="icon-chevron.right"
@@ -364,6 +385,8 @@ exports[`TaskCard Snapshots matches snapshot with default props 1`] = `
 
 exports[`TaskCard Snapshots matches snapshot with long title 1`] = `
 <View
+  accessibilityLabel="This is a very long task title that should be truncated"
+  accessibilityRole="button"
   accessibilityState={
     {
       "busy": undefined,
@@ -408,6 +431,7 @@ exports[`TaskCard Snapshots matches snapshot with long title 1`] = `
       "shadowRadius": 4,
     }
   }
+  testID="task-card"
 >
   <View
     style={
@@ -415,6 +439,7 @@ exports[`TaskCard Snapshots matches snapshot with long title 1`] = `
         "padding": 16,
       }
     }
+    testID="task-card-content"
   >
     <View
       style={
@@ -425,6 +450,7 @@ exports[`TaskCard Snapshots matches snapshot with long title 1`] = `
           false,
         ]
       }
+      testID="task-card-icon-container"
     >
       <View
         style={
@@ -464,6 +490,7 @@ exports[`TaskCard Snapshots matches snapshot with long title 1`] = `
               "lineHeight": 26,
             }
           }
+          testID="task-card-title"
         >
           This is a very long task title that should be truncated
         </Text>
@@ -477,8 +504,11 @@ exports[`TaskCard Snapshots matches snapshot with long title 1`] = `
           "justifyContent": "space-between",
         }
       }
+      testID="task-card-action-row"
     >
       <View
+        accessibilityLabel="task.begin"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -517,6 +547,7 @@ exports[`TaskCard Snapshots matches snapshot with long title 1`] = `
             "paddingVertical": 10,
           }
         }
+        testID="task-card-begin-button"
       >
         <Text
           style={
@@ -532,6 +563,8 @@ exports[`TaskCard Snapshots matches snapshot with long title 1`] = `
         </Text>
       </View>
       <View
+        accessibilityLabel="Navigate to task"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -566,6 +599,7 @@ exports[`TaskCard Snapshots matches snapshot with long title 1`] = `
             "padding": 8,
           }
         }
+        testID="task-card-arrow-button"
       >
         <Text
           testID="icon-chevron.right"
@@ -580,6 +614,8 @@ exports[`TaskCard Snapshots matches snapshot with long title 1`] = `
 
 exports[`TaskCard Snapshots matches snapshot with onPress 1`] = `
 <View
+  accessibilityLabel="Test Task"
+  accessibilityRole="button"
   accessibilityState={
     {
       "busy": undefined,
@@ -624,6 +660,7 @@ exports[`TaskCard Snapshots matches snapshot with onPress 1`] = `
       "shadowRadius": 4,
     }
   }
+  testID="task-card"
 >
   <View
     style={
@@ -631,6 +668,7 @@ exports[`TaskCard Snapshots matches snapshot with onPress 1`] = `
         "padding": 16,
       }
     }
+    testID="task-card-content"
   >
     <View
       style={
@@ -641,6 +679,7 @@ exports[`TaskCard Snapshots matches snapshot with onPress 1`] = `
           false,
         ]
       }
+      testID="task-card-icon-container"
     >
       <View
         style={
@@ -680,6 +719,7 @@ exports[`TaskCard Snapshots matches snapshot with onPress 1`] = `
               "lineHeight": 26,
             }
           }
+          testID="task-card-title"
         >
           Test Task
         </Text>
@@ -693,8 +733,11 @@ exports[`TaskCard Snapshots matches snapshot with onPress 1`] = `
           "justifyContent": "space-between",
         }
       }
+      testID="task-card-action-row"
     >
       <View
+        accessibilityLabel="task.begin"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -733,6 +776,7 @@ exports[`TaskCard Snapshots matches snapshot with onPress 1`] = `
             "paddingVertical": 10,
           }
         }
+        testID="task-card-begin-button"
       >
         <Text
           style={
@@ -748,6 +792,8 @@ exports[`TaskCard Snapshots matches snapshot with onPress 1`] = `
         </Text>
       </View>
       <View
+        accessibilityLabel="Navigate to task"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -782,6 +828,7 @@ exports[`TaskCard Snapshots matches snapshot with onPress 1`] = `
             "padding": 8,
           }
         }
+        testID="task-card-arrow-button"
       >
         <Text
           testID="icon-chevron.right"
@@ -796,6 +843,8 @@ exports[`TaskCard Snapshots matches snapshot with onPress 1`] = `
 
 exports[`TaskCard Snapshots matches snapshot with simple prop 1`] = `
 <View
+  accessibilityLabel="Test Task"
+  accessibilityRole="button"
   accessibilityState={
     {
       "busy": undefined,
@@ -840,6 +889,7 @@ exports[`TaskCard Snapshots matches snapshot with simple prop 1`] = `
       "shadowRadius": 4,
     }
   }
+  testID="task-card"
 >
   <View
     style={
@@ -847,6 +897,7 @@ exports[`TaskCard Snapshots matches snapshot with simple prop 1`] = `
         "padding": 16,
       }
     }
+    testID="task-card-content"
   >
     <View
       style={
@@ -859,6 +910,7 @@ exports[`TaskCard Snapshots matches snapshot with simple prop 1`] = `
           },
         ]
       }
+      testID="task-card-icon-container"
     >
       <View
         style={
@@ -898,6 +950,7 @@ exports[`TaskCard Snapshots matches snapshot with simple prop 1`] = `
               "lineHeight": 26,
             }
           }
+          testID="task-card-title"
         >
           Test Task
         </Text>
@@ -909,6 +962,8 @@ exports[`TaskCard Snapshots matches snapshot with simple prop 1`] = `
 
 exports[`TaskCard Snapshots matches snapshot with started task 1`] = `
 <View
+  accessibilityLabel="Test Task"
+  accessibilityRole="button"
   accessibilityState={
     {
       "busy": undefined,
@@ -953,6 +1008,7 @@ exports[`TaskCard Snapshots matches snapshot with started task 1`] = `
       "shadowRadius": 4,
     }
   }
+  testID="task-card"
 >
   <View
     style={
@@ -960,6 +1016,7 @@ exports[`TaskCard Snapshots matches snapshot with started task 1`] = `
         "padding": 16,
       }
     }
+    testID="task-card-content"
   >
     <View
       style={
@@ -970,6 +1027,7 @@ exports[`TaskCard Snapshots matches snapshot with started task 1`] = `
           false,
         ]
       }
+      testID="task-card-icon-container"
     >
       <View
         style={
@@ -1009,6 +1067,7 @@ exports[`TaskCard Snapshots matches snapshot with started task 1`] = `
               "lineHeight": 26,
             }
           }
+          testID="task-card-title"
         >
           Test Task
         </Text>
@@ -1022,8 +1081,11 @@ exports[`TaskCard Snapshots matches snapshot with started task 1`] = `
           "justifyContent": "space-between",
         }
       }
+      testID="task-card-action-row"
     >
       <View
+        accessibilityLabel="task.resume"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -1062,6 +1124,7 @@ exports[`TaskCard Snapshots matches snapshot with started task 1`] = `
             "paddingVertical": 10,
           }
         }
+        testID="task-card-begin-button"
       >
         <Text
           style={
@@ -1077,6 +1140,8 @@ exports[`TaskCard Snapshots matches snapshot with started task 1`] = `
         </Text>
       </View>
       <View
+        accessibilityLabel="Navigate to task"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
@@ -1111,6 +1176,7 @@ exports[`TaskCard Snapshots matches snapshot with started task 1`] = `
             "padding": 8,
           }
         }
+        testID="task-card-arrow-button"
       >
         <Text
           testID="icon-chevron.right"

@@ -94,10 +94,14 @@ export const TaskCard: React.FC<TaskCardProps> = ({
       onPress={handleCardPress}
       activeOpacity={isDisabled ? 1 : 0.7}
       disabled={isDisabled}
+      testID="task-card"
+      accessibilityRole="button"
+      accessibilityLabel={task.title || t("task.untitled")}
     >
-      <View style={styles.cardContent}>
+      <View style={styles.cardContent} testID="task-card-content">
         <View
           style={[styles.titleSection, simple && styles.titleSectionSimple]}
+          testID="task-card-icon-container"
         >
           <View style={styles.titleRow}>
             <View style={styles.iconContainer}>
@@ -111,18 +115,22 @@ export const TaskCard: React.FC<TaskCardProps> = ({
               text={task.title || t("task.untitled")}
               style={styles.title}
               numberOfLines={2}
+              testID="task-card-title"
             />
           </View>
         </View>
 
         {!simple && (
-          <View style={styles.actionRow}>
+          <View style={styles.actionRow} testID="task-card-action-row">
             {!isCompleted ? (
               <>
                 <TouchableOpacity
                   style={styles.beginButton}
                   onPress={handleBeginPress}
                   activeOpacity={0.8}
+                  testID="task-card-begin-button"
+                  accessibilityRole="button"
+                  accessibilityLabel={beginButtonText}
                 >
                   <Text style={styles.beginButtonText}>{beginButtonText}</Text>
                 </TouchableOpacity>
@@ -130,6 +138,9 @@ export const TaskCard: React.FC<TaskCardProps> = ({
                   style={styles.arrowButton}
                   onPress={() => onPress?.(task)}
                   activeOpacity={0.7}
+                  testID="task-card-arrow-button"
+                  accessibilityRole="button"
+                  accessibilityLabel="Navigate to task"
                 >
                   <IconSymbol
                     name="chevron.right"
@@ -139,7 +150,10 @@ export const TaskCard: React.FC<TaskCardProps> = ({
                 </TouchableOpacity>
               </>
             ) : (
-              <View style={styles.completedBadge}>
+              <View
+                style={styles.completedBadge}
+                testID="task-card-completed-badge"
+              >
                 <Text style={styles.completedText}>{completedText}</Text>
               </View>
             )}
