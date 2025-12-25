@@ -29,6 +29,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         "marginBottom": 16,
       }
     }
+    testID="task-filters-header"
   >
     <Text
       style={
@@ -38,6 +39,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
           "fontWeight": "bold",
         }
       }
+      testID="task-filters-title"
     >
       Filters
     </Text>
@@ -84,6 +86,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         "marginBottom": 8,
       }
     }
+    testID="task-filters-status-row"
   >
     <View
       accessibilityLabel="Filter by OPEN"
@@ -529,6 +532,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         "marginBottom": 8,
       }
     }
+    testID="task-filters-type-row"
   >
     <View
       accessibilityLabel="Filter by SCHEDULED"
@@ -743,6 +747,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         "marginBottom": 16,
       }
     }
+    testID="task-filters-header"
   >
     <Text
       style={
@@ -752,6 +757,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
           "fontWeight": "bold",
         }
       }
+      testID="task-filters-title"
     >
       Filters
     </Text>
@@ -851,6 +857,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         "marginBottom": 8,
       }
     }
+    testID="task-filters-status-row"
   >
     <View
       accessibilityLabel="Filter by OPEN"
@@ -1300,6 +1307,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         "marginBottom": 8,
       }
     }
+    testID="task-filters-type-row"
   >
     <View
       accessibilityLabel="Filter by SCHEDULED"
@@ -1516,6 +1524,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         "marginBottom": 16,
       }
     }
+    testID="task-filters-header"
   >
     <Text
       style={
@@ -1525,6 +1534,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
           "fontWeight": "bold",
         }
       }
+      testID="task-filters-title"
     >
       Filters
     </Text>
@@ -1571,6 +1581,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         "marginBottom": 8,
       }
     }
+    testID="task-filters-status-row"
   >
     <View
       accessibilityLabel="Filter by OPEN"
@@ -2016,6 +2027,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         "marginBottom": 8,
       }
     }
+    testID="task-filters-type-row"
   >
     <View
       accessibilityLabel="Filter by SCHEDULED"

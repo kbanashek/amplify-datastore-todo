@@ -49,8 +49,10 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
 
   return (
     <View style={styles.container} testID="task-filters">
-      <View style={styles.header}>
-        <Text style={styles.title}>Filters</Text>
+      <View style={styles.header} testID="task-filters-header">
+        <Text style={styles.title} testID="task-filters-title">
+          Filters
+        </Text>
         {hasActiveFilters && (
           <TouchableOpacity
             onPress={onClearFilters}
@@ -78,7 +80,7 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
       <Text style={styles.sectionTitle} testID="task-filters-status-title">
         Status
       </Text>
-      <View style={styles.filterRow}>
+      <View style={styles.filterRow} testID="task-filters-status-row">
         {Object.values(TaskStatus).map(status => {
           const isSelected = filters.status?.includes(status);
           return (
@@ -110,7 +112,7 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
       <Text style={styles.sectionTitle} testID="task-filters-type-title">
         Task Type
       </Text>
-      <View style={styles.filterRow}>
+      <View style={styles.filterRow} testID="task-filters-type-row">
         {Object.values(TaskType).map(type => {
           const isSelected = filters.taskType?.includes(type);
           return (
