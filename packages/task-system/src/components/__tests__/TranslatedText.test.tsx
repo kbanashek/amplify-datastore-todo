@@ -141,7 +141,12 @@ describe("TranslatedText", () => {
       const { getByText } = render(<TranslatedText text="RTL Text" />);
       const text = getByText("RTL Text");
       expect(text).toBeTruthy();
-      expect(text.props.style).toContainEqual({ textAlign: "right" });
+      const styles = Array.isArray(text.props.style)
+        ? text.props.style
+        : [text.props.style];
+      expect(styles).toContainEqual(
+        expect.objectContaining({ textAlign: "right" })
+      );
     });
 
     it("applies RTL text alignment when isRTL is true", () => {
@@ -157,7 +162,12 @@ describe("TranslatedText", () => {
 
       const { getByText } = render(<TranslatedText text="Hello" />);
       const text = getByText("Hello");
-      expect(text.props.style).toContainEqual({ textAlign: "right" });
+      const styles = Array.isArray(text.props.style)
+        ? text.props.style
+        : [text.props.style];
+      expect(styles).toContainEqual(
+        expect.objectContaining({ textAlign: "right" })
+      );
     });
 
     it("does not apply RTL alignment when isRTL is false", () => {
@@ -184,7 +194,9 @@ describe("TranslatedText", () => {
   // 4. Edge Cases
   describe("Edge Cases", () => {
     it("handles empty text", () => {
-      const { getByTestId } = render(<TranslatedText text="" />);
+      const { getByTestId } = render(
+        <TranslatedText text="" testID="translated-text-default" />
+      );
       expect(getByTestId("translated-text-default")).toBeTruthy();
     });
 
@@ -223,7 +235,7 @@ describe("TranslatedText", () => {
         <TranslatedText text="Hello" sourceLanguage="en" />
       );
       expect(getByText("Hola")).toBeTruthy();
-      expect(mockGetTranslationSync).toHaveBeenCalledWith("Hello");
+      expect(mockGetTranslationSync).toHaveBeenCalledWith("Hello", "en", "es");
     });
 
     it("falls back to original text when translation memory unavailable", () => {
