@@ -10,10 +10,14 @@ export const TranslationTest: React.FC = () => {
   const { currentLanguage, setLanguage, i18n, t } = useTaskTranslation();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Translation Test</Text>
+    <View style={styles.container} testID="translation-test">
+      <Text style={styles.title} testID="translation-test-title">
+        Translation Test
+      </Text>
 
-      <Text style={styles.info}>Current Language: {currentLanguage}</Text>
+      <Text style={styles.info} testID="translation-test-current-language">
+        Current Language: {currentLanguage}
+      </Text>
       <Text style={styles.info}>i18n.language: {i18n.language}</Text>
 
       <View style={styles.section}>
@@ -35,7 +39,7 @@ export const TranslationTest: React.FC = () => {
         <TranslatedText text="Episodic Task 01 (All required)" />
       </View>
 
-      <View style={styles.buttonRow}>
+      <View style={styles.buttonRow} testID="translation-test-buttons">
         <Button title="English" onPress={() => setLanguage("en")} />
         <Button title="Spanish" onPress={() => setLanguage("es")} />
         <Button title="French" onPress={() => setLanguage("fr")} />

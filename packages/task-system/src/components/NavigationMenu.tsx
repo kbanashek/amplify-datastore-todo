@@ -1,4 +1,8 @@
+import { IconSymbol } from "@components/ui/IconSymbol";
+import { Colors } from "@constants/Colors";
+import { useColorScheme } from "@hooks/useColorScheme";
 import { useNavigation } from "@react-navigation/native";
+import { getServiceLogger } from "@utils/serviceLogger";
 import React from "react";
 import {
   Modal,
@@ -9,10 +13,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Colors } from "@constants/Colors";
-import { useColorScheme } from "@hooks/useColorScheme";
-import { getServiceLogger } from "@utils/serviceLogger";
-import { IconSymbol } from "@components/ui/IconSymbol";
 
 const logger = getServiceLogger("NavigationMenu");
 
