@@ -65,7 +65,7 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
         testID="global-header-top"
       >
         {/* Left side: Back button */}
-        <View style={styles.headerLeft}>
+        <View style={styles.headerLeft} testID="global-header-left">
           {showBackButton && onBackPress && (
             <BackButton onPress={onBackPress} />
           )}
@@ -85,6 +85,7 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
             styles.headerActions,
             rtlStyle(styles.headerActions) as ViewStyle,
           ]}
+          testID="global-header-actions"
         >
           {showCloseButton && onClosePress && (
             <TouchableOpacity
