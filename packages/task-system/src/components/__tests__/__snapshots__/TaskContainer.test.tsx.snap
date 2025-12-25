@@ -1,31 +1,48 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TaskContainer Snapshots matches snapshot when loading 1`] = `
-<View>
-  <Text
-    testID="grouped-tasks-view-mock"
-  >
-    Loading
-  </Text>
+<View
+  testID="task-container-loading"
+>
+  <View>
+    <Text
+      testID="grouped-tasks-view-mock"
+    >
+      Loading
+    </Text>
+  </View>
 </View>
 `;
 
 exports[`TaskContainer Snapshots matches snapshot with default props 1`] = `
-<View>
-  <Text
-    testID="grouped-tasks-view-mock"
-  >
-    Tasks: 0
-  </Text>
+<View
+  style={
+    {
+      "flex": 1,
+    }
+  }
+  testID="task-container"
+>
+  <View>
+    <Text
+      testID="grouped-tasks-view-mock"
+    >
+      Tasks: 0
+    </Text>
+  </View>
 </View>
 `;
 
 exports[`TaskContainer Snapshots matches snapshot with error 1`] = `
-<View>
-  <Text
-    testID="grouped-tasks-view-mock"
-  >
-    Error message
-  </Text>
+<View
+  testID="task-container-error"
+>
+  <View>
+    <Text
+      testID="grouped-tasks-view-mock"
+    >
+      Error message
+    </Text>
+  </View>
 </View>
 `;

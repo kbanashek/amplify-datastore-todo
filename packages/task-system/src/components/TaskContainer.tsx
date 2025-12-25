@@ -2,6 +2,7 @@ import { GroupedTasksView } from "@components/GroupedTasksView";
 import { useActivityStartup } from "@hooks/useActivityStartup";
 import { useTaskContainer } from "@hooks/useTaskContainer";
 import React from "react";
+import { View } from "react-native";
 
 /**
  * A container component for displaying tasks and appointments.
@@ -23,16 +24,52 @@ export const TaskContainer: React.FC = () => {
     handleAppointmentPress,
   } = useTaskContainer();
 
+  if (loading) {
+    return (
+      <View testID="task-container-loading">
+        <GroupedTasksView
+          groupedTasks={[]}
+          loading={loading}
+          error={error}
+          onTaskPress={handleTaskPress}
+          onDelete={handleDeleteTask}
+          todayAppointments={todayAppointments}
+          onAppointmentPress={handleAppointmentPress}
+          appointmentTimezoneId={appointmentTimezoneId}
+        />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View testID="task-container-error">
+        <GroupedTasksView
+          groupedTasks={[]}
+          loading={loading}
+          error={error}
+          onTaskPress={handleTaskPress}
+          onDelete={handleDeleteTask}
+          todayAppointments={todayAppointments}
+          onAppointmentPress={handleAppointmentPress}
+          appointmentTimezoneId={appointmentTimezoneId}
+        />
+      </View>
+    );
+  }
+
   return (
-    <GroupedTasksView
-      groupedTasks={groupedTasks}
-      loading={loading}
-      error={error}
-      onTaskPress={handleTaskPress}
-      onDelete={handleDeleteTask}
-      todayAppointments={todayAppointments}
-      onAppointmentPress={handleAppointmentPress}
-      appointmentTimezoneId={appointmentTimezoneId}
-    />
+    <View testID="task-container" style={{ flex: 1 }}>
+      <GroupedTasksView
+        groupedTasks={groupedTasks}
+        loading={loading}
+        error={error}
+        onTaskPress={handleTaskPress}
+        onDelete={handleDeleteTask}
+        todayAppointments={todayAppointments}
+        onAppointmentPress={handleAppointmentPress}
+        appointmentTimezoneId={appointmentTimezoneId}
+      />
+    </View>
   );
 };

@@ -8,6 +8,7 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
       "padding": 20,
     }
   }
+  testID="translation-test"
 >
   <Text
     style={
@@ -17,6 +18,7 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
         "marginBottom": 20,
       }
     }
+    testID="translation-test-title"
   >
     Translation Test
   </Text>
@@ -27,6 +29,7 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
         "marginBottom": 10,
       }
     }
+    testID="translation-test-current-language"
   >
     Current Language: 
     es
@@ -136,6 +139,7 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
         "marginTop": 20,
       }
     }
+    testID="translation-test-buttons"
   >
     <View
       accessibilityRole="button"
@@ -323,6 +327,7 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
       "padding": 20,
     }
   }
+  testID="translation-test"
 >
   <Text
     style={
@@ -332,6 +337,7 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
         "marginBottom": 20,
       }
     }
+    testID="translation-test-title"
   >
     Translation Test
   </Text>
@@ -342,6 +348,7 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
         "marginBottom": 10,
       }
     }
+    testID="translation-test-current-language"
   >
     Current Language: 
     en
@@ -451,6 +458,7 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
         "marginTop": 20,
       }
     }
+    testID="translation-test-buttons"
   >
     <View
       accessibilityRole="button"
