@@ -117,24 +117,24 @@ describe("TranslationTest", () => {
   // 2. User Interactions
   describe("User Interactions", () => {
     it("calls setLanguage when English button is pressed", () => {
-      const { getByTestId } = render(<TranslationTest />);
-      const enButton = getByTestId("translation-test-button-en");
+      const { getByText } = render(<TranslationTest />);
+      const enButton = getByText("English");
       fireEvent.press(enButton);
       expect(mockSetLanguage).toHaveBeenCalledWith("en");
       expect(mockSetLanguage).toHaveBeenCalledTimes(1);
     });
 
     it("calls setLanguage when Spanish button is pressed", () => {
-      const { getByTestId } = render(<TranslationTest />);
-      const esButton = getByTestId("translation-test-button-es");
+      const { getByText } = render(<TranslationTest />);
+      const esButton = getByText("Spanish");
       fireEvent.press(esButton);
       expect(mockSetLanguage).toHaveBeenCalledWith("es");
       expect(mockSetLanguage).toHaveBeenCalledTimes(1);
     });
 
     it("calls setLanguage when French button is pressed", () => {
-      const { getByTestId } = render(<TranslationTest />);
-      const frButton = getByTestId("translation-test-button-fr");
+      const { getByText } = render(<TranslationTest />);
+      const frButton = getByText("French");
       fireEvent.press(frButton);
       expect(mockSetLanguage).toHaveBeenCalledWith("fr");
       expect(mockSetLanguage).toHaveBeenCalledTimes(1);
