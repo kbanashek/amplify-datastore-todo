@@ -93,7 +93,7 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
               onPress={() => toggleStatus(status)}
               testID={`task-filters-status-${status}`}
               accessibilityRole="button"
-              accessibilityLabel={`Filter by ${status}`}
+              accessibilityLabel={`Filter by ${status} status`}
               accessibilityState={{ selected: isSelected }}
             >
               <Text
@@ -125,7 +125,7 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
               onPress={() => toggleTaskType(type)}
               testID={`task-filters-type-${type}`}
               accessibilityRole="button"
-              accessibilityLabel={`Filter by ${type}`}
+              accessibilityLabel={`Filter by ${type} type`}
               accessibilityState={{ selected: isSelected }}
             >
               <Text
