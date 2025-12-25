@@ -89,7 +89,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
     testID="task-filters-status-row"
   >
     <View
-      accessibilityLabel="Filter by OPEN"
+      accessibilityLabel="Filter by OPEN status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -149,7 +149,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by VISIBLE"
+      accessibilityLabel="Filter by VISIBLE status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -209,7 +209,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by STARTED"
+      accessibilityLabel="Filter by STARTED status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -269,7 +269,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by INPROGRESS"
+      accessibilityLabel="Filter by INPROGRESS status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -329,7 +329,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by COMPLETED"
+      accessibilityLabel="Filter by COMPLETED status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -389,7 +389,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by EXPIRED"
+      accessibilityLabel="Filter by EXPIRED status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -449,7 +449,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by RECALLED"
+      accessibilityLabel="Filter by RECALLED status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -535,7 +535,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
     testID="task-filters-type-row"
   >
     <View
-      accessibilityLabel="Filter by SCHEDULED"
+      accessibilityLabel="Filter by SCHEDULED type"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -595,7 +595,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by TIMED"
+      accessibilityLabel="Filter by TIMED type"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -655,7 +655,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by EPISODIC"
+      accessibilityLabel="Filter by EPISODIC type"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -860,7 +860,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
     testID="task-filters-status-row"
   >
     <View
-      accessibilityLabel="Filter by OPEN"
+      accessibilityLabel="Filter by OPEN status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -922,7 +922,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by VISIBLE"
+      accessibilityLabel="Filter by VISIBLE status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -982,7 +982,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by STARTED"
+      accessibilityLabel="Filter by STARTED status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -1042,7 +1042,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by INPROGRESS"
+      accessibilityLabel="Filter by INPROGRESS status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -1102,7 +1102,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by COMPLETED"
+      accessibilityLabel="Filter by COMPLETED status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -1164,7 +1164,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by EXPIRED"
+      accessibilityLabel="Filter by EXPIRED status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -1224,7 +1224,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by RECALLED"
+      accessibilityLabel="Filter by RECALLED status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -1310,7 +1310,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
     testID="task-filters-type-row"
   >
     <View
-      accessibilityLabel="Filter by SCHEDULED"
+      accessibilityLabel="Filter by SCHEDULED type"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -1372,7 +1372,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by TIMED"
+      accessibilityLabel="Filter by TIMED type"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -1432,7 +1432,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by EPISODIC"
+      accessibilityLabel="Filter by EPISODIC type"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -1584,7 +1584,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
     testID="task-filters-status-row"
   >
     <View
-      accessibilityLabel="Filter by OPEN"
+      accessibilityLabel="Filter by OPEN status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -1644,7 +1644,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by VISIBLE"
+      accessibilityLabel="Filter by VISIBLE status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -1704,7 +1704,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by STARTED"
+      accessibilityLabel="Filter by STARTED status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -1764,7 +1764,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by INPROGRESS"
+      accessibilityLabel="Filter by INPROGRESS status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -1824,7 +1824,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by COMPLETED"
+      accessibilityLabel="Filter by COMPLETED status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -1884,7 +1884,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by EXPIRED"
+      accessibilityLabel="Filter by EXPIRED status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -1944,7 +1944,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by RECALLED"
+      accessibilityLabel="Filter by RECALLED status"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -2030,7 +2030,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
     testID="task-filters-type-row"
   >
     <View
-      accessibilityLabel="Filter by SCHEDULED"
+      accessibilityLabel="Filter by SCHEDULED type"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -2090,7 +2090,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by TIMED"
+      accessibilityLabel="Filter by TIMED type"
       accessibilityRole="button"
       accessibilityState={
         {
@@ -2150,7 +2150,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       </Text>
     </View>
     <View
-      accessibilityLabel="Filter by EPISODIC"
+      accessibilityLabel="Filter by EPISODIC type"
       accessibilityRole="button"
       accessibilityState={
         {
