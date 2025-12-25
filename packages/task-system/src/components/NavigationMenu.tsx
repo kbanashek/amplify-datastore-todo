@@ -84,14 +84,14 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             e.stopPropagation();
           }}
         >
-          <View style={styles.header}>
+          <View style={styles.header} testID="navigation-menu-header">
             <Text style={styles.headerTitle}>Navigation</Text>
             <TouchableOpacity
               onPress={onClose}
               style={styles.closeButton}
               testID="navigation-menu-close-button"
               accessibilityRole="button"
-              accessibilityLabel="Close menu"
+              accessibilityLabel="Close navigation menu"
             >
               <IconSymbol
                 name="xmark.circle.fill"
@@ -105,6 +105,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             style={styles.menuList}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.menuListContent}
+            testID="navigation-menu-list"
           >
             {items.length === 0 ? (
               <View
@@ -125,7 +126,11 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
                     activeOpacity={0.7}
                     testID={`navigation-menu-item-${item.key}`}
                     accessibilityRole="button"
-                    accessibilityLabel={item.name}
+                    accessibilityLabel={
+                      item.description
+                        ? `Go to ${item.name.toLowerCase()}`
+                        : item.name
+                    }
                   >
                     <View style={styles.menuItemIcon}>
                       <IconSymbol

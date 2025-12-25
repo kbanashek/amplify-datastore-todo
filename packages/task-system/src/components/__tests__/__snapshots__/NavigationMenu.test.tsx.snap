@@ -124,6 +124,7 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
             "padding": 20,
           }
         }
+        testID="navigation-menu-header"
       >
         <Text
           style={
@@ -137,7 +138,7 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
           Navigation
         </Text>
         <View
-          accessibilityLabel="Close menu"
+          accessibilityLabel="Close navigation menu"
           accessibilityRole="button"
           accessibilityState={
             {
@@ -194,6 +195,7 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
             "flexShrink": 1,
           }
         }
+        testID="navigation-menu-list"
       >
         <View>
           <View
@@ -345,6 +347,7 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
             "padding": 20,
           }
         }
+        testID="navigation-menu-header"
       >
         <Text
           style={
@@ -358,7 +361,7 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
           Navigation
         </Text>
         <View
-          accessibilityLabel="Close menu"
+          accessibilityLabel="Close navigation menu"
           accessibilityRole="button"
           accessibilityState={
             {
@@ -415,6 +418,7 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
             "flexShrink": 1,
           }
         }
+        testID="navigation-menu-list"
       >
         <View>
           <View
@@ -566,6 +570,7 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
             "padding": 20,
           }
         }
+        testID="navigation-menu-header"
       >
         <Text
           style={
@@ -579,7 +584,7 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
           Navigation
         </Text>
         <View
-          accessibilityLabel="Close menu"
+          accessibilityLabel="Close navigation menu"
           accessibilityRole="button"
           accessibilityState={
             {
@@ -636,10 +641,11 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
             "flexShrink": 1,
           }
         }
+        testID="navigation-menu-list"
       >
         <View>
           <View
-            accessibilityLabel="Dashboard"
+            accessibilityLabel="Go to dashboard"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -744,7 +750,7 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
             </Text>
           </View>
           <View
-            accessibilityLabel="Settings"
+            accessibilityLabel="Go to settings"
             accessibilityRole="button"
             accessibilityState={
               {
