@@ -9,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { useTaskForm } from "@hooks/useTaskForm";
+import { useRTL } from "@hooks/useRTL";
 import { Task, TaskStatus, TaskType } from "@task-types/Task";
 
 interface TaskFormProps {
@@ -34,6 +35,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
     handleSubmit,
     reset,
   } = useTaskForm({ onTaskCreated });
+  const { rtlStyle } = useRTL();
 
   return (
     <ScrollView
@@ -41,10 +43,12 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
       keyboardShouldPersistTaps="handled"
       testID="task-form"
     >
-      <Text style={styles.title}>Create New Task for today</Text>
+      <Text style={styles.title} testID="task-form-title">
+        Create New Task for today
+      </Text>
 
       {error && (
-        <Text style={styles.errorText} testID="task-form-error-text">
+        <Text style={styles.errorText} testID="task-form-error">
           {error}
         </Text>
       )}
@@ -82,8 +86,10 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         accessibilityLabel="Task description"
       />
 
-      <Text style={styles.label}>Task Type *</Text>
-      <View style={styles.radioGroup}>
+      <Text style={styles.label} testID="task-form-type-label">
+        Task Type *
+      </Text>
+      <View style={styles.radioGroup} testID="task-form-type-group">
         {Object.values(TaskType).map(type => (
           <TouchableOpacity
             key={type}
@@ -94,8 +100,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
             onPress={() => setTaskType(type)}
             disabled={isSubmitting}
             testID={`task-form-type-${type}`}
-            accessibilityRole="radio"
-            accessibilityState={{ checked: taskType === type }}
+            accessibilityRole="button"
+            accessibilityLabel={`Select ${type} task type`}
+            accessibilityState={{ selected: taskType === type }}
           >
             <Text
               style={[
@@ -109,8 +116,10 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         ))}
       </View>
 
-      <Text style={styles.label}>Status *</Text>
-      <View style={styles.radioGroup}>
+      <Text style={styles.label} testID="task-form-status-label">
+        Status *
+      </Text>
+      <View style={styles.radioGroup} testID="task-form-status-group">
         {Object.values(TaskStatus).map(stat => (
           <TouchableOpacity
             key={stat}
@@ -121,8 +130,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
             onPress={() => setStatus(stat)}
             disabled={isSubmitting}
             testID={`task-form-status-${stat}`}
-            accessibilityRole="radio"
-            accessibilityState={{ checked: status === stat }}
+            accessibilityRole="button"
+            accessibilityLabel={`Select ${stat} status`}
+            accessibilityState={{ selected: status === stat }}
           >
             <Text
               style={[
@@ -145,7 +155,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         autoCapitalize="none"
         autoCorrect={false}
         testID="task-form-pk-input"
-        accessibilityLabel="Partition Key"
+        accessibilityLabel="Partition key"
       />
 
       <TextInput
@@ -157,10 +167,13 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         autoCapitalize="none"
         autoCorrect={false}
         testID="task-form-sk-input"
-        accessibilityLabel="Sort Key"
+        accessibilityLabel="Sort key"
       />
 
-      <View style={styles.buttonRow}>
+      <View
+        style={[styles.buttonRow, rtlStyle(styles.buttonRow) as any]}
+        testID="task-form-buttons"
+      >
         <TouchableOpacity
           style={[styles.button, styles.secondaryButton]}
           onPress={reset}
@@ -178,10 +191,14 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
           disabled={isSubmitting}
           testID="task-form-submit-button"
           accessibilityRole="button"
-          accessibilityLabel="Submit task"
+          accessibilityLabel="Create task"
         >
           {isSubmitting ? (
-            <ActivityIndicator color="#fff" size="small" />
+            <ActivityIndicator
+              color="#fff"
+              size="small"
+              testID="task-form-submit-loading"
+            />
           ) : (
             <Text style={styles.buttonText}>Create Task</Text>
           )}

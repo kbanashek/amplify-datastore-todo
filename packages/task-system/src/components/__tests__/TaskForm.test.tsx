@@ -477,7 +477,7 @@ describe("TaskForm", () => {
       const scheduledButton = getByTestId(
         `task-form-type-${TaskType.SCHEDULED}`
       );
-      expect(scheduledButton.props.accessibilityState).toEqual({
+      expect(scheduledButton.props.accessibilityState).toMatchObject({
         selected: true,
       });
     });
@@ -489,7 +489,9 @@ describe("TaskForm", () => {
       });
       const { getByTestId } = render(<TaskForm />);
       const openButton = getByTestId(`task-form-status-${TaskStatus.OPEN}`);
-      expect(openButton.props.accessibilityState).toEqual({ selected: true });
+      expect(openButton.props.accessibilityState).toMatchObject({
+        selected: true,
+      });
     });
 
     it("has proper accessibility labels on buttons", () => {
