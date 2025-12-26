@@ -1,4 +1,5 @@
 import { IconSymbol } from "@components/ui/IconSymbol";
+import { AppFonts } from "@constants/AppFonts";
 import { Colors } from "@constants/Colors";
 import { useColorScheme } from "@hooks/useColorScheme";
 import { useNavigation } from "@react-navigation/native";
@@ -191,8 +192,7 @@ const styles = StyleSheet.create({
     flexShrink: 0,
   },
   headerTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
+    ...AppFonts.heading,
     color: "#2f3542",
   },
   closeButton: {
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   emptyStateText: {
-    fontSize: 16,
+    ...AppFonts.body,
     color: "#747d8c",
   },
   menuItem: {
@@ -233,11 +233,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   menuItemTitle: {
-    fontSize: 16,
-    fontWeight: "600",
+    ...AppFonts.bodyMedium,
     marginBottom: 2,
   },
   menuItemDescription: {
-    fontSize: 13,
+    ...AppFonts.small,
   },
 });

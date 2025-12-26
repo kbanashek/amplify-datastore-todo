@@ -8,6 +8,7 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
+import { AppFonts } from "@constants/AppFonts";
 import { useTaskTranslation } from "@translations/index";
 import type { LanguageCode } from "@translations/index";
 import { getServiceLogger } from "@utils/serviceLogger";
@@ -173,9 +174,8 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
   },
   selectorText: {
-    fontSize: 14,
+    ...AppFonts.label,
     color: "#333",
-    fontWeight: "500",
   },
   modalOverlay: {
     flex: 1,
@@ -198,15 +198,14 @@ const styles = StyleSheet.create({
     borderBottomColor: "#eee",
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
+    ...AppFonts.subheading,
     color: "#333",
   },
   closeButton: {
     padding: 4,
   },
   closeButtonText: {
-    fontSize: 24,
+    ...AppFonts.heading,
     color: "#666",
   },
   languageList: {
@@ -224,16 +223,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#e3f2fd",
   },
   languageText: {
-    fontSize: 16,
+    ...AppFonts.body,
     color: "#333",
   },
   languageTextSelected: {
-    fontWeight: "600",
+    ...AppFonts.bodyMedium,
     color: "#1976d2",
   },
   checkmark: {
-    fontSize: 18,
+    ...AppFonts.subheading,
     color: "#1976d2",
-    fontWeight: "bold",
   },
 });

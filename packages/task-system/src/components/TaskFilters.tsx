@@ -164,8 +164,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   title: {
-    fontSize: 18,
-    fontWeight: "bold",
+    ...AppFonts.subheading,
     color: "#2f3542",
   },
   clearButton: {
@@ -175,9 +174,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#e74c3c",
   },
   clearButtonText: {
+    ...AppFonts.caption,
     color: "#fff",
-    fontSize: 12,
-    fontWeight: "600",
   },
   searchInput: {
     borderWidth: 1,
@@ -185,11 +183,10 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 12,
     marginBottom: 16,
-    fontSize: 16,
+    ...AppFonts.body,
   },
   sectionTitle: {
-    fontSize: 14,
-    fontWeight: "600",
+    ...AppFonts.label,
     color: "#2f3542",
     marginBottom: 8,
     marginTop: 8,
@@ -215,9 +212,8 @@ const styles = StyleSheet.create({
     borderColor: "#3498db",
   },
   filterChipText: {
-    fontSize: 12,
+    ...AppFonts.caption,
     color: "#57606f",
-    fontWeight: "600",
   },
   filterChipTextSelected: {
     color: "#fff",

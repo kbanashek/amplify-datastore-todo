@@ -1,4 +1,5 @@
 import { IconSymbol } from "@components/ui/IconSymbol";
+import { AppFonts } from "@constants/AppFonts";
 import { useRTL } from "@hooks/useRTL";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import React from "react";
@@ -115,8 +116,7 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
   },
   headerTitle: {
-    fontSize: 17,
-    fontWeight: "600",
+    ...AppFonts.subheading,
     color: "#1e40af",
     flex: 1,
     textAlign: "center",
