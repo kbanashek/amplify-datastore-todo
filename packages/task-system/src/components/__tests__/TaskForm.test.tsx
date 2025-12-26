@@ -37,7 +37,8 @@ jest.mock("@hooks/useTaskForm", () => ({
 }));
 
 // Mock useRTL
-const mockRtlStyle = jest.fn((style: any) => style);
+import type { StyleProp, ViewStyle, TextStyle } from "react-native";
+const mockRtlStyle = jest.fn((style: StyleProp<ViewStyle | TextStyle>) => style);
 const mockUseRTL = jest.fn(() => ({
   rtlStyle: mockRtlStyle,
   isRTL: false,
@@ -71,7 +72,7 @@ describe("TaskForm", () => {
       reset: mockReset,
     });
     mockUseRTL.mockReturnValue({
-      rtlStyle: jest.fn((style: any) => style),
+      rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => style),
       isRTL: false,
     });
   });
@@ -333,7 +334,7 @@ describe("TaskForm", () => {
   describe("RTL Support", () => {
     it("renders correctly in LTR mode", () => {
       mockUseRTL.mockReturnValueOnce({
-        rtlStyle: jest.fn((style: any) => style),
+        rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => style),
         isRTL: false,
       });
 
@@ -342,8 +343,8 @@ describe("TaskForm", () => {
     });
 
     it("renders correctly in RTL mode", () => {
-      const rtlStyleFn = jest.fn((style: any) => ({
-        ...style,
+      const rtlStyleFn = jest.fn((style: StyleProp<ViewStyle | TextStyle>) => ({
+        ...(style as Record<string, unknown>),
         flexDirection: "row-reverse",
       }));
 
@@ -359,7 +360,7 @@ describe("TaskForm", () => {
 
     it("flips button row direction in RTL mode", () => {
       mockUseRTL.mockReturnValueOnce({
-        rtlStyle: jest.fn((style: any) => style),
+        rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => style),
         isRTL: true,
       });
 
@@ -547,8 +548,8 @@ describe("TaskForm", () => {
 
     it("matches snapshot in RTL mode", () => {
       mockUseRTL.mockReturnValueOnce({
-        rtlStyle: jest.fn((style: any) => ({
-          ...style,
+        rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => ({
+          ...(style as Record<string, unknown>),
           flexDirection: "row-reverse",
         })),
         isRTL: true,

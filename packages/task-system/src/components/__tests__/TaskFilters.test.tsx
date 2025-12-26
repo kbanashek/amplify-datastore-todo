@@ -1,5 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
+import type { StyleProp, ViewStyle, TextStyle } from "react-native";
 import { TaskFilters } from "@components/TaskFilters";
 import {
   TaskStatus,
@@ -8,7 +9,9 @@ import {
 } from "@task-types/Task";
 
 // Mock useRTL
-const mockRtlStyle = jest.fn((style: any) => style);
+const mockRtlStyle = jest.fn(
+  (style: StyleProp<ViewStyle | TextStyle>) => style
+);
 const mockUseRTL = jest.fn(() => ({
   rtlStyle: mockRtlStyle,
   isRTL: false,
@@ -42,7 +45,7 @@ describe("TaskFilters", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockUseRTL.mockReturnValue({
-      rtlStyle: jest.fn((style: any) => style),
+      rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => style),
       isRTL: false,
     });
   });
