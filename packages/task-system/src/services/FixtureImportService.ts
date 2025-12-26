@@ -107,10 +107,10 @@ export class FixtureImportService {
     // Note: Activities can have the same pk but different sk values (e.g., all activities in a study share the same pk)
     // We need to match by both pk AND sk to correctly identify existing activities
     const existingActivities = await DataStore.query(Activity);
-    const activityByPkSk = new Map<string, any>(); // Key: `${pk}#${sk}`
-    const duplicateActivities: any[] = [];
+    const activityByPkSk = new Map<string, Activity>(); // Key: `${pk}#${sk}`
+    const duplicateActivities: Activity[] = [];
 
-    existingActivities.forEach((activity: any) => {
+    existingActivities.forEach((activity: Activity) => {
       const key = `${activity.pk}#${activity.sk}`;
       const existing = activityByPkSk.get(key);
       if (!existing) {
@@ -124,9 +124,9 @@ export class FixtureImportService {
     });
 
     const existingTasks = await DataStore.query(Task);
-    const tasksByPkList = groupByPk(existingTasks as any[]);
-    const duplicateTasks: any[] = [];
-    const taskByPk = new Map<string, any>();
+    const tasksByPkList = groupByPk(existingTasks as Task[]);
+    const duplicateTasks: Task[] = [];
+    const taskByPk = new Map<string, Task>();
     tasksByPkList.forEach((items, pk) => {
       if (items.length === 1) {
         taskByPk.set(pk, items[0]);
@@ -138,9 +138,9 @@ export class FixtureImportService {
     });
 
     const existingQuestions = await DataStore.query(Question);
-    const questionsByPkList = groupByPk(existingQuestions as any[]);
-    const duplicateQuestions: any[] = [];
-    const questionByPk = new Map<string, any>();
+    const questionsByPkList = groupByPk(existingQuestions as Question[]);
+    const duplicateQuestions: Question[] = [];
+    const questionByPk = new Map<string, Question>();
     questionsByPkList.forEach((items, pk) => {
       if (items.length === 1) {
         questionByPk.set(pk, items[0]);
@@ -279,10 +279,11 @@ export class FixtureImportService {
       // Optional: also prune derived models for dev/test reseeds.
       // This is intentionally behind a flag to avoid deleting real user data in production flows.
       if (pruneDerivedModels) {
-        const deleteAll = async <TModel extends Record<string, any>>(
-          model: any
+        const deleteAll = async <TModel>(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          model: any // DataStore model constructor (not typed in @aws-amplify/datastore)
         ): Promise<void> => {
-          const items = (await DataStore.query(model)) as any[];
+          const items = (await DataStore.query(model)) as TModel[];
           await Promise.all(items.map(item => DataStore.delete(item)));
         };
 

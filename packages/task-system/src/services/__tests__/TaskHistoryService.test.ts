@@ -5,7 +5,9 @@ import { CreateTaskHistoryInput } from "@task-types/TaskHistory";
 
 jest.mock("@aws-amplify/datastore");
 
-const createMockTaskHistory = (overrides: Partial<any> = {}): any => ({
+const createMockTaskHistory = (
+  overrides: Partial<TaskHistory> = {}
+): TaskHistory => ({
   id: "test-history-id",
   pk: "test-pk",
   sk: "test-sk",
