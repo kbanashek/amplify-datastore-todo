@@ -1,26 +1,210 @@
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  SafeAreaView,
   Alert,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
+import { AppointmentCard } from "../src/components/AppointmentCard";
+import { NetworkStatusIndicator } from "../src/components/NetworkStatusIndicator";
+import { TaskCard } from "../src/components/TaskCard";
+import { ThemedText } from "../src/components/ThemedText";
+import { ThemedView } from "../src/components/ThemedView";
+import {
+  MultiSelectQuestion,
+  NumberQuestion,
+  ProgressIndicator,
+  SingleSelectQuestion,
+  TextQuestion,
+} from "../src/components/questions";
 import { Button } from "../src/components/ui/Button";
 import { Card } from "../src/components/ui/Card";
-import { TextField } from "../src/components/ui/TextField";
-import { LoadingSpinner } from "../src/components/ui/LoadingSpinner";
 import { DatePicker } from "../src/components/ui/DatePicker";
-import { NumericInput } from "../src/components/ui/NumericInput";
 import { FieldLabel } from "../src/components/ui/FieldLabel";
 import { IconSymbol } from "../src/components/ui/IconSymbol";
-import { SingleSelectQuestion } from "../src/components/questions/SingleSelectQuestion";
-import { MultiSelectQuestion } from "../src/components/questions/MultiSelectQuestion";
-import { TextQuestion } from "../src/components/questions/TextQuestion";
-import { NumberQuestion } from "../src/components/questions/NumberQuestion";
-import { ProgressIndicator } from "../src/components/questions/ProgressIndicator";
+import { LoadingSpinner } from "../src/components/ui/LoadingSpinner";
+import { NumericInput } from "../src/components/ui/NumericInput";
+import { TextField } from "../src/components/ui/TextField";
+
+// Control Panel Component for interactive props
+const ControlPanel: React.FC<{
+  controls: Record<string, any>;
+  onChange: (key: string, value: any) => void;
+}> = ({ controls, onChange }) => {
+  if (Object.keys(controls).length === 0) return null;
+
+  return (
+    <View style={styles.controlPanel}>
+      <Text style={styles.controlPanelTitle}>Controls</Text>
+      {Object.entries(controls).map(([key, config]) => (
+        <View key={key} style={styles.controlItem}>
+          <Text style={styles.controlLabel}>{config.label || key}</Text>
+          {config.type === "boolean" && (
+            <Switch
+              value={config.value}
+              onValueChange={value => onChange(key, value)}
+            />
+          )}
+          {config.type === "text" && (
+            <TextInput
+              style={styles.controlInput}
+              value={config.value}
+              onChangeText={value => onChange(key, value)}
+              placeholder={config.placeholder}
+            />
+          )}
+          {config.type === "select" && (
+            <View style={styles.selectContainer}>
+              {config.options.map((option: string) => (
+                <TouchableOpacity
+                  key={option}
+                  style={[
+                    styles.selectOption,
+                    config.value === option && styles.selectOptionActive,
+                  ]}
+                  onPress={() => onChange(key, option)}
+                >
+                  <Text
+                    style={[
+                      styles.selectOptionText,
+                      config.value === option && styles.selectOptionTextActive,
+                    ]}
+                  >
+                    {option}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+        </View>
+      ))}
+    </View>
+  );
+};
+
+// Interactive TextField Story with Controls
+const InteractiveTextField = ({
+  label = "Username",
+  placeholder = "Enter text",
+  error = false,
+}: any) => {
+  const [value, setValue] = useState("");
+  return (
+    <View style={styles.storyContainer}>
+      <TextField
+        label={label}
+        placeholder={placeholder}
+        value={value}
+        onChangeText={setValue}
+        error={error ? "This field has an error" : undefined}
+      />
+    </View>
+  );
+};
+
+// Interactive TaskCard Story with Controls
+const InteractiveTaskCard = ({
+  title = "Sample Task",
+  description = "Task description",
+  status = "SCHEDULED",
+}: any) => {
+  const mockTask = {
+    id: "mock-task-interactive",
+    title,
+    description,
+    status,
+    startTimeInMillSec: Date.now() + 3600000,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  return (
+    <View style={styles.storyContainer}>
+      <TaskCard
+        task={mockTask as any}
+        onPress={() => Alert.alert("Task Pressed", title)}
+      />
+    </View>
+  );
+};
+
+// Interactive Card Story with Controls
+const InteractiveCard = ({
+  title = "Card Title",
+  content = "Card content",
+}: any) => (
+  <View style={styles.storyContainer}>
+    <Card style={styles.card}>
+      <Text style={styles.cardText}>{title}</Text>
+      <Text style={styles.cardSubtext}>{content}</Text>
+    </Card>
+  </View>
+);
+
+// Interactive LoadingSpinner Story with Controls
+const InteractiveLoadingSpinner = ({ size = "default" }: any) => (
+  <View style={styles.centeredStoryContainer}>
+    <LoadingSpinner size={size === "default" ? undefined : size} />
+    <View style={styles.spacer} />
+    <Text style={styles.label}>{size} size</Text>
+  </View>
+);
+
+// Interactive ProgressIndicator Story with Controls
+const InteractiveProgressIndicator = ({
+  currentStep = "2",
+  totalSteps = "5",
+}: any) => {
+  const current = parseInt(currentStep, 10) || 2;
+  const total = parseInt(totalSteps, 10) || 5;
+  return (
+    <View style={styles.centeredStoryContainer}>
+      <ProgressIndicator currentStep={current} totalSteps={total} />
+      <View style={styles.spacer} />
+      <Text style={styles.label}>
+        Step {current} of {total}
+      </Text>
+    </View>
+  );
+};
+
+// Interactive ThemedText Story with Controls
+const InteractiveThemedText = ({
+  text = "Sample Text",
+  type = "default",
+}: any) => (
+  <View style={styles.centeredStoryContainer}>
+    <ThemedText type={type === "default" ? undefined : type}>{text}</ThemedText>
+  </View>
+);
+
+// Interactive AppointmentCard Story with Controls
+const InteractiveAppointmentCard = ({
+  title = "Doctor's Appointment",
+  location = "Medical Center - Room 302",
+}: any) => {
+  const mockAppointment = {
+    id: "mock-apt-interactive",
+    title,
+    location,
+    startTimeInMillSec: Date.now() + 86400000,
+    appointmentType: "DOCTOR_VISIT",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  return (
+    <View style={styles.storyContainer}>
+      <AppointmentCard
+        appointment={mockAppointment as any}
+        onPress={() => Alert.alert("Appointment", title)}
+      />
+    </View>
+  );
+};
 
 // Separate components for stateful examples (to avoid hooks violations)
 const TextFieldExample = () => {
@@ -51,12 +235,8 @@ const NumericInputExample = () => {
   const [value, setValue] = useState("0");
   return (
     <View style={styles.storyContainer}>
-      <NumericInput
-        label="Enter Number"
-        value={value}
-        onChangeText={setValue}
-        placeholder="0"
-      />
+      <FieldLabel label="Enter Number" />
+      <NumericInput value={value} onChange={setValue} placeholder="0" />
     </View>
   );
 };
@@ -150,15 +330,57 @@ const NumberQuestionExample = () => {
   );
 };
 
+// Interactive Button Story with Controls
+const InteractiveButton = ({
+  label = "Click Me",
+  variant = "primary",
+  disabled = false,
+  loading = false,
+  size = "md",
+}: any) => (
+  <View style={styles.centeredStoryContainer}>
+    <Button
+      label={label}
+      variant={variant}
+      disabled={disabled}
+      loading={loading}
+      size={size}
+      onPress={() => Alert.alert("Success", `${variant} button pressed!`)}
+    />
+  </View>
+);
+
 // Define all stories
 const stories = [
   {
     category: "Buttons",
+    icon: "🔘",
     items: [
+      {
+        name: "Interactive",
+        component: InteractiveButton,
+        controls: {
+          label: { type: "text", value: "Click Me", label: "Label" },
+          variant: {
+            type: "select",
+            value: "primary",
+            options: ["primary", "secondary", "outline"],
+            label: "Variant",
+          },
+          size: {
+            type: "select",
+            value: "md",
+            options: ["sm", "md", "lg"],
+            label: "Size",
+          },
+          disabled: { type: "boolean", value: false, label: "Disabled" },
+          loading: { type: "boolean", value: false, label: "Loading" },
+        },
+      },
       {
         name: "Primary",
         component: () => (
-          <View style={styles.storyContainer}>
+          <View style={styles.centeredStoryContainer}>
             <Button
               label="Primary Button"
               variant="primary"
@@ -170,7 +392,7 @@ const stories = [
       {
         name: "Secondary",
         component: () => (
-          <View style={styles.storyContainer}>
+          <View style={styles.centeredStoryContainer}>
             <Button
               label="Secondary Button"
               variant="secondary"
@@ -184,7 +406,7 @@ const stories = [
       {
         name: "Outline",
         component: () => (
-          <View style={styles.storyContainer}>
+          <View style={styles.centeredStoryContainer}>
             <Button
               label="Outline Button"
               variant="outline"
@@ -196,7 +418,7 @@ const stories = [
       {
         name: "Disabled",
         component: () => (
-          <View style={styles.storyContainer}>
+          <View style={styles.centeredStoryContainer}>
             <Button label="Disabled Button" disabled onPress={() => {}} />
           </View>
         ),
@@ -204,7 +426,7 @@ const stories = [
       {
         name: "Loading",
         component: () => (
-          <View style={styles.storyContainer}>
+          <View style={styles.centeredStoryContainer}>
             <Button label="Loading Button" loading onPress={() => {}} />
           </View>
         ),
@@ -212,7 +434,7 @@ const stories = [
       {
         name: "All Sizes",
         component: () => (
-          <View style={styles.storyContainer}>
+          <View style={styles.centeredStoryContainer}>
             <Button label="Small" size="sm" onPress={() => {}} />
             <View style={styles.spacer} />
             <Button label="Medium" size="md" onPress={() => {}} />
@@ -225,7 +447,21 @@ const stories = [
   },
   {
     category: "Form Inputs",
+    icon: "📝",
     items: [
+      {
+        name: "TextField (Interactive)",
+        component: InteractiveTextField,
+        controls: {
+          label: { type: "text", value: "Username", label: "Label" },
+          placeholder: {
+            type: "text",
+            value: "Enter text",
+            label: "Placeholder",
+          },
+          error: { type: "boolean", value: false, label: "Show Error" },
+        },
+      },
       {
         name: "TextField",
         component: TextFieldExample,
@@ -241,7 +477,7 @@ const stories = [
       {
         name: "FieldLabel",
         component: () => (
-          <View style={styles.storyContainer}>
+          <View style={styles.centeredStoryContainer}>
             <FieldLabel label="Field Label" />
             <View style={styles.spacer} />
             <FieldLabel label="Required Field" required />
@@ -252,7 +488,20 @@ const stories = [
   },
   {
     category: "Layout",
+    icon: "🎨",
     items: [
+      {
+        name: "Card (Interactive)",
+        component: InteractiveCard,
+        controls: {
+          title: { type: "text", value: "Card Title", label: "Title" },
+          content: {
+            type: "text",
+            value: "Card content goes here",
+            label: "Content",
+          },
+        },
+      },
       {
         name: "Card",
         component: () => (
@@ -288,11 +537,24 @@ const stories = [
   },
   {
     category: "Feedback",
+    icon: "⏳",
     items: [
+      {
+        name: "Loading Spinner (Interactive)",
+        component: InteractiveLoadingSpinner,
+        controls: {
+          size: {
+            type: "select",
+            value: "default",
+            options: ["small", "default", "large"],
+            label: "Size",
+          },
+        },
+      },
       {
         name: "Loading Spinner - Default",
         component: () => (
-          <View style={styles.storyContainer}>
+          <View style={styles.centeredStoryContainer}>
             <LoadingSpinner />
             <View style={styles.spacer} />
             <Text style={styles.label}>Default Size</Text>
@@ -302,7 +564,7 @@ const stories = [
       {
         name: "Loading Spinner - Large",
         component: () => (
-          <View style={styles.storyContainer}>
+          <View style={styles.centeredStoryContainer}>
             <LoadingSpinner size="large" />
             <View style={styles.spacer} />
             <Text style={styles.label}>Large Size</Text>
@@ -312,7 +574,7 @@ const stories = [
       {
         name: "Loading Spinner - Small",
         component: () => (
-          <View style={styles.storyContainer}>
+          <View style={styles.centeredStoryContainer}>
             <LoadingSpinner size="small" />
             <View style={styles.spacer} />
             <Text style={styles.label}>Small Size</Text>
@@ -320,9 +582,17 @@ const stories = [
         ),
       },
       {
+        name: "Progress Indicator (Interactive)",
+        component: InteractiveProgressIndicator,
+        controls: {
+          currentStep: { type: "text", value: "2", label: "Current Step" },
+          totalSteps: { type: "text", value: "5", label: "Total Steps" },
+        },
+      },
+      {
         name: "Progress Indicator",
         component: () => (
-          <View style={styles.storyContainer}>
+          <View style={styles.centeredStoryContainer}>
             <ProgressIndicator currentStep={2} totalSteps={5} />
             <View style={styles.spacer} />
             <Text style={styles.label}>Step 2 of 5</Text>
@@ -333,11 +603,12 @@ const stories = [
   },
   {
     category: "Icons",
+    icon: "⭐",
     items: [
       {
         name: "Icon Samples",
         component: () => (
-          <View style={styles.storyContainer}>
+          <View style={styles.centeredStoryContainer}>
             <View style={styles.iconRow}>
               <IconSymbol
                 name="checkmark.circle.fill"
@@ -364,7 +635,210 @@ const stories = [
     ],
   },
   {
+    category: "Domain Components",
+    icon: "📋",
+    items: [
+      {
+        name: "TaskCard (Interactive)",
+        component: InteractiveTaskCard,
+        controls: {
+          title: {
+            type: "text",
+            value: "Take Morning Medication",
+            label: "Title",
+          },
+          description: {
+            type: "text",
+            value: "Take blood pressure medication with water",
+            label: "Description",
+          },
+          status: {
+            type: "select",
+            value: "SCHEDULED",
+            options: ["SCHEDULED", "IN_PROGRESS", "COMPLETED"],
+            label: "Status",
+          },
+        },
+      },
+      {
+        name: "TaskCard - Scheduled",
+        component: () => {
+          const mockTask = {
+            id: "mock-task-1",
+            title: "Take Morning Medication",
+            description: "Take blood pressure medication with water",
+            status: "SCHEDULED",
+            startTimeInMillSec: Date.now() + 3600000, // 1 hour from now
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+          return (
+            <View style={styles.storyContainer}>
+              <TaskCard
+                task={mockTask as any}
+                onPress={() => Alert.alert("Task Pressed", mockTask.title)}
+              />
+            </View>
+          );
+        },
+      },
+      {
+        name: "TaskCard - In Progress",
+        component: () => {
+          const mockTask = {
+            id: "mock-task-2",
+            title: "Complete Health Survey",
+            description: "Fill out weekly health assessment",
+            status: "IN_PROGRESS",
+            startTimeInMillSec: Date.now(),
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+          return (
+            <View style={styles.storyContainer}>
+              <TaskCard
+                task={mockTask as any}
+                onPress={() => Alert.alert("Task Pressed", mockTask.title)}
+              />
+            </View>
+          );
+        },
+      },
+      {
+        name: "TaskCard - Completed",
+        component: () => {
+          const mockTask = {
+            id: "mock-task-3",
+            title: "Exercise Routine",
+            description: "30-minute walk completed",
+            status: "COMPLETED",
+            startTimeInMillSec: Date.now() - 7200000, // 2 hours ago
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+          return (
+            <View style={styles.storyContainer}>
+              <TaskCard
+                task={mockTask as any}
+                onPress={() => Alert.alert("Task Pressed", mockTask.title)}
+              />
+            </View>
+          );
+        },
+      },
+      {
+        name: "AppointmentCard (Interactive)",
+        component: InteractiveAppointmentCard,
+        controls: {
+          title: {
+            type: "text",
+            value: "Doctor's Appointment",
+            label: "Title",
+          },
+          location: {
+            type: "text",
+            value: "Medical Center - Room 302",
+            label: "Location",
+          },
+        },
+      },
+      {
+        name: "AppointmentCard",
+        component: () => {
+          const mockAppointment = {
+            id: "mock-apt-1",
+            title: "Doctor's Appointment",
+            location: "Medical Center - Room 302",
+            startTimeInMillSec: Date.now() + 86400000, // Tomorrow
+            appointmentType: "DOCTOR_VISIT",
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+          return (
+            <View style={styles.storyContainer}>
+              <AppointmentCard
+                appointment={mockAppointment as any}
+                onPress={() =>
+                  Alert.alert("Appointment", mockAppointment.title)
+                }
+              />
+            </View>
+          );
+        },
+      },
+    ],
+  },
+  {
+    category: "Themed Components",
+    icon: "🌓",
+    items: [
+      {
+        name: "ThemedText (Interactive)",
+        component: InteractiveThemedText,
+        controls: {
+          text: {
+            type: "text",
+            value: "Sample themed text",
+            label: "Text Content",
+          },
+          type: {
+            type: "select",
+            value: "default",
+            options: ["default", "title", "subtitle", "link"],
+            label: "Type",
+          },
+        },
+      },
+      {
+        name: "ThemedText - Default",
+        component: () => (
+          <View style={styles.centeredStoryContainer}>
+            <ThemedText>Default themed text</ThemedText>
+            <View style={styles.spacer} />
+            <ThemedText type="title">Title Text</ThemedText>
+            <View style={styles.spacer} />
+            <ThemedText type="subtitle">Subtitle Text</ThemedText>
+            <View style={styles.spacer} />
+            <ThemedText type="link">Link Text</ThemedText>
+          </View>
+        ),
+      },
+      {
+        name: "ThemedView",
+        component: () => (
+          <View style={styles.centeredStoryContainer}>
+            <ThemedView style={{ padding: 20, borderRadius: 8 }}>
+              <ThemedText>Content inside ThemedView</ThemedText>
+              <ThemedText type="subtitle">
+                Adapts to light/dark theme
+              </ThemedText>
+            </ThemedView>
+          </View>
+        ),
+      },
+    ],
+  },
+  {
+    category: "Status & Indicators",
+    icon: "📡",
+    items: [
+      {
+        name: "Network Status - Online",
+        component: () => (
+          <View style={styles.centeredStoryContainer}>
+            <Text style={styles.label}>Network Status Indicator</Text>
+            <View style={styles.spacer} />
+            <NetworkStatusIndicator />
+            <View style={styles.spacer} />
+            <Text style={styles.label}>Shows connection status</Text>
+          </View>
+        ),
+      },
+    ],
+  },
+  {
     category: "Question Types",
+    icon: "❓",
     items: [
       {
         name: "Single Select",
@@ -391,6 +865,26 @@ export default function SimpleStorybook() {
     category: string;
     name: string;
   } | null>(null);
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
+    new Set(stories.map(s => s.category))
+  );
+  const [controls, setControls] = useState<Record<string, any>>({});
+
+  const toggleCategory = (category: string) => {
+    setExpandedCategories(prev => {
+      const next = new Set(prev);
+      if (next.has(category)) {
+        next.delete(category);
+      } else {
+        next.add(category);
+      }
+      return next;
+    });
+  };
+
+  const handleControlChange = (key: string, value: any) => {
+    setControls(prev => ({ ...prev, [key]: value }));
+  };
 
   // If a story is selected, show it
   if (selectedStory) {
@@ -398,20 +892,34 @@ export default function SimpleStorybook() {
     const story = category?.items.find(s => s.name === selectedStory.name);
 
     const StoryComponent = story?.component;
+    const storyControls = story?.controls || {};
 
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity
-            onPress={() => setSelectedStory(null)}
+            onPress={() => {
+              setSelectedStory(null);
+              setControls({});
+            }}
             style={styles.backButton}
           >
             <Text style={styles.backText}>← Back</Text>
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>{selectedStory.name}</Text>
+          <View style={styles.headerTitleContainer}>
+            <Text style={styles.categoryBadge}>{selectedStory.category}</Text>
+            <Text style={styles.headerTitle}>{selectedStory.name}</Text>
+          </View>
         </View>
-        <ScrollView style={styles.storyView}>
-          {StoryComponent && <StoryComponent />}
+        <ScrollView
+          style={styles.storyView}
+          contentContainerStyle={styles.storyViewContent}
+        >
+          {StoryComponent && <StoryComponent {...controls} />}
+          <ControlPanel
+            controls={storyControls}
+            onChange={handleControlChange}
+          />
         </ScrollView>
       </SafeAreaView>
     );
@@ -421,34 +929,66 @@ export default function SimpleStorybook() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>📖 Storybook</Text>
+        <Text style={styles.headerTitle}>📖 Component Library</Text>
         <Text style={styles.headerSubtitle}>
-          {stories.reduce((acc, cat) => acc + cat.items.length, 0)} stories
+          {stories.reduce((acc, cat) => acc + cat.items.length, 0)} components
+          across {stories.length} categories
         </Text>
       </View>
-      <ScrollView style={styles.list}>
-        {stories.map(category => (
-          <View key={category.category} style={styles.categorySection}>
-            <Text style={styles.categoryTitle}>
-              {category.category} ({category.items.length})
-            </Text>
-            {category.items.map(story => (
+      <ScrollView
+        style={styles.list}
+        contentContainerStyle={styles.listContent}
+      >
+        {stories.map(category => {
+          const isExpanded = expandedCategories.has(category.category);
+          return (
+            <View key={category.category} style={styles.categorySection}>
               <TouchableOpacity
-                key={story.name}
-                style={styles.storyItem}
-                onPress={() =>
-                  setSelectedStory({
-                    category: category.category,
-                    name: story.name,
-                  })
-                }
+                style={styles.categoryHeader}
+                onPress={() => toggleCategory(category.category)}
               >
-                <Text style={styles.storyName}>{story.name}</Text>
-                <Text style={styles.arrow}>→</Text>
+                <View style={styles.categoryHeaderLeft}>
+                  <Text style={styles.categoryIcon}>
+                    {category.icon || "📦"}
+                  </Text>
+                  <Text style={styles.categoryTitle}>{category.category}</Text>
+                  <View style={styles.categoryBadgeSmall}>
+                    <Text style={styles.categoryBadgeText}>
+                      {category.items.length}
+                    </Text>
+                  </View>
+                </View>
+                <Text style={styles.chevron}>{isExpanded ? "▼" : "▶"}</Text>
               </TouchableOpacity>
-            ))}
-          </View>
-        ))}
+              {isExpanded &&
+                category.items.map(story => (
+                  <TouchableOpacity
+                    key={story.name}
+                    style={styles.storyItem}
+                    onPress={() => {
+                      setSelectedStory({
+                        category: category.category,
+                        name: story.name,
+                      });
+                      // Initialize controls with default values
+                      if (story.controls) {
+                        const initialControls: Record<string, any> = {};
+                        Object.entries(story.controls).forEach(
+                          ([key, config]: [string, any]) => {
+                            initialControls[key] = config.value;
+                          }
+                        );
+                        setControls(initialControls);
+                      }
+                    }}
+                  >
+                    <Text style={styles.storyName}>{story.name}</Text>
+                    <Text style={styles.arrow}>→</Text>
+                  </TouchableOpacity>
+                ))}
+            </View>
+          );
+        })}
       </ScrollView>
     </SafeAreaView>
   );
@@ -457,71 +997,145 @@ export default function SimpleStorybook() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#fafafa",
   },
   header: {
-    padding: 16,
+    padding: 20,
+    backgroundColor: "#fff",
     borderBottomWidth: 1,
-    borderBottomColor: "#e0e0e0",
-    backgroundColor: "#f8f8f8",
+    borderBottomColor: "#e5e7eb",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
   backButton: {
     padding: 8,
-    marginBottom: 8,
+    marginBottom: 12,
+    marginLeft: -8,
   },
   backText: {
     fontSize: 16,
-    color: "#007AFF",
+    color: "#3b82f6",
     fontWeight: "600",
   },
+  headerTitleContainer: {
+    flexDirection: "column",
+    gap: 4,
+  },
+  categoryBadge: {
+    fontSize: 12,
+    color: "#6b7280",
+    fontWeight: "600",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
   headerTitle: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
+    color: "#111827",
   },
   headerSubtitle: {
     fontSize: 14,
-    color: "#666",
-    marginTop: 4,
+    color: "#6b7280",
+    marginTop: 6,
   },
   list: {
     flex: 1,
   },
+  listContent: {
+    paddingBottom: 40,
+  },
   categorySection: {
-    marginTop: 20,
+    marginBottom: 8,
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    marginHorizontal: 12,
+    marginTop: 12,
+    overflow: "hidden",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 1,
+  },
+  categoryHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 16,
+    backgroundColor: "#fff",
+  },
+  categoryHeaderLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+    gap: 12,
+  },
+  categoryIcon: {
+    fontSize: 20,
   },
   categoryTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#111827",
+    flex: 1,
+  },
+  categoryBadgeSmall: {
+    backgroundColor: "#f3f4f6",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  categoryBadgeText: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#6b7280",
+  },
+  chevron: {
     fontSize: 14,
-    fontWeight: "bold",
-    color: "#666",
-    textTransform: "uppercase",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: "#f0f0f0",
+    color: "#9ca3af",
+    marginLeft: 8,
   },
   storyItem: {
     flexDirection: "row",
     alignItems: "center",
     padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
+    paddingLeft: 56,
+    borderTopWidth: 1,
+    borderTopColor: "#f3f4f6",
+    backgroundColor: "#fafafa",
   },
   storyName: {
-    fontSize: 16,
+    fontSize: 15,
     flex: 1,
+    color: "#374151",
   },
   arrow: {
-    fontSize: 18,
-    color: "#999",
+    fontSize: 16,
+    color: "#9ca3af",
   },
   storyView: {
     flex: 1,
   },
+  storyViewContent: {
+    paddingBottom: 40,
+  },
   storyContainer: {
     flex: 1,
     justifyContent: "center",
+    alignItems: "stretch",
+    padding: 24,
+    backgroundColor: "#fafafa",
+    minHeight: 400,
+  },
+  centeredStoryContainer: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
-    padding: 20,
-    backgroundColor: "#f5f5f5",
+    padding: 24,
+    backgroundColor: "#fafafa",
     minHeight: 400,
   },
   card: {
@@ -532,17 +1146,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 8,
+    color: "#111827",
   },
   cardSubtext: {
     fontSize: 14,
-    color: "#666",
+    color: "#6b7280",
   },
   spacer: {
     height: 12,
   },
   label: {
     fontSize: 14,
-    color: "#666",
+    color: "#6b7280",
     marginTop: 8,
   },
   iconRow: {
@@ -553,5 +1168,74 @@ const styles = StyleSheet.create({
   iconLabel: {
     marginLeft: 12,
     fontSize: 16,
+    color: "#374151",
+  },
+  // Control Panel Styles
+  controlPanel: {
+    backgroundColor: "#fff",
+    margin: 16,
+    marginTop: 8,
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 1,
+  },
+  controlPanelTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#111827",
+    marginBottom: 16,
+    paddingBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#e5e7eb",
+  },
+  controlItem: {
+    marginBottom: 16,
+  },
+  controlLabel: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#374151",
+    marginBottom: 8,
+  },
+  controlInput: {
+    backgroundColor: "#fafafa",
+    borderWidth: 1,
+    borderColor: "#d1d5db",
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 15,
+    color: "#111827",
+  },
+  selectContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+  },
+  selectOption: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+    backgroundColor: "#f3f4f6",
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+  },
+  selectOptionActive: {
+    backgroundColor: "#3b82f6",
+    borderColor: "#3b82f6",
+  },
+  selectOptionText: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#6b7280",
+  },
+  selectOptionTextActive: {
+    color: "#fff",
+    fontWeight: "600",
   },
 });

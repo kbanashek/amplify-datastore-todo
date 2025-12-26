@@ -43,8 +43,10 @@ export const YesNoQuestion: Story = {
             { id: "no", text: "No", value: "no" },
           ],
         }}
-        answer={answer}
-        onAnswerChange={setAnswer}
+        value={answer || null}
+        onChange={setAnswer}
+        displayProperties={{ optionPlacement: "below" }}
+        errors={[]}
       />
     );
   },
@@ -72,8 +74,10 @@ export const PainLevelQuestion: Story = {
             { id: "severe", text: "Severe Pain (7-10)", value: "7-10" },
           ],
         }}
-        answer={answer}
-        onAnswerChange={setAnswer}
+        value={answer || null}
+        onChange={setAnswer}
+        displayProperties={{ optionPlacement: "below" }}
+        errors={[]}
       />
     );
   },
@@ -110,8 +114,10 @@ export const FrequencyQuestion: Story = {
             { id: "daily", text: "Daily", value: "daily" },
           ],
         }}
-        answer={answer}
-        onAnswerChange={setAnswer}
+        value={answer || null}
+        onChange={setAnswer}
+        displayProperties={{ optionPlacement: "below" }}
+        errors={[]}
       />
     );
   },
@@ -140,8 +146,10 @@ export const MoodQuestion: Story = {
             { id: "bad", text: "😢 Bad", value: "bad" },
           ],
         }}
-        answer={answer}
-        onAnswerChange={setAnswer}
+        value={answer || null}
+        onChange={setAnswer}
+        displayProperties={{ optionPlacement: "below" }}
+        errors={[]}
       />
     );
   },
@@ -169,8 +177,10 @@ export const WithSelectedAnswer: Story = {
             { id: "severe", text: "Severe", value: "severe" },
           ],
         }}
-        answer={answer}
-        onAnswerChange={setAnswer}
+        value={answer || null}
+        onChange={setAnswer}
+        displayProperties={{ optionPlacement: "below" }}
+        errors={[]}
       />
     );
   },
@@ -196,8 +206,10 @@ export const OptionalQuestion: Story = {
             { id: "no", text: "No, skip this", value: "no" },
           ],
         }}
-        answer={answer}
-        onAnswerChange={setAnswer}
+        value={answer || null}
+        onChange={setAnswer}
+        displayProperties={{ optionPlacement: "below" }}
+        errors={[]}
       />
     );
   },
@@ -228,8 +240,10 @@ export const ManyOptions: Story = {
             { id: "other", text: "Other Specialist", value: "other" },
           ],
         }}
-        answer={answer}
-        onAnswerChange={setAnswer}
+        value={answer || null}
+        onChange={setAnswer}
+        displayProperties={{ optionPlacement: "below" }}
+        errors={[]}
       />
     );
   },

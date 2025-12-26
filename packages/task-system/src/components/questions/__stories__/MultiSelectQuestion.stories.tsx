@@ -47,8 +47,10 @@ export const SymptomsQuestion: Story = {
             { id: "none", text: "None of the above", value: "none" },
           ],
         }}
-        answer={answers}
-        onAnswerChange={setAnswers}
+        value={answers}
+        onChange={setAnswers}
+        displayProperties={{ optionPlacement: "below" }}
+        errors={[]}
       />
     );
   },
@@ -77,8 +79,10 @@ export const MedicationsQuestion: Story = {
             { id: "none", text: "Did not take any medication", value: "none" },
           ],
         }}
-        answer={answers}
-        onAnswerChange={setAnswers}
+        value={answers}
+        onChange={setAnswers}
+        displayProperties={{ optionPlacement: "below" }}
+        errors={[]}
       />
     );
   },
@@ -109,8 +113,10 @@ export const ActivitiesQuestion: Story = {
             { id: "none", text: "No exercise", value: "none" },
           ],
         }}
-        answer={answers}
-        onAnswerChange={setAnswers}
+        value={answers}
+        onChange={setAnswers}
+        displayProperties={{ optionPlacement: "below" }}
+        errors={[]}
       />
     );
   },
@@ -138,8 +144,10 @@ export const WithSelectedAnswers: Story = {
             { id: "fatigue", text: "Fatigue", value: "fatigue" },
           ],
         }}
-        answer={answers}
-        onAnswerChange={setAnswers}
+        value={answers}
+        onChange={setAnswers}
+        displayProperties={{ optionPlacement: "below" }}
+        errors={[]}
       />
     );
   },
@@ -170,8 +178,10 @@ export const DietaryQuestion: Story = {
             { id: "none", text: "No restrictions", value: "none" },
           ],
         }}
-        answer={answers}
-        onAnswerChange={setAnswers}
+        value={answers}
+        onChange={setAnswers}
+        displayProperties={{ optionPlacement: "below" }}
+        errors={[]}
       />
     );
   },
@@ -205,8 +215,10 @@ export const MedicalHistoryQuestion: Story = {
             { id: "none", text: "None of these", value: "none" },
           ],
         }}
-        answer={answers}
-        onAnswerChange={setAnswers}
+        value={answers}
+        onChange={setAnswers}
+        displayProperties={{ optionPlacement: "below" }}
+        errors={[]}
       />
     );
   },

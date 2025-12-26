@@ -39,8 +39,10 @@ export const SimpleText: Story = {
           required: true,
           screenIndex: 0,
         }}
-        answer={answer}
-        onAnswerChange={setAnswer}
+        value={answer}
+        onChange={setAnswer}
+        displayProperties={{}}
+        errors={[]}
       />
     );
   },
@@ -63,8 +65,10 @@ export const EmailQuestion: Story = {
           screenIndex: 0,
           placeholder: "you@example.com",
         }}
-        answer={answer}
-        onAnswerChange={setAnswer}
+        value={answer}
+        onChange={setAnswer}
+        displayProperties={{}}
+        errors={[]}
       />
     );
   },
@@ -87,8 +91,10 @@ export const PhoneQuestion: Story = {
           screenIndex: 0,
           placeholder: "(555) 123-4567",
         }}
-        answer={answer}
-        onAnswerChange={setAnswer}
+        value={answer}
+        onChange={setAnswer}
+        displayProperties={{}}
+        errors={[]}
       />
     );
   },
@@ -112,8 +118,10 @@ export const FeedbackQuestion: Story = {
           placeholder: "Describe your symptoms in detail...",
           multiline: true,
         }}
-        answer={answer}
-        onAnswerChange={setAnswer}
+        value={answer}
+        onChange={setAnswer}
+        displayProperties={{}}
+        errors={[]}
       />
     );
   },
@@ -136,8 +144,10 @@ export const OptionalQuestion: Story = {
           screenIndex: 0,
           placeholder: "Share any additional information...",
         }}
-        answer={answer}
-        onAnswerChange={setAnswer}
+        value={answer}
+        onChange={setAnswer}
+        displayProperties={{}}
+        errors={[]}
       />
     );
   },
@@ -159,8 +169,10 @@ export const WithAnswer: Story = {
           required: true,
           screenIndex: 0,
         }}
-        answer={answer}
-        onAnswerChange={setAnswer}
+        value={answer}
+        onChange={setAnswer}
+        displayProperties={{}}
+        errors={[]}
       />
     );
   },
@@ -185,8 +197,10 @@ export const MedicationDetails: Story = {
             "e.g., Metformin 500mg twice daily, Lisinopril 10mg once daily...",
           multiline: true,
         }}
-        answer={answer}
-        onAnswerChange={setAnswer}
+        value={answer}
+        onChange={setAnswer}
+        displayProperties={{}}
+        errors={[]}
       />
     );
   },
@@ -211,8 +225,10 @@ export const AllergyQuestion: Story = {
             "List any allergies to medications, foods, or other substances",
           multiline: true,
         }}
-        answer={answer}
-        onAnswerChange={setAnswer}
+        value={answer}
+        onChange={setAnswer}
+        displayProperties={{}}
+        errors={[]}
       />
     );
   },
@@ -235,8 +251,10 @@ export const EmergencyContact: Story = {
           screenIndex: 0,
           placeholder: "Name and phone number",
         }}
-        answer={answer}
-        onAnswerChange={setAnswer}
+        value={answer}
+        onChange={setAnswer}
+        displayProperties={{}}
+        errors={[]}
       />
     );
   },
