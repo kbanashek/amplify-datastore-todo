@@ -3,9 +3,9 @@
  * Following React Native best practices for reusable styles
  */
 
-import { StyleSheet, ViewStyle, TextStyle } from "react-native";
 import { AppColors } from "@constants/AppColors";
 import { AppFonts } from "@constants/AppFonts";
+import { StyleSheet, TextStyle, ViewStyle } from "react-native";
 
 /**
  * Common shadow styles
