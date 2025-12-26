@@ -2,8 +2,28 @@ import { DataStore, OpType } from "@aws-amplify/datastore";
 import { ModelName } from "@constants/modelNames";
 import { getServiceLogger } from "@utils/serviceLogger";
 
-function ensurePkSk(model: any, fallback?: any): any {
-  if (!model) return model;
+/**
+ * Base type constraint for DataStore models
+ * All DataStore models must have id, and may have pk/sk for DynamoDB
+ */
+interface DataStoreModel {
+  id: string;
+  pk?: string;
+  sk?: string;
+  _deleted?: boolean;
+  _version?: number;
+  _lastChangedAt?: number;
+}
+
+/**
+ * Ensures required keys (pk, sk, id) are present on a model
+ * Uses fallback model to fill in missing keys if needed
+ */
+function ensurePkSk<T extends DataStoreModel>(
+  model: T | null | undefined,
+  fallback?: Partial<T> | null
+): T | null {
+  if (!model) return model as null;
   const merged = { ...model };
   const pk = merged.pk ?? fallback?.pk;
   const sk = merged.sk ?? fallback?.sk;
@@ -38,8 +58,9 @@ export class ConflictResolution {
 
         // Defensive: Amplify can sometimes surface conflict callbacks with partial/null models.
         // Always prefer returning a model that includes required keys (pk/sk/id) when available.
-        const safeLocal = localModel ?? null;
-        const safeRemote = remoteModel ?? null;
+        // Cast to DataStoreModel since Amplify provides untyped models
+        const safeLocal = (localModel as DataStoreModel) ?? null;
+        const safeRemote = (remoteModel as DataStoreModel) ?? null;
 
         // Task model has special handling for UPDATE operations
         if (modelName === ModelName.Task) {

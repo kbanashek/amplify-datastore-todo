@@ -1,6 +1,12 @@
 import { getBorderStyle } from "@utils/borderStyleHelper";
 import React from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  View,
+  StyleProp,
+  ViewStyle,
+} from "react-native";
 
 interface NumericInputProps {
   value: string;
@@ -10,7 +16,7 @@ interface NumericInputProps {
   borderStyle?: "line" | "rectangle" | "oval";
   error?: boolean;
   testID?: string;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }
 
 /**
