@@ -8,7 +8,13 @@ jest.mock("@components/questions/ReviewScreen", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    ReviewScreen: ({ screens, answers }: any) => (
+    ReviewScreen: ({
+      screens,
+      answers,
+    }: {
+      screens: unknown[];
+      answers: Record<string, unknown>;
+    }) => (
       <View testID="review-screen">
         <Text>Review Screen</Text>
         <Text>Screens: {screens.length}</Text>

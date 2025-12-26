@@ -8,7 +8,12 @@ jest.mock("@components/questions/TextQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    TextQuestion: ({ question }: any) => (
+    TextQuestion: ({
+      question,
+    }: {
+      question: { id: string; [key: string]: unknown };
+      [key: string]: unknown;
+    }) => (
       <View testID={`text-question-${question.id}`}>
         <Text>{question.friendlyName}</Text>
       </View>
@@ -20,7 +25,12 @@ jest.mock("@components/questions/NumberQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    NumberQuestion: ({ question }: any) => (
+    NumberQuestion: ({
+      question,
+    }: {
+      question: { id: string; [key: string]: unknown };
+      [key: string]: unknown;
+    }) => (
       <View testID={`number-question-${question.id}`}>
         <Text>{question.friendlyName}</Text>
       </View>
@@ -32,7 +42,12 @@ jest.mock("@components/questions/SingleSelectQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    SingleSelectQuestion: ({ question }: any) => (
+    SingleSelectQuestion: ({
+      question,
+    }: {
+      question: { id: string; [key: string]: unknown };
+      [key: string]: unknown;
+    }) => (
       <View testID={`single-select-question-${question.id}`}>
         <Text>{question.friendlyName}</Text>
       </View>
@@ -44,7 +59,12 @@ jest.mock("@components/questions/MultiSelectQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    MultiSelectQuestion: ({ question }: any) => (
+    MultiSelectQuestion: ({
+      question,
+    }: {
+      question: { id: string; [key: string]: unknown };
+      [key: string]: unknown;
+    }) => (
       <View testID={`multi-select-question-${question.id}`}>
         <Text>{question.friendlyName}</Text>
       </View>
@@ -56,7 +76,12 @@ jest.mock("@components/questions/DateQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    DateQuestion: ({ question }: any) => (
+    DateQuestion: ({
+      question,
+    }: {
+      question: { id: string; [key: string]: unknown };
+      [key: string]: unknown;
+    }) => (
       <View testID={`date-question-${question.id}`}>
         <Text>{question.friendlyName}</Text>
       </View>
@@ -68,7 +93,11 @@ jest.mock("@components/questions/BloodPressureQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    BloodPressureQuestion: ({ question }: any) => (
+    BloodPressureQuestion: ({
+      question,
+    }: {
+      question: { id: string; friendlyName: string; [key: string]: unknown };
+    }) => (
       <View testID={`blood-pressure-question-${question.id}`}>
         <Text>{question.friendlyName}</Text>
       </View>
@@ -80,7 +109,11 @@ jest.mock("@components/questions/TemperatureQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    TemperatureQuestion: ({ question }: any) => (
+    TemperatureQuestion: ({
+      question,
+    }: {
+      question: { id: string; friendlyName: string; [key: string]: unknown };
+    }) => (
       <View testID={`temperature-question-${question.id}`}>
         <Text>{question.friendlyName}</Text>
       </View>
@@ -92,7 +125,11 @@ jest.mock("@components/questions/ClinicalDynamicInputQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    ClinicalDynamicInputQuestion: ({ question }: any) => (
+    ClinicalDynamicInputQuestion: ({
+      question,
+    }: {
+      question: { id: string; friendlyName: string; [key: string]: unknown };
+    }) => (
       <View testID={`clinical-dynamic-input-question-${question.id}`}>
         <Text>{question.friendlyName}</Text>
       </View>
@@ -104,7 +141,11 @@ jest.mock("@components/questions/HorizontalVASQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    HorizontalVASQuestion: ({ question }: any) => (
+    HorizontalVASQuestion: ({
+      question,
+    }: {
+      question: { id: string; friendlyName: string; [key: string]: unknown };
+    }) => (
       <View testID={`horizontal-vas-question-${question.id}`}>
         <Text>{question.friendlyName}</Text>
       </View>
@@ -116,7 +157,11 @@ jest.mock("@components/questions/ImageCaptureQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    ImageCaptureQuestion: ({ question }: any) => (
+    ImageCaptureQuestion: ({
+      question,
+    }: {
+      question: { id: string; friendlyName: string; [key: string]: unknown };
+    }) => (
       <View testID={`image-capture-question-${question.id}`}>
         <Text>{question.friendlyName}</Text>
       </View>
@@ -128,7 +173,12 @@ jest.mock("@components/questions/WeightHeightQuestion", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    WeightHeightQuestion: ({ question }: any) => (
+    WeightHeightQuestion: ({
+      question,
+    }: {
+      question: { id: string; [key: string]: unknown };
+      [key: string]: unknown;
+    }) => (
       <View testID={`weight-height-question-${question.id}`}>
         <Text>{question.friendlyName}</Text>
       </View>

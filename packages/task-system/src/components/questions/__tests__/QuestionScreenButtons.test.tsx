@@ -12,7 +12,9 @@ jest.mock("@components/TranslatedText", () => {
   const React = require("react");
   const { Text } = require("react-native");
   return {
-    TranslatedText: ({ text, style }: any) => <Text style={style}>{text}</Text>,
+    TranslatedText: ({ text, style }: { text: string; style?: unknown }) => (
+      <Text style={style}>{text}</Text>
+    ),
   };
 });
 
@@ -20,7 +22,19 @@ jest.mock("@components/ui/Button", () => {
   const React = require("react");
   const { Pressable, Text, View } = require("react-native");
   return {
-    Button: ({ children, onPress, disabled, style, testID }: any) => (
+    Button: ({
+      children,
+      onPress,
+      disabled,
+      style,
+      testID,
+    }: {
+      children: React.ReactNode;
+      onPress?: () => void;
+      disabled?: boolean;
+      style?: unknown;
+      testID?: string;
+    }) => (
       <Pressable
         testID={testID}
         onPress={onPress}

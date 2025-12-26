@@ -47,7 +47,9 @@ jest.mock("@components/ui/IconSymbol", () => {
   const React = require("react");
   const { Text } = require("react-native");
   return {
-    IconSymbol: ({ name }: any) => <Text testID={`icon-${name}`}>{name}</Text>,
+    IconSymbol: ({ name }: { name: string }) => (
+      <Text testID={`icon-${name}`}>{name}</Text>
+    ),
   };
 });
 

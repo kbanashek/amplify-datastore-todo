@@ -26,7 +26,15 @@ jest.mock("@components/TaskCard", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    TaskCard: ({ task, onPress, onDelete }: any) => (
+    TaskCard: ({
+      task,
+      onPress,
+      onDelete,
+    }: {
+      task: unknown;
+      onPress?: () => void;
+      onDelete?: () => void;
+    }) => (
       <View testID={`task-card-${task.id}`}>
         <Text testID={`task-card-title-${task.id}`}>{task.title}</Text>
         {onPress && (

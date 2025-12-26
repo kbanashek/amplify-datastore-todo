@@ -35,7 +35,15 @@ jest.mock("@components/TranslatedText", () => {
   const React = require("react");
   const { Text } = require("react-native");
   return {
-    TranslatedText: ({ text, testID, ...props }: any) => (
+    TranslatedText: ({
+      text,
+      testID,
+      ...props
+    }: {
+      text: string;
+      testID?: string;
+      [key: string]: unknown;
+    }) => (
       <Text testID={testID} {...props}>
         {text}
       </Text>
@@ -48,7 +56,15 @@ jest.mock("@components/TaskCard", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    TaskCard: ({ task, onPress, onDelete }: any) => (
+    TaskCard: ({
+      task,
+      onPress,
+      onDelete,
+    }: {
+      task: { id: string; title: string; [key: string]: unknown };
+      onPress?: () => void;
+      onDelete?: () => void;
+    }) => (
       <View testID={`task-card-${task.id}`}>
         <Text testID={`task-card-title-${task.id}`}>{task.title}</Text>
         {onPress && (
@@ -77,7 +93,13 @@ jest.mock("@components/AppointmentCard", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    AppointmentCard: ({ appointment, onPress }: any) => (
+    AppointmentCard: ({
+      appointment,
+      onPress,
+    }: {
+      appointment: unknown;
+      onPress?: () => void;
+    }) => (
       <View testID={`appointment-card-${appointment.appointmentId}`}>
         <Text testID={`appointment-card-title-${appointment.appointmentId}`}>
           {appointment.title}

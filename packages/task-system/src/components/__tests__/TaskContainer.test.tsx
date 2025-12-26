@@ -33,7 +33,17 @@ jest.mock("@components/GroupedTasksView", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    GroupedTasksView: ({ testID, groupedTasks, loading, error }: any) => (
+    GroupedTasksView: ({
+      testID,
+      groupedTasks,
+      loading,
+      error,
+    }: {
+      testID?: string;
+      groupedTasks: unknown;
+      loading: boolean;
+      error: string | null;
+    }) => (
       <View testID={testID}>
         <Text testID="grouped-tasks-view-mock">
           {loading ? "Loading" : error || `Tasks: ${groupedTasks.length}`}

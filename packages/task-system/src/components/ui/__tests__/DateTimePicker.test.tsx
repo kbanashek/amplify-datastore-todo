@@ -7,7 +7,19 @@ jest.mock("@components/ui/DateTimeField", () => {
   const React = require("react");
   const { View, Text, Pressable } = require("react-native");
   return {
-    DateTimeField: ({ value, onChange, mode, testID, ...props }: any) => (
+    DateTimeField: ({
+      value,
+      onChange,
+      mode,
+      testID,
+      ...props
+    }: {
+      value?: Date;
+      onChange?: (date: Date) => void;
+      mode?: string;
+      testID?: string;
+      [key: string]: unknown;
+    }) => (
       <View testID={testID}>
         <Text testID={`${testID}-mode`}>{mode}</Text>
         <Text testID={`${testID}-value`}>

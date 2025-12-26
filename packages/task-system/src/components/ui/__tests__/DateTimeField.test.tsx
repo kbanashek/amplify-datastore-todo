@@ -14,7 +14,17 @@ jest.mock("@react-native-community/datetimepicker", () => {
   const { View } = require("react-native");
   return {
     __esModule: true,
-    default: ({ value, mode, onChange, testID }: any) => (
+    default: ({
+      value,
+      mode,
+      onChange,
+      testID,
+    }: {
+      value?: Date;
+      mode?: string;
+      onChange?: (event: unknown, date?: Date) => void;
+      testID?: string;
+    }) => (
       <View testID={testID}>
         <View testID={`${testID}-value`}>{value?.toISOString()}</View>
         <View testID={`${testID}-mode`}>{mode}</View>
@@ -44,7 +54,15 @@ jest.mock("@components/ThemedText", () => {
   const React = require("react");
   const { Text } = require("react-native");
   return {
-    ThemedText: ({ children, style, ...props }: any) => (
+    ThemedText: ({
+      children,
+      style,
+      ...props
+    }: {
+      children: React.ReactNode;
+      style?: unknown;
+      [key: string]: unknown;
+    }) => (
       <Text style={style} {...props}>
         {children}
       </Text>
