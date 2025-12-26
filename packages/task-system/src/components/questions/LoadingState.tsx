@@ -1,6 +1,7 @@
 import React from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { NetworkStatusIndicator } from "@components/NetworkStatusIndicator";
+import { AppFonts } from "@constants/AppFonts";
 
 interface LoadingStateProps {
   taskId?: string;
@@ -43,8 +44,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#dfe4ea",
   },
   headerTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
+    ...AppFonts.heading,
     color: "#2f3542",
     flex: 1,
   },
@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   loadingText: {
+    ...AppFonts.small,
     marginTop: 12,
     color: "#57606f",
-    fontSize: 14,
   },
 });

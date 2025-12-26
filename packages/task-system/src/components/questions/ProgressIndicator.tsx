@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { AppFonts } from "@constants/AppFonts";
 
 interface ProgressIndicatorProps {
   currentPage: number;
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#dfe4ea",
   },
   progressText: {
-    fontSize: 14,
+    ...AppFonts.small,
     color: "#57606f",
     marginBottom: 8,
     textAlign: "center",

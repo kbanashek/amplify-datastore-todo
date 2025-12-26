@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { AppFonts } from "@constants/AppFonts";
 import {
   ActivityIndicator,
   Image,

@@ -1,4 +1,5 @@
 import { Question } from "@task-types/ActivityConfig";
+import { AppFonts } from "@constants/AppFonts";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import { getBorderStyle } from "@utils/borderStyleHelper";
 import React, { useEffect, useState } from "react";

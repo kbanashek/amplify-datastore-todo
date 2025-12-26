@@ -1,4 +1,5 @@
 import React from "react";
+import { AppFonts } from "@constants/AppFonts";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTaskTranslation } from "@translations/index";
 import { Choice, Question } from "@task-types/ActivityConfig";

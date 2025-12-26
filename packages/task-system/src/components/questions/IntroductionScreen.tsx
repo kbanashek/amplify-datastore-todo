@@ -1,4 +1,5 @@
 import React from "react";
+import { AppFonts } from "@constants/AppFonts";
 import {
   ScrollView,
   StyleSheet,
@@ -85,14 +86,13 @@ const styles = StyleSheet.create({
     padding: 40,
   },
   introTitle: {
-    fontSize: 28,
-    fontWeight: "bold",
+    ...AppFonts.heading,
     color: "#2f3542",
     marginBottom: 16,
     textAlign: "center",
   },
   introDescription: {
-    fontSize: 16,
+    ...AppFonts.body,
     color: "#57606f",
     lineHeight: 24,
     textAlign: "center",
@@ -107,8 +107,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   beginButtonText: {
+    ...AppFonts.subheading,
     color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
   },
 });

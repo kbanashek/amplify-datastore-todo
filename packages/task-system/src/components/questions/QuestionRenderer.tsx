@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from "react";
+import { AppFonts } from "@constants/AppFonts";
 import { StyleSheet, Text, View } from "react-native";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import { ParsedElement } from "@task-types/ActivityConfig";

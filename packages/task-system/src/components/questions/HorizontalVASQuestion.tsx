@@ -1,4 +1,5 @@
 import Slider from "@react-native-community/slider";
+import { AppFonts } from "@constants/AppFonts";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Question } from "@task-types/ActivityConfig";

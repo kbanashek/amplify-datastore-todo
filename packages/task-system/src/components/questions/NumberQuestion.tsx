@@ -1,4 +1,5 @@
 import Slider from "@react-native-community/slider";
+import { AppFonts } from "@constants/AppFonts";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { useTranslatedText } from "@hooks/useTranslatedText";
@@ -170,7 +171,7 @@ const styles = StyleSheet.create({
     borderColor: "#dfe4ea",
     borderRadius: 8,
     padding: 12,
-    fontSize: 16,
+    ...AppFonts.body,
     color: "#2f3542",
     minHeight: 44,
   },
@@ -178,8 +179,8 @@ const styles = StyleSheet.create({
     borderColor: "#e74c3c",
   },
   unitText: {
+    ...AppFonts.small,
     marginLeft: 8,
-    fontSize: 14,
     color: "#57606f",
   },
   sliderContainer: {
@@ -192,13 +193,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   sliderLabel: {
-    fontSize: 14,
+    ...AppFonts.label,
     color: "#57606f",
-    fontWeight: "500",
   },
   sliderValue: {
-    fontSize: 24,
-    fontWeight: "bold",
+    ...AppFonts.heading,
     color: "#3498db",
     minWidth: 50,
     textAlign: "center",

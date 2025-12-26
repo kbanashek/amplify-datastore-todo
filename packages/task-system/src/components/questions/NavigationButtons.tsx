@@ -1,4 +1,5 @@
 import React from "react";
+import { AppFonts } from "@constants/AppFonts";
 import { StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native";
 import { useRTL } from "@hooks/useRTL";
 import { useTranslatedText } from "@hooks/useTranslatedText";
@@ -113,14 +114,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   navButtonText: {
+    ...AppFonts.button,
     color: "#57606f",
-    fontSize: 16,
-    fontWeight: "600",
   },
   nextButton: {
     backgroundColor: "#3498db",
   },
   nextButtonText: {
+    ...AppFonts.button,
     color: "#fff",
   },
   reviewButton: {

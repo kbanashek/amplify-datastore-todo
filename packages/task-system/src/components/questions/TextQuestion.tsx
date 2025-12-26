@@ -1,4 +1,5 @@
 import React from "react";
+import { AppFonts } from "@constants/AppFonts";
 import { StyleSheet, TextInput, View } from "react-native";
 import { Question } from "@task-types/ActivityConfig";
 import { useTaskTranslation } from "@translations/index";
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
     borderColor: "#dfe4ea",
     borderRadius: 8,
     padding: 12,
-    fontSize: 16,
+    ...AppFonts.body,
     color: "#2f3542",
     minHeight: 44,
   },

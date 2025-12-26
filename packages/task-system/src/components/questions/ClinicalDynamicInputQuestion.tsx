@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { AppFonts } from "@constants/AppFonts";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Question } from "@task-types/ActivityConfig";
 import { useTranslatedText } from "@hooks/useTranslatedText";
