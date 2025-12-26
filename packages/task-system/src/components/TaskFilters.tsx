@@ -11,6 +11,7 @@ import {
   TaskType,
   TaskFilters as TaskFiltersType,
 } from "@task-types/Task";
+import { AppFonts } from "@constants/AppFonts";
 
 interface TaskFiltersProps {
   filters: TaskFiltersType;

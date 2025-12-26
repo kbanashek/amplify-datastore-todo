@@ -23,5 +23,10 @@
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.js", "src/**/*.json"],
-  "exclude": ["dist/**", "node_modules/**", "src/**/__stories__/**"]
+  "exclude": [
+    "dist/**",
+    "node_modules/**",
+    "src/**/__stories__/**",
+    ".ondevice/**"
+  ]
 }

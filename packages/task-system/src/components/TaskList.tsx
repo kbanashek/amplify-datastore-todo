@@ -1,6 +1,7 @@
 import { TaskCard } from "@components/TaskCard";
 import { useTaskList } from "@hooks/useTaskList";
 import { Task, TaskFilters } from "@task-types/Task";
+import { AppFonts } from "@constants/AppFonts";
 import { getServiceLogger } from "@utils/serviceLogger";
 import { groupTasksByDate } from "@utils/taskGrouping";
 import React, { useMemo } from "react";
@@ -333,14 +334,12 @@ const styles = StyleSheet.create({
     borderBottomColor: "#dfe4ea",
   },
   headerTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
+    ...AppFonts.large,
     color: "#2f3542",
   },
   syncedBadge: {
-    fontSize: 12,
+    ...AppFonts.caption,
     color: "#27ae60",
-    fontWeight: "600",
   },
   syncIndicator: {
     flexDirection: "row",
@@ -358,9 +357,8 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   syncText: {
-    fontSize: 12,
+    ...AppFonts.caption,
     color: "#155724",
-    fontWeight: "600",
   },
   listContent: {
     padding: 16,
@@ -390,7 +388,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   todaySectionTitle: {
-    fontSize: 28, // EVEN BIGGER
+    ...AppFonts.heading,
     fontWeight: "900", // HEAVIEST
     color: "#ffffff", // PURE WHITE
     textShadowColor: "rgba(0, 0, 0, 0.3)",
@@ -406,8 +404,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   todaySectionCount: {
-    fontSize: 18,
-    fontWeight: "bold",
+    ...AppFonts.subheading,
     color: "#2196f3",
   },
   // Regular section headers
@@ -428,8 +425,7 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
+    ...AppFonts.subheading,
     color: "#2f3542",
   },
   sectionCountBadge: {
@@ -441,7 +437,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   sectionCount: {
-    fontSize: 14,
+    ...AppFonts.small,
     fontWeight: "bold",
     color: "#747d8c",
   },
@@ -453,13 +449,13 @@ const styles = StyleSheet.create({
     minHeight: 200,
   },
   emptyText: {
-    fontSize: 16,
+    ...AppFonts.body,
     color: "#747d8c",
     textAlign: "center",
     marginTop: 16,
   },
   errorText: {
-    fontSize: 14,
+    ...AppFonts.small,
     color: "#e74c3c",
     textAlign: "center",
     marginBottom: 8,

@@ -2,6 +2,7 @@ import { LanguageSelector } from "@components/LanguageSelector";
 import { NetworkStatusIndicator } from "@components/NetworkStatusIndicator";
 import { IconSymbol } from "@components/ui/IconSymbol";
 import { AppColors } from "@constants/AppColors";
+import { AppFonts } from "@constants/AppFonts";
 import { Colors } from "@constants/Colors";
 import { TestIds } from "@constants/testIds";
 import { useColorScheme } from "@hooks/useColorScheme";
@@ -163,8 +164,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   headerTitle: {
-    fontSize: 17,
-    fontWeight: "600",
+    ...AppFonts.subheading,
     color: AppColors.headerBlue,
     flex: 1,
     textAlign: "center",

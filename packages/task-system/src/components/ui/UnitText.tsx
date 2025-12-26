@@ -1,6 +1,7 @@
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import React from "react";
 import { StyleSheet, Text, View, StyleProp, ViewStyle } from "react-native";
+import { AppFonts, FontSizes } from "@constants/AppFonts";
 
 interface UnitTextProps {
   unit: string;
@@ -26,17 +27,17 @@ interface UnitTextProps {
  * Automatically translates unit text if translation key is provided
  *
  * @param unit - The unit text to display
- * @param fontSize - The font size of the unit text (default: 14)
- * @param fontWeight - The font weight of the unit text (default: 600)
- * @param color - The color of the unit text (default: #57606f)
+ * @param fontSize - The font size of the unit text (default: from AppFonts.label)
+ * @param fontWeight - The font weight of the unit text (default: from AppFonts.label)
+ * @param color - The color of the unit text (default: from AppFonts.label)
  * @param style - Additional styles to apply to the container
  * @returns A themed unit text component with the provided unit text
  */
 export const UnitText: React.FC<UnitTextProps> = ({
   unit,
-  fontSize = 14,
+  fontSize = FontSizes.sm,
   fontWeight = "600",
-  color = "#57606f",
+  color = AppFonts.label.color,
   style,
 }) => {
   const { translatedText } = useTranslatedText(unit);
@@ -55,8 +56,6 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   text: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#57606f",
+    ...AppFonts.label,
   },
 });

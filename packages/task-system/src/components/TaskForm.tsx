@@ -11,6 +11,7 @@ import {
 import { useTaskForm } from "@hooks/useTaskForm";
 import { useRTL } from "@hooks/useRTL";
 import { Task, TaskStatus, TaskType } from "@task-types/Task";
+import { AppFonts } from "@constants/AppFonts";
 
 interface TaskFormProps {
   onTaskCreated?: (task: Task) => void;
@@ -221,8 +222,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   title: {
-    fontSize: 18,
-    fontWeight: "bold",
+    ...AppFonts.subheading,
     marginBottom: 16,
     color: "#2f3542",
   },
@@ -232,15 +232,14 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 12,
     marginBottom: 12,
-    fontSize: 16,
+    ...AppFonts.body,
   },
   textArea: {
     minHeight: 80,
     textAlignVertical: "top",
   },
   label: {
-    fontSize: 14,
-    fontWeight: "600",
+    ...AppFonts.label,
     color: "#2f3542",
     marginBottom: 8,
     marginTop: 4,
@@ -266,9 +265,8 @@ const styles = StyleSheet.create({
     borderColor: "#3498db",
   },
   radioButtonText: {
-    fontSize: 12,
+    ...AppFonts.caption,
     color: "#57606f",
-    fontWeight: "600",
   },
   radioButtonTextSelected: {
     color: "#fff",
@@ -293,18 +291,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#95a5a6",
   },
   buttonText: {
+    ...AppFonts.body,
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 16,
   },
   secondaryButtonText: {
+    ...AppFonts.body,
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 16,
   },
   errorText: {
+    ...AppFonts.small,
     color: "#e74c3c",
     marginBottom: 12,
-    fontSize: 14,
   },
 });

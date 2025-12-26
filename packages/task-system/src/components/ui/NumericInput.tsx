@@ -7,6 +7,7 @@ import {
   StyleProp,
   ViewStyle,
 } from "react-native";
+import { AppFonts } from "@constants/AppFonts";
 
 interface NumericInputProps {
   value: string;
@@ -66,7 +67,7 @@ export const NumericInput: React.FC<NumericInputProps> = ({
 
 const styles = StyleSheet.create({
   input: {
-    fontSize: 16,
+    ...AppFonts.body,
     color: "#2f3542",
     textAlign: "center",
     minWidth: 60,

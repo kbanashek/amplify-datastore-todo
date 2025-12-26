@@ -9,6 +9,7 @@ import {
 } from "react-native";
 
 import { ThemedText } from "@components/ThemedText";
+import { AppFonts } from "@constants/AppFonts";
 import { useThemeColor } from "@hooks/useThemeColor";
 
 export interface TextFieldProps extends Omit<TextInputProps, "style"> {
@@ -89,20 +90,19 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   label: {
-    fontSize: 14,
-    fontWeight: "600",
+    ...AppFonts.label,
   },
   input: {
     borderWidth: 1,
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 12,
-    fontSize: 16,
+    ...AppFonts.body,
   },
   inputDisabled: {
     opacity: 0.7,
   },
   message: {
-    fontSize: 12,
+    ...AppFonts.caption,
   },
 });
