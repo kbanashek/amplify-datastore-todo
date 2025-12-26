@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { QuestionHeader } from "@components/QuestionHeader";
+import { AppFonts } from "@constants/AppFonts";
 import { CompletionScreen } from "@components/questions/CompletionScreen";
 import { ErrorState } from "@components/questions/ErrorState";
 import { IntroductionScreen } from "@components/questions/IntroductionScreen";
@@ -212,8 +213,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   emptyText: {
+    ...AppFonts.body,
     color: "#747d8c",
-    fontSize: 16,
     textAlign: "center",
     marginBottom: 16,
   },
@@ -223,5 +224,5 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 8,
   },
-  backButtonText: { color: "#57606f", fontSize: 14, fontWeight: "600" },
+  backButtonText: { ...AppFonts.label, color: "#57606f" },
 });
