@@ -5,7 +5,9 @@ import { CreateTaskAnswerInput } from "@task-types/TaskAnswer";
 
 jest.mock("@aws-amplify/datastore");
 
-const createMockTaskAnswer = (overrides: Partial<any> = {}): any => ({
+const createMockTaskAnswer = (
+  overrides: Partial<TaskAnswer> = {}
+): TaskAnswer => ({
   id: "test-answer-id",
   pk: "test-pk",
   sk: "test-sk",

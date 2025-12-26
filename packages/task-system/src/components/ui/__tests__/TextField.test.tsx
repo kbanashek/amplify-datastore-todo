@@ -20,7 +20,15 @@ jest.mock("@components/ThemedText", () => {
   const React = require("react");
   const { Text } = require("react-native");
   return {
-    ThemedText: ({ children, style, ...props }: any) => (
+    ThemedText: ({
+      children,
+      style,
+      ...props
+    }: {
+      children: React.ReactNode;
+      style?: unknown;
+      [key: string]: unknown;
+    }) => (
       <Text style={style} {...props}>
         {children}
       </Text>

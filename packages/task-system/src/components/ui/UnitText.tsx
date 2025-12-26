@@ -1,6 +1,6 @@
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, StyleProp, ViewStyle } from "react-native";
 
 interface UnitTextProps {
   unit: string;
@@ -18,7 +18,7 @@ interface UnitTextProps {
     | "800"
     | "900";
   color?: string;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }
 
 /**

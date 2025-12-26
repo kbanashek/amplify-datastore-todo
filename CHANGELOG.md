@@ -9,6 +9,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.27] - 2025-12-26
+
+### Added
+
+- Implemented React Native Storybook with 21 interactive stories across 6 categories
+  - Buttons (6 stories): Primary, Secondary, Outline, Disabled, Loading, All Sizes
+  - Form Inputs (4 stories): TextField, NumericInput, DatePicker, FieldLabel
+  - Layout (2 stories): Card variants
+  - Feedback (4 stories): LoadingSpinner sizes, ProgressIndicator
+  - Icons (1 story): SF Symbol samples
+  - Question Types (4 stories): SingleSelect, MultiSelect, TextQuestion, NumberQuestion
+- Added Storybook navigation menu item in Task Dashboard for easy access
+- Created custom Storybook navigator (SimpleStorybook.tsx) for on-device browsing
+- Organized story files in `__stories__/` directories at each component level
+  - `src/components/__stories__/` (4 files): Top-level component stories
+  - `src/components/ui/__stories__/` (7 files): UI component stories
+  - `src/components/questions/__stories__/` (3 files): Question component stories
+- Added comprehensive Storybook documentation in `packages/task-system/.ondevice/README.md`
+
+### Changed
+
+- Updated root README.md with concise Storybook section linking to full documentation
+- Configured `.npmrc` to resolve `@storybook` packages from public npm registry
+- Updated `packages/task-system/package.json` with React Native Storybook dependencies
+- Added `@react-native-async-storage/async-storage` as root dependency for Storybook
+- Moved all `.stories.tsx` files from component directories to dedicated `__stories__/` subdirectories
+
+### Fixed
+
+- Resolved React 19 compatibility issues by using React Native Storybook instead of web-based Storybook 8.x
+- Fixed React Hooks violations in interactive story examples by creating separate components
+- Mocked Amplify configuration and DataStore operations to prevent real database interactions in Storybook
+
+### Removed
+
+- Removed 13 redundant Storybook documentation files, consolidated into single comprehensive README
+- Removed web-based Storybook configuration files (incompatible with React 19)
+
 ## [0.1.26] - 2025-12-24
 
 ### Changed

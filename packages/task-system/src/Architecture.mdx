@@ -1,0 +1,398 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Architecture" />
+
+# Architecture Overview
+
+This document describes the architecture and design decisions of the Orion Task System.
+
+## 🏗️ Project Structure
+
+```
+packages/task-system/
+├── src/
+│   ├── components/          # React components
+│   │   ├── ui/             # Base UI components
+│   │   ├── questions/      # Question type components
+│   │   ├── TaskCard.tsx    # Domain components
+│   │   └── ...
+│   ├── hooks/              # Custom React hooks
+│   │   ├── useTaskList.ts
+│   │   ├── useLogger.ts
+│   │   └── ...
+│   ├── services/           # Business logic services
+│   │   ├── TaskService.ts
+│   │   ├── LoggingService.ts
+│   │   └── ...
+│   ├── utils/              # Utility functions
+│   │   ├── taskIcon.ts
+│   │   ├── dateUtils.ts
+│   │   └── ...
+│   ├── types/              # TypeScript types
+│   │   ├── Task.ts
+│   │   ├── Question.ts
+│   │   └── ...
+│   ├── constants/          # App constants
+│   │   ├── AppColors.ts
+│   │   └── ...
+│   ├── translations/       # i18n translations
+│   │   ├── en.json
+│   │   └── config/
+│   └── models/            # AWS DataStore models
+└── .storybook/            # Storybook configuration
+```
+
+## 🧩 Component Architecture
+
+### Separation of Concerns
+
+Components follow a strict separation between presentation and logic:
+
+**Components** (Presentation Layer)
+- Handle rendering and user interactions
+- Should be small and focused (~200 lines max)
+- Delegate all business logic to hooks
+
+**Hooks** (Logic Layer)
+- Contain all state management
+- Handle side effects (`useEffect`, subscriptions)
+- Implement business logic
+- Provide event handlers
+
+**Services** (Data Layer)
+- Interact with AWS DataStore
+- Provide CRUD operations
+- Handle error cases
+- Manage data transformations
+
+### Example Pattern
+
+```typescript
+// ❌ BAD: Logic in component
+export default function MyComponent() {
+  const [state, setState] = useState(...);
+  useEffect(() => { ... }, []);
+  const handleSubmit = async () => { ... };
+  // 500+ lines of logic and JSX
+}
+
+// ✅ GOOD: Separated concerns
+
+// hooks/useMyComponent.ts
+export const useMyComponent = () => {
+  const [state, setState] = useState(...);
+  useEffect(() => { ... }, []);
+  const handleSubmit = async () => { ... };
+  return { state, handleSubmit, ... };
+};
+
+// components/MyComponent.tsx
+export const MyComponent = () => {
+  const { state, handleSubmit } = useMyComponent();
+  return <View>...</View>;
+};
+```
+
+## 🔄 Data Flow
+
+### AWS Amplify DataStore
+
+The system uses AWS Amplify DataStore for data persistence and sync:
+
+```
+User Interaction
+    ↓
+Component Event Handler
+    ↓
+Custom Hook
+    ↓
+Service Layer
+    ↓
+AWS DataStore
+    ↓
+Cloud Sync (when online)
+```
+
+### Real-Time Updates
+
+Components subscribe to DataStore changes for real-time updates:
+
+```typescript
+// In a custom hook
+useEffect(() => {
+  const subscription = DataStore.observe(Task).subscribe(
+    ({ element, opType }) => {
+      // Handle real-time updates
+      if (opType === "INSERT") {
+        // Add new task to list
+      } else if (opType === "UPDATE") {
+        // Update existing task
+      } else if (opType === "DELETE") {
+        // Remove task from list
+      }
+    }
+  );
+
+  return () => subscription.unsubscribe();
+}, []);
+```
+
+## 🎨 Design System
+
+### Color System
+
+Two color systems are available:
+- **AppColors** - Primary color system (preferred)
+- **Colors** - Theme-aware colors (light/dark mode)
+
+```typescript
+import { AppColors } from "@constants/AppColors";
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: AppColors.powderGray,
+    borderColor: AppColors.CIBlue,
+  },
+});
+```
+
+### Typography
+
+Use the `ThemedText` component for consistent typography:
+
+```typescript
+<ThemedText type="title">Heading</ThemedText>
+<ThemedText type="default">Body text</ThemedText>
+<ThemedText type="link">Clickable link</ThemedText>
+```
+
+### Spacing
+
+Use consistent spacing based on 4px or 8px increments:
+- Small: 8px
+- Medium: 16px
+- Large: 24px
+- XLarge: 32px
+
+## 🌐 Internationalization
+
+### i18next Integration
+
+All user-facing text uses i18next for translations:
+
+```typescript
+import { useTaskTranslation } from "@translations/index";
+
+const { t } = useTaskTranslation();
+
+// Usage
+<Text>{t("task.begin")}</Text>
+<Text>{t("common.save")}</Text>
+```
+
+### Translation Files
+
+Translations are organized by namespace:
+
+```json
+// translations/en.json
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "task": {
+    "begin": "Begin",
+    "resume": "Resume",
+    "completed": "Completed"
+  }
+}
+```
+
+## 📝 Logging System
+
+### Centralized Logging
+
+All logging goes through the `LoggingService`:
+
+```typescript
+// In React components/hooks
+import { useLogger } from "@hooks/useLogger";
+const logger = useLogger();
+
+logger.info("Task loaded", { taskId }, "TaskList", "DATA-1", "📋");
+logger.error("Failed to load task", error, "TaskList");
+
+// In services/utilities
+import { getLoggingService } from "@services/LoggingService";
+const logger = getLoggingService().createLogger("TaskService");
+
+logger.info("Task created", { taskId }, "CREATE", "✅");
+```
+
+### Log Format
+
+Logs follow a consistent format:
+```
+[ICON] [PLATFORM] [STEP] ServiceName: Message
+```
+
+Example:
+```
+📋 [iOS] [DATA-1] TaskList: Loaded 5 tasks (synced-with-cloud)
+```
+
+## 🧪 Testing Strategy
+
+### Test Organization
+
+Tests are colocated with source files:
+
+```
+src/
+├── hooks/
+│   ├── useTaskList.ts
+│   └── __tests__/
+│       └── useTaskList.test.ts
+├── services/
+│   ├── TaskService.ts
+│   └── __tests__/
+│       └── TaskService.test.ts
+└── components/
+    ├── TaskCard.tsx
+    └── __tests__/
+        └── TaskCard.test.tsx
+```
+
+### Test Coverage
+
+- **Hooks**: Test state changes, side effects, and edge cases
+- **Services**: Test all public methods and error handling
+- **Components**: Test rendering, interactions, and props
+- **Utils**: Test all functions with edge cases
+
+## 🔐 Type Safety
+
+### TypeScript Best Practices
+
+- **No `any` types** - Use proper types, `unknown`, or generics
+- **Explicit return types** - All functions have return types
+- **Strict null checks** - Handle `null` and `undefined` explicitly
+- **Type guards** - Use type guards instead of type assertions
+
+```typescript
+// ❌ Bad
+function process(data: any) {
+  return data.value;
+}
+
+// ✅ Good
+function process<T extends { value: string }>(data: T): string {
+  return data.value;
+}
+
+// ✅ Good error handling
+catch (error: unknown) {
+  const message = error instanceof Error 
+    ? error.message 
+    : String(error);
+  logger.error("Failed", message);
+}
+```
+
+## 📦 Package Exports
+
+The package exports components, hooks, services, and types:
+
+```typescript
+// From package root (src/index.ts)
+export { Button, Card, TextField } from "./components/ui";
+export { TaskCard, AppointmentCard } from "./components";
+export { useTaskList, useLogger } from "./hooks";
+export { TaskService } from "./services";
+export type { Task, Question } from "./types";
+```
+
+## 🚀 Build System
+
+### TypeScript Compilation
+
+The package uses TypeScript for compilation:
+
+```bash
+# Build command
+yarn build
+
+# Output
+dist/
+├── components/
+│   ├── ui/
+│   │   ├── Button.js
+│   │   ├── Button.d.ts
+│   │   └── ...
+│   └── ...
+└── index.js
+```
+
+### Module Resolution
+
+Path aliases simplify imports:
+
+```typescript
+// Instead of
+import { Task } from "../../types/Task";
+
+// Use
+import { Task } from "@task-types/Task";
+```
+
+## 🔄 State Management
+
+### Local State
+
+Use React hooks for component-level state:
+- `useState` for simple state
+- `useReducer` for complex state logic
+- `useMemo` for computed values
+- `useCallback` for stable callbacks
+
+### Global State
+
+DataStore subscriptions provide global real-time state:
+- Components subscribe to DataStore changes
+- Updates propagate automatically
+- No need for Redux or MobX
+
+## 📱 Platform Support
+
+The package supports:
+- **iOS** - Native iOS apps
+- **Android** - Native Android apps
+- **Web** - React Native Web (via Storybook)
+
+Platform-specific code uses `Platform.select`:
+
+```typescript
+import { Platform } from "react-native";
+
+const styles = StyleSheet.create({
+  text: {
+    ...Platform.select({
+      ios: { fontFamily: "System" },
+      android: { fontFamily: "Roboto" },
+      web: { fontFamily: "system-ui" },
+    }),
+  },
+});
+```
+
+## 🎯 Design Goals
+
+1. **Reusability** - Components can be used in multiple contexts
+2. **Composability** - Combine simple components into complex ones
+3. **Type Safety** - Full TypeScript coverage
+4. **Testability** - All code has unit tests
+5. **Accessibility** - WCAG compliant
+6. **Performance** - Optimized for mobile devices
+7. **Maintainability** - Clean, documented code
+

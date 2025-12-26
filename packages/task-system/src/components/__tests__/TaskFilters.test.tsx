@@ -1,14 +1,17 @@
-import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
 import { TaskFilters } from "@components/TaskFilters";
 import {
+  TaskFilters as TaskFiltersType,
   TaskStatus,
   TaskType,
-  TaskFilters as TaskFiltersType,
 } from "@task-types/Task";
+import { fireEvent, render } from "@testing-library/react-native";
+import React from "react";
+import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 
 // Mock useRTL
-const mockRtlStyle = jest.fn((style: any) => style);
+const mockRtlStyle = jest.fn(
+  (style: StyleProp<ViewStyle | TextStyle>) => style
+);
 const mockUseRTL = jest.fn(() => ({
   rtlStyle: mockRtlStyle,
   isRTL: false,
@@ -42,7 +45,7 @@ describe("TaskFilters", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockUseRTL.mockReturnValue({
-      rtlStyle: jest.fn((style: any) => style),
+      rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => style),
       isRTL: false,
     });
   });

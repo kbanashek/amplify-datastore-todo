@@ -23,7 +23,9 @@ jest.mock("@components/TranslatedText", () => {
   const React = require("react");
   const { Text } = require("react-native");
   return {
-    TranslatedText: ({ text, style }: any) => <Text style={style}>{text}</Text>,
+    TranslatedText: ({ text, style }: { text: string; style?: unknown }) => (
+      <Text style={style}>{text}</Text>
+    ),
   };
 });
 

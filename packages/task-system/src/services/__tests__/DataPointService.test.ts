@@ -8,7 +8,9 @@ import {
 
 jest.mock("@aws-amplify/datastore");
 
-const createMockDataPoint = (overrides: Partial<any> = {}): any => ({
+const createMockDataPoint = (
+  overrides: Partial<DataPoint> = {}
+): DataPoint => ({
   id: "test-datapoint-id",
   pk: "test-pk",
   sk: "test-sk",
@@ -17,7 +19,9 @@ const createMockDataPoint = (overrides: Partial<any> = {}): any => ({
   ...overrides,
 });
 
-const createMockDataPointInstance = (overrides: Partial<any> = {}): any => ({
+const createMockDataPointInstance = (
+  overrides: Partial<DataPoint> = {}
+): DataPoint => ({
   id: "test-instance-id",
   pk: "test-pk",
   sk: "test-sk",

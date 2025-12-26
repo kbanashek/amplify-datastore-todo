@@ -1,5 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
+import type { StyleProp, ViewStyle, TextStyle } from "react-native";
 import { GroupedTasksView } from "@components/GroupedTasksView";
 import { GroupedTask } from "@hooks/useGroupedTasks";
 import { Task, TaskStatus, TaskType } from "@task-types/Task";
@@ -9,7 +10,9 @@ import { createMockAppointment } from "../../__mocks__/Appointment.mock";
 import { createMockGroupedTask } from "../../__mocks__/GroupedTask.mock";
 
 // Mock hooks
-const mockRtlStyle = jest.fn((style: any) => style);
+const mockRtlStyle = jest.fn(
+  (style: StyleProp<ViewStyle | TextStyle>) => style
+);
 const mockUseRTL = jest.fn(() => ({
   rtlStyle: mockRtlStyle,
   isRTL: false,
@@ -32,7 +35,15 @@ jest.mock("@components/TranslatedText", () => {
   const React = require("react");
   const { Text } = require("react-native");
   return {
-    TranslatedText: ({ text, testID, ...props }: any) => (
+    TranslatedText: ({
+      text,
+      testID,
+      ...props
+    }: {
+      text: string;
+      testID?: string;
+      [key: string]: unknown;
+    }) => (
       <Text testID={testID} {...props}>
         {text}
       </Text>
@@ -45,7 +56,15 @@ jest.mock("@components/TaskCard", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    TaskCard: ({ task, onPress, onDelete }: any) => (
+    TaskCard: ({
+      task,
+      onPress,
+      onDelete,
+    }: {
+      task: { id: string; title: string; [key: string]: unknown };
+      onPress?: () => void;
+      onDelete?: () => void;
+    }) => (
       <View testID={`task-card-${task.id}`}>
         <Text testID={`task-card-title-${task.id}`}>{task.title}</Text>
         {onPress && (
@@ -74,7 +93,13 @@ jest.mock("@components/AppointmentCard", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    AppointmentCard: ({ appointment, onPress }: any) => (
+    AppointmentCard: ({
+      appointment,
+      onPress,
+    }: {
+      appointment: unknown;
+      onPress?: () => void;
+    }) => (
       <View testID={`appointment-card-${appointment.appointmentId}`}>
         <Text testID={`appointment-card-title-${appointment.appointmentId}`}>
           {appointment.title}
@@ -115,7 +140,7 @@ describe("GroupedTasksView", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockUseRTL.mockReturnValue({
-      rtlStyle: jest.fn((style: any) => style),
+      rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => style),
       isRTL: false,
     });
   });
@@ -318,7 +343,7 @@ describe("GroupedTasksView", () => {
   describe("RTL Support", () => {
     it("renders correctly in LTR mode", () => {
       mockUseRTL.mockReturnValueOnce({
-        rtlStyle: jest.fn((style: any) => style),
+        rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => style),
         isRTL: false,
       });
 
@@ -331,7 +356,7 @@ describe("GroupedTasksView", () => {
 
     it("renders correctly in RTL mode", () => {
       mockUseRTL.mockReturnValueOnce({
-        rtlStyle: jest.fn((style: any) => style),
+        rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => style),
         isRTL: true,
       });
 
@@ -345,7 +370,7 @@ describe("GroupedTasksView", () => {
 
     it("flips day header direction in RTL mode", () => {
       mockUseRTL.mockReturnValueOnce({
-        rtlStyle: jest.fn((style: any) => style),
+        rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => style),
         isRTL: true,
       });
 
@@ -537,8 +562,8 @@ describe("GroupedTasksView", () => {
 
     it("matches snapshot in RTL mode", () => {
       mockUseRTL.mockReturnValueOnce({
-        rtlStyle: jest.fn((style: any) => ({
-          ...style,
+        rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => ({
+          ...(style as Record<string, unknown>),
           flexDirection: "row-reverse",
         })),
         isRTL: true,

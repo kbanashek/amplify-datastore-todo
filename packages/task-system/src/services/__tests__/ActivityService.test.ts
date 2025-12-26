@@ -4,7 +4,7 @@ import { ActivityService } from "@services/ActivityService";
 
 jest.mock("@aws-amplify/datastore");
 
-const createMockActivity = (overrides: Partial<any> = {}): any => ({
+const createMockActivity = (overrides: Partial<Activity> = {}): Activity => ({
   id: "test-activity-id",
   pk: "test-pk",
   sk: "test-sk",

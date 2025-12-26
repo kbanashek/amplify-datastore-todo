@@ -19,7 +19,17 @@ jest.mock("@components/ThemedView", () => {
   const React = require("react");
   const { View } = require("react-native");
   return {
-    ThemedView: ({ children, testID, style, ...props }: any) => (
+    ThemedView: ({
+      children,
+      testID,
+      style,
+      ...props
+    }: {
+      children: React.ReactNode;
+      testID?: string;
+      style?: unknown;
+      [key: string]: unknown;
+    }) => (
       <View testID={testID} style={style} {...props}>
         {children}
       </View>

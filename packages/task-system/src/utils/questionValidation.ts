@@ -8,6 +8,7 @@ import {
   QuestionType,
   ValidationType,
 } from "@task-types/activity-config-enums";
+import type { AnswerValue } from "@task-types/AnswerValue";
 import { getServiceLogger } from "@utils/serviceLogger";
 
 /**
@@ -16,7 +17,7 @@ import { getServiceLogger } from "@utils/serviceLogger";
  */
 export const validateQuestionAnswer = (
   question: ParsedElement["question"],
-  answer: any,
+  answer: AnswerValue,
   allAnswers?: Record<string, any>
 ): string[] => {
   const errors: string[] = [];
@@ -195,7 +196,7 @@ export const validateQuestionAnswer = (
  */
 export const validateScreen = (
   screen: ParsedScreen,
-  answers: Record<string, any>
+  answers: Record<string, AnswerValue>
 ): Record<string, string[]> => {
   const errors: Record<string, string[]> = {};
 
@@ -218,7 +219,7 @@ export const validateScreen = (
  */
 export const validateAllScreens = (
   screens: ParsedScreen[],
-  answers: Record<string, any>
+  answers: Record<string, AnswerValue>
 ): Record<string, string[]> => {
   const errors: Record<string, string[]> = {};
 
@@ -235,7 +236,7 @@ export const validateAllScreens = (
  */
 export const isScreenValid = (
   screen: ParsedScreen,
-  answers: Record<string, any>
+  answers: Record<string, AnswerValue>
 ): boolean => {
   const errors = validateScreen(screen, answers);
   return Object.keys(errors).length === 0;

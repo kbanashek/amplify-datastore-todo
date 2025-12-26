@@ -9,7 +9,19 @@ jest.mock("@expo/vector-icons/MaterialIcons", () => {
   const { Text } = require("react-native");
   return {
     __esModule: true,
-    default: ({ name, size, color, style, testID }: any) => (
+    default: ({
+      name,
+      size,
+      color,
+      style,
+      testID,
+    }: {
+      name: string;
+      size?: number;
+      color?: string;
+      style?: unknown;
+      testID?: string;
+    }) => (
       <Text testID={testID} style={[{ fontSize: size, color }, style]}>
         {name}
       </Text>

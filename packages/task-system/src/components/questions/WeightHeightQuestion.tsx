@@ -10,11 +10,22 @@ import {
   View,
 } from "react-native";
 
+/**
+ * Compound answer format for weight/height questions.
+ * Used when a question requires both a main and secondary value (e.g., feet + inches).
+ */
+interface CompoundAnswer {
+  /** Map of unit type to value (e.g., { "ft": "5", "in": "10" }) */
+  value: Record<string, string>;
+  /** Type of compound unit (e.g., "feet-inches") */
+  type: string;
+}
+
 interface WeightHeightQuestionProps {
   question: Question;
-  value: string | Record<string, any> | null;
-  onChange: (value: string | Record<string, any>) => void;
-  displayProperties: Record<string, any>;
+  value: string | CompoundAnswer | null;
+  onChange: (value: string | CompoundAnswer) => void;
+  displayProperties: Record<string, unknown>;
   errors: string[];
 }
 
@@ -115,7 +126,7 @@ export const WeightHeightQuestion: React.FC<WeightHeightQuestionProps> = ({
 
   const updateAnswer = (main: string, secondary: string) => {
     if (isCompound) {
-      const answerObj: any = {
+      const answerObj: CompoundAnswer = {
         value: {},
         type: compoundUnitType,
       };

@@ -36,7 +36,15 @@ jest.mock("@components/TranslatedText", () => {
   const React = require("react");
   const { Text } = require("react-native");
   return {
-    TranslatedText: ({ text, testID, ...props }: any) => (
+    TranslatedText: ({
+      text,
+      testID,
+      ...props
+    }: {
+      text: string;
+      testID?: string;
+      [key: string]: unknown;
+    }) => (
       <Text testID={testID} {...props}>
         {text}
       </Text>
@@ -49,7 +57,9 @@ jest.mock("@components/ui/IconSymbol", () => {
   const React = require("react");
   const { Text } = require("react-native");
   return {
-    IconSymbol: ({ name }: any) => <Text testID={`icon-${name}`}>{name}</Text>,
+    IconSymbol: ({ name }: { name: string }) => (
+      <Text testID={`icon-${name}`}>{name}</Text>
+    ),
   };
 });
 

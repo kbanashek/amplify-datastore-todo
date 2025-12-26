@@ -1,11 +1,12 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
+import type { TOptions } from "i18next";
 import { TranslationTest } from "@components/TranslationTest";
 
 // Mock useTaskTranslation
 const mockSetLanguage = jest.fn();
-const mockT = jest.fn((key: string, options?: any) => {
-  if (options?.fallback) return options.fallback;
+const mockT = jest.fn((key: string, options?: TOptions) => {
+  if (options?.defaultValue) return options.defaultValue;
   return key;
 });
 
@@ -27,7 +28,7 @@ jest.mock("@components/TranslatedText", () => {
   const React = require("react");
   const { Text } = require("react-native");
   return {
-    TranslatedText: ({ text, testID }: any) => (
+    TranslatedText: ({ text, testID }: { text: string; testID?: string }) => (
       <Text testID={testID}>{text}</Text>
     ),
   };

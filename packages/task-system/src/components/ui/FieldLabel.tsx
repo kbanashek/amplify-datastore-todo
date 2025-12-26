@@ -1,6 +1,6 @@
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
 
 interface FieldLabelProps {
   label: string;
@@ -19,7 +19,7 @@ interface FieldLabelProps {
     | "900";
   color?: string;
   required?: boolean;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }
 
 /**
