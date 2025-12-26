@@ -26,9 +26,9 @@ const meta = {
       control: "text",
       description: "Error text shown when validation fails",
     },
-    disabled: {
+    editable: {
       control: "boolean",
-      description: "Whether the input is disabled",
+      description: "Whether the input is editable",
     },
   },
 } satisfies Meta<typeof TextField>;
