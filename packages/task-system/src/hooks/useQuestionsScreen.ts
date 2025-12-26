@@ -9,6 +9,7 @@ import { Task as DataStoreTask } from "@models/index";
 import { TaskService } from "@services/TaskService";
 import { TempAnswerSyncService } from "@services/TempAnswerSyncService";
 import { Task, TaskStatus } from "@task-types/Task";
+import type { AnswerValue } from "@task-types/AnswerValue";
 import { getServiceLogger } from "@utils/serviceLogger";
 import { extractActivityIdFromTask } from "@utils/taskUtils";
 import { useActivityData } from "@hooks/useActivityData";
@@ -39,7 +40,7 @@ export interface UseQuestionsScreenReturn {
   task: Task | null;
 
   // Actions
-  handleAnswerChange: (questionId: string, answer: any) => void;
+  handleAnswerChange: (questionId: string, answer: AnswerValue) => void;
   handleSubmit: () => Promise<void>;
   handleNext: () => void;
   handlePrevious: () => void;

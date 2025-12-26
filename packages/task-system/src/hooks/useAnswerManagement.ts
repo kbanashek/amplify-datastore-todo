@@ -1,21 +1,22 @@
 import { useCallback, useState } from "react";
 import { ParsedActivityData } from "@utils/activityParser";
 import { validateQuestionAnswer } from "@utils/questionValidation";
+import type { AnswerValue } from "@task-types/AnswerValue";
 
 /**
  * Return type for the useAnswerManagement hook.
  */
 export interface UseAnswerManagementReturn {
   /** Current answers keyed by question ID */
-  answers: Record<string, unknown>;
+  answers: Record<string, AnswerValue>;
   /** Validation errors keyed by question ID */
   errors: Record<string, string[]>;
   /** Setter for answers state */
-  setAnswers: React.Dispatch<React.SetStateAction<Record<string, unknown>>>;
+  setAnswers: React.Dispatch<React.SetStateAction<Record<string, AnswerValue>>>;
   /** Setter for errors state */
   setErrors: React.Dispatch<React.SetStateAction<Record<string, string[]>>>;
   /** Handler for answer changes with immediate validation */
-  handleAnswerChange: (questionId: string, answer: unknown) => void;
+  handleAnswerChange: (questionId: string, answer: AnswerValue) => void;
 }
 
 /**
@@ -67,11 +68,12 @@ export const useAnswerManagement = ({
   currentScreenIndex,
   initialAnswers = {},
 }: UseAnswerManagementOptions): UseAnswerManagementReturn => {
-  const [answers, setAnswers] = useState<Record<string, any>>(initialAnswers);
+  const [answers, setAnswers] =
+    useState<Record<string, AnswerValue>>(initialAnswers);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
 
   const handleAnswerChange = useCallback(
-    (questionId: string, answer: any) => {
+    (questionId: string, answer: AnswerValue) => {
       // Update answer state
       setAnswers(prev => ({
         ...prev,

@@ -1,4 +1,5 @@
 import { ParsedElement } from "@task-types/ActivityConfig";
+import type { AnswerValue } from "@task-types/AnswerValue";
 
 /**
  * Formats an answer value for display in the review screen.
@@ -35,7 +36,7 @@ import { ParsedElement } from "@task-types/ActivityConfig";
  */
 export const formatAnswer = (
   element: ParsedElement,
-  answer: any,
+  answer: AnswerValue,
   notAnsweredText: string = "Not answered"
 ): string => {
   if (answer === null || answer === undefined || answer === "") {
