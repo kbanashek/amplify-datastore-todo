@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { Text } from "react-native";
-import { ThemedView } from "./ThemedView";
+import { ThemedView } from "@components/ThemedView";
 
 const meta = {
   title: "Components/ThemedView",

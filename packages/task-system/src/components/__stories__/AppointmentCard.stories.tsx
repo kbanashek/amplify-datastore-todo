@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { View } from "react-native";
-import { AppointmentCard } from "./AppointmentCard";
+import { AppointmentCard } from "@components/AppointmentCard";
+import type { Appointment } from "@task-types/Appointment";
 
 // Mock appointment data
 const baseAppointment = {
@@ -21,7 +22,7 @@ const meta = {
   },
   tags: ["autodocs"],
   decorators: [
-    Story => (
+    (Story: React.ComponentType) => (
       <View style={{ minWidth: 350 }}>
         <Story />
       </View>
@@ -217,6 +218,7 @@ export const Interactive: Story = {
       startDateTime: Date.now() + 86400000,
       endDateTime: Date.now() + 86400000 + 3600000,
     },
-    onPress: apt => console.log("Appointment pressed:", apt.title),
+    onPress: (apt: Appointment) =>
+      console.log("Appointment pressed:", apt.title),
   },
 };

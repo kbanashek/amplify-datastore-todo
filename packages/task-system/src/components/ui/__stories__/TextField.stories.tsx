@@ -87,7 +87,7 @@ export const Disabled: Story = {
   args: {
     label: "Username",
     placeholder: "Username",
-    disabled: true,
+    editable: false,
   },
   render: args => {
     const [value, setValue] = useState("john.doe");

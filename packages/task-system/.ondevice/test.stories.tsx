@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import { storiesOf } from "@storybook/react-native/V6";
 import { Button } from "../src/components/ui/Button";
 

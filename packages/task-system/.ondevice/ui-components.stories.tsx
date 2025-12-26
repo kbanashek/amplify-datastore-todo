@@ -118,7 +118,7 @@ storiesOf("UI Components/TextField", module)
           placeholder="Enter email"
           value={value}
           onChangeText={setValue}
-          error="Invalid email address"
+          errorText="Invalid email address"
         />
       </View>
     );

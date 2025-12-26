@@ -28,7 +28,7 @@ A comprehensive Storybook implementation for the `@orion/task-system` package, r
 
 Stories are organized in `__stories__/` directories at each component level:
 
-```
+```text
 src/components/
 ├── __stories__/              # Top-level component stories
 │   └── TaskCard.stories.tsx
@@ -42,7 +42,7 @@ src/components/
 
 For `src/components/ui/NewComponent.tsx`, create:
 
-```
+```text
 src/components/ui/__stories__/NewComponent.stories.tsx
 ```
 
@@ -257,6 +257,6 @@ yarn storybook-start     # Start on-device Storybook server
 
 ## Resources
 
-- **React Hooks Rules:** https://react.dev/link/rules-of-hooks
-- **React Native Storybook:** https://github.com/storybookjs/react-native
+- **React Hooks Rules:** [React Hooks Rules](https://react.dev/link/rules-of-hooks)
+- **React Native Storybook:** [React Native Storybook](https://github.com/storybookjs/react-native)
 - **Component List:** See `COMPONENTS_ADDED.md` in this directory
