@@ -124,7 +124,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
       return (
         <View
           style={styles.todaySectionHeader}
-          testID={`task-list-section-${section.title}`}
+          testID={`task-list-section-header-${section.title}`}
         >
           <View style={styles.todaySectionContent}>
             <Text style={styles.todaySectionTitle}>📅 {section.title}</Text>
@@ -143,7 +143,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
     return (
       <View
         style={styles.sectionHeader}
-        testID={`task-list-section-${section.title}`}
+        testID={`task-list-section-header-${section.title}`}
       >
         <Text style={styles.sectionTitle}>{section.title}</Text>
         <View style={styles.sectionCountBadge}>
@@ -173,28 +173,67 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
   const renderEmpty = () => {
     if (loading) {
       return (
-        <View style={styles.emptyContainer} testID="task-list-loading">
-          <ActivityIndicator size="large" color="#3498db" />
-          <Text style={styles.emptyText}>Loading tasks...</Text>
+        <View style={styles.emptyContainer} testID="task-list-empty-loading">
+          <ActivityIndicator
+            size="large"
+            color="#3498db"
+            testID="task-list-loading-spinner"
+          />
+          <Text style={styles.emptyText} testID="task-list-loading-text">
+            Loading tasks...
+          </Text>
         </View>
       );
     }
 
     if (error) {
       return (
-        <View style={styles.emptyContainer} testID="task-list-error">
-          <Text style={styles.errorText}>{error}</Text>
-          <Text style={styles.emptyText}>Pull to refresh</Text>
+        <View style={styles.emptyContainer} testID="task-list-empty-error">
+          <Text style={styles.errorText} testID="task-list-error-text">
+            {error}
+          </Text>
+          <Text style={styles.emptyText} testID="task-list-error-hint">
+            Pull to refresh
+          </Text>
         </View>
       );
     }
 
     return (
       <View style={styles.emptyContainer} testID="task-list-empty">
-        <Text style={styles.emptyText}>No tasks yet. Create one!</Text>
+        <Text style={styles.emptyText} testID="task-list-empty-text">
+          No tasks yet. Create one!
+        </Text>
       </View>
     );
   };
+
+  // Show loading state if loading and no tasks yet
+  if (loading && tasks.length === 0) {
+    return (
+      <View style={styles.container} testID="task-list">
+        {renderEmpty()}
+      </View>
+    );
+  }
+
+  // Show error state if error exists
+  if (error && tasks.length === 0) {
+    return (
+      <View style={styles.container} testID="task-list">
+        {renderEmpty()}
+      </View>
+    );
+  }
+
+  // Show empty state only if no tasks and not loading
+  if (tasks.length === 0 && !loading && !error) {
+    return (
+      <View style={styles.container} testID="task-list">
+        {renderEmpty()}
+      </View>
+    );
+  }
 
   // Debug: Always show tasks even if sections are empty
   logger.debug("RENDER DECISION", {
@@ -205,15 +244,16 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
   });
 
   // Always show sections (Today's Tasks is always included, even if empty)
-  if (sections.length === 0 && !loading && tasks.length > 0) {
+  if (sections.length === 0 && tasks.length > 0) {
     logger.warn("Have tasks but no sections! Using fallback", { tasks });
     // Show tasks anyway in a fallback section
     const fallbackSections = [
       { title: "Today's Tasks", data: tasks, highlight: true },
     ];
     return (
-      <View style={styles.container}>
+      <View style={styles.container} testID="task-list">
         <SectionList
+          testID="task-list-section-list"
           sections={fallbackSections}
           renderItem={renderTask}
           renderSectionHeader={renderSectionHeader}
@@ -222,11 +262,6 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
         />
       </View>
     );
-  }
-
-  // Show empty state only if no tasks and not loading
-  if (sections.length === 0 && !loading && tasks.length === 0) {
-    return renderEmpty();
   }
 
   logger.debug("RENDERING MAIN SECTIONLIST", {
@@ -241,12 +276,15 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
     <View style={styles.container} testID="task-list">
       {isSynced && (
         <View style={styles.syncIndicator} testID="task-list-sync-indicator">
-          <View style={styles.syncDot} />
-          <Text style={styles.syncText}>Synced</Text>
+          <View style={styles.syncDot} testID="task-list-sync-dot" />
+          <Text style={styles.syncText} testID="task-list-sync-text">
+            Synced
+          </Text>
         </View>
       )}
 
       <SectionList
+        testID="task-list-section-list"
         sections={sections}
         renderItem={renderTask}
         renderSectionHeader={info => {

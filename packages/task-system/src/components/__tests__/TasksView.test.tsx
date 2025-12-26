@@ -2,6 +2,7 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import { TasksView } from "@components/TasksView";
 import { Task, TaskStatus, TaskType } from "@task-types/Task";
+import { createMockTask } from "../../__mocks__/Task.mock";
 
 // Mock useTaskList hook
 const mockHandleDeleteTask = jest.fn();
@@ -68,22 +69,6 @@ jest.mock("@services/TaskService", () => ({
 
 describe("TasksView", () => {
   const mockOnTaskPress = jest.fn();
-
-  const createMockTask = (
-    id: string,
-    title: string,
-    startTime?: number
-  ): Task => ({
-    id,
-    pk: `PK-${id}`,
-    sk: `SK-${id}`,
-    title,
-    taskType: TaskType.SCHEDULED,
-    status: TaskStatus.OPEN,
-    startTimeInMillSec: startTime,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  });
 
   beforeEach(() => {
     jest.clearAllMocks();

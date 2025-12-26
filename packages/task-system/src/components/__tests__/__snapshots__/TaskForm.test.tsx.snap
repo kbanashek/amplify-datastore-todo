@@ -31,6 +31,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "marginBottom": 16,
         }
       }
+      testID="task-form-title"
     >
       Create New Task for today
     </Text>
@@ -99,6 +100,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "marginTop": 4,
         }
       }
+      testID="task-form-type-label"
     >
       Task Type *
     </Text>
@@ -111,16 +113,18 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "marginBottom": 16,
         }
       }
+      testID="task-form-type-group"
     >
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select SCHEDULED task type"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": true,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": true,
           }
         }
         accessibilityValue={
@@ -174,14 +178,15 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select TIMED task type"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -233,14 +238,15 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select EPISODIC task type"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -302,6 +308,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "marginTop": 4,
         }
       }
+      testID="task-form-status-label"
     >
       Status *
     </Text>
@@ -314,16 +321,18 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "marginBottom": 16,
         }
       }
+      testID="task-form-status-group"
     >
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select OPEN status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": true,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": true,
           }
         }
         accessibilityValue={
@@ -377,14 +386,15 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select VISIBLE status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -436,14 +446,15 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select STARTED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -495,14 +506,15 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select INPROGRESS status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -554,14 +566,15 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select COMPLETED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -613,14 +626,15 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select EXPIRED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -672,14 +686,15 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select RECALLED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -732,7 +747,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
       </View>
     </View>
     <TextInput
-      accessibilityLabel="Partition Key"
+      accessibilityLabel="Partition key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -752,7 +767,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
       value=""
     />
     <TextInput
-      accessibilityLabel="Sort Key"
+      accessibilityLabel="Sort key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -773,12 +788,20 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
     />
     <View
       style={
-        {
-          "flexDirection": "row",
-          "gap": 12,
-          "marginTop": 8,
-        }
+        [
+          {
+            "flexDirection": "row",
+            "gap": 12,
+            "marginTop": 8,
+          },
+          {
+            "flexDirection": "row-reverse",
+            "gap": 12,
+            "marginTop": 8,
+          },
+        ]
       }
+      testID="task-form-buttons"
     >
       <View
         accessibilityLabel="Reset form"
@@ -836,7 +859,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Submit task"
+        accessibilityLabel="Create task"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -926,6 +949,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "marginBottom": 16,
         }
       }
+      testID="task-form-title"
     >
       Create New Task for today
     </Text>
@@ -994,6 +1018,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "marginTop": 4,
         }
       }
+      testID="task-form-type-label"
     >
       Task Type *
     </Text>
@@ -1006,16 +1031,18 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "marginBottom": 16,
         }
       }
+      testID="task-form-type-group"
     >
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select SCHEDULED task type"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": true,
+            "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": true,
           }
         }
         accessibilityValue={
@@ -1069,14 +1096,15 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select TIMED task type"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -1128,14 +1156,15 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select EPISODIC task type"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -1197,6 +1226,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "marginTop": 4,
         }
       }
+      testID="task-form-status-label"
     >
       Status *
     </Text>
@@ -1209,16 +1239,18 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "marginBottom": 16,
         }
       }
+      testID="task-form-status-group"
     >
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select OPEN status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": true,
+            "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": true,
           }
         }
         accessibilityValue={
@@ -1272,14 +1304,15 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select VISIBLE status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -1331,14 +1364,15 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select STARTED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -1390,14 +1424,15 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select INPROGRESS status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -1449,14 +1484,15 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select COMPLETED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -1508,14 +1544,15 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select EXPIRED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -1567,14 +1604,15 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select RECALLED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": true,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -1627,7 +1665,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
       </View>
     </View>
     <TextInput
-      accessibilityLabel="Partition Key"
+      accessibilityLabel="Partition key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={false}
@@ -1647,7 +1685,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
       value=""
     />
     <TextInput
-      accessibilityLabel="Sort Key"
+      accessibilityLabel="Sort key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={false}
@@ -1668,12 +1706,20 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
     />
     <View
       style={
-        {
-          "flexDirection": "row",
-          "gap": 12,
-          "marginTop": 8,
-        }
+        [
+          {
+            "flexDirection": "row",
+            "gap": 12,
+            "marginTop": 8,
+          },
+          {
+            "flexDirection": "row",
+            "gap": 12,
+            "marginTop": 8,
+          },
+        ]
       }
+      testID="task-form-buttons"
     >
       <View
         accessibilityLabel="Reset form"
@@ -1731,7 +1777,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Submit task"
+        accessibilityLabel="Create task"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -1776,6 +1822,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         <ActivityIndicator
           color="#fff"
           size="small"
+          testID="task-form-submit-loading"
         />
       </View>
     </View>
@@ -1814,6 +1861,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "marginBottom": 16,
         }
       }
+      testID="task-form-title"
     >
       Create New Task for today
     </Text>
@@ -1882,6 +1930,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "marginTop": 4,
         }
       }
+      testID="task-form-type-label"
     >
       Task Type *
     </Text>
@@ -1894,16 +1943,18 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "marginBottom": 16,
         }
       }
+      testID="task-form-type-group"
     >
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select SCHEDULED task type"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": true,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": true,
           }
         }
         accessibilityValue={
@@ -1957,14 +2008,15 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select TIMED task type"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -2016,14 +2068,15 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select EPISODIC task type"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -2085,6 +2138,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "marginTop": 4,
         }
       }
+      testID="task-form-status-label"
     >
       Status *
     </Text>
@@ -2097,16 +2151,18 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "marginBottom": 16,
         }
       }
+      testID="task-form-status-group"
     >
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select OPEN status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": true,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": true,
           }
         }
         accessibilityValue={
@@ -2160,14 +2216,15 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select VISIBLE status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -2219,14 +2276,15 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select STARTED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -2278,14 +2336,15 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select INPROGRESS status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -2337,14 +2396,15 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select COMPLETED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -2396,14 +2456,15 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select EXPIRED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -2455,14 +2516,15 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select RECALLED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -2515,7 +2577,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
       </View>
     </View>
     <TextInput
-      accessibilityLabel="Partition Key"
+      accessibilityLabel="Partition key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -2535,7 +2597,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
       value=""
     />
     <TextInput
-      accessibilityLabel="Sort Key"
+      accessibilityLabel="Sort key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -2556,12 +2618,20 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
     />
     <View
       style={
-        {
-          "flexDirection": "row",
-          "gap": 12,
-          "marginTop": 8,
-        }
+        [
+          {
+            "flexDirection": "row",
+            "gap": 12,
+            "marginTop": 8,
+          },
+          {
+            "flexDirection": "row",
+            "gap": 12,
+            "marginTop": 8,
+          },
+        ]
       }
+      testID="task-form-buttons"
     >
       <View
         accessibilityLabel="Reset form"
@@ -2619,7 +2689,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Submit task"
+        accessibilityLabel="Create task"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -2709,6 +2779,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "marginBottom": 16,
         }
       }
+      testID="task-form-title"
     >
       Create New Task for today
     </Text>
@@ -2720,7 +2791,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "marginBottom": 12,
         }
       }
-      testID="task-form-error-text"
+      testID="task-form-error"
     >
       Validation error
     </Text>
@@ -2789,6 +2860,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "marginTop": 4,
         }
       }
+      testID="task-form-type-label"
     >
       Task Type *
     </Text>
@@ -2801,16 +2873,18 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "marginBottom": 16,
         }
       }
+      testID="task-form-type-group"
     >
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select SCHEDULED task type"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": true,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": true,
           }
         }
         accessibilityValue={
@@ -2864,14 +2938,15 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select TIMED task type"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -2923,14 +2998,15 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select EPISODIC task type"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -2992,6 +3068,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "marginTop": 4,
         }
       }
+      testID="task-form-status-label"
     >
       Status *
     </Text>
@@ -3004,16 +3081,18 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "marginBottom": 16,
         }
       }
+      testID="task-form-status-group"
     >
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select OPEN status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": true,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": true,
           }
         }
         accessibilityValue={
@@ -3067,14 +3146,15 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select VISIBLE status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -3126,14 +3206,15 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select STARTED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -3185,14 +3266,15 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select INPROGRESS status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -3244,14 +3326,15 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select COMPLETED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -3303,14 +3386,15 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select EXPIRED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -3362,14 +3446,15 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select RECALLED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -3422,7 +3507,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
       </View>
     </View>
     <TextInput
-      accessibilityLabel="Partition Key"
+      accessibilityLabel="Partition key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -3442,7 +3527,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
       value=""
     />
     <TextInput
-      accessibilityLabel="Sort Key"
+      accessibilityLabel="Sort key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -3463,12 +3548,20 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
     />
     <View
       style={
-        {
-          "flexDirection": "row",
-          "gap": 12,
-          "marginTop": 8,
-        }
+        [
+          {
+            "flexDirection": "row",
+            "gap": 12,
+            "marginTop": 8,
+          },
+          {
+            "flexDirection": "row",
+            "gap": 12,
+            "marginTop": 8,
+          },
+        ]
       }
+      testID="task-form-buttons"
     >
       <View
         accessibilityLabel="Reset form"
@@ -3526,7 +3619,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Submit task"
+        accessibilityLabel="Create task"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -3616,6 +3709,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "marginBottom": 16,
         }
       }
+      testID="task-form-title"
     >
       Create New Task for today
     </Text>
@@ -3684,6 +3778,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "marginTop": 4,
         }
       }
+      testID="task-form-type-label"
     >
       Task Type *
     </Text>
@@ -3696,16 +3791,18 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "marginBottom": 16,
         }
       }
+      testID="task-form-type-group"
     >
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select SCHEDULED task type"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -3757,14 +3854,15 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select TIMED task type"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": true,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": true,
           }
         }
         accessibilityValue={
@@ -3818,14 +3916,15 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select EPISODIC task type"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -3887,6 +3986,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "marginTop": 4,
         }
       }
+      testID="task-form-status-label"
     >
       Status *
     </Text>
@@ -3899,16 +3999,18 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "marginBottom": 16,
         }
       }
+      testID="task-form-status-group"
     >
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select OPEN status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -3960,14 +4062,15 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select VISIBLE status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -4019,14 +4122,15 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select STARTED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -4078,14 +4182,15 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select INPROGRESS status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -4137,14 +4242,15 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select COMPLETED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": true,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": true,
           }
         }
         accessibilityValue={
@@ -4198,14 +4304,15 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select EXPIRED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -4257,14 +4364,15 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
-        accessibilityRole="radio"
+        accessibilityLabel="Select RECALLED status"
+        accessibilityRole="button"
         accessibilityState={
           {
             "busy": undefined,
-            "checked": false,
+            "checked": undefined,
             "disabled": false,
             "expanded": undefined,
-            "selected": undefined,
+            "selected": false,
           }
         }
         accessibilityValue={
@@ -4317,7 +4425,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
       </View>
     </View>
     <TextInput
-      accessibilityLabel="Partition Key"
+      accessibilityLabel="Partition key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -4337,7 +4445,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
       value="USER#123"
     />
     <TextInput
-      accessibilityLabel="Sort Key"
+      accessibilityLabel="Sort key"
       autoCapitalize="none"
       autoCorrect={false}
       editable={true}
@@ -4358,12 +4466,20 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
     />
     <View
       style={
-        {
-          "flexDirection": "row",
-          "gap": 12,
-          "marginTop": 8,
-        }
+        [
+          {
+            "flexDirection": "row",
+            "gap": 12,
+            "marginTop": 8,
+          },
+          {
+            "flexDirection": "row",
+            "gap": 12,
+            "marginTop": 8,
+          },
+        ]
       }
+      testID="task-form-buttons"
     >
       <View
         accessibilityLabel="Reset form"
@@ -4421,7 +4537,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Submit task"
+        accessibilityLabel="Create task"
         accessibilityRole="button"
         accessibilityState={
           {

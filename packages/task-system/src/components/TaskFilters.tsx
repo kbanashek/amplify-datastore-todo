@@ -49,8 +49,10 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
 
   return (
     <View style={styles.container} testID="task-filters">
-      <View style={styles.header}>
-        <Text style={styles.title}>Filters</Text>
+      <View style={styles.header} testID="task-filters-header">
+        <Text style={styles.title} testID="task-filters-title">
+          Filters
+        </Text>
         {hasActiveFilters && (
           <TouchableOpacity
             onPress={onClearFilters}
@@ -78,7 +80,7 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
       <Text style={styles.sectionTitle} testID="task-filters-status-title">
         Status
       </Text>
-      <View style={styles.filterRow}>
+      <View style={styles.filterRow} testID="task-filters-status-row">
         {Object.values(TaskStatus).map(status => {
           const isSelected = filters.status?.includes(status);
           return (
@@ -91,7 +93,7 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
               onPress={() => toggleStatus(status)}
               testID={`task-filters-status-${status}`}
               accessibilityRole="button"
-              accessibilityLabel={`Filter by ${status}`}
+              accessibilityLabel={`Filter by ${status} status`}
               accessibilityState={{ selected: isSelected }}
             >
               <Text
@@ -110,7 +112,7 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
       <Text style={styles.sectionTitle} testID="task-filters-type-title">
         Task Type
       </Text>
-      <View style={styles.filterRow}>
+      <View style={styles.filterRow} testID="task-filters-type-row">
         {Object.values(TaskType).map(type => {
           const isSelected = filters.taskType?.includes(type);
           return (
@@ -123,7 +125,7 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
               onPress={() => toggleTaskType(type)}
               testID={`task-filters-type-${type}`}
               accessibilityRole="button"
-              accessibilityLabel={`Filter by ${type}`}
+              accessibilityLabel={`Filter by ${type} type`}
               accessibilityState={{ selected: isSelected }}
             >
               <Text

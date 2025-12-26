@@ -5,7 +5,9 @@ exports[`TranslatedText Snapshots matches snapshot in RTL mode 1`] = `
   style={
     [
       undefined,
-      false,
+      {
+        "textAlign": "right",
+      },
     ]
   }
 >
@@ -64,6 +66,6 @@ exports[`TranslatedText Snapshots matches snapshot with translation memory 1`] =
     ]
   }
 >
-  Hello
+  Hola
 </Text>
 `;

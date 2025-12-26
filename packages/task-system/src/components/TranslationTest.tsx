@@ -18,31 +18,66 @@ export const TranslationTest: React.FC = () => {
       <Text style={styles.info} testID="translation-test-current-language">
         Current Language: {currentLanguage}
       </Text>
-      <Text style={styles.info}>i18n.language: {i18n.language}</Text>
+      <Text style={styles.info} testID="translation-test-i18n-language">
+        i18n.language: {i18n.language}
+      </Text>
 
-      <View style={styles.section}>
-        <Text style={styles.label}>Using t() function:</Text>
-        <Text style={styles.result}>
+      <View style={styles.section} testID="translation-test-t-function-section">
+        <Text style={styles.label} testID="translation-test-t-function-label">
+          Using t() function:
+        </Text>
+        <Text style={styles.result} testID="translation-test-t-begin">
           {t("task.begin", { fallback: "BEGIN" })}
         </Text>
-        <Text style={styles.result}>
+        <Text style={styles.result} testID="translation-test-t-resume">
           {t("task.resume", { fallback: "RESUME" })}
         </Text>
-        <Text style={styles.result}>{t("common.ok", { fallback: "OK" })}</Text>
+        <Text style={styles.result} testID="translation-test-t-common-ok">
+          {t("common.ok", { fallback: "OK" })}
+        </Text>
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.label}>Using TranslatedText component:</Text>
-        <TranslatedText text="BEGIN" />
-        <TranslatedText text="RESUME" />
-        <TranslatedText text="OK" />
-        <TranslatedText text="Episodic Task 01 (All required)" />
+      <View
+        style={styles.section}
+        testID="translation-test-translated-text-component-section"
+      >
+        <Text
+          style={styles.label}
+          testID="translation-test-translated-text-component-label"
+        >
+          Using TranslatedText component:
+        </Text>
+        <TranslatedText
+          text="BEGIN"
+          testID="translation-test-translated-begin"
+        />
+        <TranslatedText
+          text="RESUME"
+          testID="translation-test-translated-resume"
+        />
+        <TranslatedText text="OK" testID="translation-test-translated-ok" />
+        <TranslatedText
+          text="Episodic Task 01 (All required)"
+          testID="translation-test-translated-episodic-task"
+        />
       </View>
 
-      <View style={styles.buttonRow} testID="translation-test-buttons">
-        <Button title="English" onPress={() => setLanguage("en")} />
-        <Button title="Spanish" onPress={() => setLanguage("es")} />
-        <Button title="French" onPress={() => setLanguage("fr")} />
+      <View style={styles.buttonRow} testID="translation-test-language-buttons">
+        <Button
+          title="English"
+          onPress={() => setLanguage("en")}
+          testID="translation-test-button-en"
+        />
+        <Button
+          title="Spanish"
+          onPress={() => setLanguage("es")}
+          testID="translation-test-button-es"
+        />
+        <Button
+          title="French"
+          onPress={() => setLanguage("fr")}
+          testID="translation-test-button-fr"
+        />
       </View>
     </View>
   );

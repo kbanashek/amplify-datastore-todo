@@ -8,7 +8,7 @@ exports[`TasksView Snapshots matches snapshot with error state 1`] = `
       "flex": 1,
     }
   }
-  testID="tasks-view"
+  testID="tasks-view-error"
 >
   <Text
     style={
@@ -46,7 +46,7 @@ exports[`TasksView Snapshots matches snapshot with loading state 1`] = `
       "flex": 1,
     }
   }
-  testID="tasks-view"
+  testID="tasks-view-loading"
 >
   <ActivityIndicator
     color="#3498db"
