@@ -220,9 +220,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   captureButtonText: {
+    ...AppFonts.button,
     color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "600",
   },
   selectButton: {
     backgroundColor: "#f8f9fa",
@@ -233,9 +232,8 @@ const styles = StyleSheet.create({
     borderColor: "#dfe4ea",
   },
   selectButtonText: {
+    ...AppFonts.button,
     color: "#2f3542",
-    fontSize: 16,
-    fontWeight: "500",
   },
   imageContainer: {
     position: "relative",
@@ -260,9 +258,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   deleteButtonText: {
+    ...AppFonts.heading,
     color: "#ffffff",
-    fontSize: 24,
-    fontWeight: "bold",
   },
   editButton: {
     position: "absolute",
@@ -274,17 +271,15 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   editButtonText: {
+    ...AppFonts.label,
     color: "#ffffff",
-    fontSize: 14,
-    fontWeight: "600",
   },
   errorContainer: {
     marginTop: 8,
   },
   errorText: {
-    fontSize: 14,
+    ...AppFonts.label,
     color: "#e74c3c",
-    fontWeight: "500",
   },
   unavailableContainer: {
     padding: 16,
@@ -295,13 +290,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   unavailableTitle: {
-    fontSize: 16,
-    fontWeight: "600",
+    ...AppFonts.button,
     color: "#856404",
     marginBottom: 8,
   },
   unavailableText: {
-    fontSize: 14,
+    ...AppFonts.small,
     color: "#856404",
     textAlign: "center",
     lineHeight: 20,

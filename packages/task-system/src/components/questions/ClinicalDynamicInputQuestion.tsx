@@ -110,8 +110,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   labelText: {
-    fontSize: 14,
-    fontWeight: "500",
+    ...AppFonts.label,
     color: "#2f3542",
   },
   inputRow: {
@@ -119,7 +118,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   input: {
-    fontSize: 16,
+    ...AppFonts.body,
     color: "#2f3542",
     textAlign: "center",
     minWidth: 60,
@@ -150,8 +149,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   unitText: {
-    fontSize: 14,
-    fontWeight: "600",
+    ...AppFonts.label,
     color: "#57606f",
   },
 });

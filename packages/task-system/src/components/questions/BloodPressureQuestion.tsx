@@ -149,8 +149,7 @@ const styles = StyleSheet.create({
     paddingRight: 12,
   },
   labelText: {
-    fontSize: 14,
-    fontWeight: "500",
+    ...AppFonts.label,
     color: "#2f3542",
   },
   inputRow: {
@@ -159,7 +158,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   input: {
-    fontSize: 16,
+    ...AppFonts.body,
     color: "#2f3542",
     textAlign: "center",
     minWidth: 60,
@@ -187,8 +186,7 @@ const styles = StyleSheet.create({
     borderColor: "#e74c3c",
   },
   separator: {
-    fontSize: 18,
-    fontWeight: "600",
+    ...AppFonts.subheading,
     color: "#2f3542",
     marginHorizontal: 8,
   },
@@ -196,8 +194,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   unitText: {
-    fontSize: 14,
-    fontWeight: "600",
+    ...AppFonts.label,
     color: "#57606f",
   },
 });

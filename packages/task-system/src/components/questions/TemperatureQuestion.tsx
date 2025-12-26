@@ -179,8 +179,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   unitText: {
-    fontSize: 16,
-    fontWeight: "800",
+    ...AppFonts.bodyBold,
     color: "#2f3542",
   },
   unitButtons: {
@@ -200,8 +199,7 @@ const styles = StyleSheet.create({
     borderColor: "#3498db",
   },
   unitButtonText: {
-    fontSize: 14,
-    fontWeight: "600",
+    ...AppFonts.label,
     color: "#57606f",
   },
   unitButtonTextSelected: {

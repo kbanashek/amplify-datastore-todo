@@ -142,16 +142,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#3498db",
   },
   optionText: {
-    fontSize: 16,
+    ...AppFonts.body,
     color: "#2f3542",
     flex: 1,
   },
   optionTextSelected: {
-    fontWeight: "600",
+    ...AppFonts.bodyMedium,
     color: "#3498db",
   },
   noOptionsText: {
-    fontSize: 14,
+    ...AppFonts.small,
     color: "#95a5a6",
     fontStyle: "italic",
   },

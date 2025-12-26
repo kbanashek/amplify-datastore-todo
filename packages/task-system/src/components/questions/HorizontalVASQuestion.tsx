@@ -122,9 +122,8 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   rangeLabel: {
-    fontSize: 14,
+    ...AppFonts.label,
     color: "#57606f",
-    fontWeight: "500",
     flex: 1,
   },
   valueContainer: {
@@ -133,8 +132,7 @@ const styles = StyleSheet.create({
     minWidth: 60,
   },
   valueText: {
-    fontSize: 24,
-    fontWeight: "bold",
+    ...AppFonts.heading,
     color: "#3498db",
   },
   slider: {
@@ -147,15 +145,14 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   scaleLabel: {
-    fontSize: 12,
+    ...AppFonts.caption,
     color: "#95a5a6",
   },
   errorContainer: {
     marginTop: 8,
   },
   errorText: {
-    fontSize: 14,
+    ...AppFonts.label,
     color: "#e74c3c",
-    fontWeight: "500",
   },
 });
