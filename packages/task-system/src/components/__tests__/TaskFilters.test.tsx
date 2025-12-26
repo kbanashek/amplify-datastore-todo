@@ -1,12 +1,12 @@
-import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
-import type { StyleProp, ViewStyle, TextStyle } from "react-native";
 import { TaskFilters } from "@components/TaskFilters";
 import {
+  TaskFilters as TaskFiltersType,
   TaskStatus,
   TaskType,
-  TaskFilters as TaskFiltersType,
 } from "@task-types/Task";
+import { fireEvent, render } from "@testing-library/react-native";
+import React from "react";
+import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 
 // Mock useRTL
 const mockRtlStyle = jest.fn(

@@ -38,7 +38,9 @@ jest.mock("@hooks/useTaskForm", () => ({
 
 // Mock useRTL
 import type { StyleProp, ViewStyle, TextStyle } from "react-native";
-const mockRtlStyle = jest.fn((style: StyleProp<ViewStyle | TextStyle>) => style);
+const mockRtlStyle = jest.fn(
+  (style: StyleProp<ViewStyle | TextStyle>) => style
+);
 const mockUseRTL = jest.fn(() => ({
   rtlStyle: mockRtlStyle,
   isRTL: false,
