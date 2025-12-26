@@ -10,7 +10,9 @@ import { createMockAppointment } from "../../__mocks__/Appointment.mock";
 import { createMockGroupedTask } from "../../__mocks__/GroupedTask.mock";
 
 // Mock hooks
-const mockRtlStyle = jest.fn((style: StyleProp<ViewStyle | TextStyle>) => style);
+const mockRtlStyle = jest.fn(
+  (style: StyleProp<ViewStyle | TextStyle>) => style
+);
 const mockUseRTL = jest.fn(() => ({
   rtlStyle: mockRtlStyle,
   isRTL: false,

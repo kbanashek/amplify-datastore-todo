@@ -1,9 +1,12 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
+import type { StyleProp, ViewStyle, TextStyle } from "react-native";
 import { GlobalHeader } from "@components/GlobalHeader";
 
 // Mock hooks
-const mockRtlStyle = jest.fn((style: any) => style);
+const mockRtlStyle = jest.fn(
+  (style: StyleProp<ViewStyle | TextStyle>) => style
+);
 const mockUseRTL = jest.fn(() => ({
   rtlStyle: mockRtlStyle,
   isRTL: false,
@@ -63,7 +66,7 @@ describe("GlobalHeader", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockUseRTL.mockReturnValue({
-      rtlStyle: jest.fn((style: any) => style),
+      rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => style),
       isRTL: false,
     });
   });
@@ -199,7 +202,7 @@ describe("GlobalHeader", () => {
   describe("RTL Support", () => {
     it("renders correctly in LTR mode", () => {
       mockUseRTL.mockReturnValueOnce({
-        rtlStyle: jest.fn((style: any) => style),
+        rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => style),
         isRTL: false,
       });
 
@@ -208,7 +211,7 @@ describe("GlobalHeader", () => {
     });
 
     it("renders correctly in RTL mode", () => {
-      const rtlStyleFn = jest.fn((style: any) => ({
+      const rtlStyleFn = jest.fn((style: StyleProp<ViewStyle | TextStyle>) => ({
         ...style,
         flexDirection: "row-reverse",
       }));
@@ -225,7 +228,7 @@ describe("GlobalHeader", () => {
 
     it("flips text alignment in RTL mode", () => {
       mockUseRTL.mockReturnValueOnce({
-        rtlStyle: jest.fn((style: any) => style),
+        rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => style),
         isRTL: true,
       });
 
@@ -235,7 +238,7 @@ describe("GlobalHeader", () => {
     });
 
     it("applies RTL styles to header sections", () => {
-      const rtlStyleFn = jest.fn((style: any) => ({
+      const rtlStyleFn = jest.fn((style: StyleProp<ViewStyle | TextStyle>) => ({
         ...style,
         flexDirection: "row-reverse",
       }));
@@ -390,7 +393,7 @@ describe("GlobalHeader", () => {
 
     it("matches snapshot in RTL mode", () => {
       mockUseRTL.mockReturnValueOnce({
-        rtlStyle: jest.fn((style: any) => ({
+        rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => ({
           ...style,
           flexDirection: "row-reverse",
         })),
