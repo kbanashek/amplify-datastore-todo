@@ -8,6 +8,7 @@ import {
   RefreshControl,
 } from "react-native";
 import { Task, TaskStatus, TaskType } from "@task-types/Task";
+import { AppFonts } from "@constants/AppFonts";
 import { useTaskList } from "@hooks/useTaskList";
 import { getServiceLogger } from "@utils/serviceLogger";
 import { TaskCard } from "@components/TaskCard";
@@ -314,7 +315,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   syncText: {
-    fontSize: 12,
+    ...AppFonts.caption,
     color: "#57606f",
   },
   // TODAY'S TASKS SECTION - IMPOSSIBLE TO MISS
@@ -342,8 +343,8 @@ const styles = StyleSheet.create({
     borderColor: "#1976d2",
   },
   todaySectionTitle: {
+    ...AppFonts.heading,
     fontSize: 32,
-    fontWeight: "900",
     color: "#ffffff",
     letterSpacing: 1,
     textShadowColor: "#000",
@@ -359,12 +360,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   todaySectionCount: {
-    fontSize: 20,
-    fontWeight: "bold",
+    ...AppFonts.subheading,
     color: "#2196f3",
   },
   emptySectionText: {
-    fontSize: 14,
+    ...AppFonts.small,
     color: "#95a5a6",
     fontStyle: "italic",
     textAlign: "center",
@@ -383,13 +383,12 @@ const styles = StyleSheet.create({
     borderBottomColor: "#dfe4ea",
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
+    ...AppFonts.subheading,
     color: "#2f3542",
     marginRight: 8,
   },
   sectionCount: {
-    fontSize: 16,
+    ...AppFonts.body,
     color: "#747d8c",
   },
   emptyContainer: {
@@ -400,19 +399,19 @@ const styles = StyleSheet.create({
     minHeight: 200,
   },
   emptyText: {
-    fontSize: 18,
+    ...AppFonts.subheading,
     color: "#747d8c",
     textAlign: "center",
   },
   loadingText: {
-    fontSize: 16,
+    ...AppFonts.body,
     color: "#57606f",
     textAlign: "center",
     padding: 32,
     marginTop: 16,
   },
   errorText: {
-    fontSize: 16,
+    ...AppFonts.body,
     color: "#e74c3c",
     textAlign: "center",
     padding: 32,

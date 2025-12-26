@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 import { useTaskTranslation } from "@translations/index";
 import { TranslatedText } from "@components/TranslatedText";
+import { AppFonts } from "@constants/AppFonts";
 
 /**
  * Simple test component to verify translation system works
@@ -89,12 +90,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
+    ...AppFonts.heading,
     marginBottom: 20,
   },
   info: {
-    fontSize: 16,
+    ...AppFonts.body,
     marginBottom: 10,
   },
   section: {
@@ -104,12 +104,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   label: {
-    fontSize: 16,
-    fontWeight: "600",
+    ...AppFonts.button,
     marginBottom: 10,
   },
   result: {
-    fontSize: 14,
+    ...AppFonts.small,
     marginVertical: 5,
   },
   buttonRow: {
