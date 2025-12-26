@@ -16,6 +16,19 @@
 
 ---
 
+## 📚 Storybook Component Library
+
+Browse and test UI components interactively on-device:
+
+1. Run the app: `yarn ios` or `yarn android`
+2. Tap menu (☰) → **"Storybook"**
+3. Browse **21 stories** across 6 categories
+
+**Available**: Buttons, Form Inputs, Layout, Feedback, Icons, Question Types  
+📖 **Documentation**: [`packages/task-system/.ondevice/README.md`](packages/task-system/.ondevice/README.md)
+
+---
+
 ## 🛠️ Tech Stack
 
 ### 🎨 Frontend

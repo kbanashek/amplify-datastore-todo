@@ -1,0 +1,35 @@
+[21:05:19.169] [INFO] storybook v10.1.10
+[21:05:19.671] [DEBUG] Getting package.json info for /Users/Kyle.Banashek/Source/orion-task-system/packages/task-system/package.json...
+[21:05:19.675] [WARN] You are currently using Storybook 10.1.10 but you have packages which are incompatible with it:
+
+- @storybook/addon-essentials@8.6.14 which depends on 8.6.14
+ Repo: https://github.com/storybookjs/storybook/tree/next/code/addons/essentials
+- @storybook/addon-interactions@8.6.14 which depends on 8.6.14
+ Repo: https://github.com/storybookjs/storybook/tree/next/code/addons/interactions
+
+Please consider updating your packages or contacting the maintainers for compatibility details.
+
+For more details on compatibility guidance, see:
+https://github.com/storybookjs/storybook/issues/32836
+[21:05:20.294] [INFO] Starting...
+[21:05:20.471] [ERROR] [38;2;241;97;97mSB_CORE-SERVER_0004 (NoMatchingExportError): There was an exports mismatch error when trying to build Storybook.
+Please check whether the versions of your Storybook packages match whenever possible, as this might be the cause.
+
+Problematic example:
+{ "@storybook/react": "7.5.3", "@storybook/react-vite": "7.4.5", "storybook": "7.3.0" }
+
+Correct example:
+{ "@storybook/react": "7.5.3", "@storybook/react-vite": "7.5.3", "storybook": "7.5.3" }
+
+Please run `npx storybook doctor` for guidance on how to fix this issue.
+
+More info: 
+[39m
+    at buildOrThrow (file:///Users/Kyle.Banashek/Source/orion-task-system/node_modules/storybook/dist/core-server/index.js:5560:9)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async buildDevStandalone (file:///Users/Kyle.Banashek/Source/orion-task-system/node_modules/storybook/dist/core-server/index.js:7208:66)
+    at async withTelemetry (file:///Users/Kyle.Banashek/Source/orion-task-system/node_modules/storybook/dist/_node-chunks/chunk-PGCRO4IZ.js:209:12)
+    at async dev (file:///Users/Kyle.Banashek/Source/orion-task-system/node_modules/storybook/dist/bin/core.js:2734:3)
+    at async _Command.<anonymous> (file:///Users/Kyle.Banashek/Source/orion-task-system/node_modules/storybook/dist/bin/core.js:2801:92)
+[21:05:20.472] [WARN] Broken build, fix the error above.
+You may need to refresh the browser.

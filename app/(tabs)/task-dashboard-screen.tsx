@@ -70,6 +70,13 @@ export default function TaskDashboardScreen() {
         description: "Dev Options (fixture generation/import/reset)",
         onPress: () => router.push("/(tabs)/seed-screen"),
       },
+      {
+        key: "storybook",
+        name: "Storybook",
+        icon: "book.fill",
+        description: "Browse and test UI components",
+        onPress: () => router.push("/(tabs)/storybook"),
+      },
     ],
     [router]
   );

@@ -1,0 +1,162 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Getting Started" />
+
+# Getting Started with Orion Task System
+
+Welcome to the **Orion Task System** Storybook! This component library provides a comprehensive set of React Native components designed for health assessment and task management applications.
+
+## 📚 What's Inside
+
+This library contains three main categories of components:
+
+### 1. UI Components
+Base design system components that form the foundation of the UI:
+- **Button** - Primary action buttons with various styles
+- **Card** - Container component for content grouping
+- **TextField** - Text input with validation
+- **DatePicker** - Date selection component
+- **NumericInput** - Number input with unit support
+- **LoadingSpinner** - Loading indicator
+- **FieldLabel** - Form field labels with required indicator
+
+### 2. Domain Components
+Task and appointment management components:
+- **TaskCard** - Display task information with actions
+- **AppointmentCard** - Show appointment details
+- **TaskFilters** - Filter tasks by various criteria
+- **GroupedTasksView** - Display tasks grouped by date/time
+
+### 3. Question Components
+Health assessment question types for data collection:
+- **SingleSelectQuestion** - Single choice selection
+- **MultiSelectQuestion** - Multiple choice selection
+- **TextQuestion** - Free-form text input
+- **NumberQuestion** - Numeric value input
+- **DateQuestion** - Date selection
+- **BloodPressureQuestion** - Systolic/diastolic input
+- **TemperatureQuestion** - Temperature measurement
+- And 15+ more specialized types
+
+## 🚀 Usage
+
+### Installation
+
+```bash
+npm install @orion/task-system
+# or
+yarn add @orion/task-system
+```
+
+### Basic Usage
+
+```typescript
+import { Button, Card, TaskCard } from "@orion/task-system";
+
+function MyApp() {
+  return (
+    <Card>
+      <TaskCard
+        task={myTask}
+        onPress={handleTaskPress}
+      />
+      <Button
+        title="Complete"
+        onPress={handleComplete}
+      />
+    </Card>
+  );
+}
+```
+
+### With TypeScript
+
+All components are fully typed with TypeScript:
+
+```typescript
+import type { Task, Question } from "@orion/task-system";
+import { TaskCard, SingleSelectQuestion } from "@orion/task-system";
+
+const task: Task = {
+  id: "task-1",
+  title: "Morning Medication",
+  status: TaskStatus.OPEN,
+  // ... other properties
+};
+
+const question: Question = {
+  id: "q1",
+  text: "Did you take your medication?",
+  questionType: QuestionType.SINGLE_SELECT,
+  // ... other properties
+};
+```
+
+## 🎨 Design Principles
+
+### Mobile-First
+All components are designed for mobile devices first, with responsive design for tablets and desktops.
+
+### Accessibility
+Components follow accessibility best practices with proper ARIA labels and keyboard navigation.
+
+### Theme Support
+Components support light and dark themes through the theme system.
+
+### Internationalization
+All user-facing text is internationalized using i18next, supporting multiple languages.
+
+## 🧪 Development
+
+### Running Storybook
+
+```bash
+cd packages/task-system
+yarn storybook
+```
+
+Storybook will start at `http://localhost:6006`
+
+### Building for Production
+
+```bash
+yarn build-storybook
+```
+
+This generates a static Storybook site in `storybook-static/`
+
+## 📖 Documentation
+
+Each component has:
+- **Interactive examples** - Try different props and states
+- **Code snippets** - Copy-paste ready examples
+- **Props documentation** - Detailed prop descriptions
+- **Design variations** - Common use cases and patterns
+
+## 🔧 Configuration
+
+The library requires these peer dependencies:
+- `react` >= 18
+- `react-native` >= 0.72
+- `@aws-amplify/datastore` >= 5
+- `@react-native-community/datetimepicker` >= 8
+- `@react-navigation/native` >= 6
+
+## 🤝 Contributing
+
+When adding new components:
+1. Create the component in `src/components/`
+2. Add comprehensive stories in `*.stories.tsx`
+3. Include all common use cases
+4. Document props with JSDoc
+5. Add tests in `__tests__/`
+
+## 📝 Next Steps
+
+Explore the component categories in the sidebar:
+- **UI** - Basic building blocks
+- **Domain** - Task and appointment components
+- **Questions** - Health assessment components
+
+Each component includes multiple stories showing different states and use cases.
+

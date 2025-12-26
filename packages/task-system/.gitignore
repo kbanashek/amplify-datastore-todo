@@ -1,0 +1,13 @@
+# Build output
+dist/
+*.tsbuildinfo
+
+# Storybook
+storybook-static/
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
