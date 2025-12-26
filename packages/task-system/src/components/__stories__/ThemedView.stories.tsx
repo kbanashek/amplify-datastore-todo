@@ -66,8 +66,10 @@ export const AsCard: Story = {
         <Text style={[AppFonts.subheading, { marginBottom: 8 }]}>
           Card Title
         </Text>
-        <Text style={[AppFonts.body, { marginBottom: 4 }]}>Card content goes here</Text>
-        <Text style={[AppFonts.caption, { color: "#666" }]}>
+        <Text style={[AppFonts.body, { marginBottom: 4 }]}>
+          Card content goes here
+        </Text>
+        <Text style={[AppFonts.caption, { color: AppColors.mediumDarkGray }]}>
           Additional information
         </Text>
       </>

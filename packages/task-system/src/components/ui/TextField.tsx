@@ -50,7 +50,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   const borderBase = useThemeColor({}, "icon");
   const tint = useThemeColor({}, "tint");
 
-  const borderColor = errorText ? "#d32f2f" : borderBase + "55";
+  const borderColor = errorText ? AppColors.errorRed : borderBase + "55";
 
   return (
     <View style={[styles.container, containerStyle]} testID={testID}>
@@ -73,7 +73,7 @@ export const TextField: React.FC<TextFieldProps> = ({
         ]}
       />
       {errorText ? (
-        <ThemedText style={[styles.message, { color: "#d32f2f" }]}>
+        <ThemedText style={[styles.message, { color: AppColors.errorRed }]}>
           {errorText}
         </ThemedText>
       ) : helperText ? (

@@ -389,7 +389,6 @@ const styles = StyleSheet.create({
   },
   todaySectionTitle: {
     ...AppFonts.heading,
-    fontWeight: "900", // HEAVIEST
     color: "#ffffff", // PURE WHITE
     textShadowColor: "rgba(0, 0, 0, 0.3)",
     textShadowOffset: { width: 0, height: 1 },

@@ -63,6 +63,6 @@ const styles = StyleSheet.create({
     ...AppFonts.label,
   },
   required: {
-    color: "#e74c3c",
+    color: AppColors.errorRed,
   },
 });

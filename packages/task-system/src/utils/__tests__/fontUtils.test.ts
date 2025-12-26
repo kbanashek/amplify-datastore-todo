@@ -7,7 +7,7 @@ jest.mock("react-native", () => ({
     OS: "ios",
   },
   StyleSheet: {
-    create: jest.fn((styles) => styles),
+    create: jest.fn(styles => styles),
   },
 }));
 
@@ -186,4 +186,3 @@ describe("fontUtils", () => {
     });
   });
 });
-

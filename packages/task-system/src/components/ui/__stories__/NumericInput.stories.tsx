@@ -39,7 +39,12 @@ const NumericInputWithState: React.FC<{
         borderStyle={borderStyle}
       />
       {value && (
-        <Text style={[AppFonts.caption, { marginTop: 4, color: "#666" }]}>
+        <Text
+          style={[
+            AppFonts.caption,
+            { marginTop: 4, color: AppColors.mediumDarkGray },
+          ]}
+        >
           Value: {value} {unit}
         </Text>
       )}

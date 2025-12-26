@@ -344,7 +344,6 @@ const styles = StyleSheet.create({
   },
   todaySectionTitle: {
     ...AppFonts.heading,
-    fontSize: 32,
     color: "#ffffff",
     letterSpacing: 1,
     textShadowColor: "#000",

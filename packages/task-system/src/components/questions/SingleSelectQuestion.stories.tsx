@@ -60,7 +60,9 @@ const SingleSelectQuestionWithState: React.FC<{
       />
       {hasError && (
         <View style={{ marginTop: 4, paddingHorizontal: 4 }}>
-          <Text style={[AppFonts.caption, { color: "#dc2626" }]}>{errors[0]}</Text>
+          <Text style={[AppFonts.caption, { color: "#dc2626" }]}>
+            {errors[0]}
+          </Text>
         </View>
       )}
     </View>

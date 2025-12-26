@@ -192,6 +192,6 @@ const styles = StyleSheet.create({
   },
   doneButtonText: {
     ...AppFonts.button,
-    color: "#fff",
+    color: AppColors.white,
   },
 });

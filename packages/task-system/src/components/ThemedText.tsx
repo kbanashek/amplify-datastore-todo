@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
   },
   title: {
     ...AppFonts.heading,
-    fontSize: 32,
     lineHeight: 32,
   },
   subtitle: {

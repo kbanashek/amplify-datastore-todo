@@ -35,7 +35,9 @@ export const WithTitleAndBody: Story = {
         <Text style={[AppFonts.subheading, { marginBottom: 8 }]}>
           Card Title
         </Text>
-        <Text style={AppFonts.body}>This is the card body with some descriptive text.</Text>
+        <Text style={AppFonts.body}>
+          This is the card body with some descriptive text.
+        </Text>
       </View>
     ),
   },

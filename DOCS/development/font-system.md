@@ -36,9 +36,7 @@ import { AppFonts } from "@constants/AppFonts";
 Or combine with custom styles:
 
 ```tsx
-<Text style={[AppFonts.heading, { color: "#custom" }]}>
-  Custom Heading
-</Text>
+<Text style={[AppFonts.heading, { color: "#custom" }]}>Custom Heading</Text>
 ```
 
 ---
@@ -47,25 +45,25 @@ Or combine with custom styles:
 
 All font styles are defined in `packages/task-system/src/constants/AppFonts.ts`:
 
-| Style | Font Weight | Size | Color | Typical Use |
-|-------|-------------|------|-------|-------------|
-| `heading` | Bold (800) | 28px | CINavy | Page titles, major headings |
-| `subheading` | Medium (500) | 18px | CINavy | Section titles, subheadings |
-| `body` | Regular (400) | 16px | Gray | Standard body text |
-| `bodyMedium` | Medium (500) | 16px | Gray | Emphasized body text |
-| `bodyBold` | Bold (800) | 16px | Gray | Strong emphasis |
-| `button` | Medium (500) | 16px | White | Button labels |
-| `caption` | Regular (400) | 12px | MediumDarkGray | Image captions, helper text |
-| `label` | Medium (500) | 14px | Gray | Form labels, small headings |
-| `small` | Regular (400) | 14px | Gray | Secondary information |
+| Style        | Font Weight   | Size | Color          | Typical Use                 |
+| ------------ | ------------- | ---- | -------------- | --------------------------- |
+| `heading`    | Bold (800)    | 28px | CINavy         | Page titles, major headings |
+| `subheading` | Medium (500)  | 18px | CINavy         | Section titles, subheadings |
+| `body`       | Regular (400) | 16px | Gray           | Standard body text          |
+| `bodyMedium` | Medium (500)  | 16px | Gray           | Emphasized body text        |
+| `bodyBold`   | Bold (800)    | 16px | Gray           | Strong emphasis             |
+| `button`     | Medium (500)  | 16px | White          | Button labels               |
+| `caption`    | Regular (400) | 12px | MediumDarkGray | Image captions, helper text |
+| `label`      | Medium (500)  | 14px | Gray           | Form labels, small headings |
+| `small`      | Regular (400) | 14px | Gray           | Secondary information       |
 
 ### Italic Variants
 
-| Style | Font Weight | Size | Color | Use |
-|-------|-------------|------|-------|-----|
-| `bodyItalic` | Regular (400) | 16px | Gray | Italic body text |
-| `bodyMediumItalic` | Medium (500) | 16px | Gray | Emphasized italic text |
-| `bodyBoldItalic` | Bold (800) | 16px | Gray | Strong italic emphasis |
+| Style              | Font Weight   | Size | Color | Use                    |
+| ------------------ | ------------- | ---- | ----- | ---------------------- |
+| `bodyItalic`       | Regular (400) | 16px | Gray  | Italic body text       |
+| `bodyMediumItalic` | Medium (500)  | 16px | Gray  | Emphasized italic text |
+| `bodyBoldItalic`   | Bold (800)    | 16px | Gray  | Strong italic emphasis |
 
 **Note:** Only Light (300) and Bold (800) weights have true italic variants. Medium (500) and Regular (400) fall back to their non-italic versions when `italic: true` is specified.
 
@@ -84,12 +82,12 @@ export const FontWeights = {
 };
 ```
 
-| Weight | iOS Font | Android Font | Use |
-|--------|----------|--------------|-----|
-| 300 | `Ubuntu-Light` | `Ubuntu-L` | Lightweight UI elements |
-| 400 | `Ubuntu-Regular` | `Ubuntu-R` | Standard body text |
-| 500 | `Ubuntu-Medium` | `Ubuntu-M` | Subheadings, emphasis |
-| 800 | `Ubuntu-Bold` | `Ubuntu-B` | Headings, strong emphasis |
+| Weight | iOS Font         | Android Font | Use                       |
+| ------ | ---------------- | ------------ | ------------------------- |
+| 300    | `Ubuntu-Light`   | `Ubuntu-L`   | Lightweight UI elements   |
+| 400    | `Ubuntu-Regular` | `Ubuntu-R`   | Standard body text        |
+| 500    | `Ubuntu-Medium`  | `Ubuntu-M`   | Subheadings, emphasis     |
+| 800    | `Ubuntu-Bold`    | `Ubuntu-B`   | Headings, strong emphasis |
 
 ---
 
@@ -99,12 +97,12 @@ Defined in `packages/task-system/src/utils/fontUtils.ts`:
 
 ```typescript
 export const FontSizes = {
-  xs: 12,   // Extra small
-  sm: 14,   // Small
-  md: 16,   // Medium (body text)
-  lg: 18,   // Large
-  xl: 20,   // Extra large
-  xxl: 24,  // 2X large
+  xs: 12, // Extra small
+  sm: 14, // Small
+  md: 16, // Medium (body text)
+  lg: 18, // Large
+  xl: 20, // Extra large
+  xxl: 24, // 2X large
   xxxl: 28, // 3X large (headings)
 };
 ```
@@ -179,11 +177,13 @@ const customStyle = StyleSheet.create({
 The font system automatically handles iOS/Android differences through `fontUtils.ts`:
 
 ### iOS
+
 - Uses `fontWeight` CSS property (`"300"`, `"400"`, `"500"`, `"800"`)
 - Font family names use standard iOS format (`Ubuntu-Light`, `Ubuntu-Bold`)
 - Example: `{ fontFamily: "Ubuntu-Medium", fontWeight: "500" }`
 
 ### Android
+
 - Uses different font files with `fontWeight: "normal"`
 - Font family names use custom short format (`Ubuntu-L`, `Ubuntu-B`)
 - Weight is encoded in the font file name
@@ -200,6 +200,7 @@ All font files are located in `packages/task-system/assets/fonts/`:
 ### Ubuntu Font Files
 
 **iOS:**
+
 - `Ubuntu-Light.ttf` (300)
 - `Ubuntu-Regular.ttf` (400)
 - `Ubuntu-Medium.ttf` (500)
@@ -208,6 +209,7 @@ All font files are located in `packages/task-system/assets/fonts/`:
 - `Ubuntu-BoldItalic.ttf` (800 italic)
 
 **Android:**
+
 - `Ubuntu-L.ttf` (Light - 300)
 - `Ubuntu-R.ttf` (Regular - 400)
 - `Ubuntu-M.ttf` (Medium - 500)
@@ -251,9 +253,7 @@ All font files are located in `packages/task-system/assets/fonts/`:
 
 ```tsx
 <Button>
-  <Text style={AppFonts.button}>
-    Submit Form
-  </Text>
+  <Text style={AppFonts.button}>Submit Form</Text>
 </Button>
 ```
 
@@ -335,12 +335,12 @@ const styles = StyleSheet.create({
 
 ### Key Files
 
-| File | Purpose |
-|------|---------|
-| `src/constants/AppFonts.ts` | Pre-configured font style definitions |
-| `src/utils/fontUtils.ts` | Font utilities and platform abstraction |
-| `src/utils/__tests__/fontUtils.test.ts` | Unit tests for font utilities |
-| `assets/fonts/` | Physical font files |
+| File                                    | Purpose                                 |
+| --------------------------------------- | --------------------------------------- |
+| `src/constants/AppFonts.ts`             | Pre-configured font style definitions   |
+| `src/utils/fontUtils.ts`                | Font utilities and platform abstraction |
+| `src/utils/__tests__/fontUtils.test.ts` | Unit tests for font utilities           |
+| `assets/fonts/`                         | Physical font files                     |
 
 ### Data Flow
 
@@ -404,6 +404,7 @@ yarn test fontUtils.test.ts
 **Problem:** Font appears as system default instead of Ubuntu
 
 **Solution:**
+
 1. Verify font files exist in `packages/task-system/assets/fonts/`
 2. Ensure fonts are properly loaded in app initialization
 3. Check that you're using `AppFonts` (not hardcoded names)
@@ -416,6 +417,7 @@ yarn test fontUtils.test.ts
 **Solution:**
 
 This is expected behavior. iOS and Android handle font weights differently:
+
 - **iOS:** Uses CSS `fontWeight` property
 - **Android:** Uses different font files (weight is in the file name)
 
@@ -551,14 +553,14 @@ const styles = StyleSheet.create({
 
 ## Related Documentation
 
-- [Color System](./color-system.md) *(if exists)*
+- [Color System](./color-system.md) _(if exists)_
 - [Component Architecture](../../.cursor/rules/architecture.mdc)
 - [TypeScript Best Practices](../../.cursor/rules/code-style.mdc)
 
 ---
 
 **For questions or clarifications, refer to:**
+
 - `packages/task-system/src/constants/AppFonts.ts` - Font definitions
 - `packages/task-system/src/utils/fontUtils.ts` - Font utilities
 - `packages/task-system/src/utils/__tests__/fontUtils.test.ts` - Usage examples
-

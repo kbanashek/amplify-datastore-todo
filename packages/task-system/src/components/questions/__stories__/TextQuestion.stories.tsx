@@ -80,7 +80,9 @@ const TextQuestionWithState: React.FC<{
       />
       {enableValidation && error && (
         <View style={{ marginTop: 4, paddingHorizontal: 4 }}>
-          <Text style={[AppFonts.caption, { color: "#dc2626" }]}>{error}</Text>
+          <Text style={[AppFonts.caption, { color: AppColors.errorRed }]}>
+            {error}
+          </Text>
         </View>
       )}
     </View>
