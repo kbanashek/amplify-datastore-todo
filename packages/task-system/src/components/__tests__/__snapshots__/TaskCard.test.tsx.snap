@@ -102,8 +102,9 @@ exports[`TaskCard Snapshots matches snapshot with completed task 1`] = `
             {
               "color": "#1a1a1a",
               "flex": 1,
+              "fontFamily": "Ubuntu-Medium",
               "fontSize": 20,
-              "fontWeight": "bold",
+              "fontWeight": "500",
               "lineHeight": 26,
             }
           }
@@ -140,6 +141,7 @@ exports[`TaskCard Snapshots matches snapshot with completed task 1`] = `
           style={
             {
               "color": "#FFFFFF",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 14,
               "fontWeight": "bold",
               "letterSpacing": 0.5,
@@ -256,8 +258,9 @@ exports[`TaskCard Snapshots matches snapshot with default props 1`] = `
             {
               "color": "#1a1a1a",
               "flex": 1,
+              "fontFamily": "Ubuntu-Medium",
               "fontSize": 20,
-              "fontWeight": "bold",
+              "fontWeight": "500",
               "lineHeight": 26,
             }
           }
@@ -324,6 +327,7 @@ exports[`TaskCard Snapshots matches snapshot with default props 1`] = `
           style={
             {
               "color": "#FFFFFF",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 14,
               "fontWeight": "bold",
               "letterSpacing": 0.5,
@@ -485,8 +489,9 @@ exports[`TaskCard Snapshots matches snapshot with long title 1`] = `
             {
               "color": "#1a1a1a",
               "flex": 1,
+              "fontFamily": "Ubuntu-Medium",
               "fontSize": 20,
-              "fontWeight": "bold",
+              "fontWeight": "500",
               "lineHeight": 26,
             }
           }
@@ -553,6 +558,7 @@ exports[`TaskCard Snapshots matches snapshot with long title 1`] = `
           style={
             {
               "color": "#FFFFFF",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 14,
               "fontWeight": "bold",
               "letterSpacing": 0.5,
@@ -714,8 +720,9 @@ exports[`TaskCard Snapshots matches snapshot with onPress 1`] = `
             {
               "color": "#1a1a1a",
               "flex": 1,
+              "fontFamily": "Ubuntu-Medium",
               "fontSize": 20,
-              "fontWeight": "bold",
+              "fontWeight": "500",
               "lineHeight": 26,
             }
           }
@@ -782,6 +789,7 @@ exports[`TaskCard Snapshots matches snapshot with onPress 1`] = `
           style={
             {
               "color": "#FFFFFF",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 14,
               "fontWeight": "bold",
               "letterSpacing": 0.5,
@@ -945,8 +953,9 @@ exports[`TaskCard Snapshots matches snapshot with simple prop 1`] = `
             {
               "color": "#1a1a1a",
               "flex": 1,
+              "fontFamily": "Ubuntu-Medium",
               "fontSize": 20,
-              "fontWeight": "bold",
+              "fontWeight": "500",
               "lineHeight": 26,
             }
           }
@@ -1062,8 +1071,9 @@ exports[`TaskCard Snapshots matches snapshot with started task 1`] = `
             {
               "color": "#1a1a1a",
               "flex": 1,
+              "fontFamily": "Ubuntu-Medium",
               "fontSize": 20,
-              "fontWeight": "bold",
+              "fontWeight": "500",
               "lineHeight": 26,
             }
           }
@@ -1130,6 +1140,7 @@ exports[`TaskCard Snapshots matches snapshot with started task 1`] = `
           style={
             {
               "color": "#FFFFFF",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 14,
               "fontWeight": "bold",
               "letterSpacing": 0.5,

@@ -26,8 +26,9 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
       style={
         {
           "color": "#2f3542",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 18,
-          "fontWeight": "bold",
+          "fontWeight": "500",
           "marginBottom": 16,
         }
       }
@@ -50,7 +51,10 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "borderColor": "#dfe4ea",
           "borderRadius": 4,
           "borderWidth": 1,
+          "color": "#333333",
+          "fontFamily": "Ubuntu-Regular",
           "fontSize": 16,
+          "fontWeight": "400",
           "marginBottom": 12,
           "padding": 12,
         }
@@ -76,7 +80,10 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             "borderColor": "#dfe4ea",
             "borderRadius": 4,
             "borderWidth": 1,
+            "color": "#333333",
+            "fontFamily": "Ubuntu-Regular",
             "fontSize": 16,
+            "fontWeight": "400",
             "marginBottom": 12,
             "padding": 12,
           },
@@ -94,8 +101,9 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
       style={
         {
           "color": "#2f3542",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
-          "fontWeight": "600",
+          "fontWeight": "500",
           "marginBottom": 8,
           "marginTop": 4,
         }
@@ -165,8 +173,9 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               {
                 "color": "#fff",
@@ -227,8 +236,9 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -287,8 +297,9 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -302,8 +313,9 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
       style={
         {
           "color": "#2f3542",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
-          "fontWeight": "600",
+          "fontWeight": "500",
           "marginBottom": 8,
           "marginTop": 4,
         }
@@ -373,8 +385,9 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               {
                 "color": "#fff",
@@ -435,8 +448,9 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -495,8 +509,9 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -555,8 +570,9 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -615,8 +631,9 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -675,8 +692,9 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -735,8 +753,9 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -758,7 +777,10 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "borderColor": "#dfe4ea",
           "borderRadius": 4,
           "borderWidth": 1,
+          "color": "#333333",
+          "fontFamily": "Ubuntu-Regular",
           "fontSize": 16,
+          "fontWeight": "400",
           "marginBottom": 12,
           "padding": 12,
         }
@@ -778,7 +800,10 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           "borderColor": "#dfe4ea",
           "borderRadius": 4,
           "borderWidth": 1,
+          "color": "#333333",
+          "fontFamily": "Ubuntu-Regular",
           "fontSize": 16,
+          "fontWeight": "400",
           "marginBottom": 12,
           "padding": 12,
         }
@@ -850,6 +875,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           style={
             {
               "color": "#fff",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 16,
               "fontWeight": "bold",
             }
@@ -905,6 +931,7 @@ exports[`TaskForm Snapshots matches snapshot in RTL mode 1`] = `
           style={
             {
               "color": "#fff",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 16,
               "fontWeight": "bold",
             }
@@ -944,8 +971,9 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
       style={
         {
           "color": "#2f3542",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 18,
-          "fontWeight": "bold",
+          "fontWeight": "500",
           "marginBottom": 16,
         }
       }
@@ -968,7 +996,10 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "borderColor": "#dfe4ea",
           "borderRadius": 4,
           "borderWidth": 1,
+          "color": "#333333",
+          "fontFamily": "Ubuntu-Regular",
           "fontSize": 16,
+          "fontWeight": "400",
           "marginBottom": 12,
           "padding": 12,
         }
@@ -994,7 +1025,10 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             "borderColor": "#dfe4ea",
             "borderRadius": 4,
             "borderWidth": 1,
+            "color": "#333333",
+            "fontFamily": "Ubuntu-Regular",
             "fontSize": 16,
+            "fontWeight": "400",
             "marginBottom": 12,
             "padding": 12,
           },
@@ -1012,8 +1046,9 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
       style={
         {
           "color": "#2f3542",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
-          "fontWeight": "600",
+          "fontWeight": "500",
           "marginBottom": 8,
           "marginTop": 4,
         }
@@ -1083,8 +1118,9 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               {
                 "color": "#fff",
@@ -1145,8 +1181,9 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -1205,8 +1242,9 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -1220,8 +1258,9 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
       style={
         {
           "color": "#2f3542",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
-          "fontWeight": "600",
+          "fontWeight": "500",
           "marginBottom": 8,
           "marginTop": 4,
         }
@@ -1291,8 +1330,9 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               {
                 "color": "#fff",
@@ -1353,8 +1393,9 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -1413,8 +1454,9 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -1473,8 +1515,9 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -1533,8 +1576,9 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -1593,8 +1637,9 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -1653,8 +1698,9 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -1676,7 +1722,10 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "borderColor": "#dfe4ea",
           "borderRadius": 4,
           "borderWidth": 1,
+          "color": "#333333",
+          "fontFamily": "Ubuntu-Regular",
           "fontSize": 16,
+          "fontWeight": "400",
           "marginBottom": 12,
           "padding": 12,
         }
@@ -1696,7 +1745,10 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           "borderColor": "#dfe4ea",
           "borderRadius": 4,
           "borderWidth": 1,
+          "color": "#333333",
+          "fontFamily": "Ubuntu-Regular",
           "fontSize": 16,
+          "fontWeight": "400",
           "marginBottom": 12,
           "padding": 12,
         }
@@ -1768,6 +1820,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
           style={
             {
               "color": "#fff",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 16,
               "fontWeight": "bold",
             }
@@ -1856,8 +1909,9 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
       style={
         {
           "color": "#2f3542",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 18,
-          "fontWeight": "bold",
+          "fontWeight": "500",
           "marginBottom": 16,
         }
       }
@@ -1880,7 +1934,10 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "borderColor": "#dfe4ea",
           "borderRadius": 4,
           "borderWidth": 1,
+          "color": "#333333",
+          "fontFamily": "Ubuntu-Regular",
           "fontSize": 16,
+          "fontWeight": "400",
           "marginBottom": 12,
           "padding": 12,
         }
@@ -1906,7 +1963,10 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             "borderColor": "#dfe4ea",
             "borderRadius": 4,
             "borderWidth": 1,
+            "color": "#333333",
+            "fontFamily": "Ubuntu-Regular",
             "fontSize": 16,
+            "fontWeight": "400",
             "marginBottom": 12,
             "padding": 12,
           },
@@ -1924,8 +1984,9 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
       style={
         {
           "color": "#2f3542",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
-          "fontWeight": "600",
+          "fontWeight": "500",
           "marginBottom": 8,
           "marginTop": 4,
         }
@@ -1995,8 +2056,9 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               {
                 "color": "#fff",
@@ -2057,8 +2119,9 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -2117,8 +2180,9 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -2132,8 +2196,9 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
       style={
         {
           "color": "#2f3542",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
-          "fontWeight": "600",
+          "fontWeight": "500",
           "marginBottom": 8,
           "marginTop": 4,
         }
@@ -2203,8 +2268,9 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               {
                 "color": "#fff",
@@ -2265,8 +2331,9 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -2325,8 +2392,9 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -2385,8 +2453,9 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -2445,8 +2514,9 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -2505,8 +2575,9 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -2565,8 +2636,9 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -2588,7 +2660,10 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "borderColor": "#dfe4ea",
           "borderRadius": 4,
           "borderWidth": 1,
+          "color": "#333333",
+          "fontFamily": "Ubuntu-Regular",
           "fontSize": 16,
+          "fontWeight": "400",
           "marginBottom": 12,
           "padding": 12,
         }
@@ -2608,7 +2683,10 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           "borderColor": "#dfe4ea",
           "borderRadius": 4,
           "borderWidth": 1,
+          "color": "#333333",
+          "fontFamily": "Ubuntu-Regular",
           "fontSize": 16,
+          "fontWeight": "400",
           "marginBottom": 12,
           "padding": 12,
         }
@@ -2680,6 +2758,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           style={
             {
               "color": "#fff",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 16,
               "fontWeight": "bold",
             }
@@ -2735,6 +2814,7 @@ exports[`TaskForm Snapshots matches snapshot with default props 1`] = `
           style={
             {
               "color": "#fff",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 16,
               "fontWeight": "bold",
             }
@@ -2774,8 +2854,9 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
       style={
         {
           "color": "#2f3542",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 18,
-          "fontWeight": "bold",
+          "fontWeight": "500",
           "marginBottom": 16,
         }
       }
@@ -2787,7 +2868,9 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
       style={
         {
           "color": "#e74c3c",
+          "fontFamily": "Ubuntu-Regular",
           "fontSize": 14,
+          "fontWeight": "400",
           "marginBottom": 12,
         }
       }
@@ -2810,7 +2893,10 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "borderColor": "#dfe4ea",
           "borderRadius": 4,
           "borderWidth": 1,
+          "color": "#333333",
+          "fontFamily": "Ubuntu-Regular",
           "fontSize": 16,
+          "fontWeight": "400",
           "marginBottom": 12,
           "padding": 12,
         }
@@ -2836,7 +2922,10 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             "borderColor": "#dfe4ea",
             "borderRadius": 4,
             "borderWidth": 1,
+            "color": "#333333",
+            "fontFamily": "Ubuntu-Regular",
             "fontSize": 16,
+            "fontWeight": "400",
             "marginBottom": 12,
             "padding": 12,
           },
@@ -2854,8 +2943,9 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
       style={
         {
           "color": "#2f3542",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
-          "fontWeight": "600",
+          "fontWeight": "500",
           "marginBottom": 8,
           "marginTop": 4,
         }
@@ -2925,8 +3015,9 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               {
                 "color": "#fff",
@@ -2987,8 +3078,9 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -3047,8 +3139,9 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -3062,8 +3155,9 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
       style={
         {
           "color": "#2f3542",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
-          "fontWeight": "600",
+          "fontWeight": "500",
           "marginBottom": 8,
           "marginTop": 4,
         }
@@ -3133,8 +3227,9 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               {
                 "color": "#fff",
@@ -3195,8 +3290,9 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -3255,8 +3351,9 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -3315,8 +3412,9 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -3375,8 +3473,9 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -3435,8 +3534,9 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -3495,8 +3595,9 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -3518,7 +3619,10 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "borderColor": "#dfe4ea",
           "borderRadius": 4,
           "borderWidth": 1,
+          "color": "#333333",
+          "fontFamily": "Ubuntu-Regular",
           "fontSize": 16,
+          "fontWeight": "400",
           "marginBottom": 12,
           "padding": 12,
         }
@@ -3538,7 +3642,10 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           "borderColor": "#dfe4ea",
           "borderRadius": 4,
           "borderWidth": 1,
+          "color": "#333333",
+          "fontFamily": "Ubuntu-Regular",
           "fontSize": 16,
+          "fontWeight": "400",
           "marginBottom": 12,
           "padding": 12,
         }
@@ -3610,6 +3717,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           style={
             {
               "color": "#fff",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 16,
               "fontWeight": "bold",
             }
@@ -3665,6 +3773,7 @@ exports[`TaskForm Snapshots matches snapshot with error 1`] = `
           style={
             {
               "color": "#fff",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 16,
               "fontWeight": "bold",
             }
@@ -3704,8 +3813,9 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
       style={
         {
           "color": "#2f3542",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 18,
-          "fontWeight": "bold",
+          "fontWeight": "500",
           "marginBottom": 16,
         }
       }
@@ -3728,7 +3838,10 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "borderColor": "#dfe4ea",
           "borderRadius": 4,
           "borderWidth": 1,
+          "color": "#333333",
+          "fontFamily": "Ubuntu-Regular",
           "fontSize": 16,
+          "fontWeight": "400",
           "marginBottom": 12,
           "padding": 12,
         }
@@ -3754,7 +3867,10 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             "borderColor": "#dfe4ea",
             "borderRadius": 4,
             "borderWidth": 1,
+            "color": "#333333",
+            "fontFamily": "Ubuntu-Regular",
             "fontSize": 16,
+            "fontWeight": "400",
             "marginBottom": 12,
             "padding": 12,
           },
@@ -3772,8 +3888,9 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
       style={
         {
           "color": "#2f3542",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
-          "fontWeight": "600",
+          "fontWeight": "500",
           "marginBottom": 8,
           "marginTop": 4,
         }
@@ -3843,8 +3960,9 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -3903,8 +4021,9 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               {
                 "color": "#fff",
@@ -3965,8 +4084,9 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -3980,8 +4100,9 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
       style={
         {
           "color": "#2f3542",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
-          "fontWeight": "600",
+          "fontWeight": "500",
           "marginBottom": 8,
           "marginTop": 4,
         }
@@ -4051,8 +4172,9 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -4111,8 +4233,9 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -4171,8 +4294,9 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -4231,8 +4355,9 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -4291,8 +4416,9 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               {
                 "color": "#fff",
@@ -4353,8 +4479,9 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -4413,8 +4540,9 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
             [
               {
                 "color": "#57606f",
+                "fontFamily": "Ubuntu-Regular",
                 "fontSize": 12,
-                "fontWeight": "600",
+                "fontWeight": "400",
               },
               false,
             ]
@@ -4436,7 +4564,10 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "borderColor": "#dfe4ea",
           "borderRadius": 4,
           "borderWidth": 1,
+          "color": "#333333",
+          "fontFamily": "Ubuntu-Regular",
           "fontSize": 16,
+          "fontWeight": "400",
           "marginBottom": 12,
           "padding": 12,
         }
@@ -4456,7 +4587,10 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           "borderColor": "#dfe4ea",
           "borderRadius": 4,
           "borderWidth": 1,
+          "color": "#333333",
+          "fontFamily": "Ubuntu-Regular",
           "fontSize": 16,
+          "fontWeight": "400",
           "marginBottom": 12,
           "padding": 12,
         }
@@ -4528,6 +4662,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           style={
             {
               "color": "#fff",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 16,
               "fontWeight": "bold",
             }
@@ -4583,6 +4718,7 @@ exports[`TaskForm Snapshots matches snapshot with values 1`] = `
           style={
             {
               "color": "#fff",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 16,
               "fontWeight": "bold",
             }
