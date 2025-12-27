@@ -1,5 +1,6 @@
 import { Question } from "@task-types/ActivityConfig";
 import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import { getBorderStyle } from "@utils/borderStyleHelper";
 import React, { useEffect, useState } from "react";
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: 16,
-    color: "#2f3542",
+    color: AppColors.gray,
     textAlign: "center",
     minWidth: 80,
     paddingVertical: 8,
@@ -157,30 +158,30 @@ const styles = StyleSheet.create({
   },
   lineBorder: {
     borderBottomWidth: 1,
-    borderBottomColor: "#dfe4ea",
+    borderBottomColor: AppColors.borderGray,
     backgroundColor: "transparent",
   },
   rectangleBorder: {
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: AppColors.borderGray,
     borderRadius: 4,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: AppColors.powderGray,
   },
   ovalBorder: {
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: AppColors.borderGray,
     borderRadius: 20,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: AppColors.powderGray,
   },
   inputError: {
-    borderColor: "#e74c3c",
+    borderColor: AppColors.errorRed,
   },
   unitContainer: {
     marginLeft: 12,
   },
   unitText: {
     ...AppFonts.bodyBold,
-    color: "#2f3542",
+    color: AppColors.gray,
   },
   unitButtons: {
     flexDirection: "column",
@@ -191,18 +192,18 @@ const styles = StyleSheet.create({
     marginVertical: 2,
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: "#dfe4ea",
-    backgroundColor: "#f8f9fa",
+    borderColor: AppColors.borderGray,
+    backgroundColor: AppColors.powderGray,
   },
   unitButtonSelected: {
-    backgroundColor: "#3498db",
-    borderColor: "#3498db",
+    backgroundColor: AppColors.CIBlue,
+    borderColor: AppColors.CIBlue,
   },
   unitButtonText: {
     ...AppFonts.label,
-    color: "#57606f",
+    color: AppColors.darkGray,
   },
   unitButtonTextSelected: {
-    color: "#ffffff",
+    color: AppColors.white,
   },
 });
