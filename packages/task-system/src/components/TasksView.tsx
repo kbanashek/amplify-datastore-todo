@@ -312,12 +312,12 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: "#1dd1a1",
+    backgroundColor: AppColors.statusSynced,
     marginRight: 5,
   },
   syncText: {
     ...AppFonts.caption,
-    color: "AppColors.darkGray",
+    color: AppColors.darkGray,
   },
   // TODAY'S TASKS SECTION - IMPOSSIBLE TO MISS
   todaySection: {
@@ -389,7 +389,7 @@ const styles = StyleSheet.create({
   },
   sectionCount: {
     ...AppFonts.body,
-    color: "#747d8c",
+    color: AppColors.legacy.gray,
   },
   emptyContainer: {
     flex: 1,
@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     ...AppFonts.subheading,
-    color: "#747d8c",
+    color: AppColors.legacy.gray,
     textAlign: "center",
   },
   loadingText: {

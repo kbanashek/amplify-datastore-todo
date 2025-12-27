@@ -53,18 +53,18 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f6fa",
+    backgroundColor: AppColors.powderGray,
   },
   header: {
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: "AppColors.white",
+    backgroundColor: AppColors.white,
     borderBottomWidth: 1,
-    borderBottomColor: "AppColors.borderGray",
+    borderBottomColor: AppColors.borderGray,
   },
   headerTitle: {
     ...AppFonts.heading,
-    color: "AppColors.gray",
+    color: AppColors.gray,
     flex: 1,
   },
   centerContainer: {
@@ -75,14 +75,14 @@ const styles = StyleSheet.create({
   },
   errorText: {
     ...AppFonts.small,
-    color: "AppColors.errorRed",
+    color: AppColors.errorRed,
     textAlign: "center",
     marginBottom: 16,
   },
   errorInfoBox: {
-    backgroundColor: "#fff3cd",
+    backgroundColor: AppColors.lightYellow,
     borderWidth: 1,
-    borderColor: "#ffc107",
+    borderColor: AppColors.legacy.warning,
     borderRadius: 8,
     padding: 16,
     marginTop: 20,
@@ -91,17 +91,17 @@ const styles = StyleSheet.create({
   },
   errorInfoTitle: {
     ...AppFonts.bodyBold,
-    color: "#856404",
+    color: AppColors.legacy.dark,
     marginBottom: 8,
   },
   errorInfoText: {
     ...AppFonts.small,
-    color: "#856404",
+    color: AppColors.legacy.dark,
     lineHeight: 20,
     marginBottom: 8,
   },
   backButton: {
-    backgroundColor: "#ecf0f1",
+    backgroundColor: AppColors.legacy.lightGray,
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
