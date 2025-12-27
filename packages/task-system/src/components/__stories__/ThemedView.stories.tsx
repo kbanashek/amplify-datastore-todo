@@ -1,8 +1,8 @@
+import { ThemedView } from "@components/ThemedView";
+import { AppFonts } from "@constants/AppFonts";
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { Text } from "react-native";
-import { ThemedView } from "@components/ThemedView";
-import { AppFonts } from "@constants/AppFonts";
 
 const meta = {
   title: "Components/ThemedView",

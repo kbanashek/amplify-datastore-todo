@@ -1,5 +1,6 @@
 import React from "react";
 import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import {
   ScrollView,
   StyleSheet,
@@ -74,7 +75,7 @@ export const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
 const styles = StyleSheet.create({
   introContainer: {
     flex: 1,
-    backgroundColor: "#f5f6fa",
+    backgroundColor: "AppColors.powderGray",
   },
   scrollView: {
     flex: 1,
@@ -87,19 +88,19 @@ const styles = StyleSheet.create({
   },
   introTitle: {
     ...AppFonts.heading,
-    color: "#2f3542",
+    color: "AppColors.gray",
     marginBottom: 16,
     textAlign: "center",
   },
   introDescription: {
     ...AppFonts.body,
-    color: "#57606f",
+    color: "AppColors.darkGray",
     lineHeight: 24,
     textAlign: "center",
     marginBottom: 32,
   },
   beginButton: {
-    backgroundColor: "#3498db",
+    backgroundColor: "AppColors.CIBlue",
     paddingVertical: 16,
     paddingHorizontal: 40,
     borderRadius: 8,
@@ -108,6 +109,6 @@ const styles = StyleSheet.create({
   },
   beginButtonText: {
     ...AppFonts.subheading,
-    color: "#fff",
+    color: "AppColors.white",
   },
 });

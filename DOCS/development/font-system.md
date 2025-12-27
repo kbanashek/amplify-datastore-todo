@@ -344,16 +344,18 @@ const styles = StyleSheet.create({
 
 ### Data Flow
 
-```
-Component
-    ↓
-AppFonts (from constants/AppFonts.ts)
-    ↓
-getFontStyle() (from utils/fontUtils.ts)
-    ↓
-Platform-specific font name (iOS vs Android)
-    ↓
-Font file in assets/fonts/
+```mermaid
+graph TD
+    A[Component] --> B[AppFonts from constants/AppFonts.ts]
+    B --> C[getFontStyle from utils/fontUtils.ts]
+    C --> D[Platform-specific font name<br/>iOS vs Android]
+    D --> E[Font file in assets/fonts/]
+
+    style A fill:#e1f5ff
+    style B fill:#fff4e1
+    style C fill:#e8f5e9
+    style D fill:#f3e5f5
+    style E fill:#fce4ec
 ```
 
 ### Type Safety

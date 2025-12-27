@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Question } from "@task-types/ActivityConfig";
 import { useTranslatedText } from "@hooks/useTranslatedText";
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
   },
   labelText: {
     ...AppFonts.label,
-    color: "#2f3542",
+    color: "AppColors.gray",
   },
   inputRow: {
     flexDirection: "row",
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
   },
   input: {
     ...AppFonts.body,
-    color: "#2f3542",
+    color: "AppColors.gray",
     textAlign: "center",
     minWidth: 60,
     paddingVertical: 8,
@@ -127,29 +128,29 @@ const styles = StyleSheet.create({
   },
   lineBorder: {
     borderBottomWidth: 1,
-    borderBottomColor: "#dfe4ea",
+    borderBottomColor: "AppColors.borderGray",
     backgroundColor: "transparent",
   },
   rectangleBorder: {
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: "AppColors.borderGray",
     borderRadius: 4,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "AppColors.powderGray",
   },
   ovalBorder: {
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: "AppColors.borderGray",
     borderRadius: 20,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "AppColors.powderGray",
   },
   inputError: {
-    borderColor: "#e74c3c",
+    borderColor: "AppColors.errorRed",
   },
   unitContainer: {
     marginLeft: 12,
   },
   unitText: {
     ...AppFonts.label,
-    color: "#57606f",
+    color: "AppColors.darkGray",
   },
 });

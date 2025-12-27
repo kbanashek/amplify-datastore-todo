@@ -1,5 +1,6 @@
 import { IconSymbol } from "@components/ui/IconSymbol";
 import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import { Colors } from "@constants/Colors";
 import { useColorScheme } from "@hooks/useColorScheme";
 import { useNavigation } from "@react-navigation/native";
@@ -168,12 +169,12 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   menuContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: "AppColors.white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     maxHeight: "80%",
     minHeight: 300,
-    shadowColor: "#000",
+    shadowColor: "AppColors.black",
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.25,
     shadowRadius: 10,
@@ -188,12 +189,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "#e0e0e0",
+    borderBottomColor: "AppColors.lightGray",
     flexShrink: 0,
   },
   headerTitle: {
     ...AppFonts.heading,
-    color: "#2f3542",
+    color: "AppColors.gray",
   },
   closeButton: {
     padding: 4,
@@ -218,13 +219,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
+    borderBottomColor: "AppColors.ltGray",
   },
   menuItemIcon: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#f5f6fa",
+    backgroundColor: "AppColors.powderGray",
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,

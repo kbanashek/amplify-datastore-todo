@@ -2,6 +2,7 @@ import { TaskCard } from "@components/TaskCard";
 import { useTaskList } from "@hooks/useTaskList";
 import { Task, TaskFilters } from "@task-types/Task";
 import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import { getServiceLogger } from "@utils/serviceLogger";
 import { groupTasksByDate } from "@utils/taskGrouping";
 import React, { useMemo } from "react";
@@ -177,7 +178,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
         <View style={styles.emptyContainer} testID="task-list-empty-loading">
           <ActivityIndicator
             size="large"
-            color="#3498db"
+            color="AppColors.CIBlue"
             testID="task-list-loading-spinner"
           />
           <Text style={styles.emptyText} testID="task-list-loading-text">
@@ -302,7 +303,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
           <RefreshControl
             refreshing={loading}
             onRefresh={refreshTasks}
-            colors={["#3498db"]}
+            colors={["AppColors.CIBlue"]}
           />
         }
         contentContainerStyle={styles.listContent}
@@ -322,24 +323,24 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f6fa",
+    backgroundColor: "AppColors.powderGray",
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     padding: 16,
-    backgroundColor: "#fff",
+    backgroundColor: "AppColors.white",
     borderBottomWidth: 1,
-    borderBottomColor: "#dfe4ea",
+    borderBottomColor: "AppColors.borderGray",
   },
   headerTitle: {
     ...AppFonts.large,
-    color: "#2f3542",
+    color: "AppColors.gray",
   },
   syncedBadge: {
     ...AppFonts.caption,
-    color: "#27ae60",
+    color: "AppColors.successGreen",
   },
   syncIndicator: {
     flexDirection: "row",
@@ -353,7 +354,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "#27ae60",
+    backgroundColor: "AppColors.successGreen",
     marginRight: 8,
   },
   syncText: {
@@ -366,7 +367,7 @@ const styles = StyleSheet.create({
   },
   // Today's Tasks Section - VERY PROMINENT
   todaySectionHeader: {
-    backgroundColor: "#2196f3", // BRIGHT BLUE
+    backgroundColor: "AppColors.CIBlue", // BRIGHT BLUE
     marginTop: 0,
     marginBottom: 16,
     marginLeft: -16, // Extend to edges
@@ -375,7 +376,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
-    shadowColor: "#2196f3",
+    shadowColor: "AppColors.CIBlue",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -389,13 +390,13 @@ const styles = StyleSheet.create({
   },
   todaySectionTitle: {
     ...AppFonts.heading,
-    color: "#ffffff", // PURE WHITE
+    color: "AppColors.white", // PURE WHITE
     textShadowColor: "rgba(0, 0, 0, 0.3)",
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
   },
   todaySectionBadge: {
-    backgroundColor: "#fff",
+    backgroundColor: "AppColors.white",
     paddingHorizontal: 14,
     paddingVertical: 6,
     borderRadius: 20,
@@ -404,7 +405,7 @@ const styles = StyleSheet.create({
   },
   todaySectionCount: {
     ...AppFonts.subheading,
-    color: "#2196f3",
+    color: "AppColors.CIBlue",
   },
   // Regular section headers
   sectionHeader: {
@@ -415,9 +416,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginTop: 16,
     marginBottom: 8,
-    backgroundColor: "#fff",
+    backgroundColor: "AppColors.white",
     borderRadius: 8,
-    shadowColor: "#000",
+    shadowColor: "AppColors.black",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -425,7 +426,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     ...AppFonts.subheading,
-    color: "#2f3542",
+    color: "AppColors.gray",
   },
   sectionCountBadge: {
     backgroundColor: "#ecf0f1",
@@ -455,7 +456,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     ...AppFonts.small,
-    color: "#e74c3c",
+    color: "AppColors.errorRed",
     textAlign: "center",
     marginBottom: 8,
   },

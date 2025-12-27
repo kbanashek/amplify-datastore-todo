@@ -12,6 +12,7 @@ import { useTaskForm } from "@hooks/useTaskForm";
 import { useRTL } from "@hooks/useRTL";
 import { Task, TaskStatus, TaskType } from "@task-types/Task";
 import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 
 interface TaskFormProps {
   onTaskCreated?: (task: Task) => void;
@@ -196,7 +197,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         >
           {isSubmitting ? (
             <ActivityIndicator
-              color="#fff"
+              color="AppColors.white"
               size="small"
               testID="task-form-submit-loading"
             />
@@ -211,11 +212,11 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: "AppColors.white",
     borderRadius: 8,
     padding: 16,
     marginBottom: 16,
-    shadowColor: "#000",
+    shadowColor: "AppColors.black",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -224,11 +225,11 @@ const styles = StyleSheet.create({
   title: {
     ...AppFonts.subheading,
     marginBottom: 16,
-    color: "#2f3542",
+    color: "AppColors.gray",
   },
   input: {
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: "AppColors.borderGray",
     borderRadius: 4,
     padding: 12,
     marginBottom: 12,
@@ -240,7 +241,7 @@ const styles = StyleSheet.create({
   },
   label: {
     ...AppFonts.label,
-    color: "#2f3542",
+    color: "AppColors.gray",
     marginBottom: 8,
     marginTop: 4,
   },
@@ -255,21 +256,21 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: "#dfe4ea",
-    backgroundColor: "#fff",
+    borderColor: "AppColors.borderGray",
+    backgroundColor: "AppColors.white",
     marginRight: 8,
     marginBottom: 8,
   },
   radioButtonSelected: {
-    backgroundColor: "#3498db",
-    borderColor: "#3498db",
+    backgroundColor: "AppColors.CIBlue",
+    borderColor: "AppColors.CIBlue",
   },
   radioButtonText: {
     ...AppFonts.caption,
-    color: "#57606f",
+    color: "AppColors.darkGray",
   },
   radioButtonTextSelected: {
-    color: "#fff",
+    color: "AppColors.white",
   },
   buttonRow: {
     flexDirection: "row",
@@ -278,31 +279,31 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    backgroundColor: "#3498db",
+    backgroundColor: "AppColors.CIBlue",
     borderRadius: 4,
     padding: 14,
     alignItems: "center",
     justifyContent: "center",
   },
   secondaryButton: {
-    backgroundColor: "#95a5a6",
+    backgroundColor: "AppColors.iconGray",
   },
   disabledButton: {
-    backgroundColor: "#95a5a6",
+    backgroundColor: "AppColors.iconGray",
   },
   buttonText: {
     ...AppFonts.body,
-    color: "#fff",
+    color: "AppColors.white",
     fontWeight: "bold",
   },
   secondaryButtonText: {
     ...AppFonts.body,
-    color: "#fff",
+    color: "AppColors.white",
     fontWeight: "bold",
   },
   errorText: {
     ...AppFonts.small,
-    color: "#e74c3c",
+    color: "AppColors.errorRed",
     marginBottom: 12,
   },
 });

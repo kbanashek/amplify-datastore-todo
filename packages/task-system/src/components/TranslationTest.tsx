@@ -3,6 +3,7 @@ import { View, Text, Button, StyleSheet } from "react-native";
 import { useTaskTranslation } from "@translations/index";
 import { TranslatedText } from "@components/TranslatedText";
 import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 
 /**
  * Simple test component to verify translation system works
@@ -87,7 +88,7 @@ export const TranslationTest: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor: "#fff",
+    backgroundColor: "AppColors.white",
   },
   title: {
     ...AppFonts.heading,
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
   section: {
     marginVertical: 20,
     padding: 10,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "AppColors.ltGray",
     borderRadius: 5,
   },
   label: {

@@ -8,6 +8,7 @@ import {
   ViewStyle,
 } from "react-native";
 import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 
 interface NumericInputProps {
   value: string;
@@ -68,7 +69,7 @@ export const NumericInput: React.FC<NumericInputProps> = ({
 const styles = StyleSheet.create({
   input: {
     ...AppFonts.body,
-    color: "#2f3542",
+    color: "AppColors.gray",
     textAlign: "center",
     minWidth: 60,
     paddingVertical: 8,
@@ -76,22 +77,22 @@ const styles = StyleSheet.create({
   },
   lineBorder: {
     borderBottomWidth: 1,
-    borderBottomColor: "#dfe4ea",
+    borderBottomColor: "AppColors.borderGray",
     backgroundColor: "transparent",
   },
   rectangleBorder: {
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: "AppColors.borderGray",
     borderRadius: 4,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "AppColors.powderGray",
   },
   ovalBorder: {
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: "AppColors.borderGray",
     borderRadius: 20,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "AppColors.powderGray",
   },
   inputError: {
-    borderColor: "#e74c3c",
+    borderColor: "AppColors.errorRed",
   },
 });

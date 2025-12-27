@@ -27,26 +27,32 @@ interface UnitTextProps {
  * Automatically translates unit text if translation key is provided
  *
  * @param unit - The unit text to display
- * @param fontSize - The font size of the unit text (default: from AppFonts.label)
- * @param fontWeight - The font weight of the unit text (default: from AppFonts.label)
- * @param color - The color of the unit text (default: from AppFonts.label)
+ * @param fontSize - Optional font size override (default: from AppFonts.label)
+ * @param fontWeight - Optional font weight override (default: from AppFonts.label)
+ * @param color - Optional color override (default: from AppFonts.label)
  * @param style - Additional styles to apply to the container
  * @returns A themed unit text component with the provided unit text
  */
 export const UnitText: React.FC<UnitTextProps> = ({
   unit,
-  fontSize = FontSizes.sm,
-  fontWeight = "600",
-  color = AppFonts.label.color,
+  fontSize,
+  fontWeight,
+  color,
   style,
 }) => {
   const { translatedText } = useTranslatedText(unit);
 
+  // Build style object only with provided overrides
+  const textStyle = [
+    styles.text,
+    fontSize && { fontSize },
+    fontWeight && { fontWeight },
+    color && { color },
+  ];
+
   return (
     <View style={[styles.container, style]}>
-      <Text style={[styles.text, { fontSize, fontWeight, color }]}>
-        {translatedText || unit}
-      </Text>
+      <Text style={textStyle}>{translatedText || unit}</Text>
     </View>
   );
 };

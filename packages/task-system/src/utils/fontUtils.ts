@@ -41,7 +41,7 @@ export type FontSize = (typeof FontSizes)[keyof typeof FontSizes];
  *
  * @param weight - Font weight (300, 400, 500, 800)
  * @param italic - Whether font is italic
- * @returns Platform-specific font family string
+ * @returns Platform-specific font family string, or undefined for unsupported weights
  *
  * @example
  * ```typescript
@@ -50,7 +50,10 @@ export type FontSize = (typeof FontSizes)[keyof typeof FontSizes];
  * const fontFamily = getFontFamily(500, false);
  * ```
  */
-export const getFontFamily = (weight: FontWeight, italic = false): string => {
+export const getFontFamily = (
+  weight: FontWeight,
+  italic = false
+): string | undefined => {
   const isIOS = Platform.OS === "ios";
 
   // Map weights to font names

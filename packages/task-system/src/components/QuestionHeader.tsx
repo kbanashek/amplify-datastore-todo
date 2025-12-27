@@ -1,5 +1,6 @@
 import { IconSymbol } from "@components/ui/IconSymbol";
 import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import { useRTL } from "@hooks/useRTL";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import React from "react";
@@ -95,9 +96,9 @@ export const QuestionHeader: React.FC<QuestionHeaderProps> = ({
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#fff",
+    backgroundColor: "AppColors.white",
     borderBottomWidth: 1,
-    borderBottomColor: "#e5e7eb",
+    borderBottomColor: "AppColors.borderGray",
     width: "100%",
     alignSelf: "stretch",
   },

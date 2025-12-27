@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Task, TaskStatus, TaskType } from "@task-types/Task";
 import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import { useTaskList } from "@hooks/useTaskList";
 import { getServiceLogger } from "@utils/serviceLogger";
 import { TaskCard } from "@components/TaskCard";
@@ -113,7 +114,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
       <View style={styles.container} testID="tasks-view-loading">
         <ActivityIndicator
           size="large"
-          color="#3498db"
+          color="AppColors.CIBlue"
           testID="tasks-view-loading-spinner"
         />
         <Text style={styles.loadingText} testID="tasks-view-loading-text">
@@ -150,7 +151,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
         <RefreshControl
           refreshing={refreshing}
           onRefresh={onRefresh}
-          colors={["#3498db"]}
+          colors={["AppColors.CIBlue"]}
         />
       }
       testID="tasks-view"
@@ -292,7 +293,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f6fa",
+    backgroundColor: "AppColors.powderGray",
     // TEMPORARY: Bright background to verify component renders
     // backgroundColor: '#ff0000',
   },
@@ -316,14 +317,14 @@ const styles = StyleSheet.create({
   },
   syncText: {
     ...AppFonts.caption,
-    color: "#57606f",
+    color: "AppColors.darkGray",
   },
   // TODAY'S TASKS SECTION - IMPOSSIBLE TO MISS
   todaySection: {
     marginBottom: 24,
   },
   todaySectionHeader: {
-    backgroundColor: "#2196f3",
+    backgroundColor: "AppColors.CIBlue",
     paddingVertical: 32,
     paddingHorizontal: 20,
     borderRadius: 12,
@@ -334,24 +335,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    shadowColor: "#2196f3",
+    shadowColor: "AppColors.CIBlue",
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.5,
     shadowRadius: 12,
     elevation: 12,
     borderWidth: 4,
-    borderColor: "#1976d2",
+    borderColor: "AppColors.headerBlue",
   },
   todaySectionTitle: {
     ...AppFonts.heading,
-    color: "#ffffff",
+    color: "AppColors.white",
     letterSpacing: 1,
-    textShadowColor: "#000",
+    textShadowColor: "AppColors.black",
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 4,
   },
   todaySectionBadge: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "AppColors.white",
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
@@ -360,11 +361,11 @@ const styles = StyleSheet.create({
   },
   todaySectionCount: {
     ...AppFonts.subheading,
-    color: "#2196f3",
+    color: "AppColors.CIBlue",
   },
   emptySectionText: {
     ...AppFonts.small,
-    color: "#95a5a6",
+    color: "AppColors.iconGray",
     fontStyle: "italic",
     textAlign: "center",
     padding: 16,
@@ -379,11 +380,11 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingBottom: 8,
     borderBottomWidth: 2,
-    borderBottomColor: "#dfe4ea",
+    borderBottomColor: "AppColors.borderGray",
   },
   sectionTitle: {
     ...AppFonts.subheading,
-    color: "#2f3542",
+    color: "AppColors.gray",
     marginRight: 8,
   },
   sectionCount: {
@@ -404,14 +405,14 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     ...AppFonts.body,
-    color: "#57606f",
+    color: "AppColors.darkGray",
     textAlign: "center",
     padding: 32,
     marginTop: 16,
   },
   errorText: {
     ...AppFonts.body,
-    color: "#e74c3c",
+    color: "AppColors.errorRed",
     textAlign: "center",
     padding: 32,
   },

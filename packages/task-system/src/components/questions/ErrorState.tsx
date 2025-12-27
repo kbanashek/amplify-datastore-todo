@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { NetworkStatusIndicator } from "@components/NetworkStatusIndicator";
 import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 
 interface ErrorStateProps {
   error: string;
@@ -57,13 +58,13 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: "#fff",
+    backgroundColor: "AppColors.white",
     borderBottomWidth: 1,
-    borderBottomColor: "#dfe4ea",
+    borderBottomColor: "AppColors.borderGray",
   },
   headerTitle: {
     ...AppFonts.heading,
-    color: "#2f3542",
+    color: "AppColors.gray",
     flex: 1,
   },
   centerContainer: {
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     ...AppFonts.small,
-    color: "#e74c3c",
+    color: "AppColors.errorRed",
     textAlign: "center",
     marginBottom: 16,
   },
@@ -107,6 +108,6 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     ...AppFonts.label,
-    color: "#57606f",
+    color: "AppColors.darkGray",
   },
 });

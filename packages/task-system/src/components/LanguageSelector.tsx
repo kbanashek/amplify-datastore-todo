@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import { useTaskTranslation } from "@translations/index";
 import type { LanguageCode } from "@translations/index";
 import { getServiceLogger } from "@utils/serviceLogger";
@@ -169,13 +170,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 8,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "AppColors.ltGray",
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "AppColors.lightGray",
   },
   selectorText: {
     ...AppFonts.label,
-    color: "#333",
+    color: "AppColors.gray",
   },
   modalOverlay: {
     flex: 1,
@@ -195,18 +196,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: "AppColors.ltGray",
   },
   modalTitle: {
     ...AppFonts.subheading,
-    color: "#333",
+    color: "AppColors.gray",
   },
   closeButton: {
     padding: 4,
   },
   closeButtonText: {
     ...AppFonts.heading,
-    color: "#666",
+    color: "AppColors.mediumDarkGray",
   },
   languageList: {
     maxHeight: 400,
@@ -217,21 +218,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
+    borderBottomColor: "AppColors.ltGray",
   },
   languageItemSelected: {
-    backgroundColor: "#e3f2fd",
+    backgroundColor: "AppColors.powderGray",
   },
   languageText: {
     ...AppFonts.body,
-    color: "#333",
+    color: "AppColors.gray",
   },
   languageTextSelected: {
     ...AppFonts.bodyMedium,
-    color: "#1976d2",
+    color: "AppColors.headerBlue",
   },
   checkmark: {
     ...AppFonts.subheading,
-    color: "#1976d2",
+    color: "AppColors.headerBlue",
   },
 });
