@@ -1,9 +1,9 @@
-import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
-import { useTaskTranslation } from "@translations/index";
 import { TranslatedText } from "@components/TranslatedText";
-import { AppFonts } from "@constants/AppFonts";
 import { AppColors } from "@constants/AppColors";
+import { AppFonts } from "@constants/AppFonts";
+import { useTaskTranslation } from "@translations/index";
+import React from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
 
 /**
  * Simple test component to verify translation system works
@@ -88,7 +88,7 @@ export const TranslationTest: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor: "AppColors.white",
+    backgroundColor: AppColors.white,
   },
   title: {
     ...AppFonts.heading,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   section: {
     marginVertical: 20,
     padding: 10,
-    backgroundColor: "AppColors.ltGray",
+    backgroundColor: AppColors.ltGray,
     borderRadius: 5,
   },
   label: {
