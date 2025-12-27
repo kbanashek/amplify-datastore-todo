@@ -11,34 +11,6 @@ import { dataSubscriptionLogger } from "@utils/dataSubscriptionLogger";
 type ActivityUpdateData = Omit<UpdateActivityInput, "id" | "_version">;
 
 export class ActivityService {
-  /**
-   * Configure DataStore with custom conflict resolution strategy for Activity model
-   */
-  static configureConflictResolution() {
-    DataStore.configure({
-      conflictHandler: async ({
-        modelConstructor,
-        localModel,
-        remoteModel,
-        operation,
-        attempts,
-      }) => {
-        if (modelConstructor.name === ModelName.Activity) {
-          if (operation === OpType.DELETE) {
-            if (remoteModel._deleted) {
-              return remoteModel;
-            }
-            if (!localModel.name && !localModel.title) {
-              return { ...remoteModel, _deleted: true };
-            }
-            return localModel;
-          }
-        }
-        return remoteModel;
-      },
-    });
-  }
-
   static async createActivity(input: CreateActivityInput): Promise<Activity> {
     try {
       logWithDevice(
