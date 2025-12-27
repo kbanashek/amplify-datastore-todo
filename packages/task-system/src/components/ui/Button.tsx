@@ -18,6 +18,7 @@ import {
 } from "react-native";
 
 import { ThemedText } from "@components/ThemedText";
+import { AppFonts } from "@constants/AppFonts";
 import { useThemeColor } from "@hooks/useThemeColor";
 
 /**
@@ -190,8 +191,7 @@ export const Button: React.FC<ButtonProps> = ({
 
 const styles = StyleSheet.create({
   label: {
-    fontSize: 16,
-    fontWeight: "600",
+    ...AppFonts.button,
   },
   pressed: {
     transform: [{ scale: 0.98 }],

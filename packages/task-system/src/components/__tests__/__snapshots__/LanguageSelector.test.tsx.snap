@@ -122,6 +122,7 @@ exports[`LanguageSelector Snapshots matches snapshot with RTL language 1`] = `
       style={
         {
           "color": "#333",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
           "fontWeight": "500",
         }
@@ -195,6 +196,7 @@ exports[`LanguageSelector Snapshots matches snapshot with custom style 1`] = `
       style={
         {
           "color": "#333",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
           "fontWeight": "500",
         }
@@ -266,6 +268,7 @@ exports[`LanguageSelector Snapshots matches snapshot with default props 1`] = `
       style={
         {
           "color": "#333",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
           "fontWeight": "500",
         }
@@ -337,6 +340,7 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
       style={
         {
           "color": "#333",
+          "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
           "fontWeight": "500",
         }
@@ -418,8 +422,9 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
             style={
               {
                 "color": "#333",
+                "fontFamily": "Ubuntu-Medium",
                 "fontSize": 18,
-                "fontWeight": "bold",
+                "fontWeight": "500",
               }
             }
           >
@@ -464,7 +469,9 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
               style={
                 {
                   "color": "#666",
-                  "fontSize": 24,
+                  "fontFamily": "Ubuntu-Bold",
+                  "fontSize": 28,
+                  "fontWeight": "800",
                 }
               }
             >
@@ -565,11 +572,15 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
                     [
                       {
                         "color": "#333",
+                        "fontFamily": "Ubuntu-Regular",
                         "fontSize": 16,
+                        "fontWeight": "400",
                       },
                       {
                         "color": "#1976d2",
-                        "fontWeight": "600",
+                        "fontFamily": "Ubuntu-Medium",
+                        "fontSize": 16,
+                        "fontWeight": "500",
                       },
                     ]
                   }
@@ -580,8 +591,9 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
                   style={
                     {
                       "color": "#1976d2",
+                      "fontFamily": "Ubuntu-Medium",
                       "fontSize": 18,
-                      "fontWeight": "bold",
+                      "fontWeight": "500",
                     }
                   }
                 >
@@ -642,7 +654,9 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
                     [
                       {
                         "color": "#333",
+                        "fontFamily": "Ubuntu-Regular",
                         "fontSize": 16,
+                        "fontWeight": "400",
                       },
                       false,
                     ]
@@ -705,7 +719,9 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
                     [
                       {
                         "color": "#333",
+                        "fontFamily": "Ubuntu-Regular",
                         "fontSize": 16,
+                        "fontWeight": "400",
                       },
                       false,
                     ]

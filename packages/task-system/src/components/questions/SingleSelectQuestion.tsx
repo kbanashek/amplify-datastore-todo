@@ -5,6 +5,8 @@
  */
 
 import React from "react";
+import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTaskTranslation } from "@translations/index";
 import { Choice, Question } from "@task-types/ActivityConfig";
@@ -119,17 +121,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 12,
     marginBottom: 8,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "AppColors.powderGray",
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: "AppColors.borderGray",
   },
   optionSelected: {
-    backgroundColor: "#e3f2fd",
-    borderColor: "#3498db",
+    backgroundColor: "AppColors.powderGray",
+    borderColor: "AppColors.CIBlue",
   },
   optionError: {
-    borderColor: "#e74c3c",
+    borderColor: "AppColors.errorRed",
   },
   optionContent: {
     flexDirection: "row",
@@ -141,32 +143,32 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: "#95a5a6",
+    borderColor: "AppColors.iconGray",
     marginRight: 12,
     alignItems: "center",
     justifyContent: "center",
   },
   radioButtonSelected: {
-    borderColor: "#3498db",
+    borderColor: "AppColors.CIBlue",
   },
   radioButtonInner: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: "#3498db",
+    backgroundColor: "AppColors.CIBlue",
   },
   optionText: {
-    fontSize: 16,
-    color: "#2f3542",
+    ...AppFonts.body,
+    color: "AppColors.gray",
     flex: 1,
   },
   optionTextSelected: {
-    fontWeight: "600",
-    color: "#3498db",
+    ...AppFonts.bodyMedium,
+    color: "AppColors.CIBlue",
   },
   noOptionsText: {
-    fontSize: 14,
-    color: "#95a5a6",
+    ...AppFonts.small,
+    color: "AppColors.iconGray",
     fontStyle: "italic",
   },
 });

@@ -5,6 +5,8 @@
  */
 
 import React, { useEffect, useState } from "react";
+import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import { Question } from "@task-types/ActivityConfig";
@@ -163,9 +165,8 @@ const styles = StyleSheet.create({
     paddingRight: 12,
   },
   labelText: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: "#2f3542",
+    ...AppFonts.label,
+    color: "AppColors.gray",
   },
   inputRow: {
     flexDirection: "row",
@@ -173,8 +174,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   input: {
-    fontSize: 16,
-    color: "#2f3542",
+    ...AppFonts.body,
+    color: "AppColors.gray",
     textAlign: "center",
     minWidth: 60,
     paddingVertical: 8,
@@ -182,36 +183,34 @@ const styles = StyleSheet.create({
   },
   lineBorder: {
     borderBottomWidth: 1,
-    borderBottomColor: "#dfe4ea",
+    borderBottomColor: "AppColors.borderGray",
     backgroundColor: "transparent",
   },
   rectangleBorder: {
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: "AppColors.borderGray",
     borderRadius: 4,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "AppColors.powderGray",
   },
   ovalBorder: {
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: "AppColors.borderGray",
     borderRadius: 20,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "AppColors.powderGray",
   },
   inputError: {
-    borderColor: "#e74c3c",
+    borderColor: "AppColors.errorRed",
   },
   separator: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#2f3542",
+    ...AppFonts.subheading,
+    color: "AppColors.gray",
     marginHorizontal: 8,
   },
   unitContainer: {
     marginLeft: 8,
   },
   unitText: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#57606f",
+    ...AppFonts.label,
+    color: "AppColors.darkGray",
   },
 });

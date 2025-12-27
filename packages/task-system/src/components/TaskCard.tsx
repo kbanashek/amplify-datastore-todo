@@ -10,6 +10,7 @@
 import { TranslatedText } from "@components/TranslatedText";
 import { IconSymbol } from "@components/ui/IconSymbol";
 import { AppColors } from "@constants/AppColors";
+import { AppFonts } from "@constants/AppFonts";
 import { TaskService } from "@services/TaskService";
 import { Task, TaskStatus } from "@task-types/Task";
 import { useTaskTranslation } from "@translations/index";
@@ -229,8 +230,7 @@ const styles = StyleSheet.create({
     flexShrink: 0,
   },
   title: {
-    fontSize: 20,
-    fontWeight: "bold",
+    ...AppFonts.large,
     color: AppColors.almostBlack,
     lineHeight: 26,
     flex: 1,
@@ -249,8 +249,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   beginButtonText: {
+    ...AppFonts.small,
     color: AppColors.white,
-    fontSize: 14,
     fontWeight: "bold",
     letterSpacing: 0.5,
   },
@@ -268,9 +268,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   deleteButtonText: {
+    ...AppFonts.small,
     color: AppColors.white,
     fontWeight: "bold",
-    fontSize: 14,
   },
   cardDisabled: {
     opacity: 0.6,
@@ -284,8 +284,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   completedText: {
+    ...AppFonts.small,
     color: AppColors.white,
-    fontSize: 14,
     fontWeight: "bold",
     letterSpacing: 0.5,
   },

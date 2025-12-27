@@ -9,6 +9,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.28] - 2025-12-26
+
+### Added
+
+- Implemented standardized Ubuntu font system across all components
+  - Created `AppFonts.ts` with 11 pre-configured font styles (heading, subheading, body, bodyMedium, bodyBold, button, caption, label, small, and italic variants)
+  - Created `fontUtils.ts` with platform-aware font resolution for iOS and Android
+  - Added 12 Ubuntu font files to `packages/task-system/assets/fonts/`
+- Comprehensive unit tests for font utilities (26 tests, 100% passing)
+- Complete font system documentation in `DOCS/development/font-system.md` (564 lines)
+  - Platform-specific handling details
+  - Usage examples and best practices
+  - Migration guide and troubleshooting
+
+### Changed
+
+- Migrated 50+ components to use centralized `AppFonts` system
+  - All UI components (Button, TextField, FieldLabel, NumericInput, UnitText, DateTimeField)
+  - Core components (TaskCard, TaskList, TaskForm, TaskFilters, GlobalHeader, NavigationMenu, LanguageSelector, QuestionHeader)
+  - View components (GroupedTasksView, TasksView, ThemedText, TranslationTest)
+  - All 22 question components (questions, screens, utilities)
+  - QuestionsScreen
+- Updated `AppStyles.ts` to use `AppFonts` for text styles
+- Updated 14 Storybook stories to use `AppFonts` instead of hardcoded font styles
+- Updated 56 component snapshots to reflect new font system
+
+### Removed
+
+- Removed `SpaceMono-Regular.ttf` font (replaced with Ubuntu fonts)
+- Eliminated all hardcoded `fontSize` and `fontWeight` values in components (now using `AppFonts`)
+
 ## [0.1.27] - 2025-12-26
 
 ### Added

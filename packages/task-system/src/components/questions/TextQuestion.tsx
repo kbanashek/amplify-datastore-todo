@@ -5,6 +5,8 @@
  */
 
 import React from "react";
+import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import { StyleSheet, TextInput, View } from "react-native";
 import { Question } from "@task-types/ActivityConfig";
 import { useTaskTranslation } from "@translations/index";
@@ -83,13 +85,13 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   input: {
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "AppColors.powderGray",
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: "AppColors.borderGray",
     borderRadius: 8,
     padding: 12,
-    fontSize: 16,
-    color: "#2f3542",
+    ...AppFonts.body,
+    color: "AppColors.gray",
     minHeight: 44,
   },
   textArea: {
@@ -97,6 +99,6 @@ const styles = StyleSheet.create({
     paddingTop: 12,
   },
   inputError: {
-    borderColor: "#e74c3c",
+    borderColor: "AppColors.errorRed",
   },
 });

@@ -1,4 +1,5 @@
 /**
+import { AppFonts } from "@constants/AppFonts";
  * Review screen component that displays all answers before submission
  */
 
@@ -203,13 +204,12 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
+    ...AppFonts.heading,
     color: AppColors.gray,
     marginBottom: 8,
   },
   subtitle: {
-    fontSize: 16,
+    ...AppFonts.body,
     color: AppColors.mediumDarkGray,
     lineHeight: 22,
   },
@@ -227,8 +227,7 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   screenTitle: {
-    fontSize: 18,
-    fontWeight: "600",
+    ...AppFonts.subheading,
     color: AppColors.CINavy,
     marginBottom: 16,
     borderBottomWidth: 1,
@@ -245,8 +244,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   questionText: {
-    fontSize: 14,
-    fontWeight: "600",
+    ...AppFonts.label,
     color: AppColors.gray,
     flex: 1,
     marginRight: 8,
@@ -257,7 +255,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   answerText: {
-    fontSize: 14,
+    ...AppFonts.small,
     color: AppColors.mediumDarkGray,
     lineHeight: 20,
     paddingLeft: 12,
@@ -280,8 +278,7 @@ const styles = StyleSheet.create({
     minHeight: 50,
   },
   submitButtonText: {
+    ...AppFonts.button,
     color: AppColors.white,
-    fontSize: 16,
-    fontWeight: "700",
   },
 });

@@ -7,6 +7,8 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { NetworkStatusIndicator } from "@components/NetworkStatusIndicator";
+import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 
 /**
  * Props for the ErrorState component
@@ -66,19 +68,18 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f6fa",
+    backgroundColor: AppColors.powderGray,
   },
   header: {
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: "#fff",
+    backgroundColor: AppColors.white,
     borderBottomWidth: 1,
-    borderBottomColor: "#dfe4ea",
+    borderBottomColor: AppColors.borderGray,
   },
   headerTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#2f3542",
+    ...AppFonts.heading,
+    color: AppColors.gray,
     flex: 1,
   },
   centerContainer: {
@@ -88,15 +89,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   errorText: {
-    color: "#e74c3c",
-    fontSize: 14,
+    ...AppFonts.small,
+    color: AppColors.errorRed,
     textAlign: "center",
     marginBottom: 16,
   },
   errorInfoBox: {
-    backgroundColor: "#fff3cd",
+    backgroundColor: AppColors.lightYellow,
     borderWidth: 1,
-    borderColor: "#ffc107",
+    borderColor: AppColors.legacy.warning,
     borderRadius: 8,
     padding: 16,
     marginTop: 20,
@@ -104,26 +105,24 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   errorInfoTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#856404",
+    ...AppFonts.bodyBold,
+    color: AppColors.legacy.dark,
     marginBottom: 8,
   },
   errorInfoText: {
-    fontSize: 14,
-    color: "#856404",
+    ...AppFonts.small,
+    color: AppColors.legacy.dark,
     lineHeight: 20,
     marginBottom: 8,
   },
   backButton: {
-    backgroundColor: "#ecf0f1",
+    backgroundColor: AppColors.legacy.lightGray,
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
   },
   backButtonText: {
-    color: "#57606f",
-    fontSize: 14,
-    fontWeight: "600",
+    ...AppFonts.label,
+    color: "AppColors.darkGray",
   },
 });

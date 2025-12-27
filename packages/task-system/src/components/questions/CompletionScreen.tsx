@@ -5,6 +5,8 @@
  */
 
 import React from "react";
+import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import {
   ScrollView,
   StyleSheet,
@@ -56,7 +58,7 @@ export const CompletionScreen: React.FC<CompletionScreenProps> = ({
 const styles = StyleSheet.create({
   completionContainer: {
     flex: 1,
-    backgroundColor: "#f5f6fa",
+    backgroundColor: AppColors.powderGray,
   },
   scrollView: {
     flex: 1,
@@ -68,21 +70,20 @@ const styles = StyleSheet.create({
     padding: 40,
   },
   completionTitle: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#27ae60",
+    ...AppFonts.heading,
+    color: AppColors.successGreen,
     marginBottom: 16,
     textAlign: "center",
   },
   completionDescription: {
-    fontSize: 16,
-    color: "#57606f",
+    ...AppFonts.body,
+    color: AppColors.darkGray,
     lineHeight: 24,
     textAlign: "center",
     marginBottom: 32,
   },
   completionButton: {
-    backgroundColor: "#27ae60",
+    backgroundColor: AppColors.successGreen,
     paddingVertical: 16,
     paddingHorizontal: 40,
     borderRadius: 8,
@@ -90,8 +91,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   completionButtonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
+    ...AppFonts.subheading,
+    color: AppColors.white,
   },
 });

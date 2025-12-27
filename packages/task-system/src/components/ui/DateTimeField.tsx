@@ -11,6 +11,7 @@ import DateTimePicker, {
   DateTimePickerAndroid,
 } from "@react-native-community/datetimepicker";
 import React, { useMemo, useState } from "react";
+import { AppFonts } from "@constants/AppFonts";
 import {
   Pressable,
   StyleProp,
@@ -220,7 +221,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    fontSize: 16,
+    ...AppFonts.body,
   },
   pressed: {
     transform: [{ scale: 0.99 }],
@@ -235,8 +236,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   doneButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
+    ...AppFonts.button,
+    color: AppColors.white,
   },
 });

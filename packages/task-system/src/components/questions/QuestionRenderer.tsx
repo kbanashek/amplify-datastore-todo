@@ -5,6 +5,7 @@
  */
 
 import React, { useCallback, useMemo } from "react";
+import { AppFonts } from "@constants/AppFonts";
 import { StyleSheet, Text, View } from "react-native";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import { ParsedElement } from "@task-types/ActivityConfig";
@@ -448,8 +449,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   questionText: {
-    fontSize: 16,
-    fontWeight: "600",
+    ...AppFonts.button,
     color: "#2f3542",
     marginBottom: 12,
   },
@@ -460,8 +460,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   labelText: {
-    fontSize: 18,
-    fontWeight: "bold",
+    ...AppFonts.subheading,
   },
   unsupportedContainer: {
     padding: 16,
@@ -471,9 +470,8 @@ const styles = StyleSheet.create({
     borderColor: "#ffc107",
   },
   unsupportedText: {
-    fontSize: 14,
+    ...AppFonts.label,
     color: "#856404",
-    fontWeight: "600",
     marginBottom: 8,
   },
   errorsContainer: {
@@ -486,9 +484,8 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   errorText: {
-    fontSize: 14,
+    ...AppFonts.label,
     color: "#e74c3c",
-    fontWeight: "500",
     lineHeight: 20,
   },
 });

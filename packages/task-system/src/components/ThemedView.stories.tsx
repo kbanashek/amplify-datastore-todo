@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { Text } from "react-native";
-import { ThemedView } from "./ThemedView";
+import { ThemedView } from "@components/ThemedView";
+import { AppFonts } from "@constants/AppFonts";
 
 const meta = {
   title: "Components/ThemedView",
@@ -10,16 +11,6 @@ const meta = {
     layout: "centered",
   },
   tags: ["autodocs"],
-  argTypes: {
-    children: {
-      description: "Content to display inside the themed view",
-      control: false, // Children are JSX, not controllable via Storybook
-    },
-    style: {
-      description: "Style object for the view",
-      control: false, // Style objects are complex, not controllable via Storybook
-    },
-  },
 } satisfies Meta<typeof ThemedView>;
 
 export default meta;
@@ -57,9 +48,9 @@ export const WithMultipleChildren: Story = {
 export const Nested: Story = {
   render: () => (
     <ThemedView style={{ padding: 20, borderRadius: 8 }}>
-      <Text style={{ marginBottom: 12, fontWeight: "bold" }}>Outer View</Text>
+      <Text style={[AppFonts.bodyBold, { marginBottom: 12 }]}>Outer View</Text>
       <ThemedView style={{ padding: 16, borderRadius: 4, opacity: 0.8 }}>
-        <Text>Inner View</Text>
+        <Text style={AppFonts.body}>Inner View</Text>
       </ThemedView>
     </ThemedView>
   ),
@@ -72,11 +63,13 @@ export const AsCard: Story = {
   args: {
     children: (
       <>
-        <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 8 }}>
+        <Text style={[AppFonts.subheading, { marginBottom: 8 }]}>
           Card Title
         </Text>
-        <Text style={{ marginBottom: 4 }}>Card content goes here</Text>
-        <Text style={{ color: "#666", fontSize: 12 }}>
+        <Text style={[AppFonts.body, { marginBottom: 4 }]}>
+          Card content goes here
+        </Text>
+        <Text style={[AppFonts.caption, { color: "#666" }]}>
           Additional information
         </Text>
       </>

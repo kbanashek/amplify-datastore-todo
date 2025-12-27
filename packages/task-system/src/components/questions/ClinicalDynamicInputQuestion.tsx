@@ -4,10 +4,11 @@
  * @module ClinicalDynamicInputQuestion
  */
 
+import { AppFonts } from "@constants/AppFonts";
+import { useTranslatedText } from "@hooks/useTranslatedText";
+import { Question } from "@task-types/ActivityConfig";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import { Question } from "@task-types/ActivityConfig";
-import { useTranslatedText } from "@hooks/useTranslatedText";
 
 /**
  * Props for the ClinicalDynamicInputQuestion component
@@ -21,10 +22,22 @@ interface ClinicalDynamicInputQuestionProps {
 }
 
 /**
+<<<<<<< HEAD
  * ClinicalDynamicInputQuestion component.
  *
  * @param props - Component props
  * @returns Rendered ClinicalDynamicInputQuestion component
+=======
+ * A component for rendering a clinical dynamic input question with various display options.
+ * Supports different border styles (line, oval, rectangle) and unit display.
+ * Handles numeric input with validation and formatting.
+ *
+ * @param question - The question configuration object
+ * @param value - The current value (can be string or object with text/unitType)
+ * @param onChange - Callback function when value changes
+ * @param displayProperties - Configuration for visual display and behavior
+ * @param errors - Array of error messages
+>>>>>>> origin/develop
  */
 export const ClinicalDynamicInputQuestion: React.FC<
   ClinicalDynamicInputQuestionProps
@@ -124,17 +137,16 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   labelText: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: "#2f3542",
+    ...AppFonts.label,
+    color: "AppColors.gray",
   },
   inputRow: {
     flexDirection: "row",
     alignItems: "center",
   },
   input: {
-    fontSize: 16,
-    color: "#2f3542",
+    ...AppFonts.body,
+    color: "AppColors.gray",
     textAlign: "center",
     minWidth: 60,
     paddingVertical: 8,
@@ -142,30 +154,29 @@ const styles = StyleSheet.create({
   },
   lineBorder: {
     borderBottomWidth: 1,
-    borderBottomColor: "#dfe4ea",
+    borderBottomColor: "AppColors.borderGray",
     backgroundColor: "transparent",
   },
   rectangleBorder: {
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: "AppColors.borderGray",
     borderRadius: 4,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "AppColors.powderGray",
   },
   ovalBorder: {
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: "AppColors.borderGray",
     borderRadius: 20,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "AppColors.powderGray",
   },
   inputError: {
-    borderColor: "#e74c3c",
+    borderColor: "AppColors.errorRed",
   },
   unitContainer: {
     marginLeft: 12,
   },
   unitText: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#57606f",
+    ...AppFonts.label,
+    color: "AppColors.darkGray",
   },
 });
