@@ -1,3 +1,9 @@
+/**
+ * MultiSelectQuestion component module.
+ *
+ * @module MultiSelectQuestion
+ */
+
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Choice, Question } from "@task-types/ActivityConfig";
@@ -10,6 +16,9 @@ interface TranslatedChoice extends Choice {
   translatedText?: string;
 }
 
+/**
+ * Props for the MultiSelectQuestion component
+ */
 interface MultiSelectQuestionProps {
   question: Question;
   value: string[];
@@ -18,6 +27,12 @@ interface MultiSelectQuestionProps {
   errors: string[];
 }
 
+/**
+ * MultiSelectQuestion component.
+ *
+ * @param props - Component props
+ * @returns Rendered MultiSelectQuestion component
+ */
 export const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
   question,
   value,

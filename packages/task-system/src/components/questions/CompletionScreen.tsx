@@ -1,3 +1,9 @@
+/**
+ * CompletionScreen component module.
+ *
+ * @module CompletionScreen
+ */
+
 import React from "react";
 import {
   ScrollView,
@@ -8,11 +14,20 @@ import {
 } from "react-native";
 import { ActivityConfig } from "@task-types/ActivityConfig";
 
+/**
+ * Props for the CompletionScreen component
+ */
 interface CompletionScreenProps {
   activityConfig: ActivityConfig;
   onDone: () => void;
 }
 
+/**
+ * CompletionScreen component.
+ *
+ * @param props - Component props
+ * @returns Rendered CompletionScreen component
+ */
 export const CompletionScreen: React.FC<CompletionScreenProps> = ({
   activityConfig,
   onDone,

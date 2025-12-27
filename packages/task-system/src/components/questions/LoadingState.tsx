@@ -1,12 +1,27 @@
+/**
+ * LoadingState component module.
+ *
+ * @module LoadingState
+ */
+
 import React from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { NetworkStatusIndicator } from "@components/NetworkStatusIndicator";
 
+/**
+ * Props for the LoadingState component
+ */
 interface LoadingStateProps {
   taskId?: string;
   topInset: number;
 }
 
+/**
+ * LoadingState component.
+ *
+ * @param props - Component props
+ * @returns Rendered LoadingState component
+ */
 export const LoadingState: React.FC<LoadingStateProps> = ({
   taskId,
   topInset,

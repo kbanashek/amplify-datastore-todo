@@ -1,3 +1,9 @@
+/**
+ * TemperatureQuestion component module.
+ *
+ * @module TemperatureQuestion
+ */
+
 import { Question } from "@task-types/ActivityConfig";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import { getBorderStyle } from "@utils/borderStyleHelper";
@@ -10,6 +16,9 @@ import {
   View,
 } from "react-native";
 
+/**
+ * Props for the TemperatureQuestion component
+ */
 interface TemperatureQuestionProps {
   question: Question;
   value: string | null;
@@ -18,6 +27,12 @@ interface TemperatureQuestionProps {
   errors: string[];
 }
 
+/**
+ * TemperatureQuestion component.
+ *
+ * @param props - Component props
+ * @returns Rendered TemperatureQuestion component
+ */
 export const TemperatureQuestion: React.FC<TemperatureQuestionProps> = ({
   question,
   value,

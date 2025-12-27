@@ -1,7 +1,16 @@
+/**
+ * ErrorState component module.
+ *
+ * @module ErrorState
+ */
+
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { NetworkStatusIndicator } from "@components/NetworkStatusIndicator";
 
+/**
+ * Props for the ErrorState component
+ */
 interface ErrorStateProps {
   error: string;
   taskId?: string;
@@ -9,6 +18,12 @@ interface ErrorStateProps {
   onBack: () => void;
 }
 
+/**
+ * ErrorState component.
+ *
+ * @param props - Component props
+ * @returns Rendered ErrorState component
+ */
 export const ErrorState: React.FC<ErrorStateProps> = ({
   error,
   taskId,

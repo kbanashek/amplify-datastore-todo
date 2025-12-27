@@ -1,3 +1,9 @@
+/**
+ * NumberQuestion component module.
+ *
+ * @module NumberQuestion
+ */
+
 import Slider from "@react-native-community/slider";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
@@ -12,6 +18,9 @@ import { getUnitDisplayLabel } from "@utils/unitLabel";
 
 const logger = getServiceLogger("NumberQuestion");
 
+/**
+ * Props for the NumberQuestion component
+ */
 interface NumberQuestionProps {
   question: Question;
   value: string | number;
@@ -20,6 +29,12 @@ interface NumberQuestionProps {
   errors: string[];
 }
 
+/**
+ * NumberQuestion component.
+ *
+ * @param props - Component props
+ * @returns Rendered NumberQuestion component
+ */
 export const NumberQuestion: React.FC<NumberQuestionProps> = ({
   question,
   value,

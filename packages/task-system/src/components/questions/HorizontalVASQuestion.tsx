@@ -1,3 +1,9 @@
+/**
+ * HorizontalVASQuestion component module.
+ *
+ * @module HorizontalVASQuestion
+ */
+
 import Slider from "@react-native-community/slider";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -5,6 +11,9 @@ import { Question } from "@task-types/ActivityConfig";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import { ValidationType } from "@task-types/activity-config-enums";
 
+/**
+ * Props for the HorizontalVASQuestion component
+ */
 interface HorizontalVASQuestionProps {
   question: Question;
   value: string | number | null;
@@ -13,6 +22,12 @@ interface HorizontalVASQuestionProps {
   errors: string[];
 }
 
+/**
+ * HorizontalVASQuestion component.
+ *
+ * @param props - Component props
+ * @returns Rendered HorizontalVASQuestion component
+ */
 export const HorizontalVASQuestion: React.FC<HorizontalVASQuestionProps> = ({
   question,
   value,

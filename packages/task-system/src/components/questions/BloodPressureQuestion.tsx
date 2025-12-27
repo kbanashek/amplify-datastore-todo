@@ -1,8 +1,17 @@
+/**
+ * BloodPressureQuestion component module.
+ *
+ * @module BloodPressureQuestion
+ */
+
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import { Question } from "@task-types/ActivityConfig";
 
+/**
+ * Props for the BloodPressureQuestion component
+ */
 interface BloodPressureQuestionProps {
   question: Question;
   value: string | null;
@@ -13,6 +22,12 @@ interface BloodPressureQuestionProps {
 
 const MMHG = "mmHg";
 
+/**
+ * BloodPressureQuestion component.
+ *
+ * @param props - Component props
+ * @returns Rendered BloodPressureQuestion component
+ */
 export const BloodPressureQuestion: React.FC<BloodPressureQuestionProps> = ({
   question,
   value,

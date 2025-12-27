@@ -1,3 +1,9 @@
+/**
+ * NavigationMenu component module.
+ *
+ * @module NavigationMenu
+ */
+
 import { IconSymbol } from "@components/ui/IconSymbol";
 import { Colors } from "@constants/Colors";
 import { useColorScheme } from "@hooks/useColorScheme";
@@ -33,12 +39,21 @@ interface MenuItem {
   onPress?: () => void;
 }
 
+/**
+ * Props for the NavigationMenu component
+ */
 interface NavigationMenuProps {
   visible: boolean;
   onClose: () => void;
   items?: readonly MenuItem[];
 }
 
+/**
+ * NavigationMenu component.
+ *
+ * @param props - Component props
+ * @returns Rendered NavigationMenu component
+ */
 export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   visible,
   onClose,

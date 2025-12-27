@@ -1,3 +1,9 @@
+/**
+ * SingleSelectQuestion component module.
+ *
+ * @module SingleSelectQuestion
+ */
+
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTaskTranslation } from "@translations/index";
@@ -10,6 +16,9 @@ interface TranslatedChoice extends Choice {
   translatedText?: string;
 }
 
+/**
+ * Props for the SingleSelectQuestion component
+ */
 interface SingleSelectQuestionProps {
   question: Question;
   value: string | null;
@@ -18,6 +27,12 @@ interface SingleSelectQuestionProps {
   errors: string[];
 }
 
+/**
+ * SingleSelectQuestion component.
+ *
+ * @param props - Component props
+ * @returns Rendered SingleSelectQuestion component
+ */
 export const SingleSelectQuestion: React.FC<SingleSelectQuestionProps> = ({
   question,
   value,

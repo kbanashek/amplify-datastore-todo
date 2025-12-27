@@ -1,3 +1,9 @@
+/**
+ * TasksView component module.
+ *
+ * @module TasksView
+ */
+
 import React from "react";
 import {
   View,
@@ -16,11 +22,20 @@ import { TaskFilters } from "@task-types/Task";
 
 const logger = getServiceLogger("TasksView");
 
+/**
+ * Props for the TasksView component
+ */
 interface TasksViewProps {
   filters?: TaskFilters;
   onTaskPress?: (task: Task) => void;
 }
 
+/**
+ * TasksView component.
+ *
+ * @param props - Component props
+ * @returns Rendered TasksView component
+ */
 export const TasksView: React.FC<TasksViewProps> = ({
   filters,
   onTaskPress,

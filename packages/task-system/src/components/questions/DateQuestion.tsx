@@ -1,9 +1,18 @@
+/**
+ * DateQuestion component module.
+ *
+ * @module DateQuestion
+ */
+
 import React, { useEffect, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Question } from "@task-types/ActivityConfig";
 import { DateTimeFieldMode } from "@components/ui/DateTimeField";
 import { DateTimeField } from "@components/ui/DateTimeField";
 
+/**
+ * Props for the DateQuestion component
+ */
 interface DateQuestionProps {
   question: Question;
   value: string | Date | null;
@@ -12,6 +21,12 @@ interface DateQuestionProps {
   errors: string[];
 }
 
+/**
+ * DateQuestion component.
+ *
+ * @param props - Component props
+ * @returns Rendered DateQuestion component
+ */
 export const DateQuestion: React.FC<DateQuestionProps> = ({
   question,
   value,

@@ -1,3 +1,9 @@
+/**
+ * QuestionRenderer component module.
+ *
+ * @module QuestionRenderer
+ */
+
 import React, { useCallback, useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useTranslatedText } from "@hooks/useTranslatedText";
@@ -250,6 +256,9 @@ const normalizeToEnumFormat = (type: string): string => {
   return enumMap[lower] || type;
 };
 
+/**
+ * Props for the QuestionRenderer component
+ */
 interface QuestionRendererProps {
   element: ParsedElement;
   currentAnswer?: any; // Current answer from state (not just initial patientAnswer)
@@ -257,6 +266,12 @@ interface QuestionRendererProps {
   errors?: Record<string, string[]>;
 }
 
+/**
+ * QuestionRenderer component.
+ *
+ * @param props - Component props
+ * @returns Rendered QuestionRenderer component
+ */
 export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
   element,
   currentAnswer,

@@ -1,9 +1,18 @@
+/**
+ * ReviewScreenContainer component module.
+ *
+ * @module ReviewScreenContainer
+ */
+
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { AppColors } from "@constants/AppColors";
 import { ReviewScreen } from "@components/questions/ReviewScreen";
 import { ParsedActivityData } from "@utils/activityParser";
 
+/**
+ * Props for the ReviewScreenContainer component
+ */
 interface ReviewScreenContainerProps {
   activityData: ParsedActivityData;
   answers: Record<string, any>;
@@ -14,6 +23,12 @@ interface ReviewScreenContainerProps {
   tabBarHeight?: number;
 }
 
+/**
+ * ReviewScreenContainer component.
+ *
+ * @param props - Component props
+ * @returns Rendered ReviewScreenContainer component
+ */
 export const ReviewScreenContainer: React.FC<ReviewScreenContainerProps> = ({
   activityData,
   answers,

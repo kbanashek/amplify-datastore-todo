@@ -1,3 +1,12 @@
+/**
+ * TaskCard component for displaying task information in a card format.
+ *
+ * Shows task details including title, due date/time, icon, and action buttons.
+ * Supports both full cards (with BEGIN/RESUME buttons) and simple cards (display only).
+ *
+ * @module TaskCard
+ */
+
 import { TranslatedText } from "@components/TranslatedText";
 import { IconSymbol } from "@components/ui/IconSymbol";
 import { AppColors } from "@constants/AppColors";
@@ -11,21 +20,42 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const logger = getServiceLogger("TaskCard");
 
+/**
+ * Props for the TaskCard component
+ */
 interface TaskCardProps {
+  /** The task object to display */
   task: Task;
+  /** Callback when card is pressed (opens task) */
   onPress?: (task: Task) => void;
+  /** Callback when delete button is pressed */
   onDelete?: (id: string) => void;
-  simple?: boolean; // If true, show simple card without BEGIN button
+  /** If true, shows simple card without BEGIN/RESUME button */
+  simple?: boolean;
 }
 
 /**
- * A card component for displaying task information.
+ * A card component for displaying task information with action buttons.
  *
- * @param task - The task to display
- * @param onPress - Optional callback function when the card is pressed
- * @param onDelete - Optional callback function when the delete button is pressed
- * @param simple - Whether to show a simple card without the BEGIN button
- * @returns A themed task card component with the provided task information
+ * Displays task title, due date/time, associated icon, and action buttons.
+ * Automatically updates task status when BEGIN/RESUME is pressed.
+ * Supports translation for all user-facing text.
+ *
+ * @param props - TaskCard component props
+ * @returns Rendered task card
+ *
+ * @example
+ * ```tsx
+ * // Full card with BEGIN button
+ * <TaskCard
+ *   task={task}
+ *   onPress={(task) => navigate('TaskDetail', { task })}
+ *   onDelete={(id) => deleteTask(id)}
+ * />
+ *
+ * // Simple display card
+ * <TaskCard task={task} simple />
+ * ```
  */
 export const TaskCard: React.FC<TaskCardProps> = ({
   task,

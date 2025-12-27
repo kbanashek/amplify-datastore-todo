@@ -1,3 +1,9 @@
+/**
+ * TextQuestion component module.
+ *
+ * @module TextQuestion
+ */
+
 import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { Question } from "@task-types/ActivityConfig";
@@ -7,6 +13,9 @@ import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("TextQuestion");
 
+/**
+ * Props for the TextQuestion component
+ */
 interface TextQuestionProps {
   question: Question;
   value: string;
@@ -15,6 +24,12 @@ interface TextQuestionProps {
   errors: string[];
 }
 
+/**
+ * TextQuestion component.
+ *
+ * @param props - Component props
+ * @returns Rendered TextQuestion component
+ */
 export const TextQuestion: React.FC<TextQuestionProps> = ({
   question,
   value,

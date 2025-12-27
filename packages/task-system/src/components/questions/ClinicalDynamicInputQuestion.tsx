@@ -1,8 +1,17 @@
+/**
+ * ClinicalDynamicInputQuestion component module.
+ *
+ * @module ClinicalDynamicInputQuestion
+ */
+
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Question } from "@task-types/ActivityConfig";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 
+/**
+ * Props for the ClinicalDynamicInputQuestion component
+ */
 interface ClinicalDynamicInputQuestionProps {
   question: Question;
   value: string | Record<string, any> | null;
@@ -11,6 +20,12 @@ interface ClinicalDynamicInputQuestionProps {
   errors: string[];
 }
 
+/**
+ * ClinicalDynamicInputQuestion component.
+ *
+ * @param props - Component props
+ * @returns Rendered ClinicalDynamicInputQuestion component
+ */
 export const ClinicalDynamicInputQuestion: React.FC<
   ClinicalDynamicInputQuestionProps
 > = ({ question, value, onChange, displayProperties, errors }) => {

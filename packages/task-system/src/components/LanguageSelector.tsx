@@ -1,3 +1,9 @@
+/**
+ * LanguageSelector component module.
+ *
+ * @module LanguageSelector
+ */
+
 import React, { useState } from "react";
 import {
   View,
@@ -14,10 +20,19 @@ import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("LanguageSelector");
 
+/**
+ * Props for the LanguageSelector component
+ */
 interface LanguageSelectorProps {
   style?: object;
 }
 
+/**
+ * LanguageSelector component.
+ *
+ * @param props - Component props
+ * @returns Rendered LanguageSelector component
+ */
 export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   style,
 }) => {
