@@ -2,6 +2,7 @@ import { AppointmentCard } from "@components/AppointmentCard";
 import { TaskCard } from "@components/TaskCard";
 import { TranslatedText } from "@components/TranslatedText";
 import { AppColors } from "@constants/AppColors";
+import { AppFonts } from "@constants/AppFonts";
 import { TestIds } from "@constants/testIds";
 import { GroupedTask } from "@hooks/useGroupedTasks";
 import { Appointment } from "@task-types/Appointment";
@@ -316,14 +317,12 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   dayLabel: {
-    fontSize: 24,
-    fontWeight: "bold",
+    ...AppFonts.heading,
     color: AppColors.CINavy,
   },
   dayDate: {
-    fontSize: 16,
+    ...AppFonts.body,
     color: AppColors.mediumDarkGray,
-    fontWeight: "400",
   },
   timeGroup: {
     marginBottom: 16,
@@ -335,14 +334,12 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   dueByHeader: {
-    fontSize: 14,
-    fontWeight: "bold",
+    ...AppFonts.label,
     color: AppColors.CINavy,
     textTransform: "uppercase",
   },
   dueByTime: {
-    fontSize: 14,
-    fontWeight: "bold",
+    ...AppFonts.label,
     color: AppColors.CINavy,
   },
   centerContainer: {
@@ -350,18 +347,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   loadingText: {
+    ...AppFonts.small,
     marginTop: 12,
-    color: "#57606f",
-    fontSize: 14,
+    color: AppColors.darkGray,
   },
   errorText: {
+    ...AppFonts.small,
     color: AppColors.errorRed,
-    fontSize: 14,
     textAlign: "center",
   },
   emptyText: {
+    ...AppFonts.body,
     color: AppColors.mediumDarkGray,
-    fontSize: 16,
     textAlign: "center",
   },
   appointmentsContainer: {

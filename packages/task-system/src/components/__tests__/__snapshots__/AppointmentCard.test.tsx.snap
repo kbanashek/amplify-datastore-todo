@@ -85,8 +85,9 @@ exports[`AppointmentCard Snapshots matches snapshot in RTL mode 1`] = `
         [
           {
             "color": "#FFFFFF",
+            "fontFamily": "Ubuntu-Regular",
             "fontSize": 16,
-            "fontWeight": "600",
+            "fontWeight": "400",
             "lineHeight": 22,
             "marginBottom": 4,
           },
@@ -104,6 +105,7 @@ exports[`AppointmentCard Snapshots matches snapshot in RTL mode 1`] = `
         [
           {
             "color": "#FFFFFF",
+            "fontFamily": "Ubuntu-Regular",
             "fontSize": 14,
             "fontWeight": "400",
             "opacity": 0.9,
@@ -233,8 +235,9 @@ exports[`AppointmentCard Snapshots matches snapshot with default props 1`] = `
         [
           {
             "color": "#FFFFFF",
+            "fontFamily": "Ubuntu-Regular",
             "fontSize": 16,
-            "fontWeight": "600",
+            "fontWeight": "400",
             "lineHeight": 22,
             "marginBottom": 4,
           },
@@ -250,6 +253,7 @@ exports[`AppointmentCard Snapshots matches snapshot with default props 1`] = `
         [
           {
             "color": "#FFFFFF",
+            "fontFamily": "Ubuntu-Regular",
             "fontSize": 14,
             "fontWeight": "400",
             "opacity": 0.9,
@@ -413,8 +417,9 @@ exports[`AppointmentCard Snapshots matches snapshot with onPress handler 1`] = `
           [
             {
               "color": "#FFFFFF",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 16,
-              "fontWeight": "600",
+              "fontWeight": "400",
               "lineHeight": 22,
               "marginBottom": 4,
             },
@@ -430,6 +435,7 @@ exports[`AppointmentCard Snapshots matches snapshot with onPress handler 1`] = `
           [
             {
               "color": "#FFFFFF",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 14,
               "fontWeight": "400",
               "opacity": 0.9,
@@ -557,8 +563,9 @@ exports[`AppointmentCard Snapshots matches snapshot with telehealth appointment 
         [
           {
             "color": "#FFFFFF",
+            "fontFamily": "Ubuntu-Regular",
             "fontSize": 16,
-            "fontWeight": "600",
+            "fontWeight": "400",
             "lineHeight": 22,
             "marginBottom": 4,
           },
@@ -574,6 +581,7 @@ exports[`AppointmentCard Snapshots matches snapshot with telehealth appointment 
         [
           {
             "color": "#FFFFFF",
+            "fontFamily": "Ubuntu-Regular",
             "fontSize": 14,
             "fontWeight": "400",
             "opacity": 0.9,
@@ -700,8 +708,9 @@ exports[`AppointmentCard Snapshots matches snapshot with timezone 1`] = `
         [
           {
             "color": "#FFFFFF",
+            "fontFamily": "Ubuntu-Regular",
             "fontSize": 16,
-            "fontWeight": "600",
+            "fontWeight": "400",
             "lineHeight": 22,
             "marginBottom": 4,
           },
@@ -717,6 +726,7 @@ exports[`AppointmentCard Snapshots matches snapshot with timezone 1`] = `
         [
           {
             "color": "#FFFFFF",
+            "fontFamily": "Ubuntu-Regular",
             "fontSize": 14,
             "fontWeight": "400",
             "opacity": 0.9,

@@ -2,6 +2,7 @@ import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import { Text, View } from "react-native";
 import { DatePicker } from "./DatePicker";
+import { AppFonts } from "@constants/AppFonts";
 
 /**
  * Wrapper component to use hooks in stories
@@ -14,7 +15,7 @@ const DatePickerWithState: React.FC<{
   const [date, setDate] = useState<Date | null>(initialValue);
   return (
     <View>
-      <Text style={{ marginBottom: 8, fontWeight: "600" }}>
+      <Text style={[AppFonts.label, { marginBottom: 8 }]}>
         Selected: {date?.toLocaleDateString() || "None"}
       </Text>
       <DatePicker
@@ -99,7 +100,7 @@ export const FormExample = {
       return (
         <View style={{ gap: 20, minWidth: 300 }}>
           <View>
-            <Text style={{ marginBottom: 8, fontWeight: "600" }}>
+            <Text style={[AppFonts.label, { marginBottom: 8 }]}>
               Start Date
             </Text>
             <DatePicker
@@ -109,7 +110,7 @@ export const FormExample = {
             />
           </View>
           <View>
-            <Text style={{ marginBottom: 8, fontWeight: "600" }}>End Date</Text>
+            <Text style={[AppFonts.label, { marginBottom: 8 }]}>End Date</Text>
             <DatePicker
               value={endDate}
               onChange={setEndDate}

@@ -1,8 +1,95 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import React, { useState } from "react";
-import { View } from "react-native";
-import { MultiSelectQuestion } from "./MultiSelectQuestion";
-import { QuestionType } from "@task-types/Question";
+import { View, Text } from "react-native";
+import { MultiSelectQuestion } from "../MultiSelectQuestion";
+import { Choice, Question } from "@task-types/ActivityConfig";
+
+/**
+ * Wrapper component to use hooks in stories with validation
+ */
+const MultiSelectQuestionWithState: React.FC<{
+  text: string;
+  required?: boolean;
+  choices: Choice[];
+  initialAnswers?: string[];
+  enableValidation?: boolean;
+  minSelections?: number;
+  maxSelections?: number;
+}> = ({
+  text,
+  required = false,
+  choices,
+  initialAnswers = [],
+  enableValidation = false,
+  minSelections,
+  maxSelections,
+}) => {
+  const [answers, setAnswers] = useState<string[]>(initialAnswers);
+  const [error, setError] = useState<string>("");
+
+  const validateAnswers = (selectedAnswers: string[]): void => {
+    if (!enableValidation) {
+      setError("");
+      return;
+    }
+
+    if (required && selectedAnswers.length === 0) {
+      setError("Please select at least one option");
+      return;
+    }
+
+    if (minSelections && selectedAnswers.length < minSelections) {
+      setError(
+        `Please select at least ${minSelections} option${minSelections > 1 ? "s" : ""}`
+      );
+      return;
+    }
+
+    if (maxSelections && selectedAnswers.length > maxSelections) {
+      setError(
+        `Please select no more than ${maxSelections} option${maxSelections > 1 ? "s" : ""}`
+      );
+      return;
+    }
+
+    setError("");
+  };
+
+  const handleChange = (selectedAnswers: string[]): void => {
+    setAnswers(selectedAnswers);
+    validateAnswers(selectedAnswers);
+  };
+
+  const errors = enableValidation && error ? [error] : [];
+
+  return (
+    <View>
+      <MultiSelectQuestion
+        question={{
+          id: "story-question",
+          text,
+          questionType: QuestionType.MULTI_SELECT,
+          required,
+          screenIndex: 0,
+          choices,
+        }}
+        value={answers}
+        onChange={handleChange}
+        displayProperties={{ optionPlacement: "below" }}
+        errors={errors}
+      />
+      {enableValidation && error && (
+        <View style={{ marginTop: 4, paddingHorizontal: 4 }}>
+          <Text style={[AppFonts.caption, { color: AppColors.errorRed }]}>
+            {error}
+          </Text>
+        </View>
+      )}
+    </View>
+  );
+};
 
 const meta = {
   title: "Questions/MultiSelectQuestion",
@@ -11,8 +98,30 @@ const meta = {
     layout: "centered",
   },
   tags: ["autodocs"],
+  argTypes: {
+    text: {
+      control: "text",
+      description: "The question text to display",
+    },
+    required: {
+      control: "boolean",
+      description: "Whether the question is required",
+    },
+    enableValidation: {
+      control: "boolean",
+      description: "Enable real-time validation",
+    },
+    minSelections: {
+      control: "number",
+      description: "Minimum number of selections required",
+    },
+    maxSelections: {
+      control: "number",
+      description: "Maximum number of selections allowed",
+    },
+  },
   decorators: [
-    Story => (
+    (Story: React.ComponentType) => (
       <View style={{ minWidth: 400, padding: 20 }}>
         <Story />
       </View>
@@ -23,203 +132,190 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// Args type for render functions
+type StoryArgs = {
+  text: string;
+  required?: boolean;
+  choices: Choice[];
+  initialAnswers?: string[];
+  enableValidation?: boolean;
+  minSelections?: number;
+  maxSelections?: number;
+};
+
 /**
  * Symptoms checklist
  */
 export const SymptomsQuestion: Story = {
-  render: () => {
-    const [answers, setAnswers] = useState<string[]>([]);
-
-    return (
-      <MultiSelectQuestion
-        question={{
-          id: "q1",
-          text: "Which symptoms are you experiencing? (Select all that apply)",
-          questionType: QuestionType.MULTI_SELECT,
-          required: true,
-          screenIndex: 0,
-          choices: [
-            { id: "headache", text: "Headache", value: "headache" },
-            { id: "fever", text: "Fever", value: "fever" },
-            { id: "cough", text: "Cough", value: "cough" },
-            { id: "fatigue", text: "Fatigue", value: "fatigue" },
-            { id: "nausea", text: "Nausea", value: "nausea" },
-            { id: "none", text: "None of the above", value: "none" },
-          ],
-        }}
-        value={answers}
-        onChange={setAnswers}
-        displayProperties={{ optionPlacement: "below" }}
-        errors={[]}
-      />
-    );
+  args: {
+    text: "Which symptoms are you experiencing? (Select all that apply)",
+    required: true,
+    choices: [
+      { id: "headache", text: "Headache", value: "headache" },
+      { id: "fever", text: "Fever", value: "fever" },
+      { id: "cough", text: "Cough", value: "cough" },
+      { id: "fatigue", text: "Fatigue", value: "fatigue" },
+      { id: "nausea", text: "Nausea", value: "nausea" },
+      { id: "none", text: "None of the above", value: "none" },
+    ],
   },
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
  * Medications checklist
  */
 export const MedicationsQuestion: Story = {
-  render: () => {
-    const [answers, setAnswers] = useState<string[]>([]);
-
-    return (
-      <MultiSelectQuestion
-        question={{
-          id: "q2",
-          text: "Which medications did you take today?",
-          questionType: QuestionType.MULTI_SELECT,
-          required: true,
-          screenIndex: 0,
-          choices: [
-            { id: "med1", text: "Blood Pressure Medication", value: "bp-med" },
-            { id: "med2", text: "Diabetes Medication", value: "diabetes-med" },
-            { id: "med3", text: "Pain Reliever", value: "pain-reliever" },
-            { id: "med4", text: "Vitamin Supplement", value: "vitamin" },
-            { id: "none", text: "Did not take any medication", value: "none" },
-          ],
-        }}
-        value={answers}
-        onChange={setAnswers}
-        displayProperties={{ optionPlacement: "below" }}
-        errors={[]}
-      />
-    );
+  args: {
+    text: "Which medications did you take today?",
+    required: true,
+    choices: [
+      { id: "med1", text: "Blood Pressure Medication", value: "bp-med" },
+      { id: "med2", text: "Diabetes Medication", value: "diabetes-med" },
+      { id: "med3", text: "Pain Reliever", value: "pain-reliever" },
+      { id: "med4", text: "Vitamin Supplement", value: "vitamin" },
+      { id: "none", text: "Did not take any medication", value: "none" },
+    ],
   },
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
  * Activities checklist
  */
 export const ActivitiesQuestion: Story = {
-  render: () => {
-    const [answers, setAnswers] = useState<string[]>([]);
-
-    return (
-      <MultiSelectQuestion
-        question={{
-          id: "q3",
-          text: "What physical activities did you do this week?",
-          questionType: QuestionType.MULTI_SELECT,
-          required: false,
-          screenIndex: 0,
-          choices: [
-            { id: "walking", text: "🚶 Walking", value: "walking" },
-            { id: "running", text: "🏃 Running", value: "running" },
-            { id: "swimming", text: "🏊 Swimming", value: "swimming" },
-            { id: "cycling", text: "🚴 Cycling", value: "cycling" },
-            { id: "yoga", text: "🧘 Yoga", value: "yoga" },
-            { id: "gym", text: "💪 Gym Workout", value: "gym" },
-            { id: "none", text: "No exercise", value: "none" },
-          ],
-        }}
-        value={answers}
-        onChange={setAnswers}
-        displayProperties={{ optionPlacement: "below" }}
-        errors={[]}
-      />
-    );
+  args: {
+    text: "What physical activities did you do this week?",
+    required: false,
+    choices: [
+      { id: "walking", text: "🚶 Walking", value: "walking" },
+      { id: "running", text: "🏃 Running", value: "running" },
+      { id: "swimming", text: "🏊 Swimming", value: "swimming" },
+      { id: "cycling", text: "🚴 Cycling", value: "cycling" },
+      { id: "yoga", text: "🧘 Yoga", value: "yoga" },
+      { id: "gym", text: "💪 Gym Workout", value: "gym" },
+      { id: "none", text: "No exercise", value: "none" },
+    ],
   },
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
  * With pre-selected answers
  */
 export const WithSelectedAnswers: Story = {
-  render: () => {
-    const [answers, setAnswers] = useState<string[]>(["headache", "fatigue"]);
-
-    return (
-      <MultiSelectQuestion
-        question={{
-          id: "q4",
-          text: "Current symptoms:",
-          questionType: QuestionType.MULTI_SELECT,
-          required: true,
-          screenIndex: 0,
-          choices: [
-            { id: "headache", text: "Headache", value: "headache" },
-            { id: "fever", text: "Fever", value: "fever" },
-            { id: "cough", text: "Cough", value: "cough" },
-            { id: "fatigue", text: "Fatigue", value: "fatigue" },
-          ],
-        }}
-        value={answers}
-        onChange={setAnswers}
-        displayProperties={{ optionPlacement: "below" }}
-        errors={[]}
-      />
-    );
+  args: {
+    text: "Current symptoms:",
+    required: true,
+    choices: [
+      { id: "headache", text: "Headache", value: "headache" },
+      { id: "fever", text: "Fever", value: "fever" },
+      { id: "cough", text: "Cough", value: "cough" },
+      { id: "fatigue", text: "Fatigue", value: "fatigue" },
+    ],
+    initialAnswers: ["headache", "fatigue"],
   },
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
  * Dietary preferences
  */
 export const DietaryQuestion: Story = {
-  render: () => {
-    const [answers, setAnswers] = useState<string[]>([]);
-
-    return (
-      <MultiSelectQuestion
-        question={{
-          id: "q5",
-          text: "Select any dietary restrictions or preferences:",
-          questionType: QuestionType.MULTI_SELECT,
-          required: false,
-          screenIndex: 0,
-          choices: [
-            { id: "vegetarian", text: "Vegetarian", value: "vegetarian" },
-            { id: "vegan", text: "Vegan", value: "vegan" },
-            { id: "gluten-free", text: "Gluten-Free", value: "gluten-free" },
-            { id: "dairy-free", text: "Dairy-Free", value: "dairy-free" },
-            { id: "nut-allergy", text: "Nut Allergy", value: "nut-allergy" },
-            { id: "low-sodium", text: "Low Sodium", value: "low-sodium" },
-            { id: "none", text: "No restrictions", value: "none" },
-          ],
-        }}
-        value={answers}
-        onChange={setAnswers}
-        displayProperties={{ optionPlacement: "below" }}
-        errors={[]}
-      />
-    );
+  args: {
+    text: "Select any dietary restrictions or preferences:",
+    required: false,
+    choices: [
+      { id: "vegetarian", text: "Vegetarian", value: "vegetarian" },
+      { id: "vegan", text: "Vegan", value: "vegan" },
+      { id: "gluten-free", text: "Gluten-Free", value: "gluten-free" },
+      { id: "dairy-free", text: "Dairy-Free", value: "dairy-free" },
+      { id: "nut-allergy", text: "Nut Allergy", value: "nut-allergy" },
+      { id: "low-sodium", text: "Low Sodium", value: "low-sodium" },
+      { id: "none", text: "No restrictions", value: "none" },
+    ],
   },
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
  * Medical history
  */
 export const MedicalHistoryQuestion: Story = {
-  render: () => {
-    const [answers, setAnswers] = useState<string[]>([]);
-
-    return (
-      <MultiSelectQuestion
-        question={{
-          id: "q6",
-          text: "Select any conditions you have been diagnosed with:",
-          questionType: QuestionType.MULTI_SELECT,
-          required: true,
-          screenIndex: 0,
-          choices: [
-            {
-              id: "hypertension",
-              text: "Hypertension (High Blood Pressure)",
-              value: "hypertension",
-            },
-            { id: "diabetes", text: "Diabetes", value: "diabetes" },
-            { id: "asthma", text: "Asthma", value: "asthma" },
-            { id: "arthritis", text: "Arthritis", value: "arthritis" },
-            { id: "heart", text: "Heart Disease", value: "heart-disease" },
-            { id: "none", text: "None of these", value: "none" },
-          ],
-        }}
-        value={answers}
-        onChange={setAnswers}
-        displayProperties={{ optionPlacement: "below" }}
-        errors={[]}
-      />
-    );
+  args: {
+    text: "Select any conditions you have been diagnosed with:",
+    required: true,
+    choices: [
+      {
+        id: "hypertension",
+        text: "Hypertension (High Blood Pressure)",
+        value: "hypertension",
+      },
+      { id: "diabetes", text: "Diabetes", value: "diabetes" },
+      { id: "asthma", text: "Asthma", value: "asthma" },
+      { id: "arthritis", text: "Arthritis", value: "arthritis" },
+      { id: "heart", text: "Heart Disease", value: "heart-disease" },
+      { id: "none", text: "None of these", value: "none" },
+    ],
   },
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
+};
+
+/**
+ * With required field validation
+ */
+export const WithRequiredValidation: Story = {
+  args: {
+    text: "Which symptoms are you experiencing? (Required)",
+    required: true,
+    choices: [
+      { id: "headache", text: "Headache", value: "headache" },
+      { id: "fever", text: "Fever", value: "fever" },
+      { id: "cough", text: "Cough", value: "cough" },
+      { id: "fatigue", text: "Fatigue", value: "fatigue" },
+    ],
+    enableValidation: true,
+  },
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
+};
+
+/**
+ * With minimum selections validation
+ */
+export const WithMinSelectionsValidation: Story = {
+  args: {
+    text: "Select at least 2 activities you did this week:",
+    required: true,
+    choices: [
+      { id: "walking", text: "🚶 Walking", value: "walking" },
+      { id: "running", text: "🏃 Running", value: "running" },
+      { id: "swimming", text: "🏊 Swimming", value: "swimming" },
+      { id: "cycling", text: "🚴 Cycling", value: "cycling" },
+      { id: "yoga", text: "🧘 Yoga", value: "yoga" },
+    ],
+    enableValidation: true,
+    minSelections: 2,
+  },
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
+};
+
+/**
+ * With maximum selections validation
+ */
+export const WithMaxSelectionsValidation: Story = {
+  args: {
+    text: "Select up to 3 of your top concerns:",
+    required: false,
+    choices: [
+      { id: "pain", text: "Pain Management", value: "pain" },
+      { id: "sleep", text: "Sleep Quality", value: "sleep" },
+      { id: "energy", text: "Energy Levels", value: "energy" },
+      { id: "mood", text: "Mood", value: "mood" },
+      { id: "appetite", text: "Appetite", value: "appetite" },
+      { id: "mobility", text: "Mobility", value: "mobility" },
+    ],
+    enableValidation: true,
+    maxSelections: 3,
+  },
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
 };

@@ -1,6 +1,8 @@
+import { NetworkStatusIndicator } from "@components/NetworkStatusIndicator";
+import { AppColors } from "@constants/AppColors";
+import { AppFonts } from "@constants/AppFonts";
 import React from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import { NetworkStatusIndicator } from "@components/NetworkStatusIndicator";
 
 interface LoadingStateProps {
   taskId?: string;
@@ -23,7 +25,7 @@ export const LoadingState: React.FC<LoadingStateProps> = ({
         <NetworkStatusIndicator />
       </View>
       <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#3498db" />
+        <ActivityIndicator size="large" color={AppColors.CIBlue} />
         <Text style={styles.loadingText}>Loading questions...</Text>
       </View>
     </View>
@@ -33,19 +35,17 @@ export const LoadingState: React.FC<LoadingStateProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f6fa",
+    backgroundColor: AppColors.powderGray,
   },
   header: {
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: "#fff",
+    backgroundColor: AppColors.white,
     borderBottomWidth: 1,
-    borderBottomColor: "#dfe4ea",
+    borderBottomColor: AppColors.borderGray,
   },
   headerTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#2f3542",
+    ...AppFonts.heading,
     flex: 1,
   },
   centerContainer: {
@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   loadingText: {
+    ...AppFonts.small,
     marginTop: 12,
-    color: "#57606f",
-    fontSize: 14,
+    color: AppColors.darkGray,
   },
 });

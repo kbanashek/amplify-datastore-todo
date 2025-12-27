@@ -1,5 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 
 interface ProgressIndicatorProps {
   currentPage: number;
@@ -32,27 +34,27 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
 
 const styles = StyleSheet.create({
   progressContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: AppColors.white,
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: "#dfe4ea",
+    borderBottomColor: AppColors.borderGray,
   },
   progressText: {
-    fontSize: 14,
-    color: "#57606f",
+    ...AppFonts.caption,
+    color: AppColors.darkGray,
     marginBottom: 8,
     textAlign: "center",
   },
   progressBar: {
     height: 4,
-    backgroundColor: "#ecf0f1",
+    backgroundColor: AppColors.ltGray,
     borderRadius: 2,
     overflow: "hidden",
   },
   progressFill: {
     height: "100%",
-    backgroundColor: "#3498db",
+    backgroundColor: AppColors.CIBlue,
     borderRadius: 2,
   },
 });

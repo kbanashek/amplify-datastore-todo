@@ -1,4 +1,6 @@
 import Slider from "@react-native-community/slider";
+import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { useTranslatedText } from "@hooks/useTranslatedText";
@@ -114,9 +116,9 @@ export const NumberQuestion: React.FC<NumberQuestionProps> = ({
               );
               onChange(intValue.toString());
             }}
-            minimumTrackTintColor="#3498db"
-            maximumTrackTintColor="#dfe4ea"
-            thumbTintColor="#3498db"
+            minimumTrackTintColor="AppColors.CIBlue"
+            maximumTrackTintColor="AppColors.borderGray"
+            thumbTintColor="AppColors.CIBlue"
           />
         </View>
         {unitLabel && <Text style={styles.unitText}>{unitLabel}</Text>}
@@ -165,22 +167,22 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "AppColors.powderGray",
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: "AppColors.borderGray",
     borderRadius: 8,
     padding: 12,
-    fontSize: 16,
-    color: "#2f3542",
+    ...AppFonts.body,
+    color: "AppColors.gray",
     minHeight: 44,
   },
   inputError: {
-    borderColor: "#e74c3c",
+    borderColor: "AppColors.errorRed",
   },
   unitText: {
+    ...AppFonts.small,
     marginLeft: 8,
-    fontSize: 14,
-    color: "#57606f",
+    color: "AppColors.darkGray",
   },
   sliderContainer: {
     marginTop: 8,
@@ -192,14 +194,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   sliderLabel: {
-    fontSize: 14,
-    color: "#57606f",
-    fontWeight: "500",
+    ...AppFonts.label,
+    color: "AppColors.darkGray",
   },
   sliderValue: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#3498db",
+    ...AppFonts.heading,
+    color: "AppColors.CIBlue",
     minWidth: 50,
     textAlign: "center",
   },

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import {
   ActivityIndicator,
   Image,
@@ -144,7 +146,7 @@ export const ImageCaptureQuestion: React.FC<ImageCaptureQuestionProps> = ({
   if (loading) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color="#3498db" />
+        <ActivityIndicator size="large" color="AppColors.CIBlue" />
       </View>
     );
   }
@@ -212,29 +214,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   captureButton: {
-    backgroundColor: "#3498db",
+    backgroundColor: "AppColors.CIBlue",
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
     marginBottom: 8,
   },
   captureButtonText: {
-    color: "#ffffff",
-    fontSize: 16,
-    fontWeight: "600",
+    ...AppFonts.button,
+    color: "AppColors.white",
   },
   selectButton: {
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "AppColors.powderGray",
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: "AppColors.borderGray",
   },
   selectButtonText: {
-    color: "#2f3542",
-    fontSize: 16,
-    fontWeight: "500",
+    ...AppFonts.button,
+    color: "AppColors.gray",
   },
   imageContainer: {
     position: "relative",
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 8,
     right: 8,
-    backgroundColor: "#e74c3c",
+    backgroundColor: "AppColors.errorRed",
     width: 32,
     height: 32,
     borderRadius: 16,
@@ -259,9 +259,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   deleteButtonText: {
-    color: "#ffffff",
-    fontSize: 24,
-    fontWeight: "bold",
+    ...AppFonts.heading,
+    color: "AppColors.white",
   },
   editButton: {
     position: "absolute",
@@ -273,35 +272,32 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   editButtonText: {
-    color: "#ffffff",
-    fontSize: 14,
-    fontWeight: "600",
+    ...AppFonts.label,
+    color: "AppColors.white",
   },
   errorContainer: {
     marginTop: 8,
   },
   errorText: {
-    fontSize: 14,
-    color: "#e74c3c",
-    fontWeight: "500",
+    ...AppFonts.label,
+    color: AppColors.errorRed,
   },
   unavailableContainer: {
     padding: 16,
-    backgroundColor: "#fff3cd",
+    backgroundColor: AppColors.lightYellow,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#ffc107",
+    borderColor: AppColors.legacy.warning,
     alignItems: "center",
   },
   unavailableTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#856404",
+    ...AppFonts.button,
+    color: AppColors.legacy.dark,
     marginBottom: 8,
   },
   unavailableText: {
-    fontSize: 14,
-    color: "#856404",
+    ...AppFonts.small,
+    color: AppColors.legacy.dark,
     textAlign: "center",
     lineHeight: 20,
   },

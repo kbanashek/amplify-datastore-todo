@@ -3,8 +3,9 @@
  * Following React Native best practices for reusable styles
  */
 
-import { StyleSheet, ViewStyle, TextStyle } from "react-native";
 import { AppColors } from "@constants/AppColors";
+import { AppFonts } from "@constants/AppFonts";
+import { StyleSheet, TextStyle, ViewStyle } from "react-native";
 
 /**
  * Common shadow styles
@@ -49,29 +50,26 @@ export const Borders = {
 
 /**
  * Common text styles
+ * Now using centralized AppFonts for consistency
  */
 export const TextStyles = StyleSheet.create({
   title: {
-    fontSize: 16,
-    fontWeight: "600",
+    ...AppFonts.body,
     color: AppColors.white,
   } as TextStyle,
 
   body: {
-    fontSize: 14,
-    fontWeight: "400",
+    ...AppFonts.small,
     color: AppColors.white,
   } as TextStyle,
 
   button: {
-    fontSize: 14,
-    fontWeight: "600",
+    ...AppFonts.small,
     color: AppColors.CINavy,
   } as TextStyle,
 
   buttonDisabled: {
-    fontSize: 14,
-    fontWeight: "600",
+    ...AppFonts.small,
     color: AppColors.CINavyHalfOpacity,
   } as TextStyle,
 });

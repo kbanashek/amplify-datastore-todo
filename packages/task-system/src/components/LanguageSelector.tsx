@@ -8,6 +8,8 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
+import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import { useTaskTranslation } from "@translations/index";
 import type { LanguageCode } from "@translations/index";
 import { getServiceLogger } from "@utils/serviceLogger";
@@ -168,14 +170,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 8,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "AppColors.ltGray",
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "AppColors.lightGray",
   },
   selectorText: {
-    fontSize: 14,
-    color: "#333",
-    fontWeight: "500",
+    ...AppFonts.label,
+    color: "AppColors.gray",
   },
   modalOverlay: {
     flex: 1,
@@ -195,19 +196,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: "AppColors.ltGray",
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#333",
+    ...AppFonts.subheading,
+    color: "AppColors.gray",
   },
   closeButton: {
     padding: 4,
   },
   closeButtonText: {
-    fontSize: 24,
-    color: "#666",
+    ...AppFonts.subheading,
+    color: "AppColors.mediumDarkGray",
   },
   languageList: {
     maxHeight: 400,
@@ -218,22 +218,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
+    borderBottomColor: "AppColors.ltGray",
   },
   languageItemSelected: {
-    backgroundColor: "#e3f2fd",
+    backgroundColor: "AppColors.powderGray",
   },
   languageText: {
-    fontSize: 16,
-    color: "#333",
+    ...AppFonts.body,
+    color: "AppColors.gray",
   },
   languageTextSelected: {
-    fontWeight: "600",
-    color: "#1976d2",
+    ...AppFonts.bodyMedium,
+    color: "AppColors.headerBlue",
   },
   checkmark: {
-    fontSize: 18,
-    color: "#1976d2",
-    fontWeight: "bold",
+    ...AppFonts.body,
+    color: "AppColors.headerBlue",
   },
 });

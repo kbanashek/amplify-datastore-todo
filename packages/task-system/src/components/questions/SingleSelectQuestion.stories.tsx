@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { AppFonts } from "@constants/AppFonts";
 import React, { useState, useEffect } from "react";
 import { View, Text } from "react-native";
 import { SingleSelectQuestion } from "./SingleSelectQuestion";
@@ -59,7 +60,9 @@ const SingleSelectQuestionWithState: React.FC<{
       />
       {hasError && (
         <View style={{ marginTop: 4, paddingHorizontal: 4 }}>
-          <Text style={{ fontSize: 12, color: "#dc2626" }}>{errors[0]}</Text>
+          <Text style={[AppFonts.caption, { color: "#dc2626" }]}>
+            {errors[0]}
+          </Text>
         </View>
       )}
     </View>

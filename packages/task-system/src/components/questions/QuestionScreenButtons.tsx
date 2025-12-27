@@ -1,4 +1,5 @@
 import React from "react";
+import { AppFonts } from "@constants/AppFonts";
 import { StyleSheet, View } from "react-native";
 import { AppColors } from "@constants/AppColors";
 import { Shadows } from "@constants/AppStyles";
@@ -125,23 +126,19 @@ const styles = StyleSheet.create({
     backgroundColor: AppColors.ltGray,
   },
   navButtonText: {
-    fontSize: 16,
-    fontWeight: "600",
+    ...AppFonts.button,
     color: AppColors.mediumDarkGray,
   },
   nextButtonText: {
+    ...AppFonts.button,
     color: AppColors.white,
-    fontSize: 16,
-    fontWeight: "600",
   },
   submitButtonTextEnabled: {
+    ...AppFonts.button,
     color: AppColors.white,
-    fontSize: 16,
-    fontWeight: "700", // Bolder for submit button
   },
   submitButtonTextDisabled: {
+    ...AppFonts.button,
     color: AppColors.mediumDarkGray,
-    fontSize: 16,
-    fontWeight: "600",
   },
 });

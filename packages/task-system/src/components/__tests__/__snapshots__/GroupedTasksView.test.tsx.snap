@@ -19,7 +19,9 @@ exports[`GroupedTasksView Snapshots matches snapshot in RTL mode 1`] = `
     style={
       {
         "color": "#666666",
+        "fontFamily": "Ubuntu-Regular",
         "fontSize": 16,
+        "fontWeight": "400",
         "textAlign": "center",
       }
     }
@@ -72,8 +74,9 @@ exports[`GroupedTasksView Snapshots matches snapshot with appointments 1`] = `
           style={
             {
               "color": "#1E376C",
-              "fontSize": 24,
-              "fontWeight": "bold",
+              "fontFamily": "Ubuntu-Bold",
+              "fontSize": 28,
+              "fontWeight": "800",
             }
           }
         >
@@ -83,12 +86,13 @@ exports[`GroupedTasksView Snapshots matches snapshot with appointments 1`] = `
           style={
             {
               "color": "#666666",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 16,
               "fontWeight": "400",
             }
           }
         >
-          Thu, Dec 25
+          Fri, Dec 26
         </Text>
       </View>
       <View
@@ -132,7 +136,9 @@ exports[`GroupedTasksView Snapshots matches snapshot with default props 1`] = `
     style={
       {
         "color": "#666666",
+        "fontFamily": "Ubuntu-Regular",
         "fontSize": 16,
+        "fontWeight": "400",
         "textAlign": "center",
       }
     }
@@ -162,7 +168,9 @@ exports[`GroupedTasksView Snapshots matches snapshot with error state 1`] = `
     style={
       {
         "color": "#F44336",
+        "fontFamily": "Ubuntu-Regular",
         "fontSize": 14,
+        "fontWeight": "400",
         "textAlign": "center",
       }
     }
@@ -216,8 +224,9 @@ exports[`GroupedTasksView Snapshots matches snapshot with grouped tasks 1`] = `
           style={
             {
               "color": "#1E376C",
-              "fontSize": 24,
-              "fontWeight": "bold",
+              "fontFamily": "Ubuntu-Bold",
+              "fontSize": 28,
+              "fontWeight": "800",
             }
           }
         >
@@ -227,12 +236,13 @@ exports[`GroupedTasksView Snapshots matches snapshot with grouped tasks 1`] = `
           style={
             {
               "color": "#666666",
+              "fontFamily": "Ubuntu-Regular",
               "fontSize": 16,
               "fontWeight": "400",
             }
           }
         >
-          2025-12-25
+          2025-12-26
         </Text>
       </View>
       <View />
@@ -265,7 +275,9 @@ exports[`GroupedTasksView Snapshots matches snapshot with loading state 1`] = `
     style={
       {
         "color": "#57606f",
+        "fontFamily": "Ubuntu-Regular",
         "fontSize": 14,
+        "fontWeight": "400",
         "marginTop": 12,
       }
     }

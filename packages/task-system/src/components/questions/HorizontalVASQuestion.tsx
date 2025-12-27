@@ -1,4 +1,6 @@
 import Slider from "@react-native-community/slider";
+import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Question } from "@task-types/ActivityConfig";
@@ -84,9 +86,9 @@ export const HorizontalVASQuestion: React.FC<HorizontalVASQuestionProps> = ({
           step={scaleIncrements}
           value={sliderValue}
           onValueChange={handleSliderChange}
-          minimumTrackTintColor="#3498db"
-          maximumTrackTintColor="#dfe4ea"
-          thumbTintColor="#3498db"
+          minimumTrackTintColor="AppColors.CIBlue"
+          maximumTrackTintColor="AppColors.borderGray"
+          thumbTintColor="AppColors.CIBlue"
           testID={`horizontal-vas-slider-${question.id}`}
         />
         <View style={styles.scaleLabels}>
@@ -121,9 +123,8 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   rangeLabel: {
-    fontSize: 14,
-    color: "#57606f",
-    fontWeight: "500",
+    ...AppFonts.label,
+    color: "AppColors.darkGray",
     flex: 1,
   },
   valueContainer: {
@@ -132,9 +133,8 @@ const styles = StyleSheet.create({
     minWidth: 60,
   },
   valueText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#3498db",
+    ...AppFonts.heading,
+    color: "AppColors.CIBlue",
   },
   slider: {
     width: "100%",
@@ -146,15 +146,14 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   scaleLabel: {
-    fontSize: 12,
-    color: "#95a5a6",
+    ...AppFonts.caption,
+    color: "AppColors.iconGray",
   },
   errorContainer: {
     marginTop: 8,
   },
   errorText: {
-    fontSize: 14,
-    color: "#e74c3c",
-    fontWeight: "500",
+    ...AppFonts.label,
+    color: "AppColors.errorRed",
   },
 });

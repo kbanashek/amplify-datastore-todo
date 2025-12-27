@@ -11,6 +11,8 @@ import {
   TaskType,
   TaskFilters as TaskFiltersType,
 } from "@task-types/Task";
+import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 
 interface TaskFiltersProps {
   filters: TaskFiltersType;
@@ -146,11 +148,11 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: "AppColors.white",
     borderRadius: 8,
     padding: 16,
     marginBottom: 16,
-    shadowColor: "#000",
+    shadowColor: "AppColors.black",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -163,33 +165,30 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#2f3542",
+    ...AppFonts.subheading,
+    color: "AppColors.gray",
   },
   clearButton: {
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 4,
-    backgroundColor: "#e74c3c",
+    backgroundColor: "AppColors.errorRed",
   },
   clearButtonText: {
-    color: "#fff",
-    fontSize: 12,
-    fontWeight: "600",
+    ...AppFonts.caption,
+    color: "AppColors.white",
   },
   searchInput: {
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: "AppColors.borderGray",
     borderRadius: 4,
     padding: 12,
     marginBottom: 16,
-    fontSize: 16,
+    ...AppFonts.body,
   },
   sectionTitle: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#2f3542",
+    ...AppFonts.label,
+    color: "AppColors.gray",
     marginBottom: 8,
     marginTop: 8,
   },
@@ -204,21 +203,20 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: "AppColors.borderGray",
     backgroundColor: "#f8f9fa",
     marginRight: 8,
     marginBottom: 8,
   },
   filterChipSelected: {
-    backgroundColor: "#3498db",
-    borderColor: "#3498db",
+    backgroundColor: "AppColors.CIBlue",
+    borderColor: "AppColors.CIBlue",
   },
   filterChipText: {
-    fontSize: 12,
-    color: "#57606f",
-    fontWeight: "600",
+    ...AppFonts.caption,
+    color: "AppColors.darkGray",
   },
   filterChipTextSelected: {
-    color: "#fff",
+    color: "AppColors.white",
   },
 });

@@ -1,6 +1,8 @@
 import { TaskCard } from "@components/TaskCard";
 import { useTaskList } from "@hooks/useTaskList";
 import { Task, TaskFilters } from "@task-types/Task";
+import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import { getServiceLogger } from "@utils/serviceLogger";
 import { groupTasksByDate } from "@utils/taskGrouping";
 import React, { useMemo } from "react";
@@ -176,7 +178,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
         <View style={styles.emptyContainer} testID="task-list-empty-loading">
           <ActivityIndicator
             size="large"
-            color="#3498db"
+            color="AppColors.CIBlue"
             testID="task-list-loading-spinner"
           />
           <Text style={styles.emptyText} testID="task-list-loading-text">
@@ -301,7 +303,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
           <RefreshControl
             refreshing={loading}
             onRefresh={refreshTasks}
-            colors={["#3498db"]}
+            colors={["AppColors.CIBlue"]}
           />
         }
         contentContainerStyle={styles.listContent}
@@ -321,26 +323,24 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f6fa",
+    backgroundColor: "AppColors.powderGray",
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     padding: 16,
-    backgroundColor: "#fff",
+    backgroundColor: "AppColors.white",
     borderBottomWidth: 1,
-    borderBottomColor: "#dfe4ea",
+    borderBottomColor: "AppColors.borderGray",
   },
   headerTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#2f3542",
+    ...AppFonts.large,
+    color: "AppColors.gray",
   },
   syncedBadge: {
-    fontSize: 12,
-    color: "#27ae60",
-    fontWeight: "600",
+    ...AppFonts.caption,
+    color: "AppColors.successGreen",
   },
   syncIndicator: {
     flexDirection: "row",
@@ -354,13 +354,12 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "#27ae60",
+    backgroundColor: "AppColors.successGreen",
     marginRight: 8,
   },
   syncText: {
-    fontSize: 12,
+    ...AppFonts.caption,
     color: "#155724",
-    fontWeight: "600",
   },
   listContent: {
     padding: 16,
@@ -368,7 +367,7 @@ const styles = StyleSheet.create({
   },
   // Today's Tasks Section - VERY PROMINENT
   todaySectionHeader: {
-    backgroundColor: "#2196f3", // BRIGHT BLUE
+    backgroundColor: "AppColors.CIBlue", // BRIGHT BLUE
     marginTop: 0,
     marginBottom: 16,
     marginLeft: -16, // Extend to edges
@@ -377,7 +376,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
-    shadowColor: "#2196f3",
+    shadowColor: "AppColors.CIBlue",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -390,15 +389,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   todaySectionTitle: {
-    fontSize: 28, // EVEN BIGGER
-    fontWeight: "900", // HEAVIEST
-    color: "#ffffff", // PURE WHITE
+    ...AppFonts.heading,
+    color: "AppColors.white", // PURE WHITE
     textShadowColor: "rgba(0, 0, 0, 0.3)",
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
   },
   todaySectionBadge: {
-    backgroundColor: "#fff",
+    backgroundColor: "AppColors.white",
     paddingHorizontal: 14,
     paddingVertical: 6,
     borderRadius: 20,
@@ -406,9 +404,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   todaySectionCount: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#2196f3",
+    ...AppFonts.subheading,
+    color: "AppColors.CIBlue",
   },
   // Regular section headers
   sectionHeader: {
@@ -419,18 +416,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginTop: 16,
     marginBottom: 8,
-    backgroundColor: "#fff",
+    backgroundColor: "AppColors.white",
     borderRadius: 8,
-    shadowColor: "#000",
+    shadowColor: "AppColors.black",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
     elevation: 1,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#2f3542",
+    ...AppFonts.subheading,
+    color: "AppColors.gray",
   },
   sectionCountBadge: {
     backgroundColor: "#ecf0f1",
@@ -441,7 +437,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   sectionCount: {
-    fontSize: 14,
+    ...AppFonts.small,
     fontWeight: "bold",
     color: "#747d8c",
   },
@@ -453,14 +449,14 @@ const styles = StyleSheet.create({
     minHeight: 200,
   },
   emptyText: {
-    fontSize: 16,
+    ...AppFonts.body,
     color: "#747d8c",
     textAlign: "center",
     marginTop: 16,
   },
   errorText: {
-    fontSize: 14,
-    color: "#e74c3c",
+    ...AppFonts.small,
+    color: "AppColors.errorRed",
     textAlign: "center",
     marginBottom: 8,
   },

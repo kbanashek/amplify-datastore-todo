@@ -128,8 +128,9 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
           style={
             {
               "color": "#2f3542",
-              "fontSize": 24,
-              "fontWeight": "bold",
+              "fontFamily": "Ubuntu-Bold",
+              "fontSize": 28,
+              "fontWeight": "800",
             }
           }
         >
@@ -204,7 +205,9 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
               style={
                 {
                   "color": "#747d8c",
+                  "fontFamily": "Ubuntu-Regular",
                   "fontSize": 16,
+                  "fontWeight": "400",
                 }
               }
             >
@@ -344,8 +347,9 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
           style={
             {
               "color": "#2f3542",
-              "fontSize": 24,
-              "fontWeight": "bold",
+              "fontFamily": "Ubuntu-Bold",
+              "fontSize": 28,
+              "fontWeight": "800",
             }
           }
         >
@@ -420,7 +424,9 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
               style={
                 {
                   "color": "#747d8c",
+                  "fontFamily": "Ubuntu-Regular",
                   "fontSize": 16,
+                  "fontWeight": "400",
                 }
               }
             >
@@ -560,8 +566,9 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
           style={
             {
               "color": "#2f3542",
-              "fontSize": 24,
-              "fontWeight": "bold",
+              "fontFamily": "Ubuntu-Bold",
+              "fontSize": 28,
+              "fontWeight": "800",
             }
           }
         >
@@ -696,8 +703,10 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
                 style={
                   [
                     {
+                      "color": "#333333",
+                      "fontFamily": "Ubuntu-Medium",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "marginBottom": 2,
                     },
                     {
@@ -712,7 +721,10 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
                 style={
                   [
                     {
-                      "fontSize": 13,
+                      "color": "#333333",
+                      "fontFamily": "Ubuntu-Regular",
+                      "fontSize": 14,
+                      "fontWeight": "400",
                     },
                     {
                       "color": "#687076",
@@ -801,8 +813,10 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
                 style={
                   [
                     {
+                      "color": "#333333",
+                      "fontFamily": "Ubuntu-Medium",
                       "fontSize": 16,
-                      "fontWeight": "600",
+                      "fontWeight": "500",
                       "marginBottom": 2,
                     },
                     {
@@ -817,7 +831,10 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
                 style={
                   [
                     {
-                      "fontSize": 13,
+                      "color": "#333333",
+                      "fontFamily": "Ubuntu-Regular",
+                      "fontSize": 14,
+                      "fontWeight": "400",
                     },
                     {
                       "color": "#687076",

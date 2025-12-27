@@ -1,8 +1,93 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { TextQuestion } from "./TextQuestion";
 import { QuestionType } from "@task-types/Question";
+import { AppFonts } from "@constants/AppFonts";
+
+/**
+ * Wrapper component to use hooks in stories with validation
+ */
+const TextQuestionWithState: React.FC<{
+  text: string;
+  required?: boolean;
+  placeholder?: string;
+  multiline?: boolean;
+  initialAnswer?: string;
+  enableValidation?: boolean;
+  minLength?: number;
+  maxLength?: number;
+}> = ({
+  text,
+  required = false,
+  placeholder,
+  multiline,
+  initialAnswer = "",
+  enableValidation = false,
+  minLength,
+  maxLength,
+}) => {
+  const [answer, setAnswer] = useState<string>(initialAnswer);
+  const [error, setError] = useState<string>("");
+
+  const validateAnswer = (value: string): void => {
+    if (!enableValidation) {
+      setError("");
+      return;
+    }
+
+    if (required && value.trim().length === 0) {
+      setError("This question is required");
+      return;
+    }
+
+    if (minLength && value.length > 0 && value.length < minLength) {
+      setError(`Answer must be at least ${minLength} characters`);
+      return;
+    }
+
+    if (maxLength && value.length > maxLength) {
+      setError(`Answer must not exceed ${maxLength} characters`);
+      return;
+    }
+
+    setError("");
+  };
+
+  const handleChange = (value: string): void => {
+    setAnswer(value);
+    validateAnswer(value);
+  };
+
+  const errors = enableValidation && error ? [error] : [];
+
+  return (
+    <View>
+      <TextQuestion
+        question={{
+          id: "story-question",
+          text,
+          questionType: QuestionType.TEXT,
+          required,
+          screenIndex: 0,
+          placeholder,
+          multiline,
+        }}
+        value={answer}
+        onChange={handleChange}
+        displayProperties={{}}
+        errors={errors}
+      />
+      {enableValidation && error && (
+        <View style={{ marginTop: 4, paddingHorizontal: 4 }}>
+          <Text style={[AppFonts.caption, { color: AppColors.errorRed }]}>
+            {error}
+          </Text>
+        </View>
+      )}
+    </View>
+  );
+};
 
 const meta = {
   title: "Questions/TextQuestion",
@@ -11,6 +96,40 @@ const meta = {
     layout: "centered",
   },
   tags: ["autodocs"],
+  argTypes: {
+    text: {
+      control: "text",
+      description: "The question text to display",
+    },
+    required: {
+      control: "boolean",
+      description: "Whether the question is required",
+    },
+    placeholder: {
+      control: "text",
+      description: "Placeholder text for the input",
+    },
+    multiline: {
+      control: "boolean",
+      description: "Whether to allow multiple lines of text",
+    },
+    initialAnswer: {
+      control: "text",
+      description: "Initial answer value",
+    },
+    enableValidation: {
+      control: "boolean",
+      description: "Enable real-time validation",
+    },
+    minLength: {
+      control: "number",
+      description: "Minimum answer length",
+    },
+    maxLength: {
+      control: "number",
+      description: "Maximum answer length",
+    },
+  },
   decorators: [
     Story => (
       <View style={{ minWidth: 400, padding: 20 }}>
@@ -27,235 +146,152 @@ type Story = StoryObj<typeof meta>;
  * Simple text question
  */
 export const SimpleText: Story = {
-  render: () => {
-    const [answer, setAnswer] = useState<string>("");
-
-    return (
-      <TextQuestion
-        question={{
-          id: "q1",
-          text: "What is your name?",
-          questionType: QuestionType.TEXT,
-          required: true,
-          screenIndex: 0,
-        }}
-        value={answer}
-        onChange={setAnswer}
-        displayProperties={{}}
-        errors={[]}
-      />
-    );
+  args: {
+    text: "What is your name?",
+    required: true,
   },
+  render: args => <TextQuestionWithState {...args} />,
 };
 
 /**
  * Email question
  */
 export const EmailQuestion: Story = {
-  render: () => {
-    const [answer, setAnswer] = useState<string>("");
-
-    return (
-      <TextQuestion
-        question={{
-          id: "q2",
-          text: "What is your email address?",
-          questionType: QuestionType.TEXT,
-          required: true,
-          screenIndex: 0,
-          placeholder: "you@example.com",
-        }}
-        value={answer}
-        onChange={setAnswer}
-        displayProperties={{}}
-        errors={[]}
-      />
-    );
+  args: {
+    text: "What is your email address?",
+    required: true,
+    placeholder: "you@example.com",
   },
+  render: args => <TextQuestionWithState {...args} />,
 };
 
 /**
  * Phone number question
  */
 export const PhoneQuestion: Story = {
-  render: () => {
-    const [answer, setAnswer] = useState<string>("");
-
-    return (
-      <TextQuestion
-        question={{
-          id: "q3",
-          text: "What is your phone number?",
-          questionType: QuestionType.TEXT,
-          required: true,
-          screenIndex: 0,
-          placeholder: "(555) 123-4567",
-        }}
-        value={answer}
-        onChange={setAnswer}
-        displayProperties={{}}
-        errors={[]}
-      />
-    );
+  args: {
+    text: "What is your phone number?",
+    required: true,
+    placeholder: "(555) 123-4567",
   },
+  render: args => <TextQuestionWithState {...args} />,
 };
 
 /**
  * Multi-line feedback question
  */
 export const FeedbackQuestion: Story = {
-  render: () => {
-    const [answer, setAnswer] = useState<string>("");
-
-    return (
-      <TextQuestion
-        question={{
-          id: "q4",
-          text: "Please describe any symptoms you're experiencing:",
-          questionType: QuestionType.TEXT,
-          required: false,
-          screenIndex: 0,
-          placeholder: "Describe your symptoms in detail...",
-          multiline: true,
-        }}
-        value={answer}
-        onChange={setAnswer}
-        displayProperties={{}}
-        errors={[]}
-      />
-    );
+  args: {
+    text: "Please describe any symptoms you're experiencing:",
+    required: false,
+    placeholder: "Describe your symptoms in detail...",
+    multiline: true,
   },
+  render: args => <TextQuestionWithState {...args} />,
 };
 
 /**
  * Optional question
  */
 export const OptionalQuestion: Story = {
-  render: () => {
-    const [answer, setAnswer] = useState<string>("");
-
-    return (
-      <TextQuestion
-        question={{
-          id: "q5",
-          text: "Do you have any additional comments? (Optional)",
-          questionType: QuestionType.TEXT,
-          required: false,
-          screenIndex: 0,
-          placeholder: "Share any additional information...",
-        }}
-        value={answer}
-        onChange={setAnswer}
-        displayProperties={{}}
-        errors={[]}
-      />
-    );
+  args: {
+    text: "Do you have any additional comments? (Optional)",
+    required: false,
+    placeholder: "Share any additional information...",
   },
+  render: args => <TextQuestionWithState {...args} />,
 };
 
 /**
  * With pre-filled answer
  */
 export const WithAnswer: Story = {
-  render: () => {
-    const [answer, setAnswer] = useState<string>("John Doe");
-
-    return (
-      <TextQuestion
-        question={{
-          id: "q6",
-          text: "Patient name:",
-          questionType: QuestionType.TEXT,
-          required: true,
-          screenIndex: 0,
-        }}
-        value={answer}
-        onChange={setAnswer}
-        displayProperties={{}}
-        errors={[]}
-      />
-    );
+  args: {
+    text: "Patient name:",
+    required: true,
+    initialAnswer: "John Doe",
   },
+  render: args => <TextQuestionWithState {...args} />,
 };
 
 /**
  * Medication details question
  */
 export const MedicationDetails: Story = {
-  render: () => {
-    const [answer, setAnswer] = useState<string>("");
-
-    return (
-      <TextQuestion
-        question={{
-          id: "q7",
-          text: "List all medications you are currently taking:",
-          questionType: QuestionType.TEXT,
-          required: true,
-          screenIndex: 0,
-          placeholder:
-            "e.g., Metformin 500mg twice daily, Lisinopril 10mg once daily...",
-          multiline: true,
-        }}
-        value={answer}
-        onChange={setAnswer}
-        displayProperties={{}}
-        errors={[]}
-      />
-    );
+  args: {
+    text: "List all medications you are currently taking:",
+    required: true,
+    placeholder:
+      "e.g., Metformin 500mg twice daily, Lisinopril 10mg once daily...",
+    multiline: true,
   },
+  render: args => <TextQuestionWithState {...args} />,
 };
 
 /**
  * Allergy information
  */
 export const AllergyQuestion: Story = {
-  render: () => {
-    const [answer, setAnswer] = useState<string>("");
-
-    return (
-      <TextQuestion
-        question={{
-          id: "q8",
-          text: "Do you have any known allergies?",
-          questionType: QuestionType.TEXT,
-          required: true,
-          screenIndex: 0,
-          placeholder:
-            "List any allergies to medications, foods, or other substances",
-          multiline: true,
-        }}
-        value={answer}
-        onChange={setAnswer}
-        displayProperties={{}}
-        errors={[]}
-      />
-    );
+  args: {
+    text: "Do you have any known allergies?",
+    required: true,
+    placeholder:
+      "List any allergies to medications, foods, or other substances",
+    multiline: true,
   },
+  render: args => <TextQuestionWithState {...args} />,
 };
 
 /**
  * Emergency contact
  */
 export const EmergencyContact: Story = {
-  render: () => {
-    const [answer, setAnswer] = useState<string>("");
-
-    return (
-      <TextQuestion
-        question={{
-          id: "q9",
-          text: "Emergency contact name and phone number:",
-          questionType: QuestionType.TEXT,
-          required: true,
-          screenIndex: 0,
-          placeholder: "Name and phone number",
-        }}
-        value={answer}
-        onChange={setAnswer}
-        displayProperties={{}}
-        errors={[]}
-      />
-    );
+  args: {
+    text: "Emergency contact name and phone number:",
+    required: true,
+    placeholder: "Name and phone number",
   },
+  render: args => <TextQuestionWithState {...args} />,
+};
+
+/**
+ * With required field validation
+ */
+export const WithRequiredValidation: Story = {
+  args: {
+    text: "What is your full name?",
+    required: true,
+    placeholder: "Enter your name",
+    enableValidation: true,
+  },
+  render: args => <TextQuestionWithState {...args} />,
+};
+
+/**
+ * With minimum length validation
+ */
+export const WithMinLengthValidation: Story = {
+  args: {
+    text: "Please provide a brief description of your symptoms:",
+    required: true,
+    placeholder: "Describe your symptoms (minimum 10 characters)",
+    multiline: true,
+    enableValidation: true,
+    minLength: 10,
+  },
+  render: args => <TextQuestionWithState {...args} />,
+};
+
+/**
+ * With maximum length validation
+ */
+export const WithMaxLengthValidation: Story = {
+  args: {
+    text: "Enter a short note (max 50 characters):",
+    required: false,
+    placeholder: "Your note here",
+    enableValidation: true,
+    maxLength: 50,
+  },
+  render: args => <TextQuestionWithState {...args} />,
 };

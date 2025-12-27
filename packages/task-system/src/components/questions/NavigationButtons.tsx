@@ -1,10 +1,12 @@
-import React from "react";
-import { StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native";
+import { TranslatedText } from "@components/TranslatedText";
+import { AppColors } from "@constants/AppColors";
+import { AppFonts } from "@constants/AppFonts";
 import { useRTL } from "@hooks/useRTL";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import { ActivityConfig } from "@task-types/ActivityConfig";
 import { isIOS } from "@utils/platform";
-import { TranslatedText } from "@components/TranslatedText";
+import React from "react";
+import { StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native";
 
 interface NavigationButtonsProps {
   currentScreenIndex: number;
@@ -107,24 +109,24 @@ const styles = StyleSheet.create({
   },
   navButton: {
     flex: 1,
-    backgroundColor: "#ecf0f1",
+    backgroundColor: AppColors.lightGray,
     paddingVertical: 14,
     borderRadius: 8,
     alignItems: "center",
   },
   navButtonText: {
-    color: "#57606f",
-    fontSize: 16,
-    fontWeight: "600",
+    ...AppFonts.button,
+    color: AppColors.darkGray,
   },
   nextButton: {
-    backgroundColor: "#3498db",
+    backgroundColor: AppColors.CIBlue,
   },
   nextButtonText: {
-    color: "#fff",
+    ...AppFonts.button,
+    color: AppColors.white,
   },
   reviewButton: {
-    backgroundColor: "#ecf0f1",
+    backgroundColor: AppColors.lightGray,
   },
   submitButtonDisabled: {
     opacity: 0.6,
