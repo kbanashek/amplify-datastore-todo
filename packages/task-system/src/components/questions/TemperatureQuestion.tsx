@@ -1,3 +1,9 @@
+/**
+ * TemperatureQuestion component module.
+ *
+ * @module TemperatureQuestion
+ */
+
 import { AppColors } from "@constants/AppColors";
 import { AppFonts } from "@constants/AppFonts";
 import { Question } from "@task-types/ActivityConfig";
@@ -11,6 +17,9 @@ import {
   View,
 } from "react-native";
 
+/**
+ * Props for the TemperatureQuestion component
+ */
 interface TemperatureQuestionProps {
   question: Question;
   value: string | null;
@@ -19,6 +28,12 @@ interface TemperatureQuestionProps {
   errors: string[];
 }
 
+/**
+ * TemperatureQuestion component.
+ *
+ * @param props - Component props
+ * @returns Rendered TemperatureQuestion component
+ */
 export const TemperatureQuestion: React.FC<TemperatureQuestionProps> = ({
   question,
   value,

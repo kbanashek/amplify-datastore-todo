@@ -1,3 +1,9 @@
+/**
+ * QuestionScreenContent component module.
+ *
+ * @module QuestionScreenContent
+ */
+
 import React, { useEffect, useRef } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { ParsedActivityData } from "@utils/activityParser";
@@ -8,6 +14,9 @@ import { QuestionScreenButtons } from "@components/questions/QuestionScreenButto
 
 const logger = getServiceLogger("QuestionScreenContent");
 
+/**
+ * Props for the QuestionScreenContent component
+ */
 interface QuestionScreenContentProps {
   activityData: ParsedActivityData;
   currentScreenIndex: number;
@@ -24,6 +33,12 @@ interface QuestionScreenContentProps {
   activityConfig?: any;
 }
 
+/**
+ * QuestionScreenContent component.
+ *
+ * @param props - Component props
+ * @returns Rendered QuestionScreenContent component
+ */
 export const QuestionScreenContent: React.FC<QuestionScreenContentProps> = ({
   activityData,
   currentScreenIndex,

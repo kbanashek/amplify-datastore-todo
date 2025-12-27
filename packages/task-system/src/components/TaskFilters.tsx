@@ -1,3 +1,9 @@
+/**
+ * TaskFilters component module.
+ *
+ * @module TaskFilters
+ */
+
 import React from "react";
 import {
   View,
@@ -14,6 +20,9 @@ import {
 import { AppFonts } from "@constants/AppFonts";
 import { AppColors } from "@constants/AppColors";
 
+/**
+ * Props for the TaskFilters component
+ */
 interface TaskFiltersProps {
   filters: TaskFiltersType;
   onStatusFilterChange: (statuses: TaskStatus[]) => void;
@@ -23,6 +32,12 @@ interface TaskFiltersProps {
   hasActiveFilters: boolean;
 }
 
+/**
+ * TaskFilters component.
+ *
+ * @param props - Component props
+ * @returns Rendered TaskFilters component
+ */
 export const TaskFilters: React.FC<TaskFiltersProps> = ({
   filters,
   onStatusFilterChange,

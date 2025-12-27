@@ -1,3 +1,9 @@
+/**
+ * ImageCaptureQuestion component module.
+ *
+ * @module ImageCaptureQuestion
+ */
+
 import React, { useState } from "react";
 import { AppFonts } from "@constants/AppFonts";
 import { AppColors } from "@constants/AppColors";
@@ -24,6 +30,9 @@ try {
   ImagePicker = null;
 }
 
+/**
+ * Props for the ImageCaptureQuestion component
+ */
 interface ImageCaptureQuestionProps {
   question: Question;
   value: string | null;
@@ -32,6 +41,12 @@ interface ImageCaptureQuestionProps {
   errors: string[];
 }
 
+/**
+ * ImageCaptureQuestion component.
+ *
+ * @param props - Component props
+ * @returns Rendered ImageCaptureQuestion component
+ */
 export const ImageCaptureQuestion: React.FC<ImageCaptureQuestionProps> = ({
   question,
   value,

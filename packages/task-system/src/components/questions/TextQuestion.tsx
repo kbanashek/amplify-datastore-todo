@@ -1,3 +1,9 @@
+/**
+ * TextQuestion component module.
+ *
+ * @module TextQuestion
+ */
+
 import React from "react";
 import { AppFonts } from "@constants/AppFonts";
 import { AppColors } from "@constants/AppColors";
@@ -9,6 +15,9 @@ import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("TextQuestion");
 
+/**
+ * Props for the TextQuestion component
+ */
 interface TextQuestionProps {
   question: Question;
   value: string;
@@ -17,6 +26,12 @@ interface TextQuestionProps {
   errors: string[];
 }
 
+/**
+ * TextQuestion component.
+ *
+ * @param props - Component props
+ * @returns Rendered TextQuestion component
+ */
 export const TextQuestion: React.FC<TextQuestionProps> = ({
   question,
   value,

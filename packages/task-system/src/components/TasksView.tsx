@@ -1,28 +1,41 @@
+/**
+ * TasksView component module.
+ *
+ * @module TasksView
+ */
+
+import { TaskCard } from "@components/TaskCard";
+import { AppColors } from "@constants/AppColors";
+import { AppFonts } from "@constants/AppFonts";
+import { useTaskList } from "@hooks/useTaskList";
+import { Task, TaskFilters } from "@task-types/Task";
+import { getServiceLogger } from "@utils/serviceLogger";
 import React from "react";
 import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
   ActivityIndicator,
   RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
-import { Task, TaskStatus, TaskType } from "@task-types/Task";
-import { AppFonts } from "@constants/AppFonts";
-import { AppColors } from "@constants/AppColors";
-import { useTaskList } from "@hooks/useTaskList";
-import { getServiceLogger } from "@utils/serviceLogger";
-import { TaskCard } from "@components/TaskCard";
-
-import { TaskFilters } from "@task-types/Task";
 
 const logger = getServiceLogger("TasksView");
 
+/**
+ * Props for the TasksView component
+ */
 interface TasksViewProps {
   filters?: TaskFilters;
   onTaskPress?: (task: Task) => void;
 }
 
+/**
+ * TasksView component.
+ *
+ * @param props - Component props
+ * @returns Rendered TasksView component
+ */
 export const TasksView: React.FC<TasksViewProps> = ({
   filters,
   onTaskPress,
@@ -30,29 +43,6 @@ export const TasksView: React.FC<TasksViewProps> = ({
   const { tasks, loading, error, handleDeleteTask, refreshTasks, isSynced } =
     useTaskList(filters);
   const [refreshing, setRefreshing] = React.useState(false);
-
-  // ADD TEST TASK ON MOUNT IF NONE EXIST
-  React.useEffect(() => {
-    if (tasks.length === 0 && !loading) {
-      logger.debug("NO TASKS - Adding test task");
-      const testTask: Task = {
-        id: "test-task-" + Date.now(),
-        pk: "TEST-PK",
-        sk: "TEST-SK",
-        title: "TEST TASK - This should be visible!",
-        description: "If you see this, TaskCard is rendering!",
-        taskType: TaskType.SCHEDULED,
-        status: TaskStatus.OPEN,
-        startTimeInMillSec: Date.now(),
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-      const { TaskService } = require("../services/TaskService");
-      TaskService.createTask(testTask).catch((err: unknown) => {
-        logger.error("Error creating test task", err);
-      });
-    }
-  }, [tasks.length, loading]);
 
   logger.debug("RENDER START", {
     tasksCount: tasks.length,

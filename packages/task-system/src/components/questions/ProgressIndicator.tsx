@@ -1,13 +1,28 @@
+/**
+ * ProgressIndicator component module.
+ *
+ * @module ProgressIndicator
+ */
+
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { AppFonts } from "@constants/AppFonts";
 import { AppColors } from "@constants/AppColors";
 
+/**
+ * Props for the ProgressIndicator component
+ */
 interface ProgressIndicatorProps {
   currentPage: number;
   totalPages: number;
 }
 
+/**
+ * ProgressIndicator component.
+ *
+ * @param props - Component props
+ * @returns Rendered ProgressIndicator component
+ */
 export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
   currentPage,
   totalPages,

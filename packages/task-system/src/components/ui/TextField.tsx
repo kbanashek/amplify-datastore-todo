@@ -1,3 +1,12 @@
+/**
+ * TextField component for text input with labels and validation states.
+ *
+ * Provides a themed text input with optional label, helper text, and error states.
+ * Automatically handles theme colors and accessibility.
+ *
+ * @module TextField
+ */
+
 import React from "react";
 import {
   StyleProp,
@@ -12,28 +21,51 @@ import { ThemedText } from "@components/ThemedText";
 import { AppFonts } from "@constants/AppFonts";
 import { useThemeColor } from "@hooks/useThemeColor";
 
+/**
+ * Props for the TextField component
+ */
 export interface TextFieldProps extends Omit<TextInputProps, "style"> {
+  /** Optional label text displayed above the input */
   label?: string;
+  /** Optional helper text displayed below the input */
   helperText?: string;
+  /** Optional error text displayed below the input (overrides helperText) */
   errorText?: string;
+  /** Additional styles for the container View */
   containerStyle?: StyleProp<ViewStyle>;
+  /** Additional styles for the TextInput */
   inputStyle?: TextInputProps["style"];
+  /** Test identifier for testing frameworks */
   testID?: string;
 }
 
 /**
  * A customizable text input field component with optional label and helper/error text.
  *
- * @param label - Optional label text displayed above the input
- * @param helperText - Optional helper text displayed below the input
- * @param errorText - Optional error text displayed below the input (takes precedence over helperText)
- * @param containerStyle - Additional styles for the container View
- * @param inputStyle - Additional styles for the TextInput
- * @param testID - Test identifier for the component
- * @param editable - Whether the text input is editable (defaults to true)
- * @param inputProps - Additional props passed to the TextInput component
+ * Supports themed colors, validation states, and accessibility features.
+ * Error text takes precedence over helper text when both are provided.
  *
- * @returns A styled text field component with optional label and helper/error text
+ * @param props - TextField component props
+ * @returns Rendered text field with optional label and message
+ *
+ * @example
+ * ```tsx
+ * // Basic text field
+ * <TextField label="Email" placeholder="Enter your email" />
+ *
+ * // With helper text
+ * <TextField
+ *   label="Password"
+ *   helperText="Must be at least 8 characters"
+ *   secureTextEntry
+ * />
+ *
+ * // With error
+ * <TextField
+ *   label="Username"
+ *   errorText="Username is required"
+ * />
+ * ```
  */
 export const TextField: React.FC<TextFieldProps> = ({
   label,

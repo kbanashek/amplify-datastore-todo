@@ -10,37 +10,6 @@ type QuestionUpdateData = Omit<UpdateQuestionInput, "id" | "_version">;
 
 export class QuestionService {
   /**
-   * Configure DataStore with custom conflict resolution strategy for Question model
-   */
-  static configureConflictResolution() {
-    DataStore.configure({
-      conflictHandler: async ({
-        modelConstructor,
-        localModel,
-        remoteModel,
-        operation,
-        attempts,
-      }) => {
-        // For Question model conflicts
-        if (modelConstructor.name === ModelName.Question) {
-          // For delete operations, handle carefully
-          if (operation === OpType.DELETE) {
-            if (remoteModel._deleted) {
-              return remoteModel;
-            }
-            if (!localModel.question && !localModel.questionId) {
-              return { ...remoteModel, _deleted: true };
-            }
-            return localModel;
-          }
-        }
-        // Default to remote model for other cases
-        return remoteModel;
-      },
-    });
-  }
-
-  /**
    * Create a new Question
    */
   static async createQuestion(input: CreateQuestionInput): Promise<Question> {

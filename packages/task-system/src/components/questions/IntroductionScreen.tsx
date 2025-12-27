@@ -1,3 +1,9 @@
+/**
+ * IntroductionScreen component module.
+ *
+ * @module IntroductionScreen
+ */
+
 import React from "react";
 import { AppFonts } from "@constants/AppFonts";
 import { AppColors } from "@constants/AppColors";
@@ -12,12 +18,21 @@ import { useTranslatedText } from "@hooks/useTranslatedText";
 import { ActivityConfig } from "@task-types/ActivityConfig";
 import { Task, TaskStatus } from "@task-types/Task";
 
+/**
+ * Props for the IntroductionScreen component
+ */
 interface IntroductionScreenProps {
   activityConfig: ActivityConfig;
   onBegin: () => void;
   task?: Task | null;
 }
 
+/**
+ * IntroductionScreen component.
+ *
+ * @param props - Component props
+ * @returns Rendered IntroductionScreen component
+ */
 export const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
   activityConfig,
   onBegin,

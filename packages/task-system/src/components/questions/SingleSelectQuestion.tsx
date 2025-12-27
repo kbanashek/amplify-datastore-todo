@@ -1,3 +1,9 @@
+/**
+ * SingleSelectQuestion component module.
+ *
+ * @module SingleSelectQuestion
+ */
+
 import React from "react";
 import { AppFonts } from "@constants/AppFonts";
 import { AppColors } from "@constants/AppColors";
@@ -12,6 +18,9 @@ interface TranslatedChoice extends Choice {
   translatedText?: string;
 }
 
+/**
+ * Props for the SingleSelectQuestion component
+ */
 interface SingleSelectQuestionProps {
   question: Question;
   value: string | null;
@@ -20,6 +29,12 @@ interface SingleSelectQuestionProps {
   errors: string[];
 }
 
+/**
+ * SingleSelectQuestion component.
+ *
+ * @param props - Component props
+ * @returns Rendered SingleSelectQuestion component
+ */
 export const SingleSelectQuestion: React.FC<SingleSelectQuestionProps> = ({
   question,
   value,

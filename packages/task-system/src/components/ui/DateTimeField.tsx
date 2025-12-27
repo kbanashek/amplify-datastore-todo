@@ -1,3 +1,12 @@
+/**
+ * DateTimeField component for selecting dates and times.
+ *
+ * Provides a platform-aware date/time picker with customizable display format.
+ * Handles iOS and Android platform differences automatically.
+ *
+ * @module DateTimeField
+ */
+
 import DateTimePicker, {
   DateTimePickerAndroid,
 } from "@react-native-community/datetimepicker";
@@ -15,25 +24,61 @@ import { ThemedText } from "@components/ThemedText";
 import { useThemeColor } from "@hooks/useThemeColor";
 import { isAndroid, isIOS } from "@utils/platform";
 
+/**
+ * Date/time selection mode
+ */
 export type DateTimeFieldMode = "date" | "time" | "datetime";
 
+/**
+ * Props for the DateTimeField component
+ */
 export interface DateTimeFieldProps {
+  /** Selection mode: date, time, or datetime */
   mode: DateTimeFieldMode;
+  /** Current selected date/time value */
   value: Date | null;
+  /** Callback when date/time is changed */
   onChange: (date: Date) => void;
+  /** Placeholder text when no value is selected */
   placeholder?: string;
+  /** Custom format function for displaying the date */
   format?: (date: Date) => string;
+  /** Whether the field is disabled */
   disabled?: boolean;
+  /** Whether to show error styling */
   error?: boolean;
+  /** Test identifier for testing frameworks */
   testID?: string;
+  /** Additional styles for the container */
   style?: StyleProp<ViewStyle>;
 }
 
 /**
- * A component for selecting dates and times.
+ * A component for selecting dates and times with platform-specific handling.
  *
- * @param props - The properties for the DateTimeField component
- * @returns A DateTimeField component configured for date and time selection
+ * Automatically uses iOS modal picker or Android native picker based on platform.
+ * Supports custom date formatting and themed styling.
+ *
+ * @param props - DateTimeField component props
+ * @returns Rendered date/time picker field
+ *
+ * @example
+ * ```tsx
+ * // Date picker
+ * <DateTimeField
+ *   mode="date"
+ *   value={selectedDate}
+ *   onChange={setSelectedDate}
+ * />
+ *
+ * // Time picker with custom format
+ * <DateTimeField
+ *   mode="time"
+ *   value={selectedTime}
+ *   onChange={setSelectedTime}
+ *   format={(date) => date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+ * />
+ * ```
  */
 export const DateTimeField: React.FC<DateTimeFieldProps> = ({
   mode,

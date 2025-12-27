@@ -6,6 +6,7 @@ jest.mock("@aws-amplify/datastore");
 describe("ConflictResolution", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    (ConflictResolution as any).resetForTesting();
   });
 
   describe("configure", () => {

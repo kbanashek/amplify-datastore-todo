@@ -41,7 +41,24 @@ function ensurePkSk<T extends DataStoreModel>(
  * Note: Todo model conflict resolution is included for schema compatibility but Todo components are not used in this package
  */
 export class ConflictResolution {
+  private static configured = false;
+
+  /**
+   * Reset configuration state (for testing only)
+   * @internal
+   */
+  static resetForTesting() {
+    this.configured = false;
+  }
+
   static configure() {
+    if (this.configured) {
+      getServiceLogger("ConflictResolution").debug(
+        "Conflict resolution already configured, skipping"
+      );
+      return;
+    }
+
     DataStore.configure({
       conflictHandler: async ({
         modelConstructor,
@@ -56,81 +73,220 @@ export class ConflictResolution {
           { modelName, operation, attempts }
         );
 
-        // Defensive: Amplify can sometimes surface conflict callbacks with partial/null models.
-        // Always prefer returning a model that includes required keys (pk/sk/id) when available.
         // Cast to DataStoreModel since Amplify provides untyped models
         const safeLocal = (localModel as DataStoreModel) ?? null;
         const safeRemote = (remoteModel as DataStoreModel) ?? null;
 
-        // Task model has special handling for UPDATE operations
-        if (modelName === ModelName.Task) {
-          if (operation === OpType.UPDATE) {
-            // Prefer local status changes, but remote timing updates
-            const resolvedModel = {
-              ...(safeRemote || {}), // Start with remote model as base (may be missing pk/sk on tombstones)
-              status: safeLocal?.status || safeRemote?.status, // Prefer local status
-              // For timing, prefer remote if it's more recent
-              startTimeInMillSec:
-                safeRemote?.startTimeInMillSec || safeLocal?.startTimeInMillSec,
-              expireTimeInMillSec:
-                safeRemote?.expireTimeInMillSec ||
-                safeLocal?.expireTimeInMillSec,
-              endTimeInMillSec:
-                safeRemote?.endTimeInMillSec || safeLocal?.endTimeInMillSec,
-              // For activity responses, prefer local if it exists
-              activityAnswer:
-                safeLocal?.activityAnswer || safeRemote?.activityAnswer,
-              activityResponse:
-                safeLocal?.activityResponse || safeRemote?.activityResponse,
-            };
-            return ensurePkSk(resolvedModel, safeLocal);
-          }
+        // Route to model-specific handlers
+        switch (modelName) {
+          case ModelName.Task:
+            return this.resolveTask(
+              safeLocal,
+              safeRemote,
+              operation,
+              modelName
+            );
+          case ModelName.Activity:
+            return this.resolveActivity(
+              safeLocal,
+              safeRemote,
+              operation,
+              modelName
+            );
+          case ModelName.Question:
+            return this.resolveQuestion(
+              safeLocal,
+              safeRemote,
+              operation,
+              modelName
+            );
+          case ModelName.Todo:
+            return this.resolveTodo(
+              safeLocal,
+              safeRemote,
+              operation,
+              modelName
+            );
+          case ModelName.DataPoint:
+          case ModelName.DataPointInstance:
+          case ModelName.TaskAnswer:
+          case ModelName.TaskResult:
+          case ModelName.TaskHistory:
+            return this.resolveGenericModel(
+              safeLocal,
+              safeRemote,
+              operation,
+              modelName
+            );
+          default:
+            // Unknown model - default to remote
+            return (
+              ensurePkSk(safeRemote, safeLocal) ??
+              ensurePkSk(safeLocal, safeRemote)
+            );
         }
-
-        // Handle DELETE operations for all models
-        if (operation === OpType.DELETE) {
-          // If remote is already deleted, use that version
-          if (safeRemote?._deleted) {
-            // Amplify can provide a "tombstone" remoteModel missing required fields like pk/sk.
-            return ensurePkSk(safeRemote, safeLocal);
-          }
-
-          // If local model is incomplete, use remote with _deleted flag
-          // Check for different identifying fields based on model type
-          let isIncomplete = false;
-
-          if (modelName === ModelName.Task) {
-            isIncomplete = !safeLocal?.title && !safeLocal?.description;
-          } else if (modelName === ModelName.Todo) {
-            isIncomplete = !safeLocal?.name;
-          } else if (modelName === ModelName.Question) {
-            isIncomplete = !safeLocal?.question && !safeLocal?.questionId;
-          } else if (modelName === ModelName.Activity) {
-            isIncomplete = !safeLocal?.name && !safeLocal?.title;
-          } else {
-            // For other models (DataPoint, DataPointInstance, TaskAnswer, TaskResult, TaskHistory)
-            // Check if pk and sk are missing
-            isIncomplete = !safeLocal?.pk && !safeLocal?.sk;
-          }
-
-          if (isIncomplete) {
-            // If we have no remote, fall back to local (ensuring keys).
-            if (!safeRemote) {
-              return ensurePkSk(safeLocal, safeRemote);
-            }
-            return ensurePkSk({ ...safeRemote, _deleted: true }, safeLocal);
-          }
-
-          // Otherwise use local delete
-          return ensurePkSk(safeLocal, safeRemote);
-        }
-
-        // Default to remote model for UPDATE and CREATE operations
-        // Prefer remote, but if remote is missing, fall back to local.
-        return (
-          ensurePkSk(safeRemote, safeLocal) ?? ensurePkSk(safeLocal, safeRemote)
-        );
       },
     });
+
+    this.configured = true;
+    getServiceLogger("ConflictResolution").debug(
+      "Conflict resolution configured successfully"
+    );
+  }
+
+  /**
+   * Task-specific conflict resolution
+   * Prefers local status changes but remote timing updates
+   */
+  private static resolveTask(
+    safeLocal: DataStoreModel | null,
+    safeRemote: DataStoreModel | null,
+    operation: OpType,
+    modelName: string
+  ): DataStoreModel | null {
+    if (operation === OpType.UPDATE) {
+      // Cast to any to access model-specific properties
+      const local = safeLocal as any;
+      const remote = safeRemote as any;
+
+      const resolvedModel = {
+        ...(remote || {}),
+        status: local?.status || remote?.status,
+        startTimeInMillSec:
+          remote?.startTimeInMillSec || local?.startTimeInMillSec,
+        expireTimeInMillSec:
+          remote?.expireTimeInMillSec || local?.expireTimeInMillSec,
+        endTimeInMillSec: remote?.endTimeInMillSec || local?.endTimeInMillSec,
+        activityAnswer: local?.activityAnswer || remote?.activityAnswer,
+        activityResponse: local?.activityResponse || remote?.activityResponse,
+      };
+      return ensurePkSk(resolvedModel, safeLocal);
+    }
+
+    if (operation === OpType.DELETE) {
+      const local = safeLocal as any;
+      return this.handleDelete(
+        safeLocal,
+        safeRemote,
+        !local?.title && !local?.description
+      );
+    }
+
+    return (
+      ensurePkSk(safeRemote, safeLocal) ?? ensurePkSk(safeLocal, safeRemote)
+    );
+  }
+
+  /**
+   * Activity-specific conflict resolution
+   */
+  private static resolveActivity(
+    safeLocal: DataStoreModel | null,
+    safeRemote: DataStoreModel | null,
+    operation: OpType,
+    modelName: string
+  ): DataStoreModel | null {
+    if (operation === OpType.DELETE) {
+      const local = safeLocal as any;
+      return this.handleDelete(
+        safeLocal,
+        safeRemote,
+        !local?.name && !local?.title
+      );
+    }
+
+    return (
+      ensurePkSk(safeRemote, safeLocal) ?? ensurePkSk(safeLocal, safeRemote)
+    );
+  }
+
+  /**
+   * Question-specific conflict resolution
+   */
+  private static resolveQuestion(
+    safeLocal: DataStoreModel | null,
+    safeRemote: DataStoreModel | null,
+    operation: OpType,
+    modelName: string
+  ): DataStoreModel | null {
+    if (operation === OpType.DELETE) {
+      const local = safeLocal as any;
+      return this.handleDelete(
+        safeLocal,
+        safeRemote,
+        !local?.question && !local?.questionId
+      );
+    }
+
+    return (
+      ensurePkSk(safeRemote, safeLocal) ?? ensurePkSk(safeLocal, safeRemote)
+    );
+  }
+
+  /**
+   * Todo-specific conflict resolution
+   */
+  private static resolveTodo(
+    safeLocal: DataStoreModel | null,
+    safeRemote: DataStoreModel | null,
+    operation: OpType,
+    modelName: string
+  ): DataStoreModel | null {
+    if (operation === OpType.DELETE) {
+      const local = safeLocal as any;
+      return this.handleDelete(safeLocal, safeRemote, !local?.name);
+    }
+
+    return (
+      ensurePkSk(safeRemote, safeLocal) ?? ensurePkSk(safeLocal, safeRemote)
+    );
+  }
+
+  /**
+   * Generic conflict resolution for models with pk/sk
+   * Used for: DataPoint, DataPointInstance, TaskAnswer, TaskResult, TaskHistory
+   */
+  private static resolveGenericModel(
+    safeLocal: DataStoreModel | null,
+    safeRemote: DataStoreModel | null,
+    operation: OpType,
+    modelName: string
+  ): DataStoreModel | null {
+    if (operation === OpType.DELETE) {
+      return this.handleDelete(
+        safeLocal,
+        safeRemote,
+        !safeLocal?.pk && !safeLocal?.sk
+      );
+    }
+
+    return (
+      ensurePkSk(safeRemote, safeLocal) ?? ensurePkSk(safeLocal, safeRemote)
+    );
+  }
+
+  /**
+   * Common DELETE operation handler
+   */
+  private static handleDelete(
+    safeLocal: DataStoreModel | null,
+    safeRemote: DataStoreModel | null,
+    isIncomplete: boolean
+  ): DataStoreModel | null {
+    // If remote is already deleted, use that version
+    if (safeRemote?._deleted) {
+      return ensurePkSk(safeRemote, safeLocal);
+    }
+
+    // If local model is incomplete, use remote with _deleted flag
+    if (isIncomplete) {
+      if (!safeRemote) {
+        return ensurePkSk(safeLocal, safeRemote);
+      }
+      return ensurePkSk({ ...safeRemote, _deleted: true }, safeLocal);
+    }
+
+    // Otherwise use local delete
+    return ensurePkSk(safeLocal, safeRemote);
   }
 }

@@ -12,31 +12,6 @@ import { OperationSource } from "@constants/operationSource";
 type TaskAnswerUpdateData = Omit<UpdateTaskAnswerInput, "id" | "_version">;
 
 export class TaskAnswerService {
-  static configureConflictResolution() {
-    DataStore.configure({
-      conflictHandler: async ({
-        modelConstructor,
-        localModel,
-        remoteModel,
-        operation,
-        attempts,
-      }) => {
-        if (modelConstructor.name === ModelName.TaskAnswer) {
-          if (operation === OpType.DELETE) {
-            if (remoteModel._deleted) {
-              return remoteModel;
-            }
-            if (!localModel.pk && !localModel.sk) {
-              return { ...remoteModel, _deleted: true };
-            }
-            return localModel;
-          }
-        }
-        return remoteModel;
-      },
-    });
-  }
-
   static async createTaskAnswer(
     input: CreateTaskAnswerInput
   ): Promise<TaskAnswer> {

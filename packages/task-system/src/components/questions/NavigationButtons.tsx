@@ -1,3 +1,9 @@
+/**
+ * NavigationButtons component module.
+ *
+ * @module NavigationButtons
+ */
+
 import { TranslatedText } from "@components/TranslatedText";
 import { AppColors } from "@constants/AppColors";
 import { AppFonts } from "@constants/AppFonts";
@@ -8,6 +14,9 @@ import { isIOS } from "@utils/platform";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native";
 
+/**
+ * Props for the NavigationButtons component
+ */
 interface NavigationButtonsProps {
   currentScreenIndex: number;
   totalScreens: number;
@@ -20,6 +29,12 @@ interface NavigationButtonsProps {
   bottomInset: number;
 }
 
+/**
+ * NavigationButtons component.
+ *
+ * @param props - Component props
+ * @returns Rendered NavigationButtons component
+ */
 export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
   currentScreenIndex,
   totalScreens,

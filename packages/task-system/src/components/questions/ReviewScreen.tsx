@@ -63,6 +63,9 @@ const ScreenSection: React.FC<{
   );
 };
 
+/**
+ * Props for the ReviewScreen component
+ */
 interface ReviewScreenProps {
   screens: ParsedScreen[];
   answers: Record<string, any>;
@@ -106,6 +109,12 @@ const QuestionReviewItem: React.FC<{
   );
 };
 
+/**
+ * ReviewScreen component.
+ *
+ * @param props - Component props
+ * @returns Rendered ReviewScreen component
+ */
 export const ReviewScreen: React.FC<ReviewScreenProps> = ({
   screens,
   answers,

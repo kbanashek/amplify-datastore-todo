@@ -1,3 +1,9 @@
+/**
+ * WeightHeightQuestion component module.
+ *
+ * @module WeightHeightQuestion
+ */
+
 import { AppColors } from "@/src/constants/AppColors";
 import { AppFonts } from "@constants/AppFonts";
 import { Question } from "@task-types/ActivityConfig";
@@ -22,6 +28,9 @@ interface CompoundAnswer {
   type: string;
 }
 
+/**
+ * Props for the WeightHeightQuestion component
+ */
 interface WeightHeightQuestionProps {
   question: Question;
   value: string | CompoundAnswer | null;
@@ -30,6 +39,12 @@ interface WeightHeightQuestionProps {
   errors: string[];
 }
 
+/**
+ * WeightHeightQuestion component.
+ *
+ * @param props - Component props
+ * @returns Rendered WeightHeightQuestion component
+ */
 export const WeightHeightQuestion: React.FC<WeightHeightQuestionProps> = ({
   question,
   value,

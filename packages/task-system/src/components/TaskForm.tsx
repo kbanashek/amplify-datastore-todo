@@ -1,3 +1,9 @@
+/**
+ * TaskForm component module.
+ *
+ * @module TaskForm
+ */
+
 import React from "react";
 import {
   ActivityIndicator,
@@ -14,10 +20,19 @@ import { Task, TaskStatus, TaskType } from "@task-types/Task";
 import { AppFonts } from "@constants/AppFonts";
 import { AppColors } from "@constants/AppColors";
 
+/**
+ * Props for the TaskForm component
+ */
 interface TaskFormProps {
   onTaskCreated?: (task: Task) => void;
 }
 
+/**
+ * TaskForm component.
+ *
+ * @param props - Component props
+ * @returns Rendered TaskForm component
+ */
 export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
   const {
     title,

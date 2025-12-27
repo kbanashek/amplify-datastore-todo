@@ -1,3 +1,9 @@
+/**
+ * ThemedText component module.
+ *
+ * @module ThemedText
+ */
+
 import { StyleSheet, Text, type TextProps } from "react-native";
 
 import { AppFonts } from "@constants/AppFonts";
@@ -9,6 +15,12 @@ export type ThemedTextProps = TextProps & {
   type?: "default" | "title" | "defaultSemiBold" | "subtitle" | "link";
 };
 
+/**
+ * ThemedText component.
+ *
+ * @param props - Component props
+ * @returns Rendered ThemedText component
+ */
 export function ThemedText({
   style,
   lightColor,
