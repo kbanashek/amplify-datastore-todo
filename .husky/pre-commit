@@ -76,6 +76,16 @@ yarn check:types || {
 }
 
 echo "✅ TypeScript type check passed!"
+
+echo "📝 Checking docstring coverage..."
+yarn check:docstrings || {
+  echo "❌ Docstring coverage check failed. Please add JSDoc comments to your exports."
+  echo "💡 Run 'yarn check:docstrings' to see which exports need documentation."
+  echo "💡 You can also comment '@coderabbitai generate docstrings' on your PR."
+  exit 1
+}
+
+echo "✅ Docstring coverage check passed!"
 echo "✅ All pre-commit checks passed!"
 
 
