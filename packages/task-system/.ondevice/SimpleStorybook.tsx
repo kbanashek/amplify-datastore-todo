@@ -30,11 +30,21 @@ import { IconSymbol } from "../src/components/ui/IconSymbol";
 import { LoadingSpinner } from "../src/components/ui/LoadingSpinner";
 import { NumericInput } from "../src/components/ui/NumericInput";
 import { TextField } from "../src/components/ui/TextField";
+import { AppColors } from "../src/constants/AppColors";
+
+// Control config interface
+interface ControlConfig {
+  type: "boolean" | "text" | "select";
+  value: string | boolean;
+  label?: string;
+  placeholder?: string;
+  options?: string[];
+}
 
 // Control Panel Component for interactive props
 const ControlPanel: React.FC<{
-  controls: Record<string, any>;
-  onChange: (key: string, value: any) => void;
+  controls: Record<string, ControlConfig>;
+  onChange: (key: string, value: string | boolean) => void;
 }> = ({ controls, onChange }) => {
   if (Object.keys(controls).length === 0) return null;
 
@@ -92,7 +102,11 @@ const InteractiveTextField = ({
   label = "Username",
   placeholder = "Enter text",
   error = false,
-}: any) => {
+}: {
+  label?: string;
+  placeholder?: string;
+  error?: boolean;
+}) => {
   const [value, setValue] = useState("");
   return (
     <View style={styles.storyContainer}>
@@ -101,7 +115,7 @@ const InteractiveTextField = ({
         placeholder={placeholder}
         value={value}
         onChangeText={setValue}
-        error={error ? "This field has an error" : undefined}
+        errorMessage={error ? "This field has an error" : undefined}
       />
     </View>
   );
@@ -112,7 +126,11 @@ const InteractiveTaskCard = ({
   title = "Sample Task",
   description = "Task description",
   status = "SCHEDULED",
-}: any) => {
+}: {
+  title?: string;
+  description?: string;
+  status?: string;
+}) => {
   const mockTask = {
     id: "mock-task-interactive",
     title,
@@ -136,7 +154,10 @@ const InteractiveTaskCard = ({
 const InteractiveCard = ({
   title = "Card Title",
   content = "Card content",
-}: any) => (
+}: {
+  title?: string;
+  content?: string;
+}) => (
   <View style={styles.storyContainer}>
     <Card style={styles.card}>
       <Text style={styles.cardText}>{title}</Text>
@@ -146,7 +167,7 @@ const InteractiveCard = ({
 );
 
 // Interactive LoadingSpinner Story with Controls
-const InteractiveLoadingSpinner = ({ size = "default" }: any) => (
+const InteractiveLoadingSpinner = ({ size = "default" }: { size?: string }) => (
   <View style={styles.centeredStoryContainer}>
     <LoadingSpinner size={size === "default" ? undefined : size} />
     <View style={styles.spacer} />
@@ -158,12 +179,15 @@ const InteractiveLoadingSpinner = ({ size = "default" }: any) => (
 const InteractiveProgressIndicator = ({
   currentStep = "2",
   totalSteps = "5",
-}: any) => {
+}: {
+  currentStep?: string;
+  totalSteps?: string;
+}) => {
   const current = parseInt(currentStep, 10) || 2;
   const total = parseInt(totalSteps, 10) || 5;
   return (
     <View style={styles.centeredStoryContainer}>
-      <ProgressIndicator currentStep={current} totalSteps={total} />
+      <ProgressIndicator currentPage={current} totalPages={total} />
       <View style={styles.spacer} />
       <Text style={styles.label}>
         Step {current} of {total}
@@ -176,7 +200,10 @@ const InteractiveProgressIndicator = ({
 const InteractiveThemedText = ({
   text = "Sample Text",
   type = "default",
-}: any) => (
+}: {
+  text?: string;
+  type?: string;
+}) => (
   <View style={styles.centeredStoryContainer}>
     <ThemedText type={type === "default" ? undefined : type}>{text}</ThemedText>
   </View>
@@ -186,7 +213,10 @@ const InteractiveThemedText = ({
 const InteractiveAppointmentCard = ({
   title = "Doctor's Appointment",
   location = "Medical Center - Room 302",
-}: any) => {
+}: {
+  title?: string;
+  location?: string;
+}) => {
   const mockAppointment = {
     id: "mock-apt-interactive",
     title,
@@ -337,7 +367,13 @@ const InteractiveButton = ({
   disabled = false,
   loading = false,
   size = "md",
-}: any) => (
+}: {
+  label?: string;
+  variant?: string;
+  disabled?: boolean;
+  loading?: boolean;
+  size?: string;
+}) => (
   <View style={styles.centeredStoryContainer}>
     <Button
       label={label}
@@ -593,7 +629,7 @@ const stories = [
         name: "Progress Indicator",
         component: () => (
           <View style={styles.centeredStoryContainer}>
-            <ProgressIndicator currentStep={2} totalSteps={5} />
+            <ProgressIndicator currentPage={2} totalPages={5} />
             <View style={styles.spacer} />
             <Text style={styles.label}>Step 2 of 5</Text>
           </View>
@@ -613,20 +649,28 @@ const stories = [
               <IconSymbol
                 name="checkmark.circle.fill"
                 size={32}
-                color="#2ecc71"
+                color={AppColors.successGreen}
               />
               <Text style={styles.iconLabel}>Checkmark</Text>
             </View>
             <View style={styles.iconRow}>
-              <IconSymbol name="xmark.circle.fill" size={32} color="#e74c3c" />
+              <IconSymbol
+                name="xmark.circle.fill"
+                size={32}
+                color={AppColors.errorRed}
+              />
               <Text style={styles.iconLabel}>X Mark</Text>
             </View>
             <View style={styles.iconRow}>
-              <IconSymbol name="star.fill" size={32} color="#f39c12" />
+              <IconSymbol
+                name="star.fill"
+                size={32}
+                color={AppColors.lightYellow}
+              />
               <Text style={styles.iconLabel}>Star</Text>
             </View>
             <View style={styles.iconRow}>
-              <IconSymbol name="heart.fill" size={32} color="#e91e63" />
+              <IconSymbol name="heart.fill" size={32} color={AppColors.punch} />
               <Text style={styles.iconLabel}>Heart</Text>
             </View>
           </View>
@@ -868,7 +912,9 @@ export default function SimpleStorybook() {
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
     new Set(stories.map(s => s.category))
   );
-  const [controls, setControls] = useState<Record<string, any>>({});
+  const [controls, setControls] = useState<Record<string, string | boolean>>(
+    {}
+  );
 
   const toggleCategory = (category: string) => {
     setExpandedCategories(prev => {
@@ -972,9 +1018,12 @@ export default function SimpleStorybook() {
                       });
                       // Initialize controls with default values
                       if (story.controls) {
-                        const initialControls: Record<string, any> = {};
+                        const initialControls: Record<
+                          string,
+                          string | boolean
+                        > = {};
                         Object.entries(story.controls).forEach(
-                          ([key, config]: [string, any]) => {
+                          ([key, config]: [string, ControlConfig]) => {
                             initialControls[key] = config.value;
                           }
                         );

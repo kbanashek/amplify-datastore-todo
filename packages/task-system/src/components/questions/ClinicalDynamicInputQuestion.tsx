@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
 import { AppFonts } from "@constants/AppFonts";
-import { AppColors } from "@constants/AppColors";
-import { StyleSheet, Text, TextInput, View } from "react-native";
-import { Question } from "@task-types/ActivityConfig";
 import { useTranslatedText } from "@hooks/useTranslatedText";
+import { Question } from "@task-types/ActivityConfig";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, TextInput, View } from "react-native";
 
 interface ClinicalDynamicInputQuestionProps {
   question: Question;
@@ -13,6 +12,17 @@ interface ClinicalDynamicInputQuestionProps {
   errors: string[];
 }
 
+/**
+ * A component for rendering a clinical dynamic input question with various display options.
+ * Supports different border styles (line, oval, rectangle) and unit display.
+ * Handles numeric input with validation and formatting.
+ *
+ * @param question - The question configuration object
+ * @param value - The current value (can be string or object with text/unitType)
+ * @param onChange - Callback function when value changes
+ * @param displayProperties - Configuration for visual display and behavior
+ * @param errors - Array of error messages
+ */
 export const ClinicalDynamicInputQuestion: React.FC<
   ClinicalDynamicInputQuestionProps
 > = ({ question, value, onChange, displayProperties, errors }) => {
