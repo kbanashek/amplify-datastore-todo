@@ -1,3 +1,12 @@
+/**
+ * Button component with multiple variants, sizes, and states.
+ *
+ * Provides a flexible, themed button with support for loading states,
+ * disabled states, and custom adornments (icons, etc.).
+ *
+ * @module Button
+ */
+
 import React from "react";
 import {
   ActivityIndicator,
@@ -11,24 +20,49 @@ import {
 import { ThemedText } from "@components/ThemedText";
 import { useThemeColor } from "@hooks/useThemeColor";
 
+/**
+ * Button visual style variant
+ */
 export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
+
+/**
+ * Button size variant
+ */
 export type ButtonSize = "sm" | "md" | "lg";
 
+/**
+ * Props for the Button component
+ */
 export interface ButtonProps {
+  /** Button text label (ignored if children provided) */
   label?: string;
+  /** Custom button content (overrides label) */
   children?: React.ReactNode;
+  /** Callback when button is pressed */
   onPress?: () => void;
+  /** Whether button is disabled */
   disabled?: boolean;
+  /** Whether button is in loading state (shows spinner) */
   loading?: boolean;
+  /** Visual style variant: primary, secondary, outline, or ghost */
   variant?: ButtonVariant;
+  /** Size variant: sm, md, or lg */
   size?: ButtonSize;
+  /** Test identifier for testing frameworks */
   testID?: string;
+  /** Additional styles for the button container */
   style?: StyleProp<ViewStyle>;
+  /** Content to display before the label/children (e.g., icon) */
   startAdornment?: React.ReactNode;
+  /** Content to display after the label/children (e.g., icon) */
   endAdornment?: React.ReactNode;
+  /** Accessibility label for screen readers */
   accessibilityLabel?: string;
 }
 
+/**
+ * Padding styles for each button size
+ */
 const sizeStyles: Record<
   ButtonSize,
   { paddingVertical: number; paddingHorizontal: number }
@@ -38,6 +72,31 @@ const sizeStyles: Record<
   lg: { paddingVertical: 12, paddingHorizontal: 16 },
 };
 
+/**
+ * A flexible button component with multiple visual variants and states.
+ *
+ * Supports loading states, disabled states, custom content, and adornments.
+ * Automatically handles theme colors and accessibility.
+ *
+ * @param props - Button component props
+ * @returns Rendered button component
+ *
+ * @example
+ * ```tsx
+ * // Primary button
+ * <Button label="Submit" onPress={() => console.log('pressed')} />
+ *
+ * // Loading button
+ * <Button label="Saving..." loading variant="primary" />
+ *
+ * // Button with icon
+ * <Button
+ *   label="Next"
+ *   variant="primary"
+ *   endAdornment={<Icon name="arrow-right" />}
+ * />
+ * ```
+ */
 export const Button: React.FC<ButtonProps> = ({
   label,
   children,
