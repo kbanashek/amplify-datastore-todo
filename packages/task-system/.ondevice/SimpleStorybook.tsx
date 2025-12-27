@@ -904,6 +904,13 @@ const stories = [
   },
 ];
 
+/**
+ * Renders an interactive storybook UI for browsing component categories and previewing individual stories with configurable controls.
+ *
+ * When no story is selected, displays a list of categories that can be expanded to reveal stories. Selecting a story shows its preview along with a control panel for adjusting that story's props; the back action clears the selection and resets controls.
+ *
+ * @returns A React element that displays the component library browser and an interactive preview area for selected stories.
+ */
 export default function SimpleStorybook() {
   const [selectedStory, setSelectedStory] = useState<{
     category: string;
