@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import React, { useState } from "react";
 import { View, Text } from "react-native";
-import { MultiSelectQuestion } from "./MultiSelectQuestion";
-import { QuestionType, QuestionChoice } from "@task-types/Question";
+import { MultiSelectQuestion } from "../MultiSelectQuestion";
+import { Choice, Question } from "@task-types/ActivityConfig";
 
 /**
  * Wrapper component to use hooks in stories with validation
@@ -11,7 +12,7 @@ import { QuestionType, QuestionChoice } from "@task-types/Question";
 const MultiSelectQuestionWithState: React.FC<{
   text: string;
   required?: boolean;
-  choices: QuestionChoice[];
+  choices: Choice[];
   initialAnswers?: string[];
   enableValidation?: boolean;
   minSelections?: number;
@@ -120,7 +121,7 @@ const meta = {
     },
   },
   decorators: [
-    Story => (
+    (Story: React.ComponentType) => (
       <View style={{ minWidth: 400, padding: 20 }}>
         <Story />
       </View>
@@ -130,6 +131,17 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+// Args type for render functions
+type StoryArgs = {
+  text: string;
+  required?: boolean;
+  choices: Choice[];
+  initialAnswers?: string[];
+  enableValidation?: boolean;
+  minSelections?: number;
+  maxSelections?: number;
+};
 
 /**
  * Symptoms checklist
@@ -147,7 +159,7 @@ export const SymptomsQuestion: Story = {
       { id: "none", text: "None of the above", value: "none" },
     ],
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -165,7 +177,7 @@ export const MedicationsQuestion: Story = {
       { id: "none", text: "Did not take any medication", value: "none" },
     ],
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -185,7 +197,7 @@ export const ActivitiesQuestion: Story = {
       { id: "none", text: "No exercise", value: "none" },
     ],
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -203,7 +215,7 @@ export const WithSelectedAnswers: Story = {
     ],
     initialAnswers: ["headache", "fatigue"],
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -223,7 +235,7 @@ export const DietaryQuestion: Story = {
       { id: "none", text: "No restrictions", value: "none" },
     ],
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -246,7 +258,7 @@ export const MedicalHistoryQuestion: Story = {
       { id: "none", text: "None of these", value: "none" },
     ],
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -264,7 +276,7 @@ export const WithRequiredValidation: Story = {
     ],
     enableValidation: true,
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -284,7 +296,7 @@ export const WithMinSelectionsValidation: Story = {
     enableValidation: true,
     minSelections: 2,
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -305,5 +317,5 @@ export const WithMaxSelectionsValidation: Story = {
     enableValidation: true,
     maxSelections: 3,
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: StoryArgs) => <MultiSelectQuestionWithState {...args} />,
 };
