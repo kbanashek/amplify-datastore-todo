@@ -56,19 +56,19 @@ const ControlPanel: React.FC<{
           <Text style={styles.controlLabel}>{config.label || key}</Text>
           {config.type === "boolean" && (
             <Switch
-              value={config.value}
+              value={typeof config.value === "boolean" ? config.value : false}
               onValueChange={value => onChange(key, value)}
             />
           )}
           {config.type === "text" && (
             <TextInput
               style={styles.controlInput}
-              value={config.value}
+              value={typeof config.value === "string" ? config.value : ""}
               onChangeText={value => onChange(key, value)}
               placeholder={config.placeholder}
             />
           )}
-          {config.type === "select" && (
+          {config.type === "select" && config.options && (
             <View style={styles.selectContainer}>
               {config.options.map((option: string) => (
                 <TouchableOpacity
