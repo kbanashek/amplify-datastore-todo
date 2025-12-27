@@ -1,6 +1,7 @@
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import React from "react";
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
+import { AppColors } from "@constants/AppColors";
 import { AppFonts, FontSizes } from "@constants/AppFonts";
 
 interface FieldLabelProps {

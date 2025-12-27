@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { View } from "react-native";
-import { TaskCard } from "./TaskCard";
+import { TaskCard } from "../TaskCard";
 import { TaskStatus, TaskType } from "@task-types/Task";
 
 // Mock data for different task scenarios

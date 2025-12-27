@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { AppColors } from "@constants/AppColors";
 import { AppFonts } from "@constants/AppFonts";
 import React, { useState, useEffect } from "react";
 import { View, Text } from "react-native";
-import { SingleSelectQuestion } from "./SingleSelectQuestion";
-import { QuestionType, QuestionChoice } from "@task-types/Question";
+import { SingleSelectQuestion } from "../SingleSelectQuestion";
+import { Choice, Question } from "@task-types/ActivityConfig";
 
 /**
  * Wrapper component to use hooks in stories with validation
@@ -48,7 +49,7 @@ const SingleSelectQuestionWithState: React.FC<{
         question={{
           id: "story-question",
           text,
-          questionType: QuestionType.SINGLE_SELECT,
+          type: "SINGLE_SELECT",
           required,
           screenIndex: 0,
           choices,

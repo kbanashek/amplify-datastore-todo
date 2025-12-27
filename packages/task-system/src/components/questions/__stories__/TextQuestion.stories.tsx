@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React, { useState } from "react";
 import { View, Text } from "react-native";
-import { TextQuestion } from "./TextQuestion";
-import { QuestionType } from "@task-types/Question";
+import { TextQuestion } from "../TextQuestion";
+import { Question } from "@task-types/ActivityConfig";
+import { AppColors } from "@constants/AppColors";
 import { AppFonts } from "@constants/AppFonts";
 
 /**
@@ -67,7 +68,7 @@ const TextQuestionWithState: React.FC<{
         question={{
           id: "story-question",
           text,
-          questionType: QuestionType.TEXT,
+          type: "TEXT",
           required,
           screenIndex: 0,
           placeholder,

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React, { useState } from "react";
-import { TextField } from "./TextField";
+import { TextField } from "../TextField";
 
 const meta = {
   title: "UI/TextField",

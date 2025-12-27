@@ -1,10 +1,10 @@
 /**
-import { AppFonts } from "@constants/AppFonts";
  * Review screen component that displays all answers before submission
  */
 
 import { IconSymbol } from "@components/ui/IconSymbol";
 import { AppColors } from "@constants/AppColors";
+import { AppFonts } from "@constants/AppFonts";
 import { useRTL } from "@hooks/useRTL";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import { ParsedElement, ParsedScreen } from "@task-types/ActivityConfig";
