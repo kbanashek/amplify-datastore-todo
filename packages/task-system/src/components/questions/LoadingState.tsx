@@ -1,8 +1,8 @@
+import { NetworkStatusIndicator } from "@components/NetworkStatusIndicator";
+import { AppColors } from "@constants/AppColors";
+import { AppFonts } from "@constants/AppFonts";
 import React from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import { NetworkStatusIndicator } from "@components/NetworkStatusIndicator";
-import { AppFonts } from "@constants/AppFonts";
-import { AppColors } from "@constants/AppColors";
 
 interface LoadingStateProps {
   taskId?: string;

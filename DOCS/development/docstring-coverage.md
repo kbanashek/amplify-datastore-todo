@@ -144,6 +144,7 @@ Comment on your PR:
 ```
 
 CodeRabbit will automatically:
+
 1. Analyze your code
 2. Generate comprehensive JSDoc comments
 3. Create a commit with the documentation
@@ -163,11 +164,13 @@ git commit --no-verify -m "WIP: Work in progress"
 ```
 
 ⚠️ **Warning:** This should only be used for:
+
 - Work-in-progress commits on feature branches
 - Emergency hotfixes (document immediately after)
 - Generated code that doesn't need documentation
 
 **Never bypass the check for:**
+
 - Production code
 - Pull requests to `main` or `develop`
 - Public API changes
@@ -291,4 +294,3 @@ export const calculateTotal = (items: Item[], taxRate: number): number => {
 - **Bypass:** `git commit --no-verify` (use sparingly)
 
 For questions or issues, see the [main development docs](../README.md) or contact the team.
-

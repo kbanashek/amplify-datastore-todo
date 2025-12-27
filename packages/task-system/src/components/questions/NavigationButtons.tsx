@@ -1,5 +1,5 @@
-import { AppColors } from "@constants/AppColors";
 import { TranslatedText } from "@components/TranslatedText";
+import { AppColors } from "@constants/AppColors";
 import { AppFonts } from "@constants/AppFonts";
 import { useRTL } from "@hooks/useRTL";
 import { useTranslatedText } from "@hooks/useTranslatedText";

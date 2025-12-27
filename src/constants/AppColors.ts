@@ -25,6 +25,9 @@ export const AppColors = {
   lightGray: "#E5E5E5",
   ltGray: "#EEEEEE",
   powderGray: "#F3F7FA",
+  darkGray: "#57606f",
+  borderGray: "#e5e7eb",
+  iconGray: "#6b7280",
 
   // Accent Colors
   lightYellow: "#FFD85E",

@@ -1,6 +1,6 @@
-import { Question } from "@task-types/ActivityConfig";
+import { AppColors } from "@/src/constants/AppColors";
 import { AppFonts } from "@constants/AppFonts";
-import { useTranslatedText } from "@hooks/useTranslatedText";
+import { Question } from "@task-types/ActivityConfig";
 import { getBorderStyle } from "@utils/borderStyleHelper";
 import React, { useEffect, useState } from "react";
 import {
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
   },
   input: {
     ...AppFonts.body,
-    color: "#2f3542",
+    color: AppColors.darkGray,
     textAlign: "center",
     minWidth: 60,
     paddingVertical: 8,
@@ -253,30 +253,30 @@ const styles = StyleSheet.create({
   },
   lineBorder: {
     borderBottomWidth: 1,
-    borderBottomColor: "#dfe4ea",
-    backgroundColor: "transparent",
+    borderBottomColor: AppColors.borderGray,
+    backgroundColor: AppColors.transparent,
   },
   rectangleBorder: {
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: AppColors.iconGray,
     borderRadius: 4,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: AppColors.lightGray,
   },
   ovalBorder: {
     borderWidth: 1,
-    borderColor: "#dfe4ea",
+    borderColor: AppColors.borderGray,
     borderRadius: 20,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: AppColors.lightGray,
   },
   inputError: {
-    borderColor: "#e74c3c",
+    borderColor: AppColors.errorRed,
   },
   unitContainer: {
     marginLeft: 12,
   },
   unitText: {
     ...AppFonts.bodyBold,
-    color: "#2f3542",
+    color: AppColors.darkGray,
   },
   unitButtons: {
     flexDirection: "column",
@@ -287,18 +287,18 @@ const styles = StyleSheet.create({
     marginVertical: 2,
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: "#dfe4ea",
-    backgroundColor: "#f8f9fa",
+    borderColor: AppColors.borderGray,
+    backgroundColor: AppColors.lightGray,
   },
   unitButtonSelected: {
-    backgroundColor: "#3498db",
-    borderColor: "#3498db",
+    backgroundColor: AppColors.CIBlue,
+    borderColor: AppColors.CIBlue,
   },
   unitButtonText: {
     ...AppFonts.label,
-    color: "#57606f",
+    color: AppColors.darkGray,
   },
   unitButtonTextSelected: {
-    color: "#ffffff",
+    color: AppColors.white,
   },
 });

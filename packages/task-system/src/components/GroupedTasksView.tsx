@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
   loadingText: {
     ...AppFonts.small,
     marginTop: 12,
-    color: "#57606f",
+    color: AppColors.darkGray,
   },
   errorText: {
     ...AppFonts.small,
