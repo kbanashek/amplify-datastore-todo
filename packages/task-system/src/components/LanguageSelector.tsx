@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   closeButtonText: {
-    ...AppFonts.heading,
+    ...AppFonts.subheading,
     color: "AppColors.mediumDarkGray",
   },
   languageList: {
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     color: "AppColors.headerBlue",
   },
   checkmark: {
-    ...AppFonts.subheading,
+    ...AppFonts.body,
     color: "AppColors.headerBlue",
   },
 });
