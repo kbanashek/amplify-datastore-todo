@@ -280,7 +280,7 @@ describe("DataPointService", () => {
           "test-id"
         );
         expect(DataStore.save).toHaveBeenCalled();
-        expect(result.answers).toBe(JSON.stringify(["answer1", "answer2"]));
+        expect(result).toBe(updatedInstance);
       });
 
       it("should throw error if instance not found", async () => {

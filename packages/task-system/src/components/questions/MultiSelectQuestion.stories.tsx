@@ -4,7 +4,7 @@ import { AppColors } from "@constants/AppColors";
 import React, { useState } from "react";
 import { View, Text } from "react-native";
 import { MultiSelectQuestion } from "./MultiSelectQuestion";
-import { Question, Choice } from "@task-types/ActivityConfig";
+import { Choice } from "@task-types/ActivityConfig";
 
 /**
  * Wrapper component to use hooks in stories with validation

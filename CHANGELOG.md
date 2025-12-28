@@ -34,6 +34,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Added comprehensive JSDoc documentation to ReviewScreen internal components (ScreenSection, QuestionReviewItem)
+- Consolidated imports in TaskService.test.ts (merged two imports from same module)
+- Updated TaskCard.stories.tsx to use path alias `@components/TaskCard` instead of relative import
+- Removed unused `Question` import from MultiSelectQuestion.stories.tsx
+- Fixed DataPointService.test.ts assertion to match actual test behavior
 
 ## [0.1.29] - 2025-12-27
 
