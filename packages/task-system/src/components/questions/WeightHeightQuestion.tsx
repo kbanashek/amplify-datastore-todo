@@ -29,6 +29,20 @@ interface CompoundAnswer {
 }
 
 /**
+ * Configuration for field display properties in weight/height questions.
+ */
+interface FieldDisplayConfig {
+  /** Type of field: "weight" or "height" */
+  fieldType?: string;
+  /** Unit type: "kg", "lb", "cm", "in", or "both" */
+  unitType?: string;
+  /** Compound unit type for multi-value inputs (e.g., "weight-height") */
+  compoundUnitType?: string;
+  /** Display style for field borders: "line", "rectangle", or "oval" */
+  fieldDisplayStyle?: string;
+}
+
+/**
  * Props for the WeightHeightQuestion component
  */
 interface WeightHeightQuestionProps {
@@ -37,6 +51,24 @@ interface WeightHeightQuestionProps {
   onChange: (value: string | CompoundAnswer) => void;
   displayProperties: Record<string, unknown>;
   errors: string[];
+}
+
+/**
+ * Type guard to check if an unknown value is a valid FieldDisplayConfig
+ */
+function isFieldDisplayConfig(value: unknown): value is FieldDisplayConfig {
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
+  const obj = value as Record<string, unknown>;
+  return (
+    (obj.fieldType === undefined || typeof obj.fieldType === "string") &&
+    (obj.unitType === undefined || typeof obj.unitType === "string") &&
+    (obj.compoundUnitType === undefined ||
+      typeof obj.compoundUnitType === "string") &&
+    (obj.fieldDisplayStyle === undefined ||
+      typeof obj.fieldDisplayStyle === "string")
+  );
 }
 
 /**
@@ -83,7 +115,12 @@ export const WeightHeightQuestion: React.FC<WeightHeightQuestionProps> = ({
     }
   }, [value]);
 
-  const othersStyle = (displayProperties?.others || {}) as Record<string, any>;
+  // Safely extract and validate display properties
+  const othersValue = displayProperties?.others;
+  const othersStyle: FieldDisplayConfig = isFieldDisplayConfig(othersValue)
+    ? othersValue
+    : {};
+  
   const fieldType = othersStyle.fieldType || "weight"; // "weight" or "height"
   const unitType = othersStyle.unitType || "kg"; // "kg", "lb", "cm", "in", or "both"
   const compoundUnitType = othersStyle.compoundUnitType || ""; // "weight-height" for compound
