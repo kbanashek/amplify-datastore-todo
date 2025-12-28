@@ -111,7 +111,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         {changingLanguage || !ready ? (
           <ActivityIndicator
             size="small"
-            color="#007AFF"
+            color={AppColors.CIBlue}
             testID="language-selector-loading"
           />
         ) : (
