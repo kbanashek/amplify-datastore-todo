@@ -7,12 +7,24 @@ import { ParsedActivityData } from "@utils/activityParser";
 jest.mock("@components/questions/QuestionRenderer", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
+  
+  // Mock element shape for type safety
+  interface MockElement {
+    id: string;
+    question: {
+      friendlyName: string;
+    };
+  }
+  
   return {
-    QuestionRenderer: ({ element }: { element: any }) => (
-      <View testID={`question-${element.id}`}>
-        <Text>{element.question.friendlyName}</Text>
-      </View>
-    ),
+    QuestionRenderer: ({ element }: { element: unknown }) => {
+      const mockElement = element as MockElement;
+      return (
+        <View testID={`question-${mockElement.id}`}>
+          <Text>{mockElement.question.friendlyName}</Text>
+        </View>
+      );
+    },
   };
 });
 
