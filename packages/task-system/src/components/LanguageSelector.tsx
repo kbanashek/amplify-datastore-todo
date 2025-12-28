@@ -4,21 +4,21 @@
  * @module LanguageSelector
  */
 
+import { AppColors } from "@constants/AppColors";
+import { AppFonts } from "@constants/AppFonts";
+import type { LanguageCode } from "@translations/index";
+import { useTaskTranslation } from "@translations/index";
+import { getServiceLogger } from "@utils/serviceLogger";
 import React, { useState } from "react";
 import {
-  View,
+  ActivityIndicator,
+  FlatList,
+  Modal,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  StyleSheet,
-  Modal,
-  FlatList,
-  ActivityIndicator,
+  View,
 } from "react-native";
-import { AppFonts } from "@constants/AppFonts";
-import { AppColors } from "@constants/AppColors";
-import { useTaskTranslation } from "@translations/index";
-import type { LanguageCode } from "@translations/index";
-import { getServiceLogger } from "@utils/serviceLogger";
 
 const logger = getServiceLogger("LanguageSelector");
 
