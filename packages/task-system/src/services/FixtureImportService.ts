@@ -84,12 +84,17 @@ export class FixtureImportService {
       );
     }
 
-    const selectLatestByLastChanged = <T extends { _lastChangedAt?: number }>(
-      items: T[]
-    ): T => {
-      return [...items].sort(
-        (a, b) => (b._lastChangedAt ?? 0) - (a._lastChangedAt ?? 0)
-      )[0];
+    /**
+     * Helper to select the latest item from an array based on _lastChangedAt timestamp.
+     * DataStore models have _lastChangedAt at runtime, so this helper accepts any array
+     * and adds the timestamp property to the constraint.
+     */
+    const selectLatestByLastChanged = <T>(items: T[]): T => {
+      return [...items].sort((a, b) => {
+        const aTime = (a as { _lastChangedAt?: number })._lastChangedAt ?? 0;
+        const bTime = (b as { _lastChangedAt?: number })._lastChangedAt ?? 0;
+        return bTime - aTime;
+      })[0];
     };
 
     const groupByPk = <T extends { pk: string }>(
@@ -118,10 +123,7 @@ export class FixtureImportService {
         activityByPkSk.set(key, activity);
       } else {
         // If duplicate found, keep the latest one
-        // Cast to include _lastChangedAt property since LazyActivity has it at runtime
-        const keep = selectLatestByLastChanged([existing, activity] as Array<
-          Activity & { _lastChangedAt?: number }
-        >);
+        const keep = selectLatestByLastChanged([existing, activity]);
         activityByPkSk.set(key, keep);
         duplicateActivities.push(keep === existing ? activity : existing);
       }
@@ -137,10 +139,7 @@ export class FixtureImportService {
         taskByPk.set(pk, items[0]);
         return;
       }
-      // Cast items to include _lastChangedAt property since LazyTask has it at runtime
-      const keep = selectLatestByLastChanged(
-        items as Array<Task & { _lastChangedAt?: number }>
-      );
+      const keep = selectLatestByLastChanged(items);
       taskByPk.set(pk, keep);
       duplicateTasks.push(...items.filter(i => i !== keep));
     });
@@ -154,10 +153,7 @@ export class FixtureImportService {
         questionByPk.set(pk, items[0]);
         return;
       }
-      // Cast items to include _lastChangedAt property since LazyQuestion has it at runtime
-      const keep = selectLatestByLastChanged(
-        items as Array<Question & { _lastChangedAt?: number }>
-      );
+      const keep = selectLatestByLastChanged(items);
       questionByPk.set(pk, keep);
       duplicateQuestions.push(...items.filter(i => i !== keep));
     });
