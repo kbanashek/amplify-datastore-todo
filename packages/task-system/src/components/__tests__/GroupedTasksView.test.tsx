@@ -61,9 +61,9 @@ jest.mock("@components/TaskCard", () => {
       onPress,
       onDelete,
     }: {
-      task: { id: string; title: string; [key: string]: unknown };
-      onPress?: () => void;
-      onDelete?: () => void;
+      task: Task;
+      onPress?: (task: Task) => void;
+      onDelete?: (id: string) => void;
     }) => (
       <View testID={`task-card-${task.id}`}>
         <Text testID={`task-card-title-${task.id}`}>{task.title}</Text>
@@ -97,8 +97,8 @@ jest.mock("@components/AppointmentCard", () => {
       appointment,
       onPress,
     }: {
-      appointment: unknown;
-      onPress?: () => void;
+      appointment: Appointment;
+      onPress?: (appointment: Appointment) => void;
     }) => (
       <View testID={`appointment-card-${appointment.appointmentId}`}>
         <Text testID={`appointment-card-title-${appointment.appointmentId}`}>

@@ -30,6 +30,7 @@ exports[`GlobalHeader Snapshots matches snapshot in RTL mode 1`] = `
         },
       ]
     }
+    testID="global-header-top"
   >
     <View
       style={
@@ -39,6 +40,7 @@ exports[`GlobalHeader Snapshots matches snapshot in RTL mode 1`] = `
           "width": 44,
         }
       }
+      testID="global-header-left"
     />
     <Text
       style={
@@ -78,6 +80,7 @@ exports[`GlobalHeader Snapshots matches snapshot in RTL mode 1`] = `
           },
         ]
       }
+      testID="global-header-actions"
     />
   </View>
   <View
@@ -137,6 +140,7 @@ exports[`GlobalHeader Snapshots matches snapshot with all buttons 1`] = `
         },
       ]
     }
+    testID="global-header-top"
   >
     <View
       style={
@@ -146,6 +150,7 @@ exports[`GlobalHeader Snapshots matches snapshot with all buttons 1`] = `
           "width": 44,
         }
       }
+      testID="global-header-left"
     >
       <View
         accessibilityLabel="Go back"
@@ -228,6 +233,7 @@ exports[`GlobalHeader Snapshots matches snapshot with all buttons 1`] = `
           },
         ]
       }
+      testID="global-header-actions"
     >
       <View
         accessibilityLabel="Close"
@@ -274,7 +280,7 @@ exports[`GlobalHeader Snapshots matches snapshot with all buttons 1`] = `
         </Text>
       </View>
       <View
-        accessibilityLabel="Open menu"
+        accessibilityLabel="Menu"
         accessibilityRole="button"
         accessibilityState={
           {
@@ -376,6 +382,7 @@ exports[`GlobalHeader Snapshots matches snapshot with default props 1`] = `
         },
       ]
     }
+    testID="global-header-top"
   >
     <View
       style={
@@ -385,6 +392,7 @@ exports[`GlobalHeader Snapshots matches snapshot with default props 1`] = `
           "width": 44,
         }
       }
+      testID="global-header-left"
     />
     <Text
       style={
@@ -422,6 +430,7 @@ exports[`GlobalHeader Snapshots matches snapshot with default props 1`] = `
           },
         ]
       }
+      testID="global-header-actions"
     />
   </View>
   <View
@@ -481,6 +490,7 @@ exports[`GlobalHeader Snapshots matches snapshot with hideBottomSection 1`] = `
         },
       ]
     }
+    testID="global-header-top"
   >
     <View
       style={
@@ -490,6 +500,7 @@ exports[`GlobalHeader Snapshots matches snapshot with hideBottomSection 1`] = `
           "width": 44,
         }
       }
+      testID="global-header-left"
     />
     <Text
       style={
@@ -527,6 +538,7 @@ exports[`GlobalHeader Snapshots matches snapshot with hideBottomSection 1`] = `
           },
         ]
       }
+      testID="global-header-actions"
     />
   </View>
 </View>
@@ -562,6 +574,7 @@ exports[`GlobalHeader Snapshots matches snapshot with rightAction 1`] = `
         },
       ]
     }
+    testID="global-header-top"
   >
     <View
       style={
@@ -571,6 +584,7 @@ exports[`GlobalHeader Snapshots matches snapshot with rightAction 1`] = `
           "width": 44,
         }
       }
+      testID="global-header-left"
     />
     <Text
       style={
@@ -608,6 +622,7 @@ exports[`GlobalHeader Snapshots matches snapshot with rightAction 1`] = `
           },
         ]
       }
+      testID="global-header-actions"
     >
       <Text>
         Action

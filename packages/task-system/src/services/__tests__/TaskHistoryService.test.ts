@@ -7,16 +7,17 @@ jest.mock("@aws-amplify/datastore");
 
 const createMockTaskHistory = (
   overrides: Partial<TaskHistory> = {}
-): TaskHistory => ({
-  id: "test-history-id",
-  pk: "test-pk",
-  sk: "test-sk",
-  taskInstanceId: "test-task-id",
-  status: "OPEN",
-  timestamp: new Date().toISOString(),
-  action: "CREATED",
-  ...overrides,
-});
+): TaskHistory =>
+  ({
+    id: "test-history-id",
+    pk: "test-pk",
+    sk: "test-sk",
+    taskInstanceId: "test-task-id",
+    status: "OPEN",
+    timestamp: new Date().toISOString(),
+    action: "CREATED",
+    ...overrides,
+  }) as TaskHistory;
 
 describe("TaskHistoryService", () => {
   beforeEach(() => {
@@ -176,7 +177,7 @@ describe("TaskHistoryService", () => {
     it("filters out _deleted tombstones from subscription items", () => {
       const mockHistories = [
         createMockTaskHistory({ id: "1" }),
-        createMockTaskHistory({ id: "2", _deleted: true }),
+        { ...createMockTaskHistory({ id: "2" }), _deleted: true as const },
       ];
       const mockSubscription = {
         subscribe: jest.fn(callback => {

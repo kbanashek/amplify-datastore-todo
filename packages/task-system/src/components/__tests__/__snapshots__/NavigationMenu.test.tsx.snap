@@ -59,6 +59,7 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
           "top": 0,
         }
       }
+      testID="navigation-menu-overlay"
     />
     <View
       accessibilityState={
@@ -92,7 +93,7 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "backgroundColor": "#fff",
+          "backgroundColor": "#FFFFFF",
           "borderTopLeftRadius": 20,
           "borderTopRightRadius": 20,
           "elevation": 10,
@@ -100,7 +101,7 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
           "maxHeight": "80%",
           "minHeight": 300,
           "pointerEvents": "auto",
-          "shadowColor": "#000",
+          "shadowColor": "#000000",
           "shadowOffset": {
             "height": -2,
             "width": 0,
@@ -115,7 +116,7 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
         style={
           {
             "alignItems": "center",
-            "borderBottomColor": "#e0e0e0",
+            "borderBottomColor": "#E5E5E5",
             "borderBottomWidth": 1,
             "flexDirection": "row",
             "flexShrink": 0,
@@ -123,11 +124,12 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
             "padding": 20,
           }
         }
+        testID="navigation-menu-header"
       >
         <Text
           style={
             {
-              "color": "#2f3542",
+              "color": "#333333",
               "fontFamily": "Ubuntu-Bold",
               "fontSize": 28,
               "fontWeight": "800",
@@ -137,6 +139,8 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
           Navigation
         </Text>
         <View
+          accessibilityLabel="Close navigation menu"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -170,6 +174,7 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
               "padding": 4,
             }
           }
+          testID="navigation-menu-close-button"
         >
           <Text
             testID="icon-xmark.circle.fill"
@@ -191,6 +196,7 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
             "flexShrink": 1,
           }
         }
+        testID="navigation-menu-list"
       >
         <View>
           <View
@@ -200,6 +206,7 @@ exports[`NavigationMenu Snapshots matches snapshot with default props 1`] = `
                 "padding": 40,
               }
             }
+            testID="navigation-menu-empty-state"
           >
             <Text
               style={
@@ -278,6 +285,7 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
           "top": 0,
         }
       }
+      testID="navigation-menu-overlay"
     />
     <View
       accessibilityState={
@@ -311,7 +319,7 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "backgroundColor": "#fff",
+          "backgroundColor": "#FFFFFF",
           "borderTopLeftRadius": 20,
           "borderTopRightRadius": 20,
           "elevation": 10,
@@ -319,7 +327,7 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
           "maxHeight": "80%",
           "minHeight": 300,
           "pointerEvents": "auto",
-          "shadowColor": "#000",
+          "shadowColor": "#000000",
           "shadowOffset": {
             "height": -2,
             "width": 0,
@@ -334,7 +342,7 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
         style={
           {
             "alignItems": "center",
-            "borderBottomColor": "#e0e0e0",
+            "borderBottomColor": "#E5E5E5",
             "borderBottomWidth": 1,
             "flexDirection": "row",
             "flexShrink": 0,
@@ -342,11 +350,12 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
             "padding": 20,
           }
         }
+        testID="navigation-menu-header"
       >
         <Text
           style={
             {
-              "color": "#2f3542",
+              "color": "#333333",
               "fontFamily": "Ubuntu-Bold",
               "fontSize": 28,
               "fontWeight": "800",
@@ -356,6 +365,8 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
           Navigation
         </Text>
         <View
+          accessibilityLabel="Close navigation menu"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -389,6 +400,7 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
               "padding": 4,
             }
           }
+          testID="navigation-menu-close-button"
         >
           <Text
             testID="icon-xmark.circle.fill"
@@ -410,6 +422,7 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
             "flexShrink": 1,
           }
         }
+        testID="navigation-menu-list"
       >
         <View>
           <View
@@ -419,6 +432,7 @@ exports[`NavigationMenu Snapshots matches snapshot with empty items 1`] = `
                 "padding": 40,
               }
             }
+            testID="navigation-menu-empty-state"
           >
             <Text
               style={
@@ -497,6 +511,7 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
           "top": 0,
         }
       }
+      testID="navigation-menu-overlay"
     />
     <View
       accessibilityState={
@@ -530,7 +545,7 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "backgroundColor": "#fff",
+          "backgroundColor": "#FFFFFF",
           "borderTopLeftRadius": 20,
           "borderTopRightRadius": 20,
           "elevation": 10,
@@ -538,7 +553,7 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
           "maxHeight": "80%",
           "minHeight": 300,
           "pointerEvents": "auto",
-          "shadowColor": "#000",
+          "shadowColor": "#000000",
           "shadowOffset": {
             "height": -2,
             "width": 0,
@@ -553,7 +568,7 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
         style={
           {
             "alignItems": "center",
-            "borderBottomColor": "#e0e0e0",
+            "borderBottomColor": "#E5E5E5",
             "borderBottomWidth": 1,
             "flexDirection": "row",
             "flexShrink": 0,
@@ -561,11 +576,12 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
             "padding": 20,
           }
         }
+        testID="navigation-menu-header"
       >
         <Text
           style={
             {
-              "color": "#2f3542",
+              "color": "#333333",
               "fontFamily": "Ubuntu-Bold",
               "fontSize": 28,
               "fontWeight": "800",
@@ -575,6 +591,8 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
           Navigation
         </Text>
         <View
+          accessibilityLabel="Close navigation menu"
+          accessibilityRole="button"
           accessibilityState={
             {
               "busy": undefined,
@@ -608,6 +626,7 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
               "padding": 4,
             }
           }
+          testID="navigation-menu-close-button"
         >
           <Text
             testID="icon-xmark.circle.fill"
@@ -629,10 +648,11 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
             "flexShrink": 1,
           }
         }
+        testID="navigation-menu-list"
       >
         <View>
           <View
-            accessibilityLabel="Dashboard"
+            accessibilityLabel="Go to dashboard"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -664,7 +684,7 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
             style={
               {
                 "alignItems": "center",
-                "borderBottomColor": "#f0f0f0",
+                "borderBottomColor": "#EEEEEE",
                 "borderBottomWidth": 1,
                 "flexDirection": "row",
                 "opacity": 1,
@@ -677,7 +697,7 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
               style={
                 {
                   "alignItems": "center",
-                  "backgroundColor": "#f5f6fa",
+                  "backgroundColor": "#F3F7FA",
                   "borderRadius": 20,
                   "height": 40,
                   "justifyContent": "center",
@@ -742,7 +762,7 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
             </Text>
           </View>
           <View
-            accessibilityLabel="Settings"
+            accessibilityLabel="Go to settings"
             accessibilityRole="button"
             accessibilityState={
               {
@@ -774,7 +794,7 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
             style={
               {
                 "alignItems": "center",
-                "borderBottomColor": "#f0f0f0",
+                "borderBottomColor": "#EEEEEE",
                 "borderBottomWidth": 1,
                 "flexDirection": "row",
                 "opacity": 1,
@@ -787,7 +807,7 @@ exports[`NavigationMenu Snapshots matches snapshot with items 1`] = `
               style={
                 {
                   "alignItems": "center",
-                  "backgroundColor": "#f5f6fa",
+                  "backgroundColor": "#F3F7FA",
                   "borderRadius": 20,
                   "height": 40,
                   "justifyContent": "center",

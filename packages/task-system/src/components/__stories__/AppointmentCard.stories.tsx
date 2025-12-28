@@ -2,16 +2,23 @@ import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { View } from "react-native";
 import { AppointmentCard } from "@components/AppointmentCard";
-import type { Appointment } from "@task-types/Appointment";
+import {
+  Appointment,
+  AppointmentType,
+  AppointmentStatus,
+} from "@task-types/Appointment";
 
 // Mock appointment data
-const baseAppointment = {
-  id: "appt-1",
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
-  _version: 1,
-  _deleted: false,
-  _lastChangedAt: Date.now(),
+const baseAppointment: Partial<Appointment> = {
+  appointmentId: "appt-1",
+  eventId: "event-1",
+  patientId: "patient-1",
+  siteId: "site-1",
+  title: "Doctor Appointment",
+  appointmentType: AppointmentType.ONSITE,
+  status: AppointmentStatus.SCHEDULED,
+  startAt: new Date().toISOString(),
+  endAt: new Date(Date.now() + 3600000).toISOString(),
 };
 
 const meta = {
@@ -170,36 +177,39 @@ export const AppointmentList: Story = {
   render: () => (
     <View style={{ gap: 12, minWidth: 350 }}>
       <AppointmentCard
-        appointment={{
-          ...baseAppointment,
-          id: "appt-1",
-          title: "Dr. Smith - Checkup",
-          location: "Medical Center",
-          startDateTime: Date.now() + 3600000,
-          endDateTime: Date.now() + 5400000,
-        }}
+        appointment={
+          {
+            ...baseAppointment,
+            appointmentId: "appt-1",
+            title: "Dr. Smith - Checkup",
+            startAt: new Date(Date.now() + 3600000).toISOString(),
+            endAt: new Date(Date.now() + 5400000).toISOString(),
+          } as Appointment
+        }
       />
       <AppointmentCard
-        appointment={{
-          ...baseAppointment,
-          id: "appt-2",
-          title: "Physical Therapy",
-          description: "Knee exercises",
-          location: "Rehab Center",
-          startDateTime: Date.now() + 86400000,
-          endDateTime: Date.now() + 86400000 + 3600000,
-        }}
+        appointment={
+          {
+            ...baseAppointment,
+            appointmentId: "appt-2",
+            title: "Physical Therapy",
+            description: "Knee exercises",
+            startAt: new Date(Date.now() + 86400000).toISOString(),
+            endAt: new Date(Date.now() + 86400000 + 3600000).toISOString(),
+          } as Appointment
+        }
       />
       <AppointmentCard
-        appointment={{
-          ...baseAppointment,
-          id: "appt-3",
-          title: "Lab Work",
-          description: "Fasting required",
-          location: "Lab Services",
-          startDateTime: Date.now() + 172800000,
-          endDateTime: Date.now() + 172800000 + 1800000,
-        }}
+        appointment={
+          {
+            ...baseAppointment,
+            appointmentId: "appt-3",
+            title: "Lab Work",
+            description: "Fasting required",
+            startAt: new Date(Date.now() + 172800000).toISOString(),
+            endAt: new Date(Date.now() + 172800000 + 1800000).toISOString(),
+          } as Appointment
+        }
       />
     </View>
   ),

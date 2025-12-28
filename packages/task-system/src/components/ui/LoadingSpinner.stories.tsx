@@ -65,7 +65,7 @@ export const CustomColor: Story = {
  * Loading spinner in a container
  */
 export const InContainer: Story = {
-  render: args => (
+  render: (args: any) => (
     <View
       style={{
         width: 300,

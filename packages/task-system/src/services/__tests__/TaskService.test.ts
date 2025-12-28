@@ -1,6 +1,7 @@
 import { DataStore } from "@aws-amplify/datastore";
 import { Task as DataStoreTask } from "@models/index";
 import { TaskService } from "@services/TaskService";
+import { Task } from "@task-types/Task";
 import { TaskStatus, TaskType, CreateTaskInput } from "@task-types/Task";
 
 jest.mock("@aws-amplify/datastore");
@@ -11,8 +12,8 @@ const createMockTask = (overrides: Partial<Task> = {}): Task => ({
   sk: "test-sk",
   title: "Test Task",
   description: "Test Description",
-  status: "OPEN",
-  taskType: "SCHEDULED",
+  status: TaskStatus.OPEN,
+  taskType: TaskType.SCHEDULED,
   startTimeInMillSec: Date.now(),
   expireTimeInMillSec: Date.now() + 86400000,
   ...overrides,

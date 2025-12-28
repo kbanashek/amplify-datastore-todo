@@ -9,6 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.29] - 2025-12-27
+
+### Fixed
+
+- Fixed all TypeScript compilation errors (17 total errors across 9 files)
+  - Fixed RTL mock type errors in GlobalHeader, QuestionHeader, and TaskForm tests
+  - Fixed type mismatch in useAnswerManagement hook (initialAnswers parameter)
+  - Fixed missing model metadata in service test files (Activity, DataPoint, TaskAnswer, TaskHistory, TaskResult)
+  - Fixed type assertion issues in FixtureImportService
+- Fixed NavigationMenu visibility issue (incorrect color string literals)
+  - Changed string literals like "AppColors.white" to actual AppColors.white constants
+  - Added missing testIDs for E2E testing support
+  - Fixed accessibility labels to match test expectations
+- All ESLint checks pass with no errors
+- All TypeScript compilation checks pass with no errors
+
+### Changed
+
+- Updated GlobalHeader component with additional testIDs for E2E testing
+- Updated test snapshots after NavigationMenu and GlobalHeader fixes
+
 ## [0.1.28] - 2025-12-26
 
 ### Added

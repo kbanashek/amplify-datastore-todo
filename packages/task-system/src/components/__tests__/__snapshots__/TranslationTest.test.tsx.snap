@@ -4,7 +4,7 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
 <View
   style={
     {
-      "backgroundColor": "#fff",
+      "backgroundColor": "#FFFFFF",
       "padding": 20,
     }
   }
@@ -57,7 +57,7 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
   <View
     style={
       {
-        "backgroundColor": "#f5f5f5",
+        "backgroundColor": "#EEEEEE",
         "borderRadius": 5,
         "marginVertical": 20,
         "padding": 10,
@@ -125,7 +125,7 @@ exports[`TranslationTest Snapshots matches snapshot with Spanish language 1`] = 
   <View
     style={
       {
-        "backgroundColor": "#f5f5f5",
+        "backgroundColor": "#EEEEEE",
         "borderRadius": 5,
         "marginVertical": 20,
         "padding": 10,
@@ -363,7 +363,7 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
 <View
   style={
     {
-      "backgroundColor": "#fff",
+      "backgroundColor": "#FFFFFF",
       "padding": 20,
     }
   }
@@ -416,7 +416,7 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
   <View
     style={
       {
-        "backgroundColor": "#f5f5f5",
+        "backgroundColor": "#EEEEEE",
         "borderRadius": 5,
         "marginVertical": 20,
         "padding": 10,
@@ -484,7 +484,7 @@ exports[`TranslationTest Snapshots matches snapshot with default props 1`] = `
   <View
     style={
       {
-        "backgroundColor": "#f5f5f5",
+        "backgroundColor": "#EEEEEE",
         "borderRadius": 5,
         "marginVertical": 20,
         "padding": 10,

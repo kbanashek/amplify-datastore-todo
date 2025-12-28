@@ -57,13 +57,13 @@ describe("ConflictResolution", () => {
       // Remote already deleted
       const result1 = await conflictHandler({
         modelConstructor: { name: "Task" },
-        localModel: { _deleted: true },
-        remoteModel: { _deleted: true, title: "Task" },
+        localModel: { _deleted: true as const },
+        remoteModel: { _deleted: true as const, title: "Task" },
         operation: OpType.DELETE,
         attempts: 1,
       });
 
-      expect(result1).toEqual({ _deleted: true, title: "Task" });
+      expect(result1).toEqual({ _deleted: true as const, title: "Task" });
 
       // Local incomplete, use remote with _deleted
       const result2 = await conflictHandler({
@@ -97,13 +97,13 @@ describe("ConflictResolution", () => {
       // DataPoint with complete local model
       const result2 = await conflictHandler({
         modelConstructor: { name: "DataPoint" },
-        localModel: { pk: "PK", sk: "SK", _deleted: true },
+        localModel: { pk: "PK", sk: "SK", _deleted: true as const },
         remoteModel: { pk: "PK", sk: "SK", name: "DataPoint" },
         operation: OpType.DELETE,
         attempts: 1,
       });
 
-      expect(result2).toEqual({ pk: "PK", sk: "SK", _deleted: true });
+      expect(result2).toEqual({ pk: "PK", sk: "SK", _deleted: true as const });
     });
 
     it("should default to remote model for UPDATE and CREATE operations", async () => {

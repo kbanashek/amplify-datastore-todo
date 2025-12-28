@@ -143,7 +143,7 @@ exports[`ThemedText Snapshots matches snapshot with title type 1`] = `
       {
         "color": "#1E376C",
         "fontFamily": "Ubuntu-Bold",
-        "fontSize": 32,
+        "fontSize": 28,
         "fontWeight": "800",
         "lineHeight": 32,
       },

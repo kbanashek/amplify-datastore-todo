@@ -1,0 +1,182 @@
+# Zero TypeScript and Lint Errors Policy
+
+**CRITICAL: NO EXCEPTIONS**
+
+## Absolute Requirements
+
+### Before ANY Commit
+1. **`yarn check:types` MUST pass with 0 errors**
+2. **`yarn lint` MUST pass with 0 errors/warnings**
+3. **NO `--no-verify` commits** except for pre-existing errors being fixed
+
+### Before ANY Pull Request
+1. **ALL TypeScript errors MUST be fixed**
+2. **ALL ESLint errors/warnings MUST be fixed**
+3. **ALL tests MUST pass**
+4. **Pre-commit hooks MUST pass without bypass**
+
+## Enforcement
+
+### Pre-Commit Hook
+The pre-commit hook runs:
+- ✅ Yarn integrity check
+- ✅ Lockfile sync verification
+- ✅ ESLint (`yarn lint`)
+- ✅ Prettier format check
+- ✅ TypeScript type check (`tsc --noEmit`)
+- ✅ Docstring coverage check
+
+**If ANY of these fail, the commit is blocked.**
+
+### Pre-Push Hook
+The pre-push hook runs:
+- ✅ All unit tests (`yarn test`)
+
+**If tests fail, the push is blocked.**
+
+## Rules for AI Assistants
+
+### NEVER
+
+1. **NEVER create code with TypeScript errors**
+   - Every file you create or modify must type-check correctly
+   - Use proper types, never use `any` without explicit justification
+   - Import types correctly from the right modules
+
+2. **NEVER create code with lint errors**
+   - Follow all ESLint rules
+   - Use consistent formatting (Prettier handles this)
+   - No unused variables, no console.logs in production code
+
+3. **NEVER bypass pre-commit hooks without user approval**
+   - `--no-verify` is ONLY acceptable when fixing pre-existing errors
+   - Document WHY you're bypassing in the commit message
+   - Create a follow-up task to fix the bypassed errors
+
+4. **NEVER leave TODO comments in code**
+   - Use `DOCS/planning/todos.md` for tracking work
+   - No `// TODO:` or `// FIXME:` in source files
+
+5. **NEVER commit untested code**
+   - All new functions must have unit tests
+   - All modified functions must have updated tests
+   - Test coverage must not decrease
+
+### ALWAYS
+
+1. **ALWAYS run type check before committing**
+   ```bash
+   yarn check:types
+   ```
+   
+2. **ALWAYS run lint before committing**
+   ```bash
+   yarn lint
+   ```
+
+3. **ALWAYS run tests before pushing**
+   ```bash
+   yarn test
+   ```
+
+4. **ALWAYS fix errors immediately**
+   - Don't accumulate technical debt
+   - Fix errors as you introduce them
+   - Don't defer to "later"
+
+5. **ALWAYS use proper types**
+   - Import from the correct modules
+   - Define interfaces for complex objects
+   - Use generics instead of `any`
+   - Use `unknown` instead of `any` for catch clauses
+
+## Common TypeScript Errors to Avoid
+
+### ❌ BAD: Implicit `any` types
+```typescript
+function process(data) { ... }  // Parameter 'data' implicitly has 'any' type
+```
+
+### ✅ GOOD: Explicit types
+```typescript
+function process(data: InputData): OutputData { ... }
+```
+
+### ❌ BAD: Wrong module imports
+```typescript
+import { QuestionType } from "@task-types/Question";  // Doesn't exist!
+```
+
+### ✅ GOOD: Correct imports
+```typescript
+import { Question, Choice } from "@task-types/ActivityConfig";
+```
+
+### ❌ BAD: Hardcoded colors/strings
+```typescript
+<Text style={{ color: "#333" }}>Hello</Text>
+```
+
+### ✅ GOOD: Using constants
+```typescript
+<Text style={{ color: AppColors.darkGray }}>{t("common.hello")}</Text>
+```
+
+### ❌ BAD: Spread of potentially undefined
+```typescript
+<View style={[styles.container, ...style]} />  // style might be undefined
+```
+
+### ✅ GOOD: Conditional spread
+```typescript
+<View style={[styles.container, style]} />  // StyleProp handles undefined
+```
+
+## Error Tolerance
+
+**ZERO. There is NO acceptable error count.**
+
+- 0 TypeScript errors ✅
+- 0 ESLint errors ✅
+- 0 ESLint warnings ✅ (treat warnings as errors)
+- 0 failing tests ✅
+
+## Consequences of Violations
+
+1. **PR will be rejected**
+2. **Commit may be reverted**
+3. **Branch may be reset**
+
+## Exceptions
+
+**There are NO exceptions to this rule.**
+
+If you believe there's a valid reason to have an error:
+1. Fix the root cause (refactor code, update types, etc.)
+2. If it's a library issue, create a proper type declaration file
+3. If it's truly unavoidable (it never is), discuss with the team first
+
+## Verification Commands
+
+Run these before every commit:
+
+```bash
+# Type check
+yarn check:types
+
+# Lint check  
+yarn lint
+
+# Format check
+yarn format:check
+
+# Run tests
+yarn test
+
+# All checks (recommended)
+yarn check:types && yarn lint && yarn format:check && yarn test
+```
+
+## Summary
+
+**If it has errors, it doesn't get committed. Period.**

@@ -43,7 +43,7 @@ export const UnitText: React.FC<UnitTextProps> = ({
   const { translatedText } = useTranslatedText(unit);
 
   // Build style object only with provided overrides
-  const textStyle = [
+  const textStyle: any = [
     styles.text,
     fontSize && { fontSize },
     fontWeight && { fontWeight },

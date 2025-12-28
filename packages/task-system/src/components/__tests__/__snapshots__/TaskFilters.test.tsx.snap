@@ -4,12 +4,12 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
 <View
   style={
     {
-      "backgroundColor": "#fff",
+      "backgroundColor": "AppColors.white",
       "borderRadius": 8,
       "elevation": 2,
       "marginBottom": 16,
       "padding": 16,
-      "shadowColor": "#000",
+      "shadowColor": "AppColors.black",
       "shadowOffset": {
         "height": 2,
         "width": 0,
@@ -34,7 +34,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
     <Text
       style={
         {
-          "color": "#2f3542",
+          "color": "AppColors.gray",
           "fontFamily": "Ubuntu-Medium",
           "fontSize": 18,
           "fontWeight": "500",
@@ -53,7 +53,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
     placeholder="Search tasks..."
     style={
       {
-        "borderColor": "#dfe4ea",
+        "borderColor": "AppColors.borderGray",
         "borderRadius": 4,
         "borderWidth": 1,
         "color": "#333333",
@@ -70,7 +70,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
   <Text
     style={
       {
-        "color": "#2f3542",
+        "color": "AppColors.gray",
         "fontFamily": "Ubuntu-Medium",
         "fontSize": 14,
         "fontWeight": "500",
@@ -126,7 +126,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -142,7 +142,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -187,7 +187,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -203,7 +203,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -248,7 +248,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -264,7 +264,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -309,7 +309,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -325,7 +325,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -370,7 +370,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -386,7 +386,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -431,7 +431,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -447,7 +447,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -492,7 +492,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -508,7 +508,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -524,7 +524,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
   <Text
     style={
       {
-        "color": "#2f3542",
+        "color": "AppColors.gray",
         "fontFamily": "Ubuntu-Medium",
         "fontSize": 14,
         "fontWeight": "500",
@@ -580,7 +580,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -596,7 +596,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -641,7 +641,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -657,7 +657,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -702,7 +702,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -718,7 +718,7 @@ exports[`TaskFilters Snapshots matches snapshot in RTL mode 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -738,12 +738,12 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
 <View
   style={
     {
-      "backgroundColor": "#fff",
+      "backgroundColor": "AppColors.white",
       "borderRadius": 8,
       "elevation": 2,
       "marginBottom": 16,
       "padding": 16,
-      "shadowColor": "#000",
+      "shadowColor": "AppColors.black",
       "shadowOffset": {
         "height": 2,
         "width": 0,
@@ -768,7 +768,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
     <Text
       style={
         {
-          "color": "#2f3542",
+          "color": "AppColors.gray",
           "fontFamily": "Ubuntu-Medium",
           "fontSize": 18,
           "fontWeight": "500",
@@ -810,7 +810,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "backgroundColor": "#e74c3c",
+          "backgroundColor": "AppColors.errorRed",
           "borderRadius": 4,
           "opacity": 1,
           "paddingHorizontal": 12,
@@ -822,7 +822,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       <Text
         style={
           {
-            "color": "#fff",
+            "color": "AppColors.white",
             "fontFamily": "Ubuntu-Regular",
             "fontSize": 12,
             "fontWeight": "400",
@@ -841,7 +841,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
     placeholder="Search tasks..."
     style={
       {
-        "borderColor": "#dfe4ea",
+        "borderColor": "AppColors.borderGray",
         "borderRadius": 4,
         "borderWidth": 1,
         "color": "#333333",
@@ -858,7 +858,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
   <Text
     style={
       {
-        "color": "#2f3542",
+        "color": "AppColors.gray",
         "fontFamily": "Ubuntu-Medium",
         "fontSize": 14,
         "fontWeight": "500",
@@ -913,8 +913,8 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "backgroundColor": "#3498db",
-          "borderColor": "#3498db",
+          "backgroundColor": "AppColors.CIBlue",
+          "borderColor": "AppColors.CIBlue",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -930,13 +930,13 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
             },
             {
-              "color": "#fff",
+              "color": "AppColors.white",
             },
           ]
         }
@@ -977,7 +977,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -993,7 +993,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -1038,7 +1038,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -1054,7 +1054,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -1099,7 +1099,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -1115,7 +1115,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -1159,8 +1159,8 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "backgroundColor": "#3498db",
-          "borderColor": "#3498db",
+          "backgroundColor": "AppColors.CIBlue",
+          "borderColor": "AppColors.CIBlue",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -1176,13 +1176,13 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
             },
             {
-              "color": "#fff",
+              "color": "AppColors.white",
             },
           ]
         }
@@ -1223,7 +1223,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -1239,7 +1239,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -1284,7 +1284,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -1300,7 +1300,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -1316,7 +1316,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
   <Text
     style={
       {
-        "color": "#2f3542",
+        "color": "AppColors.gray",
         "fontFamily": "Ubuntu-Medium",
         "fontSize": 14,
         "fontWeight": "500",
@@ -1371,8 +1371,8 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         {
-          "backgroundColor": "#3498db",
-          "borderColor": "#3498db",
+          "backgroundColor": "AppColors.CIBlue",
+          "borderColor": "AppColors.CIBlue",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -1388,13 +1388,13 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
             },
             {
-              "color": "#fff",
+              "color": "AppColors.white",
             },
           ]
         }
@@ -1435,7 +1435,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -1451,7 +1451,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -1496,7 +1496,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -1512,7 +1512,7 @@ exports[`TaskFilters Snapshots matches snapshot with active filters 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -1532,12 +1532,12 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
 <View
   style={
     {
-      "backgroundColor": "#fff",
+      "backgroundColor": "AppColors.white",
       "borderRadius": 8,
       "elevation": 2,
       "marginBottom": 16,
       "padding": 16,
-      "shadowColor": "#000",
+      "shadowColor": "AppColors.black",
       "shadowOffset": {
         "height": 2,
         "width": 0,
@@ -1562,7 +1562,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
     <Text
       style={
         {
-          "color": "#2f3542",
+          "color": "AppColors.gray",
           "fontFamily": "Ubuntu-Medium",
           "fontSize": 18,
           "fontWeight": "500",
@@ -1581,7 +1581,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
     placeholder="Search tasks..."
     style={
       {
-        "borderColor": "#dfe4ea",
+        "borderColor": "AppColors.borderGray",
         "borderRadius": 4,
         "borderWidth": 1,
         "color": "#333333",
@@ -1598,7 +1598,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
   <Text
     style={
       {
-        "color": "#2f3542",
+        "color": "AppColors.gray",
         "fontFamily": "Ubuntu-Medium",
         "fontSize": 14,
         "fontWeight": "500",
@@ -1654,7 +1654,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -1670,7 +1670,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -1715,7 +1715,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -1731,7 +1731,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -1776,7 +1776,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -1792,7 +1792,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -1837,7 +1837,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -1853,7 +1853,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -1898,7 +1898,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -1914,7 +1914,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -1959,7 +1959,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -1975,7 +1975,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -2020,7 +2020,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -2036,7 +2036,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -2052,7 +2052,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
   <Text
     style={
       {
-        "color": "#2f3542",
+        "color": "AppColors.gray",
         "fontFamily": "Ubuntu-Medium",
         "fontSize": 14,
         "fontWeight": "500",
@@ -2108,7 +2108,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -2124,7 +2124,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -2169,7 +2169,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -2185,7 +2185,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",
@@ -2230,7 +2230,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
       style={
         {
           "backgroundColor": "#f8f9fa",
-          "borderColor": "#dfe4ea",
+          "borderColor": "AppColors.borderGray",
           "borderRadius": 16,
           "borderWidth": 1,
           "marginBottom": 8,
@@ -2246,7 +2246,7 @@ exports[`TaskFilters Snapshots matches snapshot with default props 1`] = `
         style={
           [
             {
-              "color": "#57606f",
+              "color": "AppColors.darkGray",
               "fontFamily": "Ubuntu-Regular",
               "fontSize": 12,
               "fontWeight": "400",

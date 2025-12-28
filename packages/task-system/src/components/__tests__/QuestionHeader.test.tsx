@@ -161,10 +161,14 @@ describe("QuestionHeader", () => {
     });
 
     it("renders correctly in RTL mode", () => {
-      const rtlStyleFn = jest.fn((style: StyleProp<ViewStyle | TextStyle>) => ({
-        ...style,
-        flexDirection: "row-reverse",
-      }));
+      const rtlStyleFn = jest.fn(
+        (
+          style: StyleProp<ViewStyle | TextStyle>
+        ): StyleProp<ViewStyle | TextStyle> => ({
+          ...(style as ViewStyle),
+          flexDirection: "row-reverse" as const,
+        })
+      );
 
       mockUseRTL.mockReturnValueOnce({
         rtlStyle: rtlStyleFn,
@@ -188,10 +192,14 @@ describe("QuestionHeader", () => {
     });
 
     it("applies RTL styles to header top", () => {
-      const rtlStyleFn = jest.fn((style: StyleProp<ViewStyle | TextStyle>) => ({
-        ...style,
-        flexDirection: "row-reverse",
-      }));
+      const rtlStyleFn = jest.fn(
+        (
+          style: StyleProp<ViewStyle | TextStyle>
+        ): StyleProp<ViewStyle | TextStyle> => ({
+          ...(style as ViewStyle),
+          flexDirection: "row-reverse" as const,
+        })
+      );
 
       mockUseRTL.mockReturnValueOnce({
         rtlStyle: rtlStyleFn,
@@ -334,7 +342,7 @@ describe("QuestionHeader", () => {
     it("matches snapshot in RTL mode", () => {
       mockUseRTL.mockReturnValueOnce({
         rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => ({
-          ...style,
+          ...(style as ViewStyle),
           flexDirection: "row-reverse",
         })),
         isRTL: true,
