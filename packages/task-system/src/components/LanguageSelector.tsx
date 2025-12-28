@@ -139,6 +139,8 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
                 style={styles.closeButton}
                 onPress={() => setModalVisible(false)}
                 testID="language-selector-modal-close"
+                accessibilityRole="button"
+                accessibilityLabel="Close language selector"
               >
                 <Text style={styles.closeButtonText}>✕</Text>
               </TouchableOpacity>

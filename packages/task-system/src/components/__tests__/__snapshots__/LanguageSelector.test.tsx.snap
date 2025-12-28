@@ -433,6 +433,8 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
             Select Language
           </Text>
           <View
+            accessibilityLabel="Close language selector"
+            accessibilityRole="button"
             accessibilityState={
               {
                 "busy": undefined,

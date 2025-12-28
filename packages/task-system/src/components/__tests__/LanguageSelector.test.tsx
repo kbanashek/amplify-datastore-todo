@@ -236,8 +236,10 @@ describe("LanguageSelector", () => {
       const { getByTestId } = render(<LanguageSelector />);
       fireEvent.press(getByTestId("language-selector-button"));
       const closeButton = getByTestId("language-selector-modal-close");
-      // Close button doesn't have explicit accessibility props in component
-      expect(closeButton).toBeTruthy();
+      expect(closeButton.props.accessibilityRole).toBe("button");
+      expect(closeButton.props.accessibilityLabel).toBe(
+        "Close language selector"
+      );
     });
 
     it("has proper accessibility state on language items", () => {
