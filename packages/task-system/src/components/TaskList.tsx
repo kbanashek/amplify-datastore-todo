@@ -323,24 +323,24 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "AppColors.powderGray",
+    backgroundColor: AppColors.powderGray,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     padding: 16,
-    backgroundColor: "AppColors.white",
+    backgroundColor: AppColors.white,
     borderBottomWidth: 1,
-    borderBottomColor: "AppColors.borderGray",
+    borderBottomColor: AppColors.borderGray,
   },
   headerTitle: {
     ...AppFonts.large,
-    color: "AppColors.gray",
+    color: AppColors.gray,
   },
   syncedBadge: {
     ...AppFonts.caption,
-    color: "AppColors.successGreen",
+    color: AppColors.successGreen,
   },
   syncIndicator: {
     flexDirection: "row",
@@ -354,7 +354,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "AppColors.successGreen",
+    backgroundColor: AppColors.successGreen,
     marginRight: 8,
   },
   syncText: {
@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
   },
   // Today's Tasks Section - VERY PROMINENT
   todaySectionHeader: {
-    backgroundColor: "AppColors.CIBlue", // BRIGHT BLUE
+    backgroundColor: AppColors.CIBlue, // BRIGHT BLUE
     marginTop: 0,
     marginBottom: 16,
     marginLeft: -16, // Extend to edges
@@ -376,7 +376,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
-    shadowColor: "AppColors.CIBlue",
+    shadowColor: AppColors.CIBlue,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -390,13 +390,13 @@ const styles = StyleSheet.create({
   },
   todaySectionTitle: {
     ...AppFonts.heading,
-    color: "AppColors.white", // PURE WHITE
+    color: AppColors.white, // PURE WHITE
     textShadowColor: "rgba(0, 0, 0, 0.3)",
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
   },
   todaySectionBadge: {
-    backgroundColor: "AppColors.white",
+    backgroundColor: AppColors.white,
     paddingHorizontal: 14,
     paddingVertical: 6,
     borderRadius: 20,
@@ -405,7 +405,7 @@ const styles = StyleSheet.create({
   },
   todaySectionCount: {
     ...AppFonts.subheading,
-    color: "AppColors.CIBlue",
+    color: AppColors.CIBlue,
   },
   // Regular section headers
   sectionHeader: {
@@ -416,9 +416,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginTop: 16,
     marginBottom: 8,
-    backgroundColor: "AppColors.white",
+    backgroundColor: AppColors.white,
     borderRadius: 8,
-    shadowColor: "AppColors.black",
+    shadowColor: AppColors.black,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -426,7 +426,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     ...AppFonts.subheading,
-    color: "AppColors.gray",
+    color: AppColors.gray,
   },
   sectionCountBadge: {
     backgroundColor: "#ecf0f1",
@@ -456,7 +456,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     ...AppFonts.small,
-    color: "AppColors.errorRed",
+    color: AppColors.errorRed,
     textAlign: "center",
     marginBottom: 8,
   },

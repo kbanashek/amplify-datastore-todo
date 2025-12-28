@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   captureButton: {
-    backgroundColor: "AppColors.CIBlue",
+    backgroundColor: AppColors.CIBlue,
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -237,19 +237,19 @@ const styles = StyleSheet.create({
   },
   captureButtonText: {
     ...AppFonts.button,
-    color: "AppColors.white",
+    color: AppColors.white,
   },
   selectButton: {
-    backgroundColor: "AppColors.powderGray",
+    backgroundColor: AppColors.powderGray,
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "AppColors.borderGray",
+    borderColor: AppColors.borderGray,
   },
   selectButtonText: {
     ...AppFonts.button,
-    color: "AppColors.gray",
+    color: AppColors.gray,
   },
   imageContainer: {
     position: "relative",
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 8,
     right: 8,
-    backgroundColor: "AppColors.errorRed",
+    backgroundColor: AppColors.errorRed,
     width: 32,
     height: 32,
     borderRadius: 16,
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   },
   deleteButtonText: {
     ...AppFonts.heading,
-    color: "AppColors.white",
+    color: AppColors.white,
   },
   editButton: {
     position: "absolute",
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
   },
   editButtonText: {
     ...AppFonts.label,
-    color: "AppColors.white",
+    color: AppColors.white,
   },
   errorContainer: {
     marginTop: 8,

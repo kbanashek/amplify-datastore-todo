@@ -182,22 +182,22 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    backgroundColor: "AppColors.powderGray",
+    backgroundColor: AppColors.powderGray,
     borderWidth: 1,
-    borderColor: "AppColors.borderGray",
+    borderColor: AppColors.borderGray,
     borderRadius: 8,
     padding: 12,
     ...AppFonts.body,
-    color: "AppColors.gray",
+    color: AppColors.gray,
     minHeight: 44,
   },
   inputError: {
-    borderColor: "AppColors.errorRed",
+    borderColor: AppColors.errorRed,
   },
   unitText: {
     ...AppFonts.small,
     marginLeft: 8,
-    color: "AppColors.darkGray",
+    color: AppColors.darkGray,
   },
   sliderContainer: {
     marginTop: 8,
@@ -210,11 +210,11 @@ const styles = StyleSheet.create({
   },
   sliderLabel: {
     ...AppFonts.label,
-    color: "AppColors.darkGray",
+    color: AppColors.darkGray,
   },
   sliderValue: {
     ...AppFonts.heading,
-    color: "AppColors.CIBlue",
+    color: AppColors.CIBlue,
     minWidth: 50,
     textAlign: "center",
   },

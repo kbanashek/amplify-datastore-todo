@@ -84,18 +84,22 @@ describe("TranslationTest", () => {
     it("renders t() function section", () => {
       const { getByTestId } = render(<TranslationTest />);
       expect(getByTestId("translation-test-t-function-section")).toBeTruthy();
-      expect(getByTestId("translation-test-t-label")).toBeTruthy();
+      expect(getByTestId("translation-test-t-function-label")).toBeTruthy();
     });
 
     it("renders TranslatedText component section", () => {
       const { getByTestId } = render(<TranslationTest />);
-      expect(getByTestId("translation-test-component-section")).toBeTruthy();
-      expect(getByTestId("translation-test-component-label")).toBeTruthy();
+      expect(
+        getByTestId("translation-test-translated-text-component-section")
+      ).toBeTruthy();
+      expect(
+        getByTestId("translation-test-translated-text-component-label")
+      ).toBeTruthy();
     });
 
     it("renders language buttons", () => {
       const { getByTestId } = render(<TranslationTest />);
-      expect(getByTestId("translation-test-buttons")).toBeTruthy();
+      expect(getByTestId("translation-test-language-buttons")).toBeTruthy();
       expect(getByTestId("translation-test-button-en")).toBeTruthy();
       expect(getByTestId("translation-test-button-es")).toBeTruthy();
       expect(getByTestId("translation-test-button-fr")).toBeTruthy();
@@ -103,15 +107,15 @@ describe("TranslationTest", () => {
 
     it("displays translated text using t() function", () => {
       const { getByTestId } = render(<TranslationTest />);
-      const beginText = getByTestId("translation-test-begin");
+      const beginText = getByTestId("translation-test-t-begin");
       expect(beginText).toBeTruthy();
     });
 
     it("displays translated text using TranslatedText component", () => {
       const { getByTestId } = render(<TranslationTest />);
-      expect(getByTestId("translation-test-component-begin")).toBeTruthy();
-      expect(getByTestId("translation-test-component-resume")).toBeTruthy();
-      expect(getByTestId("translation-test-component-ok")).toBeTruthy();
+      expect(getByTestId("translation-test-translated-begin")).toBeTruthy();
+      expect(getByTestId("translation-test-translated-resume")).toBeTruthy();
+      expect(getByTestId("translation-test-translated-ok")).toBeTruthy();
     });
   });
 
@@ -177,7 +181,7 @@ describe("TranslationTest", () => {
         return key;
       });
       const { getByTestId } = render(<TranslationTest />);
-      const beginText = getByTestId("translation-test-begin");
+      const beginText = getByTestId("translation-test-t-begin");
       expect(beginText).toBeTruthy();
     });
   });
@@ -233,7 +237,10 @@ describe("TranslationTest", () => {
     it("has testId on all sections", () => {
       const { getByTestId } = render(<TranslationTest />);
       expect(getByTestId("translation-test-t-function-section")).toBeTruthy();
-      expect(getByTestId("translation-test-component-section")).toBeTruthy();
+      expect(
+        getByTestId("translation-test-translated-text-component-section")
+      ).toBeTruthy();
+      expect(getByTestId("translation-test-language-buttons")).toBeTruthy();
     });
   });
 });

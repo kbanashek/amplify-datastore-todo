@@ -96,9 +96,9 @@ export const QuestionHeader: React.FC<QuestionHeaderProps> = ({
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "AppColors.white",
+    backgroundColor: AppColors.white,
     borderBottomWidth: 1,
-    borderBottomColor: "AppColors.borderGray",
+    borderBottomColor: AppColors.borderGray,
     width: "100%",
     alignSelf: "stretch",
   },

@@ -85,13 +85,13 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   input: {
-    backgroundColor: "AppColors.powderGray",
+    backgroundColor: AppColors.powderGray,
     borderWidth: 1,
-    borderColor: "AppColors.borderGray",
+    borderColor: AppColors.borderGray,
     borderRadius: 8,
     padding: 12,
     ...AppFonts.body,
-    color: "AppColors.gray",
+    color: AppColors.gray,
     minHeight: 44,
   },
   textArea: {
@@ -99,6 +99,6 @@ const styles = StyleSheet.create({
     paddingTop: 12,
   },
   inputError: {
-    borderColor: "AppColors.errorRed",
+    borderColor: AppColors.errorRed,
   },
 });

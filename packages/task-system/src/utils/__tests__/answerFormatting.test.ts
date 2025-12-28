@@ -205,7 +205,7 @@ describe("formatAnswer", () => {
     it("should convert object to string", () => {
       const element = createMockElement({ type: "custom" });
       const result = formatAnswer(element, JSON.stringify({ value: "123" }));
-      expect(result).toBe("[object Object]");
+      expect(result).toBe('{"value":"123"}');
     });
 
     it("should handle date objects", () => {

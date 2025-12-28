@@ -44,8 +44,8 @@ exports[`LanguageSelector Snapshots matches snapshot when loading 1`] = `
     onStartShouldSetResponder={[Function]}
     style={
       {
-        "backgroundColor": "AppColors.ltGray",
-        "borderColor": "AppColors.lightGray",
+        "backgroundColor": "#EEEEEE",
+        "borderColor": "#E5E5E5",
         "borderRadius": 8,
         "borderWidth": 1,
         "opacity": 1,
@@ -58,6 +58,7 @@ exports[`LanguageSelector Snapshots matches snapshot when loading 1`] = `
     <ActivityIndicator
       color="#007AFF"
       size="small"
+      testID="language-selector-loading"
     />
   </View>
 </View>
@@ -107,8 +108,8 @@ exports[`LanguageSelector Snapshots matches snapshot with RTL language 1`] = `
     onStartShouldSetResponder={[Function]}
     style={
       {
-        "backgroundColor": "AppColors.ltGray",
-        "borderColor": "AppColors.lightGray",
+        "backgroundColor": "#EEEEEE",
+        "borderColor": "#E5E5E5",
         "borderRadius": 8,
         "borderWidth": 1,
         "opacity": 1,
@@ -121,7 +122,7 @@ exports[`LanguageSelector Snapshots matches snapshot with RTL language 1`] = `
     <Text
       style={
         {
-          "color": "AppColors.gray",
+          "color": "#333333",
           "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
           "fontWeight": "500",
@@ -181,8 +182,8 @@ exports[`LanguageSelector Snapshots matches snapshot with custom style 1`] = `
     onStartShouldSetResponder={[Function]}
     style={
       {
-        "backgroundColor": "AppColors.ltGray",
-        "borderColor": "AppColors.lightGray",
+        "backgroundColor": "#EEEEEE",
+        "borderColor": "#E5E5E5",
         "borderRadius": 8,
         "borderWidth": 1,
         "opacity": 1,
@@ -195,7 +196,7 @@ exports[`LanguageSelector Snapshots matches snapshot with custom style 1`] = `
     <Text
       style={
         {
-          "color": "AppColors.gray",
+          "color": "#333333",
           "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
           "fontWeight": "500",
@@ -253,8 +254,8 @@ exports[`LanguageSelector Snapshots matches snapshot with default props 1`] = `
     onStartShouldSetResponder={[Function]}
     style={
       {
-        "backgroundColor": "AppColors.ltGray",
-        "borderColor": "AppColors.lightGray",
+        "backgroundColor": "#EEEEEE",
+        "borderColor": "#E5E5E5",
         "borderRadius": 8,
         "borderWidth": 1,
         "opacity": 1,
@@ -267,7 +268,7 @@ exports[`LanguageSelector Snapshots matches snapshot with default props 1`] = `
     <Text
       style={
         {
-          "color": "AppColors.gray",
+          "color": "#333333",
           "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
           "fontWeight": "500",
@@ -325,8 +326,8 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
     onStartShouldSetResponder={[Function]}
     style={
       {
-        "backgroundColor": "AppColors.ltGray",
-        "borderColor": "AppColors.lightGray",
+        "backgroundColor": "#EEEEEE",
+        "borderColor": "#E5E5E5",
         "borderRadius": 8,
         "borderWidth": 1,
         "opacity": 1,
@@ -339,7 +340,7 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
     <Text
       style={
         {
-          "color": "AppColors.gray",
+          "color": "#333333",
           "fontFamily": "Ubuntu-Medium",
           "fontSize": 14,
           "fontWeight": "500",
@@ -394,6 +395,7 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
           "opacity": 1,
         }
       }
+      testID="language-selector-modal-overlay"
     >
       <View
         style={
@@ -410,7 +412,7 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
           style={
             {
               "alignItems": "center",
-              "borderBottomColor": "AppColors.ltGray",
+              "borderBottomColor": "#EEEEEE",
               "borderBottomWidth": 1,
               "flexDirection": "row",
               "justifyContent": "space-between",
@@ -421,7 +423,7 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
           <Text
             style={
               {
-                "color": "AppColors.gray",
+                "color": "#333333",
                 "fontFamily": "Ubuntu-Medium",
                 "fontSize": 18,
                 "fontWeight": "500",
@@ -464,11 +466,12 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
                 "padding": 4,
               }
             }
+            testID="language-selector-modal-close"
           >
             <Text
               style={
                 {
-                  "color": "AppColors.mediumDarkGray",
+                  "color": "#666666",
                   "fontFamily": "Ubuntu-Medium",
                   "fontSize": 18,
                   "fontWeight": "500",
@@ -556,8 +559,8 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
                 style={
                   {
                     "alignItems": "center",
-                    "backgroundColor": "AppColors.powderGray",
-                    "borderBottomColor": "AppColors.ltGray",
+                    "backgroundColor": "#F3F7FA",
+                    "borderBottomColor": "#EEEEEE",
                     "borderBottomWidth": 1,
                     "flexDirection": "row",
                     "justifyContent": "space-between",
@@ -565,19 +568,19 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
                     "padding": 16,
                   }
                 }
-                testID="language-option-en"
+                testID="language-selector-item-en"
               >
                 <Text
                   style={
                     [
                       {
-                        "color": "AppColors.gray",
+                        "color": "#333333",
                         "fontFamily": "Ubuntu-Regular",
                         "fontSize": 16,
                         "fontWeight": "400",
                       },
                       {
-                        "color": "AppColors.headerBlue",
+                        "color": "#1e40af",
                         "fontFamily": "Ubuntu-Medium",
                         "fontSize": 16,
                         "fontWeight": "500",
@@ -590,7 +593,7 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
                 <Text
                   style={
                     {
-                      "color": "AppColors.headerBlue",
+                      "color": "#1e40af",
                       "fontFamily": "Ubuntu-Regular",
                       "fontSize": 16,
                       "fontWeight": "400",
@@ -639,7 +642,7 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
                 style={
                   {
                     "alignItems": "center",
-                    "borderBottomColor": "AppColors.ltGray",
+                    "borderBottomColor": "#EEEEEE",
                     "borderBottomWidth": 1,
                     "flexDirection": "row",
                     "justifyContent": "space-between",
@@ -647,13 +650,13 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
                     "padding": 16,
                   }
                 }
-                testID="language-option-es"
+                testID="language-selector-item-es"
               >
                 <Text
                   style={
                     [
                       {
-                        "color": "AppColors.gray",
+                        "color": "#333333",
                         "fontFamily": "Ubuntu-Regular",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -704,7 +707,7 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
                 style={
                   {
                     "alignItems": "center",
-                    "borderBottomColor": "AppColors.ltGray",
+                    "borderBottomColor": "#EEEEEE",
                     "borderBottomWidth": 1,
                     "flexDirection": "row",
                     "justifyContent": "space-between",
@@ -712,13 +715,13 @@ exports[`LanguageSelector Snapshots matches snapshot with modal open 1`] = `
                     "padding": 16,
                   }
                 }
-                testID="language-option-ar"
+                testID="language-selector-item-ar"
               >
                 <Text
                   style={
                     [
                       {
-                        "color": "AppColors.gray",
+                        "color": "#333333",
                         "fontFamily": "Ubuntu-Regular",
                         "fontSize": 16,
                         "fontWeight": "400",

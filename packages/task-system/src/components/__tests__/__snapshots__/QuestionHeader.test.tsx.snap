@@ -5,8 +5,8 @@ exports[`QuestionHeader Snapshots matches snapshot in RTL mode 1`] = `
   style={
     {
       "alignSelf": "stretch",
-      "backgroundColor": "AppColors.white",
-      "borderBottomColor": "AppColors.borderGray",
+      "backgroundColor": "#FFFFFF",
+      "borderBottomColor": "#e5e7eb",
       "borderBottomWidth": 1,
       "width": "100%",
     }
@@ -100,8 +100,8 @@ exports[`QuestionHeader Snapshots matches snapshot with back button 1`] = `
   style={
     {
       "alignSelf": "stretch",
-      "backgroundColor": "AppColors.white",
-      "borderBottomColor": "AppColors.borderGray",
+      "backgroundColor": "#FFFFFF",
+      "borderBottomColor": "#e5e7eb",
       "borderBottomWidth": 1,
       "width": "100%",
     }
@@ -229,8 +229,8 @@ exports[`QuestionHeader Snapshots matches snapshot with both buttons 1`] = `
   style={
     {
       "alignSelf": "stretch",
-      "backgroundColor": "AppColors.white",
-      "borderBottomColor": "AppColors.borderGray",
+      "backgroundColor": "#FFFFFF",
+      "borderBottomColor": "#e5e7eb",
       "borderBottomWidth": 1,
       "width": "100%",
     }
@@ -403,8 +403,8 @@ exports[`QuestionHeader Snapshots matches snapshot with close button 1`] = `
   style={
     {
       "alignSelf": "stretch",
-      "backgroundColor": "AppColors.white",
-      "borderBottomColor": "AppColors.borderGray",
+      "backgroundColor": "#FFFFFF",
+      "borderBottomColor": "#e5e7eb",
       "borderBottomWidth": 1,
       "width": "100%",
     }
@@ -541,8 +541,8 @@ exports[`QuestionHeader Snapshots matches snapshot with default props 1`] = `
   style={
     {
       "alignSelf": "stretch",
-      "backgroundColor": "AppColors.white",
-      "borderBottomColor": "AppColors.borderGray",
+      "backgroundColor": "#FFFFFF",
+      "borderBottomColor": "#e5e7eb",
       "borderBottomWidth": 1,
       "width": "100%",
     }

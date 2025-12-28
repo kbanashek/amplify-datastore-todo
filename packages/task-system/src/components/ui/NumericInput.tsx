@@ -69,7 +69,7 @@ export const NumericInput: React.FC<NumericInputProps> = ({
 const styles = StyleSheet.create({
   input: {
     ...AppFonts.body,
-    color: "AppColors.gray",
+    color: AppColors.gray,
     textAlign: "center",
     minWidth: 60,
     paddingVertical: 8,
@@ -77,22 +77,22 @@ const styles = StyleSheet.create({
   },
   lineBorder: {
     borderBottomWidth: 1,
-    borderBottomColor: "AppColors.borderGray",
+    borderBottomColor: AppColors.borderGray,
     backgroundColor: "transparent",
   },
   rectangleBorder: {
     borderWidth: 1,
-    borderColor: "AppColors.borderGray",
+    borderColor: AppColors.borderGray,
     borderRadius: 4,
-    backgroundColor: "AppColors.powderGray",
+    backgroundColor: AppColors.powderGray,
   },
   ovalBorder: {
     borderWidth: 1,
-    borderColor: "AppColors.borderGray",
+    borderColor: AppColors.borderGray,
     borderRadius: 20,
-    backgroundColor: "AppColors.powderGray",
+    backgroundColor: AppColors.powderGray,
   },
   inputError: {
-    borderColor: "AppColors.errorRed",
+    borderColor: AppColors.errorRed,
   },
 });

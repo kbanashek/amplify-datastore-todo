@@ -7,6 +7,7 @@ import {
 import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
 import type { StyleProp, TextStyle, ViewStyle } from "react-native";
+import { AppColors } from "@constants/AppColors";
 
 // Mock useRTL
 const mockRtlStyle = jest.fn(
@@ -128,7 +129,7 @@ describe("TaskFilters", () => {
         ? openChip.props.style
         : [openChip.props.style];
       const hasSelectedStyle = styles.some(
-        (style: any) => style?.backgroundColor === "#3498db"
+        (style: any) => style?.backgroundColor === AppColors.CIBlue
       );
       expect(hasSelectedStyle).toBe(true);
     });
@@ -148,7 +149,7 @@ describe("TaskFilters", () => {
         ? scheduledChip.props.style
         : [scheduledChip.props.style];
       const hasSelectedStyle = styles.some(
-        (style: any) => style?.backgroundColor === "#3498db"
+        (style: any) => style?.backgroundColor === AppColors.CIBlue
       );
       expect(hasSelectedStyle).toBe(true);
     });

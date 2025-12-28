@@ -123,6 +123,6 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     ...AppFonts.label,
-    color: "AppColors.darkGray",
+    color: AppColors.darkGray,
   },
 });

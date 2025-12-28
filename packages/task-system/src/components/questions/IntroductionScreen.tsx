@@ -90,7 +90,7 @@ export const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
 const styles = StyleSheet.create({
   introContainer: {
     flex: 1,
-    backgroundColor: "AppColors.powderGray",
+    backgroundColor: AppColors.powderGray,
   },
   scrollView: {
     flex: 1,
@@ -103,19 +103,19 @@ const styles = StyleSheet.create({
   },
   introTitle: {
     ...AppFonts.heading,
-    color: "AppColors.gray",
+    color: AppColors.gray,
     marginBottom: 16,
     textAlign: "center",
   },
   introDescription: {
     ...AppFonts.body,
-    color: "AppColors.darkGray",
+    color: AppColors.darkGray,
     lineHeight: 24,
     textAlign: "center",
     marginBottom: 32,
   },
   beginButton: {
-    backgroundColor: "AppColors.CIBlue",
+    backgroundColor: AppColors.CIBlue,
     paddingVertical: 16,
     paddingHorizontal: 40,
     borderRadius: 8,
@@ -124,6 +124,6 @@ const styles = StyleSheet.create({
   },
   beginButtonText: {
     ...AppFonts.subheading,
-    color: "AppColors.white",
+    color: AppColors.white,
   },
 });

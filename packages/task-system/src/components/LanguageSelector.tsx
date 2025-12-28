@@ -109,7 +109,11 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
         accessibilityLabel={`Change language, current: ${currentLanguageName}`}
       >
         {changingLanguage || !ready ? (
-          <ActivityIndicator size="small" color="#007AFF" />
+          <ActivityIndicator
+            size="small"
+            color="#007AFF"
+            testID="language-selector-loading"
+          />
         ) : (
           <Text style={styles.selectorText}>🌐 {currentLanguageName}</Text>
         )}
@@ -126,6 +130,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
           style={styles.modalOverlay}
           activeOpacity={1}
           onPress={() => setModalVisible(false)}
+          testID="language-selector-modal-overlay"
         >
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
@@ -133,6 +138,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
               <TouchableOpacity
                 style={styles.closeButton}
                 onPress={() => setModalVisible(false)}
+                testID="language-selector-modal-close"
               >
                 <Text style={styles.closeButtonText}>✕</Text>
               </TouchableOpacity>
@@ -151,7 +157,7 @@ export const LanguageSelector: React.FC<LanguageSelectorProps> = ({
                     ]}
                     onPress={() => handleLanguageSelect(item.code)}
                     disabled={changingLanguage}
-                    testID={`language-option-${item.code}`}
+                    testID={`language-selector-item-${item.code}`}
                     accessibilityRole="button"
                     accessibilityLabel={`Select ${item.name}`}
                     accessibilityState={{ selected: isSelected }}
@@ -185,13 +191,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 8,
-    backgroundColor: "AppColors.ltGray",
+    backgroundColor: AppColors.ltGray,
     borderWidth: 1,
-    borderColor: "AppColors.lightGray",
+    borderColor: AppColors.lightGray,
   },
   selectorText: {
     ...AppFonts.label,
-    color: "AppColors.gray",
+    color: AppColors.gray,
   },
   modalOverlay: {
     flex: 1,
@@ -211,18 +217,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "AppColors.ltGray",
+    borderBottomColor: AppColors.ltGray,
   },
   modalTitle: {
     ...AppFonts.subheading,
-    color: "AppColors.gray",
+    color: AppColors.gray,
   },
   closeButton: {
     padding: 4,
   },
   closeButtonText: {
     ...AppFonts.subheading,
-    color: "AppColors.mediumDarkGray",
+    color: AppColors.mediumDarkGray,
   },
   languageList: {
     maxHeight: 400,
@@ -233,21 +239,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "AppColors.ltGray",
+    borderBottomColor: AppColors.ltGray,
   },
   languageItemSelected: {
-    backgroundColor: "AppColors.powderGray",
+    backgroundColor: AppColors.powderGray,
   },
   languageText: {
     ...AppFonts.body,
-    color: "AppColors.gray",
+    color: AppColors.gray,
   },
   languageTextSelected: {
     ...AppFonts.bodyMedium,
-    color: "AppColors.headerBlue",
+    color: AppColors.headerBlue,
   },
   checkmark: {
     ...AppFonts.body,
-    color: "AppColors.headerBlue",
+    color: AppColors.headerBlue,
   },
 });

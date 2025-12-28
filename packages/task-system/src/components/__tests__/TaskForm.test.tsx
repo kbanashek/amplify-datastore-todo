@@ -2,6 +2,7 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { TaskForm } from "@components/TaskForm";
 import { Task, TaskStatus, TaskType } from "@task-types/Task";
+import { AppColors } from "@constants/AppColors";
 
 // Mock useTaskForm hook
 const mockSetTitle = jest.fn();
@@ -181,7 +182,7 @@ describe("TaskForm", () => {
         ? timedButton.props.style
         : [timedButton.props.style];
       const hasSelectedStyle = styles.some(
-        (style: any) => style?.backgroundColor === "#3498db"
+        (style: any) => style?.backgroundColor === AppColors.CIBlue
       );
       expect(hasSelectedStyle).toBe(true);
     });
@@ -199,7 +200,7 @@ describe("TaskForm", () => {
         ? completedButton.props.style
         : [completedButton.props.style];
       const hasSelectedStyle = styles.some(
-        (style: any) => style?.backgroundColor === "#3498db"
+        (style: any) => style?.backgroundColor === AppColors.CIBlue
       );
       expect(hasSelectedStyle).toBe(true);
     });

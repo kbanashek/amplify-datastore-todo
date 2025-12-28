@@ -4,7 +4,7 @@ exports[`TaskList Snapshots matches snapshot with default props 1`] = `
 <View
   style={
     {
-      "backgroundColor": "AppColors.powderGray",
+      "backgroundColor": "#F3F7FA",
       "flex": 1,
     }
   }
@@ -45,7 +45,7 @@ exports[`TaskList Snapshots matches snapshot with error state 1`] = `
 <View
   style={
     {
-      "backgroundColor": "AppColors.powderGray",
+      "backgroundColor": "#F3F7FA",
       "flex": 1,
     }
   }
@@ -66,7 +66,7 @@ exports[`TaskList Snapshots matches snapshot with error state 1`] = `
     <Text
       style={
         {
-          "color": "AppColors.errorRed",
+          "color": "#F44336",
           "fontFamily": "Ubuntu-Regular",
           "fontSize": 14,
           "fontWeight": "400",
@@ -101,7 +101,7 @@ exports[`TaskList Snapshots matches snapshot with loading state 1`] = `
 <View
   style={
     {
-      "backgroundColor": "AppColors.powderGray",
+      "backgroundColor": "#F3F7FA",
       "flex": 1,
     }
   }
@@ -147,7 +147,7 @@ exports[`TaskList Snapshots matches snapshot with sync indicator 1`] = `
 <View
   style={
     {
-      "backgroundColor": "AppColors.powderGray",
+      "backgroundColor": "#F3F7FA",
       "flex": 1,
     }
   }

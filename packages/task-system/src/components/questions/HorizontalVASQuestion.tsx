@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   },
   rangeLabel: {
     ...AppFonts.label,
-    color: "AppColors.darkGray",
+    color: AppColors.darkGray,
     flex: 1,
   },
   valueContainer: {
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   },
   valueText: {
     ...AppFonts.heading,
-    color: "AppColors.CIBlue",
+    color: AppColors.CIBlue,
   },
   slider: {
     width: "100%",
@@ -162,13 +162,13 @@ const styles = StyleSheet.create({
   },
   scaleLabel: {
     ...AppFonts.caption,
-    color: "AppColors.iconGray",
+    color: AppColors.iconGray,
   },
   errorContainer: {
     marginTop: 8,
   },
   errorText: {
     ...AppFonts.label,
-    color: "AppColors.errorRed",
+    color: AppColors.errorRed,
   },
 });

@@ -3,6 +3,7 @@ import { render, fireEvent } from "@testing-library/react-native";
 import { NumberQuestion } from "@components/questions/NumberQuestion";
 import { Question } from "@task-types/ActivityConfig";
 import { ValidationType } from "@task-types/activity-config-enums";
+import { AppColors } from "@constants/AppColors";
 
 // Mock useTranslatedText
 jest.mock("@hooks/useTranslatedText", () => ({
@@ -133,7 +134,7 @@ describe("NumberQuestion", () => {
 
     const input = getByPlaceholderText("Weight");
     expect(input.props.style).toContainEqual(
-      expect.objectContaining({ borderColor: "#e74c3c" })
+      expect.objectContaining({ borderColor: AppColors.errorRed })
     );
   });
 });
