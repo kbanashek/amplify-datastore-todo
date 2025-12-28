@@ -1,4 +1,5 @@
 import { DataStore } from "@aws-amplify/datastore";
+import type { PersistentModelConstructor } from "@aws-amplify/datastore";
 import {
   ImportTaskSystemFixtureOptions,
   ImportTaskSystemFixtureResult,
@@ -290,11 +291,11 @@ export class FixtureImportService {
       // Optional: also prune derived models for dev/test reseeds.
       // This is intentionally behind a flag to avoid deleting real user data in production flows.
       if (pruneDerivedModels) {
-        const deleteAll = async <TModel>(
-          model: any // DataStore model constructor (not typed in @aws-amplify/datastore)
+        const deleteAll = async <TModel extends { id: string }>(
+          model: PersistentModelConstructor<TModel>
         ): Promise<void> => {
-          const items = (await DataStore.query(model)) as TModel[];
-          await Promise.all(items.map(item => DataStore.delete(item as any)));
+          const items = await DataStore.query(model);
+          await Promise.all(items.map(item => DataStore.delete(item)));
         };
 
         await Promise.all([
