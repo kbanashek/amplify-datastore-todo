@@ -56,7 +56,7 @@ exports[`LanguageSelector Snapshots matches snapshot when loading 1`] = `
     testID="language-selector-button"
   >
     <ActivityIndicator
-      color="#007AFF"
+      color="#237cb8"
       size="small"
       testID="language-selector-loading"
     />
