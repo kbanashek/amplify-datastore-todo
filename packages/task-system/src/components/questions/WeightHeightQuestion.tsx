@@ -4,8 +4,8 @@
  * @module WeightHeightQuestion
  */
 
-import { AppFonts } from "@constants/AppFonts";
 import { AppColors } from "@constants/AppColors";
+import { AppFonts } from "@constants/AppFonts";
 import { Question } from "@task-types/ActivityConfig";
 import { getBorderStyle } from "@utils/borderStyleHelper";
 import React, { useEffect, useState } from "react";
@@ -120,7 +120,7 @@ export const WeightHeightQuestion: React.FC<WeightHeightQuestionProps> = ({
   const othersStyle: FieldDisplayConfig = isFieldDisplayConfig(othersValue)
     ? othersValue
     : {};
-  
+
   const fieldType = othersStyle.fieldType || "weight"; // "weight" or "height"
   const unitType = othersStyle.unitType || "kg"; // "kg", "lb", "cm", "in", or "both"
   const compoundUnitType = othersStyle.compoundUnitType || ""; // "weight-height" for compound

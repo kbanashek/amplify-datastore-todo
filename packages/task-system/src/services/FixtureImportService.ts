@@ -134,7 +134,8 @@ export class FixtureImportService {
     const existingTasks = await DataStore.query(Task);
     const tasksByPkList = groupByPk(existingTasks as Task[]);
     const duplicateTasks: Task[] = [];
-    const taskByPk = new Map<string, Task>();
+    // Map type must match DataStore query return type
+    const taskByPk = new Map<string, (typeof existingTasks)[0]>();
     tasksByPkList.forEach((items, pk) => {
       if (items.length === 1) {
         taskByPk.set(pk, items[0]);
@@ -222,8 +223,9 @@ export class FixtureImportService {
     for (const taskInput of fixture.tasks || []) {
       const existing = taskByPk.get(taskInput.pk);
       if (!existing) {
-        const created = (await TaskService.createTask(taskInput)) as Task;
-        taskByPk.set(created.pk, created);
+        const created = await TaskService.createTask(taskInput);
+        // Cast to DataStore type to match map values from DataStore.query
+        taskByPk.set(created.pk, created as (typeof existingTasks)[0]);
         result.tasks.created++;
         continue;
       }
