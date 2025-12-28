@@ -91,14 +91,6 @@ export class FixtureImportService {
       )[0];
     };
 
-    // Helper to cast DataStore Lazy types to their base types for selectLatestByLastChanged
-    // Accepts unknown[] to bypass TypeScript's check of Lazy types, then casts to T[] for the actual function
-    const selectLatestFromDataStore = <T>(items: unknown[]): T => {
-      return selectLatestByLastChanged<T & { _lastChangedAt?: number }>(
-        items as (T & { _lastChangedAt?: number })[]
-      ) as T;
-    };
-
     const groupByPk = <T extends { pk: string }>(
       items: T[]
     ): Map<string, T[]> => {
@@ -125,7 +117,10 @@ export class FixtureImportService {
         activityByPkSk.set(key, activity);
       } else {
         // If duplicate found, keep the latest one
-        const keep = selectLatestFromDataStore<Activity>([existing, activity]);
+        // Cast to include _lastChangedAt property since LazyActivity has it at runtime
+        const keep = selectLatestByLastChanged([existing, activity] as Array<
+          Activity & { _lastChangedAt?: number }
+        >);
         activityByPkSk.set(key, keep);
         duplicateActivities.push(keep === existing ? activity : existing);
       }
@@ -141,7 +136,10 @@ export class FixtureImportService {
         taskByPk.set(pk, items[0]);
         return;
       }
-      const keep = selectLatestFromDataStore<Task>(items);
+      // Cast items to include _lastChangedAt property since LazyTask has it at runtime
+      const keep = selectLatestByLastChanged(
+        items as Array<Task & { _lastChangedAt?: number }>
+      );
       taskByPk.set(pk, keep);
       duplicateTasks.push(...items.filter(i => i !== keep));
     });
@@ -155,7 +153,10 @@ export class FixtureImportService {
         questionByPk.set(pk, items[0]);
         return;
       }
-      const keep = selectLatestFromDataStore<Question>(items);
+      // Cast items to include _lastChangedAt property since LazyQuestion has it at runtime
+      const keep = selectLatestByLastChanged(
+        items as Array<Question & { _lastChangedAt?: number }>
+      );
       questionByPk.set(pk, keep);
       duplicateQuestions.push(...items.filter(i => i !== keep));
     });
