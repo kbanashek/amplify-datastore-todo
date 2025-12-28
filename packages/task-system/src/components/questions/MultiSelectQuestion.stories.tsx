@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import React, { useState } from "react";
 import { View, Text } from "react-native";
 import { MultiSelectQuestion } from "./MultiSelectQuestion";
@@ -81,7 +82,9 @@ const MultiSelectQuestionWithState: React.FC<{
       />
       {enableValidation && error && (
         <View style={{ marginTop: 4, paddingHorizontal: 4 }}>
-          <Text style={[AppFonts.caption, { color: "#dc2626" }]}>{error}</Text>
+          <Text style={[AppFonts.caption, { color: AppColors.errorRed }]}>
+            {error}
+          </Text>
         </View>
       )}
     </View>

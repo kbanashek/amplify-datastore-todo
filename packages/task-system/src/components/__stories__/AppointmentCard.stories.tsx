@@ -50,8 +50,8 @@ export const UpcomingAppointment: Story = {
       title: "Dr. Smith - Annual Checkup",
       description: "Routine health examination and consultation",
       location: "Medical Center, Building A, Room 205",
-      startDateTime: Date.now() + 86400000, // Tomorrow
-      endDateTime: Date.now() + 86400000 + 3600000, // Tomorrow + 1 hour
+      startAt: new Date(Date.now() + 86400000).toISOString(), // Tomorrow
+      endAt: new Date(Date.now() + 86400000 + 3600000).toISOString(), // Tomorrow + 1 hour
     },
   },
 };
@@ -66,8 +66,8 @@ export const TodayAppointment: Story = {
       title: "Physical Therapy Session",
       description: "Knee rehabilitation exercises",
       location: "Rehab Center, 2nd Floor",
-      startDateTime: Date.now() + 7200000, // 2 hours from now
-      endDateTime: Date.now() + 9000000, // 2.5 hours from now
+      startAt: new Date(Date.now() + 7200000).toISOString(), // 2 hours from now
+      endAt: new Date(Date.now() + 9000000).toISOString(), // 2.5 hours from now
     },
   },
 };
@@ -82,8 +82,8 @@ export const PastAppointment: Story = {
       title: "Cardiology Consultation",
       description: "Follow-up on heart health",
       location: "Heart Clinic",
-      startDateTime: Date.now() - 86400000, // Yesterday
-      endDateTime: Date.now() - 86400000 + 1800000, // Yesterday + 30 min
+      startAt: new Date(Date.now() - 86400000).toISOString(), // Yesterday
+      endAt: new Date(Date.now() - 86400000 + 1800000).toISOString(), // Yesterday + 30 min
     },
   },
 };
@@ -98,8 +98,8 @@ export const VirtualAppointment: Story = {
       title: "Telehealth Video Call",
       description: "Online consultation with specialist",
       location: "Video Call (link will be sent 15 minutes before)",
-      startDateTime: Date.now() + 3600000, // 1 hour from now
-      endDateTime: Date.now() + 5400000, // 1.5 hours from now
+      startAt: new Date(Date.now() + 3600000).toISOString(), // 1 hour from now
+      endAt: new Date(Date.now() + 5400000).toISOString(), // 1.5 hours from now
     },
   },
 };
@@ -114,8 +114,8 @@ export const LabAppointment: Story = {
       title: "Blood Work - Fasting Required",
       description: "Routine lab tests - please fast for 12 hours before",
       location: "Lab Services, Ground Floor",
-      startDateTime: Date.now() + 172800000, // 2 days from now
-      endDateTime: Date.now() + 172800000 + 1800000, // 2 days + 30 min
+      startAt: new Date(Date.now() + 172800000).toISOString(), // 2 days from now
+      endAt: new Date(Date.now() + 172800000 + 1800000).toISOString(), // 2 days + 30 min
     },
   },
 };
@@ -130,8 +130,8 @@ export const SpecialistAppointment: Story = {
       title: "Endocrinologist - Dr. Johnson",
       description: "Diabetes management and insulin adjustment consultation",
       location: "Diabetes Care Center, Suite 301",
-      startDateTime: Date.now() + 259200000, // 3 days from now
-      endDateTime: Date.now() + 259200000 + 2700000, // 3 days + 45 min
+      startAt: new Date(Date.now() + 259200000).toISOString(), // 3 days from now
+      endAt: new Date(Date.now() + 259200000 + 2700000).toISOString(), // 3 days + 45 min
     },
   },
 };
@@ -145,8 +145,8 @@ export const MinimalInfo: Story = {
       ...baseAppointment,
       title: "Dental Cleaning",
       location: "Dental Office",
-      startDateTime: Date.now() + 432000000, // 5 days from now
-      endDateTime: Date.now() + 432000000 + 3600000,
+      startAt: new Date(Date.now() + 432000000).toISOString(), // 5 days from now
+      endAt: new Date(Date.now() + 432000000 + 3600000).toISOString(),
     },
   },
 };
@@ -164,8 +164,8 @@ export const LongContent: Story = {
         "Full body checkup including cardiovascular assessment, diabetes screening, and general health evaluation",
       location:
         "Main Hospital Complex, Building C, Department of Internal Medicine, 3rd Floor, Suite 315",
-      startDateTime: Date.now() + 604800000, // 7 days from now
-      endDateTime: Date.now() + 604800000 + 7200000, // 7 days + 2 hours
+      startAt: new Date(Date.now() + 604800000).toISOString(), // 7 days from now
+      endAt: new Date(Date.now() + 604800000 + 7200000).toISOString(), // 7 days + 2 hours
     },
   },
 };
@@ -225,8 +225,8 @@ export const Interactive: Story = {
       title: "Click to View Details",
       description: "Tap this card to see more information",
       location: "Health Center",
-      startDateTime: Date.now() + 86400000,
-      endDateTime: Date.now() + 86400000 + 3600000,
+      startAt: new Date(Date.now() + 86400000).toISOString(),
+      endAt: new Date(Date.now() + 86400000 + 3600000).toISOString(),
     },
     onPress: (apt: Appointment) =>
       console.log("Appointment pressed:", apt.title),

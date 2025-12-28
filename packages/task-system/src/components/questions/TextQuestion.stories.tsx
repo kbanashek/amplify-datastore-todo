@@ -4,6 +4,7 @@ import { View, Text } from "react-native";
 import { TextQuestion } from "./TextQuestion";
 import { Question } from "@task-types/ActivityConfig";
 import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 
 /**
  * Wrapper component to use hooks in stories with validation
@@ -78,7 +79,9 @@ const TextQuestionWithState: React.FC<{
       />
       {enableValidation && error && (
         <View style={{ marginTop: 4, paddingHorizontal: 4 }}>
-          <Text style={[AppFonts.caption, { color: "#dc2626" }]}>{error}</Text>
+          <Text style={[AppFonts.caption, { color: AppColors.errorRed }]}>
+            {error}
+          </Text>
         </View>
       )}
     </View>

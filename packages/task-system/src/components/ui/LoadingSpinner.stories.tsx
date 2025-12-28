@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { View } from "react-native";
-import { LoadingSpinner } from "./LoadingSpinner";
+import { LoadingSpinner, LoadingSpinnerProps } from "./LoadingSpinner";
 
 const meta = {
   title: "UI/LoadingSpinner",
@@ -65,7 +65,7 @@ export const CustomColor: Story = {
  * Loading spinner in a container
  */
 export const InContainer: Story = {
-  render: (args: any) => (
+  render: (args: LoadingSpinnerProps) => (
     <View
       style={{
         width: 300,

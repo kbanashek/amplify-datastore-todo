@@ -9,6 +9,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.30] - 2025-12-27
+
+### Fixed
+
+- **Critical: Fixed AppointmentCard stories runtime errors**
+  - Changed all stories to use correct field names `startAt`/`endAt` (ISO strings) instead of `startDateTime`/`endDateTime` (numbers)
+  - Affects 9 stories: UpcomingAppointment, TodayAppointment, PastAppointment, VirtualAppointment, LabAppointment, SpecialistAppointment, MinimalInfo, LongContent, Interactive
+  - Fixed in both `AppointmentCard.stories.tsx` and `__stories__/AppointmentCard.stories.tsx`
+  - Prevents "Invalid Date" errors in production
+
+- **Replaced hardcoded colors with AppColors constants** (coding guideline compliance)
+  - `SingleSelectQuestion.stories.tsx`: Changed `#dc2626` to `AppColors.errorRed`
+  - `MultiSelectQuestion.stories.tsx`: Changed `#dc2626` to `AppColors.errorRed`
+  - `TextQuestion.stories.tsx`: Changed `#dc2626` to `AppColors.errorRed`
+
+- **Eliminated `any` types** (coding guideline compliance - "NEVER use `any`")
+  - `ReviewScreen.tsx`: Replaced `Record<string, any>` with `Record<string, AnswerValue>`
+  - `ReviewScreen.tsx`: Added proper JSDoc documentation for internal components
+  - `ReviewScreen.tsx`: Fixed `rtlStyle` type assertion from `as any` to `as ViewStyle`
+  - `UnitText.tsx`: Changed `textStyle: any` to `StyleProp<TextStyle>` with proper conditional logic
+  - `LoadingSpinner.stories.tsx`: Changed `args: any` to `args: LoadingSpinnerProps`
+
+### Changed
+
+- Added comprehensive JSDoc documentation to ReviewScreen internal components (ScreenSection, QuestionReviewItem)
+
 ## [0.1.29] - 2025-12-27
 
 ### Fixed
