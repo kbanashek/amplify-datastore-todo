@@ -4,7 +4,7 @@ exports[`TaskList Snapshots matches snapshot with default props 1`] = `
 <View
   style={
     {
-      "backgroundColor": "#f5f6fa",
+      "backgroundColor": "AppColors.powderGray",
       "flex": 1,
     }
   }
@@ -45,7 +45,7 @@ exports[`TaskList Snapshots matches snapshot with error state 1`] = `
 <View
   style={
     {
-      "backgroundColor": "#f5f6fa",
+      "backgroundColor": "AppColors.powderGray",
       "flex": 1,
     }
   }
@@ -66,7 +66,7 @@ exports[`TaskList Snapshots matches snapshot with error state 1`] = `
     <Text
       style={
         {
-          "color": "#e74c3c",
+          "color": "AppColors.errorRed",
           "fontFamily": "Ubuntu-Regular",
           "fontSize": 14,
           "fontWeight": "400",
@@ -101,7 +101,7 @@ exports[`TaskList Snapshots matches snapshot with loading state 1`] = `
 <View
   style={
     {
-      "backgroundColor": "#f5f6fa",
+      "backgroundColor": "AppColors.powderGray",
       "flex": 1,
     }
   }
@@ -120,7 +120,7 @@ exports[`TaskList Snapshots matches snapshot with loading state 1`] = `
     testID="task-list-empty-loading"
   >
     <ActivityIndicator
-      color="#3498db"
+      color="AppColors.CIBlue"
       size="large"
       testID="task-list-loading-spinner"
     />
@@ -147,7 +147,7 @@ exports[`TaskList Snapshots matches snapshot with sync indicator 1`] = `
 <View
   style={
     {
-      "backgroundColor": "#f5f6fa",
+      "backgroundColor": "AppColors.powderGray",
       "flex": 1,
     }
   }

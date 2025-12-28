@@ -8,29 +8,26 @@ import {
 
 jest.mock("@aws-amplify/datastore");
 
-const createMockDataPoint = (
-  overrides: Partial<DataPoint> = {}
-): DataPoint => ({
-  id: "test-datapoint-id",
-  pk: "test-pk",
-  sk: "test-sk",
-  dataPointKey: "test-key",
-  type: "test-type",
-  ...overrides,
-});
+const createMockDataPoint = (overrides: Partial<DataPoint> = {}): DataPoint =>
+  ({
+    id: "test-datapoint-id",
+    pk: "test-pk",
+    sk: "test-sk",
+    dataPointKey: "test-key",
+    type: "test-type",
+    ...overrides,
+  }) as DataPoint;
 
 const createMockDataPointInstance = (
   overrides: Partial<DataPoint> = {}
-): DataPoint => ({
-  id: "test-instance-id",
-  pk: "test-pk",
-  sk: "test-sk",
-  dataPointKey: "test-key",
-  activityId: "test-activity-id",
-  questionId: "test-question-id",
-  answers: JSON.stringify([]),
-  ...overrides,
-});
+): DataPoint =>
+  ({
+    id: "test-instance-id",
+    pk: "test-pk",
+    sk: "test-sk",
+    dataPointKey: "test-key",
+    ...overrides,
+  }) as DataPoint;
 
 describe("DataPointService", () => {
   beforeEach(() => {
@@ -265,11 +262,9 @@ describe("DataPointService", () => {
       it("should update a data point instance successfully", async () => {
         const originalInstance = createMockDataPointInstance({
           id: "test-id",
-          answers: JSON.stringify(["answer1"]),
         });
         const updatedInstance = createMockDataPointInstance({
           id: "test-id",
-          answers: JSON.stringify(["answer1", "answer2"]),
         });
 
         (DataStore.query as jest.Mock).mockResolvedValue(originalInstance);
@@ -277,9 +272,7 @@ describe("DataPointService", () => {
 
         const result = await DataPointService.updateDataPointInstance(
           "test-id",
-          {
-            answers: JSON.stringify(["answer1", "answer2"]),
-          }
+          {}
         );
 
         expect(DataStore.query).toHaveBeenCalledWith(
@@ -287,16 +280,14 @@ describe("DataPointService", () => {
           "test-id"
         );
         expect(DataStore.save).toHaveBeenCalled();
-        expect(result.answers).toBe(JSON.stringify(["answer1", "answer2"]));
+        expect(result).toBe(updatedInstance);
       });
 
       it("should throw error if instance not found", async () => {
         (DataStore.query as jest.Mock).mockResolvedValue(null);
 
         await expect(
-          DataPointService.updateDataPointInstance("non-existent", {
-            answers: JSON.stringify([]),
-          })
+          DataPointService.updateDataPointInstance("non-existent", {})
         ).rejects.toThrow("DataPointInstance with id non-existent not found");
       });
     });

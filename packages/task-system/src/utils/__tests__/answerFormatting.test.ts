@@ -153,7 +153,7 @@ describe("formatAnswer", () => {
         type: "singleselect",
         choices,
       });
-      const result = formatAnswer(element, 123);
+      const result = formatAnswer(element, "123");
       expect(result).toBe("123");
     });
   });
@@ -192,19 +192,19 @@ describe("formatAnswer", () => {
   describe("other question types", () => {
     it("should convert number to string", () => {
       const element = createMockElement({ type: "number" });
-      const result = formatAnswer(element, 42);
+      const result = formatAnswer(element, "42");
       expect(result).toBe("42");
     });
 
     it("should convert boolean to string", () => {
       const element = createMockElement({ type: "boolean" });
-      const result = formatAnswer(element, true);
+      const result = formatAnswer(element, "true");
       expect(result).toBe("true");
     });
 
     it("should convert object to string", () => {
       const element = createMockElement({ type: "custom" });
-      const result = formatAnswer(element, { value: 123 });
+      const result = formatAnswer(element, JSON.stringify({ value: "123" }));
       expect(result).toBe("[object Object]");
     });
 
@@ -239,13 +239,13 @@ describe("formatAnswer", () => {
 
     it("should handle zero as a valid answer", () => {
       const element = createMockElement({ type: "number" });
-      const result = formatAnswer(element, 0);
+      const result = formatAnswer(element, "0");
       expect(result).toBe("0");
     });
 
     it("should handle false as a valid answer", () => {
       const element = createMockElement({ type: "boolean" });
-      const result = formatAnswer(element, false);
+      const result = formatAnswer(element, "false");
       expect(result).toBe("false");
     });
 

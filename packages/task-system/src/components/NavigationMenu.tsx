@@ -92,6 +92,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
           style={styles.overlay}
           onPress={onClose}
           android_disableSound={true}
+          testID="navigation-menu-overlay"
         />
         <Pressable
           style={styles.menuContainer}
@@ -100,9 +101,15 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             e.stopPropagation();
           }}
         >
-          <View style={styles.header}>
+          <View style={styles.header} testID="navigation-menu-header">
             <Text style={styles.headerTitle}>Navigation</Text>
-            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+            <TouchableOpacity
+              onPress={onClose}
+              style={styles.closeButton}
+              testID="navigation-menu-close-button"
+              accessibilityRole="button"
+              accessibilityLabel="Close navigation menu"
+            >
               <IconSymbol
                 name="xmark.circle.fill"
                 size={28}
@@ -115,9 +122,13 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             style={styles.menuList}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.menuListContent}
+            testID="navigation-menu-list"
           >
             {items.length === 0 ? (
-              <View style={styles.emptyState}>
+              <View
+                style={styles.emptyState}
+                testID="navigation-menu-empty-state"
+              >
                 <Text style={styles.emptyStateText}>
                   No navigation options available
                 </Text>
@@ -132,7 +143,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
                     activeOpacity={0.7}
                     testID={`navigation-menu-item-${item.key}`}
                     accessibilityRole="button"
-                    accessibilityLabel={item.name}
+                    accessibilityLabel={item.description || item.name}
                   >
                     <View style={styles.menuItemIcon}>
                       <IconSymbol
@@ -184,12 +195,12 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   menuContainer: {
-    backgroundColor: "AppColors.white",
+    backgroundColor: AppColors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     maxHeight: "80%",
     minHeight: 300,
-    shadowColor: "AppColors.black",
+    shadowColor: AppColors.black,
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.25,
     shadowRadius: 10,
@@ -204,12 +215,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "AppColors.lightGray",
+    borderBottomColor: AppColors.lightGray,
     flexShrink: 0,
   },
   headerTitle: {
     ...AppFonts.heading,
-    color: "AppColors.gray",
+    color: AppColors.gray,
   },
   closeButton: {
     padding: 4,
@@ -234,13 +245,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "AppColors.ltGray",
+    borderBottomColor: AppColors.ltGray,
   },
   menuItemIcon: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "AppColors.powderGray",
+    backgroundColor: AppColors.powderGray,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,

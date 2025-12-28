@@ -9,6 +9,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.30] - 2025-12-27
+
+### Fixed
+
+- **Critical: Fixed AppointmentCard stories runtime errors**
+  - Changed all stories to use correct field names `startAt`/`endAt` (ISO strings) instead of `startDateTime`/`endDateTime` (numbers)
+  - Affects 9 stories: UpcomingAppointment, TodayAppointment, PastAppointment, VirtualAppointment, LabAppointment, SpecialistAppointment, MinimalInfo, LongContent, Interactive
+  - Fixed in both `AppointmentCard.stories.tsx` and `__stories__/AppointmentCard.stories.tsx`
+  - Prevents "Invalid Date" errors in production
+
+- **Replaced hardcoded colors with AppColors constants** (coding guideline compliance)
+  - `SingleSelectQuestion.stories.tsx`: Changed `#dc2626` to `AppColors.errorRed`
+  - `MultiSelectQuestion.stories.tsx`: Changed `#dc2626` to `AppColors.errorRed`
+  - `TextQuestion.stories.tsx`: Changed `#dc2626` to `AppColors.errorRed`
+
+- **Eliminated `any` types** (coding guideline compliance - "NEVER use `any`")
+  - `ReviewScreen.tsx`: Replaced `Record<string, any>` with `Record<string, AnswerValue>`
+  - `ReviewScreen.tsx`: Added proper JSDoc documentation for internal components
+  - `ReviewScreen.tsx`: Fixed `rtlStyle` type assertion from `as any` to `as ViewStyle`
+  - `UnitText.tsx`: Changed `textStyle: any` to `StyleProp<TextStyle>` with proper conditional logic
+  - `LoadingSpinner.stories.tsx`: Changed `args: any` to `args: LoadingSpinnerProps`
+
+### Changed
+
+- Added comprehensive JSDoc documentation to ReviewScreen internal components (ScreenSection, QuestionReviewItem)
+- Consolidated imports in TaskService.test.ts (merged two imports from same module)
+- Updated TaskCard.stories.tsx to use path alias `@components/TaskCard` instead of relative import
+- Removed unused `Question` import from MultiSelectQuestion.stories.tsx
+- Fixed DataPointService.test.ts assertion to match actual test behavior
+
+## [0.1.29] - 2025-12-27
+
+### Fixed
+
+- Fixed all TypeScript compilation errors (17 total errors across 9 files)
+  - Fixed RTL mock type errors in GlobalHeader, QuestionHeader, and TaskForm tests
+  - Fixed type mismatch in useAnswerManagement hook (initialAnswers parameter)
+  - Fixed missing model metadata in service test files (Activity, DataPoint, TaskAnswer, TaskHistory, TaskResult)
+  - Fixed type assertion issues in FixtureImportService
+- Fixed NavigationMenu visibility issue (incorrect color string literals)
+  - Changed string literals like "AppColors.white" to actual AppColors.white constants
+  - Added missing testIDs for E2E testing support
+  - Fixed accessibility labels to match test expectations
+- All ESLint checks pass with no errors
+- All TypeScript compilation checks pass with no errors
+
+### Changed
+
+- Updated GlobalHeader component with additional testIDs for E2E testing
+- Updated test snapshots after NavigationMenu and GlobalHeader fixes
+
 ## [0.1.28] - 2025-12-26
 
 ### Added

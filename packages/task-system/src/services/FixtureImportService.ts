@@ -117,7 +117,7 @@ export class FixtureImportService {
         activityByPkSk.set(key, activity);
       } else {
         // If duplicate found, keep the latest one
-        const keep = selectLatestByLastChanged([existing, activity]);
+        const keep = selectLatestByLastChanged([existing, activity] as any[]);
         activityByPkSk.set(key, keep);
         duplicateActivities.push(keep === existing ? activity : existing);
       }
@@ -214,7 +214,7 @@ export class FixtureImportService {
     for (const taskInput of fixture.tasks || []) {
       const existing = taskByPk.get(taskInput.pk);
       if (!existing) {
-        const created = await TaskService.createTask(taskInput);
+        const created = (await TaskService.createTask(taskInput)) as Task;
         taskByPk.set(created.pk, created);
         result.tasks.created++;
         continue;
@@ -284,7 +284,7 @@ export class FixtureImportService {
           model: any // DataStore model constructor (not typed in @aws-amplify/datastore)
         ): Promise<void> => {
           const items = (await DataStore.query(model)) as TModel[];
-          await Promise.all(items.map(item => DataStore.delete(item)));
+          await Promise.all(items.map(item => DataStore.delete(item as any)));
         };
 
         await Promise.all([

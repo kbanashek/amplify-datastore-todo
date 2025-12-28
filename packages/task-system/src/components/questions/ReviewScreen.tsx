@@ -1,13 +1,14 @@
 /**
-import { AppFonts } from "@constants/AppFonts";
  * Review screen component that displays all answers before submission
  */
 
 import { IconSymbol } from "@components/ui/IconSymbol";
 import { AppColors } from "@constants/AppColors";
+import { AppFonts } from "@constants/AppFonts";
 import { useRTL } from "@hooks/useRTL";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import { ParsedElement, ParsedScreen } from "@task-types/ActivityConfig";
+import { AnswerValue } from "@task-types/AnswerValue";
 import { formatAnswer } from "@utils/answerFormatting";
 import { isIOS } from "@utils/platform";
 import React from "react";
@@ -18,15 +19,27 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ViewStyle,
 } from "react-native";
 
-// Component for screen section with translated title
+/**
+ * Component for screen section with translated title
+ *
+ * @param props - Component props
+ * @param props.screenTitle - Title of the screen section
+ * @param props.screen - Parsed screen data containing elements
+ * @param props.answers - Map of question IDs to their answer values
+ * @param props.onEditQuestion - Optional callback when edit button is clicked
+ * @param props.formatAnswer - Function to format answer for display
+ * @param props.notAnsweredText - Text to show when question is not answered
+ * @returns Screen section component with questions and answers
+ */
 const ScreenSection: React.FC<{
   screenTitle: string;
   screen: ParsedScreen;
-  answers: Record<string, any>;
+  answers: Record<string, AnswerValue>;
   onEditQuestion?: (questionId: string) => void;
-  formatAnswer: (element: ParsedElement, answer: any) => string;
+  formatAnswer: (element: ParsedElement, answer: AnswerValue) => string;
   notAnsweredText: string;
 }> = ({
   screenTitle,
@@ -68,7 +81,7 @@ const ScreenSection: React.FC<{
  */
 interface ReviewScreenProps {
   screens: ParsedScreen[];
-  answers: Record<string, any>;
+  answers: Record<string, AnswerValue>;
   onEditQuestion?: (questionId: string) => void;
   onSubmit?: () => void;
   isSubmitting?: boolean;
@@ -76,7 +89,17 @@ interface ReviewScreenProps {
   tabBarHeight?: number;
 }
 
-// Component for individual question review item with translation and edit button
+/**
+ * Component for individual question review item with translation and edit button
+ *
+ * @param props - Component props
+ * @param props.questionText - The question text to display
+ * @param props.answer - The formatted answer string
+ * @param props.hasAnswer - Whether the question has been answered
+ * @param props.questionId - Unique identifier for the question
+ * @param props.onEdit - Optional callback when edit button is clicked
+ * @returns Question review item component
+ */
 const QuestionReviewItem: React.FC<{
   questionText: string;
   answer: string;
@@ -85,11 +108,13 @@ const QuestionReviewItem: React.FC<{
   onEdit?: (questionId: string) => void;
 }> = ({ questionText, answer, hasAnswer, questionId, onEdit }) => {
   const { translatedText } = useTranslatedText(questionText);
-  const { rtlStyle } = useRTL();
+  const { rtlStyle, isRTL } = useRTL();
 
   return (
     <View style={styles.questionItem}>
-      <View style={[styles.questionRow, rtlStyle(styles.questionRow) as any]}>
+      <View
+        style={[styles.questionRow, rtlStyle(styles.questionRow) as ViewStyle]}
+      >
         <Text style={styles.questionText}>{translatedText}</Text>
         {onEdit && (
           <TouchableOpacity
@@ -110,10 +135,29 @@ const QuestionReviewItem: React.FC<{
 };
 
 /**
- * ReviewScreen component.
+ * Main ReviewScreen component that displays all screens with their questions and answers.
+ * Provides a comprehensive review interface for users to verify their answers before submission.
  *
  * @param props - Component props
- * @returns Rendered ReviewScreen component
+ * @param props.screens - Array of parsed screen data containing questions
+ * @param props.answers - Map of question IDs to their answer values
+ * @param props.onEditQuestion - Optional callback when user wants to edit a question
+ * @param props.onSubmit - Optional callback when user submits the review
+ * @param props.isSubmitting - Whether the submission is in progress
+ * @param props.bottomInset - Bottom safe area inset for iOS devices
+ * @param props.tabBarHeight - Height of the tab bar for proper spacing
+ * @returns A scrollable review screen with all questions and answers
+ *
+ * @example
+ * ```tsx
+ * <ReviewScreen
+ *   screens={parsedScreens}
+ *   answers={userAnswers}
+ *   onEditQuestion={(questionId) => navigateToQuestion(questionId)}
+ *   onSubmit={handleSubmit}
+ *   isSubmitting={false}
+ * />
+ * ```
  */
 export const ReviewScreen: React.FC<ReviewScreenProps> = ({
   screens,

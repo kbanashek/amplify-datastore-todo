@@ -115,7 +115,7 @@ const InteractiveTextField = ({
         placeholder={placeholder}
         value={value}
         onChangeText={setValue}
-        errorMessage={error ? "This field has an error" : undefined}
+        errorText={error ? "This field has an error" : undefined}
       />
     </View>
   );
@@ -169,7 +169,9 @@ const InteractiveCard = ({
 // Interactive LoadingSpinner Story with Controls
 const InteractiveLoadingSpinner = ({ size = "default" }: { size?: string }) => (
   <View style={styles.centeredStoryContainer}>
-    <LoadingSpinner size={size === "default" ? undefined : size} />
+    <LoadingSpinner
+      size={size === "default" ? undefined : (size as "small" | "large")}
+    />
     <View style={styles.spacer} />
     <Text style={styles.label}>{size} size</Text>
   </View>
@@ -205,7 +207,20 @@ const InteractiveThemedText = ({
   type?: string;
 }) => (
   <View style={styles.centeredStoryContainer}>
-    <ThemedText type={type === "default" ? undefined : type}>{text}</ThemedText>
+    <ThemedText
+      type={
+        type === "default"
+          ? undefined
+          : (type as
+              | "link"
+              | "title"
+              | "default"
+              | "defaultSemiBold"
+              | "subtitle")
+      }
+    >
+      {text}
+    </ThemedText>
   </View>
 );
 
@@ -287,8 +302,10 @@ const SingleSelectExample = () => {
             ],
           } as any
         }
-        selectedOption={selected}
-        onSelectOption={setSelected}
+        value={selected}
+        onChange={setSelected}
+        displayProperties={{}}
+        errors={[]}
       />
     </View>
   );
@@ -311,14 +328,12 @@ const MultiSelectExample = () => {
             ],
           } as any
         }
-        selectedOptions={selected}
-        onToggleOption={optionId => {
-          if (selected.includes(optionId)) {
-            setSelected(selected.filter(id => id !== optionId));
-          } else {
-            setSelected([...selected, optionId]);
-          }
+        value={selected}
+        onChange={(selectedIds: string[]) => {
+          setSelected(selectedIds);
         }}
+        displayProperties={{}}
+        errors={[]}
       />
     </View>
   );
@@ -335,8 +350,10 @@ const TextQuestionExample = () => {
             questionText: "What is your feedback?",
           } as any
         }
-        answer={answer}
-        onChangeText={setAnswer}
+        value={answer}
+        onChange={setAnswer}
+        displayProperties={{}}
+        errors={[]}
       />
     </View>
   );
@@ -353,8 +370,10 @@ const NumberQuestionExample = () => {
             questionText: "How many hours of sleep did you get?",
           } as any
         }
-        answer={answer}
-        onChangeText={setAnswer}
+        value={answer}
+        onChange={setAnswer}
+        displayProperties={{}}
+        errors={[]}
       />
     </View>
   );
@@ -377,10 +396,10 @@ const InteractiveButton = ({
   <View style={styles.centeredStoryContainer}>
     <Button
       label={label}
-      variant={variant}
+      variant={variant as "primary" | "secondary" | "outline" | "ghost"}
       disabled={disabled}
       loading={loading}
-      size={size}
+      size={size as "sm" | "md" | "lg"}
       onPress={() => Alert.alert("Success", `${variant} button pressed!`)}
     />
   </View>

@@ -70,9 +70,9 @@ const MultiSelectQuestionWithState: React.FC<{
         question={{
           id: "story-question",
           text,
-          questionType: QuestionType.MULTI_SELECT,
+          type: "MULTI_SELECT",
+          friendlyName: "Multi Select Question",
           required,
-          screenIndex: 0,
           choices,
         }}
         value={answers}

@@ -46,7 +46,9 @@ jest.mock("@components/GroupedTasksView", () => {
     }) => (
       <View testID={testID}>
         <Text testID="grouped-tasks-view-mock">
-          {loading ? "Loading" : error || `Tasks: ${groupedTasks.length}`}
+          {loading
+            ? "Loading"
+            : error || `Tasks: ${(groupedTasks as any[]).length}`}
         </Text>
       </View>
     ),

@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React, { useState } from "react";
 import { View, Text } from "react-native";
-import { TextQuestion } from "./TextQuestion";
-import { QuestionType } from "@task-types/Question";
+import { TextQuestion } from "../TextQuestion";
+import { Question } from "@task-types/ActivityConfig";
+import { AppColors } from "@constants/AppColors";
 import { AppFonts } from "@constants/AppFonts";
 
 /**
@@ -67,11 +68,9 @@ const TextQuestionWithState: React.FC<{
         question={{
           id: "story-question",
           text,
-          questionType: QuestionType.TEXT,
+          type: "TEXT",
+          friendlyName: "Text Question",
           required,
-          screenIndex: 0,
-          placeholder,
-          multiline,
         }}
         value={answer}
         onChange={handleChange}
@@ -131,7 +130,7 @@ const meta = {
     },
   },
   decorators: [
-    Story => (
+    (Story: React.ComponentType) => (
       <View style={{ minWidth: 400, padding: 20 }}>
         <Story />
       </View>
@@ -150,7 +149,7 @@ export const SimpleText: Story = {
     text: "What is your name?",
     required: true,
   },
-  render: args => <TextQuestionWithState {...args} />,
+  render: (args: any) => <TextQuestionWithState {...args} />,
 };
 
 /**
@@ -162,7 +161,7 @@ export const EmailQuestion: Story = {
     required: true,
     placeholder: "you@example.com",
   },
-  render: args => <TextQuestionWithState {...args} />,
+  render: (args: any) => <TextQuestionWithState {...args} />,
 };
 
 /**
@@ -174,7 +173,7 @@ export const PhoneQuestion: Story = {
     required: true,
     placeholder: "(555) 123-4567",
   },
-  render: args => <TextQuestionWithState {...args} />,
+  render: (args: any) => <TextQuestionWithState {...args} />,
 };
 
 /**
@@ -187,7 +186,7 @@ export const FeedbackQuestion: Story = {
     placeholder: "Describe your symptoms in detail...",
     multiline: true,
   },
-  render: args => <TextQuestionWithState {...args} />,
+  render: (args: any) => <TextQuestionWithState {...args} />,
 };
 
 /**
@@ -199,7 +198,7 @@ export const OptionalQuestion: Story = {
     required: false,
     placeholder: "Share any additional information...",
   },
-  render: args => <TextQuestionWithState {...args} />,
+  render: (args: any) => <TextQuestionWithState {...args} />,
 };
 
 /**
@@ -211,7 +210,7 @@ export const WithAnswer: Story = {
     required: true,
     initialAnswer: "John Doe",
   },
-  render: args => <TextQuestionWithState {...args} />,
+  render: (args: any) => <TextQuestionWithState {...args} />,
 };
 
 /**
@@ -225,7 +224,7 @@ export const MedicationDetails: Story = {
       "e.g., Metformin 500mg twice daily, Lisinopril 10mg once daily...",
     multiline: true,
   },
-  render: args => <TextQuestionWithState {...args} />,
+  render: (args: any) => <TextQuestionWithState {...args} />,
 };
 
 /**
@@ -239,7 +238,7 @@ export const AllergyQuestion: Story = {
       "List any allergies to medications, foods, or other substances",
     multiline: true,
   },
-  render: args => <TextQuestionWithState {...args} />,
+  render: (args: any) => <TextQuestionWithState {...args} />,
 };
 
 /**
@@ -251,7 +250,7 @@ export const EmergencyContact: Story = {
     required: true,
     placeholder: "Name and phone number",
   },
-  render: args => <TextQuestionWithState {...args} />,
+  render: (args: any) => <TextQuestionWithState {...args} />,
 };
 
 /**
@@ -264,7 +263,7 @@ export const WithRequiredValidation: Story = {
     placeholder: "Enter your name",
     enableValidation: true,
   },
-  render: args => <TextQuestionWithState {...args} />,
+  render: (args: any) => <TextQuestionWithState {...args} />,
 };
 
 /**
@@ -279,7 +278,7 @@ export const WithMinLengthValidation: Story = {
     enableValidation: true,
     minLength: 10,
   },
-  render: args => <TextQuestionWithState {...args} />,
+  render: (args: any) => <TextQuestionWithState {...args} />,
 };
 
 /**
@@ -293,5 +292,5 @@ export const WithMaxLengthValidation: Story = {
     enableValidation: true,
     maxLength: 50,
   },
-  render: args => <TextQuestionWithState {...args} />,
+  render: (args: any) => <TextQuestionWithState {...args} />,
 };

@@ -345,10 +345,14 @@ describe("TaskForm", () => {
     });
 
     it("renders correctly in RTL mode", () => {
-      const rtlStyleFn = jest.fn((style: StyleProp<ViewStyle | TextStyle>) => ({
-        ...(style as Record<string, unknown>),
-        flexDirection: "row-reverse",
-      }));
+      const rtlStyleFn = jest.fn(
+        (
+          style: StyleProp<ViewStyle | TextStyle>
+        ): StyleProp<ViewStyle | TextStyle> => ({
+          ...(style as Record<string, unknown>),
+          flexDirection: "row-reverse" as const,
+        })
+      );
 
       mockUseRTL.mockReturnValueOnce({
         rtlStyle: rtlStyleFn,

@@ -1,18 +1,26 @@
 import { DataStore } from "@aws-amplify/datastore";
 import { Task as DataStoreTask } from "@models/index";
 import { TaskService } from "@services/TaskService";
-import { TaskStatus, TaskType, CreateTaskInput } from "@task-types/Task";
+import { Task, TaskStatus, TaskType, CreateTaskInput } from "@task-types/Task";
 
 jest.mock("@aws-amplify/datastore");
 
+/**
+ * Creates a mock Task object for testing purposes.
+ *
+ * @param overrides - Partial Task properties to override defaults
+ * @returns A complete Task object with test defaults
+ * @example
+ * const task = createMockTask({ title: "Custom Title" });
+ */
 const createMockTask = (overrides: Partial<Task> = {}): Task => ({
   id: "test-task-id",
   pk: "test-pk",
   sk: "test-sk",
   title: "Test Task",
   description: "Test Description",
-  status: "OPEN",
-  taskType: "SCHEDULED",
+  status: TaskStatus.OPEN,
+  taskType: TaskType.SCHEDULED,
   startTimeInMillSec: Date.now(),
   expireTimeInMillSec: Date.now() + 86400000,
   ...overrides,

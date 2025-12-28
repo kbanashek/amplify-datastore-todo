@@ -176,7 +176,7 @@ export const Default: Story = {
     label: "Full Name",
     placeholder: "Enter your full name",
   },
-  render: args => <TextFieldWithState {...args} />,
+  render: (args: any) => <TextFieldWithState {...args} />,
 };
 
 /**
@@ -188,7 +188,7 @@ export const WithHelperText: Story = {
     placeholder: "you@example.com",
     helperText: "We'll never share your email with anyone else.",
   },
-  render: args => <TextFieldWithState {...args} />,
+  render: (args: any) => <TextFieldWithState {...args} />,
 };
 
 /**
@@ -201,7 +201,7 @@ export const WithError: Story = {
     errorText: "Please enter a valid email address.",
     initialValue: "invalid-email",
   },
-  render: args => <TextFieldWithState {...args} />,
+  render: (args: any) => <TextFieldWithState {...args} />,
 };
 
 /**
@@ -214,7 +214,7 @@ export const Disabled: Story = {
     disabled: true,
     initialValue: "john.doe",
   },
-  render: args => <TextFieldWithState {...args} />,
+  render: (args: any) => <TextFieldWithState {...args} />,
 };
 
 /**
@@ -226,7 +226,7 @@ export const WithValue: Story = {
     placeholder: "Enter city",
     initialValue: "San Francisco",
   },
-  render: args => <TextFieldWithState {...args} />,
+  render: (args: any) => <TextFieldWithState {...args} />,
 };
 
 /**
@@ -239,7 +239,7 @@ export const MultiLine: Story = {
     multiline: true,
     numberOfLines: 4,
   },
-  render: args => <TextFieldWithState {...args} />,
+  render: (args: any) => <TextFieldWithState {...args} />,
 };
 
 /**
@@ -252,7 +252,7 @@ export const Password: Story = {
     secureTextEntry: true,
     helperText: "Must be at least 8 characters",
   },
-  render: args => <TextFieldWithState {...args} />,
+  render: (args: any) => <TextFieldWithState {...args} />,
 };
 
 /**
@@ -265,7 +265,7 @@ export const WithMaxLength: Story = {
     maxLength: 100,
     helperText: "Maximum 100 characters",
   },
-  render: args => <TextFieldWithState {...args} />,
+  render: (args: any) => <TextFieldWithState {...args} />,
 };
 
 /**
@@ -277,7 +277,7 @@ export const NumericInput: Story = {
     placeholder: "Enter your age",
     keyboardType: "numeric",
   },
-  render: args => <TextFieldWithState {...args} />,
+  render: (args: any) => <TextFieldWithState {...args} />,
 };
 
 /**
@@ -291,7 +291,7 @@ export const EmailInput: Story = {
     autoCapitalize: "none",
     autoCorrect: false,
   },
-  render: args => <TextFieldWithState {...args} />,
+  render: (args: any) => <TextFieldWithState {...args} />,
 };
 
 /**
@@ -305,7 +305,7 @@ export const WithRequiredValidation: Story = {
     enableValidation: true,
     validationType: "required",
   },
-  render: args => <TextFieldWithState {...args} />,
+  render: (args: any) => <TextFieldWithState {...args} />,
 };
 
 /**
@@ -321,7 +321,7 @@ export const WithEmailValidation: Story = {
     keyboardType: "email-address",
     autoCapitalize: "none",
   },
-  render: args => <TextFieldWithState {...args} />,
+  render: (args: any) => <TextFieldWithState {...args} />,
 };
 
 /**
@@ -336,5 +336,5 @@ export const WithMinLengthValidation: Story = {
     validationType: "minLength",
     minLengthValue: 3,
   },
-  render: args => <TextFieldWithState {...args} />,
+  render: (args: any) => <TextFieldWithState {...args} />,
 };

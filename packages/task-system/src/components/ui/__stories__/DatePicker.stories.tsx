@@ -1,7 +1,7 @@
 import type { Meta } from "@storybook/react";
 import React, { useState } from "react";
 import { Text, View } from "react-native";
-import { DatePicker } from "./DatePicker";
+import { DatePicker } from "../DatePicker";
 import { AppFonts } from "@constants/AppFonts";
 
 /**

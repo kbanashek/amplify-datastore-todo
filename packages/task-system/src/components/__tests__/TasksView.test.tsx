@@ -31,9 +31,9 @@ jest.mock("@components/TaskCard", () => {
       onPress,
       onDelete,
     }: {
-      task: unknown;
-      onPress?: () => void;
-      onDelete?: () => void;
+      task: Task;
+      onPress?: (task: Task) => void;
+      onDelete?: (id: string) => void;
     }) => (
       <View testID={`task-card-${task.id}`}>
         <Text testID={`task-card-title-${task.id}`}>{task.title}</Text>

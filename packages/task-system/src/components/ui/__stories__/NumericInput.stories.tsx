@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React, { useState } from "react";
 import { View, Text } from "react-native";
-import { NumericInput } from "./NumericInput";
+import { NumericInput } from "../NumericInput";
+import { AppColors } from "@constants/AppColors";
 import { AppFonts } from "@constants/AppFonts";
 
 /**

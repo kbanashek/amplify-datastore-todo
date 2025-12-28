@@ -283,7 +283,7 @@ export class ConflictResolution {
       if (!safeRemote) {
         return ensurePkSk(safeLocal, safeRemote);
       }
-      return ensurePkSk({ ...safeRemote, _deleted: true }, safeLocal);
+      return ensurePkSk({ ...safeRemote, _deleted: true } as any, safeLocal);
     }
 
     // Otherwise use local delete

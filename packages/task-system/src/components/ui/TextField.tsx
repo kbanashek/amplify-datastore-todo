@@ -18,7 +18,7 @@ import {
 } from "react-native";
 
 import { ThemedText } from "@components/ThemedText";
-import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import { useThemeColor } from "@hooks/useThemeColor";
 
 /**
@@ -82,7 +82,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   const borderBase = useThemeColor({}, "icon");
   const tint = useThemeColor({}, "tint");
 
-  const borderColor = errorText ? AppColors.errorRed : borderBase + "55";
+  const borderColor = errorText ? "#d32f2f" : borderBase + "55";
 
   return (
     <View style={[styles.container, containerStyle]} testID={testID}>
@@ -105,7 +105,7 @@ export const TextField: React.FC<TextFieldProps> = ({
         ]}
       />
       {errorText ? (
-        <ThemedText style={[styles.message, { color: AppColors.errorRed }]}>
+        <ThemedText style={[styles.message, { color: "#d32f2f" }]}>
           {errorText}
         </ThemedText>
       ) : helperText ? (
@@ -122,19 +122,20 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   label: {
-    ...AppFonts.label,
+    fontSize: 14,
+    fontWeight: "600",
   },
   input: {
     borderWidth: 1,
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 12,
-    ...AppFonts.body,
+    fontSize: 16,
   },
   inputDisabled: {
     opacity: 0.7,
   },
   message: {
-    ...AppFonts.caption,
+    fontSize: 12,
   },
 });

@@ -8,7 +8,7 @@ jest.mock("@components/questions/QuestionRenderer", () => {
   const React = require("react");
   const { View, Text } = require("react-native");
   return {
-    QuestionRenderer: ({ element }: { element: unknown }) => (
+    QuestionRenderer: ({ element }: { element: any }) => (
       <View testID={`question-${element.id}`}>
         <Text>{element.question.friendlyName}</Text>
       </View>

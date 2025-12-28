@@ -1,4 +1,5 @@
 import { ThemedView } from "@components/ThemedView";
+import { AppColors } from "@constants/AppColors";
 import { AppFonts } from "@constants/AppFonts";
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";

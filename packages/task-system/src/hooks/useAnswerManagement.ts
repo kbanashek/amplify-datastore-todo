@@ -28,7 +28,7 @@ export interface UseAnswerManagementOptions {
   /** Current screen index in the question flow */
   currentScreenIndex: number;
   /** Optional initial answers to pre-populate */
-  initialAnswers?: Record<string, unknown>;
+  initialAnswers?: Record<string, AnswerValue>;
 }
 
 /**

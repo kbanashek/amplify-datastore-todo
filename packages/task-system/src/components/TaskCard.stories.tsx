@@ -2,11 +2,13 @@ import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { View } from "react-native";
 import { TaskCard } from "./TaskCard";
-import { TaskStatus, TaskType } from "@task-types/Task";
+import { Task, TaskStatus, TaskType } from "@task-types/Task";
 
 // Mock data for different task scenarios
 const baseTask = {
   id: "task-1",
+  pk: "TASK#task-1",
+  sk: "TASK#task-1",
   title: "Morning Medication",
   description: "Take your prescribed medication with water",
   createdAt: new Date().toISOString(),
@@ -42,7 +44,7 @@ const meta = {
     },
   },
   decorators: [
-    Story => (
+    (Story: React.ComponentType) => (
       <View style={{ minWidth: 350 }}>
         <Story />
       </View>
@@ -67,7 +69,7 @@ export const OpenTask: Story = {
       startTimeInMillSec: Date.now(),
       endTimeInMillSec: Date.now() + 3600000, // 1 hour from now
     },
-    onPress: task => console.log("Task pressed:", task.title),
+    onPress: (task: Task) => console.log("Task pressed:", task.title),
   },
 };
 
@@ -85,7 +87,7 @@ export const StartedTask: Story = {
       startTimeInMillSec: Date.now() - 600000, // Started 10 min ago
       endTimeInMillSec: Date.now() + 3000000,
     },
-    onPress: task => console.log("Resuming task:", task.title),
+    onPress: (task: Task) => console.log("Resuming task:", task.title),
   },
 };
 
@@ -189,7 +191,7 @@ export const WithDeleteAction: Story = {
       startTimeInMillSec: Date.now(),
       endTimeInMillSec: Date.now() + 3600000,
     },
-    onDelete: id => console.log("Delete task:", id),
+    onDelete: (id: string) => console.log("Delete task:", id),
   },
 };
 

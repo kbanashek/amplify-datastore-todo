@@ -4,7 +4,7 @@ exports[`TasksView Snapshots matches snapshot with error state 1`] = `
 <View
   style={
     {
-      "backgroundColor": "#f5f6fa",
+      "backgroundColor": "AppColors.powderGray",
       "flex": 1,
     }
   }
@@ -13,7 +13,7 @@ exports[`TasksView Snapshots matches snapshot with error state 1`] = `
   <Text
     style={
       {
-        "color": "#e74c3c",
+        "color": "AppColors.errorRed",
         "fontFamily": "Ubuntu-Regular",
         "fontSize": 16,
         "fontWeight": "400",
@@ -46,21 +46,21 @@ exports[`TasksView Snapshots matches snapshot with loading state 1`] = `
 <View
   style={
     {
-      "backgroundColor": "#f5f6fa",
+      "backgroundColor": "AppColors.powderGray",
       "flex": 1,
     }
   }
   testID="tasks-view-loading"
 >
   <ActivityIndicator
-    color="#3498db"
+    color="AppColors.CIBlue"
     size="large"
     testID="tasks-view-loading-spinner"
   />
   <Text
     style={
       {
-        "color": "#57606f",
+        "color": "AppColors.darkGray",
         "fontFamily": "Ubuntu-Regular",
         "fontSize": 16,
         "fontWeight": "400",

@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import React, { useState, useEffect } from "react";
 import { View, Text } from "react-native";
 import { SingleSelectQuestion } from "./SingleSelectQuestion";
-import { QuestionType, QuestionChoice } from "@task-types/Question";
+import { Question, Choice } from "@task-types/ActivityConfig";
 
 /**
  * Wrapper component to use hooks in stories with validation
@@ -11,7 +12,7 @@ import { QuestionType, QuestionChoice } from "@task-types/Question";
 const SingleSelectQuestionWithState: React.FC<{
   text: string;
   required?: boolean;
-  choices: QuestionChoice[];
+  choices: Choice[];
   initialAnswer?: string;
   enableValidation?: boolean;
   showValidationOnMount?: boolean;
@@ -48,9 +49,9 @@ const SingleSelectQuestionWithState: React.FC<{
         question={{
           id: "story-question",
           text,
-          questionType: QuestionType.SINGLE_SELECT,
+          type: "SINGLE_SELECT",
+          friendlyName: "Single Select Question",
           required,
-          screenIndex: 0,
           choices,
         }}
         value={answer || null}
@@ -60,7 +61,7 @@ const SingleSelectQuestionWithState: React.FC<{
       />
       {hasError && (
         <View style={{ marginTop: 4, paddingHorizontal: 4 }}>
-          <Text style={[AppFonts.caption, { color: "#dc2626" }]}>
+          <Text style={[AppFonts.caption, { color: AppColors.errorRed }]}>
             {errors[0]}
           </Text>
         </View>
@@ -95,7 +96,7 @@ const meta = {
     },
   },
   decorators: [
-    Story => (
+    (Story: React.ComponentType) => (
       <View style={{ minWidth: 400, padding: 20 }}>
         <Story />
       </View>
@@ -118,7 +119,7 @@ export const YesNoQuestion: Story = {
       { id: "no", text: "No", value: "no" },
     ],
   },
-  render: args => <SingleSelectQuestionWithState {...args} />,
+  render: (args: any) => <SingleSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -135,7 +136,7 @@ export const PainLevelQuestion: Story = {
       { id: "severe", text: "Severe Pain (7-10)", value: "7-10" },
     ],
   },
-  render: args => <SingleSelectQuestionWithState {...args} />,
+  render: (args: any) => <SingleSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -157,7 +158,7 @@ export const FrequencyQuestion: Story = {
       { id: "daily", text: "Daily", value: "daily" },
     ],
   },
-  render: args => <SingleSelectQuestionWithState {...args} />,
+  render: (args: any) => <SingleSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -175,7 +176,7 @@ export const MoodQuestion: Story = {
       { id: "bad", text: "😢 Bad", value: "bad" },
     ],
   },
-  render: args => <SingleSelectQuestionWithState {...args} />,
+  render: (args: any) => <SingleSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -193,7 +194,7 @@ export const WithSelectedAnswer: Story = {
     ],
     initialAnswer: "moderate",
   },
-  render: args => <SingleSelectQuestionWithState {...args} />,
+  render: (args: any) => <SingleSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -208,7 +209,7 @@ export const OptionalQuestion: Story = {
       { id: "no", text: "No, skip this", value: "no" },
     ],
   },
-  render: args => <SingleSelectQuestionWithState {...args} />,
+  render: (args: any) => <SingleSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -228,7 +229,7 @@ export const ManyOptions: Story = {
       { id: "other", text: "Other Specialist", value: "other" },
     ],
   },
-  render: args => <SingleSelectQuestionWithState {...args} />,
+  render: (args: any) => <SingleSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -245,5 +246,5 @@ export const WithRequiredValidation: Story = {
     enableValidation: true,
     showValidationOnMount: true,
   },
-  render: args => <SingleSelectQuestionWithState {...args} />,
+  render: (args: any) => <SingleSelectQuestionWithState {...args} />,
 };

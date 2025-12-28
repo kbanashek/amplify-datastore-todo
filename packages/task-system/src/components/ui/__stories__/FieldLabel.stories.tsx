@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { View, Text } from "react-native";
-import { FieldLabel } from "./FieldLabel";
+import { FieldLabel } from "../FieldLabel";
 
 const meta = {
   title: "UI/FieldLabel",

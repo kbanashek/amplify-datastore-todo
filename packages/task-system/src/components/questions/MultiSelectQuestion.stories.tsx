@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { AppFonts } from "@constants/AppFonts";
+import { AppColors } from "@constants/AppColors";
 import React, { useState } from "react";
 import { View, Text } from "react-native";
 import { MultiSelectQuestion } from "./MultiSelectQuestion";
-import { QuestionType, QuestionChoice } from "@task-types/Question";
+import { Choice } from "@task-types/ActivityConfig";
 
 /**
  * Wrapper component to use hooks in stories with validation
@@ -11,7 +12,7 @@ import { QuestionType, QuestionChoice } from "@task-types/Question";
 const MultiSelectQuestionWithState: React.FC<{
   text: string;
   required?: boolean;
-  choices: QuestionChoice[];
+  choices: Choice[];
   initialAnswers?: string[];
   enableValidation?: boolean;
   minSelections?: number;
@@ -69,9 +70,9 @@ const MultiSelectQuestionWithState: React.FC<{
         question={{
           id: "story-question",
           text,
-          questionType: QuestionType.MULTI_SELECT,
+          type: "MULTI_SELECT",
+          friendlyName: "Multi Select Question",
           required,
-          screenIndex: 0,
           choices,
         }}
         value={answers}
@@ -81,7 +82,9 @@ const MultiSelectQuestionWithState: React.FC<{
       />
       {enableValidation && error && (
         <View style={{ marginTop: 4, paddingHorizontal: 4 }}>
-          <Text style={[AppFonts.caption, { color: "#dc2626" }]}>{error}</Text>
+          <Text style={[AppFonts.caption, { color: AppColors.errorRed }]}>
+            {error}
+          </Text>
         </View>
       )}
     </View>
@@ -118,7 +121,7 @@ const meta = {
     },
   },
   decorators: [
-    Story => (
+    (Story: React.ComponentType) => (
       <View style={{ minWidth: 400, padding: 20 }}>
         <Story />
       </View>
@@ -145,7 +148,7 @@ export const SymptomsQuestion: Story = {
       { id: "none", text: "None of the above", value: "none" },
     ],
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: any) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -163,7 +166,7 @@ export const MedicationsQuestion: Story = {
       { id: "none", text: "Did not take any medication", value: "none" },
     ],
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: any) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -183,7 +186,7 @@ export const ActivitiesQuestion: Story = {
       { id: "none", text: "No exercise", value: "none" },
     ],
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: any) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -201,7 +204,7 @@ export const WithSelectedAnswers: Story = {
     ],
     initialAnswers: ["headache", "fatigue"],
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: any) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -221,7 +224,7 @@ export const DietaryQuestion: Story = {
       { id: "none", text: "No restrictions", value: "none" },
     ],
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: any) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -244,7 +247,7 @@ export const MedicalHistoryQuestion: Story = {
       { id: "none", text: "None of these", value: "none" },
     ],
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: any) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -262,7 +265,7 @@ export const WithRequiredValidation: Story = {
     ],
     enableValidation: true,
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: any) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -282,7 +285,7 @@ export const WithMinSelectionsValidation: Story = {
     enableValidation: true,
     minSelections: 2,
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: any) => <MultiSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -303,5 +306,5 @@ export const WithMaxSelectionsValidation: Story = {
     enableValidation: true,
     maxSelections: 3,
   },
-  render: args => <MultiSelectQuestionWithState {...args} />,
+  render: (args: any) => <MultiSelectQuestionWithState {...args} />,
 };
