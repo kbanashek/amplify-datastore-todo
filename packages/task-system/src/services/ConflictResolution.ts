@@ -283,7 +283,9 @@ export class ConflictResolution {
       if (!safeRemote) {
         return ensurePkSk(safeLocal, safeRemote);
       }
-      return ensurePkSk({ ...safeRemote, _deleted: true } as any, safeLocal);
+      // Create a properly typed deleted model by spreading remote and setting _deleted
+      const deletedRemote: DataStoreModel = { ...safeRemote, _deleted: true };
+      return ensurePkSk(deletedRemote, safeLocal);
     }
 
     // Otherwise use local delete
