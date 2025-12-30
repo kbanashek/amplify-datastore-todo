@@ -1,6 +1,6 @@
-import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
 import { NavigationMenu } from "@components/NavigationMenu";
+import { fireEvent, render } from "@testing-library/react-native";
+import React from "react";
 
 // Mock useNavigation
 const mockNavigate = jest.fn();
@@ -19,8 +19,8 @@ jest.mock("@hooks/useColorScheme", () => ({
 
 // Mock IconSymbol
 jest.mock("@components/ui/IconSymbol", () => {
-  const React = require("react");
-  const { Text } = require("react-native");
+  const React = jest.requireActual("react");
+  const { Text } = jest.requireActual("react-native");
   return {
     IconSymbol: ({ name }: { name: string }) => (
       <Text testID={`icon-${name}`}>{name}</Text>
@@ -80,9 +80,7 @@ describe("NavigationMenu", () => {
       const { queryByTestId } = render(
         <NavigationMenu visible={false} onClose={mockOnClose} />
       );
-      // Note: In real React Native, Modal exists in tree with visible=false,
-      // but RNTL's Modal mock doesn't render it when visible=false.
-      // This test verifies RNTL's behavior; in actual app, Modal would exist.
+      // When visible is false, Modal component is not rendered in test environment
       expect(queryByTestId("navigation-menu-modal")).toBeNull();
     });
 
