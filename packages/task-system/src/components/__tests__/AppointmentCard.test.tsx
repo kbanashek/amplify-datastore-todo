@@ -171,10 +171,7 @@ describe("AppointmentCard", () => {
 
     it("renders correctly in RTL mode", () => {
       const rtlStyleFn = jest.fn(
-        (style: StyleProp<ViewStyle | TextStyle>): ViewStyle => ({
-          ...(style as ViewStyle),
-          flexDirection: "row-reverse",
-        })
+        (style: StyleProp<ViewStyle | TextStyle>) => style
       );
 
       mockUseRTL.mockReturnValueOnce({
