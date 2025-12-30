@@ -2,264 +2,134 @@
 
 This document contains all Jira story titles generated from the completed work in this repository, organized by epic.
 
+**Total Stories: 55** (consolidated from 179 original stories)
+
 ---
 
 ## OR-26446: [Mobile] Refactor app initialization workflow into service-based architecture with improved observability
 
-- Implement centralized logging service with flexible provider architecture
-- Add LoggingService with support for multiple log providers (Console, Native, Sentry)
-- Implement LogLevel presets (VERBOSE, DEBUG, INFO, WARN, ERROR_ONLY)
-- Add single-line log formatting with inline metadata
-- Implement sequence diagram formatting for initialization logs
-- Integrate react-native-logs for native logging support (adb logcat)
-- Create LoggingProvider and useLogger hook for React components
-- Add service logger helper for package-level logging with fallback
-- Migrate all console.log/warn/error calls to use centralized logging service
-- Update logging format to single-line with inline metadata
-- Add platform identification (iOS, Android, Web) to all logs
-- Move logging service infrastructure to package for self-containment
-- Implement bootstrap workflow with sequential initialization logging
-- Add Amplify initialization to entry.js to ensure configuration before module load
-- Make configureAmplify() idempotent to prevent double configuration
-- Update useAmplifyState and bootstrapTaskSystem to check isConfigured flag
-- Fix duplicate log entries from ConsoleProvider and NativeProvider
-- Migrate all package components and hooks to use centralized logging service
+- Implement centralized logging service with multi-provider architecture (Console, Native, Sentry)
+- Add platform identification and sequential initialization logging across all components
+- Migrate all console logging to centralized LoggingService with proper formatting
+- Implement bootstrap workflow with idempotent Amplify configuration
+- Create LoggingProvider, useLogger hook, and service logger helpers for package-level logging
 - Add comprehensive JSDoc documentation to all services and hooks
 
-**Total Stories: 19**
+**Total Stories: 6**
 
 ---
 
 ## OR-26447: [Mobile] Implement AWS AppSync & DataStore with Realm migration and database creation
 
-- Implement AWS AppSync and DataStore for offline-first synchronization
-- Create GraphQL schema with conflict detection enabled
-- Implement DataStore conflict resolution with Auto Merge strategy
-- Add ModelName constants to replace string literals for DataStore model names
-- Add OperationSource constants for LOCAL/REMOTE_SYNC operation logging
-- Add AWSErrorName constants for AWS error type checking
-- Create comprehensive unit test coverage for all services in task-system package
-- Implement TaskService with CRUD operations and subscriptions
-- Implement ActivityService with DataStore integration
-- Implement QuestionService with DataStore integration
-- Implement DataPointService with DataStore integration
-- Implement TaskAnswerService with DataStore integration
-- Implement TaskHistoryService with DataStore integration
-- Implement TaskResultService with DataStore integration
-- Implement AppointmentService with DataStore integration
-- Add conflict resolution to preserve local status changes (STARTED, INPROGRESS, COMPLETED)
-- Reduce DataStore sync interval from 5 minutes to 1 minute
-- Add Force Sync functionality for clearing local cache and forcing complete resync
-- Implement clearCacheAndResync() utility function for aggressive sync
-- Add initial query in TaskService.subscribeTasks to ensure immediate task loading
-- Fix sync issues across platforms by reverting subscription pattern
-- Harden DataStore conflict resolution to ensure required keys are present
-- Add troubleshooting documentation for Unauthorized errors
-- Add check-api-key.sh script to verify AppSync API key status
-- Enhance API key verification logging in Amplify configuration
-- Improve error logging for DataStore sync errors with detailed API key information
-- Fix TaskAnswer deletion in reset functionality with retry logic
-- Add deleteAllTaskAnswersWithRetry() method with up to 3 retry attempts
+- Implement AWS AppSync and DataStore with offline-first synchronization and GraphQL schema
+- Add type-safe constants for ModelName, OperationSource, and AWSErrorName
+- Implement DataStore services for all models (Task, Activity, Question, DataPoint, TaskAnswer, TaskHistory, TaskResult, Appointment)
+- Implement DataStore conflict resolution with Auto Merge strategy preserving local status changes
+- Optimize DataStore sync with 1-minute intervals, force sync, and initial query pattern
+- Add troubleshooting documentation and check-api-key.sh script for AppSync debugging
+- Implement retry logic for TaskAnswer deletion and sync error handling
+- Create comprehensive unit test coverage for all DataStore services
 
-**Total Stories: 28**
+**Total Stories: 8**
 
 ---
 
 ## OR-26451: [Mobile] Create comprehensive task question component library with dynamic rendering system based on study configuration metadata
 
-- Create base UI library primitives (Button, Card, TextField, LoadingSpinner)
-- Add unit tests for UI primitives
-- Implement DatePicker and DateTimePicker components with shared DateTimeField
-- Create FieldLabel shared UI primitive with unit tests
-- Create NumericInput shared UI primitive with unit tests
-- Create UnitText shared UI primitive with unit tests
-- Implement blood pressure question component with unit tests
-- Implement temperature question component with unit tests
-- Implement pulse/clinical dynamic input question component with unit tests
-- Implement weight/height question component with unit tests
-- Implement horizontal VAS question component with unit tests
-- Implement image capture question component with unit tests
-- Implement SingleSelect question component with unit tests
-- Implement MultiSelect question component with unit tests
-- Implement text question component with unit tests
-- Implement number question component with unit tests
-- Implement date question component with unit tests
-- Refactor question rendering to component map with per-type value transformers
-- Export question flow components from @orion/task-system package root
-- Consolidate question/task components into task-system package
-- Fix unsupported question type rendering failures
-- Add validation support for all question types
-- Implement question validation with translation support
-- Add error message rendering with translation support
-- Fix React Hooks violation by extracting ErrorMessage component from map loop
-- Implement QuestionScreenButtons component
-- Create useQuestionScreenButtons hook for button logic
-- Implement ReviewScreen for question answer review
-- Add QuestionHeader component with RTL support
-- Implement IntroductionScreen as pure presentation component
-- Implement CompletionScreen for task completion
-- Fix task completion status to mark as COMPLETED when questions submitted
-- Fix Begin and Done buttons showing simultaneously
-- Fix introduction and completion screens rendering simultaneously
-- Update question rendering logic to consume LX current activity JSON structure
-- Add support for parsing layouts from POC JSON files
-- Enhance activityParser to match questions from activityGroups to screen elements
-- Add helper functions getScreensFromLayouts and matchQuestionsToScreens
-- Fix task open crash when activityGroups is not an array
-- Fix unsupported question rendering for camelCase types
-- Add translation support for input placeholders in questions
-- Prevent rendering raw uniti18nKey values by mapping units to display labels
+- Create shared UI component library (Button, Card, TextField, LoadingSpinner, FieldLabel, NumericInput, UnitText, DatePicker)
+- Implement clinical question components (Blood Pressure, Temperature, Pulse, Weight/Height, HorizontalVAS)
+- Implement standard question components (SingleSelect, MultiSelect, Text, Number, Date, Image Capture)
+- Implement question validation system with translation and error message support
+- Implement question flow screens (IntroductionScreen, ReviewScreen, CompletionScreen, QuestionHeader, QuestionScreenButtons)
+- Build dynamic question rendering system with component map and value transformers
+- Implement activity parser for LX JSON structure with layout and activityGroups support
+- Consolidate question/task components into @orion/task-system package with proper exports
+- Fix question rendering issues (unsupported types, camelCase types, raw unit keys, screen state conflicts)
+- Add comprehensive unit test coverage for all question components and UI primitives
 
-**Total Stories: 42**
+**Total Stories: 10**
 
 ---
 
 ## OR-26452: Create isolated AWS Amplify environments for each developer
 
-- Create setup-amplify-backend.sh script for complete backend automation
-- Implement fresh mode for clean Amplify setup
-- Implement refresh mode for pulling existing backend configuration
-- Add schema backup and restore functionality
-- Add optional auto-push to AWS with IAM permissions check
-- Create minimal IAM policy for Amplify operations
-- Add check for CloudFormation stack conflicts
-- Create fix-stack.sh script for stuck CloudFormation stacks
-- Create fresh-start.sh for complete Amplify file cleanup
-- Create apply-native-fixes.sh script for post-prebuild fixes
-- Fix iOS build failures caused by duplicate symbols (JKBigInteger/JKBigDecimal)
-- Fix Android app crash with App react context error
-- Fix dependency resolution by bypassing CodeArtifact
-- Update .npmrc to use public npm registry for all scoped packages
-- Add documentation for native build fixes
-- Create version-bump.sh script for automated versioning
-- Add pre-commit hooks for code quality checks (lint, format, circular dependencies)
-- Add pre-push hooks for comprehensive testing
-- Fix pre-commit hook to fail on lint warnings
-- Add tighter yarn checks to pre-commit hook
-- Implement GitHub Actions workflow for running unit tests on PRs
-- Add test coverage reporting to GitHub Actions
-- Add coverage summary generation and PR comment posting
-- Optimize Jest configuration for better memory management
-- Fix expo-doctor dependency version mismatches
-- Update Expo packages to match SDK 53 requirements
-- Fix workspace dependency resolution
+- Create Amplify backend automation scripts (setup, fresh mode, refresh mode, schema backup/restore, auto-push)
+- Implement CloudFormation stack management (conflict detection, fix-stack.sh, fresh-start.sh)
+- Create minimal IAM policy for Amplify operations with permissions documentation
+- Fix native build issues (iOS duplicate symbols, Android app crash, post-prebuild fixes)
+- Fix dependency resolution by bypassing CodeArtifact and using public npm registry
+- Create version-bump.sh script for automated versioning with commit message validation
+- Implement pre-commit hooks for code quality (lint, format, circular dependencies, yarn integrity, TypeScript)
+- Implement pre-push hooks for comprehensive testing with memory optimization
+- Create GitHub Actions workflows for PR checks (unit tests, coverage reporting, PR comments)
+- Fix Expo SDK 53 dependency mismatches and workspace dependency resolution
 
-**Total Stories: 27**
+**Total Stories: 10**
 
 ---
 
 ## OR-26453: [Mobile] Implement rule engine system to evaluate and enforce task and activity rules
 
-- Implement coordinated appointment and task seeding system
-- Add task-appointment relationship linking via anchors field
-- Implement pre-visit, visit-day, and post-visit task categories
-- Add anchor-based task scheduling with anchorDayOffset support
-- Create seed-coordinated-data.ts script
-- Add testing guide for coordinated seeding
-- Create current rule logic documentation
-- Implement fixture generation support for multiple task types
-- Add Dev Options screen to replace Seed screen UI
-- Create useDevOptions hook for seed/sync/delete logic
-- Implement fixture import workflow with pruneNonFixture
-- Add dedupe by pk functionality to collapse cloud duplicates
-- Implement pruneDerivedModels to clear progress data during reseed
-- Add Nuclear reset functionality to delete all task-related data
-- Implement deleteAll methods for TaskAnswer, TaskResult, TaskHistory services
-- Update seed reset flow to clear local DataStore cache/outbox
-- Make All Question Types Test seeding idempotent
-- Add appointment seeding functionality
-- Implement AsyncStorage persistence for seeded appointments
-- Add comprehensive logging for appointment loading and filtering
-- Fix appointment date filtering to properly compare date parts
-- Implement appointment display with timezone awareness
-- Extract timezone abbreviation formatting to utility function
-- Update useGroupedTasks to show STARTED tasks even with expired dates
-- Add regression tests for TabLayout
+- Implement coordinated seeding system for task-appointment relationships with anchor-based scheduling
+- Create seed-coordinated-data.ts script with pre-visit, visit-day, and post-visit task categories
+- Add rule logic documentation and testing guide for coordinated seeding
+- Implement Dev Options screen with useDevOptions hook for seed/sync/delete operations
+- Implement fixture import workflow with pruneNonFixture, dedupe by pk, and pruneDerivedModels
+- Add Nuclear reset functionality with deleteAll methods for all task-related data
+- Implement appointment seeding with AsyncStorage persistence and timezone awareness
+- Fix appointment filtering and display with proper date comparison and timezone formatting
+- Update useGroupedTasks to show STARTED tasks regardless of expiration
+- Add comprehensive logging and regression tests for rule engine functionality
 
-**Total Stories: 25**
+**Total Stories: 10**
 
 ---
 
 ## OR-26455: Implement comprehensive user engagement tracking with AWS Pinpoint and Kinesis Firehose
 
-- Implement temp answer saving via TempAnswerSyncService
-- Add AsyncStorage outbox for offline temp answer storage
-- Implement NetInfo auto-flush for connectivity-based sync
-- Create temp-answer adapter types (TaskSystemGraphQLExecutor, TaskSystemSaveTempAnswersMapper)
-- Wire temp-answer enqueue to Next/Previous/Review navigation boundaries
-- Add dedupe by task.pk for temp answer storage
-- Export temp-answer adapter types from @orion/task-system package
+- Implement TempAnswerSyncService with AsyncStorage outbox for offline temp answer storage
+- Implement NetInfo auto-flush for connectivity-based synchronization
+- Create temp-answer adapter types and export from @orion/task-system package
+- Wire temp-answer enqueue to navigation boundaries with dedupe by task.pk
 
-**Total Stories: 7**
+**Total Stories: 4**
 
 ---
 
 ## OR-26456: [Mobile] Ensure all components support translations and RTL rendering with integration of existing LX translation files
 
-- Implement translation memory layer with bundled seeds
-- Create TranslationMemoryService with AsyncStorage backend
-- Add translation memory documentation
-- Implement translation support for TaskCard component
-- Add translation support for IntroductionScreen
-- Implement translation support for validation messages
-- Create useTranslatedText hook
-- Add seed translation memory entries for dashboard/task-card UI strings (en→es)
-- Refactor due-time header to translate static text without translating dynamic time
-- Fix Spanish/task-card translation updates by removing over-aggressive React.memo
-- Remove package → host coupling for translation
-- Implement RTL support across all components
-- Create useRTL hook for RTL detection and styling
-- Add RTL-aware styling to GlobalHeader
-- Add RTL-aware styling to QuestionHeader
-- Add RTL-aware styling to TaskForm
-- Add RTL-aware styling to NavigationMenu
-- Implement standardized Ubuntu font system across all components
-- Create AppFonts.ts with 11 pre-configured font styles
-- Create fontUtils.ts with platform-aware font resolution
-- Add 12 Ubuntu font files to packages/task-system/assets/fonts/
-- Add comprehensive unit tests for font utilities
-- Create complete font system documentation
-- Migrate 50+ components to use centralized AppFonts system
-- Update AppStyles.ts to use AppFonts for text styles
-- Update Storybook stories to use AppFonts
-- Remove SpaceMono-Regular.ttf font
-- Eliminate all hardcoded fontSize and fontWeight values
-- Implement LanguageSelector component
-- Add language switching functionality
-- Create TranslationTest component for testing translations
+- Implement TranslationMemoryService with AsyncStorage backend and bundled seed translations
+- Add translation support across all components (TaskCard, IntroductionScreen, validation messages, questions)
+- Create useTranslatedText hook and remove package-to-host translation coupling
+- Implement RTL support system with useRTL hook and RTL-aware styling for all components
+- Implement standardized Ubuntu font system with 11 pre-configured styles and platform-aware resolution
+- Migrate 50+ components to use centralized AppFonts system and eliminate hardcoded font values
+- Implement LanguageSelector component with language switching and TranslationTest component
 
-**Total Stories: 31**
+**Total Stories: 7**
 
 ---
 
-## Summary
+## Summary by Epic
 
-| Epic      | Title                                           | Story Count     |
-| --------- | ----------------------------------------------- | --------------- |
-| OR-26446  | Refactor app initialization workflow            | 19              |
-| OR-26447  | Implement AWS AppSync & DataStore               | 28              |
-| OR-26451  | Create comprehensive question component library | 42              |
-| OR-26452  | Create isolated AWS Amplify environments        | 27              |
-| OR-26453  | Implement rule engine system                    | 25              |
-| OR-26455  | Implement user engagement tracking              | 7               |
-| OR-26456  | Ensure translations and RTL support             | 31              |
-| **TOTAL** |                                                 | **179 Stories** |
+| Epic      | Title                                                           | Stories |
+| --------- | --------------------------------------------------------------- | ------- |
+| OR-26446  | Service-based architecture with improved observability          | 6       |
+| OR-26447  | AWS AppSync & DataStore with Realm migration                    | 8       |
+| OR-26451  | Task question component library with dynamic rendering          | 10      |
+| OR-26452  | Isolated AWS Amplify environments for developers                | 10      |
+| OR-26453  | Rule engine system for task and activity rules                  | 10      |
+| OR-26455  | User engagement tracking with AWS Pinpoint and Kinesis Firehose | 4       |
+| OR-26456  | Translation and RTL rendering support                           | 7       |
+| **Total** |                                                                 | **55**  |
 
 ---
 
-## Automation
+## Notes
 
-To create these stories in Jira, use the automation script:
-
-```bash
-# Dry run (preview what would be created)
-yarn ts-node scripts/create-jira-stories.ts --dry-run
-
-# Create all stories
-yarn ts-node scripts/create-jira-stories.ts
-
-# Create stories for specific epic only
-yarn ts-node scripts/create-jira-stories.ts --epic OR-26446
-```
-
-See `scripts/create-jira-stories.ts` for detailed usage instructions.
+- Stories were consolidated from 179 original stories to 55 stories (69% reduction)
+- Related incremental work was grouped into comprehensive stories
+- Service implementations were grouped by model category
+- Component implementations were grouped by functional area
+- Testing stories were integrated into their respective feature stories
+- Bug fixes and improvements were consolidated into their feature areas
