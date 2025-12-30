@@ -1,0 +1,264 @@
+{
+  "OR-26446": {
+    "epicKey": "OR-26446",
+    "epicTitle": "[Mobile] Refactor app initialization workflow into service-based architecture with improved observability",
+    "stories": [
+      {
+        "title": "Implement centralized logging service with multi-provider architecture",
+        "description": "Create a centralized logging service that supports multiple log providers (Console, Native, Sentry) with flexible configuration.\n\nRequirements:\n- Design LoggingService class with provider-based architecture\n- Implement ConsoleProvider for web and development logging\n- Implement NativeProvider for react-native-logs integration (adb logcat support)\n- Support future Sentry provider for production error tracking\n- Add LogLevel presets: VERBOSE, DEBUG, INFO, WARN, ERROR_ONLY\n- Implement single-line log formatting with inline metadata\n- Support sequence diagram formatting for initialization flow visualization\n\nAcceptance Criteria:\n- Service can be configured with multiple providers simultaneously\n- Log level can be set globally or per-provider\n- Logs include timestamp, service name, and platform identification\n- Native logs are accessible via adb logcat on Android"
+      },
+      {
+        "title": "Add platform identification and sequential initialization logging",
+        "description": "Implement platform-aware logging that identifies iOS, Android, or Web context and add sequential step numbering for initialization flows.\n\nRequirements:\n- Detect current platform (iOS/Android/Web) at runtime\n- Add platform prefix to all log messages: [iOS], [Android], or [Web]\n- Implement sequential step logging: [INIT-1], [INIT-2], etc. for initialization\n- Implement data flow step logging: [DATA-1], [DATA-2], etc. for data loading\n- Add icon conventions for log types (🚀 start, ✅ success, ❌ error, ☁️ AWS operations, etc.)\n- Create platformLogger utility for consistent formatting\n\nAcceptance Criteria:\n- All logs clearly identify which platform they originate from\n- Initialization sequence is traceable through sequential numbering\n- Icon usage is consistent across all services\n- Logs are human-readable and easy to filter"
+      },
+      {
+        "title": "Migrate all console logging to centralized LoggingService",
+        "description": "Replace all console.log, console.warn, and console.error calls throughout the codebase with centralized logging service calls.\n\nRequirements:\n- Audit codebase for all console.* calls\n- Replace with appropriate logging service calls\n- Use logWithPlatform and logErrorWithPlatform utilities\n- Ensure error messages are extracted properly (not full stack traces)\n- Maintain single-line formatting with inline metadata\n- Update all components, hooks, services, and utilities\n\nAcceptance Criteria:\n- No direct console.* calls remain in production code\n- All logging goes through centralized service\n- Log format is consistent across entire codebase\n- Error logging properly extracts messages without full objects"
+      },
+      {
+        "title": "Implement bootstrap workflow with idempotent Amplify configuration",
+        "description": "Create a sequential bootstrap workflow that initializes the application with proper Amplify configuration and prevents double-initialization.\n\nRequirements:\n- Move Amplify initialization to entry.js to ensure configuration before module load\n- Implement configureAmplify() as idempotent function with isConfigured flag\n- Create bootstrapTaskSystem() function with sequential logging\n- Update useAmplifyState hook to check configuration status\n- Implement initialization sequence logging: INIT-1 through INIT-7\n- Add data loading sequence logging: DATA-1, DATA-2, etc.\n- Fix duplicate log entries from multiple providers\n\nAcceptance Criteria:\n- Amplify configuration happens exactly once\n- Bootstrap sequence is clearly traceable in logs\n- No race conditions in initialization\n- All services initialized in correct order"
+      },
+      {
+        "title": "Create LoggingProvider and hooks for React integration",
+        "description": "Implement React context and hooks for logging integration in components and create service logger helpers for non-React code.\n\nRequirements:\n- Create LoggingProvider context for React components\n- Implement useLogger hook for component-level logging\n- Create getServiceLogger() for non-React code (services, utilities)\n- Support logger.createLogger(serviceName) for service-specific loggers\n- Implement fallback to console if logging service unavailable\n- Move logging infrastructure to @orion/task-system package for self-containment\n\nAcceptance Criteria:\n- React components can use useLogger hook\n- Services can use getServiceLogger() function\n- Service-specific loggers automatically include service name\n- Graceful fallback if logging service not initialized\n- Package is self-contained with logging infrastructure"
+      },
+      {
+        "title": "Add comprehensive JSDoc documentation to services and hooks",
+        "description": "Ensure all services, hooks, and core infrastructure have proper JSDoc documentation for maintainability.\n\nRequirements:\n- Add JSDoc to LoggingService and all providers\n- Document all public methods with @param and @returns\n- Add usage examples with @example tags\n- Document LoggingProvider and useLogger hook\n- Document service logger utilities\n- Include inline comments for complex logic\n\nAcceptance Criteria:\n- All public APIs have JSDoc comments\n- Complex functions have usage examples\n- Documentation explains WHY decisions were made\n- Docstring coverage check passes for all modified files"
+      }
+    ]
+  },
+  "OR-26447": {
+    "epicKey": "OR-26447",
+    "epicTitle": "[Mobile] Implement AWS AppSync & DataStore with Realm migration and database creation",
+    "stories": [
+      {
+        "title": "Implement AWS AppSync and DataStore with offline-first synchronization",
+        "description": "Set up AWS AppSync GraphQL API and DataStore for offline-first data persistence with automatic cloud sync.\n\nRequirements:\n- Configure AWS AppSync with GraphQL schema\n- Enable conflict detection on all data models\n- Implement DataStore with automatic sync to AWS\n- Configure sync expressions for data filtering\n- Set up authentication and authorization\n- Implement offline-first architecture with local-first writes\n- Configure sync interval (start with 5 minutes, optimize to 1 minute)\n\nAcceptance Criteria:\n- DataStore syncs automatically when online\n- Offline changes are queued and synced when connection restored\n- Conflict detection works correctly\n- GraphQL API accessible from mobile clients\n- Data persists locally when offline"
+      },
+      {
+        "title": "Add type-safe constants for DataStore operations",
+        "description": "Create TypeScript constants for model names, operation sources, and AWS error types to eliminate string literals and improve type safety.\n\nRequirements:\n- Create ModelName constants for all data models (Task, Activity, Question, etc.)\n- Define ModelNameType for type-safe model name variables\n- Create OperationSource constants (LOCAL, REMOTE_SYNC)\n- Create AWSErrorName constants for common AWS error types\n- Replace all string literal model name comparisons with constants\n- Update conflict resolution to use constants\n\nAcceptance Criteria:\n- No string literals used for model names in code\n- TypeScript enforces correct model name usage\n- Operation source clearly distinguished in logs\n- AWS errors handled with type-safe constants\n- ESLint rule prevents string literal usage (if added)"
+      },
+      {
+        "title": "Implement DataStore services for all data models",
+        "description": "Create service classes for all data models providing CRUD operations and real-time subscriptions.\n\nRequirements:\n- Implement TaskService with CRUD and subscriptions\n- Implement ActivityService with DataStore integration\n- Implement QuestionService with DataStore integration\n- Implement DataPointService with DataStore integration\n- Implement TaskAnswerService with CRUD and bulk delete\n- Implement TaskHistoryService with DataStore integration\n- Implement TaskResultService with DataStore integration\n- Implement AppointmentService with DataStore integration\n- Add comprehensive error handling and logging\n- Include retry logic for critical operations\n\nAcceptance Criteria:\n- All models have corresponding service classes\n- Services provide create, read, update, delete operations\n- Real-time subscriptions work for data changes\n- Error handling includes retry logic\n- Services use centralized logging"
+      },
+      {
+        "title": "Implement DataStore conflict resolution strategy",
+        "description": "Configure and implement conflict resolution for DataStore with Auto Merge strategy that preserves important local changes.\n\nRequirements:\n- Implement Auto Merge as default resolution strategy\n- Preserve local status changes (STARTED, INPROGRESS, COMPLETED)\n- Prevent remote changes from overwriting user progress\n- Harden resolution to ensure required keys are present\n- Log all conflicts with source and resolution details\n- Handle conflicts at model level with custom logic\n\nAcceptance Criteria:\n- Local task status changes never overwritten by remote sync\n- User progress preserved during conflicts\n- All conflicts logged with clear resolution outcome\n- Required fields validated before applying resolution\n- Conflict resolution strategy documented"
+      },
+      {
+        "title": "Optimize DataStore synchronization performance",
+        "description": "Implement optimizations for DataStore sync including faster intervals, force sync capability, and improved subscription patterns.\n\nRequirements:\n- Reduce sync interval from 5 minutes to 1 minute for faster updates\n- Implement Force Sync button for manual complete resync\n- Create clearCacheAndResync() utility for aggressive sync\n- Add initial query in TaskService.subscribeTasks for immediate data\n- Fix subscription pattern for cross-platform compatibility\n- Implement proper cleanup on subscription unmount\n\nAcceptance Criteria:\n- Data syncs every 1 minute when online\n- Force Sync clears local cache and resyncs from cloud\n- Tasks load immediately on app start (not waiting for subscription)\n- Subscriptions work correctly on iOS, Android, and Web\n- No memory leaks from subscriptions"
+      },
+      {
+        "title": "Add DataStore troubleshooting tools and documentation",
+        "description": "Create debugging tools and documentation for common DataStore issues, especially authentication and API key problems.\n\nRequirements:\n- Create check-api-key.sh script to verify AppSync API key status\n- Enhance API key verification logging in Amplify configuration\n- Add detailed error logging for DataStore sync failures\n- Create troubleshooting guide for Unauthorized errors\n- Document common sync issues and solutions\n- Add logging for cloud sync status indicators\n\nAcceptance Criteria:\n- API key status can be verified with shell script\n- Sync errors include detailed API key information\n- Troubleshooting guide covers common issues\n- Logs clearly indicate whether data is synced or local-only\n- Developers can diagnose sync issues quickly"
+      },
+      {
+        "title": "Implement retry logic for critical DataStore operations",
+        "description": "Add retry logic with exponential backoff for critical DataStore operations that may fail transiently.\n\nRequirements:\n- Implement deleteAllTaskAnswersWithRetry() with up to 3 attempts\n- Add exponential backoff between retry attempts\n- Log each retry attempt with failure reason\n- Handle TaskAnswer deletion edge cases\n- Implement general retry utility for reuse\n- Add timeout limits to prevent infinite retries\n\nAcceptance Criteria:\n- Critical operations retry automatically on failure\n- Retry attempts logged clearly\n- Exponential backoff prevents API throttling\n- Operations eventually fail with clear error after max retries\n- Retry logic reusable for other operations"
+      },
+      {
+        "title": "Create comprehensive unit test coverage for DataStore services",
+        "description": "Implement comprehensive unit tests for all DataStore services covering CRUD operations, subscriptions, and error cases.\n\nRequirements:\n- Test all CRUD operations for each service\n- Test subscription creation and cleanup\n- Test conflict resolution scenarios\n- Test error handling and retry logic\n- Mock DataStore for isolated testing\n- Test edge cases (empty results, null values, invalid data)\n- Achieve >80% coverage for all services\n\nAcceptance Criteria:\n- All service methods have unit tests\n- Subscription lifecycle tested (create, update, cleanup)\n- Error scenarios covered (network errors, validation errors)\n- Tests run in isolation with mocked DataStore\n- Coverage reports show >80% for all services"
+      }
+    ]
+  },
+  "OR-26451": {
+    "epicKey": "OR-26451",
+    "epicTitle": "[Mobile] Create comprehensive task question component library with dynamic rendering system based on study configuration metadata",
+    "stories": [
+      {
+        "title": "Create shared UI component library primitives",
+        "description": "Build foundational UI components that will be reused across the question system and app.\n\nRequirements:\n- Implement Button component with variants (primary, secondary, outline, ghost)\n- Create Card component with shadow and border radius\n- Implement TextField component with validation styling\n- Create LoadingSpinner with configurable size and color\n- Implement FieldLabel component with required indicator\n- Create NumericInput component with error state styling\n- Implement UnitText component for measurement unit display\n- Create DatePicker and DateTimePicker components sharing DateTimeField base\n- Add comprehensive unit tests for all primitives\n- Support RTL layouts in all components\n\nAcceptance Criteria:\n- All components follow consistent design system\n- Components are fully tested with >80% coverage\n- RTL support works correctly\n- Components accept standard React Native props\n- Error states render correctly"
+      },
+      {
+        "title": "Implement clinical question components",
+        "description": "Create specialized question components for clinical measurements commonly used in healthcare studies.\n\nRequirements:\n- Implement BloodPressureQuestion with systolic/diastolic inputs\n- Create TemperatureQuestion with Fahrenheit/Celsius support\n- Implement ClinicalDynamicInputQuestion for pulse and similar metrics\n- Create WeightHeightQuestion with unit conversion\n- Implement HorizontalVASQuestion for visual analog scale\n- Add validation for medical value ranges\n- Include unit selection and conversion\n- Add comprehensive unit tests for each component\n\nAcceptance Criteria:\n- Each component validates appropriate medical ranges\n- Unit conversion works correctly\n- Components handle both metric and imperial units\n- Error messages display for invalid inputs\n- All components have >80% test coverage"
+      },
+      {
+        "title": "Implement standard question components",
+        "description": "Create general-purpose question components for common question types used in surveys and forms.\n\nRequirements:\n- Implement SingleSelectQuestion with radio button UI\n- Create MultiSelectQuestion with checkbox UI\n- Implement TextQuestion for short and long text responses\n- Create NumberQuestion with numeric keyboard\n- Implement DateQuestion for date selection\n- Create ImageCaptureQuestion for photo capture\n- Support translation for all text labels\n- Add comprehensive unit tests for each component\n\nAcceptance Criteria:\n- All components support translation system\n- Selection states render correctly\n- Image capture works on all platforms\n- Number input shows numeric keyboard\n- All components have >80% test coverage"
+      },
+      {
+        "title": "Implement question validation system",
+        "description": "Create a comprehensive validation system for questions with translation support and clear error messaging.\n\nRequirements:\n- Implement required field validation\n- Add range validation for numeric inputs\n- Create pattern validation for text inputs\n- Implement custom validation rules\n- Support validation error messages with translation\n- Display errors inline below question\n- Show validation state on blur and submit\n- Prevent submission with validation errors\n\nAcceptance Criteria:\n- All validation types work correctly\n- Error messages translated properly\n- Validation happens at appropriate times\n- Error display is user-friendly\n- Submit blocked until all validations pass"
+      },
+      {
+        "title": "Implement question flow screens",
+        "description": "Create the screen components that manage question flow including introduction, review, completion, and navigation.\n\nRequirements:\n- Implement IntroductionScreen showing task overview\n- Create ReviewScreen for answer review before submission\n- Implement CompletionScreen showing success message\n- Create QuestionHeader with title and instructions\n- Implement QuestionScreenButtons with Next/Previous/Review logic\n- Add RTL support to all flow screens\n- Create useQuestionScreenButtons hook for button logic\n- Handle screen state transitions correctly\n\nAcceptance Criteria:\n- Flow screens guide user through question sequence\n- Review screen shows all answers before submission\n- Navigation buttons enable/disable appropriately\n- RTL layouts work correctly\n- Screen transitions are smooth"
+      },
+      {
+        "title": "Build dynamic question rendering system",
+        "description": "Create a component map system that dynamically renders appropriate question components based on question type configuration.\n\nRequirements:\n- Create QuestionRenderer component with type-to-component mapping\n- Implement value transformers for each question type\n- Handle unsupported question types gracefully\n- Support camelCase and snake_case question type names\n- Implement error boundaries for component failures\n- Log rendering errors with question details\n- Extract ErrorMessage component to avoid React hooks violations\n\nAcceptance Criteria:\n- Correct component renders for each question type\n- Unsupported types show fallback UI\n- Type name variations handled correctly\n- Rendering errors logged clearly\n- No React hooks violations in rendering loop"
+      },
+      {
+        "title": "Implement activity parser for LX JSON structure",
+        "description": "Create parser to convert LX activity JSON structure into renderable question screens with proper layout.\n\nRequirements:\n- Parse LX activity JSON with layouts and activityGroups\n- Implement getScreensFromLayouts helper function\n- Create matchQuestionsToScreens helper for question matching\n- Handle POC JSON file format differences\n- Match questions from activityGroups to screen elements\n- Handle missing or invalid activityGroups gracefully\n- Support multiple question formats\n\nAcceptance Criteria:\n- LX JSON parses into screen structure\n- Questions match correctly to screens\n- Parser handles missing data gracefully\n- App doesn't crash with invalid JSON\n- Parser documented with examples"
+      },
+      {
+        "title": "Consolidate question components into @orion/task-system package",
+        "description": "Move all question-related components into the task-system package and set up proper exports for package consumers.\n\nRequirements:\n- Move all question components to packages/task-system/src/components/questions/\n- Move UI primitives to packages/task-system/src/components/ui/\n- Export question flow components from package root\n- Update import paths throughout codebase\n- Ensure package is self-contained\n- Update package.json exports\n\nAcceptance Criteria:\n- All components accessible from @orion/task-system\n- Import paths use package imports not relative paths\n- Package builds successfully\n- No circular dependencies\n- Consuming app can import all public components"
+      },
+      {
+        "title": "Fix question rendering edge cases and bugs",
+        "description": "Address various edge cases and bugs discovered during question rendering implementation and testing.\n\nRequirements:\n- Fix unsupported question type rendering failures\n- Handle camelCase question type names correctly\n- Fix Begin and Done buttons showing simultaneously\n- Fix introduction and completion screens rendering together\n- Prevent raw unit18nKey values from displaying\n- Map unit keys to proper display labels\n- Add translation support for input placeholders\n- Fix task completion status (mark COMPLETED when submitted)\n\nAcceptance Criteria:\n- No crashes on unsupported question types\n- Button visibility logic works correctly\n- Only appropriate screen shows at each step\n- Unit labels display properly translated\n- Task status updates correctly on completion\n- All edge cases handled gracefully"
+      },
+      {
+        "title": "Add comprehensive unit test coverage for questions",
+        "description": "Create thorough unit tests for all question components and UI primitives covering rendering, interactions, and edge cases.\n\nRequirements:\n- Test rendering for all question components\n- Test user interactions (selections, input, navigation)\n- Test validation behavior\n- Test error states\n- Test translation integration\n- Test RTL rendering\n- Test edge cases (empty data, invalid values)\n- Achieve >80% coverage for all components\n\nAcceptance Criteria:\n- All components have unit tests\n- User interactions tested\n- Validation scenarios covered\n- Edge cases handled\n- Coverage >80% for all question components"
+      }
+    ]
+  },
+  "OR-26452": {
+    "epicKey": "OR-26452",
+    "epicTitle": "Create isolated AWS Amplify environments for each developer",
+    "stories": [
+      {
+        "title": "Create Amplify backend automation scripts",
+        "description": "Build comprehensive automation scripts for Amplify backend setup supporting fresh installs, environment refresh, and schema management.\n\nRequirements:\n- Create setup-amplify-backend.sh master automation script\n- Implement fresh mode for clean Amplify setup from scratch\n- Implement refresh mode for pulling existing backend configuration\n- Add schema backup functionality before destructive operations\n- Implement schema restore for recovery\n- Add optional auto-push to AWS with IAM permissions check\n- Support environment variable configuration\n- Add interactive prompts for safety\n\nAcceptance Criteria:\n- Fresh mode creates new isolated backend\n- Refresh mode pulls existing configuration\n- Schema backup/restore works correctly\n- Script checks IAM permissions before AWS operations\n- Documentation explains all modes\n- Safe error handling prevents data loss"
+      },
+      {
+        "title": "Implement CloudFormation stack management tools",
+        "description": "Create tools to detect and fix CloudFormation stack issues that can block Amplify operations.\n\nRequirements:\n- Add CloudFormation stack conflict detection\n- Create fix-stack.sh script for stuck stacks\n- Implement fresh-start.sh for complete Amplify file cleanup\n- Add stack status checking\n- Implement rollback handling\n- Add logging for all stack operations\n\nAcceptance Criteria:\n- Stuck stacks can be detected automatically\n- fix-stack.sh resolves common stack issues\n- fresh-start.sh removes all Amplify configuration safely\n- Stack operations logged clearly\n- Scripts handle errors gracefully"
+      },
+      {
+        "title": "Create minimal IAM policy documentation",
+        "description": "Document the minimal IAM permissions required for Amplify operations to help developers set up AWS access correctly.\n\nRequirements:\n- Document required CloudFormation permissions\n- List required AppSync permissions\n- Document S3 permissions for Amplify artifacts\n- List required IAM permissions for role creation\n- Create minimal-policy-final.json template\n- Add troubleshooting guide for permission errors\n\nAcceptance Criteria:\n- IAM policy includes all required permissions\n- Policy follows least-privilege principle\n- Documentation explains each permission\n- Developers can successfully set up backends with policy\n- Permission errors have clear troubleshooting steps"
+      },
+      {
+        "title": "Fix native build issues across iOS and Android",
+        "description": "Resolve platform-specific build failures including duplicate symbols, crashes, and configuration issues.\n\nRequirements:\n- Fix iOS duplicate symbol errors (JKBigInteger/JKBigDecimal)\n- Resolve Android App react context crash\n- Create apply-native-fixes.sh for post-prebuild fixes\n- Update Podfile with conflict resolution\n- Fix Android gradle configuration\n- Add documentation for native build fixes\n\nAcceptance Criteria:\n- iOS builds successfully without duplicate symbols\n- Android app launches without crashes\n- apply-native-fixes.sh automates post-prebuild steps\n- Native build fixes documented in DOCS/\n- Fixes work across Expo prebuild regenerations"
+      },
+      {
+        "title": "Fix dependency resolution and npm registry configuration",
+        "description": "Resolve dependency resolution issues by bypassing CodeArtifact and configuring public npm registry usage.\n\nRequirements:\n- Update .npmrc to use public npm registry for all scoped packages\n- Remove CodeArtifact authentication requirements\n- Fix workspace dependency resolution\n- Update package.json with correct dependency versions\n- Ensure CI/CD works without CodeArtifact credentials\n\nAcceptance Criteria:\n- Dependencies install without CodeArtifact access\n- Workspace dependencies resolve correctly\n- CI/CD builds succeed\n- No authentication failures during install\n- .npmrc configuration documented"
+      },
+      {
+        "title": "Create version management and validation scripts",
+        "description": "Implement automated version bumping with commit message validation and changelog maintenance.\n\nRequirements:\n- Create version-bump.sh script for semantic versioning\n- Implement commit message validation (require meaningful messages)\n- Add automatic CHANGELOG.md updates\n- Support major, minor, and patch version bumps\n- Add git tag creation for versions\n- Validate version bump before commit\n\nAcceptance Criteria:\n- version-bump.sh updates package.json correctly\n- Empty/generic commit messages rejected\n- CHANGELOG.md updated automatically\n- Git tags created for releases\n- Script validates version format"
+      },
+      {
+        "title": "Implement pre-commit hooks for code quality",
+        "description": "Set up comprehensive pre-commit hooks that ensure code quality before commits are created.\n\nRequirements:\n- Implement yarn integrity check in pre-commit\n- Add yarn lockfile synchronization check\n- Run ESLint with no warnings allowed\n- Run Prettier format check\n- Add circular dependency detection with madge\n- Run TypeScript type checking\n- Add docstring coverage check\n- Configure all checks to fail commit on issues\n\nAcceptance Criteria:\n- Commit blocked if yarn integrity fails\n- Commit blocked on lint warnings or errors\n- Commit blocked if files unformatted\n- Commit blocked on circular dependencies\n- Commit blocked on TypeScript errors\n- All checks run efficiently (<30 seconds)"
+      },
+      {
+        "title": "Implement pre-push hooks with comprehensive testing",
+        "description": "Create pre-push hooks that run full test suite with memory optimization to catch issues before push.\n\nRequirements:\n- Run full test suite in pre-push hook\n- Optimize Jest memory usage with NODE_OPTIONS\n- Block push if tests fail\n- Run tests with --watchAll=false for CI mode\n- Include test timeout handling\n- Add --passWithNoTests for missing test files\n\nAcceptance Criteria:\n- Push blocked if any tests fail\n- Memory optimizations prevent out-of-memory errors\n- Test execution is reasonably fast\n- Hook can be bypassed with --no-verify if needed\n- Test output clearly shows failures"
+      },
+      {
+        "title": "Create GitHub Actions workflows for PR validation",
+        "description": "Implement CI/CD workflows that automatically validate pull requests with tests, coverage, and quality checks.\n\nRequirements:\n- Create pr-checks.yml workflow for PR validation\n- Implement separate jobs for lint and unit tests\n- Add test coverage reporting\n- Generate coverage summary and post to PR comments\n- Add test-coverage.yml workflow for push events\n- Configure AWS CodeArtifact authentication with fallback\n- Add coverage upload to Codecov\n\nAcceptance Criteria:\n- PR checks run automatically on PR creation\n- Lint and tests run in parallel\n- Coverage reports uploaded to Codecov\n- Coverage summary posted as PR comment\n- Workflows fail gracefully if CodeArtifact unavailable\n- Badge shows current coverage in README"
+      },
+      {
+        "title": "Fix Expo SDK dependency mismatches",
+        "description": "Resolve dependency version mismatches identified by expo-doctor and update packages to match SDK requirements.\n\nRequirements:\n- Run expo-doctor to identify mismatches\n- Update Expo packages to match SDK 53 requirements\n- Fix workspace dependency resolution conflicts\n- Update peer dependencies\n- Verify no version conflicts remain\n- Document SDK version requirements\n\nAcceptance Criteria:\n- expo-doctor shows no errors\n- All Expo packages match SDK version\n- Workspace dependencies resolve correctly\n- App builds successfully on all platforms\n- SDK version documented in README"
+      }
+    ]
+  },
+  "OR-26453": {
+    "epicKey": "OR-26453",
+    "epicTitle": "[Mobile] Implement rule engine system to evaluate and enforce task and activity rules",
+    "stories": [
+      {
+        "title": "Implement coordinated seeding system for task-appointment relationships",
+        "description": "Create a seeding system that generates related tasks and appointments with proper anchor-based scheduling for testing study visits.\n\nRequirements:\n- Design task-appointment relationship model using anchors field\n- Implement anchor-based task scheduling with anchorDayOffset\n- Support pre-visit, visit-day, and post-visit task categories\n- Calculate task dates relative to appointment dates\n- Handle multiple appointments with different anchor dates\n- Support timezone-aware scheduling\n\nAcceptance Criteria:\n- Tasks correctly linked to appointments via anchors\n- Task dates calculated relative to appointment dates\n- Pre-visit tasks show before appointment\n- Visit-day tasks show on appointment date\n- Post-visit tasks show after appointment\n- Timezone handling works correctly"
+      },
+      {
+        "title": "Create seed-coordinated-data.ts script",
+        "description": "Build comprehensive seeding script that generates coordinated test data for development and testing.\n\nRequirements:\n- Implement seed-coordinated-data.ts script\n- Generate sample appointments with realistic dates\n- Create related tasks for each appointment\n- Support idempotent seeding (can run multiple times safely)\n- Add logging for seeded data\n- Include data cleanup before seeding\n\nAcceptance Criteria:\n- Script generates realistic test data\n- Data includes proper task-appointment relationships\n- Running multiple times doesn't create duplicates\n- Script logs what data was created\n- Data suitable for manual testing"
+      },
+      {
+        "title": "Add rule logic documentation and testing guide",
+        "description": "Create comprehensive documentation explaining the rule engine logic and how to test coordinated seeding scenarios.\n\nRequirements:\n- Document current rule logic for task visibility\n- Explain anchor-based scheduling rules\n- Document visit type categories and their rules\n- Create testing guide for coordinated seeding\n- Add examples of different scheduling scenarios\n- Include troubleshooting section\n\nAcceptance Criteria:\n- Rule logic clearly documented\n- Testing guide includes step-by-step instructions\n- Examples cover common scenarios\n- Documentation in DOCS/features/\n- Developers can understand and test rules"
+      },
+      {
+        "title": "Implement Dev Options screen with seed/sync/delete operations",
+        "description": "Create a development tools screen that replaces the old Seed screen with more powerful data management capabilities.\n\nRequirements:\n- Create Dev Options screen component\n- Implement useDevOptions hook for logic\n- Add buttons for seed, sync, and delete operations\n- Show loading and success/error states\n- Implement All Question Types Test seeding\n- Add appointment seeding functionality\n- Include Nuclear reset (delete all data)\n\nAcceptance Criteria:\n- Dev Options screen accessible in app\n- Seed creates test data successfully\n- Sync forces DataStore resync\n- Delete operations clear data correctly\n- UI shows operation progress\n- Nuclear reset clears everything"
+      },
+      {
+        "title": "Implement fixture import workflow with data management",
+        "description": "Create a sophisticated fixture import system that can prune old data, deduplicate, and clear derived models.\n\nRequirements:\n- Implement pruneNonFixture functionality to remove old seeded data\n- Add dedupe by pk to collapse cloud duplicates\n- Implement pruneDerivedModels to clear progress data\n- Support fixture format with pk/sk fields\n- Handle fixture validation\n- Add logging for all data operations\n\nAcceptance Criteria:\n- Old fixture data removed before new seed\n- Duplicate entries collapsed correctly\n- Derived models (answers, results, history) cleared\n- Fixture validation prevents bad data\n- All operations logged clearly"
+      },
+      {
+        "title": "Add Nuclear reset functionality with comprehensive delete methods",
+        "description": "Implement complete data deletion capability for testing that removes all task-related data from DataStore.\n\nRequirements:\n- Implement deleteAll methods for TaskAnswer service\n- Implement deleteAll methods for TaskResult service\n- Implement deleteAll methods for TaskHistory service\n- Clear local DataStore cache and outbox\n- Add confirmation dialog before nuclear reset\n- Log all deletion operations\n\nAcceptance Criteria:\n- Nuclear reset removes all task data\n- DataStore cache cleared\n- Outbox queued operations cleared\n- Confirmation prevents accidental deletion\n- Reset completes even with large datasets\n- Deletion operations logged"
+      },
+      {
+        "title": "Implement appointment seeding with timezone awareness",
+        "description": "Create appointment seeding functionality with proper timezone handling and date filtering.\n\nRequirements:\n- Generate sample appointments with realistic dates\n- Implement AsyncStorage persistence for seeded appointments\n- Add timezone-aware date handling\n- Implement appointment date filtering (show only relevant dates)\n- Extract timezone abbreviation formatting to utility function\n- Add comprehensive logging for appointment operations\n\nAcceptance Criteria:\n- Appointments persist across app restarts\n- Timezone displays correctly (e.g., \"EST\", \"PST\")\n- Date filtering shows appropriate appointments\n- Past appointments don't show for future tasks\n- Timezone utility reusable for other features"
+      },
+      {
+        "title": "Fix appointment filtering and display logic",
+        "description": "Resolve issues with appointment date filtering and timezone display to ensure correct appointment visibility.\n\nRequirements:\n- Fix date filtering to properly compare date parts (not time)\n- Implement timezone abbreviation extraction\n- Handle edge cases (midnight boundaries, DST transitions)\n- Update useGroupedTasks to show STARTED tasks regardless of expiration\n- Add logging for appointment loading and filtering\n\nAcceptance Criteria:\n- Appointments filter correctly by date\n- STARTED tasks visible even past appointment date\n- Timezone abbreviations display correctly\n- DST transitions handled correctly\n- Filtering logic documented"
+      },
+      {
+        "title": "Update task visibility rules for started tasks",
+        "description": "Modify task visibility logic to ensure tasks that users have started remain visible even after their scheduled date passes.\n\nRequirements:\n- Update useGroupedTasks hook logic\n- Show STARTED tasks even with expired dates\n- Maintain other visibility rules for non-started tasks\n- Add unit tests for visibility logic\n- Document visibility rule changes\n\nAcceptance Criteria:\n- STARTED tasks always visible\n- Other tasks follow normal date rules\n- Visibility logic tested\n- No regression in other visibility scenarios\n- Rule change documented"
+      },
+      {
+        "title": "Add regression tests for rule engine functionality",
+        "description": "Create comprehensive test suite for rule engine to prevent regressions and validate complex scheduling logic.\n\nRequirements:\n- Add regression tests for TabLayout component\n- Test anchor-based scheduling logic\n- Test task visibility rules\n- Test appointment filtering\n- Test date calculations with timezone\n- Test edge cases (boundary dates, DST, etc.)\n\nAcceptance Criteria:\n- Rule engine logic has test coverage\n- Scheduling calculations tested\n- Visibility rules tested\n- Edge cases covered\n- Tests prevent future regressions"
+      }
+    ]
+  },
+  "OR-26455": {
+    "epicKey": "OR-26455",
+    "epicTitle": "Implement comprehensive user engagement tracking with AWS Pinpoint and Kinesis Firehose",
+    "stories": [
+      {
+        "title": "Implement TempAnswerSyncService with offline storage",
+        "description": "Create a service that saves temporary answers locally with AsyncStorage for offline support and syncs to backend when online.\n\nRequirements:\n- Implement TempAnswerSyncService class\n- Add AsyncStorage outbox for offline temp answer storage\n- Support enqueue, flush, and retry operations\n- Handle network failures gracefully\n- Implement dedupe by task.pk to prevent duplicates\n- Add logging for all sync operations\n\nAcceptance Criteria:\n- Temp answers saved locally when offline\n- Answers sync automatically when online\n- No duplicate submissions\n- Failed syncs retry automatically\n- Service logs all operations clearly"
+      },
+      {
+        "title": "Implement NetInfo auto-flush for connectivity-based sync",
+        "description": "Add automatic synchronization triggered by network connectivity changes using React Native NetInfo.\n\nRequirements:\n- Integrate @react-native-community/netinfo\n- Listen for network state changes\n- Trigger auto-flush when connection restored\n- Handle transition from offline to online\n- Add logging for connectivity-triggered syncs\n\nAcceptance Criteria:\n- Answers sync automatically when going online\n- NetInfo integration works on all platforms\n- No performance impact from connectivity monitoring\n- Sync doesn't trigger repeatedly\n- Connectivity changes logged"
+      },
+      {
+        "title": "Create temp-answer adapter types and package exports",
+        "description": "Design and implement TypeScript adapter types for temp answer system and export from package for host app integration.\n\nRequirements:\n- Create TaskSystemGraphQLExecutor adapter interface\n- Implement TaskSystemSaveTempAnswersMapper adapter type\n- Define clear contract between package and host app\n- Export adapter types from @orion/task-system package root\n- Document adapter usage with examples\n\nAcceptance Criteria:\n- Adapter types well-defined\n- Host app can implement adapters easily\n- Types exported from package\n- Documentation includes integration examples\n- Package remains decoupled from host"
+      },
+      {
+        "title": "Wire temp-answer enqueue to navigation boundaries",
+        "description": "Integrate temp answer saving at appropriate points in the question flow navigation.\n\nRequirements:\n- Enqueue temp answer on Next button press\n- Enqueue temp answer on Previous button press\n- Enqueue temp answer when navigating to Review screen\n- Implement dedupe by task.pk before enqueue\n- Handle enqueue failures gracefully\n- Add logging for enqueue operations\n\nAcceptance Criteria:\n- Temp answers saved at each navigation point\n- No duplicate saves for same task\n- Enqueue failures don't block navigation\n- User unaware of background saving\n- All enqueues logged"
+      }
+    ]
+  },
+  "OR-26456": {
+    "epicKey": "OR-26456",
+    "epicTitle": "[Mobile] Ensure all components support translations and RTL rendering with integration of existing LX translation files",
+    "stories": [
+      {
+        "title": "Implement TranslationMemoryService with bundled seeds",
+        "description": "Create a translation memory service that stores translations locally with AsyncStorage backend and ships with pre-seeded translations.\n\nRequirements:\n- Implement TranslationMemoryService class\n- Add AsyncStorage backend for persistence\n- Include bundled seed translations (en→es for common strings)\n- Support runtime translation loading\n- Implement key-based translation lookup\n- Add fallback to English if translation missing\n- Create translation memory documentation\n\nAcceptance Criteria:\n- Service persists translations across app restarts\n- Bundled translations available immediately\n- Missing translations fall back to English\n- Service works offline\n- Translation memory documented in DOCS/"
+      },
+      {
+        "title": "Add translation support across all components",
+        "description": "Integrate translation system into all user-facing components including task cards, screens, validation messages, and questions.\n\nRequirements:\n- Add translation support to TaskCard component\n- Translate IntroductionScreen text\n- Translate validation messages for all question types\n- Add translation for question labels and placeholders\n- Create useTranslatedText hook\n- Refactor to translate static text without dynamic values\n- Fix over-aggressive React.memo causing translation update issues\n\nAcceptance Criteria:\n- All user-visible text translatable\n- Dynamic values (times, dates, numbers) not translated\n- Translation updates trigger re-renders\n- useTranslatedText hook easy to use\n- No React.memo blocking translation updates"
+      },
+      {
+        "title": "Remove package-to-host translation coupling",
+        "description": "Decouple translation system in package from host app requirements to make package truly self-contained.\n\nRequirements:\n- Remove hard dependencies on host app translation setup\n- Package provides its own translation infrastructure\n- Host app can override translations if needed\n- Package works standalone without host configuration\n- Document translation architecture\n\nAcceptance Criteria:\n- Package runs without host app translation setup\n- Host app can customize translations optionally\n- No import errors if host lacks translation files\n- Translation system documented\n- Package self-contained for translations"
+      },
+      {
+        "title": "Implement RTL support system with useRTL hook",
+        "description": "Create comprehensive RTL (Right-to-Left) support for all components to properly support Arabic, Hebrew, and other RTL languages.\n\nRequirements:\n- Create useRTL hook for RTL detection\n- Implement RTL-aware styling utilities\n- Add RTL support to GlobalHeader\n- Add RTL support to QuestionHeader\n- Add RTL support to TaskForm\n- Add RTL support to NavigationMenu\n- Add RTL support to all question components\n- Flip layouts (row direction, padding, margins) in RTL mode\n\nAcceptance Criteria:\n- useRTL hook detects RTL locale\n- All components render correctly in RTL\n- Text alignment flips appropriately\n- Icons and arrows flip direction\n- Padding and margins respect RTL\n- Manual RTL testing passes"
+      },
+      {
+        "title": "Implement standardized Ubuntu font system",
+        "description": "Create a centralized font system using Ubuntu font family with pre-configured text styles for consistent typography.\n\nRequirements:\n- Add 12 Ubuntu font files to packages/task-system/assets/fonts/\n- Create AppFonts.ts with 11 pre-configured font styles\n- Implement fontUtils.ts with platform-aware font resolution\n- Define styles: display, h1, h2, h3, large, subheading, body, bodyMedium, label, caption, small\n- Support font weights: regular (400), medium (500), bold (700)\n- Add comprehensive unit tests for font utilities\n- Create complete font system documentation\n\nAcceptance Criteria:\n- All Ubuntu font weights available\n- AppFonts provides consistent text styles\n- Font resolution works on iOS, Android, Web\n- Font styles documented\n- Font utilities tested"
+      },
+      {
+        "title": "Migrate components to centralized AppFonts system",
+        "description": "Replace all hardcoded font styles throughout the codebase with centralized AppFonts constants.\n\nRequirements:\n- Audit codebase for hardcoded fontSize and fontWeight values\n- Replace with appropriate AppFonts styles\n- Update 50+ components to use AppFonts\n- Update AppStyles.ts to use AppFonts\n- Update Storybook stories to use AppFonts\n- Remove SpaceMono-Regular.ttf font (unused)\n- Eliminate all remaining hardcoded font values\n\nAcceptance Criteria:\n- No hardcoded fontSize or fontWeight in components\n- All components use AppFonts constants\n- Typography consistent across app\n- Old fonts removed\n- Font usage documented"
+      },
+      {
+        "title": "Implement LanguageSelector and translation testing components",
+        "description": "Create UI components that allow users to switch languages and developers to test translations.\n\nRequirements:\n- Implement LanguageSelector component with language dropdown\n- Add language switching functionality\n- Persist language selection across app restarts\n- Create TranslationTest component for developer testing\n- Show available languages\n- Update app-wide when language changes\n\nAcceptance Criteria:\n- LanguageSelector shows available languages\n- Language switches immediately\n- Selection persists across restarts\n- TranslationTest helps verify translations\n- All text updates on language change"
+      }
+    ]
+  }
+}
