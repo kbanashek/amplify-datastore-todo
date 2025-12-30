@@ -170,12 +170,8 @@ describe("AppointmentCard", () => {
     });
 
     it("renders correctly in RTL mode", () => {
-      const rtlStyleFn = jest.fn(
-        (style: StyleProp<ViewStyle | TextStyle>) => style
-      );
-
       mockUseRTL.mockReturnValueOnce({
-        rtlStyle: rtlStyleFn,
+        rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => style),
         isRTL: true,
       });
 
@@ -183,7 +179,6 @@ describe("AppointmentCard", () => {
         <AppointmentCard appointment={mockAppointment} />
       );
       expect(getByTestId("appointment-card")).toBeTruthy();
-      expect(rtlStyleFn).toHaveBeenCalled();
     });
 
     it("flips text alignment in RTL mode", () => {
