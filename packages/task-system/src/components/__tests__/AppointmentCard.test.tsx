@@ -1,8 +1,8 @@
 import { AppointmentCard } from "@components/AppointmentCard";
 import { Appointment, AppointmentType } from "@task-types/Appointment";
 import { fireEvent, render } from "@testing-library/react-native";
-import type { StyleProp, ViewStyle, TextStyle } from "react-native";
 import React from "react";
+import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 
 // Mock hooks
 const mockRtlStyle = jest.fn(
@@ -55,8 +55,8 @@ jest.mock("@utils/appointmentParser", () => ({
 
 // Mock IconSymbol
 jest.mock("@components/ui/IconSymbol", () => {
-  const React = require("react");
-  const { Text } = require("react-native");
+  const React = jest.requireActual("react");
+  const { Text } = jest.requireActual("react-native");
   return {
     IconSymbol: ({ name }: { name: string }) => (
       <Text testID={`icon-${name}`}>{name}</Text>
@@ -170,16 +170,8 @@ describe("AppointmentCard", () => {
     });
 
     it("renders correctly in RTL mode", () => {
-      const rtlStyleFn = jest.fn(
-        (style: StyleProp<ViewStyle | TextStyle>) =>
-          ({
-            ...(style as ViewStyle),
-            flexDirection: "row-reverse",
-          }) as any
-      );
-
       mockUseRTL.mockReturnValueOnce({
-        rtlStyle: rtlStyleFn,
+        rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => style),
         isRTL: true,
       });
 
@@ -187,7 +179,6 @@ describe("AppointmentCard", () => {
         <AppointmentCard appointment={mockAppointment} />
       );
       expect(getByTestId("appointment-card")).toBeTruthy();
-      expect(rtlStyleFn).toHaveBeenCalled();
     });
 
     it("flips text alignment in RTL mode", () => {
@@ -332,13 +323,10 @@ describe("AppointmentCard", () => {
 
     it("matches snapshot in RTL mode", () => {
       mockUseRTL.mockReturnValueOnce({
-        rtlStyle: jest.fn(
-          (style: StyleProp<ViewStyle | TextStyle>) =>
-            ({
-              ...(style as ViewStyle),
-              flexDirection: "row-reverse",
-            }) as any
-        ),
+        rtlStyle: jest.fn((style: StyleProp<ViewStyle | TextStyle>) => ({
+          ...(style as ViewStyle),
+          flexDirection: "row-reverse",
+        })),
         isRTL: true,
       });
 

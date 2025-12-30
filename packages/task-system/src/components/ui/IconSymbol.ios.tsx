@@ -69,4 +69,6 @@ const MAPPING = {
   calendar: "calendar-today",
   repeat: "repeat",
   "doc.text": "description",
+  "video.fill": "videocam",
+  "building.2.fill": "business",
 } as const satisfies IconMapping;

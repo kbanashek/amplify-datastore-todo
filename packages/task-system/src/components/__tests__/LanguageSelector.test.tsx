@@ -229,7 +229,7 @@ describe("LanguageSelector", () => {
       const { getByTestId } = render(<LanguageSelector />);
       const button = getByTestId("language-selector-button");
       expect(button.props.accessibilityRole).toBe("button");
-      expect(button.props.accessibilityLabel).toContain("Current language");
+      expect(button.props.accessibilityLabel).toContain("current:");
     });
 
     it("has proper accessibility label on close button", () => {

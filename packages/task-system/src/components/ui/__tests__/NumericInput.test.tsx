@@ -1,4 +1,5 @@
 import React from "react";
+import { AppColors } from "@constants/AppColors";
 import { render, fireEvent } from "@testing-library/react-native";
 import { NumericInput } from "@components/ui/NumericInput";
 
@@ -29,7 +30,7 @@ describe("NumericInput", () => {
 
     const input = getByPlaceholderText("---");
     expect(input.props.style).toContainEqual(
-      expect.objectContaining({ borderColor: "#e74c3c" })
+      expect.objectContaining({ borderColor: AppColors.errorRed })
     );
   });
 

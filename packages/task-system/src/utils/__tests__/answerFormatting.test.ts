@@ -1,5 +1,5 @@
-import { formatAnswer } from "@utils/answerFormatting";
 import { ParsedElement, Question } from "@task-types/ActivityConfig";
+import { formatAnswer } from "@utils/answerFormatting";
 
 describe("formatAnswer", () => {
   const createMockElement = (question: Partial<Question>): ParsedElement => ({
@@ -190,13 +190,13 @@ describe("formatAnswer", () => {
   });
 
   describe("other question types", () => {
-    it("should convert number to string", () => {
+    it("should handle numeric string answers", () => {
       const element = createMockElement({ type: "number" });
       const result = formatAnswer(element, "42");
       expect(result).toBe("42");
     });
 
-    it("should convert boolean to string", () => {
+    it("should handle boolean string values", () => {
       const element = createMockElement({ type: "boolean" });
       const result = formatAnswer(element, "true");
       expect(result).toBe("true");
@@ -205,7 +205,7 @@ describe("formatAnswer", () => {
     it("should convert object to string", () => {
       const element = createMockElement({ type: "custom" });
       const result = formatAnswer(element, JSON.stringify({ value: "123" }));
-      expect(result).toBe("[object Object]");
+      expect(result).toBe('{"value":"123"}');
     });
 
     it("should handle date objects", () => {

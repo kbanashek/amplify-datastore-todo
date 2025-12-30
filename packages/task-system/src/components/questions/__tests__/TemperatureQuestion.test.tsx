@@ -1,4 +1,5 @@
 import React from "react";
+import { AppColors } from "@constants/AppColors";
 import { render, fireEvent } from "@testing-library/react-native";
 import { TemperatureQuestion } from "@components/questions/TemperatureQuestion";
 import { Question } from "@task-types/ActivityConfig";
@@ -141,7 +142,7 @@ describe("TemperatureQuestion", () => {
 
     const input = getByTestId("temperature-input-temp-1");
     expect(input.props.style).toContainEqual(
-      expect.objectContaining({ borderColor: "#e74c3c" })
+      expect.objectContaining({ borderColor: AppColors.errorRed })
     );
   });
 });

@@ -163,11 +163,11 @@ export const TaskFilters: React.FC<TaskFiltersProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "AppColors.white",
+    backgroundColor: AppColors.white,
     borderRadius: 8,
     padding: 16,
     marginBottom: 16,
-    shadowColor: "AppColors.black",
+    shadowColor: AppColors.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -181,21 +181,21 @@ const styles = StyleSheet.create({
   },
   title: {
     ...AppFonts.subheading,
-    color: "AppColors.gray",
+    color: AppColors.gray,
   },
   clearButton: {
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 4,
-    backgroundColor: "AppColors.errorRed",
+    backgroundColor: AppColors.errorRed,
   },
   clearButtonText: {
     ...AppFonts.caption,
-    color: "AppColors.white",
+    color: AppColors.white,
   },
   searchInput: {
     borderWidth: 1,
-    borderColor: "AppColors.borderGray",
+    borderColor: AppColors.borderGray,
     borderRadius: 4,
     padding: 12,
     marginBottom: 16,
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     ...AppFonts.label,
-    color: "AppColors.gray",
+    color: AppColors.gray,
     marginBottom: 8,
     marginTop: 8,
   },
@@ -218,20 +218,20 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: "AppColors.borderGray",
+    borderColor: AppColors.borderGray,
     backgroundColor: "#f8f9fa",
     marginRight: 8,
     marginBottom: 8,
   },
   filterChipSelected: {
-    backgroundColor: "AppColors.CIBlue",
-    borderColor: "AppColors.CIBlue",
+    backgroundColor: AppColors.CIBlue,
+    borderColor: AppColors.CIBlue,
   },
   filterChipText: {
     ...AppFonts.caption,
-    color: "AppColors.darkGray",
+    color: AppColors.darkGray,
   },
   filterChipTextSelected: {
-    color: "AppColors.white",
+    color: AppColors.white,
   },
 });

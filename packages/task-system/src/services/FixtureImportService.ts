@@ -1,4 +1,5 @@
 import { DataStore } from "@aws-amplify/datastore";
+import type { PersistentModelConstructor } from "@aws-amplify/datastore";
 import {
   ImportTaskSystemFixtureOptions,
   ImportTaskSystemFixtureResult,
@@ -83,12 +84,17 @@ export class FixtureImportService {
       );
     }
 
-    const selectLatestByLastChanged = <T extends { _lastChangedAt?: number }>(
-      items: T[]
-    ): T => {
-      return [...items].sort(
-        (a, b) => (b._lastChangedAt ?? 0) - (a._lastChangedAt ?? 0)
-      )[0];
+    /**
+     * Helper to select the latest item from an array based on _lastChangedAt timestamp.
+     * DataStore models have _lastChangedAt at runtime, so this helper accepts any array
+     * and adds the timestamp property to the constraint.
+     */
+    const selectLatestByLastChanged = <T>(items: T[]): T => {
+      return [...items].sort((a, b) => {
+        const aTime = (a as { _lastChangedAt?: number })._lastChangedAt ?? 0;
+        const bTime = (b as { _lastChangedAt?: number })._lastChangedAt ?? 0;
+        return bTime - aTime;
+      })[0];
     };
 
     const groupByPk = <T extends { pk: string }>(
@@ -117,7 +123,7 @@ export class FixtureImportService {
         activityByPkSk.set(key, activity);
       } else {
         // If duplicate found, keep the latest one
-        const keep = selectLatestByLastChanged([existing, activity] as any[]);
+        const keep = selectLatestByLastChanged([existing, activity]);
         activityByPkSk.set(key, keep);
         duplicateActivities.push(keep === existing ? activity : existing);
       }
@@ -126,13 +132,14 @@ export class FixtureImportService {
     const existingTasks = await DataStore.query(Task);
     const tasksByPkList = groupByPk(existingTasks as Task[]);
     const duplicateTasks: Task[] = [];
-    const taskByPk = new Map<string, Task>();
+    // Map type must match DataStore query return type
+    const taskByPk = new Map<string, (typeof existingTasks)[0]>();
     tasksByPkList.forEach((items, pk) => {
       if (items.length === 1) {
         taskByPk.set(pk, items[0]);
         return;
       }
-      const keep = selectLatestByLastChanged(items as any[]);
+      const keep = selectLatestByLastChanged(items);
       taskByPk.set(pk, keep);
       duplicateTasks.push(...items.filter(i => i !== keep));
     });
@@ -146,7 +153,7 @@ export class FixtureImportService {
         questionByPk.set(pk, items[0]);
         return;
       }
-      const keep = selectLatestByLastChanged(items as any[]);
+      const keep = selectLatestByLastChanged(items);
       questionByPk.set(pk, keep);
       duplicateQuestions.push(...items.filter(i => i !== keep));
     });
@@ -214,8 +221,9 @@ export class FixtureImportService {
     for (const taskInput of fixture.tasks || []) {
       const existing = taskByPk.get(taskInput.pk);
       if (!existing) {
-        const created = (await TaskService.createTask(taskInput)) as Task;
-        taskByPk.set(created.pk, created);
+        const created = await TaskService.createTask(taskInput);
+        // Cast to DataStore type to match map values from DataStore.query
+        taskByPk.set(created.pk, created as (typeof existingTasks)[0]);
         result.tasks.created++;
         continue;
       }
@@ -279,12 +287,11 @@ export class FixtureImportService {
       // Optional: also prune derived models for dev/test reseeds.
       // This is intentionally behind a flag to avoid deleting real user data in production flows.
       if (pruneDerivedModels) {
-        const deleteAll = async <TModel>(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          model: any // DataStore model constructor (not typed in @aws-amplify/datastore)
+        const deleteAll = async <TModel extends { id: string }>(
+          model: PersistentModelConstructor<TModel>
         ): Promise<void> => {
-          const items = (await DataStore.query(model)) as TModel[];
-          await Promise.all(items.map(item => DataStore.delete(item as any)));
+          const items = await DataStore.query(model);
+          await Promise.all(items.map(item => DataStore.delete(item)));
         };
 
         await Promise.all([

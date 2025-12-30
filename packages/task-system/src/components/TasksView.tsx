@@ -283,7 +283,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "AppColors.powderGray",
+    backgroundColor: AppColors.powderGray,
     // TEMPORARY: Bright background to verify component renders
     // backgroundColor: '#ff0000',
   },
@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   todaySectionHeader: {
-    backgroundColor: "AppColors.CIBlue",
+    backgroundColor: AppColors.CIBlue,
     paddingVertical: 32,
     paddingHorizontal: 20,
     borderRadius: 12,
@@ -325,24 +325,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    shadowColor: "AppColors.CIBlue",
+    shadowColor: AppColors.CIBlue,
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.5,
     shadowRadius: 12,
     elevation: 12,
     borderWidth: 4,
-    borderColor: "AppColors.headerBlue",
+    borderColor: AppColors.headerBlue,
   },
   todaySectionTitle: {
     ...AppFonts.heading,
-    color: "AppColors.white",
+    color: AppColors.white,
     letterSpacing: 1,
-    textShadowColor: "AppColors.black",
+    textShadowColor: AppColors.black,
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 4,
   },
   todaySectionBadge: {
-    backgroundColor: "AppColors.white",
+    backgroundColor: AppColors.white,
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
@@ -351,11 +351,11 @@ const styles = StyleSheet.create({
   },
   todaySectionCount: {
     ...AppFonts.subheading,
-    color: "AppColors.CIBlue",
+    color: AppColors.CIBlue,
   },
   emptySectionText: {
     ...AppFonts.small,
-    color: "AppColors.iconGray",
+    color: AppColors.iconGray,
     fontStyle: "italic",
     textAlign: "center",
     padding: 16,
@@ -370,11 +370,11 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingBottom: 8,
     borderBottomWidth: 2,
-    borderBottomColor: "AppColors.borderGray",
+    borderBottomColor: AppColors.borderGray,
   },
   sectionTitle: {
     ...AppFonts.subheading,
-    color: "AppColors.gray",
+    color: AppColors.gray,
     marginRight: 8,
   },
   sectionCount: {
@@ -395,14 +395,14 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     ...AppFonts.body,
-    color: "AppColors.darkGray",
+    color: AppColors.darkGray,
     textAlign: "center",
     padding: 32,
     marginTop: 16,
   },
   errorText: {
     ...AppFonts.body,
-    color: "AppColors.errorRed",
+    color: AppColors.errorRed,
     textAlign: "center",
     padding: 32,
   },

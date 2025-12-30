@@ -1,4 +1,5 @@
 import React from "react";
+import { AppColors } from "@constants/AppColors";
 import { render, fireEvent } from "@testing-library/react-native";
 import { BloodPressureQuestion } from "@components/questions/BloodPressureQuestion";
 import { Question } from "@task-types/ActivityConfig";
@@ -133,7 +134,7 @@ describe("BloodPressureQuestion", () => {
 
     const systolicInput = getByTestId("blood-pressure-systolic-bp-1");
     expect(systolicInput.props.style).toContainEqual(
-      expect.objectContaining({ borderColor: "#e74c3c" })
+      expect.objectContaining({ borderColor: AppColors.errorRed })
     );
   });
 

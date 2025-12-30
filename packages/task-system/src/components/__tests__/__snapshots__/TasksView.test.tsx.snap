@@ -4,7 +4,7 @@ exports[`TasksView Snapshots matches snapshot with error state 1`] = `
 <View
   style={
     {
-      "backgroundColor": "AppColors.powderGray",
+      "backgroundColor": "#F3F7FA",
       "flex": 1,
     }
   }
@@ -13,7 +13,7 @@ exports[`TasksView Snapshots matches snapshot with error state 1`] = `
   <Text
     style={
       {
-        "color": "AppColors.errorRed",
+        "color": "#F44336",
         "fontFamily": "Ubuntu-Regular",
         "fontSize": 16,
         "fontWeight": "400",
@@ -46,7 +46,7 @@ exports[`TasksView Snapshots matches snapshot with loading state 1`] = `
 <View
   style={
     {
-      "backgroundColor": "AppColors.powderGray",
+      "backgroundColor": "#F3F7FA",
       "flex": 1,
     }
   }
@@ -60,7 +60,7 @@ exports[`TasksView Snapshots matches snapshot with loading state 1`] = `
   <Text
     style={
       {
-        "color": "AppColors.darkGray",
+        "color": "#57606f",
         "fontFamily": "Ubuntu-Regular",
         "fontSize": 16,
         "fontWeight": "400",

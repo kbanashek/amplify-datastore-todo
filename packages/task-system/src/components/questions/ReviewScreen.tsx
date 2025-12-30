@@ -108,7 +108,7 @@ const QuestionReviewItem: React.FC<{
   onEdit?: (questionId: string) => void;
 }> = ({ questionText, answer, hasAnswer, questionId, onEdit }) => {
   const { translatedText } = useTranslatedText(questionText);
-  const { rtlStyle, isRTL } = useRTL();
+  const { rtlStyle } = useRTL();
 
   return (
     <View style={styles.questionItem}>
