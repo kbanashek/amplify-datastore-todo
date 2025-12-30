@@ -80,7 +80,9 @@ describe("NavigationMenu", () => {
       const { queryByTestId } = render(
         <NavigationMenu visible={false} onClose={mockOnClose} />
       );
-      // When visible is false, Modal component is not rendered in test environment
+      // Note: In real React Native, Modal exists in tree with visible=false,
+      // but RNTL's Modal mock doesn't render it when visible=false.
+      // This test verifies RNTL's behavior; in actual app, Modal would exist.
       expect(queryByTestId("navigation-menu-modal")).toBeNull();
     });
 
