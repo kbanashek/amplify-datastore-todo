@@ -152,10 +152,12 @@ export const useTaskCard = ({
           status: TaskStatus.STARTED,
         });
       }
-      // Call the onPress callback if provided
-      onPress?.(task);
     } catch (error) {
       logger.error("Error updating task status", error);
+    } finally {
+      // Call the onPress callback regardless of updateTask success
+      // This ensures consistent UX - user still navigates even if status update fails
+      onPress?.(task);
     }
   }, [task, onPress]);
 

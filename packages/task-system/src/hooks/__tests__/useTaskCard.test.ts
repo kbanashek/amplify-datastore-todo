@@ -178,8 +178,8 @@ describe("useTaskCard", () => {
 
       await waitFor(() => {
         expect(mockUpdateTask).toHaveBeenCalled();
-        // onPress is not called when update fails
-        expect(mockOnPress).not.toHaveBeenCalled();
+        // onPress is still called even when update fails (consistent UX)
+        expect(mockOnPress).toHaveBeenCalledWith(mockTask);
       });
     });
 
