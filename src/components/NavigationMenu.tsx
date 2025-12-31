@@ -131,7 +131,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
                 </Text>
               </View>
             ) : (
-              menuItems.map((item, index) => {
+              menuItems.map(item => {
                 // Map route to testID for e2e testing
                 const testID =
                   item.route === "/(tabs)/seed-screen"

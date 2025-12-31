@@ -21,7 +21,7 @@ export class TodoService {
         localModel,
         remoteModel,
         operation,
-        attempts,
+        attempts: _attempts,
       }) => {
         // For Todo model conflicts
         if (modelConstructor.name === "Todo") {
