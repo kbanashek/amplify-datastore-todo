@@ -14,8 +14,13 @@ module.exports = defineConfig([
     plugins: {
       "@typescript-eslint": tseslint,
     },
+    languageOptions: {
+      parser: require("@typescript-eslint/parser"),
+    },
     rules: {
       // === Unused Code Detection ===
+      // Disable base rule to avoid conflicts with TypeScript-specific rule
+      "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {
