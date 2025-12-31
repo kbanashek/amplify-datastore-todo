@@ -6,6 +6,7 @@
 
 import { StyleSheet, Text, type TextProps } from "react-native";
 
+import { AppColors } from "@constants/AppColors";
 import { AppFonts } from "@constants/AppFonts";
 import { useThemeColor } from "@hooks/useThemeColor";
 
@@ -65,6 +66,6 @@ const styles = StyleSheet.create({
   link: {
     ...AppFonts.body,
     lineHeight: 30,
-    color: "#0a7ea4",
+    color: AppColors.CIBlue,
   },
 });

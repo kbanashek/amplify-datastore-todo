@@ -346,9 +346,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 8,
-    backgroundColor: "#d4edda",
+    backgroundColor: AppColors.legacy.secondary, // Success green background
     borderBottomWidth: 1,
-    borderBottomColor: "#c3e6cb",
+    borderBottomColor: AppColors.successGreen,
   },
   syncDot: {
     width: 8,
@@ -359,7 +359,7 @@ const styles = StyleSheet.create({
   },
   syncText: {
     ...AppFonts.caption,
-    color: "#155724",
+    color: AppColors.almostBlack,
   },
   listContent: {
     padding: 16,
@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
     color: AppColors.gray,
   },
   sectionCountBadge: {
-    backgroundColor: "#ecf0f1",
+    backgroundColor: AppColors.legacy.lightGray,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
@@ -439,7 +439,7 @@ const styles = StyleSheet.create({
   sectionCount: {
     ...AppFonts.small,
     fontWeight: "bold",
-    color: "#747d8c",
+    color: AppColors.legacy.gray,
   },
   emptyContainer: {
     flex: 1,
@@ -450,7 +450,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     ...AppFonts.body,
-    color: "#747d8c",
+    color: AppColors.legacy.gray,
     textAlign: "center",
     marginTop: 16,
   },
