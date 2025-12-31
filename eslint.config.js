@@ -69,6 +69,8 @@ module.exports = defineConfig([
       // Prevent duplicate enum values
       "@typescript-eslint/no-duplicate-enum-values": "warn",
 
+      // Disable base rule to avoid conflicts with TypeScript-specific rule
+      "no-loss-of-precision": "off",
       // Prevent loss of precision
       "@typescript-eslint/no-loss-of-precision": "warn",
 
