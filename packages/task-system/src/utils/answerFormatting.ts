@@ -75,6 +75,11 @@ export const formatAnswer = (
     return answer.substring(0, 100) + "...";
   }
 
+  // Handle objects (convert to JSON string)
+  if (typeof answer === "object" && answer !== null) {
+    return JSON.stringify(answer);
+  }
+
   // Default: convert to string
   return String(answer);
 };

@@ -1,4 +1,5 @@
 import { ParsedElement, Question } from "@task-types/ActivityConfig";
+import { AnswerValue } from "@task-types/AnswerValue";
 import { formatAnswer } from "@utils/answerFormatting";
 
 describe("formatAnswer", () => {
@@ -204,7 +205,7 @@ describe("formatAnswer", () => {
 
     it("should convert object to string", () => {
       const element = createMockElement({ type: "custom" });
-      const result = formatAnswer(element, JSON.stringify({ value: "123" }));
+      const result = formatAnswer(element, { value: "123" } as AnswerValue);
       expect(result).toBe('{"value":"123"}');
     });
 
