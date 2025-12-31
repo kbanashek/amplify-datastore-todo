@@ -9,22 +9,111 @@ module.exports = defineConfig([
     ignores: ["dist/*"],
   },
   {
-    // Stricter rules for unused variables and parameters
+    // Stricter rules for production-quality TypeScript code
+    // Note: Rules requiring type information are excluded (too slow for large projects)
     plugins: {
       "@typescript-eslint": tseslint,
     },
     rules: {
+      // === Unused Code Detection ===
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {
           vars: "all",
-          args: "after-used", // Warn if unused AND after last used param
-          argsIgnorePattern: "^_", // Allow _param naming convention for intentionally unused
+          args: "after-used",
+          argsIgnorePattern: "^_",
           ignoreRestSiblings: true,
           caughtErrors: "all",
           caughtErrorsIgnorePattern: "^_",
         },
       ],
+
+      // === Type Safety ===
+      // Prevent any type usage (forces proper typing)
+      "@typescript-eslint/no-explicit-any": "warn",
+
+      // === Code Quality ===
+      // Prevent unused expressions (statements that don't do anything)
+      "@typescript-eslint/no-unused-expressions": [
+        "warn",
+        {
+          allowShortCircuit: true,
+          allowTernary: true,
+          allowTaggedTemplates: true,
+        },
+      ],
+
+      // Note: consistent-type-imports requires type information, excluded for performance
+
+      // Prefer for-of loops over traditional for loops
+      "@typescript-eslint/prefer-for-of": "warn",
+
+      // === Consistency ===
+      // Consistent type definitions (prefer interface over type)
+      "@typescript-eslint/consistent-type-definitions": ["warn", "interface"],
+
+      // Consistent indexed object style
+      "@typescript-eslint/consistent-indexed-object-style": [
+        "warn",
+        "index-signature",
+      ],
+
+      // === Best Practices ===
+      // Prevent duplicate enum values
+      "@typescript-eslint/no-duplicate-enum-values": "warn",
+
+      // Prevent loss of precision
+      "@typescript-eslint/no-loss-of-precision": "warn",
+
+      // Require using namespace keyword instead of module
+      "@typescript-eslint/prefer-namespace-keyword": "warn",
+
+      // Disallow non-null assertions using the ! postfix operator
+      "@typescript-eslint/no-non-null-assertion": "warn",
+
+      // Prevent unnecessary type constraints
+      "@typescript-eslint/no-unnecessary-type-constraint": "warn",
+
+      // === React/JSX Specific ===
+      // Prevent missing key prop in iterators
+      "react/jsx-key": [
+        "warn",
+        {
+          checkFragmentShorthand: true,
+          checkKeyMustBeforeSpread: true,
+        },
+      ],
+
+      // Prevent missing React import (not needed in React 17+, but good practice)
+      "react/react-in-jsx-scope": "off",
+
+      // Require hooks to follow rules
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+
+      // === General JavaScript ===
+      // Prefer const over let when variable is never reassigned
+      "prefer-const": "warn",
+
+      // Disallow var (use let/const)
+      "no-var": "error",
+
+      // Require === and !== instead of == and !=
+      eqeqeq: ["warn", "always", { null: "ignore" }],
+
+      // Disallow console.log (use proper logging)
+      "no-console": [
+        "warn",
+        {
+          allow: ["warn", "error", "info"],
+        },
+      ],
+
+      // Prevent debugger statements
+      "no-debugger": "warn",
+
+      // Prevent alert, confirm, prompt
+      "no-alert": "warn",
     },
   },
   {
@@ -39,6 +128,8 @@ module.exports = defineConfig([
           ignoreRestSiblings: true,
         },
       ],
+      "@typescript-eslint/no-explicit-any": "off", // Allow any in tests
+      "no-console": "off", // Allow console in tests
     },
   },
   {
