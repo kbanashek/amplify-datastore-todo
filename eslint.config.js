@@ -38,6 +38,8 @@ module.exports = defineConfig([
       "@typescript-eslint/no-explicit-any": "warn",
 
       // === Code Quality ===
+      // Disable base rule to avoid conflicts with TypeScript-specific rule
+      "no-unused-expressions": "off",
       // Prevent unused expressions (statements that don't do anything)
       "@typescript-eslint/no-unused-expressions": [
         "warn",
