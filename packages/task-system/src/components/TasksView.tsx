@@ -104,7 +104,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
       <View style={styles.container} testID="tasks-view-loading">
         <ActivityIndicator
           size="large"
-          color="AppColors.CIBlue"
+          color={AppColors.CIBlue}
           testID="tasks-view-loading-spinner"
         />
         <Text style={styles.loadingText} testID="tasks-view-loading-text">

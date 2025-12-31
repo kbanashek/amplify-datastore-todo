@@ -212,7 +212,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
         >
           {isSubmitting ? (
             <ActivityIndicator
-              color="AppColors.white"
+              color={AppColors.white}
               size="small"
               testID="task-form-submit-loading"
             />

@@ -178,7 +178,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
         <View style={styles.emptyContainer} testID="task-list-empty-loading">
           <ActivityIndicator
             size="large"
-            color="AppColors.CIBlue"
+            color={AppColors.CIBlue}
             testID="task-list-loading-spinner"
           />
           <Text style={styles.emptyText} testID="task-list-loading-text">

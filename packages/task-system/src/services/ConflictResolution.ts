@@ -38,6 +38,15 @@ function ensurePkSk<T extends DataStoreModel>(
  * Unified conflict resolution strategy for all DataStore models
  * This handles conflicts for Task, Question, Activity, DataPoint,
  * DataPointInstance, TaskAnswer, TaskResult, and TaskHistory
+ *
+ * Provides model-specific conflict resolution logic for AWS Amplify DataStore,
+ * ensuring data consistency across local and remote state during sync operations.
+ *
+ * @example
+ * ```typescript
+ * // Configure conflict resolution on app initialization
+ * ConflictResolution.configure();
+ * ```
  */
 export class ConflictResolution {
   private static configured = false;
