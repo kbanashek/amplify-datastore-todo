@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     ...AppFonts.body,
-    color: AppColors.gray,
+    color: AppColors.almostBlack,
     minHeight: 44,
   },
   textArea: {
