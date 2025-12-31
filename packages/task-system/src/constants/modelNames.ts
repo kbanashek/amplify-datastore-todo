@@ -13,7 +13,6 @@ export const ModelName = {
   TaskAnswer: "TaskAnswer",
   TaskHistory: "TaskHistory",
   TaskResult: "TaskResult",
-  Todo: "Todo",
 } as const;
 
 export type ModelNameType = (typeof ModelName)[keyof typeof ModelName];

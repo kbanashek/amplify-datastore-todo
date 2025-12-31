@@ -138,24 +138,6 @@ describe("ConflictResolution", () => {
       expect(result2).toEqual(remoteModel);
     });
 
-    it("should handle Todo model DELETE conflicts", async () => {
-      ConflictResolution.configure();
-
-      const configureCall = (DataStore.configure as jest.Mock).mock.calls[0][0];
-      const conflictHandler = configureCall.conflictHandler;
-
-      // Incomplete local Todo
-      const result = await conflictHandler({
-        modelConstructor: { name: "Todo" },
-        localModel: {}, // No name
-        remoteModel: { name: "Todo Item" },
-        operation: OpType.DELETE,
-        attempts: 1,
-      });
-
-      expect(result._deleted).toBe(true);
-    });
-
     it("should handle Question model DELETE conflicts", async () => {
       ConflictResolution.configure();
 

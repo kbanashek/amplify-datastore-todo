@@ -10,13 +10,11 @@ import {
   TaskAnswer,
   TaskHistory,
   TaskResult,
-  Todo,
 } from "@models/index";
 import { logWithDevice, logErrorWithDevice } from "@utils/deviceLogger";
 
 export interface ClearSeededDataResult {
   deleted: {
-    todos: number;
     tasks: number;
     activities: number;
     questions: number;
@@ -313,10 +311,7 @@ export class SeededDataCleanupService {
       "DataPointInstance"
     );
 
-    logWithDevice("SeededDataCleanupService", "Step 9: Deleting Todos");
-    const todos = await this.deleteAllForModel(Todo, "Todo");
-
-    logWithDevice("SeededDataCleanupService", "Step 10: Clearing appointments");
+    logWithDevice("SeededDataCleanupService", "Step 9: Clearing appointments");
     await AppointmentService.clearAppointments();
 
     // Final verification - check all models are empty
@@ -356,7 +351,6 @@ export class SeededDataCleanupService {
 
     const result = {
       deleted: {
-        todos,
         tasks,
         activities,
         questions,
