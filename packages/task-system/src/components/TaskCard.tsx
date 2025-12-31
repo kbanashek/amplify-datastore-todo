@@ -64,60 +64,17 @@ export const TaskCard: React.FC<TaskCardProps> = ({
   onDelete,
   simple = false,
 }: TaskCardProps) => {
-  const { t } = useTaskTranslation();
-
-  // Translate button text using new i18next API
-  const isStarted =
-    task.status === TaskStatus.STARTED || task.status === TaskStatus.INPROGRESS;
-  const beginButtonText = t(isStarted ? "task.resume" : "task.begin");
-  const completedText = t("task.completed");
-
-  const icon = getTaskIcon(task);
-
-  const handleBeginPress = useCallback(async () => {
-    try {
-      // If task is not started, update status to STARTED
-      if (
-        task.status !== TaskStatus.STARTED &&
-        task.status !== TaskStatus.INPROGRESS
-      ) {
-        await TaskService.updateTask(task.id, {
-          status: TaskStatus.STARTED,
-        });
-      }
-      // Call the onPress callback if provided
-      onPress?.(task);
-    } catch (error) {
-      logger.error("Error updating task status", error);
-    }
-  }, [task, onPress]);
-
-  const handleCardPress = useCallback(async () => {
-    const isCompleted = task.status === TaskStatus.COMPLETED;
-    if (isCompleted) return;
-
-    try {
-      // If task is not started, update status to STARTED when card is clicked
-      // This ensures the button text updates to "RESUME" when user returns to dashboard
-      if (
-        task.status !== TaskStatus.STARTED &&
-        task.status !== TaskStatus.INPROGRESS
-      ) {
-        await TaskService.updateTask(task.id, {
-          status: TaskStatus.STARTED,
-        });
-      }
-      // Call the onPress callback
-      onPress?.(task);
-    } catch (error) {
-      logger.error("Error updating task status on card press", error);
-      // Still navigate even if status update fails
-      onPress?.(task);
-    }
-  }, [task, onPress]);
-
-  const isCompleted = task.status === TaskStatus.COMPLETED;
-  const isDisabled = isCompleted;
+  // Use custom hook for all business logic
+  const {
+    icon,
+    beginButtonText,
+    completedText,
+    isCompleted,
+    isDisabled,
+    handleBeginPress,
+    handleCardPress,
+    t,
+  } = useTaskCard({ task, onPress });
 
   return (
     <TouchableOpacity
