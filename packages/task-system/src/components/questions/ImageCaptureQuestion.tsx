@@ -161,7 +161,7 @@ export const ImageCaptureQuestion: React.FC<ImageCaptureQuestionProps> = ({
   if (loading) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color="AppColors.CIBlue" />
+        <ActivityIndicator size="large" color={AppColors.CIBlue} />
       </View>
     );
   }

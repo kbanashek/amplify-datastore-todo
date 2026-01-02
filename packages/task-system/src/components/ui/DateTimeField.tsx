@@ -133,7 +133,7 @@ export const DateTimeField: React.FC<DateTimeFieldProps> = ({
     });
   }, [format, mode, placeholder, value]);
 
-  const borderColor = error ? "#d32f2f" : borderBase + "55";
+  const borderColor = error ? AppColors.legacy.danger : borderBase + "55";
 
   const handlePickerChange = (_event: unknown, date?: Date) => {
     setShowPicker(false);

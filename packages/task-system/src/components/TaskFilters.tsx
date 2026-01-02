@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: AppColors.borderGray,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: AppColors.powderGray,
     marginRight: 8,
     marginBottom: 8,
   },

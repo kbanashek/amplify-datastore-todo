@@ -10,30 +10,52 @@ import {
   TaskAnswer,
   TaskHistory,
   TaskResult,
-  Todo,
 } from "@models/index";
 import { logWithDevice, logErrorWithDevice } from "@utils/deviceLogger";
 
+/**
+ * Result of clearing seeded data operation
+ * Contains counts of deleted records for each model type
+ */
 export interface ClearSeededDataResult {
+  /** Counts of deleted records by model type */
   deleted: {
-    todos: number;
+    /** Number of Task records deleted */
     tasks: number;
+    /** Number of Activity records deleted */
     activities: number;
+    /** Number of Question records deleted */
     questions: number;
+    /** Number of DataPoint records deleted */
     dataPoints: number;
+    /** Number of DataPointInstance records deleted */
     dataPointInstances: number;
+    /** Number of TaskAnswer records deleted */
     taskAnswers: number;
+    /** Number of TaskResult records deleted */
     taskResults: number;
+    /** Number of TaskHistory records deleted */
     taskHistories: number;
   };
+  /** Whether appointments were successfully cleared */
   clearedAppointments: boolean;
 }
 
 /**
  * Centralized cleanup helper intended for deterministic local testing (including E2E).
  *
+ * Provides methods to delete all seeded data from DataStore, including Tasks, Activities,
+ * Questions, DataPoints, and related models. Also handles clearing appointments.
+ *
  * NOTE: DataStore deletes are syncable and will propagate to the configured backend.
  * Use this only for development/testing environments.
+ *
+ * @example
+ * ```typescript
+ * // Clear all seeded data
+ * const result = await SeededDataCleanupService.clearAllSeededData();
+ * console.log(`Deleted ${result.deleted.tasks} tasks`);
+ * ```
  */
 export class SeededDataCleanupService {
   private static async deleteAllForModel<TModel extends Record<string, any>>(
@@ -313,10 +335,7 @@ export class SeededDataCleanupService {
       "DataPointInstance"
     );
 
-    logWithDevice("SeededDataCleanupService", "Step 9: Deleting Todos");
-    const todos = await this.deleteAllForModel(Todo, "Todo");
-
-    logWithDevice("SeededDataCleanupService", "Step 10: Clearing appointments");
+    logWithDevice("SeededDataCleanupService", "Step 9: Clearing appointments");
     await AppointmentService.clearAppointments();
 
     // Final verification - check all models are empty
@@ -356,7 +375,6 @@ export class SeededDataCleanupService {
 
     const result = {
       deleted: {
-        todos,
         tasks,
         activities,
         questions,

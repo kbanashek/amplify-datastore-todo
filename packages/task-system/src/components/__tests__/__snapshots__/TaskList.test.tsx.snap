@@ -120,7 +120,7 @@ exports[`TaskList Snapshots matches snapshot with loading state 1`] = `
     testID="task-list-empty-loading"
   >
     <ActivityIndicator
-      color="AppColors.CIBlue"
+      color="#237cb8"
       size="large"
       testID="task-list-loading-spinner"
     />

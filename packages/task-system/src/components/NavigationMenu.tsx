@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
   },
   emptyStateText: {
     ...AppFonts.body,
-    color: "#747d8c",
+    color: AppColors.legacy.gray,
   },
   menuItem: {
     flexDirection: "row",

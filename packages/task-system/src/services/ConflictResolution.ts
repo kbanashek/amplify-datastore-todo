@@ -38,7 +38,15 @@ function ensurePkSk<T extends DataStoreModel>(
  * Unified conflict resolution strategy for all DataStore models
  * This handles conflicts for Task, Question, Activity, DataPoint,
  * DataPointInstance, TaskAnswer, TaskResult, and TaskHistory
- * Note: Todo model conflict resolution is included for schema compatibility but Todo components are not used in this package
+ *
+ * Provides model-specific conflict resolution logic for AWS Amplify DataStore,
+ * ensuring data consistency across local and remote state during sync operations.
+ *
+ * @example
+ * ```typescript
+ * // Configure conflict resolution on app initialization
+ * ConflictResolution.configure();
+ * ```
  */
 export class ConflictResolution {
   private static configured = false;
@@ -95,13 +103,6 @@ export class ConflictResolution {
             );
           case ModelName.Question:
             return this.resolveQuestion(
-              safeLocal,
-              safeRemote,
-              operation,
-              modelName
-            );
-          case ModelName.Todo:
-            return this.resolveTodo(
               safeLocal,
               safeRemote,
               operation,
@@ -216,25 +217,6 @@ export class ConflictResolution {
         safeRemote,
         !local?.question && !local?.questionId
       );
-    }
-
-    return (
-      ensurePkSk(safeRemote, safeLocal) ?? ensurePkSk(safeLocal, safeRemote)
-    );
-  }
-
-  /**
-   * Todo-specific conflict resolution
-   */
-  private static resolveTodo(
-    safeLocal: DataStoreModel | null,
-    safeRemote: DataStoreModel | null,
-    operation: OpType,
-    modelName: string
-  ): DataStoreModel | null {
-    if (operation === OpType.DELETE) {
-      const local = safeLocal as any;
-      return this.handleDelete(safeLocal, safeRemote, !local?.name);
     }
 
     return (

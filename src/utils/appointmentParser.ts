@@ -59,8 +59,8 @@ export function formatDateLabel(date: Date, today: Date = new Date()): string {
 /**
  * Format time for display (e.g., "2:00 p. m." or "12:50 p. m.")
  */
-export function formatTime(date: Date, timezoneId?: string): string {
-  // For now, use local time. In the future, can use timezoneId with a library like date-fns-tz
+export function formatTime(date: Date, _timezoneId?: string): string {
+  // For now, use local time. In the future, can use _timezoneId with a library like date-fns-tz
   // Format: "12:50 p. m." (lowercase with periods)
   const timeString = date.toLocaleTimeString("en-US", {
     hour: "numeric",

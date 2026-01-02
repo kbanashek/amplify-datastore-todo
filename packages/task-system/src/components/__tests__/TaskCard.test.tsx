@@ -320,9 +320,9 @@ describe("TaskCard", () => {
       // Wait for async operation to complete
       await waitFor(() => {
         expect(mockUpdateTask).toHaveBeenCalled();
+        // Should still call onPress even if update fails (consistent UX with card press)
+        expect(mockOnPress).toHaveBeenCalled();
       });
-      // When update fails, onPress is not called (error is logged but not propagated)
-      expect(mockOnPress).not.toHaveBeenCalled();
     });
 
     it("handles card press error gracefully", async () => {

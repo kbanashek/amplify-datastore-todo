@@ -56,7 +56,11 @@ export const QuestionHeader: React.FC<QuestionHeaderProps> = ({
               accessibilityRole="button"
               accessibilityLabel="Go back"
             >
-              <IconSymbol name="chevron.left" size={24} color="#6b7280" />
+              <IconSymbol
+                name="chevron.left"
+                size={24}
+                color={AppColors.iconGray}
+              />
             </TouchableOpacity>
           ) : (
             <View
@@ -84,7 +88,7 @@ export const QuestionHeader: React.FC<QuestionHeaderProps> = ({
               accessibilityRole="button"
               accessibilityLabel="Close"
             >
-              <IconSymbol name="xmark" size={24} color="#6b7280" />
+              <IconSymbol name="xmark" size={24} color={AppColors.iconGray} />
             </TouchableOpacity>
           )}
           {/* <LanguageSelector style={styles.languageSelector} /> */}

@@ -53,7 +53,7 @@ exports[`TasksView Snapshots matches snapshot with loading state 1`] = `
   testID="tasks-view-loading"
 >
   <ActivityIndicator
-    color="AppColors.CIBlue"
+    color="#237cb8"
     size="large"
     testID="tasks-view-loading-spinner"
   />

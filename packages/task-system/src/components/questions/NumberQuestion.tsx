@@ -131,9 +131,9 @@ export const NumberQuestion: React.FC<NumberQuestionProps> = ({
               );
               onChange(intValue.toString());
             }}
-            minimumTrackTintColor="AppColors.CIBlue"
-            maximumTrackTintColor="AppColors.borderGray"
-            thumbTintColor="AppColors.CIBlue"
+            minimumTrackTintColor={AppColors.CIBlue}
+            maximumTrackTintColor={AppColors.borderGray}
+            thumbTintColor={AppColors.CIBlue}
           />
         </View>
         {unitLabel && <Text style={styles.unitText}>{unitLabel}</Text>}

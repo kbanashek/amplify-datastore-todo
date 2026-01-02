@@ -93,7 +93,7 @@ exports[`ThemedText Snapshots matches snapshot with link type 1`] = `
       undefined,
       undefined,
       {
-        "color": "#0a7ea4",
+        "color": "#237cb8",
         "fontFamily": "Ubuntu-Regular",
         "fontSize": 16,
         "fontWeight": "400",

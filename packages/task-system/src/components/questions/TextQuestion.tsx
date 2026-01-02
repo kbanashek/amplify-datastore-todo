@@ -4,14 +4,14 @@
  * @module TextQuestion
  */
 
-import React from "react";
-import { AppFonts } from "@constants/AppFonts";
 import { AppColors } from "@constants/AppColors";
-import { StyleSheet, TextInput, View } from "react-native";
+import { AppFonts } from "@constants/AppFonts";
+import { useTranslatedText } from "@hooks/useTranslatedText";
 import { Question } from "@task-types/ActivityConfig";
 import { useTaskTranslation } from "@translations/index";
-import { useTranslatedText } from "@hooks/useTranslatedText";
 import { getServiceLogger } from "@utils/serviceLogger";
+import React from "react";
+import { StyleSheet, TextInput, View } from "react-native";
 
 const logger = getServiceLogger("TextQuestion");
 
@@ -22,15 +22,34 @@ interface TextQuestionProps {
   question: Question;
   value: string;
   onChange: (value: string) => void;
-  displayProperties: Record<string, string>;
+  displayProperties: { [key: string]: string };
   errors: string[];
 }
 
 /**
- * TextQuestion component.
+ * TextQuestion component for rendering single-line or multi-line text input questions.
+ *
+ * Handles text input with support for RTL languages, automatic multiline detection,
+ * placeholder translation, and input validation with error display.
  *
  * @param props - Component props
- * @returns Rendered TextQuestion component
+ * @param props.question - Question configuration object
+ * @param props.value - Current text value
+ * @param props.onChange - Callback invoked when text changes
+ * @param props.displayProperties - Display configuration properties
+ * @param props.errors - Array of validation error messages
+ * @returns React component that renders a text input field
+ *
+ * @example
+ * ```tsx
+ * <TextQuestion
+ *   question={{ type: 'text-field', friendlyName: 'Full Name' }}
+ *   value={name}
+ *   onChange={setName}
+ *   displayProperties={{}}
+ *   errors={[]}
+ * />
+ * ```
  */
 export const TextQuestion: React.FC<TextQuestionProps> = ({
   question,
@@ -91,7 +110,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     ...AppFonts.body,
-    color: AppColors.gray,
+    color: AppColors.almostBlack,
     minHeight: 44,
   },
   textArea: {

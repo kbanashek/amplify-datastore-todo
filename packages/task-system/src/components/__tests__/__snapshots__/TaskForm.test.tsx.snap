@@ -1873,7 +1873,7 @@ exports[`TaskForm Snapshots matches snapshot when submitting 1`] = `
         testID="task-form-submit-button"
       >
         <ActivityIndicator
-          color="AppColors.white"
+          color="#FFFFFF"
           size="small"
           testID="task-form-submit-loading"
         />
