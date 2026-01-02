@@ -141,7 +141,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
         <RefreshControl
           refreshing={refreshing}
           onRefresh={onRefresh}
-          colors={["AppColors.CIBlue"]}
+          colors={[AppColors.CIBlue]}
         />
       }
       testID="tasks-view"

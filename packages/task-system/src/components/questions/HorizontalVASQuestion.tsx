@@ -101,9 +101,9 @@ export const HorizontalVASQuestion: React.FC<HorizontalVASQuestionProps> = ({
           step={scaleIncrements}
           value={sliderValue}
           onValueChange={handleSliderChange}
-          minimumTrackTintColor="AppColors.CIBlue"
-          maximumTrackTintColor="AppColors.borderGray"
-          thumbTintColor="AppColors.CIBlue"
+          minimumTrackTintColor={AppColors.CIBlue}
+          maximumTrackTintColor={AppColors.borderGray}
+          thumbTintColor={AppColors.CIBlue}
           testID={`horizontal-vas-slider-${question.id}`}
         />
         <View style={styles.scaleLabels}>

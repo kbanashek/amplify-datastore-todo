@@ -303,7 +303,7 @@ export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
           <RefreshControl
             refreshing={loading}
             onRefresh={refreshTasks}
-            colors={["AppColors.CIBlue"]}
+            colors={[AppColors.CIBlue]}
           />
         }
         contentContainerStyle={styles.listContent}
