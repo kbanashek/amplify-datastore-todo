@@ -110,7 +110,7 @@ const stricterRules = {
 };
 
 // Extend expoConfig by merging our stricter rules into configs that have @typescript-eslint plugin
-const extendedConfig = expoConfig.map((config) => {
+const extendedConfig = expoConfig.map(config => {
   // If this config has the TypeScript plugin, merge our rules
   if (config.plugins && config.plugins["@typescript-eslint"]) {
     return {

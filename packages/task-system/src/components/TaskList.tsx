@@ -1,8 +1,8 @@
 import { TaskCard } from "@components/TaskCard";
+import { AppColors } from "@constants/AppColors";
+import { AppFonts } from "@constants/AppFonts";
 import { useTaskList } from "@hooks/useTaskList";
 import { Task, TaskFilters } from "@task-types/Task";
-import { AppFonts } from "@constants/AppFonts";
-import { AppColors } from "@constants/AppColors";
 import { getServiceLogger } from "@utils/serviceLogger";
 import { groupTasksByDate } from "@utils/taskGrouping";
 import React, { useMemo } from "react";
@@ -23,11 +23,23 @@ interface TaskListProps {
 }
 
 /**
- * A list component for displaying tasks.
+ * TaskList component for displaying a list of tasks grouped by date.
  *
- * @param filters - The filters to apply to the tasks
- * @param onTaskPress - Callback function when a task is pressed
- * @returns A list component with the provided configuration
+ * Renders tasks in sections (Today, Upcoming, Past) with real-time updates from DataStore.
+ * Supports pull-to-refresh, task deletion, and filtering by status/type.
+ *
+ * @param props - Component props
+ * @param props.filters - Optional filters to apply to the task list (status, type)
+ * @param props.onTaskPress - Callback invoked when a task card is pressed
+ * @returns React component that displays the task list with sections and sync status
+ *
+ * @example
+ * ```tsx
+ * <TaskList
+ *   filters={{ status: TaskStatus.OPEN }}
+ *   onTaskPress={(task) => navigate(`/task/${task.id}`)}
+ * />
+ * ```
  */
 export const TaskList: React.FC<TaskListProps> = ({ filters, onTaskPress }) => {
   const { tasks, loading, error, isSynced, handleDeleteTask, refreshTasks } =
