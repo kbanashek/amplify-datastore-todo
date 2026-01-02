@@ -11,6 +11,7 @@ import { TranslatedText } from "@components/TranslatedText";
 import { IconSymbol } from "@components/ui/IconSymbol";
 import { AppColors } from "@constants/AppColors";
 import { AppFonts } from "@constants/AppFonts";
+import { useTaskCard } from "@hooks/useTaskCard";
 import { TaskService } from "@services/TaskService";
 import { Task, TaskStatus } from "@task-types/Task";
 import { useTaskTranslation } from "@translations/index";
