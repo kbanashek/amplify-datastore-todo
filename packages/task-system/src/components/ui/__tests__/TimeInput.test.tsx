@@ -2,10 +2,9 @@
  * Unit tests for TimeInput component
  */
 
-import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
 import { TimeInput } from "@components/ui/TimeInput";
-import { Platform } from "react-native";
+import { fireEvent, render } from "@testing-library/react-native";
+import React from "react";
 
 // Mock AppFonts
 jest.mock("@constants/AppFonts", () => ({
