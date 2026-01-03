@@ -9,7 +9,7 @@ import { Platform } from "react-native";
  * Platform icon map - maps platform OS to emoji icon
  * Use this pattern instead of switch/if-else statements for simple value mappings
  */
-const PLATFORM_ICONS: Record<string, string> = {
+const PLATFORM_ICONS: { [key: string]: string } = {
   ios: "🍎", // iOS/Apple
   android: "🤖", // Android
   web: "🌐", // Web (default)

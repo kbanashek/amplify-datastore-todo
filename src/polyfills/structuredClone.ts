@@ -8,10 +8,7 @@
 if (typeof global.structuredClone === "undefined") {
   // Robust polyfill that handles AWS SDK's use case
   // AWS SDK uses structuredClone for deserializing API responses (plain objects)
-  const structuredCloneImpl = function structuredClone<T>(
-    value: T,
-    options?: StructuredSerializeOptions
-  ): T {
+  const structuredCloneImpl = function structuredClone<T>(value: T): T {
     // Handle primitives
     if (value === null || typeof value !== "object") {
       return value;
@@ -29,19 +26,16 @@ if (typeof global.structuredClone === "undefined") {
 
     // Handle Arrays - use the function reference directly
     if (Array.isArray(value)) {
-      return value.map(item =>
-        structuredCloneImpl(item, options)
-      ) as unknown as T;
+      return value.map(item => structuredCloneImpl(item)) as unknown as T;
     }
 
     // Handle plain objects (most common case for AWS SDK responses)
     if (value.constructor === Object || value.constructor === undefined) {
-      const cloned: Record<string, unknown> = {};
+      const cloned: { [key: string]: unknown } = {};
       for (const key in value) {
         if (Object.prototype.hasOwnProperty.call(value, key)) {
           cloned[key] = structuredCloneImpl(
-            (value as Record<string, unknown>)[key],
-            options
+            (value as { [key: string]: unknown })[key]
           );
         }
       }
@@ -65,8 +59,8 @@ if (typeof global.structuredClone === "undefined") {
     }
   };
 
-  // Assign to global
-  global.structuredClone = structuredCloneImpl;
+  // Assign to global with type assertion to handle overload compatibility
+  global.structuredClone = structuredCloneImpl as typeof global.structuredClone;
 
   console.log("[Polyfill] ✅ structuredClone polyfill installed successfully");
 
@@ -85,11 +79,6 @@ if (typeof global.structuredClone === "undefined") {
       error
     );
   }
-}
-
-// Type definition for options (if not already defined)
-interface StructuredSerializeOptions {
-  transfer?: Transferable[];
 }
 
 export {};

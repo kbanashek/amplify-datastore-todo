@@ -26,7 +26,7 @@ function getPlatformId(): string {
 /**
  * Log level priority (lower number = higher priority)
  */
-const LOG_LEVEL_PRIORITY: Record<LogLevel, number> = {
+const LOG_LEVEL_PRIORITY: { [key in LogLevel]: number } = {
   [LogLevel.VERBOSE]: -1,
   [LogLevel.DEBUG]: 0,
   [LogLevel.INFO]: 1,
@@ -113,10 +113,10 @@ export class LoggingService {
       if (provider.isEnabled()) {
         try {
           provider.log(entry);
-        } catch (error) {
+        } catch (_error) {
           // If provider fails, fall back to console
           if (__DEV__) {
-            console.log(
+            console.error(
               `[${platform}::LoggingService - INIT-0] : 📊 Log level set to ${levelName}`
             );
           }

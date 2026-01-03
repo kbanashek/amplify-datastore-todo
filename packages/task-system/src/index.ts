@@ -12,7 +12,7 @@ export { NetworkStatusIndicator } from "@components/NetworkStatusIndicator";
 export { TranslatedText } from "@components/TranslatedText";
 
 // Runtime initialization (LX-style: host owns Amplify.configure)
-export { initTaskSystem } from "@runtime/taskSystem";
+export { initTaskSystem, getTaskSystemConfig } from "@runtime/taskSystem";
 export type { TaskSystemInitOptions } from "@runtime/taskSystem";
 
 // Fixture import (LX-owned disk data -> DataStore/AsyncStorage materialization)
@@ -35,6 +35,16 @@ export { ActivityService } from "@services/ActivityService";
 export { AppointmentService } from "@services/AppointmentService";
 export { ConflictResolution } from "@services/ConflictResolution";
 export { DataPointService } from "@services/DataPointService";
+export {
+  ImageStorageService,
+  getImageStorageService,
+} from "@services/ImageStorageService";
+export type {
+  UploadImageOptions,
+  UploadImageResult,
+  DownloadImageOptions,
+  DownloadImageResult,
+} from "@services/ImageStorageService";
 export {
   LoggingService,
   getLoggingService,

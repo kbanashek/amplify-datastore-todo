@@ -7,7 +7,7 @@ export interface SeedTranslationMemoryFile {
     readonly generatedAt?: string;
     readonly notes?: string;
   };
-  readonly entries: Record<string, string>;
+  readonly entries: { [key: string]: string };
 }
 
 /**

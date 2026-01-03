@@ -9,7 +9,7 @@ export const getUnitDisplayLabel = (unitI18nKeyOrLabel: string): string => {
   if (!input) return "";
 
   // Known keys from seeded data
-  const known: Record<string, string> = {
+  const known: { [key: string]: string } = {
     unit_mmhg_key: "mmHg",
     unit_lbs_key: "lbs",
   };
