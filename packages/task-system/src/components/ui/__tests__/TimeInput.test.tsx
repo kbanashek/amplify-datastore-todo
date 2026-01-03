@@ -74,8 +74,8 @@ jest.mock("@translations/index", () => ({
 
 // Mock platform utilities
 jest.mock("@utils/platform", () => ({
-  isAndroid: false,
-  isIOS: true,
+  isAndroid: jest.fn(() => false),
+  isIOS: jest.fn(() => true),
 }));
 
 describe("TimeInput", () => {
