@@ -4,12 +4,6 @@
  * @module QuestionRenderer
  */
 
-import React, { useCallback, useMemo } from "react";
-import { AppFonts } from "@constants/AppFonts";
-import { StyleSheet, Text, View } from "react-native";
-import { useTranslatedText } from "@hooks/useTranslatedText";
-import { ParsedElement } from "@task-types/ActivityConfig";
-import { QuestionType } from "@task-types/activity-config-enums";
 import { BloodPressureQuestion } from "@components/questions/BloodPressureQuestion";
 import { ClinicalDynamicInputQuestion } from "@components/questions/ClinicalDynamicInputQuestion";
 import { DateQuestion } from "@components/questions/DateQuestion";
@@ -21,6 +15,13 @@ import { SingleSelectQuestion } from "@components/questions/SingleSelectQuestion
 import { TemperatureQuestion } from "@components/questions/TemperatureQuestion";
 import { TextQuestion } from "@components/questions/TextQuestion";
 import { WeightHeightQuestion } from "@components/questions/WeightHeightQuestion";
+import { AppColors } from "@constants/AppColors";
+import { AppFonts } from "@constants/AppFonts";
+import { useTranslatedText } from "@hooks/useTranslatedText";
+import { ParsedElement } from "@task-types/ActivityConfig";
+import { QuestionType } from "@task-types/activity-config-enums";
+import React, { useCallback, useMemo } from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 // Component to render a single error message (extracted to avoid hooks in map)
 // This must be a separate component because hooks cannot be called inside loops
@@ -35,157 +36,161 @@ const ErrorMessage: React.FC<{ error: string }> = ({ error }) => {
 };
 
 // Component map with value transformers - single source of truth for question rendering
-type QuestionConfig = {
+interface QuestionConfig {
+  // Component uses `any` because it's a heterogeneous map of different question components
+  // with different prop types (TextQuestionProps, SingleSelectQuestionProps, etc.)
+  // Type safety is maintained through each component's implementation
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component: React.ComponentType<any>;
-  getValue: (answerValue: any) => any;
-};
+  getValue: (answerValue: unknown) => unknown;
+}
 
-const QUESTION_CONFIG: Record<string, QuestionConfig> = {
+const QUESTION_CONFIG: { [key: string]: QuestionConfig } = {
   // Text types - default to empty string
   [QuestionType.TEXT]: {
     component: TextQuestion,
-    getValue: (answerValue: any) => answerValue || "",
+    getValue: (answerValue: unknown) => answerValue || "",
   },
   [QuestionType.TEXT_FIELD]: {
     component: TextQuestion,
-    getValue: (answerValue: any) => answerValue || "",
+    getValue: (answerValue: unknown) => answerValue || "",
   },
   [QuestionType.TEXTAREA_FIELD]: {
     component: TextQuestion,
-    getValue: (answerValue: any) => answerValue || "",
+    getValue: (answerValue: unknown) => answerValue || "",
   },
 
   // Single select types - default to null
   [QuestionType.SINGLE_SELECT]: {
     component: SingleSelectQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
   [QuestionType.CHOICE_FIELD]: {
     component: SingleSelectQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
   [QuestionType.RADIO_FIELD]: {
     component: SingleSelectQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
   [QuestionType.DROPDOWN_FIELD]: {
     component: SingleSelectQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
 
   // Multi select types - default to empty array
   [QuestionType.MULTI_SELECT]: {
     component: MultiSelectQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       Array.isArray(answerValue) ? answerValue : [],
   },
   [QuestionType.MULTI_SELECT_FIELD]: {
     component: MultiSelectQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       Array.isArray(answerValue) ? answerValue : [],
   },
   [QuestionType.CHECKBOX_FIELD]: {
     component: MultiSelectQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       Array.isArray(answerValue) ? answerValue : [],
   },
 
   // Number types - default to empty string
   [QuestionType.NUMBER]: {
     component: NumberQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : "",
   },
   [QuestionType.NUMBER_FIELD]: {
     component: NumberQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : "",
   },
   [QuestionType.NUMERIC_SCALE]: {
     component: NumberQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : "",
   },
 
   // Date/Time types - default to null
   [QuestionType.DATE]: {
     component: DateQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
   [QuestionType.DATE_FIELD]: {
     component: DateQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
   [QuestionType.DATE_TIME_FIELD]: {
     component: DateQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
   [QuestionType.TIME]: {
     component: DateQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
   [QuestionType.TIME_PICKER_FIELD]: {
     component: DateQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
 
   // Clinical measurement types - default to null
   [QuestionType.TEMPERATURE]: {
     component: TemperatureQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
   [QuestionType.PULSE]: {
     component: ClinicalDynamicInputQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
   [QuestionType.CLINICAL_DYNAMIC_INPUT]: {
     component: ClinicalDynamicInputQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
   [QuestionType.BLOOD_PRESSURE]: {
     component: BloodPressureQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
   [QuestionType.WEIGHT]: {
     component: WeightHeightQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
   [QuestionType.HEIGHT]: {
     component: WeightHeightQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
   [QuestionType.WEIGHT_HEIGHT]: {
     component: WeightHeightQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
 
   // Visual scales - default to null
   [QuestionType.HORIZONTAL_VAS]: {
     component: HorizontalVASQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
 
   // Media - default to null
   [QuestionType.IMAGE_CAPTURE]: {
     component: ImageCaptureQuestion,
-    getValue: (answerValue: any) =>
+    getValue: (answerValue: unknown) =>
       answerValue !== undefined ? answerValue : null,
   },
 };
@@ -198,7 +203,7 @@ const normalizeToEnumFormat = (type: string): string => {
 
   // Direct mapping of all enum values (case-insensitive)
   // This maps all possible input formats to the exact enum values
-  const enumMap: Record<string, string> = {
+  const enumMap: { [key: string]: string } = {
     // Clinical measurement types - these are the ones causing issues
     temperature: QuestionType.TEMPERATURE,
     pulse: QuestionType.PULSE,
@@ -221,6 +226,9 @@ const normalizeToEnumFormat = (type: string): string => {
     imagecapture: QuestionType.IMAGE_CAPTURE,
     "image-capture": QuestionType.IMAGE_CAPTURE,
     image_capture: QuestionType.IMAGE_CAPTURE,
+    mobileimagecapture: QuestionType.IMAGE_CAPTURE,
+    "mobile-image-capture": QuestionType.IMAGE_CAPTURE,
+    mobile_image_capture: QuestionType.IMAGE_CAPTURE,
     // Text types
     text: QuestionType.TEXT,
     textfield: QuestionType.TEXT_FIELD,
@@ -244,6 +252,7 @@ const normalizeToEnumFormat = (type: string): string => {
     date: QuestionType.DATE,
     datefield: QuestionType.DATE_FIELD,
     "date-field": QuestionType.DATE_FIELD,
+    datetime: QuestionType.DATE_TIME_FIELD,
     datetimefield: QuestionType.DATE_TIME_FIELD,
     "date-time-field": QuestionType.DATE_TIME_FIELD,
     time: QuestionType.TIME,
@@ -262,9 +271,9 @@ const normalizeToEnumFormat = (type: string): string => {
  */
 interface QuestionRendererProps {
   element: ParsedElement;
-  currentAnswer?: any; // Current answer from state (not just initial patientAnswer)
-  onAnswerChange: (questionId: string, answer: any) => void;
-  errors?: Record<string, string[]>;
+  currentAnswer?: unknown; // Current answer from state (not just initial patientAnswer)
+  onAnswerChange: (questionId: string, answer: unknown) => void;
+  errors?: { [key: string]: string[] };
 }
 
 /**
@@ -293,7 +302,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
   const fontSize = displayProperties.fontSize
     ? parseInt(displayProperties.fontSize, 10)
     : 16;
-  const fontColor = displayProperties.fontColor || "#000000";
+  const fontColor = displayProperties.fontColor || AppColors.black;
   const marginLeft = displayProperties.marginLeft
     ? parseInt(displayProperties.marginLeft, 10)
     : 0;
@@ -342,7 +351,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
 
   // Memoize onChange handler to prevent infinite re-renders
   const handleAnswerChange = useCallback(
-    (value: any) => {
+    (value: unknown) => {
       onAnswerChange(question.id, value);
     },
     [question.id, onAnswerChange]
@@ -350,7 +359,7 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
 
   // Parse questionProperties to determine behavior
   const questionProperties = useMemo(() => {
-    const props: Record<string, string> = {};
+    const props: { [key: string]: string } = {};
     if (question.questionProperties) {
       question.questionProperties.forEach(
         (prop: { key: string; value: string }) => {

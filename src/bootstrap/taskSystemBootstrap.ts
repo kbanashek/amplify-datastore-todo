@@ -1,16 +1,41 @@
 import { generateClient } from "@aws-amplify/api";
 import { Amplify } from "@aws-amplify/core";
 import { DataStore } from "@aws-amplify/datastore";
-import { initTaskSystem, TempAnswerSyncService } from "@orion/task-system";
-import { logErrorWithPlatform, logWithPlatform } from "../utils/platformLogger";
+import {
+  TempAnswerSyncService,
+  getLoggingService,
+  initTaskSystem,
+} from "@orion/task-system";
+import { logWithPlatform } from "../utils/platformLogger";
 
-export type TaskSystemBootstrapOptions = {
+export interface TaskSystemBootstrapOptions {
   /**
    * If true, start DataStore after initializing task-system runtime.
    * Default: true for the harness app.
    */
   startDataStore?: boolean;
-};
+
+  /**
+   * Organization identifier (parentId in Lumiere).
+   * Used for S3 image storage path hierarchy.
+   * LX should pass this from their app configuration.
+   */
+  organizationId?: string;
+
+  /**
+   * Study identifier.
+   * Used for S3 image storage path hierarchy.
+   * LX should pass this from their app configuration.
+   */
+  studyId?: string;
+
+  /**
+   * Study instance identifier.
+   * Used for S3 image storage path hierarchy.
+   * LX should pass this from their app configuration.
+   */
+  studyInstanceId?: string;
+}
 
 let bootstrapInFlight: Promise<void> | null = null;
 const bootstrapLogs = new Map<string, number>();
@@ -58,7 +83,12 @@ export async function bootstrapTaskSystem(
     bootstrapInFlight = (async () => {
       logBootstrap("🚀", "Initializing task-system runtime");
       // Initialize task-system runtime configuration (no Amplify.configure() inside)
-      await initTaskSystem({ startDataStore: false });
+      await initTaskSystem({
+        startDataStore: false,
+        organizationId: options.organizationId,
+        studyId: options.studyId,
+        studyInstanceId: options.studyInstanceId,
+      });
       logBootstrap("✅", "Task-system runtime initialized");
 
       if (startDataStore) {
@@ -74,14 +104,17 @@ export async function bootstrapTaskSystem(
       // Verify Amplify is configured before calling generateClient
       // Note: We check isConfigured flag directly to avoid triggering the warning
       // from Amplify.getConfig() if Amplify isn't configured yet
-      const isConfigured = (Amplify as any).isConfigured;
+      interface AmplifyWithConfig {
+        isConfigured?: boolean;
+      }
+      const isConfigured = (Amplify as unknown as AmplifyWithConfig)
+        .isConfigured;
       if (!isConfigured) {
         const error = new Error(
           "Amplify must be configured before calling bootstrapTaskSystem. Ensure amplify-init-sync.ts is imported before this function is called."
         );
-        logErrorWithPlatform(
-          "",
-          "Bootstrap",
+        const logger = getLoggingService().createLogger("Bootstrap");
+        logger.error(
           "Amplify not configured before generateClient() call",
           error
         );
@@ -141,12 +174,10 @@ export async function bootstrapTaskSystem(
 
               return { data };
             } catch (error) {
-              logErrorWithPlatform(
-                "",
-                "bootstrapTaskSystem",
-                "Temp-save GraphQL mutation failed",
-                error
+              const logger = getLoggingService().createLogger(
+                "bootstrapTaskSystem"
               );
+              logger.error("Temp-save GraphQL mutation failed", error);
               // Return error in GraphQL response format
               return {
                 data: undefined,

@@ -1,7 +1,7 @@
 {
   "name": "task-system-poc",
   "main": "./entry.js",
-  "version": "0.1.27",
+  "version": "0.1.31",
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
@@ -63,6 +63,7 @@
     "expo-blur": "~14.1.5",
     "expo-constants": "~17.1.8",
     "expo-dev-client": "~5.2.4",
+    "expo-file-system": "^19.0.21",
     "expo-font": "~13.3.2",
     "expo-haptics": "~14.1.4",
     "expo-image": "~2.4.1",

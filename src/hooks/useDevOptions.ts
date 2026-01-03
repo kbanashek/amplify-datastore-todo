@@ -18,13 +18,13 @@ export type DevOptionsSeedResult = Awaited<
   ReturnType<typeof FixtureImportService.importTaskSystemFixture>
 >;
 
-export type DevOptionsAppointmentSeedResult = {
+export interface DevOptionsAppointmentSeedResult {
   appointmentsCount: number;
   todayAppointments: number;
   timezone: string;
-};
+}
 
-export type UseDevOptionsReturn = {
+export interface UseDevOptionsReturn {
   // State
   isBusy: boolean;
   isImportingFixture: boolean;
@@ -52,7 +52,7 @@ export type UseDevOptionsReturn = {
   nuclearDeleteCloud: () => Promise<void>;
 
   forceSyncThisDevice: () => Promise<void>;
-};
+}
 
 const buildFixtureForToday = () => {
   const baseDate = new Date();

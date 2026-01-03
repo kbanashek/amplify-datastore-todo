@@ -11,6 +11,8 @@ import { isAndroid } from "@utils/platform";
 import { getServiceLogger } from "@utils/serviceLogger";
 import { QuestionRenderer } from "@components/questions/QuestionRenderer";
 import { QuestionScreenButtons } from "@components/questions/QuestionScreenButtons";
+import { Task } from "@task-types/Task";
+import { getTaskSystemConfig } from "@runtime/taskSystem";
 
 const logger = getServiceLogger("QuestionScreenContent");
 
@@ -31,6 +33,7 @@ interface QuestionScreenContentProps {
   onNext?: () => void;
   onReviewOrSubmit?: () => void;
   activityConfig?: any;
+  task?: Task;
 }
 
 /**
@@ -53,6 +56,7 @@ export const QuestionScreenContent: React.FC<QuestionScreenContentProps> = ({
   onNext,
   onReviewOrSubmit,
   activityConfig,
+  task,
 }) => {
   const currentScreen = activityData.screens[currentScreenIndex];
   const scrollViewRef = useRef<ScrollView>(null);
@@ -111,10 +115,30 @@ export const QuestionScreenContent: React.FC<QuestionScreenContentProps> = ({
         //   questionId: element.question.id,
         //   questionText: element.question.text?.substring(0, 30),
         // });
+
+        // Inject task context and S3 hierarchy into displayProperties for ImageCapture questions
+        const config = getTaskSystemConfig();
+        const enhancedElement = task
+          ? {
+              ...element,
+              displayProperties: {
+                ...element.displayProperties,
+                // Task context
+                taskId: task.id,
+                taskType: String(task.taskType),
+                uuid: task.taskInstanceId || "",
+                // S3 hierarchy from package configuration
+                organizationId: config.organizationId || "",
+                studyId: config.studyId || "",
+                studyInstanceId: config.studyInstanceId || "",
+              },
+            }
+          : element;
+
         return (
           <QuestionRenderer
             key={element.id}
-            element={element}
+            element={enhancedElement}
             currentAnswer={answers[element.question.id]}
             onAnswerChange={onAnswerChange}
             errors={errors}

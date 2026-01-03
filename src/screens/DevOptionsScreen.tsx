@@ -17,7 +17,7 @@ import { useDevOptions } from "../hooks/useDevOptions";
 
 type ActionVariant = "primary" | "secondary" | "danger";
 
-type ActionCardProps = {
+interface ActionCardProps {
   title: string;
   description: string;
   buttonLabel: string;
@@ -26,7 +26,7 @@ type ActionCardProps = {
   loading: boolean;
   variant?: ActionVariant;
   testID?: string;
-};
+}
 
 const ActionCard: React.FC<ActionCardProps> = ({
   title,
@@ -81,13 +81,13 @@ const ActionCard: React.FC<ActionCardProps> = ({
   );
 };
 
-type CollapsibleSectionProps = {
+interface CollapsibleSectionProps {
   title: string;
   subtitle?: string;
   isOpen: boolean;
   onToggle: () => void;
   children: React.ReactNode;
-};
+}
 
 const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
   title,

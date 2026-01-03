@@ -9,6 +9,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.31] - 2026-01-02
+
+### Added
+
+- **Implemented DateInput and TimeInput components**
+  - Created `DateInput.tsx` component for date selection with proper formatting
+  - Created `TimeInput.tsx` component for time selection with proper formatting
+  - Added comprehensive unit tests for both components (`DateInput.test.tsx`, `TimeInput.test.tsx`)
+  - Updated `DateQuestion.tsx` to use new DateInput and TimeInput components
+  - Added date/time formatting utilities in `dateTimeFormatting.ts`
+
+- **Implemented ImageStorageService for S3 integration**
+  - Created `ImageStorageService.ts` for handling image uploads to S3
+  - Added file system utilities in `fileSystemUtils.ts` for cross-platform file operations
+  - Added image path utilities in `imagePathUtils.ts`
+  - Comprehensive unit tests for all new utilities
+  - Documentation for S3 setup and native module troubleshooting
+
+### Fixed
+
+- **Eliminated all `any` types in QuestionRenderer.tsx** (coding guideline compliance)
+  - Replaced all `any` types with `unknown` for proper type safety
+  - Updated `QuestionConfig` interface to use `unknown` for getValue transformers
+  - Updated `QuestionRendererProps` interface to use `unknown` for answers
+  - Updated all 28 getValue functions across all question types
+  - Added ESLint disable comment for heterogeneous component map with explanation
+  - Fixed TypeScript strict type checking issues
+
 ## [0.1.30] - 2025-12-27
 
 ### Fixed
