@@ -10,202 +10,204 @@ For detailed information on when to add code to each location, see [Root vs Pack
 
 ## Top-Level Structure
 
-```
-orion-task-system/
-│
-├── 📦 packages/
-│   └── task-system/              # Reusable task system package
-│       ├── src/                  # Package source code
-│       ├── docs/                 # Package documentation (MDX)
-│       ├── config/               # Package configuration
-│       └── package.json          # Package metadata
-│
-├── 📱 app/                        # Expo Router app directory (harness)
-│   ├── (tabs)/                   # Tab-based navigation
-│   │   ├── index.tsx             # 🏠 Dashboard (tasks & appointments)
-│   │   ├── questions.tsx          # ❓ Question/assessment screen
-│   │   ├── seed-screen.tsx       # 🌱 Data seeding interface
-│   │   └── ...                   # Other tab screens
-│   └── _layout.tsx               # App layout configuration
-│
-├── 🎨 src/                        # Harness application source
-│   ├── amplify-config.ts         # Amplify configuration for harness
-│   ├── amplify-init.ts           # Amplify initialization
-│   ├── bootstrap/                # Bootstrap logic
-│   ├── components/               # Harness-specific components
-│   ├── screens/                  # Harness app screens
-│   └── contexts/                 # Harness-specific contexts
-│
-├── 🌱 scripts/                    # Development and seed scripts
-│   ├── seed-coordinated-data.ts  # Coordinated task/appointment seeding
-│   ├── seed-appointment-data.ts  # Appointment seeding
-│   ├── seed-question-data.ts     # Activity/question seeding
-│   └── ...                       # Other utility scripts
-│
-├── 📚 DOCS/                       # Project documentation
-│   ├── architecture/             # Architecture documentation
-│   ├── development/              # Development guides
-│   ├── features/                 # Feature documentation
-│   ├── testing/                  # Testing documentation
-│   └── ...                       # Other documentation
-│
-├── 📦 models/                     # Amplify Generated Models (root)
-│
-├── ⚙️ amplify/                    # Amplify Backend Configuration
-│   └── backend/api/lxtodoapp/
-│       └── schema.graphql        # GraphQL schema definition
-│
-└── ☁️ aws-exports.js               # AWS Configuration (generated)
+```mermaid
+graph TD
+    Root["orion-task-system/"]
+    
+    Root --> Packages["📦 packages/"]
+    Root --> App["📱 app/"]
+    Root --> Src["🎨 src/"]
+    Root --> Scripts["🌱 scripts/"]
+    Root --> Docs["📚 DOCS/"]
+    Root --> Models["📦 models/"]
+    Root --> Amplify["⚙️ amplify/"]
+    Root --> AwsExports["☁️ aws-exports.js"]
+    
+    Packages --> TaskSystem["task-system/<br/>Reusable task system package"]
+    TaskSystem --> TSrc["src/<br/>Package source code"]
+    TaskSystem --> TDocs["docs/<br/>Package documentation (MDX)"]
+    TaskSystem --> TConfig["config/<br/>Package configuration"]
+    TaskSystem --> TPackage["package.json<br/>Package metadata"]
+    
+    App --> Tabs["(tabs)/<br/>Tab-based navigation"]
+    App --> Layout["_layout.tsx<br/>App layout configuration"]
+    Tabs --> Index["index.tsx<br/>🏠 Dashboard"]
+    Tabs --> Questions["questions.tsx<br/>❓ Questions screen"]
+    Tabs --> SeedScreen["seed-screen.tsx<br/>🌱 Data seeding"]
+    Tabs --> Other1["...<br/>Other tab screens"]
+    
+    Src --> AmplifyConfig["amplify-config.ts<br/>Amplify configuration"]
+    Src --> AmplifyInit["amplify-init.ts<br/>Amplify initialization"]
+    Src --> Bootstrap["bootstrap/<br/>Bootstrap logic"]
+    Src --> Components["components/<br/>Harness components"]
+    Src --> Screens["screens/<br/>Harness screens"]
+    Src --> Contexts["contexts/<br/>Harness contexts"]
+    
+    Scripts --> SeedCoord["seed-coordinated-data.ts"]
+    Scripts --> SeedAppt["seed-appointment-data.ts"]
+    Scripts --> SeedQuest["seed-question-data.ts"]
+    Scripts --> Other2["...<br/>Other scripts"]
+    
+    Docs --> Architecture["architecture/"]
+    Docs --> Development["development/"]
+    Docs --> Features["features/"]
+    Docs --> Testing["testing/"]
+    Docs --> Other3["...<br/>Other docs"]
+    
+    Amplify --> Backend["backend/api/lxtodoapp/"]
+    Backend --> Schema["schema.graphql<br/>GraphQL schema"]
 ```
 
 ## Package Structure: `packages/task-system/`
 
 The task system package is the **single source of truth** for all reusable task management functionality.
 
-```
-packages/task-system/
-│
-├── src/
-│   ├── 📦 modules/                # Module wrappers
-│   │   └── TaskActivityModule.tsx # Main entry point for host apps
-│   │
-│   ├── 🎨 components/             # Reusable UI Components
-│   │   ├── questions/            # Question rendering components
-│   │   │   ├── QuestionRenderer.tsx
-│   │   │   ├── QuestionScreenContent.tsx
-│   │   │   ├── SingleSelectQuestion.tsx
-│   │   │   ├── TextQuestion.tsx
-│   │   │   └── ...
-│   │   ├── ui/                   # UI primitives
-│   │   │   ├── Button.tsx
-│   │   │   ├── TextField.tsx
-│   │   │   ├── DateTimeField.tsx
-│   │   │   ├── LoadingSpinner.tsx
-│   │   │   └── ...
-│   │   ├── TaskCard.tsx          # Task display card
-│   │   ├── AppointmentCard.tsx   # Appointment display card
-│   │   ├── GroupedTasksView.tsx  # Grouped task display
-│   │   ├── TaskContainer.tsx     # Task list container
-│   │   ├── GlobalHeader.tsx      # App header
-│   │   ├── LanguageSelector.tsx  # Language selection
-│   │   ├── NavigationMenu.tsx    # Navigation component
-│   │   ├── NetworkStatusIndicator.tsx # Network status
-│   │   ├── TranslatedText.tsx    # Translated text component
-│   │   └── ...
-│   │
-│   ├── 🪝 hooks/                  # Custom React Hooks
-│   │   ├── useTaskList.ts        # Task list logic
-│   │   ├── useQuestionsScreen.ts # Question screen orchestration
-│   │   ├── useAppointmentList.ts # Appointment list logic
-│   │   ├── useTranslatedText.ts  # Translation hook
-│   │   ├── useTaskFilters.ts     # Task filtering logic
-│   │   ├── useGroupedTasks.ts    # Task grouping logic
-│   │   ├── useActivityList.ts    # Activity list logic
-│   │   ├── useAmplifyState.ts    # Amplify state management
-│   │   ├── useNetworkStatus.ts   # Network status monitoring
-│   │   ├── useRTL.ts             # RTL layout support
-│   │   └── ...
-│   │
-│   ├── 🔧 services/               # Business Logic Services
-│   │   ├── TaskService.ts        # Task CRUD operations
-│   │   ├── AppointmentService.ts # Appointment operations
-│   │   ├── ActivityService.ts    # Activity/assessment operations
-│   │   ├── QuestionService.ts    # Question operations
-│   │   ├── TaskAnswerService.ts  # Task answer operations
-│   │   ├── TaskHistoryService.ts # Task history tracking
-│   │   ├── TaskResultService.ts  # Task result operations
-│   │   ├── DataPointService.ts   # Data point operations
-│   │   ├── ConflictResolution.ts # DataStore conflict handling
-│   │   ├── FixtureImportService.ts # Fixture import/export
-│   │   ├── ImageStorageService.ts # Image storage
-│   │   ├── LoggingService.ts     # Logging infrastructure
-│   │   ├── TranslationService.ts # Translation service
-│   │   ├── TranslationMemoryService.ts # Translation memory
-│   │   ├── TempAnswerSyncService.ts # Temp answer sync
-│   │   ├── SeededDataCleanupService.ts # Cleanup service
-│   │   └── ...
-│   │
-│   ├── 📘 types/                  # TypeScript Type Definitions
-│   │   ├── Task.ts               # Task types and enums
-│   │   ├── Appointment.ts        # Appointment types
-│   │   ├── Activity.ts           # Activity/assessment types
-│   │   ├── ActivityConfig.ts     # Activity configuration types
-│   │   ├── Question.ts           # Question types
-│   │   ├── TaskAnswer.ts         # Task answer types
-│   │   ├── TaskHistory.ts        # Task history types
-│   │   ├── TaskResult.ts         # Task result types
-│   │   ├── DataPoint.ts          # Data point types
-│   │   ├── tempAnswerSync.ts     # Temp answer sync types
-│   │   ├── activity-config-enums.ts # Activity config enums
-│   │   └── ...
-│   │
-│   ├── ✅ schemas/                # Validation Schemas
-│   │   └── taskSchemas.ts        # Zod schemas for task validation
-│   │
-│   ├── 📌 constants/              # Constants and Enums
-│   │   ├── modelNames.ts         # DataStore model name constants
-│   │   ├── operationSource.ts    # Operation source constants
-│   │   ├── awsErrors.ts          # AWS error name constants
-│   │   ├── AppColors.ts          # Color constants
-│   │   └── ...
-│   │
-│   ├── 🌐 contexts/               # React Contexts
-│   │   ├── AmplifyContext.tsx    # Amplify configuration context
-│   │   └── TranslationContext.tsx # Legacy translation context
-│   │
-│   ├── 🌍 translations/           # i18next Translation System
-│   │   ├── index.ts              # Translation exports
-│   │   ├── translationTypes.ts   # Translation type definitions
-│   │   ├── TranslationProvider.tsx # Translation provider
-│   │   ├── en.json               # English translations
-│   │   └── ...
-│   │
-│   ├── 🛠️ utils/                  # Utility Functions
-│   │   ├── activityParser.ts     # Activity JSON parsing
-│   │   ├── appointmentParser.ts  # Appointment parsing
-│   │   ├── questionValidation.ts # Question validation logic
-│   │   ├── logger.ts             # Enhanced logger
-│   │   ├── deviceLogger.ts       # Device-specific logging
-│   │   ├── serviceLogger.ts      # Service logger
-│   │   ├── dataSubscriptionLogger.ts # DataStore subscription logger
-│   │   └── ...
-│   │
-│   ├── 🎬 screens/                # Reusable Screens
-│   │   └── QuestionsScreen.tsx   # Questions screen component
-│   │
-│   ├── 📦 models/                 # DataStore Model Types
-│   │   ├── index.d.ts            # Model type definitions
-│   │   ├── index.js              # Model exports
-│   │   ├── schema.d.ts           # Schema definitions
-│   │   └── schema.js             # Schema exports
-│   │
-│   ├── 🧪 fixtures/               # Test Fixtures
-│   │   └── TaskSystemFixture.json # Full task system fixture
-│   │
-│   ├── 🔄 polyfills/              # Polyfills
-│   │   └── crypto.ts             # Crypto polyfill
-│   │
-│   ├── 🚀 runtime/                # Runtime Initialization
-│   │   └── taskSystem.ts         # Task system initialization
-│   │
-│   ├── 🧪 __mocks__/              # Test Mocks
-│   │   ├── translationMocks.ts   # Translation mocks
-│   │   └── ...
-│   │
-│   ├── 📝 __tests__/              # Package-level tests
-│   │
-│   └── 📤 index.ts                # Package public API exports
-│
-├── 📖 docs/                       # Package Documentation (MDX)
-│   ├── Architecture.mdx          # Architecture documentation
-│   ├── ComponentGuide.mdx        # Component guide
-│   └── GettingStarted.mdx        # Getting started guide
-│
-├── ⚙️ config/                     # Package Configuration
-│   └── aws-credentials.json      # AWS credentials config
-│
-├── 📦 package.json                # Package metadata
-└── ⚙️ tsconfig.json               # TypeScript configuration
+```mermaid
+graph TD
+    PKG["packages/task-system/"]
+    
+    PKG --> SRC["src/"]
+    PKG --> PDOCS["📖 docs/"]
+    PKG --> PCONFIG["⚙️ config/"]
+    PKG --> PPKG["📦 package.json"]
+    PKG --> PTSCONFIG["⚙️ tsconfig.json"]
+    
+    SRC --> MODULES["📦 modules/"]
+    SRC --> COMPONENTS["🎨 components/"]
+    SRC --> HOOKS["🪝 hooks/"]
+    SRC --> SERVICES["🔧 services/"]
+    SRC --> TYPES["📘 types/"]
+    SRC --> SCHEMAS["✅ schemas/"]
+    SRC --> CONSTANTS["📌 constants/"]
+    SRC --> SCONTEXTS["🌐 contexts/"]
+    SRC --> TRANSLATIONS["🌍 translations/"]
+    SRC --> UTILS["🛠️ utils/"]
+    SRC --> SSCREENS["🎬 screens/"]
+    SRC --> SMODELS["📦 models/"]
+    SRC --> FIXTURES["🧪 fixtures/"]
+    SRC --> POLYFILLS["🔄 polyfills/"]
+    SRC --> RUNTIME["🚀 runtime/"]
+    SRC --> MOCKS["🧪 __mocks__/"]
+    SRC --> TESTS["📝 __tests__/"]
+    SRC --> INDEX["📤 index.ts"]
+    
+    MODULES --> TAM["TaskActivityModule.tsx<br/>Main entry point"]
+    
+    COMPONENTS --> QUESTIONS["questions/"]
+    COMPONENTS --> UI["ui/"]
+    COMPONENTS --> TASKCARD["TaskCard.tsx"]
+    COMPONENTS --> APPTCARD["AppointmentCard.tsx"]
+    COMPONENTS --> GROUPED["GroupedTasksView.tsx"]
+    COMPONENTS --> CONTAINER["TaskContainer.tsx"]
+    COMPONENTS --> HEADER["GlobalHeader.tsx"]
+    COMPONENTS --> LANG["LanguageSelector.tsx"]
+    COMPONENTS --> NAV["NavigationMenu.tsx"]
+    COMPONENTS --> NETWORK["NetworkStatusIndicator.tsx"]
+    COMPONENTS --> TRANS["TranslatedText.tsx"]
+    COMPONENTS --> CMORE["..."]
+    
+    QUESTIONS --> QR["QuestionRenderer.tsx"]
+    QUESTIONS --> QSC["QuestionScreenContent.tsx"]
+    QUESTIONS --> SSQ["SingleSelectQuestion.tsx"]
+    QUESTIONS --> TQ["TextQuestion.tsx"]
+    QUESTIONS --> QMORE["..."]
+    
+    UI --> BTN["Button.tsx"]
+    UI --> TF["TextField.tsx"]
+    UI --> DTF["DateTimeField.tsx"]
+    UI --> LS["LoadingSpinner.tsx"]
+    UI --> UMORE["..."]
+    
+    HOOKS --> UTL["useTaskList.ts"]
+    HOOKS --> UQS["useQuestionsScreen.ts"]
+    HOOKS --> UAL["useAppointmentList.ts"]
+    HOOKS --> UTT["useTranslatedText.ts"]
+    HOOKS --> UTF["useTaskFilters.ts"]
+    HOOKS --> UGT["useGroupedTasks.ts"]
+    HOOKS --> UACL["useActivityList.ts"]
+    HOOKS --> UAS["useAmplifyState.ts"]
+    HOOKS --> UNS["useNetworkStatus.ts"]
+    HOOKS --> URTL["useRTL.ts"]
+    HOOKS --> HMORE["..."]
+    
+    SERVICES --> TS["TaskService.ts"]
+    SERVICES --> AS["AppointmentService.ts"]
+    SERVICES --> ACS["ActivityService.ts"]
+    SERVICES --> QS["QuestionService.ts"]
+    SERVICES --> TAS["TaskAnswerService.ts"]
+    SERVICES --> THS["TaskHistoryService.ts"]
+    SERVICES --> TRS["TaskResultService.ts"]
+    SERVICES --> DPS["DataPointService.ts"]
+    SERVICES --> CR["ConflictResolution.ts"]
+    SERVICES --> FIS["FixtureImportService.ts"]
+    SERVICES --> ISS["ImageStorageService.ts"]
+    SERVICES --> LGS["LoggingService.ts"]
+    SERVICES --> TRNS["TranslationService.ts"]
+    SERVICES --> TMS["TranslationMemoryService.ts"]
+    SERVICES --> TASS["TempAnswerSyncService.ts"]
+    SERVICES --> SDCS["SeededDataCleanupService.ts"]
+    SERVICES --> SMORE["..."]
+    
+    TYPES --> TTASK["Task.ts"]
+    TYPES --> TAPPT["Appointment.ts"]
+    TYPES --> TACT["Activity.ts"]
+    TYPES --> TAC["ActivityConfig.ts"]
+    TYPES --> TQUEST["Question.ts"]
+    TYPES --> TANS["TaskAnswer.ts"]
+    TYPES --> THIST["TaskHistory.ts"]
+    TYPES --> TRES["TaskResult.ts"]
+    TYPES --> TDP["DataPoint.ts"]
+    TYPES --> TTASYNC["tempAnswerSync.ts"]
+    TYPES --> TENUMS["activity-config-enums.ts"]
+    TYPES --> TMORE["..."]
+    
+    SCHEMAS --> TSCHEMAS["taskSchemas.ts<br/>Zod validation"]
+    
+    CONSTANTS --> MN["modelNames.ts"]
+    CONSTANTS --> OS["operationSource.ts"]
+    CONSTANTS --> AE["awsErrors.ts"]
+    CONSTANTS --> AC["AppColors.ts"]
+    CONSTANTS --> COMORE["..."]
+    
+    SCONTEXTS --> AMPCTX["AmplifyContext.tsx"]
+    SCONTEXTS --> TCTX["TranslationContext.tsx"]
+    
+    TRANSLATIONS --> TINDEX["index.ts"]
+    TRANSLATIONS --> TTYPES["translationTypes.ts"]
+    TRANSLATIONS --> TPROV["TranslationProvider.tsx"]
+    TRANSLATIONS --> EN["en.json"]
+    TRANSLATIONS --> TRMORE["..."]
+    
+    UTILS --> AP["activityParser.ts"]
+    UTILS --> APPT["appointmentParser.ts"]
+    UTILS --> QV["questionValidation.ts"]
+    UTILS --> LOG["logger.ts"]
+    UTILS --> DL["deviceLogger.ts"]
+    UTILS --> SL["serviceLogger.ts"]
+    UTILS --> DSL["dataSubscriptionLogger.ts"]
+    UTILS --> UUMORE["..."]
+    
+    SSCREENS --> QSCREEN["QuestionsScreen.tsx"]
+    
+    SMODELS --> IDX["index.d.ts"]
+    SMODELS --> IDXJS["index.js"]
+    SMODELS --> SCHD["schema.d.ts"]
+    SMODELS --> SCHJS["schema.js"]
+    
+    FIXTURES --> TFIX["TaskSystemFixture.json"]
+    
+    POLYFILLS --> CRYPTO["crypto.ts"]
+    
+    RUNTIME --> RTSYS["taskSystem.ts"]
+    
+    MOCKS --> TMOCKS["translationMocks.ts"]
+    MOCKS --> MMORE["..."]
+    
+    PDOCS --> ARCH["Architecture.mdx"]
+    PDOCS --> COMP["ComponentGuide.mdx"]
+    PDOCS --> START["GettingStarted.mdx"]
+    
+    PCONFIG --> AWSCRED["aws-credentials.json"]
 ```
 
 ## Key Directories

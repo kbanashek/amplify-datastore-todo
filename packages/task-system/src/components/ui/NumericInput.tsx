@@ -1,14 +1,14 @@
+import { AppColors } from "@constants/AppColors";
+import { AppFonts } from "@constants/AppFonts";
 import { getBorderStyle } from "@utils/borderStyleHelper";
 import React from "react";
 import {
+  StyleProp,
   StyleSheet,
   TextInput,
   View,
-  StyleProp,
   ViewStyle,
 } from "react-native";
-import { AppFonts } from "@constants/AppFonts";
-import { AppColors } from "@constants/AppColors";
 
 interface NumericInputProps {
   value: string;
@@ -52,7 +52,7 @@ export const NumericInput: React.FC<NumericInputProps> = ({
       <TextInput
         style={[
           styles.input,
-          getBorderStyle(borderStyle, styles as any) as any,
+          getBorderStyle(borderStyle, styles),
           error && styles.inputError,
         ]}
         value={value}
@@ -76,9 +76,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   lineBorder: {
+    borderWidth: 0,
     borderBottomWidth: 1,
+    borderColor: AppColors.borderGray,
     borderBottomColor: AppColors.borderGray,
-    backgroundColor: "transparent",
+    borderRadius: 0,
+    backgroundColor: AppColors.powderGray,
   },
   rectangleBorder: {
     borderWidth: 1,

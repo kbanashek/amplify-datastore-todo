@@ -1,14 +1,18 @@
+import { useTaskTranslation } from "@orion/task-system";
 import { Link, Stack } from "expo-router";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { AppColors } from "../src/constants/AppColors";
 
 export default function NotFoundScreen() {
+  const { t } = useTaskTranslation();
+
   return (
     <>
-      <Stack.Screen options={{ title: "Oops!" }} />
+      <Stack.Screen options={{ title: t("errors.notFound.screenTitle") }} />
       <View style={styles.container}>
-        <Text style={styles.title}>This screen does not exist.</Text>
+        <Text style={styles.title}>{t("errors.notFound.title")}</Text>
         <Link href="/" style={styles.link}>
-          <Text style={styles.linkText}>Go to home screen!</Text>
+          <Text style={styles.linkText}>{t("errors.notFound.homeLink")}</Text>
         </Link>
       </View>
     </>
@@ -21,7 +25,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
-    backgroundColor: "#fff",
+    backgroundColor: AppColors.white,
   },
   title: {
     fontSize: 24,
@@ -33,7 +37,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   linkText: {
-    color: "#007AFF",
+    color: AppColors.CIBlue,
     fontSize: 16,
   },
 });

@@ -9,6 +9,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Updated Expo File System Imports**
+  - Replaced deprecated `expo-file-system/legacy` imports with modern `expo-file-system` package
+  - Updated both production code and test mocks for consistency with current Expo SDK
+
+- **Type Safety Improvements**
+  - Replaced `any` type with `AnswerValue` in `ActivityConfig.ts` for `patientAnswer` property
+  - Created `ValidationAnswers` type (`Record<string, AnswerValue>`) in `questionValidation.ts`
+  - Updated all validation functions to use type-safe `ValidationAnswers` instead of `any`
+  - Fixed `NumericInput`, `TemperatureQuestion`, `WeightHeightQuestion`, `ClinicalDynamicInputQuestion`, and `BloodPressureQuestion` lineBorder styles to satisfy `getBorderStyle<T>` generic type requirements
+  - Standardized border colors and backgrounds across all clinical input components
+
+- **Platform-Specific Date/Time Handling**
+  - Fixed Android DateTimePicker mode compatibility by converting `"datetime"` to sequential `"date"` and `"time"` pickers
+  - Maintained iOS native `"datetime"` picker support
+
+- **CMP Workflow Enhancement**
+  - Updated `.cursor/commands/cmp.cursor.md` to pull latest `develop` before creating feature branches
+  - Added critical note emphasizing this step prevents merge conflicts
+
+### Added
+
+- **Internationalization (i18n)**
+  - Added translation keys for DateInput placeholder texts (`yearPlaceholder`, `monthPlaceholder`, `dayPlaceholder`)
+  - Added English translations (YYYY, Month, DD)
+  - Added Spanish translations (AAAA, Mes, DD)
+
+### Removed
+
+- **Duplicate Files**
+  - Deleted unused `src/utils/questionValidation.ts` (duplicate of package version)
+  - Documented deletion in `UNUSED_FILES.md` (total: 27 files deleted)
+
+### Fixed
+
+- **Import Path Alignment**
+  - Changed `TaskService.ts` import from relative path to `@schemas/taskSchemas` path alias
+  - Ensures consistency with project path mapping guidelines
+
 ## [0.1.32] - 2025-01-04
 
 ### Changed

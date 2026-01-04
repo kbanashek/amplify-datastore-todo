@@ -24,7 +24,7 @@ interface TemperatureQuestionProps {
   question: Question;
   value: string | null;
   onChange: (value: string) => void;
-  displayProperties: Record<string, any>;
+  displayProperties: { [key: string]: any };
   errors: string[];
 }
 
@@ -95,7 +95,7 @@ export const TemperatureQuestion: React.FC<TemperatureQuestionProps> = ({
         <TextInput
           style={[
             styles.input,
-            getBorderStyle(fieldDisplayStyle, styles as any) as any,
+            getBorderStyle(fieldDisplayStyle, styles),
             errors.length > 0 && styles.inputError,
           ]}
           value={temperature}
@@ -171,9 +171,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   lineBorder: {
+    borderWidth: 0,
     borderBottomWidth: 1,
+    borderColor: AppColors.borderGray,
     borderBottomColor: AppColors.borderGray,
-    backgroundColor: "transparent",
+    borderRadius: 0,
+    backgroundColor: AppColors.powderGray,
   },
   rectangleBorder: {
     borderWidth: 1,

@@ -79,7 +79,7 @@ export class FixtureImportService {
     if (!fixture || fixture.version !== 1) {
       throw new Error(
         `Unsupported fixture version: ${String(
-          (fixture as any)?.version
+          fixture?.version
         )}. Expected 1.`
       );
     }

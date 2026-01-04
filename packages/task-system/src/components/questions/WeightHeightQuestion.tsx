@@ -23,7 +23,7 @@ import {
  */
 interface CompoundAnswer {
   /** Map of unit type to value (e.g., { "ft": "5", "in": "10" }) */
-  value: Record<string, string>;
+  value: { [key: string]: string };
   /** Type of compound unit (e.g., "feet-inches") */
   type: string;
 }
@@ -49,7 +49,7 @@ interface WeightHeightQuestionProps {
   question: Question;
   value: string | CompoundAnswer | null;
   onChange: (value: string | CompoundAnswer) => void;
-  displayProperties: Record<string, unknown>;
+  displayProperties: { [key: string]: unknown };
   errors: string[];
 }
 
@@ -60,7 +60,7 @@ function isFieldDisplayConfig(value: unknown): value is FieldDisplayConfig {
   if (typeof value !== "object" || value === null) {
     return false;
   }
-  const obj = value as Record<string, unknown>;
+  const obj = value as { [key: string]: unknown };
   return (
     (obj.fieldType === undefined || typeof obj.fieldType === "string") &&
     (obj.unitType === undefined || typeof obj.unitType === "string") &&
@@ -210,7 +210,7 @@ export const WeightHeightQuestion: React.FC<WeightHeightQuestionProps> = ({
         <TextInput
           style={[
             styles.input,
-            getBorderStyle(fieldDisplayStyle, styles as any) as any,
+            getBorderStyle(fieldDisplayStyle, styles),
             errors.length > 0 && styles.inputError,
           ]}
           value={mainValue}
@@ -267,7 +267,7 @@ export const WeightHeightQuestion: React.FC<WeightHeightQuestionProps> = ({
             <TextInput
               style={[
                 styles.input,
-                getBorderStyle(fieldDisplayStyle, styles as any) as any,
+                getBorderStyle(fieldDisplayStyle, styles),
                 errors.length > 0 && styles.inputError,
               ]}
               value={secondaryValue}
@@ -304,21 +304,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   lineBorder: {
+    borderWidth: 0,
     borderBottomWidth: 1,
+    borderColor: AppColors.borderGray,
     borderBottomColor: AppColors.borderGray,
-    backgroundColor: AppColors.transparent,
+    borderRadius: 0,
+    backgroundColor: AppColors.powderGray,
   },
   rectangleBorder: {
     borderWidth: 1,
-    borderColor: AppColors.iconGray,
+    borderColor: AppColors.borderGray,
     borderRadius: 4,
-    backgroundColor: AppColors.lightGray,
+    backgroundColor: AppColors.powderGray,
   },
   ovalBorder: {
     borderWidth: 1,
     borderColor: AppColors.borderGray,
     borderRadius: 20,
-    backgroundColor: AppColors.lightGray,
+    backgroundColor: AppColors.powderGray,
   },
   inputError: {
     borderColor: AppColors.errorRed,

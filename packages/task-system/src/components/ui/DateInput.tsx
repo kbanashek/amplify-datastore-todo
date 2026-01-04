@@ -195,7 +195,7 @@ export const DateInput: React.FC<DateInputProps> = ({
             onChangeText={handleYearChange}
             keyboardType="number-pad"
             maxLength={4}
-            placeholder="YYYY"
+            placeholder={t("dateTime.yearPlaceholder")}
             placeholderTextColor={borderColor + "55"}
             editable={!disabled}
             testID={`${testID}-year`}
@@ -229,7 +229,7 @@ export const DateInput: React.FC<DateInputProps> = ({
                 monthIndex === null && styles.placeholder,
               ]}
             >
-              {monthIndex !== null ? monthNames[monthIndex] : "Month"}
+              {monthIndex !== null ? monthNames[monthIndex] : t("dateTime.monthPlaceholder")}
             </ThemedText>
             <ThemedText style={styles.dropdownIcon}>▼</ThemedText>
           </Pressable>
@@ -257,7 +257,7 @@ export const DateInput: React.FC<DateInputProps> = ({
             onChangeText={handleDayChange}
             keyboardType="number-pad"
             maxLength={2}
-            placeholder="DD"
+            placeholder={t("dateTime.dayPlaceholder")}
             placeholderTextColor={borderColor + "55"}
             editable={!disabled}
             testID={`${testID}-day`}

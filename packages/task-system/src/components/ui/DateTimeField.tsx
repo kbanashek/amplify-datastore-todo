@@ -153,15 +153,30 @@ export const DateTimeField: React.FC<DateTimeFieldProps> = ({
           if (isAndroid()) {
             // Avoid mounting the Android DateTimePicker component (it auto-opens and dismisses on unmount).
             // Using the imperative API prevents crashes when Material pickers are unavailable in the host.
+            // Android doesn't support "datetime" mode - convert to "date" or "time"
+            const androidMode = mode === "datetime" ? "date" : mode;
             DateTimePickerAndroid.open({
               value: value ?? new Date(),
-              mode,
+              mode: androidMode,
               display: "default",
-              design: "default",
-              onChange: (_event: any, selectedDate: Date | undefined) => {
-                if (selectedDate) onChange(selectedDate);
+              onChange: (_event, selectedDate) => {
+                if (selectedDate) {
+                  // For datetime mode on Android, show time picker after date is selected
+                  if (mode === "datetime") {
+                    DateTimePickerAndroid.open({
+                      value: selectedDate,
+                      mode: "time",
+                      display: "default",
+                      onChange: (_timeEvent, selectedTime) => {
+                        if (selectedTime) onChange(selectedTime);
+                      },
+                    });
+                  } else {
+                    onChange(selectedDate);
+                  }
+                }
               },
-            } as any);
+            });
             return;
           }
           setShowPicker(true);
