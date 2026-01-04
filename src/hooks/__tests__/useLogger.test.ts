@@ -7,6 +7,27 @@ import { LoggingProvider } from "../../contexts/LoggingContext";
 import { renderHook } from "@testing-library/react-native";
 import React from "react";
 
+// Mock initializeLoggingService to avoid circular dependencies
+jest.mock("@orion/task-system", () => {
+  const mockLogger = {
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    createLogger: jest.fn().mockReturnValue({
+      debug: jest.fn(),
+      info: jest.fn(),
+      warn: jest.fn(),
+      error: jest.fn(),
+    }),
+  };
+
+  return {
+    initializeLoggingService: jest.fn().mockReturnValue(mockLogger),
+    LoggingService: jest.fn().mockImplementation(() => mockLogger),
+  };
+});
+
 describe("useLogger", () => {
   it("should return logger instance when used within provider", () => {
     const wrapper = ({ children }: { children: React.ReactNode }) => {

@@ -7,6 +7,27 @@ import { Text } from "react-native";
 import { render, screen } from "@testing-library/react-native";
 import { LoggingProvider, useLogger } from "../LoggingContext";
 
+// Mock initializeLoggingService to avoid circular dependencies
+jest.mock("@orion/task-system", () => {
+  const mockLogger = {
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    createLogger: jest.fn().mockReturnValue({
+      debug: jest.fn(),
+      info: jest.fn(),
+      warn: jest.fn(),
+      error: jest.fn(),
+    }),
+  };
+
+  return {
+    initializeLoggingService: jest.fn().mockReturnValue(mockLogger),
+    LoggingService: jest.fn().mockImplementation(() => mockLogger),
+  };
+});
+
 // Test component that uses the logger
 const TestComponent: React.FC = () => {
   const logger = useLogger();

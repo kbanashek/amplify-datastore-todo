@@ -62,11 +62,12 @@ All root-level Expo template components have been removed:
 - ✅ TaskList.tsx
 - ✅ TasksView.tsx
 
-**Root-level files deleted: 22 files**
+**Root-level files deleted: 26 files**
 
 - ✅ 1 duplicate utility file (questionValidation.ts)
 - ✅ 3 Expo template components (HapticTab, ThemedText, ThemedView)
 - ✅ 18 Expo template UI files (components/ui/)
+- ✅ 4 obsolete test files (ui-button, ui-card, ui-loading-spinner, ui-text-field)
 
 **Hooks remaining (exported but only used by harness):**
 
@@ -80,6 +81,6 @@ These hooks are exported from the package for use by consuming applications:
 
 **Decision:** Keeping these hooks as they are part of the package's public API.
 
-**Total files deleted: 27 files**
+**Total files deleted: 31 files**
 
 **Remaining exported hooks: 5 hooks** (intentionally kept as public API)
