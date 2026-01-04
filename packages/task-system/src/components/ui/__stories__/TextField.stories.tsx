@@ -36,6 +36,18 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// Type for story args
+type StoryArgs = {
+  label?: string;
+  value?: string;
+  placeholder?: string;
+  error?: boolean;
+  disabled?: boolean;
+  multiline?: boolean;
+  maxLength?: number;
+  keyboardType?: "default" | "numeric" | "email-address";
+};
+
 /**
  * Default text field with label
  */
@@ -44,7 +56,7 @@ export const Default: Story = {
     label: "Full Name",
     placeholder: "Enter your full name",
   },
-  render: (args) => {
+  render: (args: StoryArgs) => {
     const [value, setValue] = useState("");
     return <TextField {...args} value={value} onChangeText={setValue} />;
   },
@@ -59,7 +71,7 @@ export const WithHelperText: Story = {
     placeholder: "you@example.com",
     helperText: "We'll never share your email with anyone else.",
   },
-  render: (args) => {
+  render: (args: StoryArgs) => {
     const [value, setValue] = useState("");
     return <TextField {...args} value={value} onChangeText={setValue} />;
   },
@@ -74,7 +86,7 @@ export const WithError: Story = {
     placeholder: "you@example.com",
     errorText: "Please enter a valid email address.",
   },
-  render: (args) => {
+  render: (args: StoryArgs) => {
     const [value, setValue] = useState("invalid-email");
     return <TextField {...args} value={value} onChangeText={setValue} />;
   },
@@ -89,7 +101,7 @@ export const Disabled: Story = {
     placeholder: "Username",
     editable: false,
   },
-  render: (args) => {
+  render: (args: StoryArgs) => {
     const [value, setValue] = useState("john.doe");
     return <TextField {...args} value={value} onChangeText={setValue} />;
   },
@@ -103,7 +115,7 @@ export const WithValue: Story = {
     label: "City",
     placeholder: "Enter city",
   },
-  render: (args) => {
+  render: (args: StoryArgs) => {
     const [value, setValue] = useState("San Francisco");
     return <TextField {...args} value={value} onChangeText={setValue} />;
   },
@@ -119,7 +131,7 @@ export const MultiLine: Story = {
     multiline: true,
     numberOfLines: 4,
   },
-  render: (args) => {
+  render: (args: StoryArgs) => {
     const [value, setValue] = useState("");
     return <TextField {...args} value={value} onChangeText={setValue} />;
   },
@@ -135,7 +147,7 @@ export const Password: Story = {
     secureTextEntry: true,
     helperText: "Must be at least 8 characters",
   },
-  render: (args) => {
+  render: (args: StoryArgs) => {
     const [value, setValue] = useState("");
     return <TextField {...args} value={value} onChangeText={setValue} />;
   },
@@ -151,7 +163,7 @@ export const WithMaxLength: Story = {
     maxLength: 100,
     helperText: "Maximum 100 characters",
   },
-  render: (args) => {
+  render: (args: StoryArgs) => {
     const [value, setValue] = useState("");
     return <TextField {...args} value={value} onChangeText={setValue} />;
   },
@@ -166,7 +178,7 @@ export const NumericInput: Story = {
     placeholder: "Enter your age",
     keyboardType: "numeric",
   },
-  render: (args) => {
+  render: (args: StoryArgs) => {
     const [value, setValue] = useState("");
     return <TextField {...args} value={value} onChangeText={setValue} />;
   },
@@ -183,7 +195,7 @@ export const EmailInput: Story = {
     autoCapitalize: "none",
     autoCorrect: false,
   },
-  render: (args) => {
+  render: (args: StoryArgs) => {
     const [value, setValue] = useState("");
     return <TextField {...args} value={value} onChangeText={setValue} />;
   },

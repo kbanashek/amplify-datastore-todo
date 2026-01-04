@@ -15,8 +15,8 @@ This document outlines the authentication security strategy for the Orion Task S
 The application currently uses **AWS AppSync API Key authentication** for all DataStore operations. This is configured in `src/amplify-config.ts`:
 
 ```typescript
-aws_appsync_authenticationType: "API_KEY"
-aws_appsync_apiKey: awsconfig.aws_appsync_apiKey
+aws_appsync_authenticationType: "API_KEY";
+aws_appsync_apiKey: awsconfig.aws_appsync_apiKey;
 ```
 
 ### Configuration Location
@@ -30,12 +30,14 @@ aws_appsync_apiKey: awsconfig.aws_appsync_apiKey
 ### API Key Authentication (Current)
 
 **✅ Advantages:**
+
 - Simple to implement and test
 - No user sign-in required
 - Fast development cycle
 - Easy cross-device sync testing
 
 **⚠️ Security Risks:**
+
 - **Public Access**: API keys are embedded in client code and can be extracted
 - **No User Identity**: Cannot track which user performed which action
 - **Limited Authorization**: All authenticated clients have same permissions
@@ -45,6 +47,7 @@ aws_appsync_apiKey: awsconfig.aws_appsync_apiKey
 ### Current Status: Testing Only
 
 **This authentication method is ONLY suitable for:**
+
 - ✅ Local development
 - ✅ Internal testing
 - ✅ Proof-of-concept demos
@@ -99,11 +102,14 @@ Amplify.configure({
 
 ```graphql
 # Update GraphQL schema with authorization rules
-type Task @model 
-  @auth(rules: [
-    { allow: owner, operations: [create, read, update, delete] }
-    { allow: groups, groups: ["Clinicians"], operations: [read] }
-  ]) {
+type Task
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read, update, delete] }
+      { allow: groups, groups: ["Clinicians"], operations: [read] }
+    ]
+  ) {
   id: ID!
   owner: String
   # ... other fields
@@ -130,10 +136,11 @@ type Task @model
 
 ```typescript
 // Current setup (API_KEY) - DEVELOPMENT ONLY
-aws_appsync_authenticationType: "API_KEY"
+aws_appsync_authenticationType: "API_KEY";
 ```
 
 **Characteristics:**
+
 - Public API key (committed to repo)
 - No user authentication required
 - Shared data access across all devices
@@ -145,10 +152,11 @@ aws_appsync_authenticationType: "API_KEY"
 
 ```typescript
 // Required for production (COGNITO USER POOLS)
-aws_appsync_authenticationType: "AMAZON_COGNITO_USER_POOLS"
+aws_appsync_authenticationType: "AMAZON_COGNITO_USER_POOLS";
 ```
 
 **Characteristics:**
+
 - User authentication required
 - Each user has unique identity
 - Data isolated per user/organization
@@ -225,14 +233,16 @@ The application now includes Zod schema validation at the service layer to preve
 **Location**: `packages/task-system/src/validation/taskSchemas.ts`
 
 **Coverage**:
+
 - ✅ Task creation input validation
-- ✅ Task update input validation  
+- ✅ Task update input validation
 - ✅ Task ID format validation (UUID)
 - ✅ Task filters validation
 - ✅ Time range validation
 - ✅ Field length validation
 
 **Example**:
+
 ```typescript
 // TaskService automatically validates all inputs
 const task = await TaskService.createTask({
@@ -243,6 +253,7 @@ const task = await TaskService.createTask({
 ```
 
 **Validation Errors**:
+
 ```typescript
 try {
   await TaskService.createTask(invalidData);
@@ -257,16 +268,19 @@ try {
 ## Additional Security Layers Needed
 
 ### 1. Client-Side Validation
+
 - Add UI-level validation before service calls
 - Provide user-friendly error messages
 - Prevent invalid data entry
 
 ### 2. API Gateway Validation
+
 - Add AWS API Gateway request validators
 - Rate limiting per client
 - IP-based access controls
 
 ### 3. Backend Business Logic Validation
+
 - Lambda resolvers for complex validation
 - Cross-field validation rules
 - Business rule enforcement
@@ -282,13 +296,14 @@ try {
 ## Contact
 
 For security concerns or questions, contact:
+
 - **Security Lead**: [Contact Information]
 - **DevOps Team**: [Contact Information]
 - **Compliance Officer**: [Contact Information]
 
 ## Change Log
 
-| Date | Change | Author |
-|------|--------|--------|
+| Date       | Change                                 | Author |
+| ---------- | -------------------------------------- | ------ |
 | 2025-01-04 | Initial security documentation created | System |
-| 2025-01-04 | Added Zod validation implementation | System |
+| 2025-01-04 | Added Zod validation implementation    | System |

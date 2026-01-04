@@ -11,7 +11,7 @@
  */
 
 import { getServiceLogger } from "@utils/serviceLogger";
-import * as FileSystem from "expo-file-system";
+import * as FileSystem from "expo-file-system/legacy";
 
 const logger = getServiceLogger("FileSystemUtils");
 

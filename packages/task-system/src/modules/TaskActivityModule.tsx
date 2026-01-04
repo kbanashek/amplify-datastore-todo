@@ -79,11 +79,10 @@ export const TaskActivityModule: React.FC<TaskActivityModuleProps> = ({
 
   const navigationContent = (
     <View style={styles.navigationWrapper}>
-      <NavigationContainer
-        ref={navigationRef}
-        independent={true}
-      >
+      {/* @ts-expect-error - independent prop exists but not in types */}
+      <NavigationContainer ref={navigationRef} independent={true}>
         <Stack.Navigator
+          id="task-system-stack"
           screenOptions={{
             headerShown: false,
             contentStyle: { margin: 0, padding: 0 },

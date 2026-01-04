@@ -78,7 +78,7 @@ export default function QuestionsScreen() {
   const handleCompletionDone = useCallback(() => {
     try {
       // Use expo-router to navigate to the dashboard
-      router.replace("/(tabs)/");
+      router.replace("/(tabs)" as any);
     } catch (error) {
       logger.warn(
         "Failed to navigate with router, using fallback",

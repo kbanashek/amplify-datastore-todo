@@ -13,6 +13,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ViewStyle,
 } from "react-native";
 import { useTaskForm } from "@hooks/useTaskForm";
 import { useRTL } from "@hooks/useRTL";
@@ -188,7 +189,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
       />
 
       <View
-        style={[styles.buttonRow, rtlStyle(styles.buttonRow)]}
+        style={[styles.buttonRow, rtlStyle(styles.buttonRow) as ViewStyle]}
         testID="task-form-buttons"
       >
         <TouchableOpacity

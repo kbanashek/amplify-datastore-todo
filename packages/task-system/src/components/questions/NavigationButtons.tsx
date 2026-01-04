@@ -96,9 +96,7 @@ export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
         <TouchableOpacity
           style={[
             styles.navButton,
-            currentScreenValid
-              ? styles.nextButton
-              : styles.nextButtonDisabled,
+            currentScreenValid ? styles.nextButton : styles.nextButtonDisabled,
           ]}
           onPress={onNext}
           disabled={!currentScreenValid}

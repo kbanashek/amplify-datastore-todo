@@ -13,7 +13,7 @@ For detailed information on when to add code to each location, see [Root vs Pack
 ```mermaid
 graph TD
     Root["orion-task-system/"]
-    
+
     Root --> Packages["📦 packages/"]
     Root --> App["📱 app/"]
     Root --> Src["🎨 src/"]
@@ -22,38 +22,38 @@ graph TD
     Root --> Models["📦 models/"]
     Root --> Amplify["⚙️ amplify/"]
     Root --> AwsExports["☁️ aws-exports.js"]
-    
+
     Packages --> TaskSystem["task-system/<br/>Reusable task system package"]
     TaskSystem --> TSrc["src/<br/>Package source code"]
     TaskSystem --> TDocs["docs/<br/>Package documentation (MDX)"]
     TaskSystem --> TConfig["config/<br/>Package configuration"]
     TaskSystem --> TPackage["package.json<br/>Package metadata"]
-    
+
     App --> Tabs["(tabs)/<br/>Tab-based navigation"]
     App --> Layout["_layout.tsx<br/>App layout configuration"]
     Tabs --> Index["index.tsx<br/>🏠 Dashboard"]
     Tabs --> Questions["questions.tsx<br/>❓ Questions screen"]
     Tabs --> SeedScreen["seed-screen.tsx<br/>🌱 Data seeding"]
     Tabs --> Other1["...<br/>Other tab screens"]
-    
+
     Src --> AmplifyConfig["amplify-config.ts<br/>Amplify configuration"]
     Src --> AmplifyInit["amplify-init.ts<br/>Amplify initialization"]
     Src --> Bootstrap["bootstrap/<br/>Bootstrap logic"]
     Src --> Components["components/<br/>Harness components"]
     Src --> Screens["screens/<br/>Harness screens"]
     Src --> Contexts["contexts/<br/>Harness contexts"]
-    
+
     Scripts --> SeedCoord["seed-coordinated-data.ts"]
     Scripts --> SeedAppt["seed-appointment-data.ts"]
     Scripts --> SeedQuest["seed-question-data.ts"]
     Scripts --> Other2["...<br/>Other scripts"]
-    
+
     Docs --> Architecture["architecture/"]
     Docs --> Development["development/"]
     Docs --> Features["features/"]
     Docs --> Testing["testing/"]
     Docs --> Other3["...<br/>Other docs"]
-    
+
     Amplify --> Backend["backend/api/lxtodoapp/"]
     Backend --> Schema["schema.graphql<br/>GraphQL schema"]
 ```
@@ -65,13 +65,13 @@ The task system package is the **single source of truth** for all reusable task 
 ```mermaid
 graph TD
     PKG["packages/task-system/"]
-    
+
     PKG --> SRC["src/"]
     PKG --> PDOCS["📖 docs/"]
     PKG --> PCONFIG["⚙️ config/"]
     PKG --> PPKG["📦 package.json"]
     PKG --> PTSCONFIG["⚙️ tsconfig.json"]
-    
+
     SRC --> MODULES["📦 modules/"]
     SRC --> COMPONENTS["🎨 components/"]
     SRC --> HOOKS["🪝 hooks/"]
@@ -90,9 +90,9 @@ graph TD
     SRC --> MOCKS["🧪 __mocks__/"]
     SRC --> TESTS["📝 __tests__/"]
     SRC --> INDEX["📤 index.ts"]
-    
+
     MODULES --> TAM["TaskActivityModule.tsx<br/>Main entry point"]
-    
+
     COMPONENTS --> QUESTIONS["questions/"]
     COMPONENTS --> UI["ui/"]
     COMPONENTS --> TASKCARD["TaskCard.tsx"]
@@ -105,19 +105,19 @@ graph TD
     COMPONENTS --> NETWORK["NetworkStatusIndicator.tsx"]
     COMPONENTS --> TRANS["TranslatedText.tsx"]
     COMPONENTS --> CMORE["..."]
-    
+
     QUESTIONS --> QR["QuestionRenderer.tsx"]
     QUESTIONS --> QSC["QuestionScreenContent.tsx"]
     QUESTIONS --> SSQ["SingleSelectQuestion.tsx"]
     QUESTIONS --> TQ["TextQuestion.tsx"]
     QUESTIONS --> QMORE["..."]
-    
+
     UI --> BTN["Button.tsx"]
     UI --> TF["TextField.tsx"]
     UI --> DTF["DateTimeField.tsx"]
     UI --> LS["LoadingSpinner.tsx"]
     UI --> UMORE["..."]
-    
+
     HOOKS --> UTL["useTaskList.ts"]
     HOOKS --> UQS["useQuestionsScreen.ts"]
     HOOKS --> UAL["useAppointmentList.ts"]
@@ -129,7 +129,7 @@ graph TD
     HOOKS --> UNS["useNetworkStatus.ts"]
     HOOKS --> URTL["useRTL.ts"]
     HOOKS --> HMORE["..."]
-    
+
     SERVICES --> TS["TaskService.ts"]
     SERVICES --> AS["AppointmentService.ts"]
     SERVICES --> ACS["ActivityService.ts"]
@@ -147,7 +147,7 @@ graph TD
     SERVICES --> TASS["TempAnswerSyncService.ts"]
     SERVICES --> SDCS["SeededDataCleanupService.ts"]
     SERVICES --> SMORE["..."]
-    
+
     TYPES --> TTASK["Task.ts"]
     TYPES --> TAPPT["Appointment.ts"]
     TYPES --> TACT["Activity.ts"]
@@ -160,24 +160,24 @@ graph TD
     TYPES --> TTASYNC["tempAnswerSync.ts"]
     TYPES --> TENUMS["activity-config-enums.ts"]
     TYPES --> TMORE["..."]
-    
+
     SCHEMAS --> TSCHEMAS["taskSchemas.ts<br/>Zod validation"]
-    
+
     CONSTANTS --> MN["modelNames.ts"]
     CONSTANTS --> OS["operationSource.ts"]
     CONSTANTS --> AE["awsErrors.ts"]
     CONSTANTS --> AC["AppColors.ts"]
     CONSTANTS --> COMORE["..."]
-    
+
     SCONTEXTS --> AMPCTX["AmplifyContext.tsx"]
     SCONTEXTS --> TCTX["TranslationContext.tsx"]
-    
+
     TRANSLATIONS --> TINDEX["index.ts"]
     TRANSLATIONS --> TTYPES["translationTypes.ts"]
     TRANSLATIONS --> TPROV["TranslationProvider.tsx"]
     TRANSLATIONS --> EN["en.json"]
     TRANSLATIONS --> TRMORE["..."]
-    
+
     UTILS --> AP["activityParser.ts"]
     UTILS --> APPT["appointmentParser.ts"]
     UTILS --> QV["questionValidation.ts"]
@@ -186,81 +186,98 @@ graph TD
     UTILS --> SL["serviceLogger.ts"]
     UTILS --> DSL["dataSubscriptionLogger.ts"]
     UTILS --> UUMORE["..."]
-    
+
     SSCREENS --> QSCREEN["QuestionsScreen.tsx"]
-    
+
     SMODELS --> IDX["index.d.ts"]
     SMODELS --> IDXJS["index.js"]
     SMODELS --> SCHD["schema.d.ts"]
     SMODELS --> SCHJS["schema.js"]
-    
+
     FIXTURES --> TFIX["TaskSystemFixture.json"]
-    
+
     POLYFILLS --> CRYPTO["crypto.ts"]
-    
+
     RUNTIME --> RTSYS["taskSystem.ts"]
-    
+
     MOCKS --> TMOCKS["translationMocks.ts"]
     MOCKS --> MMORE["..."]
-    
+
     PDOCS --> ARCH["Architecture.mdx"]
     PDOCS --> COMP["ComponentGuide.mdx"]
     PDOCS --> START["GettingStarted.mdx"]
-    
+
     PCONFIG --> AWSCRED["aws-credentials.json"]
 ```
 
 ## Key Directories
 
 ### `packages/task-system/src/modules/`
+
 Module wrappers that provide self-contained entry points. `TaskActivityModule` is the main entry point for host applications, wrapping the entire task/activity system with its own navigation.
 
 ### `packages/task-system/src/components/`
+
 Reusable UI components organized by feature:
+
 - `questions/` - Question rendering components
 - `ui/` - UI primitives (buttons, text fields, etc.)
 - Root level - Task, appointment, and app-level components
 
 ### `packages/task-system/src/hooks/`
+
 Custom React hooks containing business logic, state management, and side effects. Each hook is focused on a specific domain (tasks, questions, appointments, etc.).
 
 ### `packages/task-system/src/services/`
+
 Data services that handle all DataStore operations, API calls, and data transformations. Services provide the single source of truth for business logic.
 
 ### `packages/task-system/src/types/`
+
 TypeScript type definitions for all domain models and interfaces. Includes enums and type guards.
 
 ### `packages/task-system/src/schemas/`
+
 Validation schemas using Zod for runtime type checking and validation. Currently includes task validation schemas.
 
 ### `packages/task-system/src/constants/`
+
 Constants and enums used throughout the application. Prefer constants over magic strings for:
+
 - Model names (use `ModelName` constants)
 - Operation sources (use `OperationSource` constants)
 - AWS error names (use `AWSErrorName` constants)
 
 ### `packages/task-system/src/contexts/`
+
 React contexts for managing app-wide state (Amplify configuration, translations, etc.).
 
 ### `packages/task-system/src/translations/`
+
 i18next-based translation system with support for multiple languages and RTL layouts.
 
 ### `packages/task-system/src/utils/`
+
 Utility functions for parsing, validation, logging, and other cross-cutting concerns.
 
 ### `packages/task-system/src/runtime/`
+
 Runtime initialization logic for the task system, including configuration and setup.
 
 ### `packages/task-system/src/fixtures/`
+
 Test fixtures for integration testing and development. Includes full task system data.
 
 ### `packages/task-system/src/__mocks__/`
+
 Jest mocks for testing. Follows Jest conventions for mock discovery.
 
 ### `packages/task-system/docs/`
+
 Package documentation in MDX format, used by Storybook and other documentation tools.
 
 ### `packages/task-system/config/`
+
 Package-level configuration files (AWS credentials, etc.).
 
 ## Harness Application: Root `src/`
@@ -268,18 +285,23 @@ Package-level configuration files (AWS credentials, etc.).
 The root `src/` directory contains a harness application for testing and demonstrating the task system package.
 
 ### `src/amplify-config.ts` & `src/amplify-init.ts`
+
 Amplify configuration and initialization specific to the harness app.
 
 ### `src/bootstrap/`
+
 Bootstrap logic for initializing the harness application.
 
 ### `src/components/`
+
 Harness-specific components not intended for reuse.
 
 ### `src/screens/`
+
 Harness app screens that exercise package functionality.
 
 ### `src/contexts/`
+
 Harness-specific contexts (e.g., app-level navigation state).
 
 ## Scripts: `scripts/`
@@ -289,6 +311,7 @@ Development and utility scripts for seeding data, running migrations, and other 
 ## Documentation: `DOCS/`
 
 Comprehensive project documentation organized by topic:
+
 - `architecture/` - Architecture and design documentation
 - `development/` - Development guides and workflows
 - `features/` - Feature-specific documentation
@@ -322,10 +345,12 @@ The package uses TypeScript path aliases for cleaner imports:
 ## Naming Conventions
 
 ### Directories
+
 - Use plural names: `components/`, `hooks/`, `services/`, `types/`, `schemas/`
 - Exception: `runtime/` (conceptually singular)
 
 ### Files
+
 - Components: `PascalCase.tsx` (e.g., `TaskCard.tsx`)
 - Hooks: `useName.ts` (e.g., `useTaskList.ts`)
 - Services: `ServiceName.ts` (e.g., `TaskService.ts`)
@@ -354,8 +379,8 @@ The package uses TypeScript path aliases for cleaner imports:
 
 ## Changelog
 
-| Date | Change |
-|---|---|
+| Date       | Change                                                                  |
+| ---------- | ----------------------------------------------------------------------- |
 | 2025-01-04 | Updated for package reorganization (modules/, schemas/, docs/, config/) |
-| 2025-01-04 | Added Root vs Package Boundaries section |
-| Previous | Initial structure documentation |
+| 2025-01-04 | Added Root vs Package Boundaries section                                |
+| Previous   | Initial structure documentation                                         |
