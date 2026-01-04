@@ -20,7 +20,7 @@ export interface ParsedActivityData {
  */
 export function parseActivityConfig(
   activityConfig: ActivityConfig,
-  patientAnswers: Record<string, any> = {}
+  patientAnswers: { [key: string]: any } = {}
 ): ParsedActivityData {
   const screens: ParsedScreen[] = [];
   const allQuestions: Question[] = [];
@@ -62,7 +62,7 @@ export function parseActivityConfig(
 
               if (question) {
                 // Parse display properties
-                const displayProperties: Record<string, string> = {};
+                const displayProperties: { [key: string]: string } = {};
                 if (element.displayProperties) {
                   element.displayProperties.forEach((prop: DisplayProperty) => {
                     // Parse JSON-stringified values (e.g., "\"text\"" -> "text")
@@ -93,7 +93,7 @@ export function parseActivityConfig(
 
           if (parsedElements.length > 0) {
             // Parse screen-level display properties
-            const screenDisplayProperties: Record<string, string> = {};
+            const screenDisplayProperties: { [key: string]: string } = {};
             if (screen.displayProperties) {
               screen.displayProperties.forEach((prop: DisplayProperty) => {
                 try {
@@ -140,7 +140,7 @@ export function parseActivityConfig(
           }
 
           if (question) {
-            const displayProperties: Record<string, string> = {};
+            const displayProperties: { [key: string]: string } = {};
             if (element.displayProperties) {
               element.displayProperties.forEach((prop: DisplayProperty) => {
                 try {
@@ -168,7 +168,7 @@ export function parseActivityConfig(
 
       if (parsedElements.length > 0) {
         // Parse screen-level display properties
-        const screenDisplayProperties: Record<string, string> = {};
+        const screenDisplayProperties: { [key: string]: string } = {};
         if (screen.displayProperties) {
           screen.displayProperties.forEach((prop: DisplayProperty) => {
             try {
@@ -208,7 +208,7 @@ export function parseActivityConfig(
  * Get display property value
  */
 export function getDisplayProperty(
-  displayProperties: Record<string, string>,
+  displayProperties: { [key: string]: string },
   key: string,
   defaultValue: string = ""
 ): string {

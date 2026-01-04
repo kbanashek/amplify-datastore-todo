@@ -108,7 +108,7 @@ export interface ParsedElement {
   id: string;
   order: number;
   question: Question;
-  displayProperties: Record<string, string>;
+  displayProperties: { [key: string]: string };
   patientAnswer?: any;
 }
 
@@ -117,5 +117,5 @@ export interface ParsedScreen {
   name?: string;
   order: number;
   elements: ParsedElement[];
-  displayProperties?: Record<string, string>;
+  displayProperties?: { [key: string]: string };
 }

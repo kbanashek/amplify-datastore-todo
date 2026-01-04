@@ -1,6 +1,6 @@
 import type { TaskSystemFixture } from "../../packages/task-system/src/fixtures/TaskSystemFixture";
 
-export type BuildTaskSystemFixtureOptions = {
+export interface BuildTaskSystemFixtureOptions {
   /**
    * Used to build deterministic PKs and to label the fixture for humans.
    */
@@ -29,7 +29,7 @@ export type BuildTaskSystemFixtureOptions = {
    * Default: 2
    */
   appointmentCount?: number;
-};
+}
 
 const toDayStartLocal = (date: Date): Date => {
   const d = new Date(date);

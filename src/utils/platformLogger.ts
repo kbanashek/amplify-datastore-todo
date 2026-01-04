@@ -60,7 +60,7 @@ export function logWithPlatform(
   step: string,
   serviceName: string,
   message: string,
-  data?: Record<string, unknown>
+  data?: { [key: string]: unknown }
 ): void {
   try {
     const logger = getLoggingService();

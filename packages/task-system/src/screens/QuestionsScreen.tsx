@@ -179,6 +179,7 @@ export default function QuestionsScreen({
                 onNext={handleNext}
                 onReviewOrSubmit={handleReviewSubmit}
                 activityConfig={activityConfig}
+                task={task || undefined}
               />
             </View>
           )}

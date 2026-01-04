@@ -16,7 +16,7 @@ import {
 export const validateQuestionAnswer = (
   question: ParsedElement["question"],
   answer: any,
-  allAnswers?: Record<string, any>
+  allAnswers?: { [key: string]: any }
 ): string[] => {
   const errors: string[] = [];
   const isNumberField =
@@ -189,9 +189,9 @@ export const validateQuestionAnswer = (
  */
 export const validateScreen = (
   screen: ParsedScreen,
-  answers: Record<string, any>
-): Record<string, string[]> => {
-  const errors: Record<string, string[]> = {};
+  answers: { [key: string]: any }
+): { [key: string]: string[] } => {
+  const errors: { [key: string]: string[] } = {};
 
   screen.elements.forEach(element => {
     const question = element.question;
@@ -212,9 +212,9 @@ export const validateScreen = (
  */
 export const validateAllScreens = (
   screens: ParsedScreen[],
-  answers: Record<string, any>
-): Record<string, string[]> => {
-  const errors: Record<string, string[]> = {};
+  answers: { [key: string]: any }
+): { [key: string]: string[] } => {
+  const errors: { [key: string]: string[] } = {};
 
   screens.forEach(screen => {
     const screenErrors = validateScreen(screen, answers);
@@ -229,7 +229,7 @@ export const validateAllScreens = (
  */
 export const isScreenValid = (
   screen: ParsedScreen,
-  answers: Record<string, any>
+  answers: { [key: string]: any }
 ): boolean => {
   const errors = validateScreen(screen, answers);
   return Object.keys(errors).length === 0;
