@@ -39,7 +39,7 @@ describe("imagePathUtils", () => {
       });
 
       expect(result).toBe(
-        "images/org123/study456/instance789/task001_q7_1704211200000.jpg"
+        "data/org123/study456/instance789/task001_q7_1704211200000.jpg"
       );
     });
 
@@ -48,7 +48,7 @@ describe("imagePathUtils", () => {
         questionId: "q7",
       });
 
-      expect(result).toBe("images/q7_1704211200000.jpg");
+      expect(result).toBe("data/q7_1704211200000.jpg");
     });
 
     it("should generate key with only organizationId", () => {
@@ -57,7 +57,7 @@ describe("imagePathUtils", () => {
         questionId: "q7",
       });
 
-      expect(result).toBe("images/org123/q7_1704211200000.jpg");
+      expect(result).toBe("data/org123/q7_1704211200000.jpg");
     });
 
     it("should generate key with taskId but no organizationId", () => {
@@ -66,7 +66,7 @@ describe("imagePathUtils", () => {
         questionId: "q7",
       });
 
-      expect(result).toBe("images/task001_q7_1704211200000.jpg");
+      expect(result).toBe("data/task001_q7_1704211200000.jpg");
     });
 
     it("should use custom extension", () => {
@@ -75,7 +75,7 @@ describe("imagePathUtils", () => {
         extension: ".png",
       });
 
-      expect(result).toBe("images/q7_1704211200000.png");
+      expect(result).toBe("data/q7_1704211200000.png");
     });
 
     it("should sanitize studyInstanceId with # characters", () => {
@@ -87,7 +87,7 @@ describe("imagePathUtils", () => {
       });
 
       expect(result).toBe(
-        "images/org123/study456/instance_789/q7_1704211200000.jpg"
+        "data/org123/study456/instance_789/q7_1704211200000.jpg"
       );
     });
   });
@@ -95,7 +95,7 @@ describe("imagePathUtils", () => {
   describe("parseS3ImageKey", () => {
     it("should parse key with all components", () => {
       const result = parseS3ImageKey(
-        "images/org123/study456/instance789/task001_q7.jpg"
+        "data/org123/study456/instance789/task001_q7.jpg"
       );
 
       expect(result).toEqual({
@@ -107,7 +107,7 @@ describe("imagePathUtils", () => {
     });
 
     it("should parse key with only filename", () => {
-      const result = parseS3ImageKey("images/q7.jpg");
+      const result = parseS3ImageKey("data/q7.jpg");
 
       expect(result).toEqual({
         organizationId: undefined,
@@ -118,7 +118,7 @@ describe("imagePathUtils", () => {
     });
 
     it("should parse key with organizationId only", () => {
-      const result = parseS3ImageKey("images/org123/q7.jpg");
+      const result = parseS3ImageKey("data/org123/q7.jpg");
 
       expect(result).toEqual({
         organizationId: "org123",
@@ -128,7 +128,7 @@ describe("imagePathUtils", () => {
       });
     });
 
-    it("should return null for invalid key (no images prefix)", () => {
+    it("should return null for invalid key (no data prefix)", () => {
       const result = parseS3ImageKey("files/org123/q7.jpg");
 
       expect(result).toBeNull();
@@ -141,7 +141,7 @@ describe("imagePathUtils", () => {
     });
 
     it("should return null for key with only prefix", () => {
-      const result = parseS3ImageKey("images");
+      const result = parseS3ImageKey("data");
 
       expect(result).toBeNull();
     });
@@ -150,14 +150,14 @@ describe("imagePathUtils", () => {
   describe("extractFilenameFromS3Key", () => {
     it("should extract filename from valid key", () => {
       const result = extractFilenameFromS3Key(
-        "images/org123/study456/task001_q7.jpg"
+        "data/org123/study456/task001_q7.jpg"
       );
 
       expect(result).toBe("task001_q7.jpg");
     });
 
     it("should extract filename from minimal key", () => {
-      const result = extractFilenameFromS3Key("images/q7.jpg");
+      const result = extractFilenameFromS3Key("data/q7.jpg");
 
       expect(result).toBe("q7.jpg");
     });
@@ -177,8 +177,8 @@ describe("imagePathUtils", () => {
 
   describe("isS3Key", () => {
     it("should return true for valid S3 key", () => {
-      expect(isS3Key("images/org/study/file.jpg")).toBe(true);
-      expect(isS3Key("images/file.jpg")).toBe(true);
+      expect(isS3Key("data/org/study/file.jpg")).toBe(true);
+      expect(isS3Key("data/file.jpg")).toBe(true);
     });
 
     it("should return false for local file URI", () => {
@@ -189,7 +189,7 @@ describe("imagePathUtils", () => {
       expect(isS3Key("https://example.com/image.jpg")).toBe(false);
     });
 
-    it("should return false for path without images prefix", () => {
+    it("should return false for path without data prefix", () => {
       expect(isS3Key("files/image.jpg")).toBe(false);
     });
 
@@ -198,7 +198,7 @@ describe("imagePathUtils", () => {
     });
 
     it("should return false for relative path", () => {
-      expect(isS3Key("./images/file.jpg")).toBe(false);
+      expect(isS3Key("./data/file.jpg")).toBe(false);
     });
   });
 
@@ -212,7 +212,7 @@ describe("imagePathUtils", () => {
     });
 
     it("should return false for S3 key", () => {
-      expect(isLocalFileUri("images/org/study/image.jpg")).toBe(false);
+      expect(isLocalFileUri("data/org/study/image.jpg")).toBe(false);
     });
 
     it("should return false for http URL", () => {
@@ -224,7 +224,7 @@ describe("imagePathUtils", () => {
     });
 
     it("should return false for relative path", () => {
-      expect(isLocalFileUri("./images/file.jpg")).toBe(false);
+      expect(isLocalFileUri("./data/file.jpg")).toBe(false);
     });
   });
 
@@ -291,15 +291,15 @@ describe("imagePathUtils", () => {
 
   describe("getS3Directory", () => {
     it("should extract directory from full S3 key", () => {
-      const result = getS3Directory("images/org/study/instance/file.jpg");
+      const result = getS3Directory("data/org/study/instance/file.jpg");
 
-      expect(result).toBe("images/org/study/instance");
+      expect(result).toBe("data/org/study/instance");
     });
 
     it("should extract directory from minimal S3 key", () => {
-      const result = getS3Directory("images/file.jpg");
+      const result = getS3Directory("data/file.jpg");
 
-      expect(result).toBe("images");
+      expect(result).toBe("data");
     });
 
     it("should return null for invalid S3 key", () => {
@@ -309,9 +309,15 @@ describe("imagePathUtils", () => {
     });
 
     it("should return null for key without separators", () => {
-      const result = getS3Directory("images");
+      const result = getS3Directory("data");
 
       expect(result).toBeNull();
+    });
+
+    it("should return null for prefix with trailing slash only", () => {
+      const result = getS3Directory("data/");
+
+      expect(result).toBe("data");
     });
 
     it("should return null for empty string", () => {
@@ -323,33 +329,33 @@ describe("imagePathUtils", () => {
 
   describe("buildS3Key", () => {
     it("should build S3 key from directory and filename", () => {
-      const result = buildS3Key("images/org/study", "image.jpg");
+      const result = buildS3Key("data/org/study", "image.jpg");
 
-      expect(result).toBe("images/org/study/image.jpg");
+      expect(result).toBe("data/org/study/image.jpg");
     });
 
     it("should handle directory with trailing slash", () => {
-      const result = buildS3Key("images/org/study/", "image.jpg");
+      const result = buildS3Key("data/org/study/", "image.jpg");
 
-      expect(result).toBe("images/org/study/image.jpg");
+      expect(result).toBe("data/org/study/image.jpg");
     });
 
     it("should handle minimal directory", () => {
-      const result = buildS3Key("images", "image.jpg");
+      const result = buildS3Key("data", "image.jpg");
 
-      expect(result).toBe("images/image.jpg");
+      expect(result).toBe("data/image.jpg");
     });
 
     it("should handle directory with trailing slash removed", () => {
-      const result = buildS3Key("images/org/", "image.jpg");
+      const result = buildS3Key("data/org/", "image.jpg");
 
-      expect(result).toBe("images/org/image.jpg");
+      expect(result).toBe("data/org/image.jpg");
     });
   });
 
   describe("S3_PATH_CONFIG", () => {
     it("should have correct base prefix", () => {
-      expect(S3_PATH_CONFIG.BASE_PREFIX).toBe("images");
+      expect(S3_PATH_CONFIG.BASE_PREFIX).toBe("data");
     });
 
     it("should have correct separator", () => {
