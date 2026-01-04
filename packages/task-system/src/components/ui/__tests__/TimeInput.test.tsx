@@ -30,9 +30,15 @@ jest.mock("@constants/AppColors", () => ({
 }));
 
 // Mock DateTimePicker
+interface MockDateTimePickerProps {
+  value: Date;
+  onChange: (event: { type: string }, date?: Date) => void;
+  testID?: string;
+}
+
 jest.mock("@react-native-community/datetimepicker", () => ({
   __esModule: true,
-  default: ({ value, onChange, testID }: any) => {
+  default: ({ value, onChange, testID }: MockDateTimePickerProps) => {
     const React = require("react");
     const { View, TouchableOpacity, Text } = require("react-native");
     return (

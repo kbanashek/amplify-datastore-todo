@@ -19,6 +19,8 @@
       "@screens/*": ["src/screens/*"],
       "@fixtures/*": ["src/fixtures/*"],
       "@runtime/*": ["src/runtime/*"],
+      "@schemas/*": ["src/schemas/*"],
+      "@modules/*": ["src/modules/*"],
       "@test-utils/*": ["src/hooks/__tests__/*"]
     }
   },

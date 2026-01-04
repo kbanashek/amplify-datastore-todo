@@ -104,9 +104,11 @@ jest.mock("@components/ui/TimeInput", () => {
 });
 
 // Mock translations
+import type { TOptions } from "i18next";
+
 jest.mock("@translations/index", () => ({
   useTaskTranslation: () => ({
-    t: (key: string, options?: any) => {
+    t: (key: string, options?: TOptions) => {
       if (key === "dateTime.months" && options?.returnObjects) {
         return [
           "January",

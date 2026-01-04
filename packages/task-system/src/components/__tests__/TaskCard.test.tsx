@@ -1,14 +1,15 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { TaskCard } from "@components/TaskCard";
-import { Task, TaskStatus, TaskType } from "@task-types/Task";
+import { Task, TaskStatus, TaskType, UpdateTaskInput } from "@task-types/Task";
 
 // Mock TaskService
 const mockUpdateTask = jest.fn().mockResolvedValue({});
 
 jest.mock("@services/TaskService", () => ({
   TaskService: {
-    updateTask: (id: string, input: any) => mockUpdateTask(id, input),
+    updateTask: (id: string, input: Omit<UpdateTaskInput, "id" | "_version">) => 
+      mockUpdateTask(id, input),
   },
 }));
 

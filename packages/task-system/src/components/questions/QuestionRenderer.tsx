@@ -362,8 +362,13 @@ export const QuestionRenderer: React.FC<QuestionRendererProps> = ({
     const props: { [key: string]: string } = {};
     if (question.questionProperties) {
       question.questionProperties.forEach(
-        (prop: { key: string; value: string }) => {
-          props[prop.key] = prop.value;
+        (prop: { [key: string]: unknown }) => {
+          // Type guard to ensure we have the expected structure
+          const key = prop.key;
+          const value = prop.value;
+          if (typeof key === "string" && typeof value === "string") {
+            props[key] = value;
+          }
         }
       );
     }
