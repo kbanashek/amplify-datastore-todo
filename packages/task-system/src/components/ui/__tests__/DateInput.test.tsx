@@ -305,7 +305,7 @@ describe("DateInput", () => {
 
     expect(dayInput.props.editable).toBe(false);
     expect(yearInput.props.editable).toBe(false);
-    expect(monthButton.props.disabled).toBe(true);
+    expect(monthButton.props.accessibilityState.disabled).toBe(true);
   });
 
   it("should apply error styling when error prop is true", () => {

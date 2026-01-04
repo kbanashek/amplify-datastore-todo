@@ -155,6 +155,7 @@ export const TimeInput: React.FC<TimeInputProps> = ({
         ]}
         onPress={handlePress}
         disabled={disabled}
+        accessibilityState={{ disabled: disabled || false }}
         testID={`${testID}-button`}
       >
         {displayValue ? (
