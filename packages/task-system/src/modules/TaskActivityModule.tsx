@@ -1,22 +1,22 @@
-import { TaskContainer } from "@components/TaskContainer";
 import {
   NavigationContainer,
   NavigationIndependentTree,
   createNavigationContainerRef,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import QuestionsScreen from "@screens/QuestionsScreen";
-import { LanguageCode } from "@services/translationTypes";
-import { TranslationContext } from "@translations/TranslationProvider";
-import { TranslationProvider } from "@translations/index";
 import type { i18n } from "i18next";
 import React, { useContext, useEffect, useMemo } from "react";
 import { StyleSheet, View } from "react-native";
+import { TaskContainer } from "@components/TaskContainer";
+import QuestionsScreen from "@screens/QuestionsScreen";
+import { LanguageCode } from "@services/translationTypes";
+import { TranslationProvider } from "@translations/index";
+import { TranslationContext } from "@translations/TranslationProvider";
 
-export interface TaskSystemStackParamList {
+export type TaskSystemStackParamList = {
   TaskDashboard: undefined;
   TaskQuestions: { taskId: string; entityId: string };
-}
+};
 
 const Stack = createNativeStackNavigator<TaskSystemStackParamList>();
 
@@ -56,7 +56,7 @@ export interface TaskActivityModuleProps {
  * - Uses its own independent NavigationContainer.
  * - Expects Amplify/DataStore to be configured in the host runtime.
  */
-export const r: React.FC<TaskActivityModuleProps> = ({
+export const TaskActivityModule: React.FC<TaskActivityModuleProps> = ({
   resetSignal,
   disableSafeAreaTopInset = false,
   preferredLanguage,

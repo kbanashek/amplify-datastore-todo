@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react-native";
 import { useRTL } from "@hooks/useRTL";
 import { ViewStyle, TextStyle } from "react-native";
-import { createMockTFunction } from "../../MOCKS/translationMocks";
+import { createMockTFunction } from "../../__mocks__/translationMocks";
 import type { LanguageCode } from "@translations/translationTypes";
 
 // Mock useTaskTranslation hook

@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from "@testing-library/react-native";
-import { createMockTFunction } from "../../MOCKS/translationMocks";
+import { createMockTFunction } from "../../__mocks__/translationMocks";
 import type { LanguageCode } from "@translations/translationTypes";
 
 // Mock useTaskTranslation hook BEFORE importing useTranslatedText

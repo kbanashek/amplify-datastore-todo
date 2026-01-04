@@ -8,7 +8,7 @@ interface LogOptions {
   level?: LogLevel;
   icon?: string;
   color?: string;
-  data?: any;
+  data?: Record<string, unknown>;
 }
 
 const ICONS = {
@@ -42,63 +42,63 @@ const COLORS = {
  * Enhanced logger with icons and formatting
  */
 export const logger = {
-  info: (message: string, data?: any) => {
+  info: (message: string, data?: Record<string, unknown>) => {
     log(message, { level: "info", icon: ICONS.info, data });
   },
 
-  success: (message: string, data?: any) => {
+  success: (message: string, data?: Record<string, unknown>) => {
     log(message, { level: "success", icon: ICONS.success, data });
   },
 
-  warning: (message: string, data?: any) => {
+  warning: (message: string, data?: Record<string, unknown>) => {
     log(message, { level: "warning", icon: ICONS.warning, data });
   },
 
-  error: (message: string, data?: any) => {
+  error: (message: string, data?: Record<string, unknown>) => {
     log(message, { level: "error", icon: ICONS.error, data });
   },
 
-  debug: (message: string, data?: any) => {
+  debug: (message: string, data?: Record<string, unknown>) => {
     log(message, { level: "debug", icon: ICONS.debug, data });
   },
 
-  task: (message: string, data?: any) => {
+  task: (message: string, data?: Record<string, unknown>) => {
     log(message, { level: "info", icon: ICONS.task, data });
   },
 
-  question: (message: string, data?: any) => {
+  question: (message: string, data?: Record<string, unknown>) => {
     log(message, { level: "info", icon: ICONS.question, data });
   },
 
-  answer: (message: string, data?: any) => {
+  answer: (message: string, data?: Record<string, unknown>) => {
     log(message, { level: "info", icon: ICONS.answer, data });
   },
 
-  navigation: (message: string, data?: any) => {
+  navigation: (message: string, data?: Record<string, unknown>) => {
     log(message, { level: "info", icon: ICONS.navigation, data });
   },
 
-  activity: (message: string, data?: any) => {
+  activity: (message: string, data?: Record<string, unknown>) => {
     log(message, { level: "info", icon: ICONS.activity, data });
   },
 
-  sync: (message: string, data?: any) => {
+  sync: (message: string, data?: Record<string, unknown>) => {
     log(message, { level: "info", icon: ICONS.sync, data });
   },
 
-  database: (message: string, data?: any) => {
+  database: (message: string, data?: Record<string, unknown>) => {
     log(message, { level: "info", icon: ICONS.database, data });
   },
 
-  validation: (message: string, data?: any) => {
+  validation: (message: string, data?: Record<string, unknown>) => {
     log(message, { level: "info", icon: ICONS.validation, data });
   },
 
-  submit: (message: string, data?: any) => {
+  submit: (message: string, data?: Record<string, unknown>) => {
     log(message, { level: "info", icon: ICONS.submit, data });
   },
 
-  seed: (message: string, data?: any) => {
+  seed: (message: string, data?: Record<string, unknown>) => {
     log(message, { level: "info", icon: ICONS.seed, data });
   },
 };

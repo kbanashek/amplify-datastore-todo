@@ -86,12 +86,24 @@ export const QuestionScreenButtons: React.FC<QuestionScreenButtonsProps> = ({
       ) : (
         <Button
           variant="ghost"
-          style={[styles.navButton, styles.nextButton]}
+          style={[
+            styles.navButton,
+            styles.nextButton,
+            currentScreenValid
+              ? styles.nextButtonEnabled
+              : styles.nextButtonDisabled,
+          ]}
           onPress={onNext}
+          disabled={!currentScreenValid && !cameFromReview}
         >
           <TranslatedText
             text="Next"
-            style={[styles.navButtonText, styles.nextButtonText]}
+            style={[
+              styles.navButtonText,
+              currentScreenValid
+                ? styles.nextButtonText
+                : styles.nextButtonTextDisabled,
+            ]}
           />
         </Button>
       )}
@@ -114,6 +126,14 @@ const styles = StyleSheet.create({
   nextButton: {
     backgroundColor: AppColors.CIBlue,
   },
+  nextButtonEnabled: {
+    backgroundColor: AppColors.CIBlue,
+    ...Shadows.card, // Add shadow to enabled next button for emphasis
+  },
+  nextButtonDisabled: {
+    opacity: 0.5,
+    backgroundColor: AppColors.ltGray,
+  },
   submitButton: {
     backgroundColor: AppColors.powderGray,
   },
@@ -132,6 +152,10 @@ const styles = StyleSheet.create({
   nextButtonText: {
     ...AppFonts.button,
     color: AppColors.white,
+  },
+  nextButtonTextDisabled: {
+    ...AppFonts.button,
+    color: AppColors.mediumDarkGray,
   },
   submitButtonTextEnabled: {
     ...AppFonts.button,

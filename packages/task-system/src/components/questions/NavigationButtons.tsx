@@ -94,12 +94,23 @@ export const NavigationButtons: React.FC<NavigationButtonsProps> = ({
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
-          style={[styles.navButton, styles.nextButton]}
+          style={[
+            styles.navButton,
+            currentScreenValid
+              ? styles.nextButton
+              : styles.nextButtonDisabled,
+          ]}
           onPress={onNext}
+          disabled={!currentScreenValid}
         >
           <TranslatedText
             text="Next"
-            style={[styles.navButtonText, styles.nextButtonText]}
+            style={[
+              styles.navButtonText,
+              currentScreenValid
+                ? styles.nextButtonText
+                : styles.nextButtonTextDisabled,
+            ]}
           />
         </TouchableOpacity>
       )}
@@ -136,9 +147,17 @@ const styles = StyleSheet.create({
   nextButton: {
     backgroundColor: AppColors.CIBlue,
   },
+  nextButtonDisabled: {
+    backgroundColor: AppColors.lightGray,
+    opacity: 0.6,
+  },
   nextButtonText: {
     ...AppFonts.button,
     color: AppColors.white,
+  },
+  nextButtonTextDisabled: {
+    ...AppFonts.button,
+    color: AppColors.darkGray,
   },
   reviewButton: {
     backgroundColor: AppColors.lightGray,

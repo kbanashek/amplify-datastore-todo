@@ -9,6 +9,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.32] - 2025-01-04
+
+### Changed
+
+- **Comprehensive Repository Reorganization**
+  - Created `packages/task-system/src/modules/` directory for module wrappers
+  - Moved `TaskActivityModule.tsx` to `modules/` for better organization
+  - Renamed `validation/` to `schemas/` for clearer purpose
+  - Moved MDX documentation files to `packages/task-system/docs/`
+  - Moved configuration files to `packages/task-system/config/`
+  - Moved test mocks to `__mocks__/` following Jest conventions
+  - Updated all path aliases in `tsconfig.json` to reflect new structure
+
+### Added
+
+- **Next Button Validation**
+  - Next button now disabled when required questions are unanswered
+  - Added visual feedback (grayed out appearance) for disabled state
+  - Consistent behavior with Submit/Review button validation
+  - Exception: validation bypassed when navigating from review screen
+  - Added comprehensive tests for Next button validation states
+
+- **Documentation Updates**
+  - Created `DOCS/architecture/root-vs-package-boundaries.md` - comprehensive guide on when to add code to root vs package
+  - Updated `DOCS/architecture/project-structure.md` with new directory structure
+  - Updated `DOCS/architecture/service-consolidation.md` to fix outdated paths
+  - Updated `DOCS/GETTING-STARTED.md` with current structure diagrams
+  - Updated `UNUSED_FILES.md` to reflect deleted files
+
+### Removed
+
+- **Cleaned Up Unused Files** (26 files total)
+  - Deleted unused components: `TaskList.tsx`, `TasksView.tsx`
+  - Removed Expo template files: `HapticTab.tsx`, `ThemedText.tsx`, `ThemedView.tsx`
+  - Removed 18 Expo template UI files from root `components/ui/` directory
+  - Removed obsolete test snapshots and test files
+  - Kept exported hooks (useActivityList, useQuestionList, etc.) as part of public API
+
+### Fixed
+
+- **Type Safety Improvements**
+  - Fixed ESLint `@typescript-eslint/array-type` violations in `ActivityConfig.ts`
+  - Changed `Array<Record<string, unknown>>` to `Record<string, unknown>[]` syntax
+  - Updated `any` types to `Record<string, unknown>` in logger utilities
+  - Fixed import paths after directory reorganization
+
+- **Harness App Fixes**
+  - Fixed runtime error after removing `HapticTab` component
+  - Removed custom tab button, using default Expo Router button
+  - Fixed type errors in `+not-found.tsx` after removing themed components
+  - Fixed `ActivityConfig` type null handling in questions screen
+
 ## [0.1.31] - 2026-01-02
 
 ### Added

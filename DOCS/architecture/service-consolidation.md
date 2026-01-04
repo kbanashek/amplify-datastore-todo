@@ -8,7 +8,7 @@ All services have been consolidated into the `@orion/task-system` package. The m
 
 ### Services Moved to Package
 
-All core services are now in `packages/task-system/src/src/services/`:
+All core services are now in `packages/task-system/src/services/`:
 
 - ✅ **TaskService** - Updated with device logging and DELETE observers
 - ✅ **ActivityService** - Updated with device logging and DELETE observers
@@ -35,22 +35,22 @@ All core services are now in `packages/task-system/src/src/services/`:
 All services are now exported from `packages/task-system/src/index.ts`:
 
 ```typescript
-export { TaskService } from "./src/services/TaskService";
-export { ActivityService } from "./src/services/ActivityService";
-export { QuestionService } from "./src/services/QuestionService";
-export { DataPointService } from "./src/services/DataPointService";
-export { TaskAnswerService } from "./src/services/TaskAnswerService";
-export { TaskResultService } from "./src/services/TaskResultService";
-export { TaskHistoryService } from "./src/services/TaskHistoryService";
-export { AppointmentService } from "./src/services/AppointmentService";
-export { SeededDataCleanupService } from "./src/services/SeededDataCleanupService";
+export { TaskService } from "@services/TaskService";
+export { ActivityService } from "@services/ActivityService";
+export { QuestionService } from "@services/QuestionService";
+export { DataPointService } from "@services/DataPointService";
+export { TaskAnswerService } from "@services/TaskAnswerService";
+export { TaskResultService } from "@services/TaskResultService";
+export { TaskHistoryService } from "@services/TaskHistoryService";
+export { AppointmentService } from "@services/AppointmentService";
+export { SeededDataCleanupService } from "@services/SeededDataCleanupService";
 export {
   TranslationService,
   getTranslationService,
-} from "./src/services/TranslationService";
-export { TranslationMemoryService } from "./src/services/TranslationMemoryService";
-export { ConflictResolution } from "./src/services/ConflictResolution";
-export * from "./src/services/translationTypes";
+} from "@services/TranslationService";
+export { TranslationMemoryService } from "@services/TranslationMemoryService";
+export { ConflictResolution } from "@services/ConflictResolution";
+export * from "@services/translationTypes";
 ```
 
 ### Updated Imports

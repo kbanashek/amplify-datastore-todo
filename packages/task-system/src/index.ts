@@ -1,4 +1,4 @@
-export { TaskActivityModule } from "./TaskActivityModule";
+export { TaskActivityModule } from "./modules/TaskActivityModule";
 
 // Optional: expose internal building blocks for LX teams if they want to compose.
 export { GroupedTasksView } from "@components/GroupedTasksView";
