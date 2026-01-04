@@ -74,26 +74,30 @@ export const ensureImageDirectoryExists = async (): Promise<void> => {
 };
 
 /**
- * Generates a unique filename for an image following Lumiere convention.
+ * Generates a unique filename for an image following Lumiere convention with timestamp.
  *
- * Format: {imageUUID}_{questionId}.jpg
- * where imageUUID = EPISODIC_{uuid} for episodic tasks or {taskId} for other tasks
+ * Format: {baseName}_{questionId}_{timestamp}.jpg
+ * where baseName = EPISODIC_{uuid} for episodic tasks or {taskId} for other tasks
  *
  * @param questionId - Question identifier
  * @param taskId - Task identifier (required for non-episodic tasks)
  * @param taskType - Task type (EPISODIC, SCHEDULED, TIMED)
  * @param uuid - UUID for episodic tasks (taskInstanceId)
- * @returns Unique filename with extension
+ * @returns Unique filename with timestamp and extension
  *
  * @example
  * ```typescript
  * // Episodic task
  * const filename1 = generateImageFilename("q7", "task123", "EPISODIC", "uuid-abc-123");
- * // Returns: "EPISODIC_uuid-abc-123_q7.jpg"
+ * // Returns: "EPISODIC_uuid-abc-123_q7_1704211200000.jpg"
  *
  * // Regular task
  * const filename2 = generateImageFilename("q7", "task123", "SCHEDULED");
- * // Returns: "task123_q7.jpg"
+ * // Returns: "task123_q7_1704211200000.jpg"
+ *
+ * // Fallback (no task context)
+ * const filename3 = generateImageFilename("q7");
+ * // Returns: "q7_1704211200000.jpg"
  * ```
  */
 export const generateImageFilename = (
@@ -102,19 +106,27 @@ export const generateImageFilename = (
   taskType?: string,
   uuid?: string
 ): string => {
-  // Generate imageUUID based on taskType
-  let imageUUID: string;
+  // Build baseName based on taskType
+  let baseName: string;
 
   if (taskType === "EPISODIC" && uuid) {
-    imageUUID = `EPISODIC_${uuid}`;
+    baseName = `EPISODIC_${uuid}`;
   } else if (taskId) {
-    imageUUID = taskId;
+    baseName = taskId;
   } else {
-    // Fallback: use timestamp if no context provided
-    imageUUID = `${Date.now()}`;
+    // No baseName - just use questionId
+    baseName = "";
   }
 
-  return `${imageUUID}_${questionId}${IMAGE_STORAGE_CONFIG.EXTENSION}`;
+  // Generate timestamp
+  const timestamp = Date.now();
+
+  // Construct filename: baseName_questionId_timestamp.ext or questionId_timestamp.ext
+  if (baseName) {
+    return `${baseName}_${questionId}_${timestamp}${IMAGE_STORAGE_CONFIG.EXTENSION}`;
+  } else {
+    return `${questionId}_${timestamp}${IMAGE_STORAGE_CONFIG.EXTENSION}`;
+  }
 };
 
 /**
