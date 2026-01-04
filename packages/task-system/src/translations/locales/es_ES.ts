@@ -67,6 +67,9 @@ const es_ES = {
     day: "Día",
     month: "Mes",
     year: "Año",
+    yearPlaceholder: "AAAA",
+    monthPlaceholder: "Mes",
+    dayPlaceholder: "DD",
     hour: "Hora",
     minute: "Minuto",
     am: "a. m.",
@@ -88,6 +91,13 @@ const es_ES = {
       "Noviembre",
       "Diciembre",
     ],
+  },
+  errors: {
+    notFound: {
+      title: "Esta pantalla no existe.",
+      screenTitle: "¡Ups!",
+      homeLink: "¡Ir a la pantalla de inicio!",
+    },
   },
 } as const;
 

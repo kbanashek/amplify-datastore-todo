@@ -154,9 +154,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   lineBorder: {
+    borderWidth: 0,
     borderBottomWidth: 1,
+    borderColor: AppColors.borderGray,
     borderBottomColor: AppColors.borderGray,
-    backgroundColor: "transparent",
+    borderRadius: 0,
+    backgroundColor: AppColors.powderGray,
   },
   rectangleBorder: {
     borderWidth: 1,

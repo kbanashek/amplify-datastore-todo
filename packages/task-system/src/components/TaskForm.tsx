@@ -188,7 +188,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ onTaskCreated }) => {
       />
 
       <View
-        style={[styles.buttonRow, rtlStyle(styles.buttonRow) as any]}
+        style={[styles.buttonRow, rtlStyle(styles.buttonRow)]}
         testID="task-form-buttons"
       >
         <TouchableOpacity

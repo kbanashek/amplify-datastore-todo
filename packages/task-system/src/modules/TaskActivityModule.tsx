@@ -81,17 +81,15 @@ export const TaskActivityModule: React.FC<TaskActivityModuleProps> = ({
     <View style={styles.navigationWrapper}>
       <NavigationContainer
         ref={navigationRef}
-        {...({ independent: true } as any)}
+        independent={true}
       >
         <Stack.Navigator
-          {...({
-            screenOptions: {
-              headerShown: false,
-              contentStyle: { margin: 0, padding: 0 },
-            },
-          } as any)}
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { margin: 0, padding: 0 },
+          }}
         >
-          <Stack.Screen name="TaskDashboard" component={TaskContainer as any} />
+          <Stack.Screen name="TaskDashboard" component={TaskContainer} />
           <Stack.Screen name="TaskQuestions">
             {() => (
               <QuestionsScreen
