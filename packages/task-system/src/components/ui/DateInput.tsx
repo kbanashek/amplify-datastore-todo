@@ -220,6 +220,7 @@ export const DateInput: React.FC<DateInputProps> = ({
             ]}
             onPress={() => !disabled && setShowMonthPicker(true)}
             disabled={disabled}
+            accessibilityState={{ disabled: disabled || false }}
             testID={`${testID}-month-button`}
           >
             <ThemedText

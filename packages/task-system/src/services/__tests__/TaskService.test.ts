@@ -14,7 +14,7 @@ jest.mock("@aws-amplify/datastore");
  * const task = createMockTask({ title: "Custom Title" });
  */
 const createMockTask = (overrides: Partial<Task> = {}): Task => ({
-  id: "test-task-id",
+  id: "550e8400-e29b-41d4-a716-446655440000",
   pk: "test-pk",
   sk: "test-sk",
   title: "Test Task",
@@ -148,19 +148,21 @@ describe("TaskService", () => {
 
   describe("getTaskById", () => {
     it("should return a task by id", async () => {
-      const mockTask = createMockTask({ id: "test-id" });
+      const testId = "550e8400-e29b-41d4-a716-446655440001";
+      const mockTask = createMockTask({ id: testId });
       (DataStore.query as jest.Mock).mockResolvedValue(mockTask);
 
-      const result = await TaskService.getTaskById("test-id");
+      const result = await TaskService.getTaskById(testId);
 
-      expect(DataStore.query).toHaveBeenCalledWith(DataStoreTask, "test-id");
+      expect(DataStore.query).toHaveBeenCalledWith(DataStoreTask, testId);
       expect(result).toEqual(mockTask);
     });
 
     it("should return null if task not found", async () => {
+      const nonExistentId = "550e8400-e29b-41d4-a716-446655440002";
       (DataStore.query as jest.Mock).mockResolvedValue(null);
 
-      const result = await TaskService.getTaskById("non-existent");
+      const result = await TaskService.getTaskById(nonExistentId);
 
       expect(result).toBeNull();
     });
@@ -168,54 +170,60 @@ describe("TaskService", () => {
 
   describe("updateTask", () => {
     it("should update a task successfully", async () => {
-      const originalTask = createMockTask({ id: "test-id", title: "Original" });
-      const updatedTask = createMockTask({ id: "test-id", title: "Updated" });
+      const testId = "550e8400-e29b-41d4-a716-446655440003";
+      const originalTask = createMockTask({ id: testId, title: "Original" });
+      const updatedTask = createMockTask({ id: testId, title: "Updated" });
 
       (DataStore.query as jest.Mock).mockResolvedValue(originalTask);
       (DataStore.save as jest.Mock).mockResolvedValue(updatedTask);
 
-      const result = await TaskService.updateTask("test-id", {
+      const result = await TaskService.updateTask(testId, {
         title: "Updated",
       });
 
-      expect(DataStore.query).toHaveBeenCalledWith(DataStoreTask, "test-id");
+      expect(DataStore.query).toHaveBeenCalledWith(DataStoreTask, testId);
       expect(DataStore.save).toHaveBeenCalled();
       expect(result.title).toBe("Updated");
     });
 
     it("should throw error if task not found", async () => {
+      const nonExistentId = "550e8400-e29b-41d4-a716-446655440004";
       (DataStore.query as jest.Mock).mockResolvedValue(null);
 
       await expect(
-        TaskService.updateTask("non-existent", { title: "Updated" })
-      ).rejects.toThrow("Task with id non-existent not found");
+        TaskService.updateTask(nonExistentId, { title: "Updated" })
+      ).rejects.toThrow(`Task with id ${nonExistentId} not found`);
     });
   });
 
   describe("deleteTask", () => {
     it("should delete a task successfully", async () => {
-      const mockTask = createMockTask({ id: "test-id" });
+      const testId = "550e8400-e29b-41d4-a716-446655440005";
+      const mockTask = createMockTask({ id: testId });
       (DataStore.query as jest.Mock).mockResolvedValue(mockTask);
       (DataStore.delete as jest.Mock).mockResolvedValue(mockTask);
 
-      await TaskService.deleteTask("test-id");
+      await TaskService.deleteTask(testId);
 
-      expect(DataStore.query).toHaveBeenCalledWith(DataStoreTask, "test-id");
+      expect(DataStore.query).toHaveBeenCalledWith(DataStoreTask, testId);
       expect(DataStore.delete).toHaveBeenCalledWith(mockTask);
     });
 
     it("should throw error if task not found", async () => {
+      const nonExistentId = "550e8400-e29b-41d4-a716-446655440006";
       (DataStore.query as jest.Mock).mockResolvedValue(null);
 
-      await expect(TaskService.deleteTask("non-existent")).rejects.toThrow(
-        "Task with id non-existent not found"
+      await expect(TaskService.deleteTask(nonExistentId)).rejects.toThrow(
+        `Task with id ${nonExistentId} not found`
       );
     });
   });
 
   describe("subscribeTasks", () => {
     it("should subscribe to task changes", () => {
-      const mockTasks = [createMockTask({ id: "1" })];
+      const mockTasks = [
+        createMockTask({ id: "550e8400-e29b-41d4-a716-446655440007" }),
+      ];
       const mockSubscription = {
         subscribe: jest.fn(callback => {
           callback({ items: mockTasks, isSynced: true });

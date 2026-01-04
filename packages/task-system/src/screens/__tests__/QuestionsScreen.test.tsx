@@ -3,6 +3,14 @@ import React from "react";
 import renderer from "react-test-renderer";
 import QuestionsScreen from "@screens/QuestionsScreen";
 
+// Mock AWS Amplify Storage to prevent module import errors
+jest.mock("aws-amplify/storage", () => ({
+  uploadData: jest.fn(),
+  getUrl: jest.fn(),
+  remove: jest.fn(),
+  list: jest.fn(),
+}));
+
 jest.mock("react-native-safe-area-context", () => ({
   useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
 }));
