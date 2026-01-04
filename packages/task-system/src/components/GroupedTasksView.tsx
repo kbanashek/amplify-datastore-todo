@@ -246,13 +246,13 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
               </View>
             ) : null}
 
-            {/* Tasks without due time (simple cards) */}
+            {/* Tasks without due time */}
             <View key={`tasks-without-time-${currentLanguage}`}>
               {dayGroup.tasksWithoutTime.map(task => (
                 <TaskCard
                   key={`${task.id}-${currentLanguage}`}
                   task={task}
-                  simple={true}
+                  simple={false}
                   onPress={onTaskPress}
                   onDelete={onDelete}
                 />
