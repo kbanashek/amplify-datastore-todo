@@ -17,7 +17,7 @@ import {
   taskIdSchema,
   updateTaskSchema,
   validateOrThrow,
-} from "@schemas/taskSchemas";
+} from "../schemas/taskSchemas";
 
 type TaskUpdateData = Omit<UpdateTaskInput, "id" | "_version">;
 

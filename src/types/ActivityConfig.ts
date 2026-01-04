@@ -1,5 +1,7 @@
 // TypeScript interfaces for parsed Activity JSON structure
 
+import { AnswerValue } from "@orion/task-system";
+
 export interface Choice {
   id: string;
   order?: number;
@@ -109,7 +111,7 @@ export interface ParsedElement {
   order: number;
   question: Question;
   displayProperties: { [key: string]: string };
-  patientAnswer?: any;
+  patientAnswer?: AnswerValue;
 }
 
 export interface ParsedScreen {

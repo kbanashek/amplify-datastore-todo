@@ -41,18 +41,18 @@ yarn start
 
 ### Required
 
-| Tool | Version | Install |
-|------|---------|---------|
-| **Node.js** | v14+ | [nodejs.org](https://nodejs.org/) |
-| **Yarn** | latest | `npm install -g yarn` |
-| **Expo CLI** | latest | `yarn global add expo-cli` |
-| **AWS Amplify CLI** | latest | `yarn global add @aws-amplify/cli` |
+| Tool                | Version | Install                            |
+| ------------------- | ------- | ---------------------------------- |
+| **Node.js**         | v14+    | [nodejs.org](https://nodejs.org/)  |
+| **Yarn**            | latest  | `npm install -g yarn`              |
+| **Expo CLI**        | latest  | `yarn global add expo-cli`         |
+| **AWS Amplify CLI** | latest  | `yarn global add @aws-amplify/cli` |
 
 ### For Mobile Development
 
-| Platform | Required | Install Guide |
-|----------|----------|---------------|
-| **iOS** | Xcode + iOS Simulator | [docs.expo.dev/workflow/ios-simulator](https://docs.expo.dev/workflow/ios-simulator/) |
+| Platform    | Required                  | Install Guide                                                                                             |
+| ----------- | ------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **iOS**     | Xcode + iOS Simulator     | [docs.expo.dev/workflow/ios-simulator](https://docs.expo.dev/workflow/ios-simulator/)                     |
 | **Android** | Android Studio + Emulator | [docs.expo.dev/workflow/android-studio-emulator](https://docs.expo.dev/workflow/android-studio-emulator/) |
 
 ### Verify Installation
@@ -82,6 +82,7 @@ yarn install
 ```
 
 This installs:
+
 - Root project dependencies
 - Workspace package `@orion/task-system` dependencies
 - All development tools
@@ -95,6 +96,7 @@ amplify pull --appId d2vty117li92m8 --envName dev
 ```
 
 **Follow the prompts:**
+
 - Choose your code editor (VSCode recommended)
 - Accept defaults for other options
 - This creates `src/aws-exports.js` (needed for backend connection)
@@ -225,15 +227,15 @@ We follow a **clean separation of concerns**:
 
 ### Key Technologies
 
-| Technology | Purpose | Where Used |
-|------------|---------|------------|
-| **React Native** | Cross-platform mobile | Everywhere |
-| **Expo** | Development platform | Build, deployment |
-| **TypeScript** | Type safety | Everywhere |
-| **Expo Router** | File-based navigation | `app/` directory |
-| **AWS DataStore** | Offline-first data sync | Services layer |
-| **AWS AppSync** | GraphQL API + realtime | Backend |
-| **Jest** | Unit testing | `*.test.ts(x)` files |
+| Technology        | Purpose                 | Where Used           |
+| ----------------- | ----------------------- | -------------------- |
+| **React Native**  | Cross-platform mobile   | Everywhere           |
+| **Expo**          | Development platform    | Build, deployment    |
+| **TypeScript**    | Type safety             | Everywhere           |
+| **Expo Router**   | File-based navigation   | `app/` directory     |
+| **AWS DataStore** | Offline-first data sync | Services layer       |
+| **AWS AppSync**   | GraphQL API + realtime  | Backend              |
+| **Jest**          | Unit testing            | `*.test.ts(x)` files |
 
 ---
 
@@ -242,6 +244,7 @@ We follow a **clean separation of concerns**:
 ### 1. Pick a Task
 
 Check current priorities:
+
 - [`DOCS/planning/roadmap.md`](planning/roadmap.md) - High-level priorities
 - [`DOCS/planning/todos.md`](planning/todos.md) - Current todos
 - GitHub Issues - Team-assigned tasks
@@ -253,6 +256,7 @@ git checkout -b feature/your-feature-name
 ```
 
 **Naming convention:**
+
 - `feature/` - New features
 - `fix/` - Bug fixes
 - `refactor/` - Code improvements
@@ -261,6 +265,7 @@ git checkout -b feature/your-feature-name
 ### 3. Make Your Changes
 
 **Follow these rules:**
+
 - 📝 Read [`.cursor/rules/`](.cursor/rules/) for coding standards
 - 🧪 Write tests for all new code (mandatory)
 - 📚 Update documentation when needed
@@ -307,6 +312,7 @@ git commit -m "feat: add task filtering by priority
 ```
 
 **Commit message format:**
+
 - `feat:` - New feature
 - `fix:` - Bug fix
 - `refactor:` - Code improvement
@@ -321,6 +327,7 @@ git push origin feature/your-feature-name
 ```
 
 Create a Pull Request on GitHub with:
+
 - Clear description of changes
 - Screenshots/videos for UI changes
 - Reference to related issues
@@ -334,6 +341,7 @@ Create a Pull Request on GitHub with:
 **Every new file needs tests.** No exceptions.
 
 **Test file naming:**
+
 - `MyComponent.tsx` → `MyComponent.test.tsx`
 - `useMyHook.ts` → `useMyHook.test.ts`
 - `MyService.ts` → `MyService.test.ts`
@@ -495,13 +503,13 @@ DOCS/
 
 ### ❓ How Do I...?
 
-| Question | Resource |
-|----------|----------|
-| How do I create a new component? | [Component Library](architecture/component-library.md) |
-| How do I write tests? | [Testing Guide](development/testing.md) |
-| How does data sync work? | [AWS Architecture](architecture/aws-architecture.md) |
-| How do I add a new feature? | [Development Guidelines](development/development-guidelines.md) |
-| What's already implemented? | [Implementation Status](features/implementation-status.md) |
+| Question                         | Resource                                                        |
+| -------------------------------- | --------------------------------------------------------------- |
+| How do I create a new component? | [Component Library](architecture/component-library.md)          |
+| How do I write tests?            | [Testing Guide](development/testing.md)                         |
+| How does data sync work?         | [AWS Architecture](architecture/aws-architecture.md)            |
+| How do I add a new feature?      | [Development Guidelines](development/development-guidelines.md) |
+| What's already implemented?      | [Implementation Status](features/implementation-status.md)      |
 
 ### 📚 External Resources
 

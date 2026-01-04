@@ -16,7 +16,7 @@ export class ActivityService {
       logWithDevice(
         "ActivityService",
         "Creating activity with DataStore",
-        input
+        input as unknown as Record<string, unknown>
       );
       const activity = await DataStore.save(
         new Activity({

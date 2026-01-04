@@ -118,6 +118,7 @@ export type {
 } from "@task-types/Appointment";
 export type { DataPoint } from "@task-types/DataPoint";
 export type { Question } from "@task-types/Question";
+export type { AnswerValue } from "@task-types/AnswerValue";
 export { TaskStatus, TaskType } from "@task-types/Task";
 export type {
   CreateTaskInput,

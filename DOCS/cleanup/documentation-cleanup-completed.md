@@ -101,13 +101,13 @@ Component consolidation issue was resolved December 23, 2024 (commit `e036ad4`).
 
 ### Metrics
 
-| Metric | Before | After | Change |
-|--------|--------|-------|--------|
-| Total docs | 54 | 45 | -17% |
-| Root duplicates | 4 | 0 | -100% |
-| Outdated docs | 4+ | 0 | -100% |
-| Getting started | 0 | 1 | +100% |
-| Navigation guides | 1 | 3 | +200% |
+| Metric            | Before | After | Change |
+| ----------------- | ------ | ----- | ------ |
+| Total docs        | 54     | 45    | -17%   |
+| Root duplicates   | 4      | 0     | -100%  |
+| Outdated docs     | 4+     | 0     | -100%  |
+| Getting started   | 0      | 1     | +100%  |
+| Navigation guides | 1      | 3     | +200%  |
 
 ---
 

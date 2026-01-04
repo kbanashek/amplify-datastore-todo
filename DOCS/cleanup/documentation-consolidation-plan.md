@@ -15,11 +15,11 @@
 
 Files at root level that are identical to organized versions:
 
-| Root File | Organized Version | Action |
-|-----------|-------------------|--------|
-| `DOCS/component-library.md` | `DOCS/architecture/component-library.md` | ✅ DELETE root, keep organized |
-| `DOCS/testing.md` | `DOCS/development/testing.md` | ✅ DELETE root, keep organized |
-| `DOCS/task-system-package.md` | `DOCS/features/task-system-package.md` | ✅ DELETE root, keep organized |
+| Root File                     | Organized Version                        | Action                         |
+| ----------------------------- | ---------------------------------------- | ------------------------------ |
+| `DOCS/component-library.md`   | `DOCS/architecture/component-library.md` | ✅ DELETE root, keep organized |
+| `DOCS/testing.md`             | `DOCS/development/testing.md`            | ✅ DELETE root, keep organized |
+| `DOCS/task-system-package.md` | `DOCS/features/task-system-package.md`   | ✅ DELETE root, keep organized |
 
 **Verification**: `diff` confirms files are identical (exit code 0)
 
@@ -29,13 +29,13 @@ Files at root level that are identical to organized versions:
 
 Component consolidation issue was resolved Dec 23, 2024 (commit `e036ad4`). Multiple docs describe the same resolved issue:
 
-| File | Size | Status | Action |
-|------|------|--------|--------|
-| `component-consolidation-RESOLVED.md` | 4.1K | ✅ Current | **KEEP** (authoritative) |
-| `component-consolidation-plan.md` | 9.1K | ❌ Outdated (Dec 21) | DELETE |
-| `component-consolidation-summary.md` | 3.0K | ❌ Outdated (Dec 17) | DELETE |
-| `component-duplication-analysis-2025-01-03.md` | - | Redundant | DELETE |
-| `why-components-outside-package.md` | 5.9K | ❌ Outdated (Dec 13) | DELETE |
+| File                                           | Size | Status               | Action                   |
+| ---------------------------------------------- | ---- | -------------------- | ------------------------ |
+| `component-consolidation-RESOLVED.md`          | 4.1K | ✅ Current           | **KEEP** (authoritative) |
+| `component-consolidation-plan.md`              | 9.1K | ❌ Outdated (Dec 21) | DELETE                   |
+| `component-consolidation-summary.md`           | 3.0K | ❌ Outdated (Dec 17) | DELETE                   |
+| `component-duplication-analysis-2025-01-03.md` | -    | Redundant            | DELETE                   |
+| `why-components-outside-package.md`            | 5.9K | ❌ Outdated (Dec 13) | DELETE                   |
 
 **Keep only**: `component-consolidation-RESOLVED.md` (single source of truth)
 
@@ -45,9 +45,9 @@ Component consolidation issue was resolved Dec 23, 2024 (commit `e036ad4`). Mult
 
 Both files describe the same completed cleanup task:
 
-| File | Purpose | Action |
-|------|---------|--------|
-| `cleanup/expo-template-cleanup-plan.md` | Plan | DELETE |
+| File                                    | Purpose    | Action   |
+| --------------------------------------- | ---------- | -------- |
+| `cleanup/expo-template-cleanup-plan.md` | Plan       | DELETE   |
 | `cleanup/template-cleanup-completed.md` | Completion | **KEEP** |
 
 **Rationale**: No need for both plan and completion docs for a finished task
@@ -58,15 +58,15 @@ Both files describe the same completed cleanup task:
 
 Multiple testing docs with overlapping content:
 
-| File | Focus | Keep/Delete |
-|------|-------|-------------|
-| `development/testing.md` | Main guide | **KEEP** |
-| `e2e-testing.md` | E2E specific | **MERGE** into main |
-| `testing/poc-json-loading-guide.md` | POC tasks | **KEEP** (specific) |
-| `testing/test-progress-summary.md` | Progress tracking | **DELETE** (outdated) |
-| `testing/component-test-coverage-status.md` | Coverage | **MERGE** with progress |
-| `testing/comprehensive-testing-progress.md` | Progress tracking | **DELETE** (duplicate) |
-| `testing/remaining-testid-work.md` | TestID work | **KEEP** or merge |
+| File                                        | Focus             | Keep/Delete             |
+| ------------------------------------------- | ----------------- | ----------------------- |
+| `development/testing.md`                    | Main guide        | **KEEP**                |
+| `e2e-testing.md`                            | E2E specific      | **MERGE** into main     |
+| `testing/poc-json-loading-guide.md`         | POC tasks         | **KEEP** (specific)     |
+| `testing/test-progress-summary.md`          | Progress tracking | **DELETE** (outdated)   |
+| `testing/component-test-coverage-status.md` | Coverage          | **MERGE** with progress |
+| `testing/comprehensive-testing-progress.md` | Progress tracking | **DELETE** (duplicate)  |
+| `testing/remaining-testid-work.md`          | TestID work       | **KEEP** or merge       |
 
 **Action**: Consolidate into `development/testing.md` + `testing/poc-json-loading-guide.md` + one progress doc
 
@@ -76,17 +76,17 @@ Multiple testing docs with overlapping content:
 
 Two docs tracking TypeScript error fixes:
 
-| File | Status | Action |
-|------|--------|--------|
-| `planning/typescript-errors-remaining.md` | Current | **KEEP** |
-| `planning/typescript-fix-progress.md` | Progress log | **MERGE** or DELETE |
+| File                                      | Status       | Action              |
+| ----------------------------------------- | ------------ | ------------------- |
+| `planning/typescript-errors-remaining.md` | Current      | **KEEP**            |
+| `planning/typescript-fix-progress.md`     | Progress log | **MERGE** or DELETE |
 
 ---
 
 ## 6. Feature Duplicates (Check 2 files)
 
-| Root File | Feature Version | Action |
-|-----------|-----------------|--------|
+| Root File                              | Feature Version                                 | Action                                      |
+| -------------------------------------- | ----------------------------------------------- | ------------------------------------------- |
 | `task-system-fixture-and-hydration.md` | `features/task-system-fixture-and-hydration.md` | **CHECK** for differences, then consolidate |
 
 ---
@@ -133,13 +133,13 @@ rm DOCS/cleanup/expo-template-cleanup-plan.md
 
 ## Expected Results
 
-| Category | Before | After | Reduction |
-|----------|--------|-------|-----------|
-| Architecture | 8 | 4 | -50% |
-| Cleanup | 2 | 1 | -50% |
-| Testing | 7 | 3 | -57% |
-| Root duplicates | 4 | 0 | -100% |
-| **Total** | **54** | **~35** | **-35%** |
+| Category        | Before | After   | Reduction |
+| --------------- | ------ | ------- | --------- |
+| Architecture    | 8      | 4       | -50%      |
+| Cleanup         | 2      | 1       | -50%      |
+| Testing         | 7      | 3       | -57%      |
+| Root duplicates | 4      | 0       | -100%     |
+| **Total**       | **54** | **~35** | **-35%**  |
 
 ---
 

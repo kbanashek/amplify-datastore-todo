@@ -15,41 +15,46 @@ import { TaskType, TaskStatus } from "@task-types/Task";
  *
  * Validates required fields and data types for creating new tasks.
  */
-export const createTaskSchema = z.object({
-  pk: z.string().min(1, "pk is required"),
-  sk: z.string().min(1, "sk is required"),
-  title: z.string().min(1, "Title is required").max(500, "Title too long"),
-  description: z.string().max(2000, "Description too long").optional().nullable(),
-  taskType: z.nativeEnum(TaskType, {
-    errorMap: () => ({ message: "Invalid task type" }),
-  }),
-  status: z.nativeEnum(TaskStatus, {
-    errorMap: () => ({ message: "Invalid task status" }),
-  }),
-  startTimeInMillSec: z.number().int().positive().optional().nullable(),
-  expireTimeInMillSec: z.number().int().positive().optional().nullable(),
-  endTimeInMillSec: z.number().int().positive().optional().nullable(),
-  entityId: z.string().optional().nullable(),
-  taskInstanceId: z.string().optional().nullable(),
-  activityIndex: z.number().int().nonnegative().optional().nullable(),
-  dayOffset: z.number().int().optional().nullable(),
-  endDayOffset: z.number().int().optional().nullable(),
-  anchorDayOffset: z.number().int().optional().nullable(),
-  showBeforeStart: z.boolean().optional().nullable(),
-  allowEarlyCompletion: z.boolean().optional().nullable(),
-  allowLateCompletion: z.boolean().optional().nullable(),
-  allowLateEdits: z.boolean().optional().nullable(),
-  startTime: z.string().optional().nullable(),
-  endTime: z.string().optional().nullable(),
-  anchors: z.string().optional().nullable(),
-  actions: z.string().optional().nullable(),
-  activityAnswer: z.string().optional().nullable(),
-  resultInstanceId: z.string().optional().nullable(),
-  metaInfo: z.string().optional().nullable(),
-  version: z.number().int().nonnegative().optional().nullable(),
-})
+export const createTaskSchema = z
+  .object({
+    pk: z.string().min(1, "pk is required"),
+    sk: z.string().min(1, "sk is required"),
+    title: z.string().min(1, "Title is required").max(500, "Title too long"),
+    description: z
+      .string()
+      .max(2000, "Description too long")
+      .optional()
+      .nullable(),
+    taskType: z.nativeEnum(TaskType, {
+      message: "Invalid task type",
+    }),
+    status: z.nativeEnum(TaskStatus, {
+      message: "Invalid task status",
+    }),
+    startTimeInMillSec: z.number().int().positive().optional().nullable(),
+    expireTimeInMillSec: z.number().int().positive().optional().nullable(),
+    endTimeInMillSec: z.number().int().positive().optional().nullable(),
+    entityId: z.string().optional().nullable(),
+    taskInstanceId: z.string().optional().nullable(),
+    activityIndex: z.number().int().nonnegative().optional().nullable(),
+    dayOffset: z.number().int().optional().nullable(),
+    endDayOffset: z.number().int().optional().nullable(),
+    anchorDayOffset: z.number().int().optional().nullable(),
+    showBeforeStart: z.boolean().optional().nullable(),
+    allowEarlyCompletion: z.boolean().optional().nullable(),
+    allowLateCompletion: z.boolean().optional().nullable(),
+    allowLateEdits: z.boolean().optional().nullable(),
+    startTime: z.string().optional().nullable(),
+    endTime: z.string().optional().nullable(),
+    anchors: z.string().optional().nullable(),
+    actions: z.string().optional().nullable(),
+    activityAnswer: z.string().optional().nullable(),
+    resultInstanceId: z.string().optional().nullable(),
+    metaInfo: z.string().optional().nullable(),
+    version: z.number().int().nonnegative().optional().nullable(),
+  })
   .refine(
-    (data) => {
+    data => {
       // Validate time ranges if both start and expire are provided
       if (data.startTimeInMillSec && data.expireTimeInMillSec) {
         return data.expireTimeInMillSec >= data.startTimeInMillSec;
@@ -62,7 +67,7 @@ export const createTaskSchema = z.object({
     }
   )
   .refine(
-    (data) => {
+    data => {
       // Validate end time is after expire time if both provided
       if (data.expireTimeInMillSec && data.endTimeInMillSec) {
         return data.endTimeInMillSec >= data.expireTimeInMillSec;
@@ -81,38 +86,51 @@ export const createTaskSchema = z.object({
  * All fields are optional since updates are partial.
  * Validates data types for any provided fields.
  */
-export const updateTaskSchema = z.object({
-  title: z.string().min(1, "Title cannot be empty").max(500, "Title too long").optional(),
-  description: z.string().max(2000, "Description too long").optional().nullable(),
-  status: z.nativeEnum(TaskStatus, {
-    errorMap: () => ({ message: "Invalid task status" }),
-  }).optional(),
-  taskType: z.nativeEnum(TaskType, {
-    errorMap: () => ({ message: "Invalid task type" }),
-  }).optional(),
-  startTimeInMillSec: z.number().int().positive().optional().nullable(),
-  expireTimeInMillSec: z.number().int().positive().optional().nullable(),
-  endTimeInMillSec: z.number().int().positive().optional().nullable(),
-  entityId: z.string().optional().nullable(),
-  taskInstanceId: z.string().optional().nullable(),
-  activityIndex: z.number().int().nonnegative().optional().nullable(),
-  dayOffset: z.number().int().optional().nullable(),
-  endDayOffset: z.number().int().optional().nullable(),
-  anchorDayOffset: z.number().int().optional().nullable(),
-  showBeforeStart: z.boolean().optional().nullable(),
-  allowEarlyCompletion: z.boolean().optional().nullable(),
-  allowLateCompletion: z.boolean().optional().nullable(),
-  allowLateEdits: z.boolean().optional().nullable(),
-  startTime: z.string().optional().nullable(),
-  endTime: z.string().optional().nullable(),
-  anchors: z.string().optional().nullable(),
-  actions: z.string().optional().nullable(),
-  activityAnswer: z.string().optional().nullable(),
-  resultInstanceId: z.string().optional().nullable(),
-  metaInfo: z.string().optional().nullable(),
-  version: z.number().int().nonnegative().optional().nullable(),
-})
-  .refine((data) => Object.keys(data).length > 0, {
+export const updateTaskSchema = z
+  .object({
+    title: z
+      .string()
+      .min(1, "Title cannot be empty")
+      .max(500, "Title too long")
+      .optional(),
+    description: z
+      .string()
+      .max(2000, "Description too long")
+      .optional()
+      .nullable(),
+    status: z
+      .nativeEnum(TaskStatus, {
+        message: "Invalid task status",
+      })
+      .optional(),
+    taskType: z
+      .nativeEnum(TaskType, {
+        message: "Invalid task type",
+      })
+      .optional(),
+    startTimeInMillSec: z.number().int().positive().optional().nullable(),
+    expireTimeInMillSec: z.number().int().positive().optional().nullable(),
+    endTimeInMillSec: z.number().int().positive().optional().nullable(),
+    entityId: z.string().optional().nullable(),
+    taskInstanceId: z.string().optional().nullable(),
+    activityIndex: z.number().int().nonnegative().optional().nullable(),
+    dayOffset: z.number().int().optional().nullable(),
+    endDayOffset: z.number().int().optional().nullable(),
+    anchorDayOffset: z.number().int().optional().nullable(),
+    showBeforeStart: z.boolean().optional().nullable(),
+    allowEarlyCompletion: z.boolean().optional().nullable(),
+    allowLateCompletion: z.boolean().optional().nullable(),
+    allowLateEdits: z.boolean().optional().nullable(),
+    startTime: z.string().optional().nullable(),
+    endTime: z.string().optional().nullable(),
+    anchors: z.string().optional().nullable(),
+    actions: z.string().optional().nullable(),
+    activityAnswer: z.string().optional().nullable(),
+    resultInstanceId: z.string().optional().nullable(),
+    metaInfo: z.string().optional().nullable(),
+    version: z.number().int().nonnegative().optional().nullable(),
+  })
+  .refine(data => Object.keys(data).length > 0, {
     message: "Update must include at least one field",
   });
 
@@ -128,15 +146,16 @@ export const taskIdSchema = z.string().uuid("Invalid task ID format");
  *
  * Validates filter parameters for task queries.
  */
-export const taskFiltersSchema = z.object({
-  status: z.array(z.nativeEnum(TaskStatus)).optional(),
-  taskType: z.array(z.nativeEnum(TaskType)).optional(),
-  searchText: z.string().max(500).optional(),
-  dateFrom: z.date().optional(),
-  dateTo: z.date().optional(),
-})
+export const taskFiltersSchema = z
+  .object({
+    status: z.array(z.nativeEnum(TaskStatus)).optional(),
+    taskType: z.array(z.nativeEnum(TaskType)).optional(),
+    searchText: z.string().max(500).optional(),
+    dateFrom: z.date().optional(),
+    dateTo: z.date().optional(),
+  })
   .refine(
-    (data) => {
+    data => {
       // Validate date range if both provided
       if (data.dateFrom && data.dateTo) {
         return data.dateTo >= data.dateFrom;
@@ -155,7 +174,10 @@ export const taskFiltersSchema = z.object({
 export class ValidationError extends Error {
   public readonly issues: Array<{ path: string; message: string }>;
 
-  constructor(message: string, issues: Array<{ path: string; message: string }>) {
+  constructor(
+    message: string,
+    issues: Array<{ path: string; message: string }>
+  ) {
     super(message);
     this.name = "ValidationError";
     this.issues = issues;
@@ -179,13 +201,13 @@ export function validateOrThrow<T>(
   const result = schema.safeParse(data);
 
   if (!result.success) {
-    const issues = result.error.errors.map((err) => ({
+    const issues = result.error.issues.map((err: any) => ({
       path: err.path.join("."),
       message: err.message,
     }));
 
     throw new ValidationError(
-      `${context} validation failed: ${issues.map((i) => `${i.path}: ${i.message}`).join(", ")}`,
+      `${context} validation failed: ${issues.map((i: { path: string; message: string }, _idx: number) => `${i.path}: ${i.message}`).join(", ")}`,
       issues
     );
   }

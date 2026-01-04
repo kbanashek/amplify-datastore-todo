@@ -142,7 +142,9 @@ export const QuestionScreenContent: React.FC<QuestionScreenContentProps> = ({
             key={element.id}
             element={enhancedElement}
             currentAnswer={answers[element.question.id]}
-            onAnswerChange={onAnswerChange}
+            onAnswerChange={
+              onAnswerChange as (questionId: string, answer: unknown) => void
+            }
             errors={errors}
           />
         );

@@ -8,7 +8,7 @@ const mockUpdateTask = jest.fn().mockResolvedValue({});
 
 jest.mock("@services/TaskService", () => ({
   TaskService: {
-    updateTask: (id: string, input: Omit<UpdateTaskInput, "id" | "_version">) => 
+    updateTask: (id: string, input: Omit<UpdateTaskInput, "id" | "_version">) =>
       mockUpdateTask(id, input),
   },
 }));

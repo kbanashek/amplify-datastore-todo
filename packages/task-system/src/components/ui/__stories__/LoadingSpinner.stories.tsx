@@ -26,6 +26,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// Type for story args
+type StoryArgs = {
+  size?: "small" | "large";
+  color?: string;
+};
+
 /**
  * Default loading spinner
  */
@@ -65,7 +71,7 @@ export const CustomColor: Story = {
  * Loading spinner in a container
  */
 export const InContainer: Story = {
-  render: (args) => (
+  render: (args: StoryArgs) => (
     <View
       style={{
         width: 300,

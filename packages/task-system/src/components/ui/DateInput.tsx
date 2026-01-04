@@ -229,7 +229,9 @@ export const DateInput: React.FC<DateInputProps> = ({
                 monthIndex === null && styles.placeholder,
               ]}
             >
-              {monthIndex !== null ? monthNames[monthIndex] : t("dateTime.monthPlaceholder")}
+              {monthIndex !== null
+                ? monthNames[monthIndex]
+                : t("dateTime.monthPlaceholder")}
             </ThemedText>
             <ThemedText style={styles.dropdownIcon}>▼</ThemedText>
           </Pressable>

@@ -10,7 +10,13 @@
  * @module DateQuestion
  */
 
-import React, { useEffect, useMemo, useState, useCallback, useRef } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+  useCallback,
+  useRef,
+} from "react";
 import { StyleSheet, View } from "react-native";
 import { Question } from "@task-types/ActivityConfig";
 import { DateTimeFieldMode } from "@components/ui/DateTimeField";
@@ -148,30 +154,27 @@ export const DateQuestion: React.FC<DateQuestionProps> = ({
     if (displayMode !== "native") {
       return;
     }
-    
+
     // Only process if value actually changed
     if (prevValueRef.current === value) {
       return;
     }
-    
+
     prevValueRef.current = value;
     const next = getDateValue();
-    
+
     // Use functional update to avoid needing selectedDate in dependencies
     setSelectedDate(current => {
       // If both are null/falsy, no update needed
       if (!next && !current) {
         return current;
       }
-      
+
       // If next exists and current doesn't, or times are different, update
-      if (
-        next &&
-        (!current || next.getTime() !== current.getTime())
-      ) {
+      if (next && (!current || next.getTime() !== current.getTime())) {
         return next;
       }
-      
+
       // Otherwise keep current
       return current;
     });
