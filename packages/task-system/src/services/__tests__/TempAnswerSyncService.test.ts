@@ -32,7 +32,10 @@ describe("TempAnswerSyncService", () => {
           pk: "TASK-123",
           taskPk: "TASK-123",
           activityId: "ACTIVITY-456",
-          answers: { question1: "answer1", question2: "answer2" },
+          answers: JSON.stringify({
+            question1: "answer1",
+            question2: "answer2",
+          }),
           localtime: "2026-01-05T12:00:00Z",
           hashKey: "TASK-123",
         })
@@ -80,7 +83,7 @@ describe("TempAnswerSyncService", () => {
 
       expect(mockSave).toHaveBeenCalledWith(
         expect.objectContaining({
-          answers: complexAnswers,
+          answers: JSON.stringify(complexAnswers),
         })
       );
     });
@@ -91,7 +94,7 @@ describe("TempAnswerSyncService", () => {
       const mockAnswer = {
         taskPk: "TASK-123",
         activityId: "ACTIVITY-456",
-        answers: { question1: "answer1", question2: "answer2" },
+        answers: JSON.stringify({ question1: "answer1", question2: "answer2" }),
         localtime: "2026-01-05T12:00:00Z",
       };
 
@@ -149,12 +152,12 @@ describe("TempAnswerSyncService", () => {
       const mockAnswers = [
         {
           taskPk: "TASK-123",
-          answers: { question1: "latest" },
+          answers: JSON.stringify({ question1: "latest" }),
           localtime: "2026-01-05T12:00:00Z",
         },
         {
           taskPk: "TASK-123",
-          answers: { question1: "older" },
+          answers: JSON.stringify({ question1: "older" }),
           localtime: "2026-01-04T12:00:00Z",
         },
       ];
@@ -176,7 +179,7 @@ describe("TempAnswerSyncService", () => {
 
       const mockAnswer = {
         taskPk: "TASK-123",
-        answers: complexAnswers,
+        answers: JSON.stringify(complexAnswers),
       };
 
       (DataStore.query as jest.Mock).mockResolvedValue([mockAnswer]);
@@ -184,6 +187,47 @@ describe("TempAnswerSyncService", () => {
       const result = await TempAnswerSyncService.getTempAnswers("TASK-123");
 
       expect(result).toEqual(complexAnswers);
+    });
+
+    it("should handle answers that are already parsed objects", async () => {
+      const answersObject = { question1: "answer1", question2: "answer2" };
+
+      const mockAnswer = {
+        taskPk: "TASK-123",
+        answers: answersObject, // Already an object, not a string
+      };
+
+      (DataStore.query as jest.Mock).mockResolvedValue([mockAnswer]);
+
+      const result = await TempAnswerSyncService.getTempAnswers("TASK-123");
+
+      expect(result).toEqual(answersObject);
+    });
+
+    it("should return null if answers field is empty", async () => {
+      const mockAnswer = {
+        taskPk: "TASK-123",
+        answers: null,
+      };
+
+      (DataStore.query as jest.Mock).mockResolvedValue([mockAnswer]);
+
+      const result = await TempAnswerSyncService.getTempAnswers("TASK-123");
+
+      expect(result).toBeNull();
+    });
+
+    it("should handle JSON parse errors gracefully", async () => {
+      const mockAnswer = {
+        taskPk: "TASK-123",
+        answers: "invalid json {{{",
+      };
+
+      (DataStore.query as jest.Mock).mockResolvedValue([mockAnswer]);
+
+      const result = await TempAnswerSyncService.getTempAnswers("TASK-123");
+
+      expect(result).toBeNull();
     });
   });
 });

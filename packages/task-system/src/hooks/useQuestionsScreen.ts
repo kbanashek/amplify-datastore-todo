@@ -20,6 +20,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 const logger = getServiceLogger("useQuestionsScreen");
 
+/**
+ * Return type for the useQuestionsScreen hook.
+ */
 export interface UseQuestionsScreenReturn {
   // State
   loading: boolean;
@@ -52,6 +55,9 @@ export interface UseQuestionsScreenReturn {
   handleBack: () => void;
 }
 
+/**
+ * Parameters for the useQuestionsScreen hook.
+ */
 export interface UseQuestionsScreenParams {
   taskId?: string;
   entityId?: string;
@@ -243,19 +249,23 @@ export const useQuestionsScreen = (
 
   // Navigation handlers
   // Save temp answers via DataStore (auto-syncs to cloud when online)
-  const syncTempAnswers = useCallback(() => {
+  const syncTempAnswers = useCallback(async () => {
     if (!task || !activity) return;
     if (!task.pk) return;
 
     const activityId = activity.pk ?? activity.id;
     if (!activityId) return;
 
-    void TempAnswerSyncService.saveTempAnswers(
-      task.pk,
-      activityId,
-      answers,
-      new Date().toISOString()
-    );
+    try {
+      await TempAnswerSyncService.saveTempAnswers(
+        task.pk,
+        activityId,
+        answers,
+        new Date().toISOString()
+      );
+    } catch (error) {
+      logger.error("Failed to save temp answers", error);
+    }
   }, [task, activity, answers]);
 
   const navigation = useQuestionNavigation({
