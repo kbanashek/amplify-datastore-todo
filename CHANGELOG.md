@@ -45,6 +45,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **DataStore Sync Authentication**
+  - Extended AWS AppSync API key expiration from 7 days to 365 days to prevent frequent sync failures
+  - Updated Amplify backend configuration to support long-lived API keys for development
+  - Resolved "Unauthorized" errors preventing cross-device task and activity synchronization
+  - Fixed CloudFormation drift issues caused by expired API keys
+
 - **Import Path Alignment**
   - Changed `TaskService.ts` import from relative path to `@schemas/taskSchemas` path alias
   - Ensures consistency with project path mapping guidelines
