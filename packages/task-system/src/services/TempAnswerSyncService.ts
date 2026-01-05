@@ -23,6 +23,7 @@ interface OutboxState {
 }
 
 const DEFAULT_STORAGE_KEY = "@task-system/temp-answers-outbox";
+const CACHE_STORAGE_KEY = "@task-system/temp-answers-cache";
 
 let config: TempAnswerSyncConfig | null = null;
 let flushInFlight: Promise<{ flushed: number; remaining: number }> | null =
@@ -87,6 +88,39 @@ const writeOutbox = async (
   next: OutboxState
 ): Promise<void> => {
   await AsyncStorage.setItem(storageKey, JSON.stringify(next));
+};
+
+// Cache helpers for offline access to temp answers
+const readCache = async (
+  taskPk: string
+): Promise<Record<string, any> | null> => {
+  try {
+    const cacheKey = `${CACHE_STORAGE_KEY}:${taskPk}`;
+    const cached = await AsyncStorage.getItem(cacheKey);
+    return cached ? (JSON.parse(cached) as Record<string, any>) : null;
+  } catch (error) {
+    debugLog("⚠️", "", "Failed to read temp answers from cache", {
+      taskPk,
+      error,
+    });
+    return null;
+  }
+};
+
+const writeCache = async (
+  taskPk: string,
+  answers: Record<string, any>
+): Promise<void> => {
+  try {
+    const cacheKey = `${CACHE_STORAGE_KEY}:${taskPk}`;
+    await AsyncStorage.setItem(cacheKey, JSON.stringify(answers));
+    debugLog("💾", "", "Cached temp answers locally", {
+      taskPk,
+      answerCount: Object.keys(answers).length,
+    });
+  } catch (error) {
+    debugLog("⚠️", "", "Failed to cache temp answers", { taskPk, error });
+  }
 };
 
 const hasGraphQLErrors = (resp: unknown): boolean => {
@@ -247,10 +281,10 @@ export class TempAnswerSyncService {
       documentSnippet: (mapped.document ?? config.document).slice(0, 80),
       variableKeys: Object.keys(mapped.variables ?? {}),
     });
-    
+
     // Cache answers locally for offline access
     await writeCache(input.task.pk, input.answers);
-    
+
     await TempAnswerSyncService.enqueueTempAnswers({
       stableKey: mapped.stableKey,
       variables: mapped.variables,
@@ -513,11 +547,23 @@ export class TempAnswerSyncService {
       netState.isInternetReachable === true || netState.isConnected === true;
 
     if (!isOnline) {
-      debugLog("📴", "", "Skipping temp answers fetch - device is offline", {
+      debugLog("📴", "", "Device is offline - checking local cache", {
         taskPk,
         isConnected: netState.isConnected,
         isInternetReachable: netState.isInternetReachable,
       });
+
+      // Try to load from local cache
+      const cachedAnswers = await readCache(taskPk);
+      if (cachedAnswers) {
+        debugLog("✅", "", "Loaded temp answers from local cache", {
+          taskPk,
+          answerCount: Object.keys(cachedAnswers).length,
+        });
+        return cachedAnswers;
+      }
+
+      debugLog("ℹ️", "", "No cached temp answers found (offline)", { taskPk });
       return null;
     }
 
