@@ -38,10 +38,10 @@ globs: [".github/**/*", "*.yml", "*.yaml"]
 
 ### Branch Creation
 
-**ALWAYS create feature branches from the latest `develop` branch:**
+**⚠️ CRITICAL: ALWAYS create feature branches from the latest `develop` branch - NEVER from `main`**
 
 ```bash
-# Ensure you have the latest develop
+# ALWAYS start from develop
 git fetch origin develop
 git checkout develop
 git pull origin develop
@@ -53,21 +53,31 @@ git checkout -b kyle.banashek/feature/description-of-changes
 **Branch naming convention:** `<username>/feature/<description>` or `<username>/<type>/<description>`
 - Examples: `kyle.banashek/feature/path-aliases`, `kyle.banashek/fix/login-bug`
 
+**⚠️ NEVER use `main` as the base branch:**
+- ❌ Bad: `git checkout -b my-branch origin/main`
+- ❌ Bad: Creating branches from `main` in any way
+- ✅ Good: `git checkout -b my-branch origin/develop`
+- ✅ Good: Always use `develop` as the base
+
 **Why this matters:**
-- Prevents merge conflicts when PRs are created
-- Ensures your changes are based on the latest code
-- Makes rebasing easier if conflicts do occur
+- `develop` is the integration branch for all active development
+- `main` is only for production releases
+- Branching from `main` causes massive merge conflicts
+- PRs must target `develop`, not `main`
+- Prevents wasted time resolving conflicts during PR preparation
 
 **If your branch has conflicts after PR creation:**
-1. Fetch latest develop: `git fetch origin develop`
-2. Rebase onto develop: `git rebase origin/develop`
+1. Fetch latest develop: `git fetch origin develop` (NOT main!)
+2. Rebase onto develop: `git rebase origin/develop` (NOT origin/main!)
 3. Resolve conflicts if any
 4. Force push: `git push --force-with-lease`
+
+**⚠️ Remember: ALL work happens on `develop` branch - `main` is only for production releases**
 
 ### Push Update Workflow
 
 - **When asked to "push update", "@CMP", or similar**, follow this workflow:
-  1. **ALWAYS fetch and rebase from latest develop before creating a branch:**
+  1. **⚠️ CRITICAL: ALWAYS fetch and rebase from latest `develop` (NOT `main`) before creating a branch:**
      ```bash
      git fetch origin develop
      git checkout develop
@@ -85,6 +95,7 @@ git checkout -b kyle.banashek/feature/description-of-changes
   6. Commit with a meaningful message describing all changes
   7. Push the branch to remote (`git push -u origin <branch-name>`)
   8. Add any requested cursor rules to `.cursor/rules/` directory if specified
+- **⚠️ NEVER use `main` as the base branch** - always use `develop`
 - **Always verify lint issues are resolved** before committing
 - **Always use the current date** when updating CHANGELOG.md
 - **Commit messages must be descriptive** - summarize all changes in the commit
