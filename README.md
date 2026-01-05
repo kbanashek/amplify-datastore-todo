@@ -167,6 +167,16 @@ flowchart TD
 
    Follow the prompts to configure the Amplify backend. This will create the necessary `aws-exports.js` file.
 
+   **Alternative (if amplify pull fails):**
+
+   ```bash
+   yarn amplify:restore
+   ```
+
+   This script automatically restores all Amplify state files from the deployed backend.
+
+   > ⚠️ **Troubleshooting**: If you see `Unable to resolve "../aws-exports"` after switching branches or running `git clean`, see [Amplify State Issues](DOCS/troubleshooting/amplify-state-issues.md)
+
 4. **🏗️ Generate native projects (if needed)**
 
    If you need to build native iOS/Android apps:
