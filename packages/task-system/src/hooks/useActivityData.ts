@@ -4,6 +4,8 @@ import { ParsedActivityData, parseActivityConfig } from "@utils/activityParser";
 import { getServiceLogger } from "@utils/serviceLogger";
 import { useActivity } from "@hooks/useActivity";
 import { useTaskAnswer } from "@hooks/useTaskAnswer";
+import { TaskService } from "@services/TaskService";
+import { TempAnswerSyncService } from "@services/TempAnswerSyncService";
 import type { Activity } from "@task-types/Activity";
 
 const logger = getServiceLogger("useActivityData");
@@ -119,7 +121,7 @@ export const useActivityData = ({
           }
         }
 
-        // Load existing answers from TaskAnswer
+        // Load existing answers from TaskAnswer (final submitted answers)
         const existingAnswers: Record<string, any> = {};
         if (taskId) {
           const taskAnswersForTask = getAnswersByTaskId(taskId);
@@ -134,11 +136,36 @@ export const useActivityData = ({
           });
         }
 
+        // Load temp answers (in-progress answers saved during the task)
+        // Temp answers take precedence over final submitted answers since they're more recent
+        let tempAnswers: Record<string, any> | null = null;
+        if (taskId) {
+          try {
+            const task = await TaskService.getTaskById(taskId);
+            if (task?.pk) {
+              tempAnswers = await TempAnswerSyncService.getTempAnswers(task.pk);
+            }
+          } catch (error) {
+            logger.debug("Could not fetch temp answers", error);
+            // Continue without temp answers
+          }
+        }
+
+        // Merge: start with final answers, then overlay temp answers
+        const mergedAnswers = { ...existingAnswers, ...(tempAnswers || {}) };
+
+        logger.info("🔄 Setting initialAnswers", {
+          existingCount: Object.keys(existingAnswers).length,
+          tempCount: Object.keys(tempAnswers || {}).length,
+          mergedCount: Object.keys(mergedAnswers).length,
+          sampleKeys: Object.keys(mergedAnswers).slice(0, 3),
+        });
+
         // Parse activity config
-        const parsed = parseActivityConfig(activityConfig, existingAnswers);
+        const parsed = parseActivityConfig(activityConfig, mergedAnswers);
         setActivityData(parsed);
         setActivityConfig(activityConfig);
-        setInitialAnswers(existingAnswers);
+        setInitialAnswers(mergedAnswers);
       } catch (err: unknown) {
         logger.error("Error fetching activity", err);
         setError(

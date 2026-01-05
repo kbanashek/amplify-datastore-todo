@@ -9,15 +9,18 @@ import type {
 } from "@task-types/tempAnswerSync";
 import { DEBUG_TEMP_ANSWER_SYNC_LOGS } from "@utils/debug";
 import { logWithPlatform } from "@utils/platformLogger";
+import { DEFAULT_GET_TEMP_ANSWERS_QUERY } from "./tempAnswerDefaults";
 
-type OutboxItem = {
+interface OutboxItem {
   stableKey: string;
   document: string;
-  variables: Record<string, unknown>;
+  variables: { [key: string]: unknown };
   updatedAt: number;
-};
+}
 
-type OutboxState = Record<string, OutboxItem>;
+interface OutboxState {
+  [key: string]: OutboxItem;
+}
 
 const DEFAULT_STORAGE_KEY = "@task-system/temp-answers-outbox";
 
@@ -30,7 +33,7 @@ const debugLog = (
   icon: string,
   step: string,
   message: string,
-  meta?: Record<string, unknown>
+  meta?: { [key: string]: unknown }
 ): void => {
   if (!__DEV__) return;
   if (!DEBUG_TEMP_ANSWER_SYNC_LOGS) return;
@@ -49,16 +52,16 @@ const truncateForLog = (value: unknown): unknown => {
       : value;
   }
   if (value && typeof value === "object") {
-    const obj = value as Record<string, unknown>;
+    const obj = value as { [key: string]: unknown };
     const keys = Object.keys(obj);
     const max = 50;
     if (keys.length > max) {
-      const next: Record<string, unknown> = {};
+      const next: { [key: string]: unknown } = {};
       for (const k of keys.slice(0, max)) next[k] = truncateForLog(obj[k]);
       next["…"] = `truncated ${keys.length - max} keys`;
       return next;
     }
-    const next: Record<string, unknown> = {};
+    const next: { [key: string]: unknown } = {};
     for (const [k, v] of Object.entries(obj)) next[k] = truncateForLog(v);
     return next;
   }
@@ -193,7 +196,7 @@ export class TempAnswerSyncService {
 
   static async enqueueTempAnswers(input: {
     stableKey: string;
-    variables: Record<string, unknown>;
+    variables: { [key: string]: unknown };
     document?: string;
   }): Promise<void> {
     if (!config) return;
@@ -483,5 +486,81 @@ export class TempAnswerSyncService {
     });
 
     return flushInFlight;
+  }
+
+  /**
+   * Retrieve saved temp answers for a task from DynamoDB.
+   * Returns the most recent saved answers for the task.
+   *
+   * @param taskPk - The task's primary key
+   * @returns Record of questionId -> answer, or null if no saved answers found
+   */
+  static async getTempAnswers(
+    taskPk: string
+  ): Promise<{ [key: string]: any } | null> {
+    if (!config) {
+      debugLog("⚠️", "", "Service not configured (getTempAnswers)", { taskPk });
+      return null;
+    }
+
+    const executor: TaskSystemGraphQLExecutor = config.executor;
+
+    try {
+      debugLog("🔍", "", "Fetching saved temp answers from DynamoDB", {
+        taskPk,
+      });
+
+      const result = await executor.execute({
+        document: DEFAULT_GET_TEMP_ANSWERS_QUERY,
+        variables: { taskPk },
+      });
+
+      if (hasGraphQLErrors(result)) {
+        debugLog(
+          "❌",
+          "",
+          "Failed to fetch temp answers - GraphQL errors",
+          truncateForLog({
+            taskPk,
+            errors: (result as any).errors,
+          }) as { [key: string]: unknown }
+        );
+        return null;
+      }
+
+      const items = (result as any)?.data?.getTempAnswers;
+      if (!items || !Array.isArray(items) || items.length === 0) {
+        debugLog("ℹ️", "", "No saved temp answers found", { taskPk });
+        return null;
+      }
+
+      // Get the most recent item (first in the array, since query sorts by updatedAt desc)
+      const mostRecent = items[0];
+      const answersJson = mostRecent.answers;
+
+      if (!answersJson) {
+        debugLog("⚠️", "", "Temp answers JSON is empty", { taskPk });
+        return null;
+      }
+
+      // Parse the answers JSON string (if needed - Lambda now returns parsed object for AWSJSON)
+      const answers =
+        typeof answersJson === "string" ? JSON.parse(answersJson) : answersJson;
+
+      debugLog("✅", "", "Successfully loaded saved temp answers", {
+        taskPk,
+        activityId: mostRecent.activityId,
+        questionCount: Object.keys(answers || {}).length,
+        updatedAt: mostRecent.updatedAt,
+      });
+
+      return answers;
+    } catch (error) {
+      debugLog("❌", "", "Failed to fetch temp answers - exception", {
+        taskPk,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      return null;
+    }
   }
 }

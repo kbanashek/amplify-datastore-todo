@@ -1,22 +1,22 @@
 import { DataStore } from "@aws-amplify/datastore";
-import {
-  CommonActions,
-  useNavigation,
-  useRoute,
-} from "@react-navigation/native";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Task as DataStoreTask } from "@models/index";
-import { TaskService } from "@services/TaskService";
-import { TempAnswerSyncService } from "@services/TempAnswerSyncService";
-import { Task, TaskStatus } from "@task-types/Task";
-import type { AnswerValue } from "@task-types/AnswerValue";
-import { getServiceLogger } from "@utils/serviceLogger";
-import { extractActivityIdFromTask } from "@utils/taskUtils";
 import { useActivityData } from "@hooks/useActivityData";
 import { useAnswerManagement } from "@hooks/useAnswerManagement";
 import { useQuestionNavigation } from "@hooks/useQuestionNavigation";
 import { useQuestionSubmission } from "@hooks/useQuestionSubmission";
 import { useQuestionValidation } from "@hooks/useQuestionValidation";
+import { Task as DataStoreTask } from "@models/index";
+import {
+  CommonActions,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
+import { TaskService } from "@services/TaskService";
+import { TempAnswerSyncService } from "@services/TempAnswerSyncService";
+import type { AnswerValue } from "@task-types/AnswerValue";
+import { Task, TaskStatus } from "@task-types/Task";
+import { getServiceLogger } from "@utils/serviceLogger";
+import { extractActivityIdFromTask } from "@utils/taskUtils";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 const logger = getServiceLogger("useQuestionsScreen");
 
@@ -161,7 +161,13 @@ export const useQuestionsScreen = (
 
   // Update answers when initialAnswers change
   useEffect(() => {
+    logger.info("📝 initialAnswers changed in useQuestionsScreen", {
+      count: Object.keys(initialAnswers).length,
+      sampleKeys: Object.keys(initialAnswers).slice(0, 3),
+      firstValue: initialAnswers[Object.keys(initialAnswers)[0]],
+    });
     if (Object.keys(initialAnswers).length > 0) {
+      logger.info("✅ Setting answers from initialAnswers");
       setAnswers(initialAnswers);
     }
   }, [initialAnswers, setAnswers]);
