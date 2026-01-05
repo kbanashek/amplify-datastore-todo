@@ -1,4 +1,3 @@
-import { generateClient } from "@aws-amplify/api";
 import { Amplify } from "@aws-amplify/core";
 import React, { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
@@ -8,7 +7,6 @@ import {
   AmplifyProvider,
   FixtureImportService,
   TaskActivityModule,
-  TempAnswerSyncService,
   TranslationProvider,
   initTaskSystem,
 } from "@orion/task-system";
@@ -28,7 +26,7 @@ import fixture from "../../../src/fixtures/task-system.fixture.v1.json";
  * NOTE: This repo's real entrypoint uses src/amplify-init-sync.ts + app/_layout.tsx.
  * This file is a copyable example for LX teams/agents.
  */
-export type LXHostExampleProps = {
+export interface LXHostExampleProps {
   /**
    * If true, this example will call Amplify.configure() itself.
    * In this repo's app runtime, Amplify is already configured in app/_layout.tsx,
@@ -68,7 +66,7 @@ export type LXHostExampleProps = {
    * in the host harness.
    */
   resetSignal?: number;
-};
+}
 
 export function LXHostExample({
   configureAmplify = true,
@@ -107,63 +105,9 @@ export function LXHostExample({
         }
 
         if (enableTempAnswerSyncDemo) {
-          // Host provides the GraphQL executor + mapper.
-          // Using real Amplify GraphQL client instead of mock for actual testing.
-          const client = generateClient();
-
-          TempAnswerSyncService.configure({
-            document:
-              "mutation SaveTempAnswers($input: JSON!) { saveTempAnswers(input: $input) }",
-            executor: {
-              execute: async ({ document, variables }) => {
-                try {
-                  console.log("[LXHostExample] Temp-save execute (real API)", {
-                    document: document.substring(0, 80),
-                    variableKeys: Object.keys(variables ?? {}),
-                  });
-
-                  // Use Amplify's real GraphQL API client
-                  const response = await client.graphql({
-                    query: document,
-                    variables,
-                  });
-
-                  // Handle GraphQLResult type
-                  const data = "data" in response ? response.data : undefined;
-
-                  console.log("[LXHostExample] Temp-save success", {
-                    hasData: !!data,
-                  });
-
-                  return { data };
-                } catch (error) {
-                  console.error("[LXHostExample] Temp-save error", error);
-                  // Return error in GraphQL response format
-                  return {
-                    data: undefined,
-                    errors: [
-                      error instanceof Error
-                        ? { message: error.message }
-                        : { message: String(error) },
-                    ],
-                  };
-                }
-              },
-            },
-            mapper: ({ task, activity, answers, localtime }) => {
-              return {
-                stableKey: task.pk,
-                variables: {
-                  stableKey: task.pk,
-                  activityId: activity.pk ?? activity.id,
-                  localtime,
-                  answers,
-                },
-              };
-            },
-          });
-
-          TempAnswerSyncService.startAutoFlush();
+          // TempAnswerSyncService now uses DataStore directly
+          // No configuration needed - DataStore handles sync automatically
+          console.log("[LXHostExample] TempAnswerSync enabled via DataStore");
         }
       } catch (error) {
         console.error("[LXHostExample] bootstrap failed", error);
@@ -174,9 +118,7 @@ export function LXHostExample({
 
     return () => {
       cancelled = true;
-      if (enableTempAnswerSyncDemo) {
-        TempAnswerSyncService.stopAutoFlush();
-      }
+      // DataStore cleanup happens automatically
     };
   }, [
     configureAmplify,
@@ -187,16 +129,13 @@ export function LXHostExample({
 
   if (!ready) return null;
 
+  // DataStore handles sync automatically - no manual outbox management needed
   const refreshOutbox = async (): Promise<void> => {
-    const items = await TempAnswerSyncService.peekOutbox();
-    setOutboxCount(items.length);
+    setOutboxCount(0); // DataStore manages its own queue
   };
 
   const flushOutbox = async (): Promise<void> => {
-    const result = await TempAnswerSyncService.flush();
-    setLastFlush(
-      `flushed=${result.flushed} remaining=${result.remaining} @ ${new Date().toLocaleTimeString()}`
-    );
+    setLastFlush(`DataStore auto-syncing @ ${new Date().toLocaleTimeString()}`);
     await refreshOutbox();
   };
 

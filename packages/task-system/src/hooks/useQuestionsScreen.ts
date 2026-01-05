@@ -242,18 +242,20 @@ export const useQuestionsScreen = (
   });
 
   // Navigation handlers
-  // Mimics LX app behavior: when user clicks Next, try immediate sync,
-  // then queue if offline or sync fails
+  // Save temp answers via DataStore (auto-syncs to cloud when online)
   const syncTempAnswers = useCallback(() => {
     if (!task || !activity) return;
     if (!task.pk) return;
 
-    void TempAnswerSyncService.syncTempAnswers({
-      task,
-      activity,
+    const activityId = activity.pk ?? activity.id;
+    if (!activityId) return;
+
+    void TempAnswerSyncService.saveTempAnswers(
+      task.pk,
+      activityId,
       answers,
-      localtime: new Date().toISOString(),
-    });
+      new Date().toISOString()
+    );
   }, [task, activity, answers]);
 
   const navigation = useQuestionNavigation({

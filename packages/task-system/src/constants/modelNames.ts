@@ -20,6 +20,7 @@ export const ModelName = {
   TaskAnswer: "TaskAnswer",
   TaskHistory: "TaskHistory",
   TaskResult: "TaskResult",
+  TaskTempAnswer: "TaskTempAnswer",
 } as const;
 
 /**

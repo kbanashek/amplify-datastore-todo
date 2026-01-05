@@ -201,28 +201,13 @@ type TaskHistory @model @auth(rules: [{ allow: public }]) {
   hashKey: String
 }
 
-# Temp Answers Mutation
-input SaveTaskTempAnswersInput {
+type TaskTempAnswer @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  pk: String!
+  sk: String!
   taskPk: String!
   activityId: String!
   answers: AWSJSON!
   localtime: AWSDateTime!
-}
-
-type SaveTaskTempAnswersResponse {
-  taskPk: String!
-  activityId: String!
-  answers: AWSJSON!
-  localtime: AWSDateTime!
-  updatedAt: AWSDateTime!
-}
-
-type Query {
-  getTempAnswers(taskPk: String!): [SaveTaskTempAnswersResponse!]!
-}
-
-type Mutation {
-  saveTaskTempAnswers(
-    input: SaveTaskTempAnswersInput!
-  ): SaveTaskTempAnswersResponse!
+  hashKey: String
 }
