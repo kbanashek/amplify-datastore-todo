@@ -57,6 +57,11 @@ export { TaskHistoryService } from "@services/TaskHistoryService";
 export { TaskResultService } from "@services/TaskResultService";
 export { TaskService } from "@services/TaskService";
 export { TempAnswerSyncService } from "@services/TempAnswerSyncService";
+export {
+  DEFAULT_SAVE_TEMP_ANSWERS_MUTATION,
+  DEFAULT_GET_TEMP_ANSWERS_QUERY,
+  defaultTempAnswersMapper,
+} from "@services/tempAnswerDefaults";
 export { TranslationMemoryService } from "@services/TranslationMemoryService";
 export {
   TranslationService,

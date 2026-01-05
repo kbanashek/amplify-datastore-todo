@@ -5,9 +5,15 @@ import { getServiceLogger } from "@utils/serviceLogger";
 import { useActivity } from "@hooks/useActivity";
 import { useTaskAnswer } from "@hooks/useTaskAnswer";
 import type { Activity } from "@task-types/Activity";
+import type { Task } from "@task-types/Task";
+import { TempAnswerSyncService } from "@services/TempAnswerSyncService";
+import { TaskService } from "@services/TaskService";
 
 const logger = getServiceLogger("useActivityData");
 
+/**
+ * Return type for the useActivityData hook.
+ */
 export interface UseActivityDataReturn {
   loading: boolean;
   error: string | null;
@@ -17,6 +23,9 @@ export interface UseActivityDataReturn {
   initialAnswers: Record<string, any>;
 }
 
+/**
+ * Options for the useActivityData hook.
+ */
 export interface UseActivityDataOptions {
   entityId: string | undefined;
   taskId: string | undefined;
@@ -119,7 +128,13 @@ export const useActivityData = ({
           }
         }
 
-        // Load existing answers from TaskAnswer
+        // Fetch the task to get its pk for temp answers
+        let currentTask: Task | null = null;
+        if (taskId) {
+          currentTask = await TaskService.getTaskById(taskId);
+        }
+
+        // Load existing answers from TaskAnswer (final submitted answers)
         const existingAnswers: Record<string, any> = {};
         if (taskId) {
           const taskAnswersForTask = getAnswersByTaskId(taskId);
@@ -134,11 +149,35 @@ export const useActivityData = ({
           });
         }
 
-        // Parse activity config
-        const parsed = parseActivityConfig(activityConfig, existingAnswers);
+        // Load temp answers from DynamoDB (in-progress answers)
+        let tempAnswers: Record<string, any> | null = null;
+        if (currentTask?.pk) {
+          tempAnswers = await TempAnswerSyncService.getTempAnswers(
+            currentTask.pk
+          );
+          if (tempAnswers) {
+            logger.info("🔄 Loaded temp answers", {
+              count: Object.keys(tempAnswers).length,
+              sampleKeys: Object.keys(tempAnswers).slice(0, 3),
+            });
+          }
+        }
+
+        // Merge answers: temp answers take precedence over existing (submitted) answers
+        // This ensures that if a user resumes, their in-progress work is shown
+        const mergedAnswers = { ...existingAnswers, ...(tempAnswers || {}) };
+
+        // Parse activity config with merged answers
+        const parsed = parseActivityConfig(activityConfig, mergedAnswers);
         setActivityData(parsed);
         setActivityConfig(activityConfig);
-        setInitialAnswers(existingAnswers);
+        setInitialAnswers(mergedAnswers);
+        logger.info("🔄 Setting initialAnswers", {
+          existingCount: Object.keys(existingAnswers).length,
+          tempCount: Object.keys(tempAnswers || {}).length,
+          mergedCount: Object.keys(mergedAnswers).length,
+          sampleKeys: Object.keys(mergedAnswers).slice(0, 3),
+        });
       } catch (err: unknown) {
         logger.error("Error fetching activity", err);
         setError(

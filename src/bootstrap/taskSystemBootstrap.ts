@@ -5,9 +5,14 @@ import {
   TempAnswerSyncService,
   getLoggingService,
   initTaskSystem,
+  DEFAULT_SAVE_TEMP_ANSWERS_MUTATION,
+  defaultTempAnswersMapper,
 } from "@orion/task-system";
 import { logWithPlatform } from "../utils/platformLogger";
 
+/**
+ * Options for bootstrapping the task system.
+ */
 export interface TaskSystemBootstrapOptions {
   /**
    * If true, start DataStore after initializing task-system runtime.
@@ -69,10 +74,14 @@ function logBootstrap(icon: string, message: string): void {
 }
 
 /**
+ * Host-owned bootstrap function for initializing the task system.
+ *
  * Host-owned bootstrap (LX-style):
  * - Host app owns Amplify.configure() (must run before calling this)
  * - Host app owns DataStore lifecycle (start/stop/clear)
  * - task-system package provides initTaskSystem() (conflict handler + optional start)
+ *
+ * @param options Bootstrap configuration options
  */
 export async function bootstrapTaskSystem(
   options: TaskSystemBootstrapOptions = {}
@@ -123,8 +132,7 @@ export async function bootstrapTaskSystem(
 
       const client = generateClient();
       TempAnswerSyncService.configure({
-        document:
-          "mutation SaveTempAnswers($input: JSON!) { saveTempAnswers(input: $input) }",
+        document: DEFAULT_SAVE_TEMP_ANSWERS_MUTATION,
         executor: {
           execute: async ({ document, variables }) => {
             try {
@@ -190,17 +198,7 @@ export async function bootstrapTaskSystem(
             }
           },
         },
-        mapper: ({ task, activity, answers, localtime }) => {
-          return {
-            stableKey: task.pk,
-            variables: {
-              stableKey: task.pk,
-              activityId: activity.pk ?? activity.id,
-              localtime,
-              answers,
-            },
-          };
-        },
+        mapper: defaultTempAnswersMapper,
       });
 
       // Start auto-flush to retry queued temp answers when network comes back.

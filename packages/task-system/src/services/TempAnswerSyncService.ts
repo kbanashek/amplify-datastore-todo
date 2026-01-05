@@ -9,6 +9,7 @@ import type {
 } from "@task-types/tempAnswerSync";
 import { DEBUG_TEMP_ANSWER_SYNC_LOGS } from "@utils/debug";
 import { logWithPlatform } from "@utils/platformLogger";
+import { DEFAULT_GET_TEMP_ANSWERS_QUERY } from "./tempAnswerDefaults";
 
 type OutboxItem = {
   stableKey: string;
@@ -249,6 +250,85 @@ export class TempAnswerSyncService {
       variables: mapped.variables,
       document: mapped.document,
     });
+  }
+
+  /**
+   * Fetches the most recent temp answers for a given task from DynamoDB via AppSync.
+   *
+   * @param taskPk The primary key of the task.
+   * @returns The most recent answers as a parsed JSON object, or null if not found.
+   */
+  static async getTempAnswers(
+    taskPk: string
+  ): Promise<Record<string, any> | null> {
+    if (!config || !config.executor) {
+      debugLog(
+        "⚠️",
+        "",
+        "TempAnswerSyncService not configured (cannot fetch temp answers)",
+        { taskPk }
+      );
+      return null;
+    }
+
+    // Check network state before attempting to fetch
+    const netState = await NetInfo.fetch();
+    const isOnline =
+      netState.isInternetReachable === true || netState.isConnected === true;
+
+    if (!isOnline) {
+      debugLog(
+        "📴",
+        "",
+        "Device is offline - cannot fetch temp answers from AppSync",
+        {
+          taskPk,
+          isConnected: netState.isConnected,
+          isInternetReachable: netState.isInternetReachable,
+        }
+      );
+      return null;
+    }
+
+    debugLog("🔍", "", "Fetching saved temp answers from DynamoDB", { taskPk });
+
+    try {
+      const response = await config.executor.execute({
+        document: DEFAULT_GET_TEMP_ANSWERS_QUERY,
+        variables: { taskPk },
+      });
+
+      if (hasGraphQLErrors(response)) {
+        debugLog("❌", "", "Failed to fetch temp answers - GraphQL errors", {
+          taskPk,
+          errors: truncateForLog(response.errors),
+        });
+        return null;
+      }
+
+      const data = response.data as { getTempAnswers?: { answers: string }[] };
+      const tempAnswers = data?.getTempAnswers;
+
+      if (tempAnswers && tempAnswers.length > 0) {
+        // The resolver is configured to return the most recent item (limit: 1, scanIndexForward: false)
+        const latestAnswers = tempAnswers[0].answers;
+        debugLog("✅", "", "Successfully fetched latest temp answers", {
+          taskPk,
+          answersLength: latestAnswers.length,
+        });
+        const parsedAnswers = safeJsonParse(latestAnswers, {});
+        return parsedAnswers;
+      }
+
+      debugLog("ℹ️", "", "No temp answers found for task", { taskPk });
+      return null;
+    } catch (error) {
+      debugLog("❌", "", "Failed to fetch temp answers - exception", {
+        taskPk,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      return null;
+    }
   }
 
   /**
