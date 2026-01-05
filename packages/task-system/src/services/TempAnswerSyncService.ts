@@ -503,6 +503,20 @@ export class TempAnswerSyncService {
       return null;
     }
 
+    // Check network state before attempting to fetch
+    const netState = await NetInfo.fetch();
+    const isOnline =
+      netState.isInternetReachable === true || netState.isConnected === true;
+
+    if (!isOnline) {
+      debugLog("📴", "", "Skipping temp answers fetch - device is offline", {
+        taskPk,
+        isConnected: netState.isConnected,
+        isInternetReachable: netState.isInternetReachable,
+      });
+      return null;
+    }
+
     const executor: TaskSystemGraphQLExecutor = config.executor;
 
     try {
