@@ -10,7 +10,13 @@
  * @module DateQuestion
  */
 
-import React, { useEffect, useMemo, useState, useCallback } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+  useCallback,
+  useRef,
+} from "react";
 import { StyleSheet, View } from "react-native";
 import { Question } from "@task-types/ActivityConfig";
 import { DateTimeFieldMode } from "@components/ui/DateTimeField";
@@ -90,21 +96,24 @@ export const DateQuestion: React.FC<DateQuestionProps> = ({
   // Get translated month names for Lumiere mode
   const monthNames = t("dateTime.months", { returnObjects: true }) as string[];
 
-  // Parse value to Date
-  const getDateValue = (): Date | null => {
-    if (!value) return new Date();
+  // Parse value to Date - memoized to prevent infinite loops
+  const getDateValue = useCallback((): Date | null => {
+    if (!value) return null; // Return null instead of new Date() to avoid creating new objects on each render
     if (value instanceof Date) return value;
     if (typeof value === "string") {
       const parsed = new Date(value);
       return isNaN(parsed.getTime()) ? null : parsed;
     }
     return null;
-  };
+  }, [value]);
 
   const initialDate = getDateValue();
   const [selectedDate, setSelectedDate] = useState<Date | null>(
     initialDate ?? null
   );
+
+  // Track previous value to prevent processing same value multiple times
+  const prevValueRef = useRef<string | Date | null>(value);
 
   // Lumiere mode state (for manual input)
   const [day, setDay] = useState<number | null>(null);
@@ -142,15 +151,36 @@ export const DateQuestion: React.FC<DateQuestionProps> = ({
 
   useEffect(() => {
     // Keep local state in sync if answer updates externally (native mode)
-    if (displayMode === "native") {
-      const next = getDateValue();
-      if (
-        next &&
-        (!selectedDate || next.getTime() !== selectedDate.getTime())
-      ) {
-        setSelectedDate(next);
-      }
+    if (displayMode !== "native") {
+      return;
     }
+
+    // Only process if value actually changed
+    if (prevValueRef.current === value) {
+      return;
+    }
+
+    prevValueRef.current = value;
+    const next = getDateValue();
+
+    // Use functional update to avoid needing selectedDate in dependencies
+    setSelectedDate(current => {
+      // If both are null/falsy, no update needed
+      if (!next && !current) {
+        return current;
+      }
+
+      // If next exists and current doesn't, or times are different, update
+      if (next && (!current || next.getTime() !== current.getTime())) {
+        return next;
+      }
+
+      // Otherwise keep current
+      return current;
+    });
+    // Only depend on value and displayMode, not getDateValue
+    // getDateValue is stable via useCallback and only changes when value changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, displayMode]);
 
   const formatDate = (date: Date): string => {

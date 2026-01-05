@@ -1,18 +1,20 @@
 # Unused Files Analysis
 
+**Last Updated:** 2025-01-04
+
 This document lists files that are not being used by the application.
 
-## Package-Level Unused Files (`packages/task-system/src/src/`)
+## Package-Level Unused Files (`packages/task-system/src/`)
 
 ### Components (Excluded from build per tsconfig.build.json)
 
 These components are not imported or used by `TaskActivityModule`:
 
-1. ✅ **DELETED**: `components/AppointmentsGroupedView.tsx` - Not exported, not used
-2. ✅ **DELETED**: `components/TodoForm.tsx` - Todo components removed from package
-3. ✅ **DELETED**: `components/TodoList.tsx` - Todo components removed from package
-4. `components/TaskList.tsx` - Not imported anywhere in package
-5. `components/TasksView.tsx` - Not imported anywhere in package
+1. ✅ **DELETED** (2025-01-04): `components/AppointmentsGroupedView.tsx` - Not exported, not used
+2. ✅ **DELETED** (2025-01-04): `components/TodoForm.tsx` - Todo components removed from package
+3. ✅ **DELETED** (2025-01-04): `components/TodoList.tsx` - Todo components removed from package
+4. ✅ **DELETED** (2025-01-04): `components/TaskList.tsx` - Not imported anywhere in package
+5. ✅ **DELETED** (2025-01-04): `components/TasksView.tsx` - Not imported anywhere in package
 
 ### Hooks (Excluded from build per tsconfig.build.json)
 
@@ -30,26 +32,55 @@ These hooks are only used in root app screens, not by the package:
 - The package versions are excluded from the build and not exported
 - These files may have been kept for reference or future use, but are currently unused
 
-## Root-Level Potentially Unused Files
+## Root-Level Unused Files
 
-### Components
+### Utilities
 
-1. `src/components/AppointmentsGroupedView.tsx` - Only has a test file, not used in app
-2. `src/components/AppointmentsGroupedView.test.tsx` - Test for unused component
+1. ✅ **DELETED** (2025-01-04): `src/utils/questionValidation.ts` - Duplicate of package file, not imported anywhere
 
-### Note
+### Components (Expo Template Files)
 
-- The root app uses `GroupedTasksView` instead, which handles both tasks and appointments together
+All root-level Expo template components have been removed:
+
+1. ✅ **DELETED** (2025-01-04): `components/HapticTab.tsx` - Expo template file
+2. ✅ **DELETED** (2025-01-04): `components/ThemedText.tsx` - Expo template file
+3. ✅ **DELETED** (2025-01-04): `components/ThemedView.tsx` - Expo template file
+4. ✅ **DELETED** (2025-01-04): `components/ui/` (18 files) - Expo template UI files
+
+### Notes
+
+- All functionality has been moved to the package (`packages/task-system/src/components/`)
+- The root `src/` directory now only contains harness-specific components
 
 ## Summary
 
-**Package-level unused files: 10 files**
+**Package-level files deleted: 5 components**
 
-- 4 components (1 already deleted)
-- 5 hooks
+- ✅ AppointmentsGroupedView.tsx
+- ✅ TodoForm.tsx
+- ✅ TodoList.tsx
+- ✅ TaskList.tsx
+- ✅ TasksView.tsx
 
-**Root-level potentially unused files: 2 files**
+**Root-level files deleted: 26 files**
 
-- 1 component + 1 test
+- ✅ 1 duplicate utility file (questionValidation.ts)
+- ✅ 3 Expo template components (HapticTab, ThemedText, ThemedView)
+- ✅ 18 Expo template UI files (components/ui/)
+- ✅ 4 obsolete test files (ui-button, ui-card, ui-loading-spinner, ui-text-field)
 
-**Total: 12 files** (1 already deleted, 11 remaining)
+**Hooks remaining (exported but only used by harness):**
+
+These hooks are exported from the package for use by consuming applications:
+
+1. `hooks/useActivityList.ts` - Used in harness, available for LX teams
+2. `hooks/useQuestionList.ts` - Available for LX teams
+3. `hooks/useTaskAnswerList.ts` - Used in harness, available for LX teams
+4. `hooks/useTaskHistoryList.ts` - Used in harness, available for LX teams
+5. `hooks/useTaskResultList.ts` - Used in harness, available for LX teams
+
+**Decision:** Keeping these hooks as they are part of the package's public API.
+
+**Total files deleted: 31 files**
+
+**Remaining exported hooks: 5 hooks** (intentionally kept as public API)

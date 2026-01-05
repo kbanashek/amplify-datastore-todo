@@ -12,13 +12,19 @@ import type { AnswerValue } from "@task-types/AnswerValue";
 import { getServiceLogger } from "@utils/serviceLogger";
 
 /**
+ * Type for validation answer map used in cross-field comparisons.
+ * Maps question IDs to their answer values.
+ */
+export type ValidationAnswers = Record<string, AnswerValue>;
+
+/**
  * Validates a single question answer
  * Returns array of error messages (empty if valid)
  */
 export const validateQuestionAnswer = (
   question: ParsedElement["question"],
   answer: AnswerValue,
-  allAnswers?: Record<string, any>
+  allAnswers?: ValidationAnswers
 ): string[] => {
   const errors: string[] = [];
   const isNumberField =
@@ -196,7 +202,7 @@ export const validateQuestionAnswer = (
  */
 export const validateScreen = (
   screen: ParsedScreen,
-  answers: Record<string, AnswerValue>
+  answers: ValidationAnswers
 ): Record<string, string[]> => {
   const errors: Record<string, string[]> = {};
 
@@ -219,7 +225,7 @@ export const validateScreen = (
  */
 export const validateAllScreens = (
   screens: ParsedScreen[],
-  answers: Record<string, AnswerValue>
+  answers: ValidationAnswers
 ): Record<string, string[]> => {
   const errors: Record<string, string[]> = {};
 
@@ -236,7 +242,7 @@ export const validateAllScreens = (
  */
 export const isScreenValid = (
   screen: ParsedScreen,
-  answers: Record<string, AnswerValue>
+  answers: ValidationAnswers
 ): boolean => {
   const errors = validateScreen(screen, answers);
   return Object.keys(errors).length === 0;

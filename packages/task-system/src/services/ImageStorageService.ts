@@ -138,7 +138,7 @@ export class ImageStorageService {
    *   studyId: "study456",
    * });
    *
-   * console.log(result.s3Key);  // "images/org123/study456/task123_q7_1704211200000.jpg"
+   * console.log(result.s3Key);  // "data/org123/study456/task123_q7_1704211200000.jpg"
    * console.log(result.localPath);  // Local cached path
    * ```
    */
@@ -262,7 +262,7 @@ export class ImageStorageService {
    * @example
    * ```typescript
    * const result = await ImageStorageService.getInstance().downloadImage({
-   *   s3Key: "images/org/study/task123_q7.jpg",
+   *   s3Key: "data/org/study/task123_q7.jpg",
    *   useCache: true,
    * });
    *
@@ -339,7 +339,7 @@ export class ImageStorageService {
    * @example
    * ```typescript
    * await ImageStorageService.getInstance().deleteImage(
-   *   "images/org/study/task123_q7.jpg"
+   *   "data/org/study/task123_q7.jpg"
    * );
    * ```
    */
@@ -385,7 +385,7 @@ export class ImageStorageService {
    * @example
    * ```typescript
    * const images = await ImageStorageService.getInstance().listImages(
-   *   "images/org123/study456/"
+   *   "data/org123/study456/"
    * );
    * ```
    */
@@ -431,7 +431,7 @@ export class ImageStorageService {
    * @example
    * ```typescript
    * const uri = await ImageStorageService.getInstance().getDisplayUri(
-   *   "images/org/study/task123_q7.jpg"
+   *   "data/org/study/task123_q7.jpg"
    * );
    *
    * <Image source={{ uri }} />

@@ -9,6 +9,104 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Updated Expo File System Imports**
+  - Replaced deprecated `expo-file-system/legacy` imports with modern `expo-file-system` package
+  - Updated both production code and test mocks for consistency with current Expo SDK
+
+- **Type Safety Improvements**
+  - Replaced `any` type with `AnswerValue` in `ActivityConfig.ts` for `patientAnswer` property
+  - Created `ValidationAnswers` type (`Record<string, AnswerValue>`) in `questionValidation.ts`
+  - Updated all validation functions to use type-safe `ValidationAnswers` instead of `any`
+  - Fixed `NumericInput`, `TemperatureQuestion`, `WeightHeightQuestion`, `ClinicalDynamicInputQuestion`, and `BloodPressureQuestion` lineBorder styles to satisfy `getBorderStyle<T>` generic type requirements
+  - Standardized border colors and backgrounds across all clinical input components
+
+- **Platform-Specific Date/Time Handling**
+  - Fixed Android DateTimePicker mode compatibility by converting `"datetime"` to sequential `"date"` and `"time"` pickers
+  - Maintained iOS native `"datetime"` picker support
+
+- **CMP Workflow Enhancement**
+  - Updated `.cursor/commands/cmp.cursor.md` to pull latest `develop` before creating feature branches
+  - Added critical note emphasizing this step prevents merge conflicts
+
+### Added
+
+- **Internationalization (i18n)**
+  - Added translation keys for DateInput placeholder texts (`yearPlaceholder`, `monthPlaceholder`, `dayPlaceholder`)
+  - Added English translations (YYYY, Month, DD)
+  - Added Spanish translations (AAAA, Mes, DD)
+
+### Removed
+
+- **Duplicate Files**
+  - Deleted unused `src/utils/questionValidation.ts` (duplicate of package version)
+  - Documented deletion in `UNUSED_FILES.md` (total: 27 files deleted)
+
+### Fixed
+
+- **DataStore Sync Authentication**
+  - Extended AWS AppSync API key expiration from 7 days to 365 days to prevent frequent sync failures
+  - Updated Amplify backend configuration to support long-lived API keys for development
+  - Resolved "Unauthorized" errors preventing cross-device task and activity synchronization
+  - Fixed CloudFormation drift issues caused by expired API keys
+
+- **Import Path Alignment**
+  - Changed `TaskService.ts` import from relative path to `@schemas/taskSchemas` path alias
+  - Ensures consistency with project path mapping guidelines
+
+## [0.1.32] - 2025-01-04
+
+### Changed
+
+- **Comprehensive Repository Reorganization**
+  - Created `packages/task-system/src/modules/` directory for module wrappers
+  - Moved `TaskActivityModule.tsx` to `modules/` for better organization
+  - Renamed `validation/` to `schemas/` for clearer purpose
+  - Moved MDX documentation files to `packages/task-system/docs/`
+  - Moved configuration files to `packages/task-system/config/`
+  - Moved test mocks to `__mocks__/` following Jest conventions
+  - Updated all path aliases in `tsconfig.json` to reflect new structure
+
+### Added
+
+- **Next Button Validation**
+  - Next button now disabled when required questions are unanswered
+  - Added visual feedback (grayed out appearance) for disabled state
+  - Consistent behavior with Submit/Review button validation
+  - Exception: validation bypassed when navigating from review screen
+  - Added comprehensive tests for Next button validation states
+
+- **Documentation Updates**
+  - Created `DOCS/architecture/root-vs-package-boundaries.md` - comprehensive guide on when to add code to root vs package
+  - Updated `DOCS/architecture/project-structure.md` with new directory structure
+  - Updated `DOCS/architecture/service-consolidation.md` to fix outdated paths
+  - Updated `DOCS/GETTING-STARTED.md` with current structure diagrams
+  - Updated `UNUSED_FILES.md` to reflect deleted files
+
+### Removed
+
+- **Cleaned Up Unused Files** (26 files total)
+  - Deleted unused components: `TaskList.tsx`, `TasksView.tsx`
+  - Removed Expo template files: `HapticTab.tsx`, `ThemedText.tsx`, `ThemedView.tsx`
+  - Removed 18 Expo template UI files from root `components/ui/` directory
+  - Removed obsolete test snapshots and test files
+  - Kept exported hooks (useActivityList, useQuestionList, etc.) as part of public API
+
+### Fixed
+
+- **Type Safety Improvements**
+  - Fixed ESLint `@typescript-eslint/array-type` violations in `ActivityConfig.ts`
+  - Changed `Array<Record<string, unknown>>` to `Record<string, unknown>[]` syntax
+  - Updated `any` types to `Record<string, unknown>` in logger utilities
+  - Fixed import paths after directory reorganization
+
+- **Harness App Fixes**
+  - Fixed runtime error after removing `HapticTab` component
+  - Removed custom tab button, using default Expo Router button
+  - Fixed type errors in `+not-found.tsx` after removing themed components
+  - Fixed `ActivityConfig` type null handling in questions screen
+
 ## [0.1.31] - 2026-01-02
 
 ### Added

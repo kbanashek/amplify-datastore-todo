@@ -107,6 +107,16 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// Type for story args
+type StoryArgs = {
+  text: string;
+  required?: boolean;
+  choices: Choice[];
+  initialAnswer?: string;
+  enableValidation?: boolean;
+  showValidationOnMount?: boolean;
+};
+
 /**
  * Simple yes/no question
  */
@@ -119,7 +129,7 @@ export const YesNoQuestion: Story = {
       { id: "no", text: "No", value: "no" },
     ],
   },
-  render: (args: any) => <SingleSelectQuestionWithState {...args} />,
+  render: (args: StoryArgs) => <SingleSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -136,7 +146,7 @@ export const PainLevelQuestion: Story = {
       { id: "severe", text: "Severe Pain (7-10)", value: "7-10" },
     ],
   },
-  render: (args: any) => <SingleSelectQuestionWithState {...args} />,
+  render: (args: StoryArgs) => <SingleSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -158,7 +168,7 @@ export const FrequencyQuestion: Story = {
       { id: "daily", text: "Daily", value: "daily" },
     ],
   },
-  render: (args: any) => <SingleSelectQuestionWithState {...args} />,
+  render: (args: StoryArgs) => <SingleSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -176,7 +186,7 @@ export const MoodQuestion: Story = {
       { id: "bad", text: "😢 Bad", value: "bad" },
     ],
   },
-  render: (args: any) => <SingleSelectQuestionWithState {...args} />,
+  render: (args: StoryArgs) => <SingleSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -194,7 +204,7 @@ export const WithSelectedAnswer: Story = {
     ],
     initialAnswer: "moderate",
   },
-  render: (args: any) => <SingleSelectQuestionWithState {...args} />,
+  render: (args: StoryArgs) => <SingleSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -209,7 +219,7 @@ export const OptionalQuestion: Story = {
       { id: "no", text: "No, skip this", value: "no" },
     ],
   },
-  render: (args: any) => <SingleSelectQuestionWithState {...args} />,
+  render: (args: StoryArgs) => <SingleSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -229,7 +239,7 @@ export const ManyOptions: Story = {
       { id: "other", text: "Other Specialist", value: "other" },
     ],
   },
-  render: (args: any) => <SingleSelectQuestionWithState {...args} />,
+  render: (args: StoryArgs) => <SingleSelectQuestionWithState {...args} />,
 };
 
 /**
@@ -246,5 +256,5 @@ export const WithRequiredValidation: Story = {
     enableValidation: true,
     showValidationOnMount: true,
   },
-  render: (args: any) => <SingleSelectQuestionWithState {...args} />,
+  render: (args: StoryArgs) => <SingleSelectQuestionWithState {...args} />,
 };

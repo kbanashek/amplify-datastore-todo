@@ -83,21 +83,21 @@ describe("ImageStorageService", () => {
         new Blob(["mock-image-data"], { type: "image/jpeg" })
       );
       (ImagePathUtils.generateS3ImageKey as jest.Mock).mockReturnValue(
-        "images/org123/study456/task123_q7_1704211200000.jpg"
+        "data/org123/study456/task123_q7_1704211200000.jpg"
       );
     });
 
     it("should upload image successfully", async () => {
       (uploadData as jest.Mock).mockReturnValue({
         result: Promise.resolve({
-          key: "images/org123/study456/task123_q7_1704211200000.jpg",
+          key: "data/org123/study456/task123_q7_1704211200000.jpg",
         }),
       });
 
       const result = await service.uploadImage(mockUploadOptions);
 
       expect(result).toEqual({
-        s3Key: "images/org123/study456/task123_q7_1704211200000.jpg",
+        s3Key: "data/org123/study456/task123_q7_1704211200000.jpg",
         filename: "task123_q7_1704211200000.jpg",
         localPath: "file:///permanent/task123_q7_1704211200000.jpg",
         uploadedToS3: true,
@@ -121,7 +121,7 @@ describe("ImageStorageService", () => {
       });
 
       expect(result).toEqual({
-        s3Key: "images/org123/study456/task123_q7_1704211200000.jpg",
+        s3Key: "data/org123/study456/task123_q7_1704211200000.jpg",
         filename: "task123_q7_1704211200000.jpg",
         localPath: "file:///permanent/task123_q7_1704211200000.jpg",
         uploadedToS3: false,
@@ -153,7 +153,7 @@ describe("ImageStorageService", () => {
   });
 
   describe("downloadImage", () => {
-    const mockS3Key = "images/org123/study456/task123_q7.jpg";
+    const mockS3Key = "data/org123/study456/task123_q7.jpg";
     const mockFilename = "task123_q7.jpg";
 
     beforeEach(() => {
@@ -244,7 +244,7 @@ describe("ImageStorageService", () => {
   });
 
   describe("deleteImage", () => {
-    const mockS3Key = "images/org123/study456/task123_q7.jpg";
+    const mockS3Key = "data/org123/study456/task123_q7.jpg";
     const mockFilename = "task123_q7.jpg";
 
     beforeEach(() => {
@@ -286,21 +286,21 @@ describe("ImageStorageService", () => {
   });
 
   describe("listImages", () => {
-    const mockPrefix = "images/org123/study456/";
+    const mockPrefix = "data/org123/study456/";
 
     it("should list images from S3", async () => {
       (list as jest.Mock).mockResolvedValue({
         items: [
-          { key: "images/org123/study456/image1.jpg" },
-          { key: "images/org123/study456/image2.jpg" },
+          { key: "data/org123/study456/image1.jpg" },
+          { key: "data/org123/study456/image2.jpg" },
         ],
       });
 
       const result = await service.listImages(mockPrefix);
 
       expect(result).toEqual([
-        "images/org123/study456/image1.jpg",
-        "images/org123/study456/image2.jpg",
+        "data/org123/study456/image1.jpg",
+        "data/org123/study456/image2.jpg",
       ]);
 
       expect(list).toHaveBeenCalledWith({
@@ -361,7 +361,7 @@ describe("ImageStorageService", () => {
         url: new URL("https://s3.amazonaws.com/signed-url"),
       });
 
-      const result = await service.getDisplayUri("images/org/study/image.jpg");
+      const result = await service.getDisplayUri("data/org/study/image.jpg");
 
       expect(result).toBe("https://s3.amazonaws.com/signed-url");
     });
@@ -384,7 +384,7 @@ describe("ImageStorageService", () => {
       (FileSystemUtils.localImageExists as jest.Mock).mockResolvedValue(false);
       (getUrl as jest.Mock).mockRejectedValue(new Error("Download failed"));
 
-      const result = await service.getDisplayUri("images/org/study/image.jpg");
+      const result = await service.getDisplayUri("data/org/study/image.jpg");
 
       expect(result).toBeNull();
     });

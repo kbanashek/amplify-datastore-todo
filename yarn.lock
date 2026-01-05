@@ -1937,17 +1937,17 @@
     "@types/hammerjs" "^2.0.36"
 
 "@emnapi/core@^1.4.3":
-  version "1.7.1"
-  resolved "https://registry.npmjs.org/@emnapi/core/-/core-1.7.1.tgz#3a79a02dbc84f45884a1806ebb98e5746bdfaac4"
-  integrity sha512-o1uhUASyo921r2XtHYOHy7gdkGLge8ghBEQHMWmyJFoXlpU58kIrhhN3w26lpQb6dspetweapMn2CSNwQ8I4wg==
+  version "1.8.1"
+  resolved "https://registry.npmjs.org/@emnapi/core/-/core-1.8.1.tgz#fd9efe721a616288345ffee17a1f26ac5dd01349"
+  integrity sha512-AvT9QFpxK0Zd8J0jopedNm+w/2fIzvtPKPjqyw9jwvBaReTTqPBk9Hixaz7KbjimP+QNz605/XnjFcDAL2pqBg==
   dependencies:
     "@emnapi/wasi-threads" "1.1.0"
     tslib "^2.4.0"
 
 "@emnapi/runtime@^1.4.3":
-  version "1.7.1"
-  resolved "https://registry.npmjs.org/@emnapi/runtime/-/runtime-1.7.1.tgz#a73784e23f5d57287369c808197288b52276b791"
-  integrity sha512-PVtJr5CmLwYAU9PZDMITZoR5iAOShYREoR45EyyLrbntV50mdePTgUn4AmOw90Ifcj+x2kRjdzr1HP3RrNiHGA==
+  version "1.8.1"
+  resolved "https://registry.npmjs.org/@emnapi/runtime/-/runtime-1.8.1.tgz#550fa7e3c0d49c5fb175a116e8cd70614f9a22a5"
+  integrity sha512-mehfKSMWjjNol8659Z8KxEMrdSJDDot5SXMq00dM8BN4o+CLNXQ0xH2V7EchNHV4RmbZLmmPdEaXZc5H2FXmDg==
   dependencies:
     tslib "^2.4.0"
 
@@ -12153,3 +12153,8 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+zod@^4.3.5:
+  version "4.3.5"
+  resolved "https://registry.npmjs.org/zod/-/zod-4.3.5.tgz#aeb269a6f9fc259b1212c348c7c5432aaa474d2a"
+  integrity sha512-k7Nwx6vuWx1IJ9Bjuf4Zt1PEllcwe7cls3VNzm4CQ1/hgtFUK2bRNG3rvnpPUhFjmqJKAKtjV576KnUkHocg/g==

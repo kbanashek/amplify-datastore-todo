@@ -18,7 +18,7 @@ jest.mock("expo-image-picker");
 jest.mock("@services/ImageStorageService", () => ({
   getImageStorageService: jest.fn(() => ({
     uploadImage: jest.fn().mockResolvedValue({
-      s3Key: "images/org/study/task_q_123.jpg",
+      s3Key: "data/org/study/task_q_123.jpg",
       filename: "task_q_123.jpg",
       localPath: "file://test-image.jpg",
       uploadedToS3: true,
@@ -86,7 +86,7 @@ describe("ImageCaptureQuestion", () => {
     const { getByTestId } = render(
       <ImageCaptureQuestion
         question={mockQuestion}
-        value="images/org/study/task_q_123.jpg"
+        value="data/org/study/task_q_123.jpg"
         onChange={() => {}}
         displayProperties={mockDisplayProperties}
         errors={[]}
@@ -120,7 +120,7 @@ describe("ImageCaptureQuestion", () => {
       expect(mockLaunchCameraAsync).toHaveBeenCalled();
       // Now stores S3 key instead of local URI
       expect(mockOnChange).toHaveBeenCalledWith(
-        "images/org/study/task_q_123.jpg"
+        "data/org/study/task_q_123.jpg"
       );
     });
   });
@@ -130,7 +130,7 @@ describe("ImageCaptureQuestion", () => {
     const { getByTestId } = render(
       <ImageCaptureQuestion
         question={mockQuestion}
-        value="images/org/study/task_q_123.jpg"
+        value="data/org/study/task_q_123.jpg"
         onChange={mockOnChange}
         displayProperties={mockDisplayProperties}
         errors={[]}

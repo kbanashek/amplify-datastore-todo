@@ -52,7 +52,7 @@ export function getLogPrefix(serviceName: string): string {
 export function logWithDevice(
   serviceName: string,
   message: string,
-  data?: any
+  data?: Record<string, unknown>
 ): void {
   if (!debugLogsEnabled()) return;
   const deviceId = getDeviceId();
@@ -72,7 +72,7 @@ export function logWithDevice(
 export function logErrorWithDevice(
   serviceName: string,
   message: string,
-  error?: any
+  error?: unknown
 ): void {
   const deviceId = getDeviceId();
   const source = "task-system"; // Package source

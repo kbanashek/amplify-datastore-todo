@@ -1,5 +1,7 @@
 // TypeScript interfaces for parsed Activity JSON structure
 
+import { AnswerValue } from "./AnswerValue";
+
 export interface Choice {
   id: string;
   order?: number;
@@ -31,10 +33,10 @@ export interface Question {
   required?: boolean | null;
   validations?: Validation[];
   choices?: Choice[];
-  codingLogic?: any[];
-  dataMappers?: any[];
-  questionProperties?: any[];
-  translationKeys?: any[];
+  codingLogic?: { [key: string]: unknown }[];
+  dataMappers?: { [key: string]: unknown }[];
+  questionProperties?: { [key: string]: unknown }[];
+  translationKeys?: { [key: string]: unknown }[];
 }
 
 export interface DisplayProperty {
@@ -108,8 +110,8 @@ export interface ParsedElement {
   id: string;
   order: number;
   question: Question;
-  displayProperties: Record<string, string>;
-  patientAnswer?: any;
+  displayProperties: { [key: string]: string };
+  patientAnswer?: AnswerValue;
 }
 
 export interface ParsedScreen {
@@ -117,5 +119,5 @@ export interface ParsedScreen {
   name?: string;
   order: number;
   elements: ParsedElement[];
-  displayProperties?: Record<string, string>;
+  displayProperties?: { [key: string]: string };
 }

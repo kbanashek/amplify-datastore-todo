@@ -13,6 +13,8 @@ import { QuestionRenderer } from "@components/questions/QuestionRenderer";
 import { QuestionScreenButtons } from "@components/questions/QuestionScreenButtons";
 import { Task } from "@task-types/Task";
 import { getTaskSystemConfig } from "@runtime/taskSystem";
+import { AnswerValue } from "@task-types/AnswerValue";
+import { ActivityConfig } from "@task-types/ActivityConfig";
 
 const logger = getServiceLogger("QuestionScreenContent");
 
@@ -22,9 +24,9 @@ const logger = getServiceLogger("QuestionScreenContent");
 interface QuestionScreenContentProps {
   activityData: ParsedActivityData;
   currentScreenIndex: number;
-  answers: Record<string, any>;
+  answers: Record<string, AnswerValue>;
   errors: Record<string, string[]>;
-  onAnswerChange: (questionId: string, answer: any) => void;
+  onAnswerChange: (questionId: string, answer: AnswerValue) => void;
   bottomInset: number;
   currentScreenValid: boolean;
   cameFromReview?: boolean;
@@ -32,7 +34,7 @@ interface QuestionScreenContentProps {
   onPrevious?: () => void;
   onNext?: () => void;
   onReviewOrSubmit?: () => void;
-  activityConfig?: any;
+  activityConfig?: ActivityConfig;
   task?: Task;
 }
 
@@ -140,7 +142,9 @@ export const QuestionScreenContent: React.FC<QuestionScreenContentProps> = ({
             key={element.id}
             element={enhancedElement}
             currentAnswer={answers[element.question.id]}
-            onAnswerChange={onAnswerChange}
+            onAnswerChange={
+              onAnswerChange as (questionId: string, answer: unknown) => void
+            }
             errors={errors}
           />
         );
