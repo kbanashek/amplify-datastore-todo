@@ -14,6 +14,19 @@ jest.mock("@utils/activityParser", () => ({
   parseActivityConfig: jest.fn(),
 }));
 
+// Mock services
+jest.mock("@services/TaskService", () => ({
+  TaskService: {
+    getTaskById: jest.fn(),
+  },
+}));
+
+jest.mock("@services/TempAnswerSyncService", () => ({
+  TempAnswerSyncService: {
+    getTempAnswers: jest.fn(),
+  },
+}));
+
 import { useActivity } from "@hooks/useActivity";
 import { useTaskAnswer } from "@hooks/useTaskAnswer";
 import { parseActivityConfig } from "@utils/activityParser";
@@ -21,6 +34,8 @@ import { Activity } from "@task-types/Activity";
 import { ParsedActivityData } from "@utils/activityParser";
 import { ActivityConfig } from "@task-types/ActivityConfig";
 import { TaskAnswer } from "@task-types/TaskAnswer";
+import { TaskService } from "@services/TaskService";
+import { TempAnswerSyncService } from "@services/TempAnswerSyncService";
 
 describe("useActivityData", () => {
   const mockUseActivity = useActivity as jest.MockedFunction<
@@ -32,6 +47,13 @@ describe("useActivityData", () => {
   const mockParseActivityConfig = parseActivityConfig as jest.MockedFunction<
     typeof parseActivityConfig
   >;
+  const mockGetTaskById = TaskService.getTaskById as jest.MockedFunction<
+    typeof TaskService.getTaskById
+  >;
+  const mockGetTempAnswers =
+    TempAnswerSyncService.getTempAnswers as jest.MockedFunction<
+      typeof TempAnswerSyncService.getTempAnswers
+    >;
 
   const mockActivity: Activity = {
     id: "1",
@@ -83,6 +105,18 @@ describe("useActivityData", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+
+    // Default mock implementations
+    mockGetTaskById.mockResolvedValue({
+      id: "TASK-1",
+      pk: "TASK-PK-1",
+      sk: "TASK-SK-1",
+      title: "Test Task",
+      taskType: "SCHEDULED",
+      status: "OPEN",
+    } as any);
+
+    mockGetTempAnswers.mockResolvedValue(null); // No temp answers by default
   });
 
   describe("loading state", () => {
