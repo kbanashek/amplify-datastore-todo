@@ -4,29 +4,25 @@
     {
       "Sid": "CF",
       "Effect": "Allow",
-      "Action": [
-        "cloudformation:ListStackResources",
-        "cloudformation:DescribeStacks",
-        "cloudformation:DescribeStackResources",
-        "cloudformation:GetTemplate",
-        "cloudformation:ListStacks",
-        "cloudformation:CreateStack",
-        "cloudformation:UpdateStack",
-        "cloudformation:DeleteStack",
-        "cloudformation:ContinueUpdateRollback"
-      ],
+      "Action": ["cloudformation:*"],
       "Resource": [
-        "arn:aws:cloudformation:us-east-1:377973420769:stack/amplify-lxtodoapp-dev-*/*",
-        "arn:aws:cloudformation:us-east-1:377973420769:stack/amplify-lxtodoapp-dev-*"
+        "arn:aws:cloudformation:us-east-1:377973420769:stack/amplify-*/*",
+        "arn:aws:cloudformation:us-east-1:377973420769:stack/amplify-*"
       ]
+    },
+    {
+      "Sid": "CFList",
+      "Effect": "Allow",
+      "Action": ["cloudformation:ListStacks", "cloudformation:DescribeStacks"],
+      "Resource": "*"
     },
     {
       "Sid": "S3",
       "Effect": "Allow",
-      "Action": ["s3:GetObject", "s3:PutObject", "s3:ListBucket"],
+      "Action": ["s3:*"],
       "Resource": [
-        "arn:aws:s3:::amplify-lxtodoapp-dev-*-deployment",
-        "arn:aws:s3:::amplify-lxtodoapp-dev-*-deployment/*"
+        "arn:aws:s3:::amplify-*-deployment",
+        "arn:aws:s3:::amplify-*-deployment/*"
       ]
     },
     {
@@ -47,30 +43,21 @@
         "iam:PassRole",
         "iam:TagRole",
         "iam:UntagRole",
-        "iam:ListRoleTags"
+        "iam:ListRoleTags",
+        "iam:UpdateRole"
       ],
       "Resource": [
         "arn:aws:iam::377973420769:role/*IAM*",
-        "arn:aws:iam::377973420769:role/amplify-*"
+        "arn:aws:iam::377973420769:role/amplify-*",
+        "arn:aws:iam::377973420769:role/*LambdaRole*",
+        "arn:aws:iam::377973420769:role/getTempAnswers*"
       ]
     },
     {
       "Sid": "AS",
       "Effect": "Allow",
-      "Action": [
-        "appsync:CreateGraphqlApi",
-        "appsync:UpdateGraphqlApi",
-        "appsync:GetGraphqlApi",
-        "appsync:ListGraphqlApis",
-        "appsync:StartSchemaCreation",
-        "appsync:GetSchemaCreationStatus",
-        "appsync:CreateDataSource",
-        "appsync:UpdateDataSource",
-        "appsync:DeleteDataSource",
-        "appsync:GetDataSource",
-        "appsync:ListDataSources"
-      ],
-      "Resource": ["arn:aws:appsync:us-east-1:377973420769:apis/*"]
+      "Action": ["appsync:*"],
+      "Resource": ["arn:aws:appsync:us-east-1:377973420769:*"]
     },
     {
       "Sid": "DDB",
@@ -79,9 +66,45 @@
         "dynamodb:CreateTable",
         "dynamodb:UpdateTable",
         "dynamodb:DescribeTable",
-        "dynamodb:ListTables"
+        "dynamodb:ListTables",
+        "dynamodb:DeleteTable",
+        "dynamodb:DescribeTimeToLive",
+        "dynamodb:UpdateTimeToLive",
+        "dynamodb:TagResource",
+        "dynamodb:UntagResource",
+        "dynamodb:ListTagsOfResource",
+        "dynamodb:DescribeContinuousBackups",
+        "dynamodb:UpdateContinuousBackups"
       ],
       "Resource": ["arn:aws:dynamodb:us-east-1:377973420769:table/*"]
+    },
+    {
+      "Sid": "Amplify",
+      "Effect": "Allow",
+      "Action": ["amplify:*"],
+      "Resource": ["arn:aws:amplify:us-east-1:377973420769:apps/*"]
+    },
+    {
+      "Sid": "Lambda",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:CreateFunction",
+        "lambda:DeleteFunction",
+        "lambda:GetFunction",
+        "lambda:GetFunctionConfiguration",
+        "lambda:UpdateFunctionCode",
+        "lambda:UpdateFunctionConfiguration",
+        "lambda:ListVersionsByFunction",
+        "lambda:PublishVersion",
+        "lambda:CreateAlias",
+        "lambda:DeleteAlias",
+        "lambda:UpdateAlias",
+        "lambda:GetAlias",
+        "lambda:AddPermission",
+        "lambda:RemovePermission",
+        "lambda:InvokeFunction"
+      ],
+      "Resource": ["arn:aws:lambda:us-east-1:377973420769:function:*"]
     }
   ]
 }

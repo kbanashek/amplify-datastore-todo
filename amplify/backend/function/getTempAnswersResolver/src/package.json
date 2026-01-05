@@ -1,0 +1,7 @@
+{
+  "name": "get-temp-answers-resolver",
+  "version": "1.0.0",
+  "description": "Lambda resolver for getTempAnswers GraphQL query",
+  "main": "index.js",
+  "dependencies": {}
+}

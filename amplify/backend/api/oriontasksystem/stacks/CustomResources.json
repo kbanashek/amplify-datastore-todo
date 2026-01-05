@@ -1,0 +1,154 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Custom resources for temp answers",
+  "Parameters": {
+    "AppSyncApiId": {
+      "Type": "String"
+    },
+    "AppSyncApiName": {
+      "Type": "String"
+    },
+    "env": {
+      "Type": "String"
+    },
+    "functiongetTempAnswersResolverArn": {
+      "Type": "String"
+    },
+    "functiongetTempAnswersResolverName": {
+      "Type": "String"
+    }
+  },
+  "Conditions": {
+    "HasEnvironmentParameter": {
+      "Fn::Not": [{"Fn::Equals": [{"Ref": "env"}, "NONE"]}]
+    }
+  },
+  "Resources": {
+    "TaskTempAnswersTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": {
+          "Fn::If": [
+            "HasEnvironmentParameter",
+            {"Fn::Sub": "TaskTempAnswers-${env}"},
+            "TaskTempAnswers"
+          ]
+        },
+        "AttributeDefinitions": [
+          {"AttributeName": "taskPk", "AttributeType": "S"},
+          {"AttributeName": "updatedAt", "AttributeType": "S"}
+        ],
+        "KeySchema": [
+          {"AttributeName": "taskPk", "KeyType": "HASH"},
+          {"AttributeName": "updatedAt", "KeyType": "RANGE"}
+        ],
+        "BillingMode": "PAY_PER_REQUEST"
+      }
+    },
+    "TaskTempAnswersTableRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Principal": {"Service": "appsync.amazonaws.com"},
+            "Action": "sts:AssumeRole"
+          }]
+        },
+        "Policies": [{
+          "PolicyName": "DynamoDBAccess",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": ["dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:Query"],
+              "Resource": {"Fn::GetAtt": ["TaskTempAnswersTable", "Arn"]}
+            }]
+          }
+        }]
+      }
+    },
+    "TaskTempAnswersDataSource": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {"Ref": "AppSyncApiId"},
+        "Name": "TaskTempAnswersDataSource",
+        "Type": "AMAZON_DYNAMODB",
+        "ServiceRoleArn": {"Fn::GetAtt": ["TaskTempAnswersTableRole", "Arn"]},
+        "DynamoDBConfig": {
+          "TableName": {"Ref": "TaskTempAnswersTable"},
+          "AwsRegion": {"Ref": "AWS::Region"}
+        }
+      }
+    },
+    "SaveTaskTempAnswersResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {"Ref": "AppSyncApiId"},
+        "TypeName": "Mutation",
+        "FieldName": "saveTaskTempAnswers",
+        "DataSourceName": {"Fn::GetAtt": ["TaskTempAnswersDataSource", "Name"]},
+        "RequestMappingTemplate": "#set($answersJson = $util.toJson($ctx.args.input.answers))\n#set($answersEscaped = $util.escapeJavaScript($answersJson))\n{\n  \"version\": \"2018-05-29\",\n  \"operation\": \"PutItem\",\n  \"key\": {\n    \"taskPk\": $util.dynamodb.toDynamoDBJson($ctx.args.input.taskPk),\n    \"updatedAt\": $util.dynamodb.toDynamoDBJson($util.time.nowISO8601())\n  },\n  \"attributeValues\": {\n    \"activityId\": $util.dynamodb.toDynamoDBJson($ctx.args.input.activityId),\n    \"answers\": {\"S\": \"$answersEscaped\"},\n    \"localtime\": $util.dynamodb.toDynamoDBJson($ctx.args.input.localtime)\n  }\n}",
+        "ResponseMappingTemplate": "#set($now = $util.time.nowISO8601())\n{\n  \"taskPk\": $util.toJson($ctx.args.input.taskPk),\n  \"activityId\": $util.toJson($ctx.args.input.activityId),\n  \"answers\": $util.toJson($ctx.args.input.answers),\n  \"localtime\": $util.toJson($ctx.args.input.localtime),\n  \"updatedAt\": $util.toJson($now)\n}"
+      },
+      "DependsOn": "TaskTempAnswersDataSource"
+    },
+    "GetTempAnswersLambdaRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Principal": {"Service": "appsync.amazonaws.com"},
+            "Action": "sts:AssumeRole"
+          }]
+        },
+        "Policies": [{
+          "PolicyName": "InvokeLambda",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": "lambda:InvokeFunction",
+              "Resource": {"Ref": "functiongetTempAnswersResolverArn"}
+            }]
+          }
+        }]
+      }
+    },
+    "GetTempAnswersLambdaDataSource": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {"Ref": "AppSyncApiId"},
+        "Name": "GetTempAnswersLambdaDataSource",
+        "Type": "AWS_LAMBDA",
+        "ServiceRoleArn": {"Fn::GetAtt": ["GetTempAnswersLambdaRole", "Arn"]},
+        "LambdaConfig": {
+          "LambdaFunctionArn": {"Ref": "functiongetTempAnswersResolverArn"}
+        }
+      }
+    },
+    "GetTempAnswersResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {"Ref": "AppSyncApiId"},
+        "TypeName": "Query",
+        "FieldName": "getTempAnswers",
+        "DataSourceName": {"Fn::GetAtt": ["GetTempAnswersLambdaDataSource", "Name"]},
+        "RequestMappingTemplate": "{\n  \"version\": \"2018-05-29\",\n  \"operation\": \"Invoke\",\n  \"payload\": $util.toJson($context)\n}",
+        "ResponseMappingTemplate": "$util.toJson($context.result)"
+      },
+      "DependsOn": "GetTempAnswersLambdaDataSource"
+    }
+  },
+  "Outputs": {
+    "TaskTempAnswersTableName": {
+      "Value": {"Ref": "TaskTempAnswersTable"}
+    },
+    "TaskTempAnswersTableArn": {
+      "Value": {"Fn::GetAtt": ["TaskTempAnswersTable", "Arn"]}
+    }
+  }
+}
