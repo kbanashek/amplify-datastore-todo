@@ -247,6 +247,10 @@ export class TempAnswerSyncService {
       documentSnippet: (mapped.document ?? config.document).slice(0, 80),
       variableKeys: Object.keys(mapped.variables ?? {}),
     });
+    
+    // Cache answers locally for offline access
+    await writeCache(input.task.pk, input.answers);
+    
     await TempAnswerSyncService.enqueueTempAnswers({
       stableKey: mapped.stableKey,
       variables: mapped.variables,
@@ -567,6 +571,9 @@ export class TempAnswerSyncService {
         questionCount: Object.keys(answers || {}).length,
         updatedAt: mostRecent.updatedAt,
       });
+
+      // Cache for offline access
+      await writeCache(taskPk, answers);
 
       return answers;
     } catch (error) {
