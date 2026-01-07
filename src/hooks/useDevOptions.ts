@@ -42,6 +42,7 @@ export interface UseDevOptionsReturn {
   importFixtureFromRepo: () => Promise<void>;
   importPOCFixture: () => Promise<void>;
   generateFixtureAndImport: () => Promise<void>;
+  simpleImportFixture: () => Promise<void>;
   freshCloudResetAndImport: () => Promise<void>;
   resetLocalAndImport: () => Promise<void>;
 
@@ -157,6 +158,25 @@ export const useDevOptions = (): UseDevOptionsReturn => {
       setIsImportingFixture(false);
     }
   }, [doLocalReset, importFixture]);
+
+  const simpleImportFixture = useCallback(async (): Promise<void> => {
+    setIsImportingFixture(true);
+    setLastError(null);
+    setSeedResult(null);
+
+    try {
+      const generated = buildFixtureForToday();
+      setGeneratedFixtureJson(JSON.stringify(generated, null, 2));
+      // IMPORTANT: Just import without stopping DataStore
+      // Use when DataStore.stop() is hanging due to broken sync
+      await importFixture(generated as any);
+    } catch (error: unknown) {
+      setLastError(error instanceof Error ? error.message : String(error));
+      throw error;
+    } finally {
+      setIsImportingFixture(false);
+    }
+  }, [importFixture]);
 
   const freshCloudResetAndImport = useCallback(async (): Promise<void> => {
     setIsDeleting(true);
@@ -307,6 +327,7 @@ export const useDevOptions = (): UseDevOptionsReturn => {
     importFixtureFromRepo,
     importPOCFixture,
     generateFixtureAndImport,
+    simpleImportFixture,
     freshCloudResetAndImport,
     resetLocalAndImport,
     seedAppointmentsOnly,

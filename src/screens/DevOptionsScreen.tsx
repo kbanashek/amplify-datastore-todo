@@ -1,6 +1,5 @@
-import React, { useMemo, useState } from "react";
+import React from "react";
 import {
-  ActivityIndicator,
   Alert,
   ScrollView,
   StyleSheet,
@@ -15,129 +14,26 @@ import { GlobalHeader } from "@orion/task-system";
 import { TestIds } from "../constants/testIds";
 import { useDevOptions } from "../hooks/useDevOptions";
 
-type ActionVariant = "primary" | "secondary" | "danger";
-
-interface ActionCardProps {
-  title: string;
-  description: string;
-  buttonLabel: string;
-  onPress: () => void;
-  disabled: boolean;
-  loading: boolean;
-  variant?: ActionVariant;
-  testID?: string;
-}
-
-const ActionCard: React.FC<ActionCardProps> = ({
-  title,
-  description,
-  buttonLabel,
-  onPress,
-  disabled,
-  loading,
-  variant = "primary",
-  testID,
-}) => {
-  const buttonStyle = useMemo(() => {
-    switch (variant) {
-      case "danger":
-        return styles.buttonDanger;
-      case "secondary":
-        return styles.buttonSecondary;
-      default:
-        return styles.buttonPrimary;
-    }
-  }, [variant]);
-
-  const buttonTextStyle = useMemo(() => {
-    switch (variant) {
-      case "secondary":
-        return styles.buttonTextSecondary;
-      default:
-        return styles.buttonText;
-    }
-  }, [variant]);
-
-  return (
-    <View style={styles.card}>
-      <View style={styles.cardLeft}>
-        <Text style={styles.cardTitle}>{title}</Text>
-        <Text style={styles.cardDescription}>{description}</Text>
-      </View>
-
-      <TouchableOpacity
-        style={[buttonStyle, (disabled || loading) && styles.buttonDisabled]}
-        onPress={onPress}
-        disabled={disabled || loading}
-        testID={testID}
-      >
-        {loading ? (
-          <ActivityIndicator size="small" color="#fff" />
-        ) : (
-          <Text style={buttonTextStyle}>{buttonLabel}</Text>
-        )}
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-interface CollapsibleSectionProps {
-  title: string;
-  subtitle?: string;
-  isOpen: boolean;
-  onToggle: () => void;
-  children: React.ReactNode;
-}
-
-const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
-  title,
-  subtitle,
-  isOpen,
-  onToggle,
-  children,
-}) => {
-  return (
-    <View style={styles.section}>
-      <TouchableOpacity onPress={onToggle} style={styles.sectionHeader}>
-        <View style={styles.sectionHeaderText}>
-          <Text style={styles.sectionTitle}>{title}</Text>
-          {subtitle ? (
-            <Text style={styles.sectionSubtitle}>{subtitle}</Text>
-          ) : null}
-        </View>
-        <Text style={styles.sectionChevron}>{isOpen ? "Hide" : "Show"}</Text>
-      </TouchableOpacity>
-      {isOpen ? <View style={styles.sectionBody}>{children}</View> : null}
-    </View>
-  );
-};
+/**
+ * Dev Options Screen
+ *
+ * Provides dev tools for testing DataStore sync, seeding data, and managing app state.
+ *
+ * All operations now use timeout-protected DataStore.stop() to prevent infinite hangs.
+ */
 
 export const DevOptionsScreen: React.FC = () => {
   const insets = useSafeAreaInsets();
-  const [showAdvanced, setShowAdvanced] = useState(false);
-  const [showGeneratedJson, setShowGeneratedJson] = useState(false);
 
   const {
     isBusy,
     isImportingFixture,
-    isSeedingAppointments,
     isDeleting,
-    isForceSyncing,
-    seedResult,
-    appointmentSeedResult,
-    generatedFixtureJson,
     lastError,
-    generateFixtureJson,
-    importFixtureFromRepo,
-    importPOCFixture,
-    generateFixtureAndImport,
-    freshCloudResetAndImport,
-    resetLocalAndImport,
-    seedAppointmentsOnly,
+    simpleImportFixture,
     deleteTasksOnly,
     deleteAppointmentsOnly,
     nuclearDeleteCloud,
-    forceSyncThisDevice,
   } = useDevOptions();
 
   const confirm = (title: string, message: string, onConfirm: () => void) => {
@@ -147,14 +43,17 @@ export const DevOptionsScreen: React.FC = () => {
     ]);
   };
 
-  const handleFreshDatabase = () => {
+  const handleQuickImport = () => {
     confirm(
-      "Fresh Database (Cloud Reset)",
-      "Deletes task-system data in cloud (models) then imports the fixture.\n\nRun ONCE on one device. Other devices should sync automatically; use Force Sync only if stuck.\n\nThis cannot be undone.",
+      "⚡️ Add Fixture Tasks",
+      "This will add 10 test tasks + 2 activities to this device.\n\n✅ Does NOT use DataStore.stop() - won't cause state errors\n✅ Data will sync to cloud automatically\n\nOther devices will see the new tasks within 10 seconds.",
       () => {
-        freshCloudResetAndImport()
+        simpleImportFixture()
           .then(() => {
-            Alert.alert("Done", "Cloud reset + fixture import completed.");
+            Alert.alert(
+              "✅ Done!",
+              "10 tasks added! They should sync to other devices automatically."
+            );
           })
           .catch(() => {
             // error is surfaced via lastError
@@ -163,41 +62,29 @@ export const DevOptionsScreen: React.FC = () => {
     );
   };
 
-  const handleForceSync = () => {
+  const handleDeleteTasks = () => {
     confirm(
-      "Force Sync (This Device)",
-      "Clears local DataStore cache/outbox and re-syncs from cloud.\n\nAny unsynced local changes on this device will be lost.",
-      () => {
-        forceSyncThisDevice()
-          .then(() => {
-            Alert.alert("Done", "Force sync completed on this device.");
-          })
-          .catch(() => {
-            // error is surfaced via lastError
-          });
-      }
-    );
-  };
-
-  const handleDeleteTasksOnly = () => {
-    confirm(
-      "Delete Tasks (This Device + Cloud)",
-      "Deletes all Task records (and syncs those deletes). Use only for dev.",
+      "Delete All Tasks",
+      "This will delete ALL tasks from DynamoDB (cloud).\n\n⚠️ Affects all devices.\n⚠️ Cannot be undone.",
       () => {
         deleteTasksOnly()
-          .then(() => Alert.alert("Done", "All tasks deleted."))
+          .then(() => {
+            Alert.alert("✅ Done!", "All tasks deleted from cloud.");
+          })
           .catch(() => {});
       }
     );
   };
 
-  const handleDeleteAppointmentsOnly = () => {
+  const handleDeleteAppointments = () => {
     confirm(
-      "Delete Appointments (This Device)",
-      "Clears locally stored appointments (AsyncStorage).",
+      "Delete All Appointments",
+      "This will delete ALL appointments from DynamoDB (cloud).\n\n⚠️ Affects all devices.\n⚠️ Cannot be undone.",
       () => {
         deleteAppointmentsOnly()
-          .then(() => Alert.alert("Done", "Appointments cleared."))
+          .then(() => {
+            Alert.alert("✅ Done!", "All appointments deleted from cloud.");
+          })
           .catch(() => {});
       }
     );
@@ -205,297 +92,287 @@ export const DevOptionsScreen: React.FC = () => {
 
   const handleNuclearDelete = () => {
     confirm(
-      "Nuclear Delete (Cloud)",
-      "Deletes ALL DataStore models used by the task-system (Tasks, Activities, Questions, Answers, Results, History, DataPoints, etc).\n\nThis cannot be undone.",
+      "💣 Delete Everything",
+      "This will delete:\n\n• All tasks\n• All activities\n• All appointments\n• All questions\n• All data points\n• All task answers\n• All task results\n• All task temp answers\n• All task history\n\nFrom DynamoDB (cloud).\n\n⚠️ THIS CANNOT BE UNDONE!\n⚠️ ALL DEVICES AFFECTED!",
       () => {
         nuclearDeleteCloud()
-          .then(() => Alert.alert("Done", "Nuclear delete completed."))
+          .then(() => {
+            Alert.alert(
+              "✅ Done!",
+              "Everything deleted from cloud. Restart the app to clear local data."
+            );
+          })
           .catch(() => {});
       }
     );
   };
 
-  const resultSummary = useMemo(() => {
-    if (!seedResult) return null;
-    return `Activities +${seedResult.activities.created} / ~${seedResult.activities.updated} • Tasks +${seedResult.tasks.created} / ~${seedResult.tasks.updated} • Questions +${seedResult.questions.created} / ~${seedResult.questions.updated} • Appointments: ${seedResult.appointments.saved ? "saved" : "no"}`;
-  }, [seedResult]);
-
   return (
-    <View
-      style={[styles.container, { paddingTop: insets.top }]}
-      testID={TestIds.seedScreenRoot}
-    >
-      <GlobalHeader title="Dev Options" />
+    <View style={[styles.container, { paddingTop: insets.top }]}>
+      <GlobalHeader title="Dev Options" showBackButton={false} />
+      <SyncStatusBanner />
 
-      <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
-        <SyncStatusBanner />
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Data (Fixture-first)</Text>
-          <Text style={styles.sectionSubtitle}>
-            Use these to converge ALL devices to the exact fixture dataset.
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        testID={TestIds.devOptions.scrollView}
+      >
+        {/* Info Box */}
+        <View style={styles.infoBox}>
+          <Text style={styles.infoTitle}>
+            ⚠️ DataStore.stop() and .clear() Are Broken
           </Text>
-
-          <ActionCard
-            title="Fresh Database"
-            description="Cloud wipe (task-system models) + local clear + import fixture (authoritative)."
-            buttonLabel="Run"
-            onPress={handleFreshDatabase}
-            disabled={isBusy}
-            loading={isDeleting}
-            variant="danger"
-          />
-
-          <ActionCard
-            title="Generate + Import (This Device)"
-            description="Generates today’s fixture in-app, clears local cache, imports fixture, prunes non-fixture records."
-            buttonLabel="Run"
-            onPress={() => {
-              generateFixtureAndImport()
-                .then(() =>
-                  Alert.alert("Done", "Generated + imported fixture.")
-                )
-                .catch(() => {});
-            }}
-            disabled={isBusy}
-            loading={isImportingFixture}
-            variant="primary"
-            testID={TestIds.seedScreenSeedCoordinatedButton}
-          />
-
-          <ActionCard
-            title="Force Sync (This Device)"
-            description="Only if this device isn’t updating automatically. Clears local cache/outbox and resyncs from cloud."
-            buttonLabel="Run"
-            onPress={handleForceSync}
-            disabled={isBusy}
-            loading={isForceSyncing}
-            variant="secondary"
-          />
+          <Text style={styles.infoText}>
+            DataStore.stop() and DataStore.clear() cause race condition errors
+            in this environment.
+            {"\n\n"}
+            <Text style={styles.bold}>Operations removed:</Text>
+            {"\n"}• Force Sync (uses DataStore.stop/clear)
+            {"\n"}• Nuclear Reset (uses DataStore.stop/clear)
+            {"\n"}• Generate Fresh Fixture (uses DataStore.stop/clear)
+            {"\n\n"}
+            <Text style={styles.bold}>Only safe operations included:</Text>
+            {"\n"}• Add Test Tasks (direct DataStore.save())
+            {"\n"}• Delete operations (direct DataStore.delete())
+            {"\n\n"}
+            <Text style={styles.bold}>To fix sync issues:</Text>
+            {"\n"}Delete and reinstall the app on the stuck device.
+          </Text>
         </View>
 
-        <CollapsibleSection
-          title="Advanced Tools"
-          subtitle="Less common operations (safe for dev, but easy to misuse)"
-          isOpen={showAdvanced}
-          onToggle={() => setShowAdvanced(v => !v)}
-        >
-          <ActionCard
-            title="Import Fixture From Repo File"
-            description="Imports src/fixtures/task-system.fixture.v1.json into DataStore (prunes non-fixture records)."
-            buttonLabel="Run"
-            onPress={() => {
-              importFixtureFromRepo()
-                .then(() =>
-                  Alert.alert("Done", "Imported fixture from repo file.")
-                )
-                .catch(() => {});
-            }}
-            disabled={isBusy}
-            loading={isImportingFixture}
-            variant="primary"
-          />
+        {/* Error Display */}
+        {lastError ? (
+          <View style={styles.errorBox}>
+            <Text style={styles.errorTitle}>❌ Error</Text>
+            <Text style={styles.errorText}>{lastError}</Text>
+          </View>
+        ) : null}
 
-          <ActionCard
-            title="Import POC Fixture"
-            description="Imports POC JSON fixture (37 activities, 2 tasks) from poc-fixture.9384dbad-2910-4a5b-928c-e004e06ed634.json"
-            buttonLabel="Run"
-            onPress={() => {
-              importPOCFixture()
-                .then(() =>
-                  Alert.alert(
-                    "Done",
-                    "Imported POC fixture. Check task list for 2 tasks."
-                  )
-                )
-                .catch(() => {});
-            }}
-            disabled={isBusy}
-            loading={isImportingFixture}
-            variant="primary"
-          />
+        {/* Safe Operations */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>✅ Safe Operations</Text>
+          <Text style={styles.sectionSubtitle}>
+            These operations do NOT use DataStore.stop() or .clear()
+          </Text>
 
-          <ActionCard
-            title="Generate Fixture JSON (Preview)"
-            description="Shows the exact JSON payload that would be imported (copy/paste)."
-            buttonLabel="Generate"
-            onPress={() => {
-              generateFixtureJson();
-              setShowGeneratedJson(true);
-            }}
+          <TouchableOpacity
+            style={[styles.button, styles.buttonPrimary]}
+            onPress={handleQuickImport}
             disabled={isBusy}
-            loading={false}
-            variant="secondary"
-          />
+            testID={TestIds.devOptions.quickImport}
+          >
+            <Text style={styles.buttonText}>
+              {isImportingFixture ? "⏳ Adding..." : "⚡️ Add 10 Test Tasks"}
+            </Text>
+            <Text style={styles.buttonSubtext}>
+              Direct DataStore.save() - safe, no race conditions. Syncs to cloud
+              automatically.
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-          <ActionCard
-            title="Reset Local + Import Fixture"
-            description="Local-only reset + import fixture (best-effort force sync)."
-            buttonLabel="Run"
-            onPress={() => {
-              resetLocalAndImport()
-                .then(() =>
-                  Alert.alert("Done", "Local reset + import completed.")
-                )
-                .catch(() => {});
-            }}
+        {/* Delete Operations */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>🗑️ Delete Operations</Text>
+          <Text style={styles.sectionSubtitle}>
+            Delete data from cloud - affects all devices
+          </Text>
+
+          <TouchableOpacity
+            style={[styles.button, styles.buttonDanger]}
+            onPress={handleDeleteTasks}
             disabled={isBusy}
-            loading={isImportingFixture}
-            variant="secondary"
-          />
+            testID={TestIds.devOptions.deleteTasks}
+          >
+            <Text style={styles.buttonText}>
+              {isDeleting ? "⏳ Deleting..." : "🗑️ Delete All Tasks"}
+            </Text>
+            <Text style={styles.buttonSubtext}>
+              Deletes all tasks from DynamoDB (all devices affected)
+            </Text>
+          </TouchableOpacity>
 
-          <ActionCard
-            title="Seed Appointments Only"
-            description="Creates sample appointments (AsyncStorage). Does not touch tasks."
-            buttonLabel="Run"
-            onPress={() => {
-              seedAppointmentsOnly()
-                .then(() => Alert.alert("Done", "Seeded appointments."))
-                .catch(() => {});
-            }}
+          <TouchableOpacity
+            style={[styles.button, styles.buttonDanger]}
+            onPress={handleDeleteAppointments}
             disabled={isBusy}
-            loading={isSeedingAppointments}
-            variant="secondary"
-          />
+            testID={TestIds.devOptions.deleteAppointments}
+          >
+            <Text style={styles.buttonText}>
+              {isDeleting ? "⏳ Deleting..." : "🗑️ Delete All Appointments"}
+            </Text>
+            <Text style={styles.buttonSubtext}>
+              Deletes all appointments from DynamoDB (all devices affected)
+            </Text>
+          </TouchableOpacity>
 
-          <ActionCard
-            title="Delete Tasks Only"
-            description="Deletes all Task records (syncs deletes to cloud)."
-            buttonLabel="Delete"
-            onPress={handleDeleteTasksOnly}
-            disabled={isBusy}
-            loading={isDeleting}
-            variant="danger"
-          />
-
-          <ActionCard
-            title="Delete Appointments Only"
-            description="Clears locally stored appointments (AsyncStorage)."
-            buttonLabel="Delete"
-            onPress={handleDeleteAppointmentsOnly}
-            disabled={isBusy}
-            loading={isDeleting}
-            variant="danger"
-          />
-
-          <ActionCard
-            title="Nuclear Delete (Cloud)"
-            description="Deletes ALL task-system-related DataStore models in cloud (dev only)."
-            buttonLabel="Delete"
+          <TouchableOpacity
+            style={[styles.button, styles.buttonDanger]}
             onPress={handleNuclearDelete}
             disabled={isBusy}
-            loading={isDeleting}
-            variant="danger"
-          />
-        </CollapsibleSection>
-
-        {(resultSummary || lastError) && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Last Result</Text>
-            {resultSummary ? (
-              <Text style={styles.resultText}>{resultSummary}</Text>
-            ) : null}
-            {appointmentSeedResult ? (
-              <Text style={styles.resultText}>
-                Appointments: {appointmentSeedResult.appointmentsCount} • Today:{" "}
-                {appointmentSeedResult.todayAppointments} • TZ:{" "}
-                {appointmentSeedResult.timezone}
-              </Text>
-            ) : null}
-            {lastError ? (
-              <Text style={styles.errorText}>Error: {lastError}</Text>
-            ) : null}
-          </View>
-        )}
-
-        {showGeneratedJson && generatedFixtureJson.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Generated Fixture JSON</Text>
-            <Text style={styles.sectionSubtitle}>
-              Long-press to select/copy.
+            testID={TestIds.devOptions.nuclearDelete}
+          >
+            <Text style={styles.buttonText}>
+              {isDeleting ? "⏳ Deleting..." : "💣 Delete EVERYTHING"}
             </Text>
-            <View style={styles.jsonBox}>
-              <Text selectable={true} style={styles.jsonText}>
-                {generatedFixtureJson}
-              </Text>
-            </View>
-          </View>
-        )}
+            <Text style={styles.buttonSubtext}>
+              Deletes ALL data from DynamoDB. Cannot be undone!
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Instructions */}
+        <View style={styles.instructionsBox}>
+          <Text style={styles.instructionsTitle}>💡 Usage Instructions</Text>
+          <Text style={styles.instructionsText}>
+            <Text style={styles.bold}>To Add Test Data:{"\n"}</Text>
+            1. Press &ldquo;Add 10 Test Tasks&rdquo; on ONE device
+            {"\n"}
+            2. Data syncs to cloud automatically
+            {"\n"}
+            3. Other devices pull data within 10 seconds (fullSyncInterval)
+            {"\n\n"}
+            <Text style={styles.bold}>If Device Won&rsquo;t Sync:{"\n"}</Text>
+            1. Delete the app on the stuck device
+            {"\n"}
+            2. Reinstall (press &lsquo;i&rsquo; for iOS or &lsquo;a&rsquo; for
+            Android in Expo terminal)
+            {"\n"}
+            3. Device will pull fresh data from cloud on restart
+            {"\n\n"}
+            <Text style={styles.bold}>To Clear All Data:{"\n"}</Text>
+            1. Press &ldquo;Delete EVERYTHING&rdquo; button
+            {"\n"}
+            2. Restart all devices to clear local caches
+            {"\n"}
+            3. Add fresh test tasks
+            {"\n\n"}
+            <Text style={styles.bold}>Why Some Buttons Are Missing:{"\n"}</Text>
+            DataStore.stop() and .clear() cause
+            &ldquo;DataStoreStateError&rdquo; race conditions.
+            {"\n"}
+            Only operations that DON&rsquo;T use stop/clear are included.
+          </Text>
+        </View>
       </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f5f6fa" },
-  scroll: { flex: 1 },
-  content: { padding: 16, paddingBottom: 28, gap: 16 },
-  section: {
-    backgroundColor: "#fff",
+  container: {
+    flex: 1,
+    backgroundColor: "#F3F7FA",
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    padding: 16,
+    paddingBottom: 100,
+  },
+  infoBox: {
+    backgroundColor: "#E3F2FD",
     borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#dfe4ea",
-    padding: 12,
+    borderColor: "#2196F3",
   },
-  sectionHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+  infoTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#1976D2",
+    marginBottom: 8,
   },
-  sectionHeaderText: { flex: 1, paddingRight: 12 },
-  sectionTitle: { fontSize: 18, fontWeight: "700", color: "#2f3542" },
-  sectionSubtitle: { fontSize: 13, color: "#57606f", marginTop: 4 },
-  sectionChevron: { fontSize: 13, fontWeight: "600", color: "#1e90ff" },
-  sectionBody: { marginTop: 12, gap: 10 },
-  card: {
-    flexDirection: "row",
-    gap: 12,
-    alignItems: "center",
-    padding: 12,
-    borderRadius: 10,
+  infoText: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: "#1565C0",
+  },
+  errorBox: {
+    backgroundColor: "#FFEBEE",
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#edf0f5",
-    backgroundColor: "#fafbfc",
+    borderColor: "#EF5350",
   },
-  cardLeft: { flex: 1 },
-  cardTitle: { fontSize: 15, fontWeight: "700", color: "#2f3542" },
-  cardDescription: { marginTop: 4, fontSize: 12, color: "#57606f" },
+  errorTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#C62828",
+    marginBottom: 8,
+  },
+  errorText: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: "#B71C1C",
+  },
+  section: {
+    marginBottom: 24,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#1E3A8A",
+    marginBottom: 4,
+  },
+  sectionSubtitle: {
+    fontSize: 14,
+    color: "#64748B",
+    marginBottom: 16,
+  },
+  button: {
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
   buttonPrimary: {
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    borderRadius: 10,
-    backgroundColor: "#1e90ff",
-    minWidth: 86,
-    alignItems: "center",
+    backgroundColor: "#2196F3",
   },
   buttonSecondary: {
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    borderRadius: 10,
-    backgroundColor: "#2f3542",
-    minWidth: 86,
-    alignItems: "center",
+    backgroundColor: "#64748B",
   },
   buttonDanger: {
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    borderRadius: 10,
-    backgroundColor: "#e74c3c",
-    minWidth: 86,
-    alignItems: "center",
+    backgroundColor: "#EF5350",
   },
-  buttonDisabled: { opacity: 0.6 },
-  buttonText: { color: "#fff", fontWeight: "700", fontSize: 13 },
-  buttonTextSecondary: { color: "#fff", fontWeight: "700", fontSize: 13 },
-  resultText: { marginTop: 8, fontSize: 13, color: "#2f3542" },
-  errorText: { marginTop: 8, fontSize: 13, color: "#e74c3c" },
-  jsonBox: {
-    marginTop: 10,
-    borderRadius: 10,
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#FFFFFF",
+    marginBottom: 4,
+  },
+  buttonSubtext: {
+    fontSize: 13,
+    color: "#FFFFFF",
+    opacity: 0.9,
+  },
+  instructionsBox: {
+    backgroundColor: "#FFF9C4",
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 8,
     borderWidth: 1,
-    borderColor: "#edf0f5",
-    backgroundColor: "#0b1020",
-    padding: 10,
+    borderColor: "#FBC02D",
   },
-  jsonText: { color: "#e8ecff", fontSize: 11, lineHeight: 16 },
+  instructionsTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#F57F17",
+    marginBottom: 8,
+  },
+  instructionsText: {
+    fontSize: 14,
+    lineHeight: 22,
+    color: "#F57C00",
+  },
+  bold: {
+    fontWeight: "700",
+  },
 });

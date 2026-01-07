@@ -7,6 +7,37 @@ import { DataStore } from "@aws-amplify/datastore";
 import { logWithDevice, logErrorWithDevice } from "./deviceLogger";
 
 /**
+ * Wrapper around DataStore.stop() with timeout protection
+ *
+ * CRITICAL: DataStore.stop() can hang indefinitely in Amplify v5/v6 if:
+ * - There are pending mutations in the outbox
+ * - Sync subscriptions are in a bad state
+ * - Network is unreliable
+ *
+ * This wrapper adds a 5-second timeout to prevent infinite hangs.
+ * If DataStore.stop() doesn't complete in 5 seconds, we proceed anyway.
+ *
+ * @param timeoutMs - Timeout in milliseconds (default: 5000ms)
+ * @returns Promise that resolves when stop completes or timeout expires
+ */
+async function stopDataStoreWithTimeout(
+  timeoutMs: number = 5000
+): Promise<void> {
+  return Promise.race([
+    DataStore.stop(),
+    new Promise<void>(resolve => {
+      setTimeout(() => {
+        logWithDevice(
+          "syncUtils",
+          `⚠️ DataStore.stop() timed out after ${timeoutMs}ms - proceeding anyway`
+        );
+        resolve();
+      }, timeoutMs);
+    }),
+  ]);
+}
+
+/**
  * Manually trigger a full sync of all DataStore models
  * Useful when you need to force sync across devices immediately
  *
@@ -23,8 +54,8 @@ export async function forceFullSync(): Promise<void> {
     );
 
     // Stop DataStore - this will queue any pending operations
-    logWithDevice("syncUtils", "Stopping DataStore...");
-    await DataStore.stop();
+    logWithDevice("syncUtils", "Stopping DataStore (with 5s timeout)...");
+    await stopDataStoreWithTimeout();
     logWithDevice("syncUtils", "DataStore stopped");
 
     // Wait a brief moment to ensure stop completes
@@ -65,8 +96,8 @@ export async function clearCacheAndResync(): Promise<void> {
     );
 
     // Stop DataStore first
-    logWithDevice("syncUtils", "Stopping DataStore...");
-    await DataStore.stop();
+    logWithDevice("syncUtils", "Stopping DataStore (with 5s timeout)...");
+    await stopDataStoreWithTimeout();
     logWithDevice("syncUtils", "DataStore stopped");
 
     // Wait a moment

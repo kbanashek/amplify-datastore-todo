@@ -13,6 +13,14 @@ export const TestIds = {
     "seed_screen_coordinated_results_section",
   seedScreenBackToDashboardButton: "seed_screen_back_to_dashboard_button",
 
+  devOptions: {
+    scrollView: "dev_options_scroll_view",
+    quickImport: "dev_options_quick_import",
+    deleteTasks: "dev_options_delete_tasks",
+    deleteAppointments: "dev_options_delete_appointments",
+    nuclearDelete: "dev_options_nuclear_delete",
+  },
+
   // New name (preferred)
   dashboardGroupedTasksView: "dashboard_grouped_tasks_view",
   // Back-compat alias (older name)

@@ -26,11 +26,12 @@ export const configureAmplify = (): void => {
       DataStore: {
         // Enable automatic sync when online
         syncExpressions: [],
-        // Enable frequent periodic full sync for immediate cross-device updates
-        // Full sync runs every 10 seconds (10000ms) to catch any missed real-time updates
-        // This ensures iOS, Android, and web all show the same data almost immediately
-        // Real-time subscriptions handle immediate updates, this is a safety net
-        fullSyncInterval: 10000, // 10 seconds - very fast sync for immediate cross-device consistency
+        // FORCE FULL SYNC ALWAYS (NOT DELTA SYNC)
+        // This fixes iOS sync metadata corruption where delta sync returns 0 items
+        // even though iOS has empty cache
+        fullSyncInterval: 5000, // 5 seconds - very fast full sync
+        maxRecordsToSync: 10000, // Large limit forces full sync instead of delta
+        syncPageSize: 1000, // Larger page size for full sync
       },
       // Explicitly configure API key auth for AppSync
       // This ensures DataStore uses the API key from aws-exports.js

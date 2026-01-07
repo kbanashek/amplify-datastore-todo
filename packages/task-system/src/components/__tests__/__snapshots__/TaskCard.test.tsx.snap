@@ -96,22 +96,30 @@ exports[`TaskCard Snapshots matches snapshot with completed task 1`] = `
             pills
           </Text>
         </View>
-        <Text
-          numberOfLines={2}
+        <View
           style={
             {
-              "color": "#1a1a1a",
               "flex": 1,
-              "fontFamily": "Ubuntu-Medium",
-              "fontSize": 20,
-              "fontWeight": "500",
-              "lineHeight": 26,
+              "gap": 6,
             }
           }
-          testID="task-card-title"
         >
-          Test Task
-        </Text>
+          <Text
+            numberOfLines={2}
+            style={
+              {
+                "color": "#1a1a1a",
+                "fontFamily": "Ubuntu-Medium",
+                "fontSize": 20,
+                "fontWeight": "500",
+                "lineHeight": 26,
+              }
+            }
+            testID="task-card-title"
+          >
+            Test Task
+          </Text>
+        </View>
       </View>
     </View>
     <View
@@ -252,22 +260,30 @@ exports[`TaskCard Snapshots matches snapshot with default props 1`] = `
             pills
           </Text>
         </View>
-        <Text
-          numberOfLines={2}
+        <View
           style={
             {
-              "color": "#1a1a1a",
               "flex": 1,
-              "fontFamily": "Ubuntu-Medium",
-              "fontSize": 20,
-              "fontWeight": "500",
-              "lineHeight": 26,
+              "gap": 6,
             }
           }
-          testID="task-card-title"
         >
-          Test Task
-        </Text>
+          <Text
+            numberOfLines={2}
+            style={
+              {
+                "color": "#1a1a1a",
+                "fontFamily": "Ubuntu-Medium",
+                "fontSize": 20,
+                "fontWeight": "500",
+                "lineHeight": 26,
+              }
+            }
+            testID="task-card-title"
+          >
+            Test Task
+          </Text>
+        </View>
       </View>
     </View>
     <View
@@ -483,22 +499,30 @@ exports[`TaskCard Snapshots matches snapshot with long title 1`] = `
             pills
           </Text>
         </View>
-        <Text
-          numberOfLines={2}
+        <View
           style={
             {
-              "color": "#1a1a1a",
               "flex": 1,
-              "fontFamily": "Ubuntu-Medium",
-              "fontSize": 20,
-              "fontWeight": "500",
-              "lineHeight": 26,
+              "gap": 6,
             }
           }
-          testID="task-card-title"
         >
-          This is a very long task title that should be truncated
-        </Text>
+          <Text
+            numberOfLines={2}
+            style={
+              {
+                "color": "#1a1a1a",
+                "fontFamily": "Ubuntu-Medium",
+                "fontSize": 20,
+                "fontWeight": "500",
+                "lineHeight": 26,
+              }
+            }
+            testID="task-card-title"
+          >
+            This is a very long task title that should be truncated
+          </Text>
+        </View>
       </View>
     </View>
     <View
@@ -714,22 +738,30 @@ exports[`TaskCard Snapshots matches snapshot with onPress 1`] = `
             pills
           </Text>
         </View>
-        <Text
-          numberOfLines={2}
+        <View
           style={
             {
-              "color": "#1a1a1a",
               "flex": 1,
-              "fontFamily": "Ubuntu-Medium",
-              "fontSize": 20,
-              "fontWeight": "500",
-              "lineHeight": 26,
+              "gap": 6,
             }
           }
-          testID="task-card-title"
         >
-          Test Task
-        </Text>
+          <Text
+            numberOfLines={2}
+            style={
+              {
+                "color": "#1a1a1a",
+                "fontFamily": "Ubuntu-Medium",
+                "fontSize": 20,
+                "fontWeight": "500",
+                "lineHeight": 26,
+              }
+            }
+            testID="task-card-title"
+          >
+            Test Task
+          </Text>
+        </View>
       </View>
     </View>
     <View
@@ -947,22 +979,30 @@ exports[`TaskCard Snapshots matches snapshot with simple prop 1`] = `
             pills
           </Text>
         </View>
-        <Text
-          numberOfLines={2}
+        <View
           style={
             {
-              "color": "#1a1a1a",
               "flex": 1,
-              "fontFamily": "Ubuntu-Medium",
-              "fontSize": 20,
-              "fontWeight": "500",
-              "lineHeight": 26,
+              "gap": 6,
             }
           }
-          testID="task-card-title"
         >
-          Test Task
-        </Text>
+          <Text
+            numberOfLines={2}
+            style={
+              {
+                "color": "#1a1a1a",
+                "fontFamily": "Ubuntu-Medium",
+                "fontSize": 20,
+                "fontWeight": "500",
+                "lineHeight": 26,
+              }
+            }
+            testID="task-card-title"
+          >
+            Test Task
+          </Text>
+        </View>
       </View>
     </View>
   </View>
@@ -1065,22 +1105,30 @@ exports[`TaskCard Snapshots matches snapshot with started task 1`] = `
             pills
           </Text>
         </View>
-        <Text
-          numberOfLines={2}
+        <View
           style={
             {
-              "color": "#1a1a1a",
               "flex": 1,
-              "fontFamily": "Ubuntu-Medium",
-              "fontSize": 20,
-              "fontWeight": "500",
-              "lineHeight": 26,
+              "gap": 6,
             }
           }
-          testID="task-card-title"
         >
-          Test Task
-        </Text>
+          <Text
+            numberOfLines={2}
+            style={
+              {
+                "color": "#1a1a1a",
+                "fontFamily": "Ubuntu-Medium",
+                "fontSize": 20,
+                "fontWeight": "500",
+                "lineHeight": 26,
+              }
+            }
+            testID="task-card-title"
+          >
+            Test Task
+          </Text>
+        </View>
       </View>
     </View>
     <View
