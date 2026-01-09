@@ -49,18 +49,20 @@ describe("DevOptionsScreen", () => {
       deleteAppointmentsOnly: jest.fn().mockResolvedValue(undefined),
       nuclearDeleteCloud: jest.fn().mockResolvedValue(undefined),
       forceSyncThisDevice: jest.fn().mockResolvedValue(undefined),
+      quickImportFixture: jest.fn().mockResolvedValue(undefined),
     });
   });
 
-  it("renders main actions and can open advanced tools", () => {
+  it("renders main actions", () => {
     const screen = render(<DevOptionsScreen />);
 
     expect(screen.getByText("Dev Options")).toBeTruthy();
-    expect(screen.getByText("Fresh Database")).toBeTruthy();
-    expect(screen.getByText("Generate + Import (This Device)")).toBeTruthy();
-    expect(screen.getByText("Force Sync (This Device)")).toBeTruthy();
-
-    fireEvent.press(screen.getByText("Show"));
-    expect(screen.getByText("Import Fixture From Repo File")).toBeTruthy();
+    expect(screen.getByText("✅ Safe Operations")).toBeTruthy();
+    expect(screen.getByText("🗑️ Delete Operations")).toBeTruthy();
+    expect(screen.getAllByText(/Add 10 Test Tasks/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Delete All Tasks/).length).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText(/Delete All Appointments/).length
+    ).toBeGreaterThan(0);
   });
 });

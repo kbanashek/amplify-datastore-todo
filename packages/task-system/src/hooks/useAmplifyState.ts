@@ -31,6 +31,8 @@ export enum DataStoreEventType {
   SyncQueriesReady = "syncQueriesReady",
   SyncQueriesError = "syncQueriesError",
   OutboxStatus = "outboxStatus",
+  OutboxMutationEnqueued = "outboxMutationEnqueued",
+  OutboxMutationProcessed = "outboxMutationProcessed",
   ConflictDetected = "conflictDetected",
 }
 
@@ -39,6 +41,8 @@ export interface AmplifyState {
   networkStatus: NetworkStatus;
   syncState: SyncState;
   conflictCount: number;
+  lastSyncedAt: Date | null;
+  pendingSyncCount: number;
 }
 
 export const useAmplifyState = (options?: {
@@ -55,6 +59,8 @@ export const useAmplifyState = (options?: {
   );
   const [syncState, setSyncState] = useState<SyncState>(SyncState.NotSynced);
   const [conflictCount, setConflictCount] = useState<number>(0);
+  const [lastSyncedAt, setLastSyncedAt] = useState<Date | null>(null);
+  const [pendingSyncCount, setPendingSyncCount] = useState<number>(0);
 
   useEffect(() => {
     let isMounted = true;
@@ -76,22 +82,64 @@ export const useAmplifyState = (options?: {
 
           const { event, data } = hubData.payload;
 
+          // 🔍 LOG EVERY SINGLE DATASTORE EVENT FOR DEBUGGING
+          logger.info(
+            `🔍 DataStore Event: ${event}`,
+            {
+              event,
+              data: data ? JSON.stringify(data, null, 2) : "no data",
+              timestamp: new Date().toISOString(),
+            },
+            undefined,
+            "🔍"
+          );
+
           switch (event) {
             case DataStoreEventType.NetworkStatus:
+              logger.info(
+                `🌐 Network Status Changed: ${data.active ? "ONLINE" : "OFFLINE"}`,
+                { active: data.active, data },
+                undefined,
+                "🌐"
+              );
               setNetworkStatus(
                 data.active ? NetworkStatus.Online : NetworkStatus.Offline
               );
               break;
             case DataStoreEventType.ConflictDetected:
+              logger.warn("⚠️ Conflict Detected", { data }, undefined, "⚠️");
               // Increment conflict count when a conflict is detected
               setConflictCount(prevCount => prevCount + 1);
               break;
             case DataStoreEventType.SyncQueriesStarted:
+              logger.info(
+                "🔄 Sync Queries STARTED - DataStore is now syncing with AWS",
+                {
+                  event,
+                  data,
+                  timestamp: new Date().toISOString(),
+                },
+                undefined,
+                "🔄"
+              );
               setSyncState(SyncState.Syncing);
               break;
             case DataStoreEventType.SyncQueriesReady:
+              logger.info(
+                "✅ Sync Queries READY - DataStore sync completed successfully",
+                {
+                  event,
+                  data,
+                  timestamp: new Date().toISOString(),
+                },
+                undefined,
+                "✅"
+              );
               setSyncState(SyncState.Synced);
               setIsReady(true);
+              setLastSyncedAt(new Date());
+              // Reset pending count when sync completes successfully
+              setPendingSyncCount(0);
               break;
             case DataStoreEventType.SyncQueriesError:
               setSyncState(SyncState.Error);
@@ -135,6 +183,53 @@ export const useAmplifyState = (options?: {
                   "⚠️"
                 );
               }
+              break;
+            case DataStoreEventType.OutboxStatus:
+              // OutboxStatus event indicates if outbox is empty or not
+              // Use this to reset count when explicitly empty
+              if (data?.isEmpty === true) {
+                logger.debug("Outbox is empty", { event, data });
+                setPendingSyncCount(0);
+              }
+              break;
+            case DataStoreEventType.OutboxMutationEnqueued:
+              // Increment count when new mutation is added to outbox
+              setPendingSyncCount(prev => {
+                const newCount = prev + 1;
+                logger.debug("Mutation enqueued", {
+                  event,
+                  previousCount: prev,
+                  newCount,
+                });
+                return newCount;
+              });
+              break;
+            case DataStoreEventType.OutboxMutationProcessed:
+              // Decrement count when mutation is successfully synced
+              setPendingSyncCount(prev => {
+                const newCount = Math.max(0, prev - 1);
+                logger.debug("Mutation processed", {
+                  event,
+                  previousCount: prev,
+                  newCount,
+                });
+                return newCount;
+              });
+              break;
+            case "modelSynced":
+              // Log model sync details to see if it's full sync or delta sync
+              logger.info(
+                `📦 Model Synced: ${data?.model?.name || "unknown"}`,
+                {
+                  isFullSync: data?.isFullSync,
+                  isDeltaSync: data?.isDeltaSync,
+                  counts: data?.counts,
+                  model: data?.model?.name,
+                  timestamp: new Date().toISOString(),
+                },
+                undefined,
+                "📦"
+              );
               break;
             default:
               break;
@@ -232,5 +327,7 @@ export const useAmplifyState = (options?: {
     networkStatus,
     syncState,
     conflictCount,
+    lastSyncedAt,
+    pendingSyncCount,
   };
 };

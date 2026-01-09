@@ -121,11 +121,19 @@ export class ActivityService {
       snapshot => {
         const { items, isSynced } = snapshot;
 
-        logWithDevice("ActivityService", "Subscription update (observeQuery)", {
-          itemCount: items.length,
-          isSynced,
-          itemIds: items.map(i => i.id),
-        });
+        // VERBOSE LOGGING FOR DEBUGGING SYNC ISSUES
+        logWithDevice(
+          "ActivityService",
+          `📋 AWS DataStore subscription fired - ${items.length} activities`,
+          {
+            activityCount: items.length,
+            isSynced,
+            syncStatus: isSynced ? "cloud-synced" : "local-only",
+            activityIds: items.map(i => i.id),
+            activityNames: items.map(i => i.name),
+            timestamp: new Date().toISOString(),
+          }
+        );
 
         callback(items, isSynced);
       }

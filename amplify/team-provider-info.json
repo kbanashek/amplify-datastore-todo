@@ -1,19 +1,20 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-lxtodoapp-dev-50e3d-authRole",
-      "UnauthRoleArn": "arn:aws:iam::377973420769:role/amplify-lxtodoapp-dev-50e3d-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::377973420769:role/amplify-lxtodoapp-dev-50e3d-authRole",
+      "AuthRoleName": "amplify-oriontasksystem-dev-e8f2a-authRole",
+      "UnauthRoleArn": "arn:aws:iam::377973420769:role/amplify-oriontasksystem-dev-e8f2a-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::377973420769:role/amplify-oriontasksystem-dev-e8f2a-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-lxtodoapp-dev-50e3d-deployment",
-      "UnauthRoleName": "amplify-lxtodoapp-dev-50e3d-unauthRole",
-      "StackName": "amplify-lxtodoapp-dev-50e3d",
-      "StackId": "arn:aws:cloudformation:us-east-1:377973420769:stack/amplify-lxtodoapp-dev-50e3d/9be98330-d54f-11f0-8652-12bdc230a45d",
-      "AmplifyAppId": "d2vty117li92m8"
+      "DeploymentBucketName": "amplify-oriontasksystem-dev-e8f2a-deployment",
+      "UnauthRoleName": "amplify-oriontasksystem-dev-e8f2a-unauthRole",
+      "StackName": "amplify-oriontasksystem-dev-e8f2a",
+      "StackId": "arn:aws:cloudformation:us-east-1:377973420769:stack/amplify-oriontasksystem-dev-e8f2a/4adf2cd0-ea3d-11f0-b9b2-12196f819c81",
+      "AmplifyAppId": "d3ndmdev4g7l4r"
     },
     "categories": {
       "api": {
-        "lxtodoapp": {}
+        "lxtodoapp": {},
+        "oriontasksystem": {}
       }
     }
   }

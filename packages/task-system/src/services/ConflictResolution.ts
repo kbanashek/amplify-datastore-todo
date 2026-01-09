@@ -113,6 +113,7 @@ export class ConflictResolution {
           case ModelName.TaskAnswer:
           case ModelName.TaskResult:
           case ModelName.TaskHistory:
+          case ModelName.TaskTempAnswer:
             return this.resolveGenericModel(
               safeLocal,
               safeRemote,

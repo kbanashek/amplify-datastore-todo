@@ -49,7 +49,7 @@ jest.mock("@hooks/useQuestionSubmission", () => ({
 
 jest.mock("@services/TempAnswerSyncService", () => ({
   TempAnswerSyncService: {
-    syncTempAnswers: jest.fn(),
+    saveTempAnswers: jest.fn(),
   },
 }));
 
@@ -286,7 +286,7 @@ describe("useQuestionsScreen", () => {
         result.current.handleReviewSubmit();
       });
 
-      expect(TempAnswerSyncService.syncTempAnswers).toHaveBeenCalledTimes(3);
+      expect(TempAnswerSyncService.saveTempAnswers).toHaveBeenCalledTimes(3);
     });
   });
 

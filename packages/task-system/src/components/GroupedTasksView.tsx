@@ -321,8 +321,8 @@ const styles = StyleSheet.create({
     color: AppColors.CINavy,
   },
   dayDate: {
-    ...AppFonts.body,
-    color: AppColors.mediumDarkGray,
+    ...AppFonts.heading,
+    color: AppColors.CINavy,
   },
   timeGroup: {
     marginBottom: 16,

@@ -135,15 +135,7 @@ export {
 } from "@task-types/activity-config-enums";
 
 // Temp answer (LX-integrated) types
-export type {
-  BuildSaveTempAnswersVariablesInput,
-  BuildSaveTempAnswersVariablesResult,
-  TaskSystemGraphQLExecutor,
-  TaskSystemGraphQLExecutorRequest,
-  TaskSystemGraphQLExecutorResponse,
-  TaskSystemSaveTempAnswersMapper,
-  TempAnswerSyncConfig,
-} from "@task-types/tempAnswerSync";
+// TempAnswerSync types removed - DataStore handles sync automatically
 
 // Activity parsing types/utils
 export { getDisplayProperty, parseActivityConfig } from "@utils/activityParser";

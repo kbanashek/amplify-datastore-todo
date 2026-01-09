@@ -1,487 +1,167 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import NetInfo from "@react-native-community/netinfo";
+import { DataStore } from "@aws-amplify/datastore";
 
-import type {
-  BuildSaveTempAnswersVariablesInput,
-  TaskSystemGraphQLExecutor,
-  TaskSystemSaveTempAnswersMapper,
-  TempAnswerSyncConfig,
-} from "@task-types/tempAnswerSync";
-import { DEBUG_TEMP_ANSWER_SYNC_LOGS } from "@utils/debug";
-import { logWithPlatform } from "@utils/platformLogger";
-
-type OutboxItem = {
-  stableKey: string;
-  document: string;
-  variables: Record<string, unknown>;
-  updatedAt: number;
-};
-
-type OutboxState = Record<string, OutboxItem>;
-
-const DEFAULT_STORAGE_KEY = "@task-system/temp-answers-outbox";
-
-let config: TempAnswerSyncConfig | null = null;
-let flushInFlight: Promise<{ flushed: number; remaining: number }> | null =
-  null;
-let netInfoUnsubscribe: (() => void) | null = null;
-
-const debugLog = (
-  icon: string,
-  step: string,
-  message: string,
-  meta?: Record<string, unknown>
-): void => {
-  if (!__DEV__) return;
-  if (!DEBUG_TEMP_ANSWER_SYNC_LOGS) return;
-  logWithPlatform(icon, step, "TempAnswerSyncService", message, meta);
-};
-
-const truncateForLog = (value: unknown): unknown => {
-  if (typeof value === "string") {
-    const max = 2000;
-    return value.length > max ? `${value.slice(0, max)}…(truncated)` : value;
-  }
-  if (Array.isArray(value)) {
-    const max = 50;
-    return value.length > max
-      ? [...value.slice(0, max), "…(truncated)"]
-      : value;
-  }
-  if (value && typeof value === "object") {
-    const obj = value as Record<string, unknown>;
-    const keys = Object.keys(obj);
-    const max = 50;
-    if (keys.length > max) {
-      const next: Record<string, unknown> = {};
-      for (const k of keys.slice(0, max)) next[k] = truncateForLog(obj[k]);
-      next["…"] = `truncated ${keys.length - max} keys`;
-      return next;
-    }
-    const next: Record<string, unknown> = {};
-    for (const [k, v] of Object.entries(obj)) next[k] = truncateForLog(v);
-    return next;
-  }
-  return value;
-};
-
-const safeJsonParse = <T>(value: string | null, fallback: T): T => {
-  if (!value) return fallback;
-  try {
-    return JSON.parse(value) as T;
-  } catch {
-    return fallback;
-  }
-};
-
-const readOutbox = async (storageKey: string): Promise<OutboxState> => {
-  const raw = await AsyncStorage.getItem(storageKey);
-  return safeJsonParse<OutboxState>(raw, {});
-};
-
-const writeOutbox = async (
-  storageKey: string,
-  next: OutboxState
-): Promise<void> => {
-  await AsyncStorage.setItem(storageKey, JSON.stringify(next));
-};
-
-const hasGraphQLErrors = (resp: unknown): boolean => {
-  if (!resp || typeof resp !== "object") return false;
-  const errors = (resp as any).errors;
-  if (!errors) return false;
-  if (Array.isArray(errors)) return errors.length > 0;
-  return true;
-};
+import { TaskTempAnswer } from "@models/index";
+import { getServiceLogger } from "@utils/serviceLogger";
 
 /**
- * TempAnswerSyncService
+ * Service for managing temporary task answers using DataStore.
  *
- * Package-owned offline-first outbox for LX "temp answers" (save-as-you-go).
+ * Provides simple save/query operations for in-progress task answers.
+ * DataStore automatically handles offline persistence (SQLite) and cloud sync.
  *
- * Host provides:
- * - GraphQL executor (Apollo/Amplify/etc.)
- * - mapper to shape variables + stableKey (`task.pk`)
+ * @example
+ * ```typescript
+ * // Save temp answers
+ * await TempAnswerSyncService.saveTempAnswers(
+ *   "TASK-123",
+ *   "ACTIVITY-456",
+ *   { question1: "answer1" },
+ *   new Date().toISOString()
+ * );
+ *
+ * // Get latest temp answers
+ * const answers = await TempAnswerSyncService.getTempAnswers("TASK-123");
+ * ```
+ */
+const logger = getServiceLogger("TempAnswerSyncService");
+
+/**
+ * Service for managing temporary answers via AWS DataStore.
+ *
+ * Provides save and retrieval operations for in-progress task answers.
+ * Uses DataStore for offline-first support and automatic cloud sync.
  */
 export class TempAnswerSyncService {
-  static configure(next: TempAnswerSyncConfig): void {
-    config = next;
-
-    // Format metadata as readable list
-    const storageKey = next.storageKey ?? DEFAULT_STORAGE_KEY;
-    const hasExecutor = !!next.executor;
-    const hasMapper = !!next.mapper;
-    const metadataList = [
-      `  • hasExecutor: ${hasExecutor}`,
-      `  • hasMapper: ${hasMapper}`,
-      `  • storageKey: ${storageKey}`,
-    ].join("\n");
-
-    // Don't pass metadata object - it's already formatted in the message
-    debugLog("⚙️", "", `Service configured\n${metadataList}`);
-  }
-
-  static isConfigured(): boolean {
-    return !!config;
-  }
-
   /**
-   * Start auto-flush mechanism that retries queued temp answers when network comes online.
+   * Save temporary answers for a task.
    *
-   * **Design Intent:**
-   * - On app refresh/restart, if there are queued temp answers in AsyncStorage from a previous
-   *   session (e.g., user clicked "Next" but sync failed), this automatically retries them
-   *   when the network is detected as online.
-   * - This ensures users don't lose their progress even if they close the app while offline
-   *   or if a sync fails.
-   * - The flush is triggered immediately when network is detected online (including on app
-   *   startup if network is already available).
+   * DataStore automatically:
+   * - Persists to local SQLite (works offline)
+   * - Syncs to cloud when online
+   * - Handles retries and conflicts
    *
-   * **Expected Behavior:**
-   * - On app refresh with network online → flush() is called immediately
-   * - On network reconnection → flush() is called automatically
-   * - Queued items persist across app restarts until successfully synced
+   * @param taskPk - Task primary key
+   * @param activityId - Activity identifier
+   * @param answers - Answer data as JSON object
+   * @param localtime - ISO 8601 timestamp when saved
    */
-  static startAutoFlush(): void {
-    if (netInfoUnsubscribe) return;
-
-    netInfoUnsubscribe = NetInfo.addEventListener(state => {
-      const isOnline =
-        state.isInternetReachable === true || state.isConnected === true;
-      if (isOnline) {
-        // Format metadata as readable list
-        const metadataList = [
-          `  • isConnected: ${state.isConnected}`,
-          `  • isInternetReachable: ${state.isInternetReachable}`,
-          `  • trigger: auto-flush-on-network-online`,
-        ].join("\n");
-
-        debugLog(
-          "🔄",
-          "",
-          `Network online detected → Auto-flushing queued temp answers (this is expected on app refresh if items are queued)\n${metadataList}`,
-          {
-            isConnected: state.isConnected,
-            isInternetReachable: state.isInternetReachable,
-            trigger: "auto-flush-on-network-online",
-          }
-        );
-        void TempAnswerSyncService.flush();
-      }
-    });
-  }
-
-  static stopAutoFlush(): void {
-    if (netInfoUnsubscribe) {
-      netInfoUnsubscribe();
-      netInfoUnsubscribe = null;
-    }
-  }
-
-  static async peekOutbox(): Promise<OutboxItem[]> {
-    if (!config) return [];
-    const storageKey = config.storageKey ?? DEFAULT_STORAGE_KEY;
-    const outbox = await readOutbox(storageKey);
-    return Object.values(outbox).sort((a, b) => b.updatedAt - a.updatedAt);
-  }
-
-  static async clearOutbox(): Promise<void> {
-    if (!config) return;
-    const storageKey = config.storageKey ?? DEFAULT_STORAGE_KEY;
-    await writeOutbox(storageKey, {});
-  }
-
-  static async enqueueTempAnswers(input: {
-    stableKey: string;
-    variables: Record<string, unknown>;
-    document?: string;
-  }): Promise<void> {
-    if (!config) return;
-
-    const storageKey = config.storageKey ?? DEFAULT_STORAGE_KEY;
-    const document = input.document ?? config.document;
-
-    const outbox = await readOutbox(storageKey);
-    const existed = !!outbox[input.stableKey];
-    outbox[input.stableKey] = {
-      stableKey: input.stableKey,
-      document,
-      variables: input.variables,
-      updatedAt: Date.now(),
-    };
-    await writeOutbox(storageKey, outbox);
-
-    debugLog(
-      "📦",
-      "",
-      "Queued temp answers to outbox (will sync when network is available)",
-      {
-        storageKey,
-        stableKey: input.stableKey,
-        replacedExisting: existed,
-        outboxCount: Object.keys(outbox).length,
-        documentSnippet: document.slice(0, 80),
-        variableKeys: Object.keys(input.variables ?? {}),
-      }
-    );
-  }
-
-  static async enqueueFromMapper(
-    input: BuildSaveTempAnswersVariablesInput
+  static async saveTempAnswers(
+    taskPk: string,
+    activityId: string,
+    answers: Record<string, unknown>,
+    localtime: string
   ): Promise<void> {
-    if (!config) return;
-    const mapper: TaskSystemSaveTempAnswersMapper = config.mapper;
-    const mapped = mapper(input);
-    if (!mapped) {
-      debugLog("⚠️", "", "Mapper returned null (skipping temp save)", {
-        taskPk: input.task.pk,
+    try {
+      logger.info(`💾 [TempAnswers] Saving temp answers for task ${taskPk}`, {
+        taskPk,
+        activityId,
+        answerCount: Object.keys(answers).length,
       });
-      return;
-    }
 
-    debugLog("💾", "", "Mapper produced temp-save payload", {
-      stableKey: mapped.stableKey,
-      documentSnippet: (mapped.document ?? config.document).slice(0, 80),
-      variableKeys: Object.keys(mapped.variables ?? {}),
-    });
-    await TempAnswerSyncService.enqueueTempAnswers({
-      stableKey: mapped.stableKey,
-      variables: mapped.variables,
-      document: mapped.document,
-    });
+      const saved = await DataStore.save(
+        new TaskTempAnswer({
+          pk: taskPk,
+          sk: `TEMP#${Date.now()}`,
+          taskPk,
+          activityId,
+          answers: JSON.stringify(answers), // AWSJSON type requires string
+          localtime,
+          hashKey: taskPk,
+        })
+      );
+
+      logger.info(
+        `✅ [TempAnswers] Successfully saved temp answers for task ${taskPk}`,
+        { id: saved.id }
+      );
+    } catch (error) {
+      logger.error(
+        `❌ [TempAnswers] Failed to save temp answers for task ${taskPk}`,
+        error
+      );
+      throw error;
+    }
   }
 
   /**
-   * Sync temp answers immediately if online, otherwise queue for later.
-   * Mimics LX app behavior: tries immediate sync, queues if offline or fails.
+   * Get the most recent temporary answers for a task.
    *
-   * This is the method to call when user clicks "Next" - it attempts immediate
-   * sync and only queues if the sync fails or device is offline.
+   * Queries DataStore for the latest saved answers.
+   * Returns null if no temp answers exist.
+   *
+   * @param taskPk - Task primary key
+   * @returns Answer data or null if not found
    */
-  static async syncTempAnswers(
-    input: BuildSaveTempAnswersVariablesInput
-  ): Promise<void> {
-    if (!config) return;
+  static async getTempAnswers(
+    taskPk: string
+  ): Promise<Record<string, unknown> | null> {
+    try {
+      logger.info(`🔍 [TempAnswers] Querying temp answers for task ${taskPk}`);
 
-    const mapper: TaskSystemSaveTempAnswersMapper = config.mapper;
-    const mapped = mapper(input);
-    if (!mapped) {
-      debugLog("⚠️", "", "Mapper returned null (skipping temp save)", {
-        taskPk: input.task.pk,
-      });
-      return;
-    }
-
-    const document = mapped.document ?? config.document;
-    const executor: TaskSystemGraphQLExecutor = config.executor;
-
-    // Check network status
-    const netInfo = await NetInfo.fetch();
-    const isOnline =
-      netInfo.isInternetReachable === true || netInfo.isConnected === true;
-
-    if (isOnline) {
-      // Try immediate sync
-      try {
-        debugLog(
-          "📤",
-          "",
-          "Attempting immediate temp-save sync (user clicked Next)",
-          {
-            stableKey: mapped.stableKey,
-            documentSnippet: document.slice(0, 80),
-            variableKeys: Object.keys(mapped.variables ?? {}),
-          }
-        );
-
-        const resp = await executor.execute({
-          document,
-          variables: mapped.variables,
-        });
-
-        if (hasGraphQLErrors(resp)) {
-          debugLog(
-            "❌",
-            "",
-            "Immediate sync failed with GraphQL errors (queuing for retry)",
-            {
-              stableKey: mapped.stableKey,
-              errors: resp.errors,
-            }
-          );
-          // Queue for retry
-          await TempAnswerSyncService.enqueueTempAnswers({
-            stableKey: mapped.stableKey,
-            variables: mapped.variables,
-            document,
-          });
-        } else {
-          debugLog("✅", "", "Immediate sync succeeded", {
-            stableKey: mapped.stableKey,
-          });
-          // Success - no need to queue
-          return;
+      const results = await DataStore.query(
+        TaskTempAnswer,
+        c => c.taskPk.eq(taskPk),
+        {
+          sort: s => s.localtime("DESCENDING"),
+          limit: 1,
         }
-      } catch (error) {
-        debugLog(
-          "❌",
-          "",
-          "Immediate sync failed with exception (queuing for retry)",
-          {
-            stableKey: mapped.stableKey,
-            error: error instanceof Error ? error.message : String(error),
-          }
+      );
+
+      if (!results || results.length === 0) {
+        logger.info(
+          `📭 [TempAnswers] No temp answers found for task ${taskPk}`
         );
-        // Queue for retry
-        await TempAnswerSyncService.enqueueTempAnswers({
-          stableKey: mapped.stableKey,
-          variables: mapped.variables,
-          document,
-        });
+        return null;
       }
-    } else {
-      // Offline - queue immediately
-      debugLog(
-        "📡",
-        "",
-        "Device offline (queuing temp answers for later sync)",
-        {
-          stableKey: mapped.stableKey,
-          isConnected: netInfo.isConnected,
-          isInternetReachable: netInfo.isInternetReachable,
-        }
-      );
-      await TempAnswerSyncService.enqueueTempAnswers({
-        stableKey: mapped.stableKey,
-        variables: mapped.variables,
-        document,
-      });
-    }
-  }
 
-  /**
-   * Flush queued temp answers from AsyncStorage outbox.
-   *
-   * **When this is called:**
-   * - Automatically on app refresh/startup if network is online (via startAutoFlush)
-   * - Automatically when network comes back online (via startAutoFlush)
-   * - Can be called manually if needed
-   *
-   * **What it does:**
-   * - Reads all queued items from AsyncStorage
-   * - Attempts to sync each item via GraphQL
-   * - Removes successfully synced items from the outbox
-   * - Retains failed items for future retry
-   */
-  static async flush(): Promise<{ flushed: number; remaining: number }> {
-    if (!config) {
-      return { flushed: 0, remaining: 0 };
-    }
+      const answersData = results[0]?.answers;
+      if (!answersData) {
+        logger.warn(
+          `⚠️ [TempAnswers] Temp answer record exists but answers field is empty for task ${taskPk}`
+        );
+        return null;
+      }
 
-    if (flushInFlight) return flushInFlight;
-
-    const executor: TaskSystemGraphQLExecutor = config.executor;
-    const storageKey = config.storageKey ?? DEFAULT_STORAGE_KEY;
-
-    flushInFlight = (async () => {
-      const outbox = await readOutbox(storageKey);
-      const items = Object.values(outbox).sort(
-        (a, b) => a.updatedAt - b.updatedAt
-      );
-
-      let flushed = 0;
-      const nextOutbox: OutboxState = { ...outbox };
-
-      // Format metadata as readable list
-      const flushMetadataList = [
-        `  • queued: ${items.length}`,
-        `  • source: auto-flush-on-app-refresh-or-network-online`,
-        `  • storageKey: ${storageKey}`,
-      ].join("\n");
-
-      debugLog(
-        "🚀",
-        "",
-        `Starting flush of queued temp answers\n${flushMetadataList}`,
-        {
-          storageKey,
-          queued: items.length,
-          source: "auto-flush-on-app-refresh-or-network-online",
-        }
-      );
-
-      for (const item of items) {
+      // Handle both string (AWSJSON) and object cases
+      let parsed: Record<string, unknown>;
+      if (typeof answersData === "string") {
         try {
-          // Format metadata as readable list
-          const syncMetadataList = [
-            `  • stableKey: ${item.stableKey}`,
-            `  • documentSnippet: ${item.document.slice(0, 80)}`,
-            `  • variableKeys: [${Object.keys(item.variables ?? {}).join(", ")}]`,
-            `  • updatedAt: ${item.updatedAt}`,
-          ].join("\n");
-
-          debugLog(
-            "📤",
-            "",
-            `Attempting to sync queued temp answer\n${syncMetadataList}`,
+          parsed = JSON.parse(answersData) as Record<string, unknown>;
+        } catch (parseError) {
+          logger.error(
+            `❌ [TempAnswers] Failed to parse answers JSON for task ${taskPk}`,
             {
-              stableKey: item.stableKey,
-              updatedAt: item.updatedAt,
-              documentSnippet: item.document.slice(0, 80),
-              variableKeys: Object.keys(item.variables ?? {}),
+              error: parseError,
+              answersData: answersData.substring(0, 100), // Log first 100 chars
             }
           );
-
-          const resp = await executor.execute({
-            document: item.document,
-            variables: item.variables,
-          });
-
-          if (hasGraphQLErrors(resp)) {
-            debugLog(
-              "❌",
-              "",
-              "Sync failed with GraphQL errors (will retry later)",
-              {
-                stableKey: item.stableKey,
-                errors: (resp as any).errors,
-              }
-            );
-            continue;
-          }
-
-          delete nextOutbox[item.stableKey];
-          flushed++;
-          await writeOutbox(storageKey, nextOutbox);
-          debugLog(
-            "✅",
-            "",
-            "Successfully synced temp answer (removed from outbox)",
-            {
-              stableKey: item.stableKey,
-              remaining: Object.keys(nextOutbox).length,
-            }
-          );
-        } catch (error) {
-          debugLog("❌", "", "Sync failed with exception (will retry later)", {
-            stableKey: item.stableKey,
-            error: error instanceof Error ? error.message : String(error),
-          });
-          // Keep the item for retry.
+          return null;
         }
+      } else if (typeof answersData === "object" && answersData !== null) {
+        // Already an object - use as-is
+        parsed = answersData as Record<string, unknown>;
+      } else {
+        logger.warn(
+          `⚠️ [TempAnswers] Unexpected answers data type for task ${taskPk}`,
+          { type: typeof answersData }
+        );
+        return null;
       }
 
-      const remaining = Object.keys(nextOutbox).length;
-      debugLog("🏁", "", "Flush completed", {
-        flushed,
-        remaining,
-        status: remaining > 0 ? "some-items-still-queued" : "all-synced",
-      });
-      return { flushed, remaining };
-    })().finally(() => {
-      flushInFlight = null;
-    });
-
-    return flushInFlight;
+      logger.info(
+        `✅ [TempAnswers] Retrieved temp answers for task ${taskPk}`,
+        {
+          answerCount: Object.keys(parsed).length,
+          recordId: results[0].id,
+        }
+      );
+      return parsed;
+    } catch (error) {
+      logger.error(
+        `❌ [TempAnswers] Failed to get temp answers for task ${taskPk}`,
+        error
+      );
+      return null;
+    }
   }
 }

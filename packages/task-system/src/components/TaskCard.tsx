@@ -97,12 +97,14 @@ const TaskCardComponent: React.FC<TaskCardProps> = ({
                 color={icon.color}
               />
             </View>
-            <TranslatedText
-              text={task.title || t("task.untitled")}
-              style={styles.title}
-              numberOfLines={2}
-              testID="task-card-title"
-            />
+            <View style={styles.titleContainer}>
+              <TranslatedText
+                text={task.title || t("task.untitled")}
+                style={styles.title}
+                numberOfLines={2}
+                testID="task-card-title"
+              />
+            </View>
           </View>
         </View>
 
@@ -191,11 +193,26 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexShrink: 0,
   },
+  titleContainer: {
+    flex: 1,
+    gap: 6,
+  },
   title: {
     ...AppFonts.large,
     color: AppColors.almostBlack,
     lineHeight: 26,
-    flex: 1,
+  },
+  syncBadge: {
+    alignSelf: "flex-start",
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 4,
+    marginTop: 2,
+  },
+  syncBadgeText: {
+    fontSize: 10,
+    fontWeight: "600",
+    color: AppColors.white,
   },
   actionRow: {
     flexDirection: "row",
