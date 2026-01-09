@@ -45,6 +45,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Date Header Styling**
+  - Fixed date format styling to match "Today"/"Tomorrow" label (same font size and color)
+  - Changed dayDate style from body font to heading font for visual consistency
+
 - **DataStore Sync Authentication**
   - Extended AWS AppSync API key expiration from 7 days to 365 days to prevent frequent sync failures
   - Updated Amplify backend configuration to support long-lived API keys for development
