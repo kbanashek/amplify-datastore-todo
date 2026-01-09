@@ -199,21 +199,36 @@ export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
         (taskDay.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
       );
 
-      // Format date for display
-      const dayDate = firstTaskDate.toLocaleDateString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-      });
-
-      // Use "Today" or "Tomorrow" for labels, actual date for others
+      // Format date for display - use actual device date for Today/Tomorrow
+      let dayDate: string;
       let dayLabel: string;
-      if (diffDays === 0) {
+
+      if (diffDays === 0 || diffDays < 0) {
+        // Today or past: use actual current date
         dayLabel = "Today";
+        dayDate = now.toLocaleDateString("en-US", {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+        });
       } else if (diffDays === 1) {
+        // Tomorrow: use actual tomorrow date
         dayLabel = "Tomorrow";
+        const tomorrow = new Date(now);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        dayDate = tomorrow.toLocaleDateString("en-US", {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+        });
       } else {
-        dayLabel = dayDate; // Use actual date for future dates
+        // Future dates: use task's date
+        dayDate = firstTaskDate.toLocaleDateString("en-US", {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+        });
+        dayLabel = dayDate;
       }
 
       // Group by time within the day
