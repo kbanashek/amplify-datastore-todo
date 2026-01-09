@@ -85,14 +85,14 @@ exports[`GroupedTasksView Snapshots matches snapshot with appointments 1`] = `
         <Text
           style={
             {
-              "color": "#666666",
-              "fontFamily": "Ubuntu-Regular",
-              "fontSize": 16,
-              "fontWeight": "400",
+              "color": "#1E376C",
+              "fontFamily": "Ubuntu-Bold",
+              "fontSize": 28,
+              "fontWeight": "800",
             }
           }
         >
-          Wed, Jan 7
+          Thu, Jan 8
         </Text>
       </View>
       <View
@@ -235,14 +235,14 @@ exports[`GroupedTasksView Snapshots matches snapshot with grouped tasks 1`] = `
         <Text
           style={
             {
-              "color": "#666666",
-              "fontFamily": "Ubuntu-Regular",
-              "fontSize": 16,
-              "fontWeight": "400",
+              "color": "#1E376C",
+              "fontFamily": "Ubuntu-Bold",
+              "fontSize": 28,
+              "fontWeight": "800",
             }
           }
         >
-          2026-01-07
+          2026-01-09
         </Text>
       </View>
       <View />

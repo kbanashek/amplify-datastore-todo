@@ -268,20 +268,17 @@ export class TaskService {
       snapshot => {
         const { items, isSynced } = snapshot;
 
-        // VERBOSE LOGGING FOR DEBUGGING SYNC ISSUES
-        logger.info(
-          `📋 AWS DataStore subscription fired - ${items.length} tasks`,
-          {
-            taskCount: items.length,
-            isSynced,
-            syncStatus: isSynced ? "cloud-synced" : "local-only",
-            taskIds: items.map(t => t.id),
-            taskTitles: items.map(t => (t as Task).title),
-            timestamp: new Date().toISOString(),
-          },
-          undefined,
-          "📋"
-        );
+        // Only log in development to reduce production overhead
+        if (__DEV__) {
+          logger.debug(
+            `AWS DataStore subscription update - ${items.length} tasks`,
+            {
+              synced: isSynced ? "cloud-synced" : "local-only",
+            },
+            undefined,
+            "☁️"
+          );
+        }
 
         callback(items as Task[], isSynced);
       }

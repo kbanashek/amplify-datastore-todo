@@ -11,14 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Temporary Answer System Cleanup**
-  - Removed unused `TempAnswerSyncService` import from `useActivityData.ts`
-  - Removed unused `syncTimeoutId` variable from DataStore subscription logic
-  - Updated business documentation (`data-sync-overview.md`) to reflect DataStore-based architecture
-  - Updated technical architecture diagrams to show DataStore instead of Lambda/AsyncStorage
-  - Updated performance metrics to reflect improved DataStore sync times
-  - Enhanced unit tests with additional test cases for already-parsed objects and error handling
-
 - **Updated Expo File System Imports**
   - Replaced deprecated `expo-file-system/legacy` imports with modern `expo-file-system` package
   - Updated both production code and test mocks for consistency with current Expo SDK
@@ -52,6 +44,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Documented deletion in `UNUSED_FILES.md` (total: 27 files deleted)
 
 ### Fixed
+
+- **Date Header Styling**
+  - Fixed date format styling to match "Today"/"Tomorrow" label (same font size and color)
+  - Changed dayDate style from body font to heading font for visual consistency
 
 - **DataStore Sync Authentication**
   - Extended AWS AppSync API key expiration from 7 days to 365 days to prevent frequent sync failures
