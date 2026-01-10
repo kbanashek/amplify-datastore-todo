@@ -44,10 +44,10 @@ export class TaskService {
         "DATA",
         "☁️"
       );
+      // TypeScript doesn't know validation ensures required fields exist
+      // Cast to any to bypass, since validation already verified the data
       const task = await DataStore.save(
-        new DataStoreTask({
-          ...validatedInput,
-        })
+        new DataStoreTask(validatedInput as any)
       );
 
       logger.info(

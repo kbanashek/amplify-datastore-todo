@@ -254,7 +254,6 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
                   task={task}
                   simple={false}
                   onPress={onTaskPress}
-                  onDelete={onDelete}
                 />
               ))}
             </View>
@@ -282,7 +281,6 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
                       task={task}
                       simple={false}
                       onPress={onTaskPress}
-                      onDelete={onDelete}
                     />
                   ))}
                 </View>

@@ -4,6 +4,10 @@
  */
 
 import { LogLevel, LogLevelPreset } from "@services/logging/types";
+import {
+  formatObjectForLog,
+  parseJsonStrings,
+} from "@utils/logFormatter";
 
 /**
  * Sentry severity level constants
@@ -121,6 +125,26 @@ export function formatMetadataInline(
   }
 
   return parts.length > 0 ? ` {${parts.join(", ")}}` : "";
+}
+
+/**
+ * Format metadata as multi-line string for readable logs
+ * Automatically parses JSON strings in metadata
+ */
+export function formatMetadataMultiLine(
+  metadata?: Record<string, unknown>
+): string {
+  if (!metadata || Object.keys(metadata).length === 0) {
+    return "";
+  }
+
+  // Parse any JSON strings in metadata
+  const parsed = parseJsonStrings(metadata) as Record<string, unknown>;
+
+  // Format as multi-line
+  const formatted = formatObjectForLog(parsed);
+
+  return formatted ? `\n${formatted}` : "";
 }
 
 /**

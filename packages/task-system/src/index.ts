@@ -140,6 +140,13 @@ export {
 // Activity parsing types/utils
 export { getDisplayProperty, parseActivityConfig } from "@utils/activityParser";
 export type { ParsedActivityData } from "@utils/activityParser";
+export {
+  getDeviceId,
+  getLogPrefix,
+  logWithDevice,
+  logErrorWithDevice,
+} from "@utils/deviceLogger";
+export { getPlatformIcon } from "@utils/platformIcons";
 
 // Export utils commonly used by host apps
 export {

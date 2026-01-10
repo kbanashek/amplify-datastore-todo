@@ -147,6 +147,7 @@ export class LoggingService {
     const consoleProvider = new ConsoleProvider({
       singleLine: this.config.singleLine ?? true,
       sequenceDiagram: this.config.sequenceDiagram ?? true,
+      multiLineMetadata: this.config.multiLineMetadata ?? true, // Default to true for readable logs
     });
     this.addProvider(consoleProvider);
 

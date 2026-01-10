@@ -10,6 +10,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { SyncStatusBanner } from "../components/SyncStatusBanner";
+import { SyncHealthDashboard } from "../components/SyncHealthDashboard";
 import { GlobalHeader } from "@orion/task-system";
 import { TestIds } from "../constants/testIds";
 import { useDevOptions } from "../hooks/useDevOptions";
@@ -17,9 +18,12 @@ import { useDevOptions } from "../hooks/useDevOptions";
 /**
  * Dev Options Screen
  *
- * Provides dev tools for testing DataStore sync, seeding data, and managing app state.
+ * Clean, organized developer tools for testing and debugging.
  *
- * All operations now use timeout-protected DataStore.stop() to prevent infinite hangs.
+ * Sections:
+ * - Sync Tools: Force DataStore resync without deleting app
+ * - Data Tools: Add test data for testing
+ * - Delete Tools: Remove data from cloud/devices
  */
 
 export const DevOptionsScreen: React.FC = () => {
@@ -29,11 +33,13 @@ export const DevOptionsScreen: React.FC = () => {
     isBusy,
     isImportingFixture,
     isDeleting,
+    isResyncing,
     lastError,
     simpleImportFixture,
     deleteTasksOnly,
     deleteAppointmentsOnly,
     nuclearDeleteCloud,
+    forceDataStoreResync,
   } = useDevOptions();
 
   const confirm = (title: string, message: string, onConfirm: () => void) => {
@@ -43,16 +49,17 @@ export const DevOptionsScreen: React.FC = () => {
     ]);
   };
 
-  const handleQuickImport = () => {
+  // Sync Tools
+  const handleForceResync = () => {
     confirm(
-      "⚡️ Add Fixture Tasks",
-      "This will add 10 test tasks + 2 activities to this device.\n\n✅ Does NOT use DataStore.stop() - won't cause state errors\n✅ Data will sync to cloud automatically\n\nOther devices will see the new tasks within 10 seconds.",
+      "🔄 Force DataStore Resync",
+      "This will:\n\n• Clear local DataStore cache\n• Force fresh pull from AWS\n• Fix sync issues without deleting app\n\n⏱️ Takes ~10 seconds\n✅ Keeps your app data and settings",
       () => {
-        simpleImportFixture()
+        forceDataStoreResync()
           .then(() => {
             Alert.alert(
-              "✅ Done!",
-              "10 tasks added! They should sync to other devices automatically."
+              "✅ Resync Complete!",
+              "DataStore cache cleared and resynced from cloud."
             );
           })
           .catch(() => {
@@ -62,10 +69,28 @@ export const DevOptionsScreen: React.FC = () => {
     );
   };
 
+  // Data Tools
+  const handleQuickImport = () => {
+    confirm(
+      "⚡️ Add Test Tasks",
+      "This will add 10 test tasks + 2 activities.\n\n✅ Data syncs to cloud automatically\n✅ Other devices will see tasks within 5-10 seconds",
+      () => {
+        simpleImportFixture()
+          .then(() => {
+            Alert.alert("✅ Done!", "10 tasks added and syncing to cloud!");
+          })
+          .catch(() => {
+            // error is surfaced via lastError
+          });
+      }
+    );
+  };
+
+  // Delete Tools
   const handleDeleteTasks = () => {
     confirm(
       "Delete All Tasks",
-      "This will delete ALL tasks from DynamoDB (cloud).\n\n⚠️ Affects all devices.\n⚠️ Cannot be undone.",
+      "Deletes ALL tasks from cloud.\n\n⚠️ Affects all devices\n⚠️ Cannot be undone",
       () => {
         deleteTasksOnly()
           .then(() => {
@@ -79,7 +104,7 @@ export const DevOptionsScreen: React.FC = () => {
   const handleDeleteAppointments = () => {
     confirm(
       "Delete All Appointments",
-      "This will delete ALL appointments from DynamoDB (cloud).\n\n⚠️ Affects all devices.\n⚠️ Cannot be undone.",
+      "Deletes ALL appointments from cloud.\n\n⚠️ Affects all devices\n⚠️ Cannot be undone",
       () => {
         deleteAppointmentsOnly()
           .then(() => {
@@ -93,13 +118,13 @@ export const DevOptionsScreen: React.FC = () => {
   const handleNuclearDelete = () => {
     confirm(
       "💣 Delete Everything",
-      "This will delete:\n\n• All tasks\n• All activities\n• All appointments\n• All questions\n• All data points\n• All task answers\n• All task results\n• All task temp answers\n• All task history\n\nFrom DynamoDB (cloud).\n\n⚠️ THIS CANNOT BE UNDONE!\n⚠️ ALL DEVICES AFFECTED!",
+      "Deletes ALL data from cloud:\n• Tasks\n• Activities\n• Appointments\n• Questions\n• Answers\n• Data Points\n\n⚠️ CANNOT BE UNDONE!\n⚠️ ALL DEVICES AFFECTED!",
       () => {
         nuclearDeleteCloud()
           .then(() => {
             Alert.alert(
               "✅ Done!",
-              "Everything deleted from cloud. Restart the app to clear local data."
+              "Everything deleted. Press 'Force Resync' to clear local data."
             );
           })
           .catch(() => {});
@@ -117,28 +142,8 @@ export const DevOptionsScreen: React.FC = () => {
         contentContainerStyle={styles.scrollContent}
         testID={TestIds.devOptions.scrollView}
       >
-        {/* Info Box */}
-        <View style={styles.infoBox}>
-          <Text style={styles.infoTitle}>
-            ⚠️ DataStore.stop() and .clear() Are Broken
-          </Text>
-          <Text style={styles.infoText}>
-            DataStore.stop() and DataStore.clear() cause race condition errors
-            in this environment.
-            {"\n\n"}
-            <Text style={styles.bold}>Operations removed:</Text>
-            {"\n"}• Force Sync (uses DataStore.stop/clear)
-            {"\n"}• Nuclear Reset (uses DataStore.stop/clear)
-            {"\n"}• Generate Fresh Fixture (uses DataStore.stop/clear)
-            {"\n\n"}
-            <Text style={styles.bold}>Only safe operations included:</Text>
-            {"\n"}• Add Test Tasks (direct DataStore.save())
-            {"\n"}• Delete operations (direct DataStore.delete())
-            {"\n\n"}
-            <Text style={styles.bold}>To fix sync issues:</Text>
-            {"\n"}Delete and reinstall the app on the stuck device.
-          </Text>
-        </View>
+        {/* Sync Health Dashboard */}
+        <SyncHealthDashboard />
 
         {/* Error Display */}
         {lastError ? (
@@ -148,62 +153,91 @@ export const DevOptionsScreen: React.FC = () => {
           </View>
         ) : null}
 
-        {/* Safe Operations */}
+        {/* Sync Tools */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>✅ Safe Operations</Text>
-          <Text style={styles.sectionSubtitle}>
-            These operations do NOT use DataStore.stop() or .clear()
+          <Text style={styles.sectionTitle}>🔄 Sync Tools</Text>
+          <Text style={styles.sectionDescription}>
+            Fix DataStore sync issues without deleting the app
           </Text>
 
           <TouchableOpacity
-            style={[styles.button, styles.buttonPrimary]}
+            style={[styles.button, styles.buttonSync]}
+            onPress={handleForceResync}
+            disabled={isBusy}
+            testID={TestIds.devOptions.forceResync}
+          >
+            <View style={styles.buttonContent}>
+              <Text style={styles.buttonTitle}>
+                {isResyncing ? "⏳ Resyncing..." : "🔄 Force DataStore Resync"}
+              </Text>
+              <Text style={styles.buttonDescription}>
+                Clear local cache and pull fresh data from AWS
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        {/* Data Tools */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>📦 Data Tools</Text>
+          <Text style={styles.sectionDescription}>
+            Add test data for development and testing
+          </Text>
+
+          <TouchableOpacity
+            style={[styles.button, styles.buttonData]}
             onPress={handleQuickImport}
             disabled={isBusy}
             testID={TestIds.devOptions.quickImport}
           >
-            <Text style={styles.buttonText}>
-              {isImportingFixture ? "⏳ Adding..." : "⚡️ Add 10 Test Tasks"}
-            </Text>
-            <Text style={styles.buttonSubtext}>
-              Direct DataStore.save() - safe, no race conditions. Syncs to cloud
-              automatically.
-            </Text>
+            <View style={styles.buttonContent}>
+              <Text style={styles.buttonTitle}>
+                {isImportingFixture ? "⏳ Adding..." : "⚡️ Add 10 Test Tasks"}
+              </Text>
+              <Text style={styles.buttonDescription}>
+                Adds tasks + activities, syncs to cloud automatically
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
 
-        {/* Delete Operations */}
+        {/* Delete Tools */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>🗑️ Delete Operations</Text>
-          <Text style={styles.sectionSubtitle}>
-            Delete data from cloud - affects all devices
+          <Text style={styles.sectionTitle}>🗑️ Delete Tools</Text>
+          <Text style={styles.sectionDescription}>
+            Remove data from cloud (affects all devices)
           </Text>
 
           <TouchableOpacity
-            style={[styles.button, styles.buttonDanger]}
+            style={[styles.button, styles.buttonDelete]}
             onPress={handleDeleteTasks}
             disabled={isBusy}
             testID={TestIds.devOptions.deleteTasks}
           >
-            <Text style={styles.buttonText}>
-              {isDeleting ? "⏳ Deleting..." : "🗑️ Delete All Tasks"}
-            </Text>
-            <Text style={styles.buttonSubtext}>
-              Deletes all tasks from DynamoDB (all devices affected)
-            </Text>
+            <View style={styles.buttonContent}>
+              <Text style={styles.buttonTitle}>
+                {isDeleting ? "⏳ Deleting..." : "🗑️ Delete All Tasks"}
+              </Text>
+              <Text style={styles.buttonDescription}>
+                Removes all tasks from cloud
+              </Text>
+            </View>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.button, styles.buttonDanger]}
+            style={[styles.button, styles.buttonDelete]}
             onPress={handleDeleteAppointments}
             disabled={isBusy}
             testID={TestIds.devOptions.deleteAppointments}
           >
-            <Text style={styles.buttonText}>
-              {isDeleting ? "⏳ Deleting..." : "🗑️ Delete All Appointments"}
-            </Text>
-            <Text style={styles.buttonSubtext}>
-              Deletes all appointments from DynamoDB (all devices affected)
-            </Text>
+            <View style={styles.buttonContent}>
+              <Text style={styles.buttonTitle}>
+                {isDeleting ? "⏳ Deleting..." : "🗑️ Delete All Appointments"}
+              </Text>
+              <Text style={styles.buttonDescription}>
+                Removes all appointments from cloud
+              </Text>
+            </View>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -212,48 +246,31 @@ export const DevOptionsScreen: React.FC = () => {
             disabled={isBusy}
             testID={TestIds.devOptions.nuclearDelete}
           >
-            <Text style={styles.buttonText}>
-              {isDeleting ? "⏳ Deleting..." : "💣 Delete EVERYTHING"}
-            </Text>
-            <Text style={styles.buttonSubtext}>
-              Deletes ALL data from DynamoDB. Cannot be undone!
-            </Text>
+            <View style={styles.buttonContent}>
+              <Text style={styles.buttonTitle}>
+                {isDeleting ? "⏳ Deleting..." : "💣 Delete EVERYTHING"}
+              </Text>
+              <Text style={styles.buttonDescription}>
+                Removes ALL data from cloud - cannot be undone!
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
 
-        {/* Instructions */}
-        <View style={styles.instructionsBox}>
-          <Text style={styles.instructionsTitle}>💡 Usage Instructions</Text>
-          <Text style={styles.instructionsText}>
-            <Text style={styles.bold}>To Add Test Data:{"\n"}</Text>
-            1. Press &ldquo;Add 10 Test Tasks&rdquo; on ONE device
-            {"\n"}
-            2. Data syncs to cloud automatically
-            {"\n"}
-            3. Other devices pull data within 10 seconds (fullSyncInterval)
-            {"\n\n"}
-            <Text style={styles.bold}>If Device Won&rsquo;t Sync:{"\n"}</Text>
-            1. Delete the app on the stuck device
-            {"\n"}
-            2. Reinstall (press &lsquo;i&rsquo; for iOS or &lsquo;a&rsquo; for
-            Android in Expo terminal)
-            {"\n"}
-            3. Device will pull fresh data from cloud on restart
-            {"\n\n"}
-            <Text style={styles.bold}>To Clear All Data:{"\n"}</Text>
-            1. Press &ldquo;Delete EVERYTHING&rdquo; button
-            {"\n"}
-            2. Restart all devices to clear local caches
-            {"\n"}
-            3. Add fresh test tasks
-            {"\n\n"}
-            <Text style={styles.bold}>Why Some Buttons Are Missing:{"\n"}</Text>
-            DataStore.stop() and .clear() cause
-            &ldquo;DataStoreStateError&rdquo; race conditions.
-            {"\n"}
-            Only operations that DON&rsquo;T use stop/clear are included.
+        {/* Quick Tips */}
+        <View style={styles.tipsBox}>
+          <Text style={styles.tipsTitle}>💡 Quick Tips</Text>
+          <Text style={styles.tipsText}>
+            • <Text style={styles.bold}>Sync issues?</Text> Try &ldquo;Force DataStore
+            Resync&rdquo; first
+            {"\n"}• <Text style={styles.bold}>Test cross-device sync?</Text> Add
+            tasks on one device, check others
+            {"\n"}• <Text style={styles.bold}>Start fresh?</Text> Delete
+            Everything → Force Resync
           </Text>
         </View>
+
+        <View style={{ height: 40 }} />
       </ScrollView>
     </View>
   );
@@ -262,67 +279,54 @@ export const DevOptionsScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F3F7FA",
+    backgroundColor: "#f5f5f5",
   },
   scrollView: {
     flex: 1,
   },
   scrollContent: {
     padding: 16,
-    paddingBottom: 100,
   },
-  infoBox: {
-    backgroundColor: "#E3F2FD",
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: "#2196F3",
-  },
-  infoTitle: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#1976D2",
-    marginBottom: 8,
-  },
-  infoText: {
-    fontSize: 14,
-    lineHeight: 20,
-    color: "#1565C0",
-  },
+
+  // Error Display
   errorBox: {
-    backgroundColor: "#FFEBEE",
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
+    backgroundColor: "#fee",
     borderWidth: 1,
-    borderColor: "#EF5350",
+    borderColor: "#fcc",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
   },
   errorTitle: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#C62828",
-    marginBottom: 8,
+    color: "#c00",
+    marginBottom: 6,
   },
   errorText: {
     fontSize: 14,
+    color: "#900",
     lineHeight: 20,
-    color: "#B71C1C",
   },
+
+  // Sections
   section: {
     marginBottom: 24,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#1E3A8A",
+    color: "#333",
     marginBottom: 4,
   },
-  sectionSubtitle: {
+  sectionDescription: {
     fontSize: 14,
-    color: "#64748B",
-    marginBottom: 16,
+    color: "#666",
+    marginBottom: 12,
+    lineHeight: 20,
   },
+
+  // Buttons
   button: {
     borderRadius: 12,
     padding: 16,
@@ -333,46 +337,57 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  buttonPrimary: {
-    backgroundColor: "#2196F3",
+  buttonContent: {
+    gap: 4,
   },
-  buttonSecondary: {
-    backgroundColor: "#64748B",
-  },
-  buttonDanger: {
-    backgroundColor: "#EF5350",
-  },
-  buttonText: {
+  buttonTitle: {
     fontSize: 16,
-    fontWeight: "700",
-    color: "#FFFFFF",
+    fontWeight: "600",
+    color: "#fff",
     marginBottom: 4,
   },
-  buttonSubtext: {
+  buttonDescription: {
     fontSize: 13,
-    color: "#FFFFFF",
-    opacity: 0.9,
+    color: "rgba(255, 255, 255, 0.9)",
+    lineHeight: 18,
   },
-  instructionsBox: {
-    backgroundColor: "#FFF9C4",
-    borderRadius: 12,
+
+  // Button Variants
+  buttonSync: {
+    backgroundColor: "#2196F3", // Blue
+  },
+  buttonData: {
+    backgroundColor: "#4CAF50", // Green
+  },
+  buttonDelete: {
+    backgroundColor: "#FF9800", // Orange
+  },
+  buttonDanger: {
+    backgroundColor: "#F44336", // Red
+  },
+
+  // Tips Box
+  tipsBox: {
+    backgroundColor: "#fff9e6",
+    borderWidth: 1,
+    borderColor: "#ffe066",
+    borderRadius: 8,
     padding: 16,
     marginTop: 8,
-    borderWidth: 1,
-    borderColor: "#FBC02D",
   },
-  instructionsTitle: {
+  tipsTitle: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#F57F17",
+    color: "#b8860b",
     marginBottom: 8,
   },
-  instructionsText: {
+  tipsText: {
     fontSize: 14,
+    color: "#666",
     lineHeight: 22,
-    color: "#F57C00",
   },
   bold: {
-    fontWeight: "700",
+    fontWeight: "600",
+    color: "#333",
   },
 });

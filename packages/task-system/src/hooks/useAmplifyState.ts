@@ -1,9 +1,10 @@
 import { Amplify, Hub } from "@aws-amplify/core";
 import NetInfo from "@react-native-community/netinfo";
-import { useEffect, useState } from "react";
 import { initTaskSystem } from "@runtime/taskSystem";
 import { logWithDevice } from "@utils/deviceLogger";
+import { formatModelSyncLog } from "@utils/logFormatter";
 import { getServiceLogger } from "@utils/serviceLogger";
+import { useEffect, useState } from "react";
 
 const logger = getServiceLogger("useAmplifyState");
 
@@ -36,6 +37,47 @@ export enum DataStoreEventType {
   ConflictDetected = "conflictDetected",
 }
 
+// Define types for DataStore event payloads
+interface DataStoreError {
+  message?: string;
+  errors?: { message?: string }[];
+}
+
+interface NetworkStatusData {
+  active: boolean;
+}
+
+interface OutboxStatusData {
+  isEmpty?: boolean;
+}
+
+interface ModelSyncData {
+  model?: { name?: string };
+  isFullSync?: boolean;
+  isDeltaSync?: boolean;
+  counts?: {
+    new?: number;
+    updated?: number;
+    deleted?: number;
+  };
+}
+
+interface SyncErrorData {
+  error?: DataStoreError;
+}
+
+type DataStoreEventData =
+  | NetworkStatusData
+  | OutboxStatusData
+  | ModelSyncData
+  | SyncErrorData
+  | { [key: string]: unknown };
+
+interface DataStoreHubPayload {
+  event: string;
+  data: DataStoreEventData;
+}
+
 export interface AmplifyState {
   isReady: boolean;
   networkStatus: NetworkStatus;
@@ -64,7 +106,7 @@ export const useAmplifyState = (options?: {
 
   useEffect(() => {
     let isMounted = true;
-    let hubListener: any = null;
+    let hubListener: (() => void) | null = null;
     let unsubscribeNetInfo: (() => void) | null = null;
 
     const initializeDataStore = async () => {
@@ -77,164 +119,189 @@ export const useAmplifyState = (options?: {
         await new Promise(resolve => setTimeout(resolve, 100));
 
         // Subscribe to DataStore events BEFORE starting DataStore so we don't miss early events.
-        hubListener = Hub.listen("datastore", async (hubData: any) => {
-          if (!isMounted) return;
+        hubListener = Hub.listen(
+          "datastore",
+          async (hubData: { payload: DataStoreHubPayload }) => {
+            if (!isMounted) return;
 
-          const { event, data } = hubData.payload;
+            const { event, data } = hubData.payload;
 
-          // 🔍 LOG EVERY SINGLE DATASTORE EVENT FOR DEBUGGING
-          logger.info(
-            `🔍 DataStore Event: ${event}`,
-            {
-              event,
-              data: data ? JSON.stringify(data, null, 2) : "no data",
-              timestamp: new Date().toISOString(),
-            },
-            undefined,
-            "🔍"
-          );
+            // Log DataStore events with minimal, readable info (not full JSON blobs)
+            // Only log essential details - full element objects are too verbose
 
-          switch (event) {
-            case DataStoreEventType.NetworkStatus:
-              logger.info(
-                `🌐 Network Status Changed: ${data.active ? "ONLINE" : "OFFLINE"}`,
-                { active: data.active, data },
-                undefined,
-                "🌐"
-              );
-              setNetworkStatus(
-                data.active ? NetworkStatus.Online : NetworkStatus.Offline
-              );
-              break;
-            case DataStoreEventType.ConflictDetected:
-              logger.warn("⚠️ Conflict Detected", { data }, undefined, "⚠️");
-              // Increment conflict count when a conflict is detected
-              setConflictCount(prevCount => prevCount + 1);
-              break;
-            case DataStoreEventType.SyncQueriesStarted:
-              logger.info(
-                "🔄 Sync Queries STARTED - DataStore is now syncing with AWS",
-                {
-                  event,
-                  data,
-                  timestamp: new Date().toISOString(),
-                },
-                undefined,
-                "🔄"
-              );
-              setSyncState(SyncState.Syncing);
-              break;
-            case DataStoreEventType.SyncQueriesReady:
-              logger.info(
-                "✅ Sync Queries READY - DataStore sync completed successfully",
-                {
-                  event,
-                  data,
-                  timestamp: new Date().toISOString(),
-                },
-                undefined,
-                "✅"
-              );
-              setSyncState(SyncState.Synced);
-              setIsReady(true);
-              setLastSyncedAt(new Date());
-              // Reset pending count when sync completes successfully
-              setPendingSyncCount(0);
-              break;
-            case DataStoreEventType.SyncQueriesError:
-              setSyncState(SyncState.Error);
-
-              // Log sync errors for debugging
-              logger.error("DataStore sync error", {
-                event,
-                data,
-                errorDetails: data?.error || data,
-                note: "Check earlier logs for '[Amplify] ✅ Configured' to see API key being used",
-                error: data?.error || data,
-              });
-
-              // Check if it's an auth error
-              const isUnauthorized =
-                data?.error?.message?.includes("Unauthorized") ||
-                data?.error?.errors?.[0]?.message?.includes("Unauthorized") ||
-                data?.error?.message?.includes("401") ||
-                data?.error?.errors?.[0]?.message?.includes("401") ||
-                String(data?.error || "").includes("Unauthorized");
-
-              if (isUnauthorized) {
-                logger.error(
-                  "UNAUTHORIZED ERROR - API key issue detected!",
-                  {
-                    expectedApiKey: "da2-b655th...",
-                    suggestion: [
-                      "1. Check console logs for '[Amplify] ✅ Configured with API_KEY authentication'",
-                      "2. Verify the API key prefix shown matches: da2-b655th...",
-                      "3. Verify API key exists in AWS AppSync Console and is NOT expired",
-                      "4. If API key is wrong, update aws-exports.js and restart app completely",
-                      "5. If API key is correct but still failing, the key may not exist in AWS",
-                      "6. Create a new API key in AWS Console if needed",
-                    ],
-                    error: data?.error,
-                    errorMessage: data?.error?.message,
-                    errorDetails: data?.error?.errors,
-                    fullError: JSON.stringify(data?.error || data, null, 2),
-                  },
+            switch (event) {
+              case DataStoreEventType.NetworkStatus: {
+                const networkData = data as NetworkStatusData;
+                logger.info(
+                  `Network Status Changed: ${networkData.active ? "ONLINE" : "OFFLINE"}`,
                   undefined,
-                  "⚠️"
+                  undefined,
+                  "🌐"
                 );
+                setNetworkStatus(
+                  networkData.active
+                    ? NetworkStatus.Online
+                    : NetworkStatus.Offline
+                );
+                break;
               }
-              break;
-            case DataStoreEventType.OutboxStatus:
-              // OutboxStatus event indicates if outbox is empty or not
-              // Use this to reset count when explicitly empty
-              if (data?.isEmpty === true) {
-                logger.debug("Outbox is empty", { event, data });
+              case DataStoreEventType.ConflictDetected:
+                logger.warn("Conflict Detected", undefined, undefined, "⚠️");
+                // Increment conflict count when a conflict is detected
+                setConflictCount(prevCount => prevCount + 1);
+                break;
+              case DataStoreEventType.SyncQueriesStarted:
+                logger.info(
+                  "Sync Queries STARTED - DataStore is now syncing with AWS",
+                  undefined,
+                  undefined,
+                  "🔄"
+                );
+                setSyncState(SyncState.Syncing);
+                break;
+              case DataStoreEventType.SyncQueriesReady:
+                logger.info(
+                  "Sync Queries READY - DataStore sync completed successfully",
+                  undefined,
+                  undefined,
+                  "✅"
+                );
+                setSyncState(SyncState.Synced);
+                setIsReady(true);
+                setLastSyncedAt(new Date());
+                // Reset pending count when sync completes successfully
                 setPendingSyncCount(0);
+                break;
+              case DataStoreEventType.SyncQueriesError: {
+                setSyncState(SyncState.Error);
+                const errorData = data as SyncErrorData;
+
+                // Log sync errors for debugging
+                logger.error("DataStore sync error", {
+                  event,
+                  data,
+                  errorDetails: errorData?.error || data,
+                  note: "Check earlier logs for '[Amplify] ✅ Configured' to see API key being used",
+                  error: errorData?.error || data,
+                });
+
+                // Check if it's an auth error
+                const errorMessage = errorData?.error?.message || "";
+                const firstErrorMessage =
+                  errorData?.error?.errors?.[0]?.message || "";
+                const errorString = String(errorData?.error || "");
+
+                const isUnauthorized =
+                  errorMessage.includes("Unauthorized") ||
+                  firstErrorMessage.includes("Unauthorized") ||
+                  errorMessage.includes("401") ||
+                  firstErrorMessage.includes("401") ||
+                  errorString.includes("Unauthorized");
+
+                if (isUnauthorized) {
+                  logger.error(
+                    "UNAUTHORIZED ERROR - API key issue detected!",
+                    {
+                      expectedApiKey: "da2-b655th...",
+                      suggestion: [
+                        "1. Check console logs for '[Amplify] ✅ Configured with API_KEY authentication'",
+                        "2. Verify the API key prefix shown matches: da2-b655th...",
+                        "3. Verify API key exists in AWS AppSync Console and is NOT expired",
+                        "4. If API key is wrong, update aws-exports.js and restart app completely",
+                        "5. If API key is correct but still failing, the key may not exist in AWS",
+                        "6. Create a new API key in AWS Console if needed",
+                      ],
+                      error: errorData?.error,
+                      errorMessage: errorData?.error?.message,
+                      errorDetails: errorData?.error?.errors,
+                      fullError: JSON.stringify(
+                        errorData?.error || data,
+                        null,
+                        2
+                      ),
+                    },
+                    undefined,
+                    "⚠️"
+                  );
+                }
+                break;
               }
-              break;
-            case DataStoreEventType.OutboxMutationEnqueued:
-              // Increment count when new mutation is added to outbox
-              setPendingSyncCount(prev => {
-                const newCount = prev + 1;
-                logger.debug("Mutation enqueued", {
-                  event,
-                  previousCount: prev,
-                  newCount,
+              case DataStoreEventType.OutboxStatus: {
+                // OutboxStatus event indicates if outbox is empty or not
+                // Use this to reset count when explicitly empty
+                const outboxData = data as OutboxStatusData;
+                if (outboxData?.isEmpty === true) {
+                  logger.debug("Outbox is empty - all mutations synced");
+                  setPendingSyncCount(0);
+                }
+                break;
+              }
+              case DataStoreEventType.OutboxMutationEnqueued: {
+                // Increment count when new mutation is added to outbox
+                const enqueueData = data as {
+                  element?: { id?: string };
+                  model?: { name?: string };
+                };
+                const modelName = enqueueData?.model?.name || "Unknown";
+                const elementId = enqueueData?.element?.id || "Unknown";
+
+                setPendingSyncCount(prev => {
+                  const newCount = prev + 1;
+                  logger.debug(
+                    `Mutation enqueued: ${modelName} (${elementId.substring(0, 8)}...)`,
+                    { count: newCount }
+                  );
+                  return newCount;
                 });
-                return newCount;
-              });
-              break;
-            case DataStoreEventType.OutboxMutationProcessed:
-              // Decrement count when mutation is successfully synced
-              setPendingSyncCount(prev => {
-                const newCount = Math.max(0, prev - 1);
-                logger.debug("Mutation processed", {
-                  event,
-                  previousCount: prev,
-                  newCount,
+                break;
+              }
+              case DataStoreEventType.OutboxMutationProcessed: {
+                // Decrement count when mutation is successfully synced
+                const processedData = data as {
+                  element?: { id?: string };
+                  model?: { name?: string };
+                };
+                const modelName = processedData?.model?.name || "Unknown";
+                const elementId = processedData?.element?.id || "Unknown";
+
+                setPendingSyncCount(prev => {
+                  const newCount = Math.max(0, prev - 1);
+                  logger.debug(
+                    `Mutation synced: ${modelName} (${elementId.substring(0, 8)}...)`,
+                    { remaining: newCount }
+                  );
+                  return newCount;
                 });
-                return newCount;
-              });
-              break;
-            case "modelSynced":
-              // Log model sync details to see if it's full sync or delta sync
-              logger.info(
-                `📦 Model Synced: ${data?.model?.name || "unknown"}`,
-                {
-                  isFullSync: data?.isFullSync,
-                  isDeltaSync: data?.isDeltaSync,
-                  counts: data?.counts,
-                  model: data?.model?.name,
-                  timestamp: new Date().toISOString(),
-                },
-                undefined,
-                "📦"
-              );
-              break;
-            default:
-              break;
+                break;
+              }
+              case "modelSynced": {
+                // Log model sync details using formatter utility
+                const modelData = data as ModelSyncData;
+                const modelName = modelData?.model?.name || "unknown";
+                const syncDetails = formatModelSyncLog(modelName, {
+                  isFullSync: modelData?.isFullSync,
+                  isDeltaSync: modelData?.isDeltaSync,
+                  counts: modelData?.counts,
+                });
+
+                logger.info(
+                  `Model Synced: ${modelName}\n${syncDetails}`,
+                  undefined,
+                  undefined,
+                  "📦"
+                );
+                break;
+              }
+              default: {
+                // Log unknown events with minimal info (event name only)
+                // Don't log full data object to avoid JSON blobs in logs
+                const dataKeys = Object.keys(data).join(", ");
+                logger.debug(`DataStore event: ${event} (keys: ${dataKeys})`);
+                break;
+              }
+            }
           }
-        });
+        );
 
         // Initialize network status
         NetInfo.fetch().then(state => {
@@ -259,7 +326,11 @@ export const useAmplifyState = (options?: {
 
         // Verify Amplify config before starting DataStore
         // Check isConfigured flag directly to avoid triggering warning from getConfig()
-        const isConfigured = (Amplify as any).isConfigured;
+        // Use unknown to access internal property safely
+        const amplifyInternal = Amplify as unknown as {
+          isConfigured?: boolean;
+        };
+        const isConfigured = amplifyInternal.isConfigured;
         if (!isConfigured) {
           logger.warn(
             "Amplify not configured yet - DataStore initialization may fail",
