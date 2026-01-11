@@ -20,6 +20,7 @@ import {
 } from "../schemas/taskSchemas";
 
 type TaskUpdateData = Omit<UpdateTaskInput, "id" | "_version">;
+type DataStoreTaskInput = ConstructorParameters<typeof DataStoreTask>[0];
 
 export class TaskService {
   /**
@@ -44,10 +45,9 @@ export class TaskService {
         "DATA",
         "☁️"
       );
-      // TypeScript doesn't know validation ensures required fields exist
-      // Cast to any to bypass, since validation already verified the data
+      // Validation ensures required fields exist; cast to DataStoreTask constructor input type
       const task = await DataStore.save(
-        new DataStoreTask(validatedInput as any)
+        new DataStoreTask(validatedInput as DataStoreTaskInput)
       );
 
       logger.info(
