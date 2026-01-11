@@ -74,20 +74,21 @@ export class ErrorBoundary extends Component<
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     const boundaryName = this.props.name || "ErrorBoundary";
 
-    // Log the error with full details
+    // Log the error with proper signature
     logger.error(
-      `${boundaryName} caught error: ${error.message}`,
-      {
-        error: {
-          name: error.name,
-          message: error.message,
-          stack: error.stack,
-        },
-        componentStack: errorInfo.componentStack,
-        boundaryName,
-      },
+      `Caught error: ${error.message}`,
+      error,
+      boundaryName,
       undefined,
       "❌"
+    );
+
+    // Log component stack separately for debugging
+    logger.info(
+      "Component stack trace",
+      { componentStack: errorInfo.componentStack },
+      boundaryName,
+      "🔍"
     );
 
     // Call optional error callback
