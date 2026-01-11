@@ -1,4 +1,7 @@
-import { getBorderStyle, BorderStyleType } from "@utils/platform/borderStyleHelper";
+import {
+  getBorderStyle,
+  BorderStyleType,
+} from "@utils/platform/borderStyleHelper";
 import { StyleSheet } from "react-native";
 
 describe("getBorderStyle", () => {

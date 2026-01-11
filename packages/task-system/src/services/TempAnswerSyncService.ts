@@ -58,16 +58,13 @@ export class TempAnswerSyncService {
         .map(key => `${key}: ${JSON.stringify(answers[key]).substring(0, 50)}`)
         .join(", ");
 
-      logger.info(
-        `💾 [TempAnswers] SAVING temp answers for task ${taskPk}`,
-        {
-          taskPk,
-          activityId,
-          answerCount: answerKeys.length,
-          answerKeys: answerKeys.join(", "),
-          preview: answerPreview,
-        }
-      );
+      logger.info(`💾 [TempAnswers] SAVING temp answers for task ${taskPk}`, {
+        taskPk,
+        activityId,
+        answerCount: answerKeys.length,
+        answerKeys: answerKeys.join(", "),
+        preview: answerPreview,
+      });
 
       const answersJson = JSON.stringify(answers);
       const saved = await DataStore.save(

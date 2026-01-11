@@ -75,13 +75,7 @@ export class ErrorBoundary extends Component<
     const boundaryName = this.props.name || "ErrorBoundary";
 
     // Log the error with proper signature
-    logger.error(
-      `Caught error: ${error.message}`,
-      error,
-      boundaryName,
-      undefined,
-      "❌"
-    );
+    logger.error(`Caught error: ${error.message}`, error, boundaryName, "❌");
 
     // Log component stack separately for debugging
     logger.info(

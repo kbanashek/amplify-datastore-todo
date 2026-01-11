@@ -4,7 +4,7 @@ import { ModelName } from "@constants/modelNames";
 import { OperationSource } from "@constants/operationSource";
 import { Activity } from "@models/index";
 import { CreateActivityInput, UpdateActivityInput } from "@task-types/Activity";
-import { logErrorWithDevice, logWithDevice } from "@utils/logging/deviceLogger";
+import { logWithDevice } from "@utils/logging/deviceLogger";
 import { getServiceLogger } from "@utils/logging/serviceLogger";
 import { dataSubscriptionLogger } from "@utils/logging/dataSubscriptionLogger";
 
@@ -137,11 +137,12 @@ export class ActivityService {
 
         callback(items, isSynced);
       },
-      error => {
-        logErrorWithDevice(
-          "ActivityService",
+      (error: unknown) => {
+        getServiceLogger("ActivityService").error(
           "DataStore subscription error",
-          error
+          error instanceof Error ? error : new Error(String(error)),
+          "DATA",
+          "❌"
         );
         callback([], false);
       }
@@ -180,20 +181,22 @@ export class ActivityService {
               );
               callback(activities, true);
             })
-            .catch(err => {
-              logErrorWithDevice(
-                "ActivityService",
+            .catch((err: unknown) => {
+              getServiceLogger("ActivityService").error(
                 "Error refreshing after delete",
-                err
+                err instanceof Error ? err : new Error(String(err)),
+                "DATA",
+                "❌"
               );
             });
         }
       },
-      error => {
-        logErrorWithDevice(
-          "ActivityService",
+      (error: unknown) => {
+        getServiceLogger("ActivityService").error(
           "DELETE observer error",
-          error
+          error instanceof Error ? error : new Error(String(error)),
+          "DATA",
+          "❌"
         );
       }
     );

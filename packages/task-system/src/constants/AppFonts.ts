@@ -14,7 +14,11 @@
  */
 
 import { AppColors } from "@constants/AppColors";
-import { FontSizes, FontWeights, getFontStyle } from "@utils/formatting/fontUtils";
+import {
+  FontSizes,
+  FontWeights,
+  getFontStyle,
+} from "@utils/formatting/fontUtils";
 import { TextStyle } from "react-native";
 
 /**

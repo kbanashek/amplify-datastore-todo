@@ -13,69 +13,108 @@ jest.mock("@services/TaskAnswerService");
 jest.mock("@services/DataPointService");
 jest.mock("@services/TaskService");
 
-// Mock Alert without requiring react-native
-const mockAlert = jest.fn();
-jest.mock("react-native/Libraries/Alert/Alert", () => ({
-  __esModule: true,
-  default: {
-    alert: mockAlert,
-  },
-}));
+// Alert.alert will be mocked in beforeEach using jest.spyOn
+// This approach avoids conflicts with @testing-library/react-native's own react-native mocks
 
-// Mock the Alert import
-jest.mock("react-native", () => ({
-  Alert: {
-    alert: mockAlert,
-  },
-  Platform: {
-    OS: "ios",
-  },
-}));
-
-// Mock hooks
+// Mock hooks as jest.fn() so they can be configured in tests
 jest.mock("../useTaskAnswer", () => ({
-  useTaskAnswer: () => ({
-    getAnswerByQuestionId: jest.fn(),
-    createTaskAnswer: jest.fn(),
-    updateTaskAnswer: jest.fn(),
-  }),
+  useTaskAnswer: jest.fn(),
 }));
 
 jest.mock("../useDataPointInstance", () => ({
-  useDataPointInstance: () => ({
-    getInstanceByQuestionId: jest.fn(),
-    createDataPointInstance: jest.fn(),
-    updateDataPointInstance: jest.fn(),
-  }),
+  useDataPointInstance: jest.fn(),
 }));
 
 jest.mock("../useTaskUpdate", () => ({
-  useTaskUpdate: () => ({
-    updateTask: jest.fn(),
-  }),
+  useTaskUpdate: jest.fn(),
 }));
+
+// Mock validation utilities
+jest.mock("@utils/validation/questionValidation", () => ({
+  validateAllScreens: jest.fn(() => ({})), // Return empty object by default (no errors)
+}));
+
+// Import mocked hooks to configure them
+import { useTaskAnswer } from "../useTaskAnswer";
+import { useDataPointInstance } from "../useDataPointInstance";
+import { useTaskUpdate } from "../useTaskUpdate";
 
 describe("useQuestionSubmission - Adversarial Tests", () => {
   const mockActivityData = {
+    questions: [],
     screens: [
       {
+        id: "screen-1",
+        name: "Screen 1",
+        order: 1,
         elements: [
           {
-            id: "elem-1",
+            id: "q1",
+            order: 1,
             question: {
               id: "q1",
               text: "Question 1",
-              questionType: "TEXT",
+              friendlyName: "Question 1",
+              type: "text",
               required: true,
+              validations: [],
+              choices: [],
+              dataMappers: [],
             },
+            displayProperties: {},
           },
         ],
+        displayProperties: {},
       },
     ],
   };
 
+  const mockUseTaskAnswer = useTaskAnswer as jest.MockedFunction<
+    typeof useTaskAnswer
+  >;
+  const mockUseDataPointInstance = useDataPointInstance as jest.MockedFunction<
+    typeof useDataPointInstance
+  >;
+  const mockUseTaskUpdate = useTaskUpdate as jest.MockedFunction<
+    typeof useTaskUpdate
+  >;
+
   beforeEach(() => {
     jest.clearAllMocks();
+
+    // Set up hook mocks with proper return values
+    mockUseTaskAnswer.mockReturnValue({
+      taskAnswers: [],
+      loading: false,
+      error: null,
+      isCreating: false,
+      isUpdating: false,
+      getAnswersByTaskId: jest.fn(() => []),
+      getAnswerByQuestionId: jest.fn(),
+      createTaskAnswer: jest.fn(),
+      updateTaskAnswer: jest.fn(),
+    });
+
+    mockUseDataPointInstance.mockReturnValue({
+      instances: [],
+      loading: false,
+      error: null,
+      isCreating: false,
+      isUpdating: false,
+      getInstancesByActivityId: jest.fn(() => []),
+      getInstanceByQuestionId: jest.fn(),
+      createDataPointInstance: jest.fn(),
+      updateDataPointInstance: jest.fn(),
+    });
+
+    mockUseTaskUpdate.mockReturnValue({
+      updateTask: jest.fn(),
+      isUpdating: false,
+      error: null,
+    });
+
+    // Mock Alert.alert
+    jest.spyOn(Alert, "alert").mockImplementation(() => {});
   });
 
   it("should handle createTaskAnswer rejecting with non-Error", async () => {

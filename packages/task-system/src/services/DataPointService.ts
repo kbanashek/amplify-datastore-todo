@@ -216,11 +216,7 @@ export class DataPointService {
         }
       },
       error => {
-        logErrorWithDevice(
-          "DataPointService",
-          "DELETE observer error",
-          error
-        );
+        logErrorWithDevice("DataPointService", "DELETE observer error", error);
       }
     );
 

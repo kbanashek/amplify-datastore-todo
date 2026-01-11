@@ -261,8 +261,8 @@ export const DevOptionsScreen: React.FC = () => {
         <View style={styles.tipsBox}>
           <Text style={styles.tipsTitle}>💡 Quick Tips</Text>
           <Text style={styles.tipsText}>
-            • <Text style={styles.bold}>Sync issues?</Text> Try &ldquo;Force DataStore
-            Resync&rdquo; first
+            • <Text style={styles.bold}>Sync issues?</Text> Try &ldquo;Force
+            DataStore Resync&rdquo; first
             {"\n"}• <Text style={styles.bold}>Test cross-device sync?</Text> Add
             tasks on one device, check others
             {"\n"}• <Text style={styles.bold}>Start fresh?</Text> Delete

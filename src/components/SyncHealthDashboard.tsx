@@ -52,9 +52,7 @@ export const SyncHealthDashboard: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>{getStatusIcon()} Sync Health</Text>
-        {!isReady && (
-          <Text style={styles.notReady}>Initializing...</Text>
-        )}
+        {!isReady && <Text style={styles.notReady}>Initializing...</Text>}
       </View>
 
       <View style={styles.grid}>
@@ -77,10 +75,12 @@ export const SyncHealthDashboard: React.FC = () => {
         {/* Pending Mutations */}
         <View style={styles.metric}>
           <Text style={styles.metricLabel}>Pending</Text>
-          <Text style={[
-            styles.metricValue,
-            { color: pendingSyncCount > 0 ? "#FF9800" : "#4CAF50" }
-          ]}>
+          <Text
+            style={[
+              styles.metricValue,
+              { color: pendingSyncCount > 0 ? "#FF9800" : "#4CAF50" },
+            ]}
+          >
             {pendingSyncCount}
           </Text>
         </View>
@@ -88,10 +88,12 @@ export const SyncHealthDashboard: React.FC = () => {
         {/* Conflicts */}
         <View style={styles.metric}>
           <Text style={styles.metricLabel}>Conflicts</Text>
-          <Text style={[
-            styles.metricValue,
-            { color: conflictCount > 0 ? "#F44336" : "#4CAF50" }
-          ]}>
+          <Text
+            style={[
+              styles.metricValue,
+              { color: conflictCount > 0 ? "#F44336" : "#4CAF50" },
+            ]}
+          >
             {conflictCount}
           </Text>
         </View>
@@ -99,9 +101,7 @@ export const SyncHealthDashboard: React.FC = () => {
         {/* Last Sync */}
         <View style={[styles.metric, styles.metricWide]}>
           <Text style={styles.metricLabel}>Last Sync</Text>
-          <Text style={styles.metricValue}>
-            {formatLastSync()}
-          </Text>
+          <Text style={styles.metricValue}>{formatLastSync()}</Text>
         </View>
       </View>
 

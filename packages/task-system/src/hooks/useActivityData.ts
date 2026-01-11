@@ -140,7 +140,12 @@ export const useActivityData = ({
           try {
             activityConfig.activityGroups = JSON.parse(activity.activityGroups);
           } catch (e) {
-            logger.error("Error parsing activityGroups", e, "ActivityConfig", "❌");
+            logger.error(
+              "Error parsing activityGroups",
+              e,
+              "ActivityConfig",
+              "❌"
+            );
           }
         }
 
@@ -430,12 +435,7 @@ export const useActivityData = ({
             }
           },
           error: err => {
-            logger.error(
-              "Subscription error",
-              err,
-              "TaskTempAnswer",
-              "❌"
-            );
+            logger.error("Subscription error", err, "TaskTempAnswer", "❌");
           },
         });
 

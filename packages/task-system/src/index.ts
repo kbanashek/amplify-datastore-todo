@@ -138,7 +138,10 @@ export {
 // TempAnswerSync types removed - DataStore handles sync automatically
 
 // Activity parsing types/utils
-export { getDisplayProperty, parseActivityConfig } from "@utils/parsers/activityParser";
+export {
+  getDisplayProperty,
+  parseActivityConfig,
+} from "@utils/parsers/activityParser";
 export type { ParsedActivityData } from "@utils/parsers/activityParser";
 export {
   getDeviceId,

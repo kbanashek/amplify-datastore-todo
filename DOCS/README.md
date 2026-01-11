@@ -49,18 +49,18 @@ Coding standards, testing, and development guides:
 
 Feature-specific documentation and implementation details:
 
-| Document                                                                 | Purpose                         | Priority      |
-| ------------------------------------------------------------------------ | ------------------------------- | ------------- |
-| **[Implementation Status](features/implementation-status.md)**           | What's built / not built        | 🔥 READ FIRST |
-| **[Task System Package](features/task-system-package.md)**               | @orion/task-system package docs | ⭐ Important  |
-| **[Translations](features/translations.md)**                             | i18n system documentation       | ⭐ Important  |
-| **[Task System Fixture](features/task-system-fixture-and-hydration.md)**   | Fixture generation & hydration     | -             |
-| **[Translation Memory](features/translation-memory.md)**                   | Translation service & memory       | -             |
-| **[Analytics](features/analytics-implementation.md)**                      | User engagement analytics          | -             |
-| **[Image Storage S3](features/image-storage-s3-setup.md)**                 | S3 image storage setup             | -             |
-| **[Temp Answer Implementation](features/temp-answer-implementation.md)**   | Temp answer persistence system     | -             |
-| **[Temp Answer Mutation](features/temp-answer-graphql-mutation.md)**       | Temp answer GraphQL mutation       | -             |
-| **[Temp Answer DataStore Refactor](features/temp-answer-datastore-refactor.md)** | DataStore refactoring notes | -             |
+| Document                                                                         | Purpose                         | Priority      |
+| -------------------------------------------------------------------------------- | ------------------------------- | ------------- |
+| **[Implementation Status](features/implementation-status.md)**                   | What's built / not built        | 🔥 READ FIRST |
+| **[Task System Package](features/task-system-package.md)**                       | @orion/task-system package docs | ⭐ Important  |
+| **[Translations](features/translations.md)**                                     | i18n system documentation       | ⭐ Important  |
+| **[Task System Fixture](features/task-system-fixture-and-hydration.md)**         | Fixture generation & hydration  | -             |
+| **[Translation Memory](features/translation-memory.md)**                         | Translation service & memory    | -             |
+| **[Analytics](features/analytics-implementation.md)**                            | User engagement analytics       | -             |
+| **[Image Storage S3](features/image-storage-s3-setup.md)**                       | S3 image storage setup          | -             |
+| **[Temp Answer Implementation](features/temp-answer-implementation.md)**         | Temp answer persistence system  | -             |
+| **[Temp Answer Mutation](features/temp-answer-graphql-mutation.md)**             | Temp answer GraphQL mutation    | -             |
+| **[Temp Answer DataStore Refactor](features/temp-answer-datastore-refactor.md)** | DataStore refactoring notes     | -             |
 
 ### 📋 Planning (`planning/`)
 
@@ -110,13 +110,13 @@ External service integrations:
 
 Cleanup tracking and completed work:
 
-| Document                                                                                 | Purpose                                        |
-| ---------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| **[Documentation Consolidation](cleanup/documentation-consolidation-plan.md)**           | Doc cleanup plan (Jan 4, 2025)                 |
-| **[Documentation Cleanup Completed](cleanup/documentation-cleanup-completed.md)**        | Doc cleanup completion (Jan 4, 2025)           |
-| **[Template Cleanup](cleanup/template-cleanup-completed.md)**                            | Expo template cleanup (Jan 3, 2025)            |
-| **[Commit Summary: Temp Answer](cleanup/commit-summary-temp-answer-2025-01-05.md)**     | Temp answer persistence implementation summary |
-| **[Unused Files Analysis](cleanup/unused-files-analysis.md)**                            | Analysis of unused files (Jan 4, 2025)         |
+| Document                                                                            | Purpose                                        |
+| ----------------------------------------------------------------------------------- | ---------------------------------------------- |
+| **[Documentation Consolidation](cleanup/documentation-consolidation-plan.md)**      | Doc cleanup plan (Jan 4, 2025)                 |
+| **[Documentation Cleanup Completed](cleanup/documentation-cleanup-completed.md)**   | Doc cleanup completion (Jan 4, 2025)           |
+| **[Template Cleanup](cleanup/template-cleanup-completed.md)**                       | Expo template cleanup (Jan 3, 2025)            |
+| **[Commit Summary: Temp Answer](cleanup/commit-summary-temp-answer-2025-01-05.md)** | Temp answer persistence implementation summary |
+| **[Unused Files Analysis](cleanup/unused-files-analysis.md)**                       | Analysis of unused files (Jan 4, 2025)         |
 
 ### 📝 Code Reviews (`code_reviews/`)
 

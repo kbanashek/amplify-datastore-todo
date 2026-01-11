@@ -184,11 +184,7 @@ export class QuestionService {
         }
       },
       error => {
-        logErrorWithDevice(
-          "QuestionService",
-          "DELETE observer error",
-          error
-        );
+        logErrorWithDevice("QuestionService", "DELETE observer error", error);
       }
     );
 

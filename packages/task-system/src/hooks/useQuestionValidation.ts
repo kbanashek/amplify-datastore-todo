@@ -1,6 +1,9 @@
 import { useMemo } from "react";
 import { ParsedActivityData } from "@utils/parsers/activityParser";
-import { isScreenValid, validateScreen } from "@utils/validation/questionValidation";
+import {
+  isScreenValid,
+  validateScreen,
+} from "@utils/validation/questionValidation";
 
 export interface UseQuestionValidationReturn {
   currentScreenValid: boolean;

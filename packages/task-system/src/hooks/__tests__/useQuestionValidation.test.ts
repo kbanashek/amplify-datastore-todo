@@ -8,7 +8,10 @@ jest.mock("@utils/validation/questionValidation", () => ({
   validateScreen: jest.fn(),
 }));
 
-import { isScreenValid, validateScreen } from "@utils/validation/questionValidation";
+import {
+  isScreenValid,
+  validateScreen,
+} from "@utils/validation/questionValidation";
 
 describe("useQuestionValidation", () => {
   const mockIsScreenValid = isScreenValid as jest.MockedFunction<

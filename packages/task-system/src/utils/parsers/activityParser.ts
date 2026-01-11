@@ -110,7 +110,7 @@ const matchQuestionsToScreens = (
   }
 
   return parsedScreens;
-}
+};
 
 /**
  * Parse Activity JSON configuration and extract questions for rendering

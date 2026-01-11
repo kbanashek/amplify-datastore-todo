@@ -3,7 +3,10 @@ import { useAmplify } from "@contexts/AmplifyContext";
 import { TaskService } from "@services/TaskService";
 import { Task, TaskFilters } from "@task-types/Task";
 import { NetworkStatus } from "@hooks/useAmplifyState";
-import { logWithPlatform, logErrorWithPlatform } from "@utils/logging/platformLogger";
+import {
+  logWithPlatform,
+  logErrorWithPlatform,
+} from "@utils/logging/platformLogger";
 import { dataSubscriptionLogger } from "@utils/logging/dataSubscriptionLogger";
 
 /**

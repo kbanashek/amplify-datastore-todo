@@ -196,48 +196,48 @@ flowchart TD
 
 ### 🚀 Getting Started
 
-| Document                                         | Description                            |
-| ------------------------------------------------ | -------------------------------------- |
-| **[Getting Started](DOCS/GETTING-STARTED.md)**   | Complete onboarding guide (30 minutes) |
-| **[Documentation Index](DOCS/README.md)**        | Complete documentation index           |
+| Document                                       | Description                            |
+| ---------------------------------------------- | -------------------------------------- |
+| **[Getting Started](DOCS/GETTING-STARTED.md)** | Complete onboarding guide (30 minutes) |
+| **[Documentation Index](DOCS/README.md)**      | Complete documentation index           |
 
 ### 🏗️ Architecture & Design
 
-| Document                                                          | Description                              |
-| ----------------------------------------------------------------- | ---------------------------------------- |
-| **[AWS Architecture](DOCS/architecture/aws-architecture.md)**     | AWS services, data flow, and conflict resolution |
-| **[Component Library](DOCS/architecture/component-library.md)**   | Component library structure and patterns |
-| **[Project Structure](DOCS/architecture/project-structure.md)**   | Detailed directory structure             |
+| Document                                                        | Description                                      |
+| --------------------------------------------------------------- | ------------------------------------------------ |
+| **[AWS Architecture](DOCS/architecture/aws-architecture.md)**   | AWS services, data flow, and conflict resolution |
+| **[Component Library](DOCS/architecture/component-library.md)** | Component library structure and patterns         |
+| **[Project Structure](DOCS/architecture/project-structure.md)** | Detailed directory structure                     |
 
 ### 💻 Development
 
-| Document                                                                | Description                                |
-| ----------------------------------------------------------------------- | ------------------------------------------ |
-| **[Development Guidelines](DOCS/development/development-guidelines.md)** | Coding standards and best practices        |
-| **[Testing Guide](DOCS/development/testing.md)**                         | Unit test requirements and examples        |
-| **[Logging Service](DOCS/development/logging-service.md)**               | Centralized logging documentation          |
-| **[Coverage Setup](DOCS/development/coverage-setup.md)**                 | GitHub Actions coverage reporting          |
+| Document                                                                 | Description                         |
+| ------------------------------------------------------------------------ | ----------------------------------- |
+| **[Development Guidelines](DOCS/development/development-guidelines.md)** | Coding standards and best practices |
+| **[Testing Guide](DOCS/development/testing.md)**                         | Unit test requirements and examples |
+| **[Logging Service](DOCS/development/logging-service.md)**               | Centralized logging documentation   |
+| **[Coverage Setup](DOCS/development/coverage-setup.md)**                 | GitHub Actions coverage reporting   |
 
 ### ✨ Features
 
-| Document                                                              | Description                                  |
-| --------------------------------------------------------------------- | -------------------------------------------- |
-| **[Implementation Status](DOCS/features/implementation-status.md)**   | Current feature implementation status        |
-| **[Task System Package](DOCS/features/task-system-package.md)**       | @orion/task-system package documentation     |
-| **[Translations](DOCS/features/translations.md)**                     | Internationalization system                  |
+| Document                                                            | Description                              |
+| ------------------------------------------------------------------- | ---------------------------------------- |
+| **[Implementation Status](DOCS/features/implementation-status.md)** | Current feature implementation status    |
+| **[Task System Package](DOCS/features/task-system-package.md)**     | @orion/task-system package documentation |
+| **[Translations](DOCS/features/translations.md)**                   | Internationalization system              |
 
 ### 📋 Planning
 
-| Document                                        | Description                        |
-| ----------------------------------------------- | ---------------------------------- |
-| **[Roadmap](DOCS/planning/roadmap.md)**         | Development priorities and roadmap |
-| **[Todos](DOCS/planning/todos.md)**             | Current task list                  |
+| Document                                | Description                        |
+| --------------------------------------- | ---------------------------------- |
+| **[Roadmap](DOCS/planning/roadmap.md)** | Development priorities and roadmap |
+| **[Todos](DOCS/planning/todos.md)**     | Current task list                  |
 
 ### 🔧 Troubleshooting
 
-| Document                                                                  | Description                              |
-| ------------------------------------------------------------------------- | ---------------------------------------- |
-| **[Native Build Fixes](DOCS/troubleshooting/native-build-fixes.md)**     | Required fixes for iOS and Android builds |
+| Document                                                             | Description                               |
+| -------------------------------------------------------------------- | ----------------------------------------- |
+| **[Native Build Fixes](DOCS/troubleshooting/native-build-fixes.md)** | Required fixes for iOS and Android builds |
 
 ---
 

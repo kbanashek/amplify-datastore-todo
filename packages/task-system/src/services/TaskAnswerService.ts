@@ -183,11 +183,7 @@ export class TaskAnswerService {
         }
       },
       error => {
-        logErrorWithDevice(
-          "TaskAnswerService",
-          "DELETE observer error",
-          error
-        );
+        logErrorWithDevice("TaskAnswerService", "DELETE observer error", error);
       }
     );
 

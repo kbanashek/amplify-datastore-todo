@@ -23,7 +23,10 @@ export const parseAppointmentData = (data: AppointmentData): Appointment[] => {
 /**
  * Format date to display label
  */
-export const formatDateLabel = (date: Date, today: Date = new Date()): string => {
+export const formatDateLabel = (
+  date: Date,
+  today: Date = new Date()
+): string => {
   const todayStart = new Date(
     today.getFullYear(),
     today.getMonth(),

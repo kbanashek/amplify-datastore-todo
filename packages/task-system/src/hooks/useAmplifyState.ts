@@ -333,12 +333,21 @@ export const useAmplifyState = (options?: {
         logWithDevice("useAmplifyState", "Initializing task-system runtime...");
 
         // Verify Amplify config before starting DataStore
-        // Check isConfigured flag directly to avoid triggering warning from getConfig()
-        // Use unknown to access internal property safely
-        const amplifyInternal = Amplify as unknown as {
-          isConfigured?: boolean;
-        };
-        const isConfigured = amplifyInternal.isConfigured;
+        // Use public Amplify.getConfig() API to check configuration status
+        let isConfigured = false;
+        try {
+          const config = Amplify.getConfig();
+          // Check if config is valid (non-null and has keys)
+          isConfigured = config != null && Object.keys(config).length > 0;
+        } catch (error) {
+          logger.warn(
+            "Failed to check Amplify configuration",
+            error instanceof Error ? error : new Error(String(error)),
+            undefined,
+            "⚠️"
+          );
+        }
+
         if (!isConfigured) {
           logger.warn(
             "Amplify not configured yet - DataStore initialization may fail",

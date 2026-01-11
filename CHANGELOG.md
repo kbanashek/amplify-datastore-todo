@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **iOS Build Stability**
+  - Fixed duplicate JKBigInteger symbol errors in iOS build by excluding duplicate files from RNAWSCognito pod
+  - Added pre_install and post_install hooks to Podfile to handle Amplify library conflicts
+  - iOS build now completes successfully without linker errors
+
+- **Error Handling Improvements**
+  - Fixed Amplify config check in useAmplifyState to use public getConfig() API instead of unsafe type assertion
+  - Consolidated TaskHistoryService subscriptions to prevent race conditions and duplicate updates
+  - Updated ActivityService error callbacks to use centralized logger with explicit unknown types
+  - Optimized TaskService adversarial test fixture (reduced from 10k to 1k items for CI performance)
+
+- **Testing & Linting**
+  - Refined react-native mock in useQuestionSubmission tests to avoid conflicts with testing-library
+  - Added Node.js global declarations to ESLint config for scripts directory
+  - Removed unused fs import from generate-icons script
+
 ### Changed
 
 - **Documentation Consolidation**

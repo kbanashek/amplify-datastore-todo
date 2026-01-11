@@ -91,7 +91,13 @@ export const useDevOptions = (): UseDevOptionsReturn => {
       isForceSyncing ||
       isResyncing
     );
-  }, [isImportingFixture, isSeedingAppointments, isDeleting, isForceSyncing, isResyncing]);
+  }, [
+    isImportingFixture,
+    isSeedingAppointments,
+    isDeleting,
+    isForceSyncing,
+    isResyncing,
+  ]);
 
   const generateFixtureJson = useCallback((): void => {
     const generated = buildFixtureForToday();

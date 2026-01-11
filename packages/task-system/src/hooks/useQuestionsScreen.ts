@@ -170,9 +170,11 @@ export const useQuestionsScreen = (
     const keys = Object.keys(initialAnswers);
     const preview = keys
       .slice(0, 3)
-      .map(key => `${key}=${JSON.stringify(initialAnswers[key]).substring(0, 50)}`)
+      .map(
+        key => `${key}=${JSON.stringify(initialAnswers[key]).substring(0, 50)}`
+      )
       .join(", ");
-      
+
     logger.info("📝 initialAnswers RECEIVED in useQuestionsScreen", {
       count: keys.length,
       keys: keys.join(", "),

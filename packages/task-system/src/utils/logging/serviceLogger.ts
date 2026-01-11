@@ -5,7 +5,10 @@
 
 import { getServiceLogger as getPackageServiceLogger } from "@services/logging/serviceLogger";
 import type { LogMetadata } from "@services/logging/types";
-import { logErrorWithPlatform, logWithPlatform } from "@utils/logging/platformLogger";
+import {
+  logErrorWithPlatform,
+  logWithPlatform,
+} from "@utils/logging/platformLogger";
 
 /**
  * Valid service names for typed logging
