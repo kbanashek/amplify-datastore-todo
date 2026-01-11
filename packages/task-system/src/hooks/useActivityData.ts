@@ -131,7 +131,7 @@ export const useActivityData = ({
               activityConfig.layouts = parsedLayouts;
             }
           } catch (e) {
-            logger.error("Error parsing layouts", e);
+            logger.error("Error parsing layouts", e, "ActivityConfig", "❌");
           }
         }
 
@@ -140,7 +140,7 @@ export const useActivityData = ({
           try {
             activityConfig.activityGroups = JSON.parse(activity.activityGroups);
           } catch (e) {
-            logger.error("Error parsing activityGroups", e);
+            logger.error("Error parsing activityGroups", e, "ActivityConfig", "❌");
           }
         }
 
@@ -166,12 +166,14 @@ export const useActivityData = ({
         const initialMergedAnswers = { ...existingAnswers };
 
         logger.info(
-          "🔄 Setting initialAnswers (temp answers will load via subscription)",
+          "Setting initialAnswers (temp answers will load via subscription)",
           {
             existingCount: Object.keys(existingAnswers).length,
             mergedCount: Object.keys(initialMergedAnswers).length,
             sampleKeys: Object.keys(initialMergedAnswers).slice(0, 3),
-          }
+          },
+          "InitialLoad",
+          "🔄"
         );
 
         // Parse activity config
@@ -183,7 +185,7 @@ export const useActivityData = ({
         setActivityConfig(activityConfig);
         setInitialAnswers(initialMergedAnswers);
       } catch (err: unknown) {
-        logger.error("Error fetching activity", err);
+        logger.error("Error fetching activity", err, "ActivityFetch", "❌");
         setError(
           err instanceof Error ? err.message : "Failed to load activity"
         );
@@ -223,12 +225,14 @@ export const useActivityData = ({
             const { items, isSynced } = snapshot;
 
             logger.info(
-              `🔔 [TaskTempAnswer] Subscription fired - RECEIVED FROM DATASTORE`,
+              "Subscription fired - RECEIVED FROM DATASTORE",
               {
                 totalItems: items.length,
                 taskPk,
                 isSynced,
-              }
+              },
+              "TaskTempAnswer",
+              "🔔"
             );
 
             // Process immediately if synced, or if we have items locally
@@ -237,11 +241,16 @@ export const useActivityData = ({
               isSynced || (items.length > 0 && !hasProcessedInitialLoad);
 
             if (!shouldProcess) {
-              logger.info(`⏳ [TaskTempAnswer] Waiting for DataStore sync...`, {
-                taskPk,
-                itemsBeforeSync: items.length,
-                hasProcessedInitialLoad,
-              });
+              logger.info(
+                "Waiting for DataStore sync...",
+                {
+                  taskPk,
+                  itemsBeforeSync: items.length,
+                  hasProcessedInitialLoad,
+                },
+                "TaskTempAnswer",
+                "⏳"
+              );
               return;
             }
 
@@ -249,11 +258,13 @@ export const useActivityData = ({
 
             if (!isSynced && items.length > 0) {
               logger.warn(
-                `⚠️ [TaskTempAnswer] Processing local data (not yet synced)`,
+                "Processing local data (not yet synced)",
                 {
                   taskPk,
                   itemsCount: items.length,
-                }
+                },
+                "TaskTempAnswer",
+                "⚠️"
               );
             }
 
@@ -266,18 +277,28 @@ export const useActivityData = ({
                 return timeB - timeA; // Descending order (most recent first)
               });
 
-            logger.info(`🔍 [TaskTempAnswer] Filtered items for task`, {
-              taskPk,
-              filteredCount: taskItems.length,
-            });
+            logger.info(
+              "Filtered items for task",
+              {
+                taskPk,
+                filteredCount: taskItems.length,
+              },
+              "TaskTempAnswer",
+              "🔍"
+            );
 
             if (taskItems.length > 0) {
               const latestTempAnswer = taskItems[0];
-              logger.info(`📦 [TaskTempAnswer] Latest temp answer found`, {
-                id: latestTempAnswer.id,
-                taskPk: latestTempAnswer.taskPk,
-                localtime: latestTempAnswer.localtime,
-              });
+              logger.info(
+                "Latest temp answer found",
+                {
+                  id: latestTempAnswer.id,
+                  taskPk: latestTempAnswer.taskPk,
+                  localtime: latestTempAnswer.localtime,
+                },
+                "TaskTempAnswer",
+                "📦"
+              );
 
               // Parse the answers JSON string
               let tempAnswers: AnswersMap = {};
@@ -298,7 +319,9 @@ export const useActivityData = ({
                       "Unexpected answers data type in subscription",
                       {
                         type: typeof latestTempAnswer.answers,
-                      }
+                      },
+                      "TaskTempAnswer",
+                      "⚠️"
                     );
                   }
 
@@ -312,21 +335,28 @@ export const useActivityData = ({
                     )
                     .join(", ");
                   logger.info(
-                    `📝 [TaskTempAnswer] PARSED temp answers from subscription`,
+                    "PARSED temp answers from subscription",
                     {
                       tempAnswersCount: tempKeys.length,
                       tempKeys: tempKeys.join(", "),
                       tempPreview,
-                    }
+                    },
+                    "TaskTempAnswer",
+                    "📝"
                   );
                 } catch (error) {
-                  logger.error("Error parsing temp answers from subscription", {
-                    error,
-                    answersPreview:
-                      typeof latestTempAnswer.answers === "string"
-                        ? latestTempAnswer.answers.substring(0, 100)
-                        : String(latestTempAnswer.answers).substring(0, 100),
-                  });
+                  logger.error(
+                    "Error parsing temp answers from subscription",
+                    {
+                      error,
+                      answersPreview:
+                        typeof latestTempAnswer.answers === "string"
+                          ? latestTempAnswer.answers.substring(0, 100)
+                          : String(latestTempAnswer.answers).substring(0, 100),
+                    },
+                    "TaskTempAnswer",
+                    "❌"
+                  );
                 }
               }
 
@@ -359,7 +389,7 @@ export const useActivityData = ({
                 .join(", ");
 
               logger.info(
-                "🔄 [Real-time] MERGED answers from DataStore subscription",
+                "MERGED answers from DataStore subscription",
                 {
                   taskPk,
                   existingCount: Object.keys(existingAnswers).length,
@@ -368,39 +398,60 @@ export const useActivityData = ({
                   mergedKeys: mergedKeys.join(", "),
                   mergedPreview,
                   isSynced,
-                }
+                },
+                "Real-time",
+                "🔄"
               );
 
               // Update initialAnswers - this will trigger useEffect in useQuestionsScreen
               setInitialAnswers(mergedAnswers);
 
               logger.info(
-                "✅ [Real-time] setInitialAnswers CALLED - this should trigger useQuestionsScreen",
+                "setInitialAnswers CALLED - this should trigger useQuestionsScreen",
                 {
                   mergedCount: mergedKeys.length,
                   mergedKeys: mergedKeys.join(", "),
                   willTriggerReRender:
                     "yes - useEffect in useQuestionsScreen should fire",
-                }
+                },
+                "Real-time",
+                "✅"
               );
             } else {
               logger.info(
-                `📭 [TaskTempAnswer] No temp answers found for task ${taskPk}`,
+                `No temp answers found for task ${taskPk}`,
                 {
                   totalItems: items.length,
                   taskItems: taskItems.length,
-                }
+                },
+                "TaskTempAnswer",
+                "📭"
               );
             }
           },
           error: err => {
-            logger.error("❌ [TaskTempAnswer] Subscription error", err);
+            logger.error(
+              "Subscription error",
+              err,
+              "TaskTempAnswer",
+              "❌"
+            );
           },
         });
 
-        logger.info("✅ Subscribed to TaskTempAnswer updates", { taskPk });
+        logger.info(
+          "Subscribed to TaskTempAnswer updates",
+          { taskPk },
+          "Setup",
+          "✅"
+        );
       } catch (error) {
-        logger.error("Error setting up TaskTempAnswer subscription", error);
+        logger.error(
+          "Error setting up TaskTempAnswer subscription",
+          error,
+          "Setup",
+          "❌"
+        );
       }
     };
 
@@ -409,7 +460,12 @@ export const useActivityData = ({
     return () => {
       if (subscription) {
         subscription.unsubscribe();
-        logger.info("🔌 Unsubscribed from TaskTempAnswer updates", { taskPk });
+        logger.info(
+          "Unsubscribed from TaskTempAnswer updates",
+          { taskPk },
+          "Cleanup",
+          "🔌"
+        );
       }
     };
   }, [taskId]); // Only taskId - taskAnswers accessed via ref to prevent subscription recreation
