@@ -1,7 +1,7 @@
 {
   "name": "task-system-poc",
   "main": "./entry.js",
-  "version": "0.1.31",
+  "version": "0.1.32",
   "scripts": {
     "start": "expo start",
     "delete-apps": "./scripts/delete-apps.sh",
