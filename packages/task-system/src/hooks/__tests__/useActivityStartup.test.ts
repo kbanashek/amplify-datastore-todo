@@ -9,14 +9,14 @@ jest.mock("@services/ActivityService", () => ({
 }));
 
 // Mock dataSubscriptionLogger
-jest.mock("@utils/dataSubscriptionLogger", () => ({
+jest.mock("@utils/logging/dataSubscriptionLogger", () => ({
   dataSubscriptionLogger: {
     logActivities: jest.fn(),
   },
 }));
 
 import { ActivityService } from "@services/ActivityService";
-import { dataSubscriptionLogger } from "@utils/dataSubscriptionLogger";
+import { dataSubscriptionLogger } from "@utils/logging/dataSubscriptionLogger";
 import { Activity as ActivityModel } from "@models/index";
 import { Activity } from "@task-types/Activity";
 

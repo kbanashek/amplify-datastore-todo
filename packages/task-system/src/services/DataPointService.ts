@@ -8,8 +8,8 @@ import {
   UpdateDataPointInput,
   UpdateDataPointInstanceInput,
 } from "@task-types/DataPoint";
-import { logErrorWithDevice, logWithDevice } from "@utils/deviceLogger";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { logErrorWithDevice, logWithDevice } from "@utils/logging/deviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 /** Data for updating a DataPoint (excludes id and version) */
 type DataPointUpdateData = Omit<UpdateDataPointInput, "id" | "_version">;
@@ -162,49 +162,67 @@ export class DataPointService {
         );
 
         callback(items, isSynced);
+      },
+      error => {
+        logErrorWithDevice(
+          "DataPointService",
+          "DataStore subscription error",
+          error
+        );
+        // Provide empty array to prevent app crash
+        callback([], false);
       }
     );
 
     // Also observe DELETE operations to ensure deletions trigger updates
-    const deleteObserver = DataStore.observe(DataPoint).subscribe(msg => {
-      if (msg.opType === OpType.DELETE) {
-        const element = msg.element as any;
-        const isLocalDelete = element?._deleted === true;
-        const source = isLocalDelete
-          ? OperationSource.LOCAL
-          : OperationSource.REMOTE_SYNC;
+    const deleteObserver = DataStore.observe(DataPoint).subscribe(
+      msg => {
+        if (msg.opType === OpType.DELETE) {
+          const element = msg.element as any;
+          const isLocalDelete = element?._deleted === true;
+          const source = isLocalDelete
+            ? OperationSource.LOCAL
+            : OperationSource.REMOTE_SYNC;
 
-        logWithDevice(
+          logWithDevice(
+            "DataPointService",
+            `DELETE operation detected for DataPoint (${source})`,
+            {
+              dataPointId: element?.id,
+              dataPointName: element?.name,
+              deleted: element?._deleted,
+              operationType: msg.opType,
+            }
+          );
+
+          DataStore.query(DataPoint)
+            .then(dataPoints => {
+              logWithDevice(
+                "DataPointService",
+                "Query refresh after DELETE completed",
+                {
+                  remainingDataPointCount: dataPoints.length,
+                }
+              );
+              callback(dataPoints, true);
+            })
+            .catch(err => {
+              logErrorWithDevice(
+                "DataPointService",
+                "Error refreshing after delete",
+                err
+              );
+            });
+        }
+      },
+      error => {
+        logErrorWithDevice(
           "DataPointService",
-          `DELETE operation detected for DataPoint (${source})`,
-          {
-            dataPointId: element?.id,
-            dataPointName: element?.name,
-            deleted: element?._deleted,
-            operationType: msg.opType,
-          }
+          "DELETE observer error",
+          error
         );
-
-        DataStore.query(DataPoint)
-          .then(dataPoints => {
-            logWithDevice(
-              "DataPointService",
-              "Query refresh after DELETE completed",
-              {
-                remainingDataPointCount: dataPoints.length,
-              }
-            );
-            callback(dataPoints, true);
-          })
-          .catch(err => {
-            logErrorWithDevice(
-              "DataPointService",
-              "Error refreshing after delete",
-              err
-            );
-          });
       }
-    });
+    );
 
     return {
       unsubscribe: () => {

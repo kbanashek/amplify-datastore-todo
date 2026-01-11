@@ -118,7 +118,7 @@ jest.mock("@components/AppointmentCard", () => {
 });
 
 // Mock logger
-jest.mock("@utils/serviceLogger", () => ({
+jest.mock("@utils/logging/serviceLogger", () => ({
   getServiceLogger: jest.fn(() => ({
     debug: jest.fn(),
     error: jest.fn(),

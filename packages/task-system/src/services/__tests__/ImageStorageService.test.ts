@@ -3,8 +3,8 @@
  */
 
 import { ImageStorageService } from "@services/ImageStorageService";
-import * as FileSystemUtils from "@utils/fileSystemUtils";
-import * as ImagePathUtils from "@utils/imagePathUtils";
+import * as FileSystemUtils from "@utils/system/fileSystemUtils";
+import * as ImagePathUtils from "@utils/platform/imagePathUtils";
 
 // Mock Amplify Storage with lazy import support
 jest.mock("aws-amplify/storage", () => ({
@@ -16,7 +16,7 @@ jest.mock("aws-amplify/storage", () => ({
 }));
 
 // Mock file system utilities
-jest.mock("@utils/fileSystemUtils", () => ({
+jest.mock("@utils/system/fileSystemUtils", () => ({
   copyImageToPermanentStorage: jest.fn(),
   readImageAsBase64: jest.fn(),
   createBlobFromLocalFile: jest.fn(),
@@ -27,7 +27,7 @@ jest.mock("@utils/fileSystemUtils", () => ({
 }));
 
 // Mock image path utilities
-jest.mock("@utils/imagePathUtils", () => ({
+jest.mock("@utils/platform/imagePathUtils", () => ({
   generateS3ImageKey: jest.fn(),
   extractFilenameFromS3Key: jest.fn(),
   isS3Key: jest.fn(),
@@ -35,7 +35,7 @@ jest.mock("@utils/imagePathUtils", () => ({
 }));
 
 // Mock service logger
-jest.mock("@utils/serviceLogger", () => ({
+jest.mock("@utils/logging/serviceLogger", () => ({
   getServiceLogger: jest.fn(() => ({
     info: jest.fn(),
     warn: jest.fn(),

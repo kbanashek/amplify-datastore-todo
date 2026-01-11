@@ -1,6 +1,6 @@
 import { AppColors } from "@constants/AppColors";
 import { AppFonts } from "@constants/AppFonts";
-import { getBorderStyle } from "@utils/borderStyleHelper";
+import { getBorderStyle } from "@utils/platform/borderStyleHelper";
 import React from "react";
 import {
   StyleProp,

@@ -9,7 +9,7 @@ import { AppFonts } from "@constants/AppFonts";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Choice, Question } from "@task-types/ActivityConfig";
 import { useTaskTranslation } from "@translations/index";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 const logger = getServiceLogger("MultiSelectQuestion");
 

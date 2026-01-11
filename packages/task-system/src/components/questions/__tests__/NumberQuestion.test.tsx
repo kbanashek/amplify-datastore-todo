@@ -14,7 +14,7 @@ jest.mock("@hooks/useTranslatedText", () => ({
 }));
 
 // Mock getUnitDisplayLabel
-jest.mock("@utils/unitLabel", () => ({
+jest.mock("@utils/tasks/unitLabel", () => ({
   getUnitDisplayLabel: jest.fn((text: string) => text || ""),
 }));
 

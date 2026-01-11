@@ -1,7 +1,7 @@
 import { DataStore } from "@aws-amplify/datastore";
 
 import { TaskTempAnswer } from "@models/index";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 /**
  * Service for managing temporary task answers using DataStore.
@@ -52,31 +52,47 @@ export class TempAnswerSyncService {
     localtime: string
   ): Promise<void> {
     try {
-      logger.info(`💾 [TempAnswers] Saving temp answers for task ${taskPk}`, {
-        taskPk,
-        activityId,
-        answerCount: Object.keys(answers).length,
-      });
+      const answerKeys = Object.keys(answers);
+      const answerPreview = answerKeys
+        .slice(0, 3)
+        .map(key => `${key}: ${JSON.stringify(answers[key]).substring(0, 50)}`)
+        .join(", ");
 
+      logger.info(
+        `💾 [TempAnswers] SAVING temp answers for task ${taskPk}`,
+        {
+          taskPk,
+          activityId,
+          answerCount: answerKeys.length,
+          answerKeys: answerKeys.join(", "),
+          preview: answerPreview,
+        }
+      );
+
+      const answersJson = JSON.stringify(answers);
       const saved = await DataStore.save(
         new TaskTempAnswer({
           pk: taskPk,
           sk: `TEMP#${Date.now()}`,
           taskPk,
           activityId,
-          answers: JSON.stringify(answers), // AWSJSON type requires string
+          answers: answersJson, // AWSJSON type requires string
           localtime,
           hashKey: taskPk,
         })
       );
 
       logger.info(
-        `✅ [TempAnswers] Successfully saved temp answers for task ${taskPk}`,
-        { id: saved.id }
+        `✅ [TempAnswers] SAVED to local DataStore (will sync to cloud) for task ${taskPk}`,
+        {
+          id: saved.id,
+          answersJsonLength: answersJson.length,
+          willSyncToCloud: "DataStore will sync when online",
+        }
       );
     } catch (error) {
       logger.error(
-        `❌ [TempAnswers] Failed to save temp answers for task ${taskPk}`,
+        `❌ [TempAnswers] FAILED to save temp answers for task ${taskPk}`,
         error
       );
       throw error;

@@ -2,8 +2,8 @@ import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useCallback } from "react";
 import { Alert } from "react-native";
 import { ActivityConfig } from "@task-types/ActivityConfig";
-import { ParsedActivityData } from "@utils/activityParser";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { ParsedActivityData } from "@utils/parsers/activityParser";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 
 const logger = getServiceLogger("useQuestionNavigation");

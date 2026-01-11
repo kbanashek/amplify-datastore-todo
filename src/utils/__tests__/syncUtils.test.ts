@@ -15,8 +15,9 @@ jest.mock("@aws-amplify/datastore", () => ({
   },
 }));
 
-// Mock deviceLogger
-jest.mock("../deviceLogger", () => ({
+// Mock deviceLogger from package
+jest.mock("@orion/task-system", () => ({
+  ...jest.requireActual("@orion/task-system"),
   logWithDevice: jest.fn(),
   logErrorWithDevice: jest.fn(),
 }));

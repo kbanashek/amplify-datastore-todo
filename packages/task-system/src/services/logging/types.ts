@@ -102,6 +102,13 @@ export interface LoggingConfig {
   singleLine?: boolean;
 
   /**
+   * Use multi-line formatting for metadata (readable, one key per line)
+   * When true, metadata is formatted as multi-line with automatic JSON parsing
+   * When false, falls back to inline formatting
+   */
+  multiLineMetadata?: boolean;
+
+  /**
    * Use sequence diagram formatting for initialization logs (with arrows/indentation)
    */
   sequenceDiagram?: boolean;

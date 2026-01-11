@@ -1,6 +1,6 @@
 import { DataPointService } from "@services/DataPointService";
 import { DataPoint, DataPointInstance } from "@task-types/DataPoint";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 import { useEffect, useState } from "react";
 
 const logger = getServiceLogger("useDataPointList");

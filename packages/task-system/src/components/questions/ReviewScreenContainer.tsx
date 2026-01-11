@@ -8,7 +8,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { AppColors } from "@constants/AppColors";
 import { ReviewScreen } from "@components/questions/ReviewScreen";
-import { ParsedActivityData } from "@utils/activityParser";
+import { ParsedActivityData } from "@utils/parsers/activityParser";
 
 /**
  * Props for the ReviewScreenContainer component

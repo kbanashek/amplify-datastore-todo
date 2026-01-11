@@ -2,6 +2,9 @@ import { Amplify } from "@aws-amplify/core";
 import awsconfig from "../aws-exports";
 import { logErrorWithPlatform, logWithPlatform } from "./utils/platformLogger";
 
+// Note: @aws-amplify/api package is required for DataStore cloud sync
+// but doesn't need explicit import/configure - Amplify.configure() handles it
+
 // Configure Amplify
 export const configureAmplify = (): void => {
   try {
@@ -40,6 +43,8 @@ export const configureAmplify = (): void => {
       aws_appsync_apiKey: awsconfig.aws_appsync_apiKey,
     };
 
+    // CRITICAL: Amplify.configure() automatically configures all modules
+    // including API (for DataStore cloud sync) if @aws-amplify/api is installed
     Amplify.configure(config as any);
 
     const apiKeyPrefix = awsconfig.aws_appsync_apiKey?.substring(0, 10) + "...";
@@ -57,13 +62,14 @@ export const configureAmplify = (): void => {
       "🔐",
       "INIT-1",
       "AmplifyConfig",
-      `Amplify configured with API_KEY authentication\n${configDetails}`,
+      `Amplify configured with API_KEY authentication (includes API module for DataStore sync)\n${configDetails}`,
       {
         endpoint: awsconfig.aws_appsync_graphqlEndpoint,
         region: awsconfig.aws_appsync_region,
         authType: awsconfig.aws_appsync_authenticationType,
         apiKeyPrefix,
         hasApiKey: !!awsconfig.aws_appsync_apiKey,
+        apiPackageInstalled: true, // @aws-amplify/api package enables DataStore cloud sync
       }
     );
 

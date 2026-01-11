@@ -1,6 +1,6 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
 import { ModelName } from "@constants/modelNames";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 /**
  * Base type constraint for DataStore models

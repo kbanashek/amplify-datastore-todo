@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { TaskAnswerService } from "@services/TaskAnswerService";
 import { TaskAnswer } from "@task-types/TaskAnswer";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 const logger = getServiceLogger("useTaskAnswerList");
 

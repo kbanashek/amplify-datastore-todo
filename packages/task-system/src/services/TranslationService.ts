@@ -7,8 +7,8 @@ import {
 } from "@aws-sdk/client-translate";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AWSErrorName } from "@constants/awsErrors";
-import { getServiceLogger } from "@utils/serviceLogger";
-import { simpleHash } from "@utils/simpleHash";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
+import { simpleHash } from "@utils/system/simpleHash";
 import { TranslationMemoryService } from "@services/TranslationMemoryService";
 import type { LanguageCode } from "@services/translationTypes";
 

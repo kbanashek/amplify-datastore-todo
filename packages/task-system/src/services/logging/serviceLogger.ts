@@ -4,7 +4,7 @@
  *
  * Usage in services:
  * ```typescript
- * import { getServiceLogger } from "@utils/serviceLogger";
+ * import { getServiceLogger } from "@utils/logging/serviceLogger";
  *
  * const logger = getServiceLogger("TaskService");
  * logger.info("Task created", { taskId: "123" });
@@ -12,6 +12,7 @@
  * ```
  */
 
+import { Platform } from "react-native";
 import { getLoggingService } from "@services/LoggingService";
 
 /**
@@ -38,9 +39,9 @@ export function getServiceLogger(serviceName: string) {
         if (__DEV__) {
           const formatted = formatMessage(serviceName, message, step, icon);
           if (metadata) {
-            console.log(formatted, metadata);
+            console.info(formatted, metadata);
           } else {
-            console.log(formatted);
+            console.info(formatted);
           }
         }
       },
@@ -52,9 +53,9 @@ export function getServiceLogger(serviceName: string) {
       ) => {
         const formatted = formatMessage(serviceName, message, step, icon);
         if (metadata) {
-          console.log(formatted, metadata);
+          console.info(formatted, metadata);
         } else {
-          console.log(formatted);
+          console.info(formatted);
         }
       },
       warn: (
@@ -110,15 +111,13 @@ function formatMessage(
   step?: string,
   icon?: string
 ): string {
-  // Use direct platform detection for fallback with emoji icons
-  const platform = (() => {
-    try {
-      const { getPlatformIcon } = require("../../utils/platformIcons");
-      return getPlatformIcon();
-    } catch {
-      return "❓"; // Unknown
-    }
-  })();
+  // Direct platform detection
+  const platformIcons: { [key: string]: string } = {
+    ios: "🍎",
+    android: "🤖",
+    web: "🌐",
+  };
+  const platform = platformIcons[Platform.OS] || "❓";
 
   const iconPart = icon ? `${icon} ` : "";
   const messageWithIcon = `${iconPart}${message}`;

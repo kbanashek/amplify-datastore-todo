@@ -9,8 +9,8 @@ import { useRTL } from "@hooks/useRTL";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import { ParsedElement, ParsedScreen } from "@task-types/ActivityConfig";
 import { AnswerValue } from "@task-types/AnswerValue";
-import { formatAnswer } from "@utils/answerFormatting";
-import { isIOS } from "@utils/platform";
+import { formatAnswer } from "@utils/formatting/answerFormatting";
+import { isIOS } from "@utils/platform/platform";
 import React from "react";
 import {
   ActivityIndicator,

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { ActivityService } from "@services/ActivityService";
 import { Activity } from "@task-types/Activity";
-import { logErrorWithPlatform, logWithPlatform } from "@utils/platformLogger";
+import { logErrorWithPlatform, logWithPlatform } from "@utils/logging/platformLogger";
 
 /**
  * Return type for the useActivity hook.

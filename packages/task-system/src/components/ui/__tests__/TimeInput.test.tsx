@@ -78,7 +78,7 @@ jest.mock("@translations/index", () => ({
 }));
 
 // Mock platform utilities
-jest.mock("@utils/platform", () => ({
+jest.mock("@utils/platform/platform", () => ({
   isAndroid: jest.fn(() => false),
   isIOS: jest.fn(() => true),
 }));

@@ -10,7 +10,7 @@ import { AppFonts } from "@constants/AppFonts";
 import { useRTL } from "@hooks/useRTL";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import { ActivityConfig } from "@task-types/ActivityConfig";
-import { isIOS } from "@utils/platform";
+import { isIOS } from "@utils/platform/platform";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native";
 

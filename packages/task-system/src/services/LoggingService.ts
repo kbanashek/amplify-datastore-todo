@@ -3,6 +3,7 @@
  * Manages multiple log providers and routes logs to all active providers
  */
 
+import { Platform } from "react-native";
 import { ConsoleProvider } from "@services/logging/providers/ConsoleProvider";
 import { NativeProvider } from "@services/logging/providers/NativeProvider";
 import { SentryProvider } from "@services/logging/providers/SentryProvider";
@@ -14,13 +15,18 @@ import type {
 } from "@services/logging/types";
 import { LogLevel, LogLevelPreset } from "@services/logging/types";
 import { presetToLogLevel } from "@services/logging/utils";
-import { getPlatformIcon } from "@utils/platformIcons";
+
+const PLATFORM_ICONS: Record<string, string> = {
+  ios: "🍎",
+  android: "🤖",
+  web: "🌐",
+} as const;
 
 /**
  * Get platform identifier for logging
  */
 function getPlatformId(): string {
-  return getPlatformIcon();
+  return PLATFORM_ICONS[Platform.OS] || "❓";
 }
 
 /**
@@ -147,6 +153,7 @@ export class LoggingService {
     const consoleProvider = new ConsoleProvider({
       singleLine: this.config.singleLine ?? true,
       sequenceDiagram: this.config.sequenceDiagram ?? true,
+      multiLineMetadata: this.config.multiLineMetadata ?? true, // Default to true for readable logs
     });
     this.addProvider(consoleProvider);
 

@@ -23,8 +23,8 @@ import { ThemedText } from "@components/ThemedText";
 import { AppColors } from "@constants/AppColors";
 import { useThemeColor } from "@hooks/useThemeColor";
 import { useTaskTranslation } from "@translations/index";
-import { isAndroid, isIOS } from "@utils/platform";
-import { getFontStyle, FontWeights } from "@utils/fontUtils";
+import { isAndroid, isIOS } from "@utils/platform/platform";
+import { getFontStyle, FontWeights } from "@utils/formatting/fontUtils";
 
 /**
  * Props for the TimeInput component

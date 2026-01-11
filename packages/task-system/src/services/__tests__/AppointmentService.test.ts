@@ -59,7 +59,7 @@ const mockAppointmentData: AppointmentData = {
 
 // Mock appointmentParser
 const mockParseAppointmentData = jest.fn();
-jest.mock("@utils/appointmentParser", () => ({
+jest.mock("@utils/parsers/appointmentParser", () => ({
   parseAppointmentData: (...args: unknown[]) =>
     mockParseAppointmentData(...args),
 }));

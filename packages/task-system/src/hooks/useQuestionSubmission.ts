@@ -2,9 +2,9 @@ import { useCallback, useState } from "react";
 import { Alert } from "react-native";
 import { ActivityConfig } from "@task-types/ActivityConfig";
 import { TaskStatus } from "@task-types/Task";
-import { ParsedActivityData } from "@utils/activityParser";
-import { validateAllScreens } from "@utils/questionValidation";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { ParsedActivityData } from "@utils/parsers/activityParser";
+import { validateAllScreens } from "@utils/validation/questionValidation";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 import { useDataPointInstance } from "@hooks/useDataPointInstance";
 import { useTaskAnswer } from "@hooks/useTaskAnswer";
 import { useTaskUpdate } from "@hooks/useTaskUpdate";
@@ -52,6 +52,11 @@ export const useQuestionSubmission = ({
   const { updateTask } = useTaskUpdate();
 
   const handleSubmit = useCallback(async () => {
+    // Guard against race condition: prevent double submission
+    if (isSubmitting) {
+      return;
+    }
+
     if (!activityData) {
       Alert.alert("Error", "Activity data is not available.");
       return;
@@ -273,6 +278,7 @@ export const useQuestionSubmission = ({
       setIsSubmitting(false);
     }
   }, [
+    isSubmitting,
     taskId,
     entityId,
     answers,

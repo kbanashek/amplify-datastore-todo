@@ -5,7 +5,7 @@ import {
   CreateTaskAnswerInput,
   UpdateTaskAnswerInput,
 } from "@task-types/TaskAnswer";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 const logger = getServiceLogger("useTaskAnswer");
 

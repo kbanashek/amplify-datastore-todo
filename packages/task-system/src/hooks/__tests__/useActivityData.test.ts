@@ -10,15 +10,15 @@ jest.mock("@hooks/useTaskAnswer", () => ({
   useTaskAnswer: jest.fn(),
 }));
 
-jest.mock("@utils/activityParser", () => ({
+jest.mock("@utils/parsers/activityParser", () => ({
   parseActivityConfig: jest.fn(),
 }));
 
 import { useActivity } from "@hooks/useActivity";
 import { useTaskAnswer } from "@hooks/useTaskAnswer";
-import { parseActivityConfig } from "@utils/activityParser";
+import { parseActivityConfig } from "@utils/parsers/activityParser";
 import { Activity } from "@task-types/Activity";
-import { ParsedActivityData } from "@utils/activityParser";
+import { ParsedActivityData } from "@utils/parsers/activityParser";
 import { ActivityConfig } from "@task-types/ActivityConfig";
 import { TaskAnswer } from "@task-types/TaskAnswer";
 

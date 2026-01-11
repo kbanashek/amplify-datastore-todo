@@ -11,7 +11,7 @@ import {
   TaskHistory,
   TaskResult,
 } from "@models/index";
-import { logWithDevice, logErrorWithDevice } from "@utils/deviceLogger";
+import { logWithDevice, logErrorWithDevice } from "@utils/logging/deviceLogger";
 
 /**
  * Result of clearing seeded data operation

@@ -97,12 +97,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="lx-host-example"
-        options={{
-          href: null, // Hide from tab bar
-        }}
-      />
-      <Tabs.Screen
         name="storybook"
         options={{
           href: null, // Hide from tab bar

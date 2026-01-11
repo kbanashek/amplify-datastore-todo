@@ -92,7 +92,7 @@ exports[`GroupedTasksView Snapshots matches snapshot with appointments 1`] = `
             }
           }
         >
-          Thu, Jan 8
+          Sun, Jan 11
         </Text>
       </View>
       <View
@@ -242,7 +242,7 @@ exports[`GroupedTasksView Snapshots matches snapshot with grouped tasks 1`] = `
             }
           }
         >
-          2026-01-09
+          2026-01-11
         </Text>
       </View>
       <View />

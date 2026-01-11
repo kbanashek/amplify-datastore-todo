@@ -28,7 +28,7 @@ jest.mock("@components/ui/IconSymbol", () => {
 });
 
 // Mock platform utils
-jest.mock("@utils/platform", () => ({
+jest.mock("@utils/platform/platform", () => ({
   isIOS: jest.fn(() => false),
 }));
 

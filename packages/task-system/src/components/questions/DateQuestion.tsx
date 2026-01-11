@@ -31,7 +31,7 @@ import {
   combineDateAndTime,
   getMonthName,
   getTodayLumiereFormat,
-} from "@utils/dateTimeFormatting";
+} from "@utils/formatting/dateTimeFormatting";
 
 /**
  * Display mode for date/time questions

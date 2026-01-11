@@ -7,8 +7,7 @@
  * New code should use useLogger() hook or getLoggingService() directly.
  */
 
-import { getLoggingService } from "@orion/task-system";
-import { getPlatformIcon } from "./platformIcons";
+import { getLoggingService, getPlatformIcon } from "@orion/task-system";
 
 /**
  * Get platform identifier for logging (direct detection, no service dependency)

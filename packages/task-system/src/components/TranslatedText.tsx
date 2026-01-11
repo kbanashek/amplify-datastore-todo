@@ -2,7 +2,7 @@ import React from "react";
 import { Text, TextProps } from "react-native";
 import { TranslationMemoryService } from "@services/TranslationMemoryService";
 import { useTaskTranslation, type LanguageCode } from "@translations/index";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 const logger = getServiceLogger("TranslatedText");
 

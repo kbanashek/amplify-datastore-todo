@@ -9,7 +9,7 @@ import { AppFonts } from "@constants/AppFonts";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import { Question } from "@task-types/ActivityConfig";
 import { useTaskTranslation } from "@translations/index";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 

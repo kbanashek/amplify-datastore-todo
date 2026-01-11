@@ -9,7 +9,7 @@
  */
 
 import { uploadData, getUrl, remove, list } from "aws-amplify/storage";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 import {
   copyImageToPermanentStorage,
   deleteLocalImage,
@@ -17,14 +17,14 @@ import {
   getLocalImagePath,
   generateImageFilename,
   createBlobFromLocalFile,
-} from "@utils/fileSystemUtils";
+} from "@utils/system/fileSystemUtils";
 import {
   generateS3ImageKey,
   extractFilenameFromS3Key,
   isS3Key,
   isLocalFileUri,
   type S3ImagePathOptions,
-} from "@utils/imagePathUtils";
+} from "@utils/platform/imagePathUtils";
 
 const logger = getServiceLogger("ImageStorageService");
 

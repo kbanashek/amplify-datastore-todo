@@ -15,8 +15,8 @@ import {
   QuestionType,
   ValidationType,
 } from "@task-types/activity-config-enums";
-import { getServiceLogger } from "@utils/serviceLogger";
-import { getUnitDisplayLabel } from "@utils/unitLabel";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
+import { getUnitDisplayLabel } from "@utils/tasks/unitLabel";
 
 const logger = getServiceLogger("NumberQuestion");
 

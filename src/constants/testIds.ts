@@ -15,6 +15,7 @@ export const TestIds = {
 
   devOptions: {
     scrollView: "dev_options_scroll_view",
+    forceResync: "dev_options_force_resync",
     quickImport: "dev_options_quick_import",
     deleteTasks: "dev_options_delete_tasks",
     deleteAppointments: "dev_options_delete_appointments",

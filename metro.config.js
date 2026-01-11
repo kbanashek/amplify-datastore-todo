@@ -16,4 +16,14 @@ config.resolver.nodeModulesPaths = [path.resolve(projectRoot, "node_modules")];
 // Ensure Metro can resolve workspace packages
 config.resolver.sourceExts = [...(config.resolver.sourceExts || []), "json"];
 
+// Exclude docs and test files from bundling
+config.resolver.blockList = [
+  // Exclude docs directory (contains examples and integration resources)
+  /packages\/task-system\/docs\/.*/,
+  // Exclude all test files
+  /.*\/__tests__\/.*/,
+  /.*\.test\.(ts|tsx|js|jsx)$/,
+  /.*\.spec\.(ts|tsx|js|jsx)$/,
+];
+
 module.exports = config;

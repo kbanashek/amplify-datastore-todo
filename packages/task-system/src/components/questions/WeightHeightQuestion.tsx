@@ -7,7 +7,7 @@
 import { AppColors } from "@constants/AppColors";
 import { AppFonts } from "@constants/AppFonts";
 import { Question } from "@task-types/ActivityConfig";
-import { getBorderStyle } from "@utils/borderStyleHelper";
+import { getBorderStyle } from "@utils/platform/borderStyleHelper";
 import React, { useEffect, useState } from "react";
 import {
   StyleSheet,

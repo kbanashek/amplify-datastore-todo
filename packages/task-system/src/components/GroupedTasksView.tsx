@@ -8,7 +8,7 @@ import { GroupedTask } from "@hooks/useGroupedTasks";
 import { Appointment } from "@task-types/Appointment";
 import { Task } from "@task-types/Task";
 import { useTaskTranslation } from "@translations/index";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 import React from "react";
 import {
   ActivityIndicator,
@@ -254,7 +254,6 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
                   task={task}
                   simple={false}
                   onPress={onTaskPress}
-                  onDelete={onDelete}
                 />
               ))}
             </View>
@@ -282,7 +281,6 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
                       task={task}
                       simple={false}
                       onPress={onTaskPress}
-                      onDelete={onDelete}
                     />
                   ))}
                 </View>

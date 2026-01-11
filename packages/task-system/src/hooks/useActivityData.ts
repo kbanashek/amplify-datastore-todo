@@ -1,15 +1,27 @@
-import { useEffect, useState, useRef } from "react";
-import { DataStore } from "aws-amplify/datastore";
-import { ActivityConfig } from "@task-types/ActivityConfig";
-import { ParsedActivityData, parseActivityConfig } from "@utils/activityParser";
-import { getServiceLogger } from "@utils/serviceLogger";
 import { useActivity } from "@hooks/useActivity";
 import { useTaskAnswer } from "@hooks/useTaskAnswer";
 import { TaskService } from "@services/TaskService";
-import { TaskTempAnswer } from "../models";
 import type { Activity } from "@task-types/Activity";
+import { ActivityConfig } from "@task-types/ActivityConfig";
+import type { AnswerValue } from "@task-types/AnswerValue";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
+import {
+  ParsedActivityData,
+  parseActivityConfig,
+} from "@utils/parsers/activityParser";
+import { DataStore } from "aws-amplify/datastore";
+import { useEffect, useRef, useState } from "react";
+import { TaskTempAnswer } from "../models";
 
 const logger = getServiceLogger("useActivityData");
+
+/**
+ * Interface representing a map of question IDs to answer values.
+ * Answer values can be strings, numbers, booleans, arrays, or objects as defined by AnswerValue.
+ */
+interface AnswersMap {
+  [key: string]: AnswerValue;
+}
 
 /**
  * Return type for the useActivityData hook.
@@ -20,7 +32,7 @@ export interface UseActivityDataReturn {
   activity: Activity | null;
   activityData: ParsedActivityData | null;
   activityConfig: ActivityConfig | null;
-  initialAnswers: Record<string, any>;
+  initialAnswers: AnswersMap;
 }
 
 /**
@@ -54,7 +66,7 @@ export const useActivityData = ({
   const [activityConfig, setActivityConfig] = useState<ActivityConfig | null>(
     null
   );
-  const [initialAnswers, setInitialAnswers] = useState<Record<string, any>>({});
+  const [initialAnswers, setInitialAnswers] = useState<AnswersMap>({});
 
   // Use ref to avoid recreating subscription when taskAnswers changes
   const taskAnswersRef = useRef(taskAnswers);
@@ -90,7 +102,7 @@ export const useActivityData = ({
         }
 
         // Reconstruct the full JSON structure matching the provided format
-        let activityConfig: ActivityConfig = {};
+        const activityConfig: ActivityConfig = {};
 
         // Parse layouts - check if it contains the full JSON structure
         if (activity.layouts) {
@@ -133,7 +145,7 @@ export const useActivityData = ({
         }
 
         // Load existing answers from TaskAnswer (final submitted answers)
-        const existingAnswers: Record<string, any> = {};
+        const existingAnswers: AnswersMap = {};
         if (taskId) {
           const taskAnswersForTask = getAnswersByTaskId(taskId);
           taskAnswersForTask.forEach(ta => {
@@ -190,7 +202,7 @@ export const useActivityData = ({
       return;
     }
 
-    let subscription: any = null;
+    let subscription: { unsubscribe: () => void } | null = null;
     let taskPk: string | null = null;
 
     const setupSubscription = async () => {
@@ -210,11 +222,14 @@ export const useActivityData = ({
           next: async snapshot => {
             const { items, isSynced } = snapshot;
 
-            logger.info(`🔔 [TaskTempAnswer] Subscription fired`, {
-              totalItems: items.length,
-              taskPk,
-              isSynced,
-            });
+            logger.info(
+              `🔔 [TaskTempAnswer] Subscription fired - RECEIVED FROM DATASTORE`,
+              {
+                totalItems: items.length,
+                taskPk,
+                isSynced,
+              }
+            );
 
             // Process immediately if synced, or if we have items locally
             // This handles offline scenarios where isSynced might stay false
@@ -254,9 +269,6 @@ export const useActivityData = ({
             logger.info(`🔍 [TaskTempAnswer] Filtered items for task`, {
               taskPk,
               filteredCount: taskItems.length,
-              allTaskPks: items
-                .map(i => i.taskPk)
-                .filter((v, i, a) => a.indexOf(v) === i),
             });
 
             if (taskItems.length > 0) {
@@ -268,20 +280,19 @@ export const useActivityData = ({
               });
 
               // Parse the answers JSON string
-              let tempAnswers: Record<string, any> = {};
+              let tempAnswers: AnswersMap = {};
               if (latestTempAnswer.answers) {
                 try {
                   if (typeof latestTempAnswer.answers === "string") {
-                    tempAnswers = JSON.parse(latestTempAnswer.answers);
+                    tempAnswers = JSON.parse(
+                      latestTempAnswer.answers
+                    ) as AnswersMap;
                   } else if (
                     typeof latestTempAnswer.answers === "object" &&
                     latestTempAnswer.answers !== null
                   ) {
                     // Already an object - use as-is
-                    tempAnswers = latestTempAnswer.answers as Record<
-                      string,
-                      any
-                    >;
+                    tempAnswers = latestTempAnswer.answers as AnswersMap;
                   } else {
                     logger.warn(
                       "Unexpected answers data type in subscription",
@@ -290,6 +301,24 @@ export const useActivityData = ({
                       }
                     );
                   }
+
+                  // Log parsed temp answers with actual values
+                  const tempKeys = Object.keys(tempAnswers);
+                  const tempPreview = tempKeys
+                    .slice(0, 3)
+                    .map(
+                      key =>
+                        `${key}=${JSON.stringify(tempAnswers[key]).substring(0, 50)}`
+                    )
+                    .join(", ");
+                  logger.info(
+                    `📝 [TaskTempAnswer] PARSED temp answers from subscription`,
+                    {
+                      tempAnswersCount: tempKeys.length,
+                      tempKeys: tempKeys.join(", "),
+                      tempPreview,
+                    }
+                  );
                 } catch (error) {
                   logger.error("Error parsing temp answers from subscription", {
                     error,
@@ -303,7 +332,7 @@ export const useActivityData = ({
 
               // Load existing TaskAnswers
               // Use ref to get latest taskAnswers without causing subscription recreation
-              const existingAnswers: Record<string, any> = {};
+              const existingAnswers: AnswersMap = {};
               const taskAnswersForTask = taskAnswersRef.current.filter(
                 ta => ta.taskInstanceId === taskId
               );
@@ -320,14 +349,24 @@ export const useActivityData = ({
               // Merge: temp answers override existing answers
               const mergedAnswers = { ...existingAnswers, ...tempAnswers };
 
+              const mergedKeys = Object.keys(mergedAnswers);
+              const mergedPreview = mergedKeys
+                .slice(0, 3)
+                .map(
+                  key =>
+                    `${key}=${JSON.stringify(mergedAnswers[key]).substring(0, 50)}`
+                )
+                .join(", ");
+
               logger.info(
-                "🔄 [Real-time] Updated initialAnswers from DataStore subscription",
+                "🔄 [Real-time] MERGED answers from DataStore subscription",
                 {
                   taskPk,
                   existingCount: Object.keys(existingAnswers).length,
                   tempCount: Object.keys(tempAnswers).length,
-                  mergedCount: Object.keys(mergedAnswers).length,
-                  sampleKeys: Object.keys(mergedAnswers).slice(0, 3),
+                  mergedCount: mergedKeys.length,
+                  mergedKeys: mergedKeys.join(", "),
+                  mergedPreview,
                   isSynced,
                 }
               );
@@ -336,7 +375,13 @@ export const useActivityData = ({
               setInitialAnswers(mergedAnswers);
 
               logger.info(
-                "✅ [Real-time] setInitialAnswers called with updated data"
+                "✅ [Real-time] setInitialAnswers CALLED - this should trigger useQuestionsScreen",
+                {
+                  mergedCount: mergedKeys.length,
+                  mergedKeys: mergedKeys.join(", "),
+                  willTriggerReRender:
+                    "yes - useEffect in useQuestionsScreen should fire",
+                }
               );
             } else {
               logger.info(
@@ -367,7 +412,6 @@ export const useActivityData = ({
         logger.info("🔌 Unsubscribed from TaskTempAnswer updates", { taskPk });
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [taskId]); // Only taskId - taskAnswers accessed via ref to prevent subscription recreation
 
   return {

@@ -4,7 +4,7 @@
  */
 
 import { DataStore } from "@aws-amplify/datastore";
-import { logWithDevice, logErrorWithDevice } from "./deviceLogger";
+import { logWithDevice, logErrorWithDevice } from "@orion/task-system";
 
 /**
  * Wrapper around DataStore.stop() with timeout protection

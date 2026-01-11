@@ -22,8 +22,8 @@ import { ThemedText } from "@components/ThemedText";
 import { AppColors } from "@constants/AppColors";
 import { useThemeColor } from "@hooks/useThemeColor";
 import { useTaskTranslation } from "@translations/index";
-import { isValidDate } from "@utils/dateTimeFormatting";
-import { getFontStyle, FontWeights } from "@utils/fontUtils";
+import { isValidDate } from "@utils/formatting/dateTimeFormatting";
+import { getFontStyle, FontWeights } from "@utils/formatting/fontUtils";
 
 /**
  * Props for the DateInput component

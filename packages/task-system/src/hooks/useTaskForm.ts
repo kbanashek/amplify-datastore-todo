@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TaskService } from "@services/TaskService";
 import { CreateTaskInput, Task, TaskStatus, TaskType } from "@task-types/Task";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 const logger = getServiceLogger("useTaskForm");
 

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "task-system-poc",
-    "slug": "task-system-poc",
+    "name": "Orion Task System",
+    "slug": "orion-task-system",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",

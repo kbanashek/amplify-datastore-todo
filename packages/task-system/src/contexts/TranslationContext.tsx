@@ -19,8 +19,8 @@ import {
   SUPPORTED_LANGUAGES,
   isRTL as isRTLanguage,
 } from "@services/translationTypes";
-import { DEBUG_TRANSLATION_LOGS } from "@utils/debug";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { DEBUG_TRANSLATION_LOGS } from "@utils/system/debug";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 const logger = getServiceLogger("TranslationProvider");
 
