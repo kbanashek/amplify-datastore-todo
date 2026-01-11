@@ -102,7 +102,7 @@ export const useActivityData = ({
         }
 
         // Reconstruct the full JSON structure matching the provided format
-        const activityConfig: ActivityConfig = {};
+        const parsedConfig: ActivityConfig = {};
 
         // Parse layouts - check if it contains the full JSON structure
         if (activity.layouts) {
@@ -119,16 +119,16 @@ export const useActivityData = ({
                 parsedLayouts.completionScreen)
             ) {
               // Full JSON structure - extract all parts
-              activityConfig.activityGroups = parsedLayouts.activityGroups;
-              activityConfig.layouts = parsedLayouts.layouts || [];
-              activityConfig.introductionScreen =
+              parsedConfig.activityGroups = parsedLayouts.activityGroups;
+              parsedConfig.layouts = parsedLayouts.layouts || [];
+              parsedConfig.introductionScreen =
                 parsedLayouts.introductionScreen;
-              activityConfig.summaryScreen = parsedLayouts.summaryScreen;
-              activityConfig.completionScreen = parsedLayouts.completionScreen;
+              parsedConfig.summaryScreen = parsedLayouts.summaryScreen;
+              parsedConfig.completionScreen = parsedLayouts.completionScreen;
             } else if (Array.isArray(parsedLayouts)) {
-              activityConfig.layouts = parsedLayouts;
+              parsedConfig.layouts = parsedLayouts;
             } else {
-              activityConfig.layouts = parsedLayouts;
+              parsedConfig.layouts = parsedLayouts;
             }
           } catch (e) {
             logger.error("Error parsing layouts", e, "ActivityConfig", "❌");
@@ -136,9 +136,9 @@ export const useActivityData = ({
         }
 
         // Parse activityGroups (if not already extracted)
-        if (!activityConfig.activityGroups && activity.activityGroups) {
+        if (!parsedConfig.activityGroups && activity.activityGroups) {
           try {
-            activityConfig.activityGroups = JSON.parse(activity.activityGroups);
+            parsedConfig.activityGroups = JSON.parse(activity.activityGroups);
           } catch (e) {
             logger.error(
               "Error parsing activityGroups",
@@ -182,12 +182,9 @@ export const useActivityData = ({
         );
 
         // Parse activity config
-        const parsed = parseActivityConfig(
-          activityConfig,
-          initialMergedAnswers
-        );
+        const parsed = parseActivityConfig(parsedConfig, initialMergedAnswers);
         setActivityData(parsed);
-        setActivityConfig(activityConfig);
+        setActivityConfig(parsedConfig);
         setInitialAnswers(initialMergedAnswers);
       } catch (err: unknown) {
         logger.error("Error fetching activity", err, "ActivityFetch", "❌");
@@ -352,15 +349,21 @@ export const useActivityData = ({
                 } catch (error) {
                   logger.error(
                     "Error parsing temp answers from subscription",
+                    error,
+                    "TaskTempAnswer",
+                    "❌"
+                  );
+                  // Log the context separately for debugging
+                  logger.debug(
+                    "Temp answer parsing context",
                     {
-                      error,
                       answersPreview:
                         typeof latestTempAnswer.answers === "string"
                           ? latestTempAnswer.answers.substring(0, 100)
                           : String(latestTempAnswer.answers).substring(0, 100),
                     },
                     "TaskTempAnswer",
-                    "❌"
+                    "🔍"
                   );
                 }
               }
