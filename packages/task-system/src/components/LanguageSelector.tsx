@@ -8,7 +8,7 @@ import { AppColors } from "@constants/AppColors";
 import { AppFonts } from "@constants/AppFonts";
 import type { LanguageCode } from "@translations/index";
 import { useTaskTranslation } from "@translations/index";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 import React, { useState } from "react";
 import {
   ActivityIndicator,

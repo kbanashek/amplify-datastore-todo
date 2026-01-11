@@ -1,0 +1,47 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#93c5fd;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Rounded square background -->
+  <rect width="1024" height="1024" rx="200" fill="url(#bgGradient)"/>
+  
+  <!-- Stylized "O" with star constellation theme -->
+  <circle cx="512" cy="400" r="220" fill="none" stroke="white" stroke-width="40" opacity="0.9"/>
+  
+  <!-- Constellation stars inside the O -->
+  <circle cx="420" cy="340" r="18" fill="white" opacity="0.95"/>
+  <circle cx="512" cy="300" r="22" fill="white"/>
+  <circle cx="604" cy="340" r="18" fill="white" opacity="0.95"/>
+  <circle cx="580" cy="450" r="16" fill="white" opacity="0.9"/>
+  <circle cx="444" cy="450" r="16" fill="white" opacity="0.9"/>
+  
+  <!-- Connection lines between stars -->
+  <line x1="420" y1="340" x2="512" y2="300" stroke="white" stroke-width="3" opacity="0.5"/>
+  <line x1="512" y1="300" x2="604" y2="340" stroke="white" stroke-width="3" opacity="0.5"/>
+  <line x1="420" y1="340" x2="444" y2="450" stroke="white" stroke-width="3" opacity="0.5"/>
+  <line x1="604" y1="340" x2="580" y2="450" stroke="white" stroke-width="3" opacity="0.5"/>
+  
+  <!-- Task checkmark elements below -->
+  <g transform="translate(512, 720)">
+    <!-- First checkmark -->
+    <circle cx="-140" cy="-30" r="50" fill="white" opacity="0.2"/>
+    <polyline points="-165,-35 -150,-15 -115,-50" fill="none" stroke="white" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Second checkmark -->
+    <circle cx="0" cy="-30" r="50" fill="white" opacity="0.2"/>
+    <polyline points="-25,-35 -10,-15 25,-50" fill="none" stroke="white" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Third checkmark -->
+    <circle cx="140" cy="-30" r="50" fill="white" opacity="0.2"/>
+    <polyline points="115,-35 130,-15 165,-50" fill="none" stroke="white" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

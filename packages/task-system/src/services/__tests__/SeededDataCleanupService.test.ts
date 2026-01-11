@@ -3,7 +3,7 @@ import { AppointmentService } from "@services/AppointmentService";
 import { SeededDataCleanupService } from "@services/SeededDataCleanupService";
 
 // Mock deviceLogger to prevent import issues during test teardown
-jest.mock("@utils/deviceLogger", () => ({
+jest.mock("@utils/logging/deviceLogger", () => ({
   logWithDevice: jest.fn(),
   logErrorWithDevice: jest.fn(),
 }));

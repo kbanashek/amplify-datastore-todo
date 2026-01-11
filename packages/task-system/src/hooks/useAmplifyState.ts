@@ -1,9 +1,9 @@
 import { Amplify, Hub } from "@aws-amplify/core";
 import NetInfo from "@react-native-community/netinfo";
 import { initTaskSystem } from "@runtime/taskSystem";
-import { logWithDevice } from "@utils/deviceLogger";
-import { formatModelSyncLog } from "@utils/logFormatter";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { logWithDevice } from "@utils/logging/deviceLogger";
+import { formatModelSyncLog } from "@utils/logging/logFormatter";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 import { useEffect, useState } from "react";
 
 const logger = getServiceLogger("useAmplifyState");
@@ -304,13 +304,21 @@ export const useAmplifyState = (options?: {
         );
 
         // Initialize network status
-        NetInfo.fetch().then(state => {
-          if (isMounted) {
-            setNetworkStatus(
-              state.isConnected ? NetworkStatus.Online : NetworkStatus.Offline
-            );
-          }
-        });
+        NetInfo.fetch()
+          .then(state => {
+            if (isMounted) {
+              setNetworkStatus(
+                state.isConnected ? NetworkStatus.Online : NetworkStatus.Offline
+              );
+            }
+          })
+          .catch(error => {
+            logger.error("Failed to fetch initial network status", error);
+            // Default to offline if we can't determine network status
+            if (isMounted) {
+              setNetworkStatus(NetworkStatus.Offline);
+            }
+          });
 
         unsubscribeNetInfo = NetInfo.addEventListener(state => {
           if (isMounted) {

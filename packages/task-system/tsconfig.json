@@ -3,9 +3,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "jsx": "react-native",
+    "module": "esnext",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "paths": {
       "@components/*": ["src/components/*"],
       "@hooks/*": ["src/hooks/*"],
@@ -29,6 +30,7 @@
     "dist/**",
     "node_modules/**",
     "src/**/__stories__/**",
-    ".ondevice/**"
+    ".ondevice/**",
+    "docs/**"
   ]
 }

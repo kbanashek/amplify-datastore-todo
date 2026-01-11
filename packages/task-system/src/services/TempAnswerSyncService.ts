@@ -1,7 +1,7 @@
 import { DataStore } from "@aws-amplify/datastore";
 
 import { TaskTempAnswer } from "@models/index";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 /**
  * Service for managing temporary task answers using DataStore.

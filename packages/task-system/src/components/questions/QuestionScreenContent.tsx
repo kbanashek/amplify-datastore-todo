@@ -6,9 +6,9 @@
 
 import React, { useEffect, useRef } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { ParsedActivityData } from "@utils/activityParser";
-import { isAndroid } from "@utils/platform";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { ParsedActivityData } from "@utils/parsers/activityParser";
+import { isAndroid } from "@utils/platform/platform";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 import { QuestionRenderer } from "@components/questions/QuestionRenderer";
 import { QuestionScreenButtons } from "@components/questions/QuestionScreenButtons";
 import { Task } from "@task-types/Task";

@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { ActivityService } from "@services/ActivityService";
 import { Activity } from "@task-types/Activity";
-import { logErrorWithPlatform } from "@utils/platformLogger";
-import { dataSubscriptionLogger } from "@utils/dataSubscriptionLogger";
+import { logErrorWithPlatform } from "@utils/logging/platformLogger";
+import { dataSubscriptionLogger } from "@utils/logging/dataSubscriptionLogger";
 
 /**
  * Return type for the useActivityList hook.

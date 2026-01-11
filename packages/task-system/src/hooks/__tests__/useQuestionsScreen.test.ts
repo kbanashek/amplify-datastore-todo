@@ -63,7 +63,7 @@ import { useQuestionNavigation } from "@hooks/useQuestionNavigation";
 import { useQuestionSubmission } from "@hooks/useQuestionSubmission";
 import { TempAnswerSyncService } from "@services/TempAnswerSyncService";
 import { Task } from "@task-types/Task";
-import { ParsedActivityData } from "@utils/activityParser";
+import { ParsedActivityData } from "@utils/parsers/activityParser";
 import { ActivityConfig } from "@task-types/ActivityConfig";
 
 describe("useQuestionsScreen", () => {

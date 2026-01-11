@@ -1,11 +1,11 @@
 import { act, renderHook } from "@testing-library/react-native";
 import { Alert } from "react-native";
 import { ActivityConfig } from "@task-types/ActivityConfig";
-import { ParsedActivityData } from "@utils/activityParser";
+import { ParsedActivityData } from "@utils/parsers/activityParser";
 import { useQuestionNavigation } from "@hooks/useQuestionNavigation";
 
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { validateScreen } from "@utils/questionValidation";
+import { validateScreen } from "@utils/validation/questionValidation";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 
 // Mock react-navigation
@@ -22,7 +22,7 @@ jest.mock("@hooks/useTranslatedText", () => ({
 }));
 
 // Mock validation utilities
-jest.mock("@utils/questionValidation", () => ({
+jest.mock("@utils/validation/questionValidation", () => ({
   validateScreen: jest.fn(),
 }));
 

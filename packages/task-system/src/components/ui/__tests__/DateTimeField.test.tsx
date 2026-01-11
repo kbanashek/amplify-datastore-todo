@@ -3,7 +3,7 @@ import { render, fireEvent } from "@testing-library/react-native";
 import { DateTimeField } from "@components/ui/DateTimeField";
 
 // Mock platform utilities
-jest.mock("@utils/platform", () => ({
+jest.mock("@utils/platform/platform", () => ({
   isAndroid: jest.fn(() => false),
   isIOS: jest.fn(() => true),
 }));

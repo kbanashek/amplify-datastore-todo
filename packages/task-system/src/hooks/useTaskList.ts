@@ -3,8 +3,8 @@ import { useAmplify } from "@contexts/AmplifyContext";
 import { TaskService } from "@services/TaskService";
 import { Task, TaskFilters } from "@task-types/Task";
 import { NetworkStatus } from "@hooks/useAmplifyState";
-import { logWithPlatform, logErrorWithPlatform } from "@utils/platformLogger";
-import { dataSubscriptionLogger } from "@utils/dataSubscriptionLogger";
+import { logWithPlatform, logErrorWithPlatform } from "@utils/logging/platformLogger";
+import { dataSubscriptionLogger } from "@utils/logging/dataSubscriptionLogger";
 
 /**
  * Return type for the useTaskList hook.

@@ -10,7 +10,7 @@ import { AppColors } from "@constants/AppColors";
 import { Colors } from "@constants/Colors";
 import { useColorScheme } from "@hooks/useColorScheme";
 import { useNavigation } from "@react-navigation/native";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 import React from "react";
 import {
   Modal,

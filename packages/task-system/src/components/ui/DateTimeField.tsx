@@ -22,7 +22,7 @@ import {
 import { ThemedText } from "@components/ThemedText";
 import { AppColors } from "@constants/AppColors";
 import { useThemeColor } from "@hooks/useThemeColor";
-import { isAndroid, isIOS } from "@utils/platform";
+import { isAndroid, isIOS } from "@utils/platform/platform";
 
 /**
  * Date/time selection mode

@@ -13,7 +13,7 @@ import { AppFonts } from "@constants/AppFonts";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import { getImageStorageService } from "@services/ImageStorageService";
 import { Question } from "@task-types/ActivityConfig";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 import React, { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,

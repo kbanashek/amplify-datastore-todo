@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { seedTranslationMemories } from "@translations/index";
 import { LanguageCode } from "@services/translationTypes";
-import { simpleHash } from "@utils/simpleHash";
+import { simpleHash } from "@utils/system/simpleHash";
 
 const MEMORY_PREFIX = "translation_memory:";
 

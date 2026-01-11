@@ -3,8 +3,12 @@ import { useTaskAnswer } from "@hooks/useTaskAnswer";
 import { TaskService } from "@services/TaskService";
 import type { Activity } from "@task-types/Activity";
 import { ActivityConfig } from "@task-types/ActivityConfig";
-import { ParsedActivityData, parseActivityConfig } from "@utils/activityParser";
-import { getServiceLogger } from "@utils/serviceLogger";
+import type { AnswerValue } from "@task-types/AnswerValue";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
+import {
+  ParsedActivityData,
+  parseActivityConfig,
+} from "@utils/parsers/activityParser";
 import { DataStore } from "aws-amplify/datastore";
 import { useEffect, useRef, useState } from "react";
 import { TaskTempAnswer } from "../models";
@@ -13,10 +17,10 @@ const logger = getServiceLogger("useActivityData");
 
 /**
  * Interface representing a map of question IDs to answer values.
- * Answer values are unknown since they can be strings, numbers, booleans, arrays, or objects.
+ * Answer values can be strings, numbers, booleans, arrays, or objects as defined by AnswerValue.
  */
 interface AnswersMap {
-  [key: string]: unknown;
+  [key: string]: AnswerValue;
 }
 
 /**

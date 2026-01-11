@@ -1,6 +1,6 @@
 import { Alert, Linking } from "react-native";
 import { Appointment } from "@task-types/Appointment";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 /**
  * Navigation service for handling external navigation.

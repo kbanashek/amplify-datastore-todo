@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
 import { ReviewScreenContainer } from "@components/questions/ReviewScreenContainer";
-import { ParsedActivityData } from "@utils/activityParser";
+import { ParsedActivityData } from "@utils/parsers/activityParser";
 
 // Mock ReviewScreen
 jest.mock("@components/questions/ReviewScreen", () => {

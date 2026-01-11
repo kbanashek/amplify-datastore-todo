@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { ActivityService } from "@services/ActivityService";
-import { dataSubscriptionLogger } from "@utils/dataSubscriptionLogger";
+import { dataSubscriptionLogger } from "@utils/logging/dataSubscriptionLogger";
 
 /**
  * Startup hook that subscribes to activities on mount and logs them

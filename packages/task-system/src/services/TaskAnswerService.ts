@@ -1,7 +1,7 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
-import { logWithDevice, logErrorWithDevice } from "@utils/deviceLogger";
+import { logWithDevice, logErrorWithDevice } from "@utils/logging/deviceLogger";
 import { TaskAnswer } from "@models/index";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 import {
   CreateTaskAnswerInput,
   UpdateTaskAnswerInput,
@@ -129,50 +129,67 @@ export class TaskAnswerService {
         );
 
         callback(visibleItems, isSynced);
+      },
+      error => {
+        logErrorWithDevice(
+          "TaskAnswerService",
+          "DataStore subscription error",
+          error
+        );
+        callback([], false);
       }
     );
 
     // Also observe DELETE operations to ensure deletions trigger updates
-    const deleteObserver = DataStore.observe(TaskAnswer).subscribe(msg => {
-      if (msg.opType === OpType.DELETE) {
-        const element = msg.element as any;
-        const isLocalDelete = element?._deleted === true;
-        const source = isLocalDelete
-          ? OperationSource.LOCAL
-          : OperationSource.REMOTE_SYNC;
+    const deleteObserver = DataStore.observe(TaskAnswer).subscribe(
+      msg => {
+        if (msg.opType === OpType.DELETE) {
+          const element = msg.element as any;
+          const isLocalDelete = element?._deleted === true;
+          const source = isLocalDelete
+            ? OperationSource.LOCAL
+            : OperationSource.REMOTE_SYNC;
 
-        logWithDevice(
+          logWithDevice(
+            "TaskAnswerService",
+            `DELETE operation detected (${source})`,
+            {
+              taskAnswerId: element?.id,
+              taskId: element?.taskId,
+              deleted: element?._deleted,
+              operationType: msg.opType,
+            }
+          );
+
+          DataStore.query(TaskAnswer)
+            .then(answers => {
+              const visibleAnswers = filterNotDeleted(answers);
+              logWithDevice(
+                "TaskAnswerService",
+                "Query refresh after DELETE completed",
+                {
+                  remainingAnswerCount: visibleAnswers.length,
+                }
+              );
+              callback(visibleAnswers, true);
+            })
+            .catch(err => {
+              logErrorWithDevice(
+                "TaskAnswerService",
+                "Error refreshing after delete",
+                err
+              );
+            });
+        }
+      },
+      error => {
+        logErrorWithDevice(
           "TaskAnswerService",
-          `DELETE operation detected (${source})`,
-          {
-            taskAnswerId: element?.id,
-            taskId: element?.taskId,
-            deleted: element?._deleted,
-            operationType: msg.opType,
-          }
+          "DELETE observer error",
+          error
         );
-
-        DataStore.query(TaskAnswer)
-          .then(answers => {
-            const visibleAnswers = filterNotDeleted(answers);
-            logWithDevice(
-              "TaskAnswerService",
-              "Query refresh after DELETE completed",
-              {
-                remainingAnswerCount: visibleAnswers.length,
-              }
-            );
-            callback(visibleAnswers, true);
-          })
-          .catch(err => {
-            logErrorWithDevice(
-              "TaskAnswerService",
-              "Error refreshing after delete",
-              err
-            );
-          });
       }
-    });
+    );
 
     return {
       unsubscribe: () => {

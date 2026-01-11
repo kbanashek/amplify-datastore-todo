@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
 import { QuestionScreenContent } from "@components/questions/QuestionScreenContent";
-import { ParsedActivityData } from "@utils/activityParser";
+import { ParsedActivityData } from "@utils/parsers/activityParser";
 
 // Mock QuestionRenderer
 jest.mock("@components/questions/QuestionRenderer", () => {
@@ -42,7 +42,7 @@ jest.mock("@components/questions/QuestionScreenButtons", () => {
 });
 
 // Mock platform utils
-jest.mock("@utils/platform", () => ({
+jest.mock("@utils/platform/platform", () => ({
   isAndroid: jest.fn(() => false),
   getPlatform: jest.fn(() => "ios"),
 }));

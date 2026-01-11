@@ -29,7 +29,7 @@ jest.mock("@components/ui/IconSymbol", () => {
 });
 
 // Mock logger
-jest.mock("@utils/serviceLogger", () => ({
+jest.mock("@utils/logging/serviceLogger", () => ({
   getServiceLogger: jest.fn(() => ({
     error: jest.fn(),
     debug: jest.fn(),

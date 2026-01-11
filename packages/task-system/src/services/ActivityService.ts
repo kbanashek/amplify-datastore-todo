@@ -4,9 +4,9 @@ import { ModelName } from "@constants/modelNames";
 import { OperationSource } from "@constants/operationSource";
 import { Activity } from "@models/index";
 import { CreateActivityInput, UpdateActivityInput } from "@task-types/Activity";
-import { logErrorWithDevice, logWithDevice } from "@utils/deviceLogger";
-import { getServiceLogger } from "@utils/serviceLogger";
-import { dataSubscriptionLogger } from "@utils/dataSubscriptionLogger";
+import { logErrorWithDevice, logWithDevice } from "@utils/logging/deviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
+import { dataSubscriptionLogger } from "@utils/logging/dataSubscriptionLogger";
 
 type ActivityUpdateData = Omit<UpdateActivityInput, "id" | "_version">;
 
@@ -136,50 +136,67 @@ export class ActivityService {
         );
 
         callback(items, isSynced);
+      },
+      error => {
+        logErrorWithDevice(
+          "ActivityService",
+          "DataStore subscription error",
+          error
+        );
+        callback([], false);
       }
     );
 
     // Also observe DELETE operations to ensure deletions trigger updates
-    const deleteObserver = DataStore.observe(Activity).subscribe(msg => {
-      if (msg.opType === OpType.DELETE) {
-        const element = msg.element as any;
-        const isLocalDelete = element?._deleted === true;
-        const source = isLocalDelete
-          ? OperationSource.LOCAL
-          : OperationSource.REMOTE_SYNC;
+    const deleteObserver = DataStore.observe(Activity).subscribe(
+      msg => {
+        if (msg.opType === OpType.DELETE) {
+          const element = msg.element as any;
+          const isLocalDelete = element?._deleted === true;
+          const source = isLocalDelete
+            ? OperationSource.LOCAL
+            : OperationSource.REMOTE_SYNC;
 
-        logWithDevice(
+          logWithDevice(
+            "ActivityService",
+            `DELETE operation detected (${source})`,
+            {
+              activityId: element?.id,
+              activityName: element?.name || element?.title,
+              deleted: element?._deleted,
+              operationType: msg.opType,
+            }
+          );
+
+          DataStore.query(Activity)
+            .then(activities => {
+              logWithDevice(
+                "ActivityService",
+                "Query refresh after DELETE completed",
+                {
+                  remainingActivityCount: activities.length,
+                  remainingActivityIds: activities.map(a => a.id),
+                }
+              );
+              callback(activities, true);
+            })
+            .catch(err => {
+              logErrorWithDevice(
+                "ActivityService",
+                "Error refreshing after delete",
+                err
+              );
+            });
+        }
+      },
+      error => {
+        logErrorWithDevice(
           "ActivityService",
-          `DELETE operation detected (${source})`,
-          {
-            activityId: element?.id,
-            activityName: element?.name || element?.title,
-            deleted: element?._deleted,
-            operationType: msg.opType,
-          }
+          "DELETE observer error",
+          error
         );
-
-        DataStore.query(Activity)
-          .then(activities => {
-            logWithDevice(
-              "ActivityService",
-              "Query refresh after DELETE completed",
-              {
-                remainingActivityCount: activities.length,
-                remainingActivityIds: activities.map(a => a.id),
-              }
-            );
-            callback(activities, true);
-          })
-          .catch(err => {
-            logErrorWithDevice(
-              "ActivityService",
-              "Error refreshing after delete",
-              err
-            );
-          });
       }
-    });
+    );
 
     return {
       unsubscribe: () => {

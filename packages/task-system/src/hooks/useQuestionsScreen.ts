@@ -14,8 +14,8 @@ import { TaskService } from "@services/TaskService";
 import { TempAnswerSyncService } from "@services/TempAnswerSyncService";
 import type { AnswerValue } from "@task-types/AnswerValue";
 import { Task, TaskStatus } from "@task-types/Task";
-import { getServiceLogger } from "@utils/serviceLogger";
-import { extractActivityIdFromTask } from "@utils/taskUtils";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
+import { extractActivityIdFromTask } from "@utils/tasks/taskUtils";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 const logger = getServiceLogger("useQuestionsScreen");

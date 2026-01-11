@@ -8,9 +8,9 @@ import {
   TaskType,
   UpdateTaskInput,
 } from "@task-types/Task";
-import { dataSubscriptionLogger } from "@utils/dataSubscriptionLogger";
-import { logWithDevice } from "@utils/deviceLogger";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { dataSubscriptionLogger } from "@utils/logging/dataSubscriptionLogger";
+import { logWithDevice } from "@utils/logging/deviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 import {
   createTaskSchema,
   taskFiltersSchema,
@@ -281,6 +281,11 @@ export class TaskService {
         }
 
         callback(items as Task[], isSynced);
+      },
+      error => {
+        logger.error("AWS DataStore subscription error", error);
+        // Provide empty array to prevent app crash
+        callback([], false);
       }
     );
 

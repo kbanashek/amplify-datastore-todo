@@ -2,7 +2,7 @@ import { renderHook, act, waitFor } from "@testing-library/react-native";
 import { useQuestionSubmission } from "@hooks/useQuestionSubmission";
 import { Alert } from "react-native";
 import { TaskStatus } from "@task-types/Task";
-import { ParsedActivityData } from "@utils/activityParser";
+import { ParsedActivityData } from "@utils/parsers/activityParser";
 import { ActivityConfig } from "@task-types/ActivityConfig";
 
 // Mock hooks
@@ -19,14 +19,14 @@ jest.mock("@hooks/useTaskUpdate", () => ({
 }));
 
 // Mock validation utilities
-jest.mock("@utils/questionValidation", () => ({
+jest.mock("@utils/validation/questionValidation", () => ({
   validateAllScreens: jest.fn(),
 }));
 
 import { useTaskAnswer } from "@hooks/useTaskAnswer";
 import { useDataPointInstance } from "@hooks/useDataPointInstance";
 import { useTaskUpdate } from "@hooks/useTaskUpdate";
-import { validateAllScreens } from "@utils/questionValidation";
+import { validateAllScreens } from "@utils/validation/questionValidation";
 import { TaskAnswer } from "@task-types/TaskAnswer";
 import { DataPointInstance } from "@task-types/DataPoint";
 import { Task } from "@task-types/Task";

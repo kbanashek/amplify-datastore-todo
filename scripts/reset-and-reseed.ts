@@ -17,7 +17,7 @@ import awsconfig from "../aws-exports";
 import { SeededDataCleanupService } from "@orion/task-system";
 import { seedCoordinatedData } from "./seed-coordinated-data";
 import { Task } from "../models";
-import { logWithDevice, logErrorWithDevice } from "../src/utils/deviceLogger";
+import { logWithDevice, logErrorWithDevice } from "../packages/task-system/src/utils/logging/deviceLogger";
 
 // Configure Amplify
 Amplify.configure(awsconfig);

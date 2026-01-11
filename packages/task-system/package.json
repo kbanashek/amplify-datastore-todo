@@ -1,8 +1,8 @@
 {
   "name": "@orion/task-system",
   "version": "0.0.2",
-  "description": "Orion Task System UI components (React Native).",
-  "license": "UNLICENSED",
+  "description": "Orion Task System",
+  "license": "ClinicalInk Private",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "files": [

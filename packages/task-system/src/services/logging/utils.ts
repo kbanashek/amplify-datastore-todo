@@ -7,7 +7,7 @@ import { LogLevel, LogLevelPreset } from "@services/logging/types";
 import {
   formatObjectForLog,
   parseJsonStrings,
-} from "@utils/logFormatter";
+} from "@utils/logging/logFormatter";
 
 /**
  * Sentry severity level constants
