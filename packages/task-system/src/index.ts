@@ -138,8 +138,18 @@ export {
 // TempAnswerSync types removed - DataStore handles sync automatically
 
 // Activity parsing types/utils
-export { getDisplayProperty, parseActivityConfig } from "@utils/activityParser";
-export type { ParsedActivityData } from "@utils/activityParser";
+export {
+  getDisplayProperty,
+  parseActivityConfig,
+} from "@utils/parsers/activityParser";
+export type { ParsedActivityData } from "@utils/parsers/activityParser";
+export {
+  getDeviceId,
+  getLogPrefix,
+  logWithDevice,
+  logErrorWithDevice,
+} from "@utils/logging/deviceLogger";
+export { getPlatformIcon } from "@utils/icons/platformIcons";
 
 // Export utils commonly used by host apps
 export {
@@ -149,7 +159,7 @@ export {
   getTimezoneAbbreviation,
   groupAppointmentsByDate,
   parseAppointmentData,
-} from "@utils/appointmentParser";
+} from "@utils/parsers/appointmentParser";
 
 // Export constants
 export { AWSErrorName } from "@constants/awsErrors";

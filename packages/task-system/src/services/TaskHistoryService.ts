@@ -1,13 +1,12 @@
-import { DataStore, OpType } from "@aws-amplify/datastore";
-import { logWithDevice, logErrorWithDevice } from "@utils/deviceLogger";
+import { DataStore } from "@aws-amplify/datastore";
+import { logWithDevice } from "@utils/logging/deviceLogger";
 import { TaskHistory } from "@models/index";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 import {
   CreateTaskHistoryInput,
   UpdateTaskHistoryInput,
 } from "@task-types/TaskHistory";
 import { ModelName } from "@constants/modelNames";
-import { OperationSource } from "@constants/operationSource";
 
 type TaskHistoryUpdateData = Omit<UpdateTaskHistoryInput, "id" | "_version">;
 
@@ -129,56 +128,26 @@ export class TaskHistoryService {
         );
 
         callback(visibleItems, isSynced);
+      },
+      (error: unknown) => {
+        getServiceLogger("TaskHistoryService").error(
+          "DataStore subscription error",
+          error instanceof Error ? error : new Error(String(error)),
+          "DATA",
+          "❌"
+        );
+        callback([], false);
       }
     );
 
-    // Also observe DELETE operations to ensure deletions trigger updates
-    const deleteObserver = DataStore.observe(TaskHistory).subscribe(msg => {
-      if (msg.opType === OpType.DELETE) {
-        const element = msg.element as any;
-        const isLocalDelete = element?._deleted === true;
-        const source = isLocalDelete
-          ? OperationSource.LOCAL
-          : OperationSource.REMOTE_SYNC;
-
-        logWithDevice(
-          "TaskHistoryService",
-          `DELETE operation detected (${source})`,
-          {
-            taskHistoryId: element?.id,
-            taskId: element?.taskId,
-            deleted: element?._deleted,
-            operationType: msg.opType,
-          }
-        );
-
-        DataStore.query(TaskHistory)
-          .then(histories => {
-            const visibleHistories = filterNotDeleted(histories);
-            logWithDevice(
-              "TaskHistoryService",
-              "Query refresh after DELETE completed",
-              {
-                remainingHistoryCount: visibleHistories.length,
-              }
-            );
-            callback(visibleHistories, true);
-          })
-          .catch(err => {
-            logErrorWithDevice(
-              "TaskHistoryService",
-              "Error refreshing after delete",
-              err
-            );
-          });
-      }
-    });
+    // Note: DELETE operations are already handled by observeQuery
+    // The filterNotDeleted() function above removes deleted items from the snapshot
+    // No need for a separate deleteObserver to avoid duplicate callbacks
 
     return {
       unsubscribe: () => {
         logWithDevice("TaskHistoryService", "Unsubscribing from DataStore");
         querySubscription.unsubscribe();
-        deleteObserver.unsubscribe();
       },
     };
   }

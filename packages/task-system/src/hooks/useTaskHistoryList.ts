@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { TaskHistoryService } from "@services/TaskHistoryService";
 import { TaskHistory } from "@task-types/TaskHistory";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 const logger = getServiceLogger("useTaskHistoryList");
 

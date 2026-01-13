@@ -10,8 +10,8 @@
 import { TaskService } from "@services/TaskService";
 import { Task, TaskStatus } from "@task-types/Task";
 import { useTaskTranslation } from "@translations/index";
-import { getServiceLogger } from "@utils/serviceLogger";
-import { getTaskIcon } from "@utils/taskIcon";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
+import { getTaskIcon } from "@utils/icons/taskIcon";
 import { useCallback, useMemo } from "react";
 
 const logger = getServiceLogger("useTaskCard");

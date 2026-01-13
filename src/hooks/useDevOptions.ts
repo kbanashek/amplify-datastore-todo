@@ -31,6 +31,7 @@ export interface UseDevOptionsReturn {
   isSeedingAppointments: boolean;
   isDeleting: boolean;
   isForceSyncing: boolean;
+  isResyncing: boolean;
 
   seedResult: DevOptionsSeedResult | null;
   appointmentSeedResult: DevOptionsAppointmentSeedResult | null;
@@ -53,6 +54,7 @@ export interface UseDevOptionsReturn {
   nuclearDeleteCloud: () => Promise<void>;
 
   forceSyncThisDevice: () => Promise<void>;
+  forceDataStoreResync: () => Promise<void>;
 }
 
 const buildFixtureForToday = () => {
@@ -71,6 +73,7 @@ export const useDevOptions = (): UseDevOptionsReturn => {
   const [isSeedingAppointments, setIsSeedingAppointments] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isForceSyncing, setIsForceSyncing] = useState(false);
+  const [isResyncing, setIsResyncing] = useState(false);
 
   const [seedResult, setSeedResult] = useState<DevOptionsSeedResult | null>(
     null
@@ -85,9 +88,16 @@ export const useDevOptions = (): UseDevOptionsReturn => {
       isImportingFixture ||
       isSeedingAppointments ||
       isDeleting ||
-      isForceSyncing
+      isForceSyncing ||
+      isResyncing
     );
-  }, [isImportingFixture, isSeedingAppointments, isDeleting, isForceSyncing]);
+  }, [
+    isImportingFixture,
+    isSeedingAppointments,
+    isDeleting,
+    isForceSyncing,
+    isResyncing,
+  ]);
 
   const generateFixtureJson = useCallback((): void => {
     const generated = buildFixtureForToday();
@@ -313,12 +323,37 @@ export const useDevOptions = (): UseDevOptionsReturn => {
     }
   }, []);
 
+  /**
+   * Force DataStore Resync
+   *
+   * Clears local DataStore cache and forces a fresh pull from AWS.
+   * This fixes sync issues without requiring app deletion/reinstallation.
+   *
+   * Uses clearCacheAndResync utility which:
+   * - Clears local SQLite cache
+   * - Restarts DataStore
+   * - Pulls fresh data from AWS
+   */
+  const forceDataStoreResync = useCallback(async (): Promise<void> => {
+    setIsResyncing(true);
+    setLastError(null);
+    try {
+      await clearCacheAndResync();
+    } catch (error: unknown) {
+      setLastError(error instanceof Error ? error.message : String(error));
+      throw error;
+    } finally {
+      setIsResyncing(false);
+    }
+  }, []);
+
   return {
     isBusy,
     isImportingFixture,
     isSeedingAppointments,
     isDeleting,
     isForceSyncing,
+    isResyncing,
     seedResult,
     appointmentSeedResult,
     generatedFixtureJson,
@@ -335,5 +370,6 @@ export const useDevOptions = (): UseDevOptionsReturn => {
     deleteAppointmentsOnly,
     nuclearDeleteCloud,
     forceSyncThisDevice,
+    forceDataStoreResync,
   };
 };

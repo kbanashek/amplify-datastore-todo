@@ -1,10 +1,10 @@
 import { DataStore, OpType } from "@aws-amplify/datastore";
 import { Question } from "@models/index";
 import { CreateQuestionInput, UpdateQuestionInput } from "@task-types/Question";
-import { logWithDevice, logErrorWithDevice } from "@utils/deviceLogger";
+import { logWithDevice, logErrorWithDevice } from "@utils/logging/deviceLogger";
 import { ModelName } from "@constants/modelNames";
 import { OperationSource } from "@constants/operationSource";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 type QuestionUpdateData = Omit<UpdateQuestionInput, "id" | "_version">;
 
@@ -131,49 +131,62 @@ export class QuestionService {
         });
 
         callback(items, isSynced);
+      },
+      error => {
+        logErrorWithDevice(
+          "QuestionService",
+          "DataStore subscription error",
+          error
+        );
+        callback([], false);
       }
     );
 
     // Also observe DELETE operations to ensure deletions trigger updates
-    const deleteObserver = DataStore.observe(Question).subscribe(msg => {
-      if (msg.opType === OpType.DELETE) {
-        const element = msg.element as any;
-        const isLocalDelete = element?._deleted === true;
-        const source = isLocalDelete
-          ? OperationSource.LOCAL
-          : OperationSource.REMOTE_SYNC;
+    const deleteObserver = DataStore.observe(Question).subscribe(
+      msg => {
+        if (msg.opType === OpType.DELETE) {
+          const element = msg.element as any;
+          const isLocalDelete = element?._deleted === true;
+          const source = isLocalDelete
+            ? OperationSource.LOCAL
+            : OperationSource.REMOTE_SYNC;
 
-        logWithDevice(
-          "QuestionService",
-          `DELETE operation detected (${source})`,
-          {
-            questionId: element?.id,
-            questionText: element?.question,
-            deleted: element?._deleted,
-            operationType: msg.opType,
-          }
-        );
+          logWithDevice(
+            "QuestionService",
+            `DELETE operation detected (${source})`,
+            {
+              questionId: element?.id,
+              questionText: element?.question,
+              deleted: element?._deleted,
+              operationType: msg.opType,
+            }
+          );
 
-        DataStore.query(Question)
-          .then(questions => {
-            logWithDevice(
-              "QuestionService",
-              "Query refresh after DELETE completed",
-              {
-                remainingQuestionCount: questions.length,
-              }
-            );
-            callback(questions, true);
-          })
-          .catch(err => {
-            logErrorWithDevice(
-              "QuestionService",
-              "Error refreshing after delete",
-              err
-            );
-          });
+          DataStore.query(Question)
+            .then(questions => {
+              logWithDevice(
+                "QuestionService",
+                "Query refresh after DELETE completed",
+                {
+                  remainingQuestionCount: questions.length,
+                }
+              );
+              callback(questions, true);
+            })
+            .catch(err => {
+              logErrorWithDevice(
+                "QuestionService",
+                "Error refreshing after delete",
+                err
+              );
+            });
+        }
+      },
+      error => {
+        logErrorWithDevice("QuestionService", "DELETE observer error", error);
       }
-    });
+    );
 
     return {
       unsubscribe: () => {

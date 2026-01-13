@@ -8,9 +8,9 @@ import {
   TaskType,
   UpdateTaskInput,
 } from "@task-types/Task";
-import { dataSubscriptionLogger } from "@utils/dataSubscriptionLogger";
-import { logWithDevice } from "@utils/deviceLogger";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { dataSubscriptionLogger } from "@utils/logging/dataSubscriptionLogger";
+import { logWithDevice } from "@utils/logging/deviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 import {
   createTaskSchema,
   taskFiltersSchema,
@@ -20,6 +20,7 @@ import {
 } from "../schemas/taskSchemas";
 
 type TaskUpdateData = Omit<UpdateTaskInput, "id" | "_version">;
+type DataStoreTaskInput = ConstructorParameters<typeof DataStoreTask>[0];
 
 export class TaskService {
   /**
@@ -44,10 +45,9 @@ export class TaskService {
         "DATA",
         "☁️"
       );
+      // Validation ensures required fields exist; cast to DataStoreTask constructor input type
       const task = await DataStore.save(
-        new DataStoreTask({
-          ...validatedInput,
-        })
+        new DataStoreTask(validatedInput as DataStoreTaskInput)
       );
 
       logger.info(
@@ -281,6 +281,11 @@ export class TaskService {
         }
 
         callback(items as Task[], isSynced);
+      },
+      error => {
+        logger.error("AWS DataStore subscription error", error);
+        // Provide empty array to prevent app crash
+        callback([], false);
       }
     );
 

@@ -81,7 +81,7 @@ Browse and test UI components interactively on-device:
 - **📡 Offline-First** - Seamless synchronization with AWS AppSync
 - **🛡️ Type Safety** - Full TypeScript with comprehensive unit tests
 
-📖 **For detailed feature information**, see [Implementation Status](DOCS/implementation-status.md)
+📖 **For detailed feature information**, see [Implementation Status](DOCS/features/implementation-status.md)
 
 ---
 
@@ -118,11 +118,11 @@ flowchart TD
 
 📖 **For detailed architecture information**, see:
 
-- [Component Library](DOCS/component-library.md)
-- [Project Structure](DOCS/project-structure.md)
-- [AWS Architecture](DOCS/aws-architecture.md)
-- [Development Guidelines](DOCS/development-guidelines.md)
-- [Task System Package (LX Integration)](DOCS/task-system-package.md)
+- [Component Library](DOCS/architecture/component-library.md)
+- [Project Structure](DOCS/architecture/project-structure.md)
+- [AWS Architecture](DOCS/architecture/aws-architecture.md)
+- [Development Guidelines](DOCS/development/development-guidelines.md)
+- [Task System Package (LX Integration)](DOCS/features/task-system-package.md)
 
 ---
 
@@ -194,24 +194,50 @@ flowchart TD
 
 ## 📚 Documentation
 
-| Document                                                                 | Description                                                |
-| ------------------------------------------------------------------------ | ---------------------------------------------------------- |
-| **[Implementation Status](DOCS/implementation-status.md)**               | Current feature implementation status and what's missing   |
-| **[Roadmap](DOCS/roadmap.md)**                                           | Future development priorities and planned features         |
-| **[Component Library](DOCS/component-library.md)**                       | Component library structure, principles, and roadmap       |
-| **[Project Structure](DOCS/project-structure.md)**                       | Detailed directory structure and organization              |
-| **[AWS Architecture](DOCS/aws-architecture.md)**                         | AWS services, data flow, and conflict resolution           |
-| **[Development Guidelines](DOCS/development-guidelines.md)**             | Coding standards, testing requirements, and best practices |
-| **[Documentation Index](DOCS/README.md)**                                | Complete documentation index organized by category         |
-| **[Development Guidelines](DOCS/development/development-guidelines.md)** | Coding standards, testing requirements, and best practices |
-| **[Testing Guide](DOCS/development/testing.md)**                         | Unit test requirements, coverage, and examples             |
-| **[Logging Service](DOCS/development/logging-service.md)**               | Centralized logging service documentation                  |
-| **[Coverage Setup](DOCS/development/coverage-setup.md)**                 | GitHub Actions coverage reporting and Codecov setup        |
-| **[AWS Architecture](DOCS/architecture/aws-architecture.md)**            | AWS services, data flow, and conflict resolution           |
-| **[Project Structure](DOCS/architecture/project-structure.md)**          | Detailed directory structure and organization              |
-| **[Component Library](DOCS/architecture/component-library.md)**          | Component library structure, principles, and roadmap       |
-| **[Native Build Fixes](DOCS/troubleshooting/native-build-fixes.md)**     | Required fixes for iOS and Android native builds           |
-| **[Roadmap](DOCS/planning/roadmap.md)**                                  | Future development priorities and planned features         |
+### 🚀 Getting Started
+
+| Document                                       | Description                            |
+| ---------------------------------------------- | -------------------------------------- |
+| **[Getting Started](DOCS/GETTING-STARTED.md)** | Complete onboarding guide (30 minutes) |
+| **[Documentation Index](DOCS/README.md)**      | Complete documentation index           |
+
+### 🏗️ Architecture & Design
+
+| Document                                                        | Description                                      |
+| --------------------------------------------------------------- | ------------------------------------------------ |
+| **[AWS Architecture](DOCS/architecture/aws-architecture.md)**   | AWS services, data flow, and conflict resolution |
+| **[Component Library](DOCS/architecture/component-library.md)** | Component library structure and patterns         |
+| **[Project Structure](DOCS/architecture/project-structure.md)** | Detailed directory structure                     |
+
+### 💻 Development
+
+| Document                                                                 | Description                         |
+| ------------------------------------------------------------------------ | ----------------------------------- |
+| **[Development Guidelines](DOCS/development/development-guidelines.md)** | Coding standards and best practices |
+| **[Testing Guide](DOCS/development/testing.md)**                         | Unit test requirements and examples |
+| **[Logging Service](DOCS/development/logging-service.md)**               | Centralized logging documentation   |
+| **[Coverage Setup](DOCS/development/coverage-setup.md)**                 | GitHub Actions coverage reporting   |
+
+### ✨ Features
+
+| Document                                                            | Description                              |
+| ------------------------------------------------------------------- | ---------------------------------------- |
+| **[Implementation Status](DOCS/features/implementation-status.md)** | Current feature implementation status    |
+| **[Task System Package](DOCS/features/task-system-package.md)**     | @orion/task-system package documentation |
+| **[Translations](DOCS/features/translations.md)**                   | Internationalization system              |
+
+### 📋 Planning
+
+| Document                                | Description                        |
+| --------------------------------------- | ---------------------------------- |
+| **[Roadmap](DOCS/planning/roadmap.md)** | Development priorities and roadmap |
+| **[Todos](DOCS/planning/todos.md)**     | Current task list                  |
+
+### 🔧 Troubleshooting
+
+| Document                                                             | Description                               |
+| -------------------------------------------------------------------- | ----------------------------------------- |
+| **[Native Build Fixes](DOCS/troubleshooting/native-build-fixes.md)** | Required fixes for iOS and Android builds |
 
 ---
 
@@ -219,7 +245,7 @@ flowchart TD
 
 **All new code must include unit tests.** This is a mandatory requirement for hooks, services, components, and utility functions.
 
-📖 **For detailed testing requirements and examples**, see [Testing Guide](DOCS/testing.md)
+📖 **For detailed testing requirements and examples**, see [Testing Guide](DOCS/development/testing.md)
 
 **Quick Start:**
 
@@ -251,9 +277,9 @@ yarn test:coverage
 - ⚠️ **Partially Implemented**: Rule fields (stored but not enforced), task visibility, anchors
 - 🚧 **Not Yet Implemented**: Rule engine, time-based validation, anchor rescheduling
 
-📖 **For detailed status information**, see [Implementation Status](DOCS/implementation-status.md)
+📖 **For detailed status information**, see [Implementation Status](DOCS/features/implementation-status.md)
 
-📖 **For future plans**, see [Roadmap](DOCS/roadmap.md)
+📖 **For future plans**, see [Roadmap](DOCS/planning/roadmap.md)
 
 ## 📦 Project Structure
 
@@ -263,7 +289,7 @@ This project uses **yarn workspaces** with the following structure:
 - **Workspace Package** (`packages/task-system/`) - Reusable task/activity module (`@orion/task-system`)
 - **Shared Components** (`components/ui/`) - Base UI design system components
 
-📖 **For detailed structure information**, see [Project Structure](DOCS/project-structure.md) and [Task System Package](DOCS/task-system-package.md)
+📖 **For detailed structure information**, see [Project Structure](DOCS/architecture/project-structure.md) and [Task System Package](DOCS/features/task-system-package.md)
 
 ---
 

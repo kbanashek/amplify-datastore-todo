@@ -10,7 +10,7 @@ import { AppColors } from "@constants/AppColors";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTaskTranslation } from "@translations/index";
 import { Choice, Question } from "@task-types/ActivityConfig";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 const logger = getServiceLogger("SingleSelectQuestion");
 

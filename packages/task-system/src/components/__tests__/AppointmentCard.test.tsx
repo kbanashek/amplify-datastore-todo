@@ -33,7 +33,7 @@ jest.mock("@translations/index", () => ({
 }));
 
 // Mock utilities
-jest.mock("@utils/appointmentIcon", () => ({
+jest.mock("@utils/icons/appointmentIcon", () => ({
   getAppointmentIconConfig: jest.fn((type: string) => {
     if (type === "TELEVISIT") {
       return {
@@ -48,7 +48,7 @@ jest.mock("@utils/appointmentIcon", () => ({
   }),
 }));
 
-jest.mock("@utils/appointmentParser", () => ({
+jest.mock("@utils/parsers/appointmentParser", () => ({
   formatTime: jest.fn((date: Date) => "10:00 AM"),
   getTimezoneAbbreviation: jest.fn((tz?: string) => (tz ? "EST" : null)),
 }));

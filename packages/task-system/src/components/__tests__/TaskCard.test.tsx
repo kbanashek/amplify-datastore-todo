@@ -25,7 +25,7 @@ jest.mock("@translations/index", () => ({
 }));
 
 // Mock getTaskIcon
-jest.mock("@utils/taskIcon", () => ({
+jest.mock("@utils/icons/taskIcon", () => ({
   getTaskIcon: jest.fn((task: Task) => ({
     name: "pills",
     color: "#007AFF",
@@ -65,7 +65,7 @@ jest.mock("@components/ui/IconSymbol", () => {
 });
 
 // Mock logger
-jest.mock("@utils/serviceLogger", () => ({
+jest.mock("@utils/logging/serviceLogger", () => ({
   getServiceLogger: jest.fn(() => ({
     error: jest.fn(),
     debug: jest.fn(),

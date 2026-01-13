@@ -52,7 +52,7 @@ describe("TabLayout Regression Tests", () => {
       "task-results",
       "task-history",
       "appointment-details",
-      "lx-host-example",
+      "storybook",
     ];
 
     hiddenScreens.forEach(screenName => {

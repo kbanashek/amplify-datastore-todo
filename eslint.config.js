@@ -151,4 +151,18 @@ module.exports = defineConfig([
       "import/no-unresolved": "off", // aws-exports is a generated file, not in repo
     },
   },
+  {
+    files: ["scripts/**/*.js"],
+    languageOptions: {
+      globals: {
+        __dirname: "readonly",
+        __filename: "readonly",
+        process: "readonly",
+        console: "readonly",
+      },
+    },
+    rules: {
+      "no-console": "off", // Allow console in scripts
+    },
+  },
 ]);

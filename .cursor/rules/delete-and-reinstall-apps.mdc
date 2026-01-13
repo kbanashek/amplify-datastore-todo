@@ -1,0 +1,54 @@
+# Delete and Reinstall Apps Command
+
+## Purpose
+Quickly delete and reinstall both iOS and Android apps from simulators/emulators. Useful for:
+- Clearing corrupted local DataStore caches
+- Testing fresh installs after adding packages
+- Starting with clean state after schema changes
+
+## Command Usage
+
+When the user says:
+- "delete and reinstall apps"
+- "reinstall both apps"
+- "fresh install"
+- "delete apps"
+
+Execute these steps:
+
+### Step 1: Delete Both Apps
+```bash
+cd /Users/Kyle.Banashek/Source/orion-task-system && ./scripts/delete-apps.sh
+```
+
+Or use the package.json script:
+```bash
+yarn delete-apps
+```
+
+### Step 2: Reinstall Apps
+After deletion completes, tell the user:
+```
+✅ Apps deleted. Now reinstall:
+- Press 'i' for iOS
+- Press 'a' for Android
+(in the Expo terminal)
+```
+
+## Script Location
+- Script: `scripts/delete-apps.sh`
+- Package command: `yarn delete-apps`
+
+## What It Does
+1. Deletes iOS app from simulator: `xcrun simctl uninstall booted com.orion.tasksystem`
+2. Deletes Android app from emulator: `adb uninstall com.orion.tasksystem`
+3. Shows success/error messages for each
+
+## Bundle Identifiers
+- iOS: `com.orion.tasksystem`
+- Android: `com.orion.tasksystem`
+
+## Notes
+- Simulators/emulators must be running
+- Apps will need to be reinstalled via Expo after deletion
+- This clears all local data (SQLite, AsyncStorage, etc.)

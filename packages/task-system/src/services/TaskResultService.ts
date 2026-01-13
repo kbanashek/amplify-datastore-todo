@@ -5,8 +5,8 @@ import {
   CreateTaskResultInput,
   UpdateTaskResultInput,
 } from "@task-types/TaskResult";
-import { logErrorWithDevice, logWithDevice } from "@utils/deviceLogger";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { logErrorWithDevice, logWithDevice } from "@utils/logging/deviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 type TaskResultUpdateData = Omit<UpdateTaskResultInput, "id" | "_version">;
 
@@ -128,50 +128,63 @@ export class TaskResultService {
         );
 
         callback(visibleItems, isSynced);
+      },
+      error => {
+        logErrorWithDevice(
+          "TaskResultService",
+          "DataStore subscription error",
+          error
+        );
+        callback([], false);
       }
     );
 
     // Also observe DELETE operations to ensure deletions trigger updates
-    const deleteObserver = DataStore.observe(TaskResult).subscribe(msg => {
-      if (msg.opType === OpType.DELETE) {
-        const element = msg.element as any;
-        const isLocalDelete = element?._deleted === true;
-        const source = isLocalDelete
-          ? OperationSource.LOCAL
-          : OperationSource.REMOTE_SYNC;
+    const deleteObserver = DataStore.observe(TaskResult).subscribe(
+      msg => {
+        if (msg.opType === OpType.DELETE) {
+          const element = msg.element as any;
+          const isLocalDelete = element?._deleted === true;
+          const source = isLocalDelete
+            ? OperationSource.LOCAL
+            : OperationSource.REMOTE_SYNC;
 
-        logWithDevice(
-          "TaskResultService",
-          `DELETE operation detected (${source})`,
-          {
-            taskResultId: element?.id,
-            taskId: element?.taskId,
-            deleted: element?._deleted,
-            operationType: msg.opType,
-          }
-        );
+          logWithDevice(
+            "TaskResultService",
+            `DELETE operation detected (${source})`,
+            {
+              taskResultId: element?.id,
+              taskId: element?.taskId,
+              deleted: element?._deleted,
+              operationType: msg.opType,
+            }
+          );
 
-        DataStore.query(TaskResult)
-          .then(results => {
-            const visibleResults = filterNotDeleted(results);
-            logWithDevice(
-              "TaskResultService",
-              "Query refresh after DELETE completed",
-              {
-                remainingResultCount: visibleResults.length,
-              }
-            );
-            callback(visibleResults, true);
-          })
-          .catch(err => {
-            logErrorWithDevice(
-              "TaskResultService",
-              "Error refreshing after delete",
-              err
-            );
-          });
+          DataStore.query(TaskResult)
+            .then(results => {
+              const visibleResults = filterNotDeleted(results);
+              logWithDevice(
+                "TaskResultService",
+                "Query refresh after DELETE completed",
+                {
+                  remainingResultCount: visibleResults.length,
+                }
+              );
+              callback(visibleResults, true);
+            })
+            .catch(err => {
+              logErrorWithDevice(
+                "TaskResultService",
+                "Error refreshing after delete",
+                err
+              );
+            });
+        }
+      },
+      error => {
+        logErrorWithDevice("TaskResultService", "DELETE observer error", error);
       }
-    });
+    );
 
     return {
       unsubscribe: () => {

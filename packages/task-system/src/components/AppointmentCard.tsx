@@ -5,8 +5,11 @@ import { useRTL } from "@hooks/useRTL";
 import { useTranslatedText } from "@hooks/useTranslatedText";
 import { Appointment } from "@task-types/Appointment";
 import { useTaskTranslation } from "@translations/index";
-import { getAppointmentIconConfig } from "@utils/appointmentIcon";
-import { formatTime, getTimezoneAbbreviation } from "@utils/appointmentParser";
+import { getAppointmentIconConfig } from "@utils/icons/appointmentIcon";
+import {
+  formatTime,
+  getTimezoneAbbreviation,
+} from "@utils/parsers/appointmentParser";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 

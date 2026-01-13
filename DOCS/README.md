@@ -49,16 +49,18 @@ Coding standards, testing, and development guides:
 
 Feature-specific documentation and implementation details:
 
-| Document                                                                 | Purpose                         | Priority      |
-| ------------------------------------------------------------------------ | ------------------------------- | ------------- |
-| **[Implementation Status](features/implementation-status.md)**           | What's built / not built        | 🔥 READ FIRST |
-| **[Task System Package](features/task-system-package.md)**               | @orion/task-system package docs | ⭐ Important  |
-| **[Translations](features/translations.md)**                             | i18n system documentation       | ⭐ Important  |
-| **[Task System Fixture](features/task-system-fixture-and-hydration.md)** | Fixture generation & hydration  | -             |
-| **[Translation Memory](features/translation-memory.md)**                 | Translation service & memory    | -             |
-| **[Analytics](features/analytics-implementation.md)**                    | User engagement analytics       | -             |
-| **[Image Storage S3](features/image-storage-s3-setup.md)**               | S3 image storage setup          | -             |
-| **[Temp Answer Mutation](features/temp-answer-graphql-mutation.md)**     | Temp answer GraphQL mutation    | -             |
+| Document                                                                         | Purpose                         | Priority      |
+| -------------------------------------------------------------------------------- | ------------------------------- | ------------- |
+| **[Implementation Status](features/implementation-status.md)**                   | What's built / not built        | 🔥 READ FIRST |
+| **[Task System Package](features/task-system-package.md)**                       | @orion/task-system package docs | ⭐ Important  |
+| **[Translations](features/translations.md)**                                     | i18n system documentation       | ⭐ Important  |
+| **[Task System Fixture](features/task-system-fixture-and-hydration.md)**         | Fixture generation & hydration  | -             |
+| **[Translation Memory](features/translation-memory.md)**                         | Translation service & memory    | -             |
+| **[Analytics](features/analytics-implementation.md)**                            | User engagement analytics       | -             |
+| **[Image Storage S3](features/image-storage-s3-setup.md)**                       | S3 image storage setup          | -             |
+| **[Temp Answer Implementation](features/temp-answer-implementation.md)**         | Temp answer persistence system  | -             |
+| **[Temp Answer Mutation](features/temp-answer-graphql-mutation.md)**             | Temp answer GraphQL mutation    | -             |
+| **[Temp Answer DataStore Refactor](features/temp-answer-datastore-refactor.md)** | DataStore refactoring notes     | -             |
 
 ### 📋 Planning (`planning/`)
 
@@ -108,10 +110,13 @@ External service integrations:
 
 Cleanup tracking and completed work:
 
-| Document                                                                       | Purpose                             |
-| ------------------------------------------------------------------------------ | ----------------------------------- |
-| **[Documentation Consolidation](cleanup/documentation-consolidation-plan.md)** | Doc cleanup plan (Jan 4, 2025)      |
-| **[Template Cleanup](cleanup/template-cleanup-completed.md)**                  | Expo template cleanup (Jan 3, 2025) |
+| Document                                                                            | Purpose                                        |
+| ----------------------------------------------------------------------------------- | ---------------------------------------------- |
+| **[Documentation Consolidation](cleanup/documentation-consolidation-plan.md)**      | Doc cleanup plan (Jan 4, 2025)                 |
+| **[Documentation Cleanup Completed](cleanup/documentation-cleanup-completed.md)**   | Doc cleanup completion (Jan 4, 2025)           |
+| **[Template Cleanup](cleanup/template-cleanup-completed.md)**                       | Expo template cleanup (Jan 3, 2025)            |
+| **[Commit Summary: Temp Answer](cleanup/commit-summary-temp-answer-2025-01-05.md)** | Temp answer persistence implementation summary |
+| **[Unused Files Analysis](cleanup/unused-files-analysis.md)**                       | Analysis of unused files (Jan 4, 2025)         |
 
 ### 📝 Code Reviews (`code_reviews/`)
 
@@ -120,6 +125,15 @@ Historical code review archives:
 | Document                                                         | Purpose               |
 | ---------------------------------------------------------------- | --------------------- |
 | **[CodeRabbit PR#37](code_reviews/CODERABBIT_PR37_COMMENTS.md)** | PR#37 review comments |
+
+### 📊 Business (`business/`)
+
+Business requirements and planning:
+
+| Document                                                 | Purpose                             |
+| -------------------------------------------------------- | ----------------------------------- |
+| **[Data Sync Overview](business/data-sync-overview.md)** | Data synchronization overview       |
+| **[Jira Stories](business/jira-stories.md)**             | Jira story titles organized by epic |
 
 ### 📄 Root-Level Docs
 
@@ -213,24 +227,26 @@ spaces in name.md             # ❌ Bad
 
 ## 📊 Documentation Stats
 
-**Last Updated**: January 4, 2025  
-**Total Files**: 45 documents  
-**Recent Cleanup**: Removed 9 duplicate/outdated files (35% reduction)
+**Last Updated**: January 9, 2025  
+**Total Files**: 48 documents  
+**Recent Cleanup**: Consolidated root-level docs into organized categories
 
 ### By Category
 
-| Category        | Files | Description               |
-| --------------- | ----- | ------------------------- |
-| Architecture    | 7     | System design & structure |
-| Development     | 10    | Coding standards & guides |
-| Features        | 8     | Feature documentation     |
-| Planning        | 6     | Roadmap & todos           |
-| Testing         | 6     | Test coverage & guides    |
-| Troubleshooting | 3     | Common issues & fixes     |
-| Integration     | 1     | External integrations     |
-| Cleanup         | 2     | Cleanup tracking          |
-| Code Reviews    | 1     | Review archives           |
-| Root            | 3     | Miscellaneous             |
+| Category        | Files | Description                      |
+| --------------- | ----- | -------------------------------- |
+| Architecture    | 8     | System design & structure        |
+| Development     | 11    | Coding standards & guides        |
+| Features        | 10    | Feature documentation            |
+| Planning        | 6     | Roadmap & todos                  |
+| Testing         | 6     | Test coverage & guides           |
+| Troubleshooting | 3     | Common issues & fixes            |
+| Integration     | 1     | External integrations            |
+| Cleanup         | 5     | Cleanup tracking                 |
+| Code Reviews    | 1     | Review archives                  |
+| Business        | 2     | Business requirements & planning |
+| Security        | 1     | Security documentation           |
+| Root            | 3     | Miscellaneous                    |
 
 ---
 

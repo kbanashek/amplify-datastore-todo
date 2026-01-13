@@ -9,6 +9,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **iOS Build Stability**
+  - Fixed duplicate JKBigInteger symbol errors in iOS build by excluding duplicate files from RNAWSCognito pod
+  - Added pre_install and post_install hooks to Podfile to handle Amplify library conflicts
+  - iOS build now completes successfully without linker errors
+
+- **Error Handling Improvements**
+  - Fixed Amplify config check in useAmplifyState to use public getConfig() API instead of unsafe type assertion
+  - Consolidated TaskHistoryService subscriptions to prevent race conditions and duplicate updates
+  - Updated ActivityService error callbacks to use centralized logger with explicit unknown types
+  - Optimized TaskService adversarial test fixture (reduced from 10k to 1k items for CI performance)
+
+- **Testing & Linting**
+  - Refined react-native mock in useQuestionSubmission tests to avoid conflicts with testing-library
+  - Added Node.js global declarations to ESLint config for scripts directory
+  - Removed unused fs import from generate-icons script
+
+### Changed
+
+- **Documentation Consolidation**
+  - Moved `COMMIT_SUMMARY.md` → `DOCS/cleanup/commit-summary-temp-answer-2025-01-05.md`
+  - Moved `JIRA_STORIES.md` → `DOCS/business/jira-stories.md`
+  - Moved `UNUSED_FILES.md` → `DOCS/cleanup/unused-files-analysis.md`
+  - Fixed 15+ broken documentation links in root `README.md` to point to correct organized paths
+  - Consolidated duplicate documentation table entries in `README.md` into categorized sections
+  - Updated `DOCS/README.md` with new file locations and updated statistics (48 documents)
+  - Updated CHANGELOG.md references to moved files
+
+- **Code Cleanup - Duplicate File Removal**
+  - Deleted 10 obsolete files that were duplicates of package versions or unused code
+  - Component: `src/components/NetworkStatusIndicator.js` (duplicate of TypeScript package version)
+  - Service: `src/services/logging/serviceLogger.ts` (not imported anywhere)
+  - Utils: `src/utils/activityParser.ts`, `appointmentParser.ts`, `deviceLogger.ts`, `logger.ts`, `platformIcons.ts`, `simpleHash.ts`, `unitLabel.ts` (all duplicates of package versions)
+  - Tests: `src/utils/__tests__/appointmentParser.test.ts`, `simpleHash.test.ts` (for deleted duplicates)
+  - Updated `src/utils/syncUtils.ts` and `src/utils/platformLogger.ts` to import from `@orion/task-system` package
+  - Exported `deviceLogger` and `platformIcons` functions from package index
+  - Updated `DOCS/cleanup/unused-files-analysis.md` with January 9, 2025 cleanup details
+  - Reinforces package-first architecture: `@orion/task-system` is single source of truth
+
 ### Changed
 
 - **Updated Expo File System Imports**
@@ -41,7 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Duplicate Files**
   - Deleted unused `src/utils/questionValidation.ts` (duplicate of package version)
-  - Documented deletion in `UNUSED_FILES.md` (total: 27 files deleted)
+  - Documented deletion in `DOCS/cleanup/unused-files-analysis.md` (total: 27 files deleted)
 
 ### Fixed
 
@@ -86,7 +126,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Updated `DOCS/architecture/project-structure.md` with new directory structure
   - Updated `DOCS/architecture/service-consolidation.md` to fix outdated paths
   - Updated `DOCS/GETTING-STARTED.md` with current structure diagrams
-  - Updated `UNUSED_FILES.md` to reflect deleted files
+  - Updated `DOCS/cleanup/unused-files-analysis.md` to reflect deleted files
 
 ### Removed
 
@@ -347,7 +387,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Removed old logging files from harness (`src/services/logging/`)
   - Package is now self-contained with its own logging infrastructure
 - Reorganized documentation structure
-  - Moved `UNUSED_FILES.md` to `DOCS/development/unused-files.md`
+  - Moved `UNUSED_FILES.md` to `DOCS/cleanup/unused-files-analysis.md`
   - Moved `e2e-testing.md` to `DOCS/development/e2e-testing.md`
   - Removed duplicate files from `DOCS/` root (kept organized versions in subdirectories)
   - Updated all references in `README.md`, `CHANGELOG.md`, and `DOCS/` files
@@ -705,7 +745,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `DOCS/why-components-outside-package.md` - Explanation of component architecture and why components exist outside package directory
 - Nuclear reset functionality on seed screen to delete all task-related submitted data (Tasks, TaskAnswers, TaskResults, TaskHistory) from AWS databases
 - `deleteAll` methods to TaskAnswerService, TaskResultService, and TaskHistoryService for comprehensive data cleanup
-- `UNUSED_FILES.md` - Documentation of unused files identified in codebase analysis
+- `DOCS/cleanup/unused-files-analysis.md` - Documentation of unused files identified in codebase analysis
 
 ## [0.1.8] - 2025-12-13
 

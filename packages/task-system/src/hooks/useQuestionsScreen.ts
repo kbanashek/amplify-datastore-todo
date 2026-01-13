@@ -14,8 +14,8 @@ import { TaskService } from "@services/TaskService";
 import { TempAnswerSyncService } from "@services/TempAnswerSyncService";
 import type { AnswerValue } from "@task-types/AnswerValue";
 import { Task, TaskStatus } from "@task-types/Task";
-import { getServiceLogger } from "@utils/serviceLogger";
-import { extractActivityIdFromTask } from "@utils/taskUtils";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
+import { extractActivityIdFromTask } from "@utils/tasks/taskUtils";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 const logger = getServiceLogger("useQuestionsScreen");
@@ -167,13 +167,25 @@ export const useQuestionsScreen = (
 
   // Update answers when initialAnswers change
   useEffect(() => {
-    logger.info("📝 initialAnswers changed in useQuestionsScreen", {
-      count: Object.keys(initialAnswers).length,
-      sampleKeys: Object.keys(initialAnswers).slice(0, 3),
-      firstValue: initialAnswers[Object.keys(initialAnswers)[0]],
+    const keys = Object.keys(initialAnswers);
+    const preview = keys
+      .slice(0, 3)
+      .map(
+        key => `${key}=${JSON.stringify(initialAnswers[key]).substring(0, 50)}`
+      )
+      .join(", ");
+
+    logger.info("📝 initialAnswers RECEIVED in useQuestionsScreen", {
+      count: keys.length,
+      keys: keys.join(", "),
+      preview,
+      willSetAnswers: keys.length > 0 ? "yes" : "no",
     });
-    if (Object.keys(initialAnswers).length > 0) {
-      logger.info("✅ Setting answers from initialAnswers");
+    if (keys.length > 0) {
+      logger.info("✅ Setting answers from initialAnswers", {
+        keys: keys.join(", "),
+        preview,
+      });
       setAnswers(initialAnswers);
     }
   }, [initialAnswers, setAnswers]);

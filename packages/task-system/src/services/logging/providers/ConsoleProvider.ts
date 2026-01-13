@@ -7,22 +7,26 @@ import type { LogEntry, LogProvider } from "@services/logging/types";
 import { LogLevel } from "@services/logging/types";
 import {
   formatMetadataInline,
+  formatMetadataMultiLine,
   formatSequenceDiagram,
 } from "@services/logging/utils";
 
 interface ConsoleProviderConfig {
   singleLine?: boolean;
   sequenceDiagram?: boolean;
+  multiLineMetadata?: boolean; // Use multi-line formatting for metadata
 }
 
 export class ConsoleProvider implements LogProvider {
   private enabled: boolean = true;
   private singleLine: boolean;
   private sequenceDiagram: boolean;
+  private multiLineMetadata: boolean;
 
   constructor(config: ConsoleProviderConfig = {}) {
     this.singleLine = config.singleLine ?? true;
     this.sequenceDiagram = config.sequenceDiagram ?? true;
+    this.multiLineMetadata = config.multiLineMetadata ?? true; // Default to multi-line for readability
   }
 
   getName(): string {
@@ -60,11 +64,19 @@ export class ConsoleProvider implements LogProvider {
       formattedMessage = `[${platform}:${source}:${serviceName}] : ${messageWithIcon}`;
     }
 
-    // Add inline metadata for single-line logs
-    if (this.singleLine && metadata && Object.keys(metadata).length > 0) {
-      formattedMessage += formatMetadataInline(
-        metadata as Record<string, unknown>
-      );
+    // Add metadata formatting (multi-line or inline)
+    if (metadata && Object.keys(metadata).length > 0) {
+      if (this.multiLineMetadata) {
+        // Multi-line formatting - clean and readable
+        formattedMessage += formatMetadataMultiLine(
+          metadata as Record<string, unknown>
+        );
+      } else if (this.singleLine) {
+        // Inline formatting - compact
+        formattedMessage += formatMetadataInline(
+          metadata as Record<string, unknown>
+        );
+      }
     }
 
     // Use appropriate console method based on level

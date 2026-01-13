@@ -18,7 +18,7 @@ import {
   type TranslationConfig,
 } from "@translations/translationTypes";
 import { initializeI18n } from "@translations/config/i18nConfig";
-import { getServiceLogger } from "@utils/serviceLogger";
+import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 const logger = getServiceLogger("TranslationProvider");
 

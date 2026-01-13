@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
-import { ParsedActivityData } from "@utils/activityParser";
-import { validateQuestionAnswer } from "@utils/questionValidation";
+import { ParsedActivityData } from "@utils/parsers/activityParser";
+import { validateQuestionAnswer } from "@utils/validation/questionValidation";
 import type { AnswerValue } from "@task-types/AnswerValue";
 
 /**

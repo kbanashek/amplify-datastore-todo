@@ -27,7 +27,7 @@ jest.mock("@hooks/useAppointmentList", () => ({
   useAppointmentList: jest.fn(),
 }));
 
-jest.mock("@utils/appointmentParser", () => ({
+jest.mock("@utils/parsers/appointmentParser", () => ({
   groupAppointmentsByDate: jest.fn(),
 }));
 
@@ -41,7 +41,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useTaskList } from "@hooks/useTaskList";
 import { useGroupedTasks } from "@hooks/useGroupedTasks";
 import { useAppointmentList } from "@hooks/useAppointmentList";
-import { groupAppointmentsByDate } from "@utils/appointmentParser";
+import { groupAppointmentsByDate } from "@utils/parsers/appointmentParser";
 import { navigationService } from "@services/NavigationService";
 
 describe("useTaskContainer", () => {

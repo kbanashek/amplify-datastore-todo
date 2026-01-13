@@ -1,6 +1,6 @@
 import { DataStore } from "@aws-amplify/datastore";
 import { ConflictResolution } from "@services/ConflictResolution";
-import { logWithPlatform } from "@utils/platformLogger";
+import { logWithPlatform } from "@utils/logging/platformLogger";
 
 /**
  * LX ownership contract:
