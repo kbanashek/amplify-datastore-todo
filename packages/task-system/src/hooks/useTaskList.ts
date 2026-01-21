@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useAmplify } from "@contexts/AmplifyContext";
 import { TaskService } from "@services/TaskService";
-import { Task, TaskFilters } from "@task-types/Task";
+import { Task, TaskFilters, TaskType } from "@task-types/Task";
 import { NetworkStatus } from "@hooks/useAmplifyState";
 import {
   logWithPlatform,
@@ -105,6 +105,25 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
           lastSyncedRef.current = synced;
         }
 
+        // Log episodic task detection
+        const episodicTasks = items.filter(t => {
+          const taskTypeStr = String(t.taskType).toUpperCase();
+          return taskTypeStr === "EPISODIC" || t.taskType === TaskType.EPISODIC;
+        });
+        if (episodicTasks.length > 0) {
+          console.warn('[useTaskList] 📋 Episodic tasks detected', {
+            totalTasks: items.length,
+            episodicCount: episodicTasks.length,
+            episodicTasks: episodicTasks.map(t => ({
+              id: t.id,
+              title: t.title,
+              taskType: t.taskType,
+              taskTypeStr: String(t.taskType).toUpperCase(),
+              expireTimeInMillSec: t.expireTimeInMillSec,
+            })),
+          });
+        }
+
         setAllTasks(items);
         setIsSynced(synced);
         setLoading(false);
@@ -138,7 +157,21 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
 
   // Memoize filtered tasks - only recalculates when allTasks or filters change
   const tasks = useMemo(() => {
-    if (!filters) return allTasks;
+    console.warn('[useTaskList] 🔄 Filtering tasks', {
+      totalTasks: allTasks.length,
+      hasFilters: !!filters,
+      episodicCount: allTasks.filter(t => {
+        const taskTypeStr = String(t.taskType).toUpperCase();
+        return taskTypeStr === "EPISODIC" || t.taskType === TaskType.EPISODIC;
+      }).length,
+    });
+
+    if (!filters) {
+      console.warn('[useTaskList] ✅ No filters, returning all tasks', {
+        totalTasks: allTasks.length,
+      });
+      return allTasks;
+    }
 
     let filtered = allTasks;
 
@@ -166,9 +199,19 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
     }
 
     // Apply date range filter
+    // Episodic tasks (without startTimeInMillSec) should always pass date filters
     if (filters.dateFrom || filters.dateTo) {
       filtered = filtered.filter(task => {
-        if (!task.startTimeInMillSec) return false;
+        // Episodic tasks don't have startTimeInMillSec - always include them
+        if (!task.startTimeInMillSec) {
+          // Check if it's episodic - if so, always include
+          const taskTypeStr = String(task.taskType).toUpperCase();
+          if (taskTypeStr === "EPISODIC" || task.taskType === TaskType.EPISODIC) {
+            return true;
+          }
+          // Non-episodic tasks without startTimeInMillSec are excluded
+          return false;
+        }
 
         const taskDate = new Date(task.startTimeInMillSec);
 
@@ -183,6 +226,19 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
         return true;
       });
     }
+
+    console.warn('[useTaskList] ✅ Filtered tasks result', {
+      beforeFilter: allTasks.length,
+      afterFilter: filtered.length,
+      episodicBefore: allTasks.filter(t => {
+        const taskTypeStr = String(t.taskType).toUpperCase();
+        return taskTypeStr === "EPISODIC" || t.taskType === TaskType.EPISODIC;
+      }).length,
+      episodicAfter: filtered.filter(t => {
+        const taskTypeStr = String(t.taskType).toUpperCase();
+        return taskTypeStr === "EPISODIC" || t.taskType === TaskType.EPISODIC;
+      }).length,
+    });
 
     return filtered;
   }, [allTasks, filters]);

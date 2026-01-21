@@ -1,5 +1,5 @@
+import { Task, TaskStatus, TaskType } from "@task-types/Task";
 import React from "react";
-import { Task, TaskStatus } from "@task-types/Task";
 
 /**
  * Represents a group of tasks organized by day and time.
@@ -47,7 +47,26 @@ export interface GroupedTask {
  * ```
  */
 export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
+  // Log immediately when hook is called (before useMemo)
+  console.warn('[useGroupedTasks] 🔥 HOOK CALLED', {
+    totalTasks: tasks.length,
+    episodicCount: tasks.filter(t => {
+      const taskTypeStr = String(t.taskType).toUpperCase();
+      return taskTypeStr === "EPISODIC" || t.taskType === TaskType.EPISODIC;
+    }).length,
+    allTaskTypes: tasks.map(t => ({
+      title: t.title,
+      taskType: t.taskType,
+      taskTypeStr: String(t.taskType).toUpperCase(),
+      expireTime: t.expireTimeInMillSec,
+    })),
+  });
+
   return React.useMemo(() => {
+    console.warn('[useGroupedTasks] 🚀 Starting task grouping', {
+      totalTasks: tasks.length,
+      taskTypes: tasks.map(t => ({ title: t.title, taskType: t.taskType, expireTime: t.expireTimeInMillSec })),
+    });
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
@@ -79,8 +98,43 @@ export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
     });
 
     // Separate tasks with and without due times
-    const tasksWithTime = allTasks.filter(task => task.expireTimeInMillSec);
-    const tasksWithoutTime = allTasks.filter(task => !task.expireTimeInMillSec);
+    // Episodic tasks should always be in tasksWithoutTime, even if they have expireTimeInMillSec: 0
+    // Handle both enum and string comparisons (LX data might have strings)
+    const isEpisodic = (task: Task): boolean => {
+      const taskTypeStr = String(task.taskType).toUpperCase();
+      const result = taskTypeStr === "EPISODIC" || task.taskType === TaskType.EPISODIC;
+      // Debug logging for episodic task detection
+      if (result) {
+        console.warn('[useGroupedTasks] ✅ Episodic task detected', {
+          id: task.id,
+          title: task.title,
+          taskType: task.taskType,
+          taskTypeStr,
+          expireTimeInMillSec: task.expireTimeInMillSec,
+        });
+      }
+      return result;
+    };
+
+    const tasksWithTime = allTasks.filter(task => {
+      // Episodic tasks should not be in tasksWithTime
+      if (isEpisodic(task)) return false;
+      // Only include tasks with a valid expireTimeInMillSec (> 0)
+      return task.expireTimeInMillSec && task.expireTimeInMillSec > 0;
+    });
+    
+    const tasksWithoutTime = allTasks.filter(task => {
+      // Only EPISODIC tasks go in tasksWithoutTime
+      return isEpisodic(task);
+    });
+
+    // Debug logging
+    console.warn('[useGroupedTasks] 📊 Task separation', {
+      totalTasks: allTasks.length,
+      tasksWithTime: tasksWithTime.length,
+      tasksWithoutTime: tasksWithoutTime.length,
+      episodicInWithoutTime: tasksWithoutTime.filter(isEpisodic).length,
+    });
 
     // Helper function to create consistent dayKey in YYYY-MM-DD format
     const createDayKey = (date: Date): string => {
@@ -103,13 +157,47 @@ export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
     });
 
     // Add tasks without time to "Today"
-    if (tasksWithoutTime.length > 0) {
+    // Sort episodic tasks first before adding to today
+    // Handle both enum and string comparisons (LX data might have strings)
+    const isEpisodicForSort = (task: Task): boolean => {
+      const taskTypeStr = String(task.taskType).toUpperCase();
+      return taskTypeStr === "EPISODIC" || task.taskType === TaskType.EPISODIC;
+    };
+
+    const sortedTasksWithoutTime = [...tasksWithoutTime].sort((a, b) => {
+      // Episodic tasks should always come first
+      const aIsEpisodic = isEpisodicForSort(a);
+      const bIsEpisodic = isEpisodicForSort(b);
+      if (aIsEpisodic && !bIsEpisodic) {
+        console.warn('[useGroupedTasks] 🔄 Sorting: Episodic before non-episodic', {
+          episodic: { title: a.title, taskType: a.taskType },
+          nonEpisodic: { title: b.title, taskType: b.taskType },
+        });
+        return -1;
+      }
+      if (!aIsEpisodic && bIsEpisodic) {
+        console.warn('[useGroupedTasks] 🔄 Sorting: Non-episodic after episodic', {
+          nonEpisodic: { title: a.title, taskType: a.taskType },
+          episodic: { title: b.title, taskType: b.taskType },
+        });
+        return 1;
+      }
+      // If both are episodic or both are not, maintain original order
+      return 0;
+    });
+
+    console.warn('[useGroupedTasks] 📋 Sorted tasksWithoutTime before adding to Today', {
+      before: tasksWithoutTime.map(t => ({ title: t.title, taskType: t.taskType, isEpisodic: isEpisodicForSort(t) })),
+      after: sortedTasksWithoutTime.map(t => ({ title: t.title, taskType: t.taskType, isEpisodic: isEpisodicForSort(t) })),
+    });
+
+    if (sortedTasksWithoutTime.length > 0) {
       const today = new Date();
       const todayKey = createDayKey(today);
       if (!byDay[todayKey]) {
         byDay[todayKey] = [];
       }
-      byDay[todayKey].unshift(...tasksWithoutTime);
+      byDay[todayKey].unshift(...sortedTasksWithoutTime);
     }
 
     // Process each day
@@ -177,8 +265,25 @@ export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
       const dayTasks = byDay[dayKey];
 
       // Separate tasks with and without time for this day
-      const withTime = dayTasks.filter(task => task.expireTimeInMillSec);
-      const withoutTime = dayTasks.filter(task => !task.expireTimeInMillSec);
+      // Episodic tasks should always be in withoutTime, even if they have expireTimeInMillSec: 0
+      // Handle both enum and string comparisons (LX data might have strings)
+      const isEpisodic = (task: Task): boolean => {
+        const taskTypeStr = String(task.taskType).toUpperCase();
+        return taskTypeStr === "EPISODIC" || task.taskType === TaskType.EPISODIC;
+      };
+
+      const withTime = dayTasks.filter(task => {
+        // Episodic tasks should not be in withTime
+        if (isEpisodic(task)) return false;
+        // Only include tasks with a valid expireTimeInMillSec (> 0)
+        return task.expireTimeInMillSec && task.expireTimeInMillSec > 0;
+      });
+      const withoutTime = dayTasks.filter(task => {
+        // Episodic tasks should always be in withoutTime
+        if (isEpisodic(task)) return true;
+        // Other tasks without expireTimeInMillSec
+        return !task.expireTimeInMillSec || task.expireTimeInMillSec === 0;
+      });
 
       // Get date from first task with time, or use today for tasks without time
       let firstTaskDate: Date;
@@ -265,12 +370,79 @@ export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
           };
         });
 
+      // Sort tasksWithoutTime so episodic tasks appear first
+      // Handle both enum and string comparisons (LX data might have strings)
+      const isEpisodicForSort = (task: Task): boolean => {
+        const taskTypeStr = String(task.taskType).toUpperCase();
+        return taskTypeStr === "EPISODIC" || task.taskType === TaskType.EPISODIC;
+      };
+
+      console.warn(`[useGroupedTasks] 🔄 Starting sort for ${dayLabel}`, {
+        beforeSort: withoutTime.map((t, idx) => ({
+          index: idx,
+          title: t.title,
+          taskType: t.taskType,
+          isEpisodic: isEpisodicForSort(t),
+        })),
+      });
+
+      const sortedWithoutTime = [...withoutTime].sort((a, b) => {
+        // Episodic tasks should always come first
+        const aIsEpisodic = isEpisodicForSort(a);
+        const bIsEpisodic = isEpisodicForSort(b);
+        if (aIsEpisodic && !bIsEpisodic) {
+          console.warn(`[useGroupedTasks] 🔄 Sorting: Episodic "${a.title}" BEFORE non-episodic "${b.title}"`);
+          return -1;
+        }
+        if (!aIsEpisodic && bIsEpisodic) {
+          console.warn(`[useGroupedTasks] 🔄 Sorting: Non-episodic "${a.title}" AFTER episodic "${b.title}"`);
+          return 1;
+        }
+        // If both are episodic or both are not, maintain original order
+        return 0;
+      });
+
+      // Debug logging for sorting
+      if (sortedWithoutTime.length > 0) {
+        console.warn(`[useGroupedTasks] 📋 Sorted tasksWithoutTime for ${dayLabel}`, {
+          total: sortedWithoutTime.length,
+          firstTaskType: sortedWithoutTime[0]?.taskType,
+          firstTaskTitle: sortedWithoutTime[0]?.title,
+          firstIsEpisodic: isEpisodicForSort(sortedWithoutTime[0]),
+          episodicCount: sortedWithoutTime.filter(isEpisodicForSort).length,
+          order: sortedWithoutTime.map((t, idx) => ({
+            index: idx,
+            title: t.title,
+            taskType: t.taskType,
+            isEpisodic: isEpisodicForSort(t),
+            expireTime: t.expireTimeInMillSec,
+          })),
+        });
+      }
+
       result.push({
         dayLabel,
         dayDate,
-        tasksWithoutTime: withoutTime,
+        tasksWithoutTime: sortedWithoutTime,
         timeGroups,
       });
+    });
+
+    console.warn('[useGroupedTasks] ✅ Final grouped result', {
+      totalGroups: result.length,
+      groups: result.map(g => ({
+        dayLabel: g.dayLabel,
+        tasksWithoutTimeCount: g.tasksWithoutTime.length,
+        timeGroupsCount: g.timeGroups.length,
+        firstTaskWithoutTime: g.tasksWithoutTime[0] ? {
+          title: g.tasksWithoutTime[0].title,
+          taskType: g.tasksWithoutTime[0].taskType,
+        } : null,
+        allTasksWithoutTime: g.tasksWithoutTime.map(t => ({
+          title: t.title,
+          taskType: t.taskType,
+        })),
+      })),
     });
 
     return result;

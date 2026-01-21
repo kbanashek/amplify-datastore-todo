@@ -11,9 +11,259 @@
  */
 
 import { getServiceLogger } from "@utils/logging/serviceLogger";
-import * as FileSystem from "expo-file-system/legacy";
+import * as FileSystem from "expo-file-system";
 
 const logger = getServiceLogger("FileSystemUtils");
+
+/**
+ * Narrow unknown values to a basic object map.
+ *
+ * @param value - Value to check
+ * @returns True if the value is a non-null object
+ */
+const isRecord = (value: unknown): value is Record<string, unknown> => {
+  return typeof value === "object" && value !== null;
+};
+
+/**
+ * Gets the Expo document directory URI across expo-file-system versions.
+ *
+ * expo-file-system v18 exports `documentDirectory` on the module.
+ * expo-file-system v19 exports `Paths.document.uri`.
+ *
+ * @returns Document directory URI (always ends with "/")
+ * @throws Error if the document directory cannot be determined
+ */
+const getDocumentDirectoryUri = (): string => {
+  const fsUnknown: unknown = FileSystem;
+
+  if (isRecord(fsUnknown)) {
+    const paths = fsUnknown["Paths"];
+    if (isRecord(paths)) {
+      const document = paths["document"];
+      if (isRecord(document)) {
+        const uri = document["uri"];
+        if (typeof uri === "string" && uri.length > 0) {
+          return uri.endsWith("/") ? uri : `${uri}/`;
+        }
+      }
+    }
+
+    const documentDirectory = fsUnknown["documentDirectory"];
+    if (typeof documentDirectory === "string" && documentDirectory.length > 0) {
+      return documentDirectory.endsWith("/")
+        ? documentDirectory
+        : `${documentDirectory}/`;
+    }
+  }
+
+  throw new Error("expo-file-system: unable to determine document directory");
+};
+
+/**
+ * Determines whether we can use the expo-file-system v19+ object API (File/Directory).
+ *
+ * @returns True if v19+ API is available
+ */
+const hasV19ObjectApi = (): boolean => {
+  const fsUnknown: unknown = FileSystem;
+  if (!isRecord(fsUnknown)) return false;
+
+  // Keep this check intentionally minimal and runtime-based.
+  // We only use v19 path when Paths.document.uri is present.
+  const paths = fsUnknown["Paths"];
+  if (!isRecord(paths)) return false;
+  const document = paths["document"];
+  if (!isRecord(document)) return false;
+  return typeof document["uri"] === "string";
+};
+
+/**
+ * Returns true if a file/directory exists for the given URI.
+ *
+ * @param uri - File or directory URI
+ * @returns Promise resolving to true if it exists
+ */
+const existsAtUri = async (uri: string): Promise<boolean> => {
+  if (hasV19ObjectApi()) {
+    const fsUnknown: unknown = FileSystem;
+    if (isRecord(fsUnknown)) {
+      const FileCtor = fsUnknown["File"];
+      const DirectoryCtor = fsUnknown["Directory"];
+
+      const isDir = uri.endsWith("/");
+
+      if (typeof DirectoryCtor === "function" && isDir) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const dir = new (DirectoryCtor as new (...args: unknown[]) => unknown)(
+          uri
+        );
+        if (isRecord(dir) && typeof dir["exists"] === "boolean") {
+          return dir["exists"];
+        }
+      }
+
+      if (typeof FileCtor === "function" && !isDir) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const file = new (FileCtor as new (...args: unknown[]) => unknown)(uri);
+        if (isRecord(file) && typeof file["exists"] === "boolean") {
+          return file["exists"];
+        }
+      }
+    }
+  }
+
+  const info = await FileSystem.getInfoAsync(uri);
+  return info.exists;
+};
+
+/**
+ * Creates a directory at the given URI, including intermediates when supported.
+ *
+ * @param uri - Directory URI
+ */
+const createDirectoryAtUri = async (uri: string): Promise<void> => {
+  if (hasV19ObjectApi()) {
+    const fsUnknown: unknown = FileSystem;
+    if (isRecord(fsUnknown)) {
+      const DirectoryCtor = fsUnknown["Directory"];
+      if (typeof DirectoryCtor === "function") {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const dir = new (DirectoryCtor as new (...args: unknown[]) => unknown)(
+          uri
+        );
+        if (isRecord(dir) && typeof dir["create"] === "function") {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+          (dir["create"] as (options?: unknown) => unknown)({
+            intermediates: true,
+            idempotent: true,
+          });
+          return;
+        }
+      }
+    }
+  }
+
+  await FileSystem.makeDirectoryAsync(uri, { intermediates: true });
+};
+
+/**
+ * Copies a file from `fromUri` to `toUri`.
+ *
+ * @param fromUri - Source file URI
+ * @param toUri - Destination file URI
+ */
+const copyFile = async (fromUri: string, toUri: string): Promise<void> => {
+  if (hasV19ObjectApi()) {
+    const fsUnknown: unknown = FileSystem;
+    if (isRecord(fsUnknown)) {
+      const FileCtor = fsUnknown["File"];
+      if (typeof FileCtor === "function") {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const fromFile = new (FileCtor as new (...args: unknown[]) => unknown)(
+          fromUri
+        );
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const toFile = new (FileCtor as new (...args: unknown[]) => unknown)(
+          toUri
+        );
+        if (isRecord(fromFile) && typeof fromFile["copy"] === "function") {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+          (fromFile["copy"] as (dest: unknown) => unknown)(toFile);
+          return;
+        }
+      }
+    }
+  }
+
+  await FileSystem.copyAsync({ from: fromUri, to: toUri });
+};
+
+/**
+ * Reads a file as base64.
+ *
+ * @param uri - File URI
+ * @returns Base64 string
+ */
+const readFileAsBase64 = async (uri: string): Promise<string> => {
+  if (hasV19ObjectApi()) {
+    const fsUnknown: unknown = FileSystem;
+    if (isRecord(fsUnknown)) {
+      const FileCtor = fsUnknown["File"];
+      if (typeof FileCtor === "function") {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const file = new (FileCtor as new (...args: unknown[]) => unknown)(uri);
+        if (isRecord(file) && typeof file["base64"] === "function") {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+          return (file["base64"] as () => Promise<string>)();
+        }
+      }
+    }
+  }
+
+  // Use string encoding literal for cross-version compatibility.
+  return FileSystem.readAsStringAsync(uri, { encoding: "base64" });
+};
+
+/**
+ * Deletes a file at the given URI.
+ *
+ * @param uri - File URI
+ */
+const deleteFileAtUri = async (uri: string): Promise<void> => {
+  if (hasV19ObjectApi()) {
+    const fsUnknown: unknown = FileSystem;
+    if (isRecord(fsUnknown)) {
+      const FileCtor = fsUnknown["File"];
+      if (typeof FileCtor === "function") {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const file = new (FileCtor as new (...args: unknown[]) => unknown)(uri);
+        if (isRecord(file) && typeof file["delete"] === "function") {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+          (file["delete"] as () => unknown)();
+          return;
+        }
+      }
+    }
+  }
+
+  await FileSystem.deleteAsync(uri);
+};
+
+/**
+ * Lists filenames in a directory URI.
+ *
+ * @param uri - Directory URI
+ * @returns Array of filenames (not full URIs)
+ */
+const listDirectoryFilenames = async (uri: string): Promise<string[]> => {
+  if (hasV19ObjectApi()) {
+    const fsUnknown: unknown = FileSystem;
+    if (isRecord(fsUnknown)) {
+      const DirectoryCtor = fsUnknown["Directory"];
+      if (typeof DirectoryCtor === "function") {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const dir = new (DirectoryCtor as new (...args: unknown[]) => unknown)(
+          uri
+        );
+        if (isRecord(dir) && typeof dir["list"] === "function") {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+          const entries = (dir["list"] as () => unknown[])();
+          return entries
+            .map(entry => {
+              if (isRecord(entry) && typeof entry["name"] === "string") {
+                return entry["name"];
+              }
+              return null;
+            })
+            .filter((name): name is string => typeof name === "string");
+        }
+      }
+    }
+  }
+
+  return FileSystem.readDirectoryAsync(uri);
+};
 
 /**
  * Image storage configuration
@@ -39,7 +289,7 @@ export const IMAGE_STORAGE_CONFIG = {
  * ```
  */
 export const getImageDirectory = (): string => {
-  return `${FileSystem.documentDirectory}${IMAGE_STORAGE_CONFIG.DIRECTORY}/`;
+  return `${getDocumentDirectoryUri()}${IMAGE_STORAGE_CONFIG.DIRECTORY}/`;
 };
 
 /**
@@ -57,11 +307,11 @@ export const ensureImageDirectoryExists = async (): Promise<void> => {
   const directory = getImageDirectory();
 
   try {
-    const dirInfo = await FileSystem.getInfoAsync(directory);
+    const exists = await existsAtUri(directory);
 
-    if (!dirInfo.exists) {
+    if (!exists) {
       logger.info("Creating image storage directory", { directory });
-      await FileSystem.makeDirectoryAsync(directory, { intermediates: true });
+      await createDirectoryAtUri(directory);
       logger.info("Image storage directory created", { directory });
     }
   } catch (error) {
@@ -175,11 +425,7 @@ export const copyImageToPermanentStorage = async (
       destinationPath,
     });
 
-    // Copy file
-    await FileSystem.copyAsync({
-      from: sourceUri,
-      to: destinationPath,
-    });
+    await copyFile(sourceUri, destinationPath);
 
     logger.info("Image copied successfully", { destinationPath });
 
@@ -209,9 +455,7 @@ export const readImageAsBase64 = async (filepath: string): Promise<string> => {
   try {
     logger.info("Reading image as base64", { filepath });
 
-    const base64 = await FileSystem.readAsStringAsync(filepath, {
-      encoding: FileSystem.EncodingType.Base64,
-    });
+    const base64 = await readFileAsBase64(filepath);
 
     logger.info("Image read successfully", {
       filepath,
@@ -284,10 +528,10 @@ export const deleteLocalImage = async (filename: string): Promise<void> => {
 
     logger.info("Deleting local image", { filepath });
 
-    const fileInfo = await FileSystem.getInfoAsync(filepath);
+    const exists = await existsAtUri(filepath);
 
-    if (fileInfo.exists) {
-      await FileSystem.deleteAsync(filepath);
+    if (exists) {
+      await deleteFileAtUri(filepath);
       logger.info("Image deleted successfully", { filepath });
     } else {
       logger.warn("Image file does not exist", { filepath });
@@ -315,8 +559,7 @@ export const deleteLocalImage = async (filename: string): Promise<void> => {
 export const localImageExists = async (filename: string): Promise<boolean> => {
   try {
     const filepath = getLocalImagePath(filename);
-    const fileInfo = await FileSystem.getInfoAsync(filepath);
-    return fileInfo.exists;
+    return await existsAtUri(filepath);
   } catch (error) {
     logger.error(`Failed to check if local image exists: ${filename}`, error);
     return false;
@@ -340,6 +583,8 @@ export const getLocalImageInfo = async (
 ): Promise<FileSystem.FileInfo | null> => {
   try {
     const filepath = getLocalImagePath(filename);
+    // In v19+, `getInfoAsync` exists but is deprecated/throws; we only call it in
+    // environments where the legacy API is available.
     const fileInfo = await FileSystem.getInfoAsync(filepath);
 
     if (fileInfo.exists) {
@@ -371,19 +616,19 @@ export const clearAllLocalImages = async (): Promise<number> => {
 
     logger.info("Clearing all local images", { directory });
 
-    const dirInfo = await FileSystem.getInfoAsync(directory);
+    const exists = await existsAtUri(directory);
 
-    if (!dirInfo.exists) {
+    if (!exists) {
       logger.info("Image directory does not exist, nothing to clear");
       return 0;
     }
 
-    const files = await FileSystem.readDirectoryAsync(directory);
+    const files = await listDirectoryFilenames(directory);
 
     logger.info("Found images to delete", { count: files.length });
 
     for (const file of files) {
-      await FileSystem.deleteAsync(`${directory}${file}`);
+      await deleteFileAtUri(`${directory}${file}`);
     }
 
     logger.info("All local images cleared", { count: files.length });

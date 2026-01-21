@@ -1,6 +1,6 @@
-import { renderHook } from "@testing-library/react-native";
 import { useGroupedTasks } from "@hooks/useGroupedTasks";
 import { Task, TaskStatus, TaskType } from "@task-types/Task";
+import { renderHook } from "@testing-library/react-native";
 
 describe("useGroupedTasks", () => {
   const now = new Date();
@@ -74,22 +74,22 @@ describe("useGroupedTasks", () => {
       expect(allTasks).not.toContainEqual(pastTask);
     });
 
-    it("includes tasks without expire time", () => {
-      const taskWithoutTime: Task = {
+    it("includes episodic tasks without expire time", () => {
+      const episodicTask: Task = {
         id: "1",
         pk: "TASK-1",
         sk: "SK-1",
         title: "Task 1",
         description: "Description 1",
         status: TaskStatus.OPEN,
-        taskType: TaskType.SCHEDULED,
+        taskType: TaskType.EPISODIC,
         startTimeInMillSec: Date.now(),
         expireTimeInMillSec: null,
       };
-      const { result } = renderHook(() => useGroupedTasks([taskWithoutTime]));
+      const { result } = renderHook(() => useGroupedTasks([episodicTask]));
       expect(result.current.length).toBeGreaterThan(0);
       expect(result.current[0].tasksWithoutTime).toContainEqual(
-        taskWithoutTime
+        episodicTask
       );
     });
   });
@@ -185,23 +185,124 @@ describe("useGroupedTasks", () => {
   });
 
   describe("tasks without time", () => {
-    it("places tasks without time in Today group", () => {
-      const taskWithoutTime: Task = {
+    it("places episodic tasks in Today group", () => {
+      const episodicTask: Task = {
         id: "1",
         pk: "TASK-1",
         sk: "SK-1",
         title: "Task 1",
         description: "Description 1",
         status: TaskStatus.OPEN,
-        taskType: TaskType.SCHEDULED,
+        taskType: TaskType.EPISODIC,
         startTimeInMillSec: Date.now(),
         expireTimeInMillSec: null,
       };
-      const { result } = renderHook(() => useGroupedTasks([taskWithoutTime]));
+      const { result } = renderHook(() => useGroupedTasks([episodicTask]));
       const todayGroup = result.current.find(
         group => group.dayLabel === "Today"
       );
-      expect(todayGroup?.tasksWithoutTime).toContainEqual(taskWithoutTime);
+      expect(todayGroup?.tasksWithoutTime).toContainEqual(episodicTask);
+    });
+
+    it("places episodic tasks in tasksWithoutTime even with expireTimeInMillSec: 0", () => {
+      const episodicTask: Task = {
+        id: "episodic-1",
+        pk: "TASK-EPISODIC-1",
+        sk: "SK-EPISODIC-1",
+        title: "Episodic Task 1",
+        description: "Episodic description",
+        status: TaskStatus.OPEN,
+        taskType: TaskType.EPISODIC,
+        startTimeInMillSec: Date.now(),
+        expireTimeInMillSec: 0, // Episodic tasks can have 0
+      };
+      const { result } = renderHook(() => useGroupedTasks([episodicTask]));
+      const todayGroup = result.current.find(
+        group => group.dayLabel === "Today"
+      );
+      expect(todayGroup?.tasksWithoutTime).toContainEqual(episodicTask);
+      expect(todayGroup?.timeGroups.length).toBe(0);
+    });
+
+    it("renders episodic tasks first in tasksWithoutTime array", () => {
+      const episodicTask1: Task = {
+        id: "episodic-1",
+        pk: "TASK-EPISODIC-1",
+        sk: "SK-EPISODIC-1",
+        title: "Episodic Task 1",
+        description: "Episodic description 1",
+        status: TaskStatus.OPEN,
+        taskType: TaskType.EPISODIC,
+        startTimeInMillSec: Date.now(),
+        expireTimeInMillSec: 0,
+      };
+      const episodicTask2: Task = {
+        id: "episodic-2",
+        pk: "TASK-EPISODIC-2",
+        sk: "SK-EPISODIC-2",
+        title: "Episodic Task 2",
+        description: "Episodic description 2",
+        status: TaskStatus.OPEN,
+        taskType: TaskType.EPISODIC,
+        startTimeInMillSec: Date.now(),
+        expireTimeInMillSec: null,
+      };
+
+      // Pass episodic tasks in mixed order
+      const { result } = renderHook(() =>
+        useGroupedTasks([episodicTask2, episodicTask1])
+      );
+      const todayGroup = result.current.find(
+        group => group.dayLabel === "Today"
+      );
+
+      // Only episodic tasks should be in tasksWithoutTime
+      expect(todayGroup?.tasksWithoutTime.length).toBe(2);
+      // Both should be episodic tasks
+      expect(todayGroup?.tasksWithoutTime[0].taskType).toBe(TaskType.EPISODIC);
+      expect(todayGroup?.tasksWithoutTime[1].taskType).toBe(TaskType.EPISODIC);
+    });
+
+    it("renders episodic tasks before scheduled tasks with times", () => {
+      const scheduledTaskWithTime: Task = {
+        id: "scheduled-1",
+        pk: "TASK-SCHEDULED-1",
+        sk: "SK-SCHEDULED-1",
+        title: "Scheduled Task With Time",
+        description: "Scheduled description",
+        status: TaskStatus.OPEN,
+        taskType: TaskType.SCHEDULED,
+        startTimeInMillSec: Date.now(),
+        expireTimeInMillSec: today.getTime() + 3600000, // 1 hour from now
+      };
+      const episodicTask: Task = {
+        id: "episodic-1",
+        pk: "TASK-EPISODIC-1",
+        sk: "SK-EPISODIC-1",
+        title: "Episodic Task",
+        description: "Episodic description",
+        status: TaskStatus.OPEN,
+        taskType: TaskType.EPISODIC,
+        startTimeInMillSec: Date.now(),
+        expireTimeInMillSec: 0,
+      };
+
+      const { result } = renderHook(() =>
+        useGroupedTasks([scheduledTaskWithTime, episodicTask])
+      );
+      const todayGroup = result.current.find(
+        group => group.dayLabel === "Today"
+      );
+
+      expect(todayGroup).toBeDefined();
+      // Episodic task should be in tasksWithoutTime
+      expect(todayGroup?.tasksWithoutTime).toContainEqual(episodicTask);
+      // Scheduled task should be in timeGroups
+      expect(todayGroup?.timeGroups.length).toBeGreaterThan(0);
+      expect(todayGroup?.timeGroups[0].tasks).toContainEqual(scheduledTaskWithTime);
+      // tasksWithoutTime should render first (episodic before scheduled with time)
+      expect(todayGroup?.tasksWithoutTime.length).toBe(1);
+      expect(todayGroup?.tasksWithoutTime[0].taskType).toBe(TaskType.EPISODIC);
     });
   });
 });

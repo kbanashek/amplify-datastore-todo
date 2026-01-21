@@ -9,7 +9,7 @@ import {
   ParsedActivityData,
   parseActivityConfig,
 } from "@utils/parsers/activityParser";
-import { DataStore } from "aws-amplify/datastore";
+import { DataStore } from "@aws-amplify/datastore";
 import { useEffect, useRef, useState } from "react";
 import { TaskTempAnswer } from "../models";
 

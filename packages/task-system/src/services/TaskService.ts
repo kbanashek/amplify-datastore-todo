@@ -103,7 +103,16 @@ export class TaskService {
 
         if (filters.dateFrom || filters.dateTo) {
           tasks = tasks.filter(task => {
-            if (!task.startTimeInMillSec) return false;
+            // Episodic tasks don't have startTimeInMillSec - always include them
+            if (!task.startTimeInMillSec) {
+              // Check if it's episodic - if so, always include
+              const taskTypeStr = String(task.taskType).toUpperCase();
+              if (taskTypeStr === "EPISODIC" || task.taskType === TaskType.EPISODIC) {
+                return true;
+              }
+              // Non-episodic tasks without startTimeInMillSec are excluded
+              return false;
+            }
             const taskDate = new Date(task.startTimeInMillSec);
             if (filters.dateFrom && taskDate < filters.dateFrom) return false;
             if (filters.dateTo && taskDate > filters.dateTo) return false;

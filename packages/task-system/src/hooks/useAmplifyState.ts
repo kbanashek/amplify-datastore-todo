@@ -4,6 +4,7 @@ import { initTaskSystem } from "@runtime/taskSystem";
 import { logWithDevice } from "@utils/logging/deviceLogger";
 import { formatModelSyncLog } from "@utils/logging/logFormatter";
 import { getServiceLogger } from "@utils/logging/serviceLogger";
+import { installAmplifyDataStoreNoEndpointWarningFilter } from "@utils/system/amplifyDataStoreWarningFilter";
 import { useEffect, useState } from "react";
 
 const logger = getServiceLogger("useAmplifyState");
@@ -108,9 +109,50 @@ export const useAmplifyState = (options?: {
     let isMounted = true;
     let hubListener: (() => void) | null = null;
     let unsubscribeNetInfo: (() => void) | null = null;
+    let amplifyWaitTimer: ReturnType<typeof setTimeout> | null = null;
 
     const initializeDataStore = async () => {
       try {
+        // Option A (LX local-only): don't touch Amplify.getConfig() or DataStore lifecycle here.
+        // - Calling Amplify.getConfig() before host configuration can emit the global Amplify warning.
+        // - DataStore queries may still start DataStore internally; we suppress the *specific* noisy warning
+        //   about missing GraphQL endpoint.
+        if (!autoStartDataStore) {
+          installAmplifyDataStoreNoEndpointWarningFilter();
+
+          // Network status still matters for UI affordances; keep it updated.
+          NetInfo.fetch()
+            .then(state => {
+              if (isMounted) {
+                setNetworkStatus(
+                  state.isConnected
+                    ? NetworkStatus.Online
+                    : NetworkStatus.Offline
+                );
+              }
+            })
+            .catch(error => {
+              logger.error("Failed to fetch initial network status", error);
+              if (isMounted) {
+                setNetworkStatus(NetworkStatus.Offline);
+              }
+            });
+
+          unsubscribeNetInfo = NetInfo.addEventListener(state => {
+            if (isMounted) {
+              setNetworkStatus(
+                state.isConnected ? NetworkStatus.Online : NetworkStatus.Offline
+              );
+            }
+          });
+
+          if (isMounted) {
+            setIsReady(true);
+          }
+
+          return;
+        }
+
         // CRITICAL: Amplify is already configured by amplify-init-sync.ts in app/_layout.tsx
         // DO NOT call configureAmplify() again here as it may reset the auth configuration
         // The amplify-init-sync.ts runs synchronously before any components mount
@@ -332,58 +374,120 @@ export const useAmplifyState = (options?: {
         // IMPORTANT: This does NOT call Amplify.configure() — the host owns Amplify.configure().
         logWithDevice("useAmplifyState", "Initializing task-system runtime...");
 
-        // Verify Amplify config before starting DataStore
-        // Use public Amplify.getConfig() API to check configuration status
-        let isConfigured = false;
-        try {
-          const config = Amplify.getConfig();
-          // Check if config is valid (non-null and has keys)
-          isConfigured = config != null && Object.keys(config).length > 0;
-        } catch (error) {
+        /**
+         * Checks whether the host has configured Amplify yet.
+         *
+         * @returns True if Amplify has a non-empty config object
+         */
+        const isAmplifyConfigured = (): boolean => {
+          try {
+            const config = Amplify.getConfig();
+            return config != null && Object.keys(config).length > 0;
+          } catch {
+            return false;
+          }
+        };
+
+        /**
+         * Returns the configured GraphQL endpoint URL, if present.
+         *
+         * LX config shape:
+         * `Amplify.getConfig().API.GraphQL.endpoint`
+         *
+         * @returns Endpoint string if configured, otherwise null
+         */
+        const getGraphqlEndpoint = (): string | null => {
+          try {
+            const config = Amplify.getConfig() as unknown;
+            if (
+              typeof config === "object" &&
+              config !== null &&
+              "API" in config
+            ) {
+              const api = (config as { API?: unknown }).API;
+              if (typeof api === "object" && api !== null && "GraphQL" in api) {
+                const graphQl = (api as { GraphQL?: unknown }).GraphQL;
+                if (
+                  typeof graphQl === "object" &&
+                  graphQl !== null &&
+                  "endpoint" in graphQl
+                ) {
+                  const endpoint = (graphQl as { endpoint?: unknown }).endpoint;
+                  return typeof endpoint === "string" &&
+                    endpoint.trim().length > 0
+                    ? endpoint
+                    : null;
+                }
+              }
+            }
+          } catch {
+            // Ignore
+          }
+          return null;
+        };
+
+        /**
+         * Waits for host Amplify.configure() to run, to avoid starting DataStore too early.
+         *
+         * @param maxWaitMs - Maximum time to wait for config
+         * @param pollMs - Poll interval
+         * @returns True if Amplify became configured, otherwise false
+         */
+        const waitForAmplifyConfigured = async (
+          maxWaitMs: number,
+          pollMs: number
+        ): Promise<boolean> => {
+          const start = Date.now();
+
+          while (Date.now() - start < maxWaitMs) {
+            if (!isMounted) return false;
+            if (isAmplifyConfigured()) return true;
+
+            await new Promise<void>(resolve => {
+              amplifyWaitTimer = setTimeout(() => resolve(), pollMs);
+            });
+          }
+
+          return isAmplifyConfigured();
+        };
+
+        const configured = autoStartDataStore
+          ? await waitForAmplifyConfigured(10_000, 250)
+          : isAmplifyConfigured();
+
+        if (autoStartDataStore && !configured) {
           logger.warn(
-            "Failed to check Amplify configuration",
-            error instanceof Error ? error : new Error(String(error)),
+            "Amplify not configured yet - delaying DataStore start until host calls Amplify.configure()",
+            undefined,
             undefined,
             "⚠️"
           );
         }
 
-        if (!isConfigured) {
+        const graphqlEndpoint = configured ? getGraphqlEndpoint() : null;
+
+        if (autoStartDataStore && configured && !graphqlEndpoint) {
           logger.warn(
-            "Amplify not configured yet - DataStore initialization may fail",
+            "Amplify configured, but GraphQL endpoint is missing - skipping DataStore start (local-only mode)",
             undefined,
             undefined,
             "⚠️"
           );
-          // Don't throw - let DataStore.start() handle the error gracefully
-        } else {
-          // Only call getConfig() if Amplify is configured to avoid warning
-          try {
-            const amplifyConfig = Amplify.getConfig();
-            const hasConfig = !!amplifyConfig;
-            logger.debug("Amplify config verified", {
-              hasConfig,
-              configType: typeof amplifyConfig,
-            });
+        }
 
-            // Note: Amplify.getConfig() may not expose API key directly
-            // The API key is configured via Amplify.configure() and used internally
-            // If we get here, Amplify was configured successfully
-          } catch (configError) {
-            logger.warn("Could not verify Amplify config", configError);
+        if (autoStartDataStore && configured && graphqlEndpoint) {
+          logWithDevice(
+            "useAmplifyState",
+            "Starting DataStore — host Amplify.configure() detected"
+          );
+          await initTaskSystem({ startDataStore: true });
+        } else {
+          // Still initialize non-DataStore runtime bits (conflict handler, etc.)
+          await initTaskSystem({ startDataStore: false });
+          if (isMounted) {
+            setIsReady(true);
           }
         }
-
-        // Log that we're starting DataStore
-        // The API key was already configured in amplify-init-sync.ts
-        // Check the console logs for "[Amplify] ✅ Configured with API_KEY authentication"
-        // to see which API key is being used
-        logWithDevice(
-          "useAmplifyState",
-          "Starting DataStore (if enabled) — API key configured by host Amplify.configure()..."
-        );
-
-        await initTaskSystem({ startDataStore: autoStartDataStore });
         logWithDevice("useAmplifyState", "task-system runtime initialized", {
           autoStartDataStore,
         });
@@ -401,6 +505,9 @@ export const useAmplifyState = (options?: {
 
     return () => {
       isMounted = false;
+      if (amplifyWaitTimer) {
+        clearTimeout(amplifyWaitTimer);
+      }
       if (hubListener) {
         hubListener();
       }

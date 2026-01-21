@@ -3,13 +3,33 @@ import { ConflictResolution } from "@services/ConflictResolution";
 import { logWithPlatform } from "@utils/logging/platformLogger";
 
 /**
+ * Ensures Amplify DataStore schema is initialized before DataStore.start().
+ *
+ * In Amplify DataStore, the schema is registered by calling `initSchema(schema)`,
+ * which happens when importing the generated models module.
+ *
+ * If a host calls `DataStore.start()` before models have been imported, DataStore
+ * can throw "Schema is not initialized".
+ *
+ * IMPORTANT: This must be a synchronous require() to ensure the side effect
+ * (initSchema) executes immediately, not after an async import resolves.
+ */
+const ensureDataStoreSchemaInitialized = (): void => {
+  // Use require() for synchronous side effect execution.
+  // The models/index.js file calls initSchema(schema) at module load time,
+  // which must happen synchronously before DataStore.start().
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  require("../models/index");
+};
+
+/**
  * LX ownership contract:
  * - Host app owns Amplify.configure()
  * - task-system package never calls Amplify.configure()
  * - Package may optionally start DataStore if the host asks it to
  */
 
-export type TaskSystemInitOptions = {
+export interface TaskSystemInitOptions {
   /**
    * If true, start DataStore after configuring package-level DataStore options.
    * Default: false (LX-style host ownership of DataStore lifecycle)
@@ -33,7 +53,7 @@ export type TaskSystemInitOptions = {
    * Used for S3 image storage path hierarchy.
    */
   studyInstanceId?: string;
-};
+}
 
 let startInFlight: Promise<void> | null = null;
 const taskSystemLogs = new Map<string, number>();
@@ -68,7 +88,14 @@ function logTaskSystem(icon: string, message: string): void {
 export async function initTaskSystem(
   options: TaskSystemInitOptions = {}
 ): Promise<void> {
-  // Safe to call multiple times; this does NOT call Amplify.configure().
+  // Always initialize schema if DataStore might be used (even if host will start it manually).
+  // Schema initialization is a prerequisite for any DataStore operations, not just starting.
+  // This ensures DataStore.start() is safe when called by the host after initTaskSystem.
+  // Note: This is synchronous to ensure schema is registered before any async operations.
+  ensureDataStoreSchemaInitialized();
+
+  // Always configure conflict handler before DataStore starts (regardless of who starts it).
+  // This ensures conflict resolution is ready whether DataStore is started here or by the host.
   logTaskSystem("⚙️", "Configuring conflict resolution");
   ConflictResolution.configure();
   logTaskSystem("✅", "Conflict resolution configured");
