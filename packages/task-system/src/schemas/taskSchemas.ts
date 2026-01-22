@@ -68,7 +68,8 @@ export const createTaskSchema = z
       return true;
     },
     {
-      message: "expireTimeInMillSec must be greater than 0 for non-episodic tasks",
+      message:
+        "expireTimeInMillSec must be greater than 0 for non-episodic tasks",
       path: ["expireTimeInMillSec"],
     }
   )
@@ -165,7 +166,8 @@ export const updateTaskSchema = z
       return true;
     },
     {
-      message: "expireTimeInMillSec must be greater than 0 for non-episodic tasks",
+      message:
+        "expireTimeInMillSec must be greater than 0 for non-episodic tasks",
       path: ["expireTimeInMillSec"],
     }
   )

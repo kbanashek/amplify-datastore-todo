@@ -72,7 +72,7 @@ export const DataSourceProvider: React.FC<{ children: React.ReactNode }> = ({
   const [state, setState] = useState<DataSourceState>(initialState);
 
   const setActiveSource = useCallback((source: DataSourceType) => {
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
       activeSource: source,
     }));
@@ -80,7 +80,7 @@ export const DataSourceProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const loadFixture = useCallback(
     (source: DataSourceType, fixture: TaskSystemFixture) => {
-      setState((prev) => ({
+      setState(prev => ({
         ...prev,
         fixtures: {
           ...prev.fixtures,

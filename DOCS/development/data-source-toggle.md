@@ -7,21 +7,17 @@ The data source toggle system allows you to switch between static fixture data a
 ### 1. Wrap Your App with DataSourceProvider
 
 ```tsx
-import { DataSourceProvider } from '@contexts/DataSourceContext';
+import { DataSourceProvider } from "@contexts/DataSourceContext";
 
 function App() {
-  return (
-    <DataSourceProvider>
-      {/* Your app components */}
-    </DataSourceProvider>
-  );
+  return <DataSourceProvider>{/* Your app components */}</DataSourceProvider>;
 }
 ```
 
 ### 2. Add the Toggle UI
 
 ```tsx
-import { DataSourceToggle } from '@components/dev/DataSourceToggle';
+import { DataSourceToggle } from "@components/dev/DataSourceToggle";
 
 function DebugScreen() {
   return (
@@ -36,8 +32,8 @@ function DebugScreen() {
 ### 3. Load Data Sources
 
 ```tsx
-import { useFixtureLoader } from '@hooks/useFixtureLoader';
-import { lxToTaskSystemAdapter } from '@utils/lxToTaskSystemAdapter';
+import { useFixtureLoader } from "@hooks/useFixtureLoader";
+import { lxToTaskSystemAdapter } from "@utils/lxToTaskSystemAdapter";
 
 function DataLoader() {
   const { loadStaticFixture, loadLxFixture } = useFixtureLoader();
@@ -48,7 +44,7 @@ function DataLoader() {
   };
 
   // Load LX data
-  const handleLoadLx = async (lxResponse) => {
+  const handleLoadLx = async lxResponse => {
     const fixture = lxToTaskSystemAdapter(lxResponse);
     await loadLxFixture(fixture);
   };
@@ -67,11 +63,11 @@ function DataLoader() {
 Here's a complete example using the DataSourceManager component:
 
 ```tsx
-import React from 'react';
-import { View, ScrollView } from 'react-native';
-import { DataSourceProvider } from '@contexts/DataSourceContext';
-import { DataSourceManager } from '@components/dev/DataSourceManager';
-import { TaskListScreen } from '@screens/TaskListScreen';
+import React from "react";
+import { View, ScrollView } from "react-native";
+import { DataSourceProvider } from "@contexts/DataSourceContext";
+import { DataSourceManager } from "@components/dev/DataSourceManager";
+import { TaskListScreen } from "@screens/TaskListScreen";
 
 export default function App() {
   return (
@@ -79,7 +75,7 @@ export default function App() {
       <ScrollView>
         {/* Data source controls */}
         <DataSourceManager showDetails />
-        
+
         {/* Your task UI - will render data from active source */}
         <TaskListScreen />
       </ScrollView>
@@ -97,6 +93,7 @@ Context provider that manages data source state.
 **Props:** None
 
 **Usage:**
+
 ```tsx
 <DataSourceProvider>
   <App />
@@ -108,16 +105,19 @@ Context provider that manages data source state.
 Toggle component for switching between data sources.
 
 **Props:**
+
 - `showCounts?: boolean` - Show task counts for each source (default: true)
 - `style?: object` - Custom container styles
 
 **Features:**
+
 - Visual indication of active source
 - Disabled state for sources without data
 - Task count display
 - Status indicator
 
 **Usage:**
+
 ```tsx
 <DataSourceToggle showCounts />
 ```
@@ -127,10 +127,12 @@ Toggle component for switching between data sources.
 Complete data source management UI with loading controls.
 
 **Props:**
+
 - `showDetails?: boolean` - Show detailed status (default: true)
 - `style?: object` - Custom container styles
 
 **Features:**
+
 - Data source toggle
 - Load static fixture button
 - Reload active fixture button
@@ -139,6 +141,7 @@ Complete data source management UI with loading controls.
 - Usage instructions
 
 **Usage:**
+
 ```tsx
 <DataSourceManager showDetails />
 ```
@@ -150,6 +153,7 @@ Complete data source management UI with loading controls.
 Access data source context.
 
 **Returns:**
+
 ```typescript
 {
   activeSource: 'static' | 'lx',
@@ -164,11 +168,12 @@ Access data source context.
 ```
 
 **Usage:**
+
 ```tsx
 const { activeSource, setActiveSource, getActiveFixture } = useDataSource();
 
 // Switch to LX data
-setActiveSource('lx');
+setActiveSource("lx");
 
 // Get current fixture
 const fixture = getActiveFixture();
@@ -179,6 +184,7 @@ const fixture = getActiveFixture();
 Load and manage fixtures with data source awareness.
 
 **Options:**
+
 ```typescript
 {
   autoLoad?: boolean,  // Auto-load static fixture on mount
@@ -191,6 +197,7 @@ Load and manage fixtures with data source awareness.
 ```
 
 **Returns:**
+
 ```typescript
 {
   loadFixture: (source, fixture) => Promise<Result>,
@@ -204,13 +211,14 @@ Load and manage fixtures with data source awareness.
 ```
 
 **Usage:**
+
 ```tsx
 const { loadLxFixture, loading, error } = useFixtureLoader({
   autoLoad: true,
   importOptions: {
     updateExisting: true,
-    pruneNonFixture: false
-  }
+    pruneNonFixture: false,
+  },
 });
 
 // Load LX data
@@ -223,43 +231,41 @@ await loadLxFixture(fixture);
 ### Method 1: Using useFixtureLoader Hook
 
 ```tsx
-import { useFixtureLoader } from '@hooks/useFixtureLoader';
-import { lxToTaskSystemAdapter } from '@utils/lxToTaskSystemAdapter';
+import { useFixtureLoader } from "@hooks/useFixtureLoader";
+import { lxToTaskSystemAdapter } from "@utils/lxToTaskSystemAdapter";
 
 function MyComponent() {
   const { loadLxFixture } = useFixtureLoader();
 
-  const handleLoadLxData = async (lxResponse) => {
+  const handleLoadLxData = async lxResponse => {
     // Convert LX response to fixture
     const fixture = lxToTaskSystemAdapter(lxResponse, {
-      studyVersion: '1.0',
-      studyStatus: 'LIVE',
-      fixtureId: 'lx-production-data'
+      studyVersion: "1.0",
+      studyStatus: "LIVE",
+      fixtureId: "lx-production-data",
     });
 
     // Load into DataStore and context
     const result = await loadLxFixture(fixture);
-    
+
     console.log(`Loaded ${result.tasks.created} tasks`);
   };
 
-  return (
-    <Button title="Load LX Data" onPress={() => handleLoadLxData(data)} />
-  );
+  return <Button title="Load LX Data" onPress={() => handleLoadLxData(data)} />;
 }
 ```
 
 ### Method 2: Manual Loading
 
 ```tsx
-import { useDataSource } from '@contexts/DataSourceContext';
-import { FixtureImportService } from '@services/FixtureImportService';
-import { lxToTaskSystemAdapter } from '@utils/lxToTaskSystemAdapter';
+import { useDataSource } from "@contexts/DataSourceContext";
+import { FixtureImportService } from "@services/FixtureImportService";
+import { lxToTaskSystemAdapter } from "@utils/lxToTaskSystemAdapter";
 
 function MyComponent() {
   const { loadFixture } = useDataSource();
 
-  const handleLoadLxData = async (lxResponse) => {
+  const handleLoadLxData = async lxResponse => {
     // Convert to fixture
     const fixture = lxToTaskSystemAdapter(lxResponse);
 
@@ -267,34 +273,30 @@ function MyComponent() {
     await FixtureImportService.importTaskSystemFixture(fixture);
 
     // Store in context
-    loadFixture('lx', fixture);
+    loadFixture("lx", fixture);
   };
 
-  return (
-    <Button title="Load LX Data" onPress={() => handleLoadLxData(data)} />
-  );
+  return <Button title="Load LX Data" onPress={() => handleLoadLxData(data)} />;
 }
 ```
 
 ### Method 3: From JSON File
 
 ```tsx
-import { useFixtureLoader } from '@hooks/useFixtureLoader';
+import { useFixtureLoader } from "@hooks/useFixtureLoader";
 
 function MyComponent() {
   const { loadLxFixture } = useFixtureLoader();
 
   const handleLoadFromFile = async () => {
     // Import the fixture JSON
-    const lxFixture = await import('@fixtures/lx-production-tasks.json');
-    
+    const lxFixture = await import("@fixtures/lx-production-tasks.json");
+
     // Load it
     await loadLxFixture(lxFixture.default);
   };
 
-  return (
-    <Button title="Load LX Fixture" onPress={handleLoadFromFile} />
-  );
+  return <Button title="Load LX Fixture" onPress={handleLoadFromFile} />;
 }
 ```
 
@@ -303,24 +305,24 @@ function MyComponent() {
 The toggle automatically switches between sources when you click them. You can also switch programmatically:
 
 ```tsx
-import { useDataSource } from '@contexts/DataSourceContext';
+import { useDataSource } from "@contexts/DataSourceContext";
 
 function MyComponent() {
   const { activeSource, setActiveSource, hasData } = useDataSource();
 
   const switchToLx = () => {
-    if (hasData('lx')) {
-      setActiveSource('lx');
+    if (hasData("lx")) {
+      setActiveSource("lx");
     } else {
-      console.log('LX data not loaded yet');
+      console.log("LX data not loaded yet");
     }
   };
 
   const switchToStatic = () => {
-    if (hasData('static')) {
-      setActiveSource('static');
+    if (hasData("static")) {
+      setActiveSource("static");
     } else {
-      console.log('Static data not loaded yet');
+      console.log("Static data not loaded yet");
     }
   };
 
@@ -339,7 +341,7 @@ function MyComponent() {
 Your task list components don't need to change - they'll automatically render data from the active source:
 
 ```tsx
-import { useTaskList } from '@hooks/useTaskList';
+import { useTaskList } from "@hooks/useTaskList";
 
 function TaskListScreen() {
   // This automatically uses data from the active source
@@ -382,6 +384,7 @@ await loadLxFixture(fixture);
 ### 4. Compare Rendering
 
 Use the toggle to switch between static and LX data and compare:
+
 - Task titles and descriptions
 - Task times and dates
 - Task icons and statuses
@@ -391,6 +394,7 @@ Use the toggle to switch between static and LX data and compare:
 ### 5. Iterate
 
 If you find differences:
+
 1. Check field mapping in the adapter
 2. Verify LX data structure
 3. Update task-system rendering logic
@@ -433,14 +437,14 @@ import { DataSourceToggle } from '@components/dev/DataSourceToggle';
 describe('DataSourceToggle', () => {
   it('should render both options', () => {
     const { getByText } = render(<DataSourceToggle />);
-    
+
     expect(getByText('Static Fixture')).toBeTruthy();
     expect(getByText('LX Data')).toBeTruthy();
   });
 
   it('should disable sources without data', () => {
     const { getByText } = render(<DataSourceToggle />);
-    
+
     const lxButton = getByText('LX Data');
     expect(lxButton.props.disabled).toBe(true);
   });
@@ -465,7 +469,8 @@ describe('DataSourceToggle', () => {
 
 **Cause:** Invalid LX JSON structure or conversion error.
 
-**Solution:** 
+**Solution:**
+
 1. Verify LX JSON matches expected structure
 2. Check console for adapter errors
 3. Validate fixture format
@@ -475,6 +480,7 @@ describe('DataSourceToggle', () => {
 **Cause:** Field mapping differences between LX and static data.
 
 **Solution:**
+
 1. Compare fixture structures side-by-side
 2. Check adapter field transformations
 3. Verify task-system rendering logic handles both formats

@@ -273,7 +273,9 @@ export const GroupedTasksView: React.FC<GroupedTasksViewProps> = ({
                   <TranslatedText text="DUE BY" style={styles.dueByHeader} />
                   <Text style={styles.dueByTime}>{timeGroup.time}</Text>
                 </View>
-                <View key={`time-group-tasks-${timeGroup.time}-${currentLanguage}`}>
+                <View
+                  key={`time-group-tasks-${timeGroup.time}-${currentLanguage}`}
+                >
                   {timeGroup.tasks.map(task => (
                     <TaskCard
                       key={`${task.id}-${currentLanguage}`}

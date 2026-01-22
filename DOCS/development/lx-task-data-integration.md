@@ -35,7 +35,7 @@ graph LR
     Importer[FixtureImportService]
     DataStore[AWS DataStore]
     UI[Task-System UI]
-    
+
     LX -->|Export| JSON
     JSON -->|Convert| Adapter
     Adapter -->|Generate| Fixture
@@ -59,11 +59,11 @@ The easiest way to capture LX task data is during the download process:
 this.data = data;
 
 // Add this logging:
-console.log('LX Task Data:', JSON.stringify(data, null, 2));
+console.log("LX Task Data:", JSON.stringify(data, null, 2));
 // Or save to file:
-import RNFS from '@dr.pogodin/react-native-fs';
-const filePath = RNFS.DocumentDirectoryPath + '/lx-tasks.json';
-RNFS.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8');
+import RNFS from "@dr.pogodin/react-native-fs";
+const filePath = RNFS.DocumentDirectoryPath + "/lx-tasks.json";
+RNFS.writeFile(filePath, JSON.stringify(data, null, 2), "utf8");
 ```
 
 2. **Run LX and trigger download**:
@@ -80,20 +80,20 @@ RNFS.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8');
 If you have access to LX's GraphQL endpoint:
 
 ```typescript
-import { getApolloGraphqlClient } from '$src/services/clients/ApolloClientFactory';
-import gql from 'graphql-tag';
-import { getTasks } from '$src/graphql/queries';
+import { getApolloGraphqlClient } from "$src/services/clients/ApolloClientFactory";
+import gql from "graphql-tag";
+import { getTasks } from "$src/graphql/queries";
 
 const client = await getApolloGraphqlClient();
 const result = await client.query({
   query: gql(getTasks),
   variables: {
-    pk: 'user-pk',
-    from: '2025-01-20T00:00:00.000Z',
+    pk: "user-pk",
+    from: "2025-01-20T00:00:00.000Z",
     days: 30,
-    studyVersion: '1.0'
+    studyVersion: "1.0",
   },
-  fetchPolicy: 'no-cache'
+  fetchPolicy: "no-cache",
 });
 
 // Save result.data to file
@@ -166,6 +166,7 @@ node scripts/convert-lx-tasks-to-fixture.ts \
 ```
 
 **Options:**
+
 - `--input, -i`: Input LX task JSON file (required)
 - `--output, -o`: Output fixture JSON file (required)
 - `--study-version, -v`: Study version (default: "1.0")
@@ -178,27 +179,24 @@ node scripts/convert-lx-tasks-to-fixture.ts \
 You can also use the adapter directly in code:
 
 ```typescript
-import { lxToTaskSystemAdapter } from '@utils/lxToTaskSystemAdapter';
-import type { LXGetTasksResponse } from '@utils/lxToTaskSystemAdapter';
-import * as fs from 'fs';
+import { lxToTaskSystemAdapter } from "@utils/lxToTaskSystemAdapter";
+import type { LXGetTasksResponse } from "@utils/lxToTaskSystemAdapter";
+import * as fs from "fs";
 
 // Read LX JSON
 const lxResponse: LXGetTasksResponse = JSON.parse(
-  fs.readFileSync('lx-tasks.json', 'utf-8')
+  fs.readFileSync("lx-tasks.json", "utf-8")
 );
 
 // Convert to fixture
 const fixture = lxToTaskSystemAdapter(lxResponse, {
-  studyVersion: '1.0',
-  studyStatus: 'LIVE',
-  fixtureId: 'lx-production-2025-01-20'
+  studyVersion: "1.0",
+  studyStatus: "LIVE",
+  fixtureId: "lx-production-2025-01-20",
 });
 
 // Save fixture
-fs.writeFileSync(
-  'lx-production-tasks.json',
-  JSON.stringify(fixture, null, 2)
-);
+fs.writeFileSync("lx-production-tasks.json", JSON.stringify(fixture, null, 2));
 ```
 
 ## Importing the Fixture
@@ -206,8 +204,8 @@ fs.writeFileSync(
 Once you have a fixture file, import it into task-system:
 
 ```typescript
-import { FixtureImportService } from '@services/FixtureImportService';
-import fixture from '@fixtures/lx-production-tasks.json';
+import { FixtureImportService } from "@services/FixtureImportService";
+import fixture from "@fixtures/lx-production-tasks.json";
 
 // Import with default options (update existing, don't prune)
 const result = await FixtureImportService.importTaskSystemFixture(fixture);
@@ -223,14 +221,14 @@ console.log(`Skipped: ${result.tasks.skipped} tasks`);
 const result = await FixtureImportService.importTaskSystemFixture(fixture, {
   // Update existing records with matching pk (default: true)
   updateExisting: true,
-  
+
   // Remove non-fixture records from DataStore (default: false)
   // Use with caution - this deletes data!
   pruneNonFixture: false,
-  
+
   // Also remove derived models (TaskAnswer, TaskResult, etc.) (default: false)
   // Only use for dev/test reseeds, never in production!
-  pruneDerivedModels: false
+  pruneDerivedModels: false,
 });
 ```
 
@@ -238,69 +236,69 @@ const result = await FixtureImportService.importTaskSystemFixture(fixture, {
 
 ### Core Fields
 
-| LX Field | Task-System Field | Transformation | Notes |
-|----------|-------------------|----------------|-------|
-| `pk` | `pk` | Direct copy | Primary key |
-| `sk` | `sk` | Direct copy | Sort key |
-| `title` | `title` | Direct copy | Task title |
-| `taskType` | `taskType` | Normalize to enum | SCHEDULED/TIMED/EPISODIC |
-| `status` | `status` | Normalize to enum | OPEN/VISIBLE/STARTED/etc. |
-| `description` | `description` | Direct copy | Optional |
+| LX Field      | Task-System Field | Transformation    | Notes                     |
+| ------------- | ----------------- | ----------------- | ------------------------- |
+| `pk`          | `pk`              | Direct copy       | Primary key               |
+| `sk`          | `sk`              | Direct copy       | Sort key                  |
+| `title`       | `title`           | Direct copy       | Task title                |
+| `taskType`    | `taskType`        | Normalize to enum | SCHEDULED/TIMED/EPISODIC  |
+| `status`      | `status`          | Normalize to enum | OPEN/VISIBLE/STARTED/etc. |
+| `description` | `description`     | Direct copy       | Optional                  |
 
 ### Timing Fields
 
-| LX Field | Task-System Field | Transformation | Notes |
-|----------|-------------------|----------------|-------|
-| `startTime` | `startTime` | Direct copy | ISO 8601 string |
-| `startTime` | `startTimeInMillSec` | `new Date(startTime).getTime()` | Computed |
-| `endTime` | `endTime` | Direct copy | ISO 8601 string |
-| `endTime` | `endTimeInMillSec` | `new Date(endTime).getTime()` | Computed |
-| `dayOffset` | `dayOffset` | Direct copy | Number |
-| `endDayOffset` | `endDayOffset` | Direct copy | Number |
+| LX Field       | Task-System Field    | Transformation                  | Notes           |
+| -------------- | -------------------- | ------------------------------- | --------------- |
+| `startTime`    | `startTime`          | Direct copy                     | ISO 8601 string |
+| `startTime`    | `startTimeInMillSec` | `new Date(startTime).getTime()` | Computed        |
+| `endTime`      | `endTime`            | Direct copy                     | ISO 8601 string |
+| `endTime`      | `endTimeInMillSec`   | `new Date(endTime).getTime()`   | Computed        |
+| `dayOffset`    | `dayOffset`          | Direct copy                     | Number          |
+| `endDayOffset` | `endDayOffset`       | Direct copy                     | Number          |
 
 ### Actions & Anchors
 
-| LX Field | Task-System Field | Transformation | Notes |
-|----------|-------------------|----------------|-------|
-| `actions` (array) | `actions` (string) | `JSON.stringify(actions)` | Array → JSON string |
-| `actions[0].entityId` | `entityId` | Extract from array | First action's entityId |
-| `actions[0].ref.hashKey` | `hashKey` | Extract from array | First action's hashKey |
-| `anchors` (array) | `anchors` (string) | `JSON.stringify(anchors)` | Array → JSON string |
-| `anchorDayOffset` | `anchorDayOffset` | Direct copy | Number |
+| LX Field                 | Task-System Field  | Transformation            | Notes                   |
+| ------------------------ | ------------------ | ------------------------- | ----------------------- |
+| `actions` (array)        | `actions` (string) | `JSON.stringify(actions)` | Array → JSON string     |
+| `actions[0].entityId`    | `entityId`         | Extract from array        | First action's entityId |
+| `actions[0].ref.hashKey` | `hashKey`          | Extract from array        | First action's hashKey  |
+| `anchors` (array)        | `anchors` (string) | `JSON.stringify(anchors)` | Array → JSON string     |
+| `anchorDayOffset`        | `anchorDayOffset`  | Direct copy               | Number                  |
 
 ### LX-Specific Fields
 
-| LX Field | Task-System Field | Transformation | Notes |
-|----------|-------------------|----------------|-------|
-| `tci.sk` | `tciSk` | Extract from object | Task Configuration Instance SK |
-| `occurrenceHashKey` | `occurrenceHashKey` | Direct copy | Occurrence identifier |
-| `occurrenceParentHashKey` | `occurrenceParentHashKey` | Direct copy | Parent occurrence |
-| `parentTaskInstanceId` | `parentTaskInstanceId` | Direct copy | Parent task instance |
-| `taskInstanceId` | `taskInstanceId` | Direct copy | Task instance ID |
+| LX Field                  | Task-System Field         | Transformation      | Notes                          |
+| ------------------------- | ------------------------- | ------------------- | ------------------------------ |
+| `tci.sk`                  | `tciSk`                   | Extract from object | Task Configuration Instance SK |
+| `occurrenceHashKey`       | `occurrenceHashKey`       | Direct copy         | Occurrence identifier          |
+| `occurrenceParentHashKey` | `occurrenceParentHashKey` | Direct copy         | Parent occurrence              |
+| `parentTaskInstanceId`    | `parentTaskInstanceId`    | Direct copy         | Parent task instance           |
+| `taskInstanceId`          | `taskInstanceId`          | Direct copy         | Task instance ID               |
 
 ### Completion Rules
 
-| LX Field | Task-System Field | Transformation | Notes |
-|----------|-------------------|----------------|-------|
-| `showBeforeStart` | `showBeforeStart` | Direct copy | Boolean |
-| `allowEarlyCompletion` | `allowEarlyCompletion` | Direct copy | Boolean |
-| `allowLateCompletion` | `allowLateCompletion` | Direct copy | Boolean |
-| `allowLateEdits` | `allowLateEdits` | Direct copy | Boolean |
+| LX Field               | Task-System Field      | Transformation | Notes   |
+| ---------------------- | ---------------------- | -------------- | ------- |
+| `showBeforeStart`      | `showBeforeStart`      | Direct copy    | Boolean |
+| `allowEarlyCompletion` | `allowEarlyCompletion` | Direct copy    | Boolean |
+| `allowLateCompletion`  | `allowLateCompletion`  | Direct copy    | Boolean |
+| `allowLateEdits`       | `allowLateEdits`       | Direct copy    | Boolean |
 
 ### Activity References
 
-| LX Field | Task-System Field | Transformation | Notes |
-|----------|-------------------|----------------|-------|
-| `activityAnswer` | `activityAnswer` | Direct copy | JSON string |
-| `activityResponse` | `activityResponse` | Direct copy | JSON string |
-| N/A | `activityIndex` | Not provided by LX | Set to null |
+| LX Field           | Task-System Field  | Transformation     | Notes       |
+| ------------------ | ------------------ | ------------------ | ----------- |
+| `activityAnswer`   | `activityAnswer`   | Direct copy        | JSON string |
+| `activityResponse` | `activityResponse` | Direct copy        | JSON string |
+| N/A                | `activityIndex`    | Not provided by LX | Set to null |
 
 ### Study Information
 
-| LX Field | Task-System Field | Transformation | Notes |
-|----------|-------------------|----------------|-------|
-| Options param | `studyVersion` | From options | Study version string |
-| Options param | `studyStatus` | From options | Study status string |
+| LX Field      | Task-System Field | Transformation | Notes                |
+| ------------- | ----------------- | -------------- | -------------------- |
+| Options param | `studyVersion`    | From options   | Study version string |
+| Options param | `studyStatus`     | From options   | Study status string  |
 
 ### Sync State (Auto-Managed)
 
@@ -337,15 +335,15 @@ node scripts/convert-lx-tasks-to-fixture.ts \
 ### 3. Import and Test
 
 ```typescript
-import { FixtureImportService } from '@services/FixtureImportService';
-import { TaskService } from '@services/TaskService';
-import fixture from '@fixtures/lx-test.json';
+import { FixtureImportService } from "@services/FixtureImportService";
+import { TaskService } from "@services/TaskService";
+import fixture from "@fixtures/lx-test.json";
 
 // Import fixture
 await FixtureImportService.importTaskSystemFixture(fixture, {
   updateExisting: true,
   pruneNonFixture: true,
-  pruneDerivedModels: true // Clean slate for testing
+  pruneDerivedModels: true, // Clean slate for testing
 });
 
 // Query tasks
@@ -361,6 +359,7 @@ console.log(`Loaded ${tasks.length} tasks`);
 Compare task-system rendering with LX:
 
 **Side-by-side checklist:**
+
 - [ ] Task titles match
 - [ ] Task times display correctly
 - [ ] Task icons are appropriate
@@ -390,7 +389,7 @@ describe('LX Task Compatibility', () => {
 
   it('should render all tasks from fixture', async () => {
     render(<TaskListScreen />);
-    
+
     // Verify task count
     const tasks = await screen.findAllByTestId('task-card');
     expect(tasks).toHaveLength(fixture.tasks.length);
@@ -398,7 +397,7 @@ describe('LX Task Compatibility', () => {
 
   it('should display task titles correctly', async () => {
     render(<TaskListScreen />);
-    
+
     fixture.tasks.forEach(task => {
       expect(screen.getByText(task.title)).toBeTruthy();
     });
@@ -424,7 +423,8 @@ describe('LX Task Compatibility', () => {
 
 **Cause:** Tasks might be filtered out by date range or status.
 
-**Solution:** 
+**Solution:**
+
 - Check task `startTime` and `endTime` values
 - Verify task `status` is appropriate (OPEN, VISIBLE, etc.)
 - Check task-system's date filtering logic
@@ -434,6 +434,7 @@ describe('LX Task Compatibility', () => {
 **Cause:** The JSON string format might be invalid.
 
 **Solution:**
+
 - Verify the adapter is converting arrays to JSON strings correctly
 - Check for nested JSON that needs double-parsing
 - Inspect the `actions` and `anchors` fields in the fixture
@@ -443,6 +444,7 @@ describe('LX Task Compatibility', () => {
 **Cause:** The adapter only converts tasks, not activities.
 
 **Solution:**
+
 - Activities must be converted separately
 - Use LX's activity metadata export
 - Create a separate adapter for activities if needed
@@ -452,12 +454,13 @@ describe('LX Task Compatibility', () => {
 **Cause:** Multiple imports without pruning.
 
 **Solution:**
+
 ```typescript
 // Clean slate before import
 await FixtureImportService.importTaskSystemFixture(fixture, {
   updateExisting: true,
   pruneNonFixture: true,
-  pruneDerivedModels: true
+  pruneDerivedModels: true,
 });
 ```
 
@@ -466,6 +469,7 @@ await FixtureImportService.importTaskSystemFixture(fixture, {
 **Cause:** Timezone conversion issues.
 
 **Solution:**
+
 - Verify `startTimeInMillSec` and `endTimeInMillSec` are computed correctly
 - Check that LX uses UTC timestamps
 - Ensure task-system handles timezone conversion consistently
@@ -477,7 +481,7 @@ await FixtureImportService.importTaskSystemFixture(fixture, {
 You can filter tasks programmatically before creating the fixture:
 
 ```typescript
-import { lxToTaskSystemAdapter } from '@utils/lxToTaskSystemAdapter';
+import { lxToTaskSystemAdapter } from "@utils/lxToTaskSystemAdapter";
 
 // Filter to only scheduled tasks
 const filteredResponse = {
@@ -485,9 +489,9 @@ const filteredResponse = {
   data: {
     getTasks: lxResponse.data.getTasks.map(group => ({
       ...group,
-      tasks: group.tasks.filter(t => t.taskType === 'SCHEDULED')
-    }))
-  }
+      tasks: group.tasks.filter(t => t.taskType === "SCHEDULED"),
+    })),
+  },
 };
 
 const fixture = lxToTaskSystemAdapter(filteredResponse);
@@ -498,14 +502,14 @@ const fixture = lxToTaskSystemAdapter(filteredResponse);
 Combine tasks from multiple date ranges:
 
 ```typescript
-import { lxToTaskSystemAdapter } from '@utils/lxToTaskSystemAdapter';
+import { lxToTaskSystemAdapter } from "@utils/lxToTaskSystemAdapter";
 
 const fixture1 = lxToTaskSystemAdapter(lxResponse1);
 const fixture2 = lxToTaskSystemAdapter(lxResponse2);
 
 const mergedFixture = {
   ...fixture1,
-  tasks: [...fixture1.tasks, ...fixture2.tasks]
+  tasks: [...fixture1.tasks, ...fixture2.tasks],
 };
 ```
 
@@ -514,7 +518,7 @@ const mergedFixture = {
 Extend the adapter for custom transformations:
 
 ```typescript
-import { lxToTaskSystemAdapter } from '@utils/lxToTaskSystemAdapter';
+import { lxToTaskSystemAdapter } from "@utils/lxToTaskSystemAdapter";
 
 const fixture = lxToTaskSystemAdapter(lxResponse);
 
@@ -522,9 +526,9 @@ const fixture = lxToTaskSystemAdapter(lxResponse);
 fixture.tasks = fixture.tasks.map(task => ({
   ...task,
   // Add custom field
-  customField: 'custom value',
+  customField: "custom value",
   // Transform existing field
-  title: task.title.toUpperCase()
+  title: task.title.toUpperCase(),
 }));
 ```
 
@@ -538,6 +542,7 @@ fixture.tasks = fixture.tasks.map(task => ({
 ## Support
 
 For issues or questions:
+
 1. Check the [Troubleshooting](#troubleshooting) section above
 2. Review the [Field Mapping Reference](#field-mapping-reference)
 3. Inspect the adapter source code: `packages/task-system/src/utils/lxToTaskSystemAdapter.ts`

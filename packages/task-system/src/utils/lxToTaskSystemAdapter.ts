@@ -5,6 +5,7 @@
  */
 
 import type { TaskSystemFixture } from "@task-types/../fixtures/TaskSystemFixture";
+import type { CreateActivityInput } from "@task-types/Activity";
 import type { CreateTaskInput } from "@task-types/Task";
 import { TaskStatus, TaskType } from "@task-types/Task";
 
@@ -70,8 +71,10 @@ export interface LXTask {
   isHidden?: boolean | null;
   isTranscribable?: boolean | null;
   systemName?: string | null;
-  canRecall?: boolean | null;
+  canRecall?: number | null; // Recall period in minutes
   noEndTime?: boolean | null;
+  dueByLabel?: string | null; // Time label for grouping ("11:00 AM", "2:30 PM", etc.)
+  showTask?: boolean | null; // Episodic task show flag
   taskTemplateId?: string | null;
   taskDefinitionId?: string | null;
   data?: string | null;
@@ -80,8 +83,11 @@ export interface LXTask {
   endAfter?: number | null;
   activityAnswer?: string | null;
   activityResponse?: string | null;
+  entityId?: string | null; // Activity reference (e.g., "ActivityRef#Arm.xxx#Activity.yyy")
   expireTimeInMillSec?: number | null;
   expireDate?: string | Date | null;
+  date?: string | null; // ISO date string (e.g., "2024-01-15")
+  statusBeforeExpired?: string | null; // Previous status before expiration
 }
 
 /**
@@ -119,18 +125,72 @@ export const lxToTaskSystemAdapter = (
 
   // Flatten all tasks from all dates into a single array
   const allTasks: CreateTaskInput[] = [];
+  const activityIdsSet = new Set<string>();
 
-  lxResponse.data.getTasks.forEach((taskGroup) => {
-    taskGroup.tasks.forEach((lxTask) => {
-      const transformedTask = transformLXTask(lxTask, studyVersion, studyStatus);
+  lxResponse.data.getTasks.forEach(taskGroup => {
+    taskGroup.tasks.forEach(lxTask => {
+      // Filter out TIMED tasks with expireTimeInMillSec: 0 (expired/invalid tasks)
+      // LX filters these out in shouldFilterTask as expired
+      if (
+        lxTask.taskType === "TIMED" &&
+        (lxTask.expireTimeInMillSec === 0 ||
+          lxTask.expireTimeInMillSec === null)
+      ) {
+        console.warn(
+          `[lxToTaskSystemAdapter] 🚫 Filtering out TIMED task with expireTimeInMillSec=0 (expired)`,
+          {
+            title: lxTask.title,
+            pk: lxTask.pk,
+            taskType: lxTask.taskType,
+            expireTimeInMillSec: lxTask.expireTimeInMillSec,
+          }
+        );
+        return; // Skip this task
+      }
+
+      const transformedTask = transformLXTask(
+        lxTask,
+        studyVersion,
+        studyStatus
+      );
       allTasks.push(transformedTask);
+
+      // Extract Activity IDs from task entityId
+      if (lxTask.entityId && typeof lxTask.entityId === "string") {
+        activityIdsSet.add(lxTask.entityId);
+      }
     });
   });
+
+  // Create minimal Activity stubs from extracted entityIds
+  const activities: CreateActivityInput[] = Array.from(activityIdsSet).map(
+    entityId => {
+      // Parse entityId: "ActivityRef#Arm.xxx#ActivityGroup.yyy#Activity.zzz"
+      const activityId = entityId.split("#").pop() || entityId;
+
+      return {
+        pk: activityId,
+        sk: `SK-${activityId}`,
+        name: activityId,
+        title: `Activity (from LX)`,
+        type: "ACTIVITY",
+        description: `Activity stub created from LX task entityId: ${entityId}`,
+      };
+    }
+  );
+
+  console.warn(
+    "[lxToTaskSystemAdapter] ✅ Extracted activities from task entityIds",
+    {
+      totalActivities: activities.length,
+      activityIds: activities.map(a => a.pk),
+    }
+  );
 
   return {
     version: 1,
     fixtureId,
-    activities: [], // LX activities would need separate transformation
+    activities,
     tasks: allTasks,
     questions: [],
     appointments: undefined,
@@ -165,7 +225,11 @@ const transformLXTask = (
           entityId = firstAction.entityId;
         }
         // Extract hashKey from actions[0].ref.hashKey if not already set
-        if (!hashKey && firstAction?.ref && typeof firstAction.ref === "object") {
+        if (
+          !hashKey &&
+          firstAction?.ref &&
+          typeof firstAction.ref === "object"
+        ) {
           const ref = firstAction.ref as { [key: string]: unknown };
           if (ref?.hashKey && typeof ref.hashKey === "string") {
             hashKey = ref.hashKey;
@@ -179,10 +243,17 @@ const transformLXTask = (
         const parsed = JSON.parse(lxTask.actions);
         if (Array.isArray(parsed) && parsed.length > 0) {
           const firstAction = parsed[0] as { [key: string]: unknown };
-          if (firstAction?.entityId && typeof firstAction.entityId === "string") {
+          if (
+            firstAction?.entityId &&
+            typeof firstAction.entityId === "string"
+          ) {
             entityId = firstAction.entityId;
           }
-          if (!hashKey && firstAction?.ref && typeof firstAction.ref === "object") {
+          if (
+            !hashKey &&
+            firstAction?.ref &&
+            typeof firstAction.ref === "object"
+          ) {
             const ref = firstAction.ref as { [key: string]: unknown };
             if (ref?.hashKey && typeof ref.hashKey === "string") {
               hashKey = ref.hashKey;
@@ -231,7 +302,7 @@ const transformLXTask = (
   // Use LX's expireTimeInMillSec if available, otherwise compute from expireDate
   // Note: expireTimeInMillSec: 0 is allowed for episodic tasks
   let expireTimeInMillSec: number | null = null;
-  if (typeof lxTask.expireTimeInMillSec === 'number') {
+  if (typeof lxTask.expireTimeInMillSec === "number") {
     expireTimeInMillSec = lxTask.expireTimeInMillSec;
   } else if (lxTask.expireDate) {
     try {
@@ -249,10 +320,12 @@ const transformLXTask = (
   const taskType = normalizeTaskType(lxTask.taskType);
 
   // Log episodic task detection for debugging
-  const isEpisodic = taskType === TaskType.EPISODIC || String(taskType).toUpperCase() === 'EPISODIC';
-  
+  const isEpisodic =
+    taskType === TaskType.EPISODIC ||
+    String(taskType).toUpperCase() === "EPISODIC";
+
   if (isEpisodic) {
-    console.warn('[lxToTaskSystemAdapter] ✅ Episodic task detected', {
+    console.warn("[lxToTaskSystemAdapter] ✅ Episodic task detected", {
       title: lxTask.title,
       taskType: lxTask.taskType,
       normalizedTaskType: taskType,
@@ -279,6 +352,9 @@ const transformLXTask = (
     expireTimeInMillSec,
     dayOffset: lxTask.dayOffset ?? null,
     endDayOffset: lxTask.endDayOffset ?? null,
+    date: lxTask.date ?? null, // ISO date string from LX
+    localDateTime: null, // Will be calculated by parseTaskForPatientDate if needed
+    statusBeforeExpired: lxTask.statusBeforeExpired ?? null,
     showBeforeStart: lxTask.showBeforeStart ?? null,
     allowEarlyCompletion: lxTask.allowEarlyCompletion ?? null,
     allowLateCompletion: lxTask.allowLateCompletion ?? null,
@@ -301,6 +377,14 @@ const transformLXTask = (
     tciSk,
     studyVersion,
     studyStatus,
+    // LX Parity Fields
+    noEndTime: lxTask.noEndTime ?? null,
+    dueByLabel: lxTask.dueByLabel ?? null,
+    dueByUpdated: null, // Will be computed during grouping if task is in recall period
+    isHidden: lxTask.isHidden ?? null, // Episodic task visibility flag
+    etci: lxTask.etci ?? null, // Episodic task control info (startedAt, endedAt)
+    showTask: lxTask.showTask ?? null, // Episodic task show flag
+    canRecall: lxTask.canRecall ?? null, // Recall period in minutes
   };
 };
 

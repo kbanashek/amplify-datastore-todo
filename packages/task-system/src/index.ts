@@ -197,10 +197,7 @@ export {
   parseAppointmentData,
 } from "@utils/parsers/appointmentParser";
 export { lxToTaskSystemAdapter } from "@utils/lxToTaskSystemAdapter";
-export type { 
-  LXGetTasksResponse, 
-  LXTask 
-} from "@utils/lxToTaskSystemAdapter";
+export type { LXGetTasksResponse, LXTask } from "@utils/lxToTaskSystemAdapter";
 
 // Export constants
 export { AWSErrorName } from "@constants/awsErrors";

@@ -107,7 +107,10 @@ export class TaskService {
             if (!task.startTimeInMillSec) {
               // Check if it's episodic - if so, always include
               const taskTypeStr = String(task.taskType).toUpperCase();
-              if (taskTypeStr === "EPISODIC" || task.taskType === TaskType.EPISODIC) {
+              if (
+                taskTypeStr === "EPISODIC" ||
+                task.taskType === TaskType.EPISODIC
+              ) {
                 return true;
               }
               // Non-episodic tasks without startTimeInMillSec are excluded
@@ -181,11 +184,27 @@ export class TaskService {
         throw new Error(`Task with id ${id} not found`);
       }
 
+      console.warn(`[TaskService] ☁️ UPDATING TASK IN DATASTORE`, {
+        id,
+        originalStatus: original.status,
+        newStatus: validatedData.status,
+        title: original.title,
+        changes: Object.keys(validatedData),
+        timestamp: new Date().toISOString(),
+      });
+
       const updated = await DataStore.save(
         DataStoreTask.copyOf(original, updated => {
           Object.assign(updated, validatedData);
         })
       );
+
+      console.warn(`[TaskService] ✅ TASK UPDATED SUCCESSFULLY IN DATASTORE`, {
+        id: updated.id,
+        status: updated.status,
+        title: updated.title,
+        timestamp: new Date().toISOString(),
+      });
 
       logger.info(
         "Task updated successfully in AWS DataStore",
@@ -276,6 +295,14 @@ export class TaskService {
     const querySubscription = DataStore.observeQuery(DataStoreTask).subscribe(
       snapshot => {
         const { items, isSynced } = snapshot;
+
+        // ALWAYS log sync status changes (not just in dev)
+        console.warn(`[TaskService] 🔄 DataStore subscription update`, {
+          taskCount: items.length,
+          isSynced: isSynced,
+          syncStatus: isSynced ? "☁️ CLOUD-SYNCED" : "📱 LOCAL-ONLY",
+          timestamp: new Date().toISOString(),
+        });
 
         // Only log in development to reduce production overhead
         if (__DEV__) {

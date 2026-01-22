@@ -111,7 +111,7 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
           return taskTypeStr === "EPISODIC" || t.taskType === TaskType.EPISODIC;
         });
         if (episodicTasks.length > 0) {
-          console.warn('[useTaskList] 📋 Episodic tasks detected', {
+          console.warn("[useTaskList] 📋 Episodic tasks detected", {
             totalTasks: items.length,
             episodicCount: episodicTasks.length,
             episodicTasks: episodicTasks.map(t => ({
@@ -157,7 +157,7 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
 
   // Memoize filtered tasks - only recalculates when allTasks or filters change
   const tasks = useMemo(() => {
-    console.warn('[useTaskList] 🔄 Filtering tasks', {
+    console.warn("[useTaskList] 🔄 Filtering tasks", {
       totalTasks: allTasks.length,
       hasFilters: !!filters,
       episodicCount: allTasks.filter(t => {
@@ -167,7 +167,7 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
     });
 
     if (!filters) {
-      console.warn('[useTaskList] ✅ No filters, returning all tasks', {
+      console.warn("[useTaskList] ✅ No filters, returning all tasks", {
         totalTasks: allTasks.length,
       });
       return allTasks;
@@ -206,7 +206,10 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
         if (!task.startTimeInMillSec) {
           // Check if it's episodic - if so, always include
           const taskTypeStr = String(task.taskType).toUpperCase();
-          if (taskTypeStr === "EPISODIC" || task.taskType === TaskType.EPISODIC) {
+          if (
+            taskTypeStr === "EPISODIC" ||
+            task.taskType === TaskType.EPISODIC
+          ) {
             return true;
           }
           // Non-episodic tasks without startTimeInMillSec are excluded
@@ -227,7 +230,7 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
       });
     }
 
-    console.warn('[useTaskList] ✅ Filtered tasks result', {
+    console.warn("[useTaskList] ✅ Filtered tasks result", {
       beforeFilter: allTasks.length,
       afterFilter: filtered.length,
       episodicBefore: allTasks.filter(t => {

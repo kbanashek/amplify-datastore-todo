@@ -56,7 +56,7 @@ export const DataSourceToggle: React.FC<DataSourceToggleProps> = ({
   return (
     <View style={[styles.container, style]}>
       <Text style={styles.label}>Data Source:</Text>
-      
+
       <View style={styles.toggleContainer}>
         {/* Static Fixture Button */}
         <TouchableOpacity
@@ -79,10 +79,7 @@ export const DataSourceToggle: React.FC<DataSourceToggleProps> = ({
           </Text>
           {showCounts && hasData("static") && (
             <Text
-              style={[
-                styles.count,
-                isActive("static") && styles.countActive,
-              ]}
+              style={[styles.count, isActive("static") && styles.countActive]}
             >
               {getTaskCount("static")} tasks
             </Text>
@@ -109,12 +106,7 @@ export const DataSourceToggle: React.FC<DataSourceToggleProps> = ({
             LX Data
           </Text>
           {showCounts && hasData("lx") && (
-            <Text
-              style={[
-                styles.count,
-                isActive("lx") && styles.countActive,
-              ]}
-            >
+            <Text style={[styles.count, isActive("lx") && styles.countActive]}>
               {getTaskCount("lx")} tasks
             </Text>
           )}

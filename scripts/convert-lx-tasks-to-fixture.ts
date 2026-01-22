@@ -169,7 +169,11 @@ const readJsonFile = (filePath: string): LXGetTasksResponse => {
 /**
  * Write JSON to file
  */
-const writeJsonFile = (filePath: string, data: unknown, pretty: boolean): void => {
+const writeJsonFile = (
+  filePath: string,
+  data: unknown,
+  pretty: boolean
+): void => {
   try {
     const absolutePath = path.resolve(filePath);
     const dir = path.dirname(absolutePath);
@@ -179,7 +183,9 @@ const writeJsonFile = (filePath: string, data: unknown, pretty: boolean): void =
       fs.mkdirSync(dir, { recursive: true });
     }
 
-    const content = pretty ? JSON.stringify(data, null, 2) : JSON.stringify(data);
+    const content = pretty
+      ? JSON.stringify(data, null, 2)
+      : JSON.stringify(data);
     fs.writeFileSync(absolutePath, content, "utf-8");
   } catch (error) {
     if (error instanceof Error) {
@@ -230,7 +236,8 @@ const main = (): void => {
 
   console.log(`Input:  ${options.input}`);
   console.log(`Output: ${options.output}`);
-  if (options.studyVersion) console.log(`Study Version: ${options.studyVersion}`);
+  if (options.studyVersion)
+    console.log(`Study Version: ${options.studyVersion}`);
   if (options.studyStatus) console.log(`Study Status: ${options.studyStatus}`);
   if (options.fixtureId) console.log(`Fixture ID: ${options.fixtureId}`);
   console.log();
@@ -242,7 +249,9 @@ const main = (): void => {
   // Validate structure
   console.log("Validating input structure...");
   if (!validateLxResponse(lxResponse)) {
-    console.error("Error: Input file does not match expected LX getTasks response structure");
+    console.error(
+      "Error: Input file does not match expected LX getTasks response structure"
+    );
     console.error("Expected: { data: { getTasks: [...] } }");
     process.exit(1);
   }
@@ -252,7 +261,9 @@ const main = (): void => {
     (sum, group) => sum + group.tasks.length,
     0
   );
-  console.log(`Found ${taskCount} tasks in ${lxResponse.data.getTasks.length} date groups`);
+  console.log(
+    `Found ${taskCount} tasks in ${lxResponse.data.getTasks.length} date groups`
+  );
 
   // Convert to fixture
   console.log("Converting to task-system fixture format...");

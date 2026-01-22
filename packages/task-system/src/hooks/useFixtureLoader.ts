@@ -87,27 +87,37 @@ export const useFixtureLoader = (
       source: DataSourceType,
       fixture: TaskSystemFixture
     ): Promise<ImportTaskSystemFixtureResult> => {
-      logger.info(`Starting fixture load for source: ${source}`, {
-        source,
-        taskCount: fixture.tasks.length,
-        activityCount: fixture.activities.length,
-        fixtureId: fixture.fixtureId,
-      }, "STEP-1", "📋");
+      logger.info(
+        `Starting fixture load for source: ${source}`,
+        {
+          source,
+          taskCount: fixture.tasks.length,
+          activityCount: fixture.activities.length,
+          fixtureId: fixture.fixtureId,
+        },
+        "STEP-1",
+        "📋"
+      );
 
       setLoading(true);
       setError(null);
 
       try {
         // Import into DataStore
-        logger.info("Importing fixture into DataStore", {
-          source,
-          importOptions: {
-            updateExisting: true,
-            pruneNonFixture: false,
-            pruneDerivedModels: false,
-            ...importOptions,
+        logger.info(
+          "Importing fixture into DataStore",
+          {
+            source,
+            importOptions: {
+              updateExisting: true,
+              pruneNonFixture: false,
+              pruneDerivedModels: false,
+              ...importOptions,
+            },
           },
-        }, "STEP-2", "💾");
+          "STEP-2",
+          "💾"
+        );
 
         const result = await FixtureImportService.importTaskSystemFixture(
           fixture,
@@ -119,26 +129,46 @@ export const useFixtureLoader = (
           }
         );
 
-        logger.info("Fixture import completed", {
-          source,
-          tasksCreated: result.tasks.created,
-          tasksUpdated: result.tasks.updated,
-          activitiesCreated: result.activities.created,
-          activitiesUpdated: result.activities.updated,
-          totalTasks: result.tasks.created + result.tasks.updated,
-          totalActivities: result.activities.created + result.activities.updated,
-        }, "STEP-3", "✅");
+        logger.info(
+          "Fixture import completed",
+          {
+            source,
+            tasksCreated: result.tasks.created,
+            tasksUpdated: result.tasks.updated,
+            activitiesCreated: result.activities.created,
+            activitiesUpdated: result.activities.updated,
+            totalTasks: result.tasks.created + result.tasks.updated,
+            totalActivities:
+              result.activities.created + result.activities.updated,
+          },
+          "STEP-3",
+          "✅"
+        );
 
         // Store in context
-        logger.info("Storing fixture in DataSourceContext", { source }, "STEP-4", "💾");
+        logger.info(
+          "Storing fixture in DataSourceContext",
+          { source },
+          "STEP-4",
+          "💾"
+        );
         loadFixtureToContext(source, fixture);
         logger.info("Fixture stored in context", { source }, "STEP-5", "✅");
 
         setLastResult(result);
-        logger.info(`Fixture load completed successfully for source: ${source}`, {
-          source,
-          totalImported: result.tasks.created + result.tasks.updated + result.activities.created + result.activities.updated,
-        }, "SUCCESS", "✅");
+        logger.info(
+          `Fixture load completed successfully for source: ${source}`,
+          {
+            source,
+            totalImported:
+              result.tasks.created +
+              result.tasks.updated +
+              result.activities.created +
+              result.activities.updated,
+          },
+          "SUCCESS",
+          "✅"
+        );
         return result;
       } catch (err) {
         const error = err instanceof Error ? err : new Error(String(err));
@@ -147,7 +177,12 @@ export const useFixtureLoader = (
         throw error;
       } finally {
         setLoading(false);
-        logger.info(`Fixture load process finished for source: ${source}`, { source }, "FINALLY", "🏁");
+        logger.info(
+          `Fixture load process finished for source: ${source}`,
+          { source },
+          "FINALLY",
+          "🏁"
+        );
       }
     },
     [importOptions, loadFixtureToContext]
@@ -161,11 +196,16 @@ export const useFixtureLoader = (
     async (
       fixture: TaskSystemFixture
     ): Promise<ImportTaskSystemFixtureResult> => {
-      logger.info("loadStaticFixture called", {
-        taskCount: fixture.tasks.length,
-        activityCount: fixture.activities.length,
-        fixtureId: fixture.fixtureId,
-      }, "ENTRY", "📋");
+      logger.info(
+        "loadStaticFixture called",
+        {
+          taskCount: fixture.tasks.length,
+          activityCount: fixture.activities.length,
+          fixtureId: fixture.fixtureId,
+        },
+        "ENTRY",
+        "📋"
+      );
       return await loadFixture("static", fixture);
     },
     [loadFixture]
@@ -178,11 +218,16 @@ export const useFixtureLoader = (
     async (
       fixture: TaskSystemFixture
     ): Promise<ImportTaskSystemFixtureResult> => {
-      logger.info("loadLxFixture called", {
-        taskCount: fixture.tasks.length,
-        activityCount: fixture.activities.length,
-        fixtureId: fixture.fixtureId,
-      }, "ENTRY", "📋");
+      logger.info(
+        "loadLxFixture called",
+        {
+          taskCount: fixture.tasks.length,
+          activityCount: fixture.activities.length,
+          fixtureId: fixture.fixtureId,
+        },
+        "ENTRY",
+        "📋"
+      );
       return await loadFixture("lx", fixture);
     },
     [loadFixture]
@@ -191,65 +236,86 @@ export const useFixtureLoader = (
   /**
    * Reload the currently active fixture.
    */
-  const reloadActiveFixture = useCallback(async (): Promise<ImportTaskSystemFixtureResult | null> => {
-    logger.info("reloadActiveFixture called", undefined, "ENTRY", "🔄");
-    
-    const activeFixture = getActiveFixture();
-    if (!activeFixture) {
-      const error = new Error("No active fixture to reload");
-      logger.error("No active fixture to reload", error, "ERROR");
-      setError(error);
-      return null;
-    }
+  const reloadActiveFixture =
+    useCallback(async (): Promise<ImportTaskSystemFixtureResult | null> => {
+      logger.info("reloadActiveFixture called", undefined, "ENTRY", "🔄");
 
-    logger.info("Active fixture found, starting reload", {
-      taskCount: activeFixture.tasks.length,
-      activityCount: activeFixture.activities.length,
-      fixtureId: activeFixture.fixtureId,
-    }, "STEP-1", "📋");
+      const activeFixture = getActiveFixture();
+      if (!activeFixture) {
+        const error = new Error("No active fixture to reload");
+        logger.error("No active fixture to reload", error, "ERROR");
+        setError(error);
+        return null;
+      }
 
-    setLoading(true);
-    setError(null);
-
-    try {
-      logger.info("Importing active fixture into DataStore", {
-        importOptions: {
-          updateExisting: true,
-          pruneNonFixture: true,
-          pruneDerivedModels: true,
-          ...importOptions,
-        },
-      }, "STEP-2", "💾");
-
-      const result = await FixtureImportService.importTaskSystemFixture(
-        activeFixture,
+      logger.info(
+        "Active fixture found, starting reload",
         {
-          updateExisting: true,
-          pruneNonFixture: true,
-          pruneDerivedModels: true,
-          ...importOptions,
-        }
+          taskCount: activeFixture.tasks.length,
+          activityCount: activeFixture.activities.length,
+          fixtureId: activeFixture.fixtureId,
+        },
+        "STEP-1",
+        "📋"
       );
 
-      logger.info("Active fixture reload completed", {
-        tasksCreated: result.tasks.created,
-        tasksUpdated: result.tasks.updated,
-        activitiesCreated: result.activities.created,
-        activitiesUpdated: result.activities.updated,
-      }, "SUCCESS", "✅");
+      setLoading(true);
+      setError(null);
 
-      setLastResult(result);
-      return result;
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error(String(err));
-      logger.error("Active fixture reload failed", error, "ERROR");
-      setError(error);
-      return null;
-    } finally {
-      setLoading(false);
-      logger.info("Active fixture reload process finished", undefined, "FINALLY", "🏁");
-    }
-  }, [getActiveFixture, importOptions]);
+      try {
+        logger.info(
+          "Importing active fixture into DataStore",
+          {
+            importOptions: {
+              updateExisting: true,
+              pruneNonFixture: true,
+              pruneDerivedModels: true,
+              ...importOptions,
+            },
+          },
+          "STEP-2",
+          "💾"
+        );
+
+        const result = await FixtureImportService.importTaskSystemFixture(
+          activeFixture,
+          {
+            updateExisting: true,
+            pruneNonFixture: true,
+            pruneDerivedModels: true,
+            ...importOptions,
+          }
+        );
+
+        logger.info(
+          "Active fixture reload completed",
+          {
+            tasksCreated: result.tasks.created,
+            tasksUpdated: result.tasks.updated,
+            activitiesCreated: result.activities.created,
+            activitiesUpdated: result.activities.updated,
+          },
+          "SUCCESS",
+          "✅"
+        );
+
+        setLastResult(result);
+        return result;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        logger.error("Active fixture reload failed", error, "ERROR");
+        setError(error);
+        return null;
+      } finally {
+        setLoading(false);
+        logger.info(
+          "Active fixture reload process finished",
+          undefined,
+          "FINALLY",
+          "🏁"
+        );
+      }
+    }, [getActiveFixture, importOptions]);
 
   // Note: Auto-load removed - host app must explicitly load fixtures
 
