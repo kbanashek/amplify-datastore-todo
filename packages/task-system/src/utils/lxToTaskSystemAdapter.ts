@@ -93,7 +93,7 @@ export interface LXTask {
   endAfter?: number | null;
   activityAnswer?: string | null;
   activityResponse?: string | null;
-  entityId?: string | null; // Activity reference (e.g., "ActivityRef#Arm.xxx#Activity.yyy")
+  entityId?: string | null; // Activity reference (e.g., "ActivityRef#...#Activity.{uuid}" or "Activity.{uuid}")
   expireTimeInMillSec?: number | null;
   expireDate?: string | Date | null;
   date?: string | null; // ISO date string (e.g., "2024-01-15")
@@ -118,6 +118,11 @@ export const lxToTaskSystemAdapter = (
 
   // Flatten all tasks from all dates into a single array
   const allTasks: CreateTaskInput[] = [];
+  /**
+   * Track activity IDs referenced by tasks.
+   *
+   * We prefer the actual activity id (`Activity.<uuid>`) rather than the full ActivityRef.
+   */
   const activityIdsSet = new Set<string>();
 
   lxResponse.data.getTasks.forEach(taskGroup => {
@@ -149,9 +154,12 @@ export const lxToTaskSystemAdapter = (
       );
       allTasks.push(transformedTask);
 
-      // Extract Activity IDs from task entityId
+      // Extract Activity IDs from task entityId (prefer Activity.<uuid> over ActivityRef#...)
       if (lxTask.entityId && typeof lxTask.entityId === "string") {
-        activityIdsSet.add(lxTask.entityId);
+        const match =
+          lxTask.entityId.match(/(?:^|#)(Activity\.[^#]+)(?:#|$)/) ??
+          lxTask.entityId.match(/(?:^|#)(Activity\.[a-f0-9-]{36})(?:#|$)/i);
+        activityIdsSet.add(match?.[1] ?? lxTask.entityId);
       }
     });
   });
@@ -159,12 +167,15 @@ export const lxToTaskSystemAdapter = (
   // Create minimal Activity stubs from extracted entityIds
   const activities: CreateActivityInput[] = Array.from(activityIdsSet).map(
     entityId => {
-      // Parse entityId: "ActivityRef#Arm.xxx#ActivityGroup.yyy#Activity.zzz"
-      const activityId = entityId.split("#").pop() || entityId;
+      // entityId is expected to be either "Activity.<uuid>" or a raw fallback string.
+      // Keep pk as the full Activity.<uuid> token for parity with Lumiere's metadata filenames.
+      const activityId = entityId;
 
       return {
         pk: activityId,
-        sk: `SK-${activityId}`,
+        // Use the same sk scheme as LX metadata hydration to avoid creating duplicate Activity rows.
+        // See Lumiere `loadLxActivitiesFromMetadata` which uses `ActivityRef#${Activity.<uuid>}`.
+        sk: `ActivityRef#${activityId}`,
         name: activityId,
         title: `Activity (from LX)`,
         type: "ACTIVITY",
@@ -270,15 +281,42 @@ const transformLXTask = (
   let entityId: string | null = null;
   let hashKey: string | null = lxTask.hashKey ?? null;
 
+  /**
+   * Prefer the real activity id if present.
+   * In LX, `actions[0].ref.activityId` is typically "Activity.<uuid>" and is the key
+   * used to load the activity JSON from on-device metadata.
+   */
+  const normalizeEntityId = (raw: string | null | undefined): string | null => {
+    if (!raw || typeof raw !== "string") return null;
+    // If this is an ActivityRef chain, extract the Activity.<uuid> segment.
+    const match =
+      raw.match(/(?:^|#)(Activity\.[^#]+)(?:#|$)/) ??
+      raw.match(/(?:^|#)(Activity\.[a-f0-9-]{36})(?:#|$)/i);
+    return match?.[1] ?? raw;
+  };
+
+  // Seed from top-level entityId first (normalized).
+  entityId = normalizeEntityId(lxTask.entityId);
+
   if (lxTask.actions) {
     if (Array.isArray(lxTask.actions)) {
       actionsStr = JSON.stringify(lxTask.actions);
       // Extract entityId from actions[0].entityId
       if (lxTask.actions.length > 0) {
         const firstAction = lxTask.actions[0] as { [key: string]: unknown };
-        if (firstAction?.entityId && typeof firstAction.entityId === "string") {
-          entityId = firstAction.entityId;
-        }
+        // Prefer ref.activityId if present; fallback to action entityId.
+        const ref = firstAction?.ref as { [key: string]: unknown } | undefined;
+        const refActivityId =
+          ref?.activityId && typeof ref.activityId === "string"
+            ? (ref.activityId as string)
+            : null;
+        const actionEntityId =
+          firstAction?.entityId && typeof firstAction.entityId === "string"
+            ? (firstAction.entityId as string)
+            : null;
+
+        entityId =
+          normalizeEntityId(refActivityId ?? actionEntityId) ?? entityId;
         // Extract hashKey from actions[0].ref.hashKey if not already set
         if (
           !hashKey &&
@@ -298,12 +336,20 @@ const transformLXTask = (
         const parsed = JSON.parse(lxTask.actions);
         if (Array.isArray(parsed) && parsed.length > 0) {
           const firstAction = parsed[0] as { [key: string]: unknown };
-          if (
-            firstAction?.entityId &&
-            typeof firstAction.entityId === "string"
-          ) {
-            entityId = firstAction.entityId;
-          }
+          const ref = firstAction?.ref as
+            | { [key: string]: unknown }
+            | undefined;
+          const refActivityId =
+            ref?.activityId && typeof ref.activityId === "string"
+              ? (ref.activityId as string)
+              : null;
+          const actionEntityId =
+            firstAction?.entityId && typeof firstAction.entityId === "string"
+              ? (firstAction.entityId as string)
+              : null;
+
+          entityId =
+            normalizeEntityId(refActivityId ?? actionEntityId) ?? entityId;
           if (
             !hashKey &&
             firstAction?.ref &&

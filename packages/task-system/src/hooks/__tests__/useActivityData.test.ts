@@ -284,6 +284,104 @@ describe("useActivityData", () => {
         expect(result.current.activityConfig?.completionScreen).toBeDefined();
       });
     });
+
+    it("handles double-encoded layouts JSON (common from host metadata loaders)", async () => {
+      const doubleEncodedActivity: Activity = {
+        ...mockActivity,
+        // layouts is a JSON string that itself contains a JSON string
+        layouts: JSON.stringify(mockActivity.layouts),
+      };
+
+      mockUseActivity.mockReturnValue({
+        activity: doubleEncodedActivity,
+        loading: false,
+        error: null,
+        refresh: jest.fn(),
+      });
+      mockUseTaskAnswer.mockReturnValue({
+        taskAnswers: [],
+        loading: false,
+        error: null,
+        isCreating: false,
+        isUpdating: false,
+        getAnswersByTaskId: jest.fn(() => []),
+        getAnswerByQuestionId: jest.fn(),
+        createTaskAnswer: jest.fn(),
+        updateTaskAnswer: jest.fn(),
+      });
+      mockParseActivityConfig.mockReturnValue(mockParsedActivityData);
+
+      renderHook(() =>
+        useActivityData({ entityId: "ACTIVITY-1", taskId: "TASK-1" })
+      );
+
+      await waitFor(() => {
+        expect(mockParseActivityConfig).toHaveBeenCalled();
+      });
+
+      const [passedConfig] = mockParseActivityConfig.mock.calls[0] as [
+        ActivityConfig,
+        Record<string, unknown>,
+      ];
+
+      // The hook should recover the full config object and expose introduction/summary/completion.
+      expect(passedConfig.introductionScreen).toBeDefined();
+      expect(passedConfig.summaryScreen).toBeDefined();
+      expect(passedConfig.completionScreen).toBeDefined();
+    });
+
+    it("unwraps container objects that include layouts/screens but not intro/summary/completion keys", async () => {
+      const containerOnly: Activity = {
+        ...mockActivity,
+        // Container shape: { layouts: [...] } with no activityGroups/introduction/etc
+        layouts: JSON.stringify({
+          layouts: [
+            {
+              type: "MOBILE",
+              screens: [],
+            },
+          ],
+          screens: [],
+        }),
+        activityGroups: null,
+      };
+
+      mockUseActivity.mockReturnValue({
+        activity: containerOnly,
+        loading: false,
+        error: null,
+        refresh: jest.fn(),
+      });
+      mockUseTaskAnswer.mockReturnValue({
+        taskAnswers: [],
+        loading: false,
+        error: null,
+        isCreating: false,
+        isUpdating: false,
+        getAnswersByTaskId: jest.fn(() => []),
+        getAnswerByQuestionId: jest.fn(),
+        createTaskAnswer: jest.fn(),
+        updateTaskAnswer: jest.fn(),
+      });
+      mockParseActivityConfig.mockReturnValue(mockParsedActivityData);
+
+      renderHook(() =>
+        useActivityData({ entityId: "ACTIVITY-1", taskId: "TASK-1" })
+      );
+
+      await waitFor(() => {
+        expect(mockParseActivityConfig).toHaveBeenCalled();
+      });
+
+      const [passedConfig] = mockParseActivityConfig.mock.calls[0] as [
+        ActivityConfig,
+        Record<string, unknown>,
+      ];
+
+      expect(Array.isArray(passedConfig.layouts)).toBe(true);
+      expect(passedConfig.layouts?.[0]?.type).toBe("MOBILE");
+      expect(Array.isArray(passedConfig.screens)).toBe(true);
+    });
   });
 
   describe("initial answers", () => {

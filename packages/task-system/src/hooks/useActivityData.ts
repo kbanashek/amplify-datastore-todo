@@ -2,7 +2,11 @@ import { useActivity } from "@hooks/useActivity";
 import { useTaskAnswer } from "@hooks/useTaskAnswer";
 import { TaskService } from "@services/TaskService";
 import type { Activity } from "@task-types/Activity";
-import { ActivityConfig } from "@task-types/ActivityConfig";
+import type {
+  ActivityConfig,
+  ActivityGroup,
+  Layout,
+} from "@task-types/ActivityConfig";
 import type { AnswerValue } from "@task-types/AnswerValue";
 import { getServiceLogger } from "@utils/logging/serviceLogger";
 import {
@@ -12,6 +16,7 @@ import {
 import { DataStore } from "@aws-amplify/datastore";
 import { useEffect, useRef, useState } from "react";
 import { TaskTempAnswer } from "../models";
+import { safeJsonParseDeep } from "@utils/parsers/safeJsonParse";
 
 const logger = getServiceLogger("useActivityData");
 
@@ -80,9 +85,13 @@ export const useActivityData = ({
       }
 
       if (!entityId) {
-        setError(
-          "This task does not have an associated activity. Please ensure the task has an entityId that links to an Activity."
-        );
+        const errorMsg =
+          "This task does not have an associated activity. Please ensure the task has an entityId that links to an Activity.";
+        logger.error("❌ No entityId provided to useActivityData", {
+          taskId,
+          error: errorMsg,
+        });
+        setError(errorMsg);
         setLoading(false);
         return;
       }
@@ -104,48 +113,121 @@ export const useActivityData = ({
         // Reconstruct the full JSON structure matching the provided format
         const parsedConfig: ActivityConfig = {};
 
-        // Parse layouts - check if it contains the full JSON structure
+        // Parse layouts - supports double-encoded JSON strings (common when host stores JSON as string)
         if (activity.layouts) {
-          try {
-            const parsedLayouts = JSON.parse(activity.layouts);
+          const parsedLayouts = safeJsonParseDeep(activity.layouts, 3);
 
-            // Check if this is the full JSON structure
-            if (
-              typeof parsedLayouts === "object" &&
-              !Array.isArray(parsedLayouts) &&
-              (parsedLayouts.activityGroups ||
-                parsedLayouts.introductionScreen ||
-                parsedLayouts.summaryScreen ||
-                parsedLayouts.completionScreen)
+          if (parsedLayouts === null) {
+            logger.error(
+              "Error parsing layouts (invalid JSON)",
+              undefined,
+              "ActivityConfig",
+              "❌"
+            );
+          } else if (
+            typeof parsedLayouts === "object" &&
+            parsedLayouts !== null &&
+            !Array.isArray(parsedLayouts) &&
+            ("activityGroups" in parsedLayouts ||
+              "layouts" in parsedLayouts ||
+              "screens" in parsedLayouts ||
+              "introductionScreen" in parsedLayouts ||
+              "summaryScreen" in parsedLayouts ||
+              "completionScreen" in parsedLayouts)
+          ) {
+            // Full JSON structure - extract all parts
+            const full = parsedLayouts as Record<string, unknown>;
+            const fullActivityGroups = safeJsonParseDeep(
+              full.activityGroups,
+              2
+            );
+            if (Array.isArray(fullActivityGroups)) {
+              parsedConfig.activityGroups =
+                fullActivityGroups as unknown as ActivityGroup[];
+            } else if (
+              fullActivityGroups &&
+              typeof fullActivityGroups === "object"
             ) {
-              // Full JSON structure - extract all parts
-              parsedConfig.activityGroups = parsedLayouts.activityGroups;
-              parsedConfig.layouts = parsedLayouts.layouts || [];
-              parsedConfig.introductionScreen =
-                parsedLayouts.introductionScreen;
-              parsedConfig.summaryScreen = parsedLayouts.summaryScreen;
-              parsedConfig.completionScreen = parsedLayouts.completionScreen;
-            } else if (Array.isArray(parsedLayouts)) {
-              parsedConfig.layouts = parsedLayouts;
-            } else {
-              parsedConfig.layouts = parsedLayouts;
+              parsedConfig.activityGroups = [
+                fullActivityGroups as unknown as ActivityGroup,
+              ];
             }
-          } catch (e) {
-            logger.error("Error parsing layouts", e, "ActivityConfig", "❌");
+
+            const fullLayouts = safeJsonParseDeep(full.layouts, 2);
+            if (Array.isArray(fullLayouts)) {
+              parsedConfig.layouts = fullLayouts as unknown as Layout[];
+            } else if (fullLayouts && typeof fullLayouts === "object") {
+              parsedConfig.layouts = [fullLayouts as unknown as Layout];
+            } else {
+              parsedConfig.layouts = [];
+            }
+
+            // Some sources provide `screens` directly at the top level (LX-style)
+            const fullScreens = safeJsonParseDeep(full.screens, 2);
+            if (Array.isArray(fullScreens)) {
+              parsedConfig.screens =
+                fullScreens as unknown as ActivityConfig["screens"];
+            }
+            parsedConfig.introductionScreen =
+              full.introductionScreen as ActivityConfig["introductionScreen"];
+            parsedConfig.summaryScreen =
+              full.summaryScreen as ActivityConfig["summaryScreen"];
+            parsedConfig.completionScreen =
+              full.completionScreen as ActivityConfig["completionScreen"];
+          } else if (Array.isArray(parsedLayouts)) {
+            parsedConfig.layouts = parsedLayouts as unknown as Layout[];
+          } else if (
+            typeof parsedLayouts === "object" &&
+            parsedLayouts !== null
+          ) {
+            // This may be either:
+            // 1) A single layout object, or
+            // 2) A container object that includes `layouts` and/or `screens`.
+            const container = parsedLayouts as Record<string, unknown>;
+
+            const containerLayouts = safeJsonParseDeep(container.layouts, 2);
+            if (Array.isArray(containerLayouts)) {
+              parsedConfig.layouts = containerLayouts as unknown as Layout[];
+            } else if (
+              containerLayouts &&
+              typeof containerLayouts === "object"
+            ) {
+              parsedConfig.layouts = [containerLayouts as unknown as Layout];
+            } else {
+              // Fallback: treat the object itself as a single layout.
+              parsedConfig.layouts = [parsedLayouts as unknown as Layout];
+            }
+
+            const containerScreens = safeJsonParseDeep(container.screens, 2);
+            if (Array.isArray(containerScreens)) {
+              parsedConfig.screens =
+                containerScreens as unknown as ActivityConfig["screens"];
+            }
+          } else {
+            // If it's still a string/primitive after parsing attempts, treat as unusable.
+            parsedConfig.layouts = [];
           }
         }
 
         // Parse activityGroups (if not already extracted)
         if (!parsedConfig.activityGroups && activity.activityGroups) {
-          try {
-            parsedConfig.activityGroups = JSON.parse(activity.activityGroups);
-          } catch (e) {
+          const parsedGroups = safeJsonParseDeep(activity.activityGroups, 3);
+          if (parsedGroups === null) {
             logger.error(
-              "Error parsing activityGroups",
-              e,
+              "Error parsing activityGroups (invalid JSON)",
+              undefined,
               "ActivityConfig",
               "❌"
             );
+          } else {
+            if (Array.isArray(parsedGroups)) {
+              parsedConfig.activityGroups =
+                parsedGroups as unknown as ActivityGroup[];
+            } else if (parsedGroups && typeof parsedGroups === "object") {
+              parsedConfig.activityGroups = [
+                parsedGroups as unknown as ActivityGroup,
+              ];
+            }
           }
         }
 

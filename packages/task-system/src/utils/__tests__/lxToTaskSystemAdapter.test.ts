@@ -193,10 +193,11 @@ describe("lxToTaskSystemAdapter", () => {
         taskType: "SCHEDULED",
         actions: [
           {
-            entityId: "activity-456",
+            entityId:
+              "ActivityRef#Arm.11111111-1111-1111-1111-111111111111#ActivityGroup.22222222-2222-2222-2222-222222222222#Activity.33333333-3333-3333-3333-333333333333",
             entityType: "ACTIVITY",
             ref: {
-              activityId: "activity-456",
+              activityId: "Activity.33333333-3333-3333-3333-333333333333",
               hashKey: "hash-789",
             },
           },
@@ -222,7 +223,9 @@ describe("lxToTaskSystemAdapter", () => {
       expect(task.actions).toBeTruthy();
       const parsedActions = JSON.parse(task.actions!);
       expect(parsedActions).toHaveLength(1);
-      expect(parsedActions[0].entityId).toBe("activity-456");
+      expect(parsedActions[0].entityId).toBe(
+        "ActivityRef#Arm.11111111-1111-1111-1111-111111111111#ActivityGroup.22222222-2222-2222-2222-222222222222#Activity.33333333-3333-3333-3333-333333333333"
+      );
     });
 
     it("should extract entityId from actions[0].entityId", () => {
@@ -233,7 +236,8 @@ describe("lxToTaskSystemAdapter", () => {
         taskType: "SCHEDULED",
         actions: [
           {
-            entityId: "activity-456",
+            entityId:
+              "ActivityRef#Arm.11111111-1111-1111-1111-111111111111#ActivityGroup.22222222-2222-2222-2222-222222222222#Activity.33333333-3333-3333-3333-333333333333",
             entityType: "ACTIVITY",
           },
         ],
@@ -254,7 +258,10 @@ describe("lxToTaskSystemAdapter", () => {
       const fixture = lxToTaskSystemAdapter(lxResponse);
       const task = fixture.tasks[0];
 
-      expect(task.entityId).toBe("activity-456");
+      // Normalizes ActivityRef#... to Activity.<uuid>
+      expect(task.entityId).toBe(
+        "Activity.33333333-3333-3333-3333-333333333333"
+      );
     });
 
     it("should extract hashKey from actions[0].ref.hashKey", () => {
@@ -301,7 +308,8 @@ describe("lxToTaskSystemAdapter", () => {
         hashKey: "existing-hash",
         actions: [
           {
-            entityId: "activity-456",
+            entityId:
+              "ActivityRef#Arm.11111111-1111-1111-1111-111111111111#ActivityGroup.22222222-2222-2222-2222-222222222222#Activity.33333333-3333-3333-3333-333333333333",
             entityType: "ACTIVITY",
             ref: {
               hashKey: "hash-789",
@@ -331,9 +339,13 @@ describe("lxToTaskSystemAdapter", () => {
     it("should handle actions already as JSON string", () => {
       const actionsArray = [
         {
-          entityId: "activity-456",
+          entityId:
+            "ActivityRef#Arm.11111111-1111-1111-1111-111111111111#ActivityGroup.22222222-2222-2222-2222-222222222222#Activity.33333333-3333-3333-3333-333333333333",
           entityType: "ACTIVITY",
-          ref: { hashKey: "hash-789" },
+          ref: {
+            activityId: "Activity.33333333-3333-3333-3333-333333333333",
+            hashKey: "hash-789",
+          },
         },
       ];
 
@@ -361,7 +373,10 @@ describe("lxToTaskSystemAdapter", () => {
       const task = fixture.tasks[0];
 
       expect(task.actions).toBe(JSON.stringify(actionsArray));
-      expect(task.entityId).toBe("activity-456");
+      // Prefer ref.activityId and normalize away ActivityRef#... chains.
+      expect(task.entityId).toBe(
+        "Activity.33333333-3333-3333-3333-333333333333"
+      );
       expect(task.hashKey).toBe("hash-789");
     });
 
