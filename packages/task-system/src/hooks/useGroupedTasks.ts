@@ -55,17 +55,19 @@ export interface GroupedTask {
  * ));
  * ```
  */
+/** React hook that groups tasks by day and due-by time label (LX parity). */
 export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
   const currentTime = React.useMemo(() => Date.now(), []);
 
   return React.useMemo(() => {
-    console.warn("[useGroupedTasks] 🚀 Starting LX-parity task grouping", {
-      totalTasks: tasks.length,
-      episodicCount: tasks.filter(t => t.taskType === TaskType.EPISODIC).length,
-      scheduledCount: tasks.filter(t => t.taskType === TaskType.SCHEDULED)
-        .length,
-      timedCount: tasks.filter(t => t.taskType === TaskType.TIMED).length,
-    });
+    // Commented out for less log noise - uncomment to debug task grouping
+    // console.warn("[useGroupedTasks] 🚀 Starting LX-parity task grouping", {
+    //   totalTasks: tasks.length,
+    //   episodicCount: tasks.filter(t => t.taskType === TaskType.EPISODIC).length,
+    //   scheduledCount: tasks.filter(t => t.taskType === TaskType.SCHEDULED)
+    //     .length,
+    //   timedCount: tasks.filter(t => t.taskType === TaskType.TIMED).length,
+    // });
 
     // 1. Separate episodic and scheduled/timed tasks
     const episodicTasks = tasks.filter(t => t.taskType === TaskType.EPISODIC);
@@ -77,21 +79,21 @@ export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
       currentTime
     );
 
-    console.warn("[useGroupedTasks] ✅ Filtered episodic tasks", {
-      before: episodicTasks.length,
-      after: filteredEpisodicTasks.length,
-      tasks: filteredEpisodicTasks.map(t => t.title),
-    });
+    // console.warn("[useGroupedTasks] ✅ Filtered episodic tasks", {
+    //   before: episodicTasks.length,
+    //   after: filteredEpisodicTasks.length,
+    //   tasks: filteredEpisodicTasks.map(t => t.title),
+    // });
 
     // 3. Filter scheduled/timed tasks (LX parity: completed, expired, not started, old tasks)
     const filteredScheduledTasks = scheduledTasks.filter(
       task => !shouldFilterTask(task, currentTime)
     );
 
-    console.warn("[useGroupedTasks] ✅ Filtered scheduled tasks", {
-      before: scheduledTasks.length,
-      after: filteredScheduledTasks.length,
-    });
+    // console.warn("[useGroupedTasks] ✅ Filtered scheduled tasks", {
+    //   before: scheduledTasks.length,
+    //   after: filteredScheduledTasks.length,
+    // });
 
     // 4. Sort scheduled tasks by startTimeInMillSec then title
     const sortedScheduledTasks = sortTaskArray(filteredScheduledTasks);
@@ -208,15 +210,15 @@ export const useGroupedTasks = (tasks: Task[]): GroupedTask[] => {
       });
     }
 
-    console.warn("[useGroupedTasks] ✅ Final grouped result", {
-      totalGroups: groupedByDate.length,
-      groups: groupedByDate.map(g => ({
-        dayLabel: g.dayLabel,
-        episodicCount: g.tasksWithoutTime.length,
-        timeGroupsCount: g.timeGroups.length,
-        firstEpisodic: g.tasksWithoutTime[0]?.title,
-      })),
-    });
+    // console.warn("[useGroupedTasks] ✅ Final grouped result", {
+    //   totalGroups: groupedByDate.length,
+    //   groups: groupedByDate.map(g => ({
+    //     dayLabel: g.dayLabel,
+    //     episodicCount: g.tasksWithoutTime.length,
+    //     timeGroupsCount: g.timeGroups.length,
+    //     firstEpisodic: g.tasksWithoutTime[0]?.title,
+    //   })),
+    // });
 
     return groupedByDate;
   }, [tasks, currentTime]);

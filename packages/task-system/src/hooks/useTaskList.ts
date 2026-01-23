@@ -58,6 +58,7 @@ interface UseTaskListReturn {
  * await handleDeleteTask("task-123");
  * ```
  */
+/** React hook for managing a list of tasks with live DataStore updates. */
 export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
   const [allTasks, setAllTasks] = useState<Task[]>([]); // Store unfiltered tasks
   const [loading, setLoading] = useState<boolean>(true);
@@ -110,19 +111,20 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
           const taskTypeStr = String(t.taskType).toUpperCase();
           return taskTypeStr === "EPISODIC" || t.taskType === TaskType.EPISODIC;
         });
-        if (episodicTasks.length > 0) {
-          console.warn("[useTaskList] 📋 Episodic tasks detected", {
-            totalTasks: items.length,
-            episodicCount: episodicTasks.length,
-            episodicTasks: episodicTasks.map(t => ({
-              id: t.id,
-              title: t.title,
-              taskType: t.taskType,
-              taskTypeStr: String(t.taskType).toUpperCase(),
-              expireTimeInMillSec: t.expireTimeInMillSec,
-            })),
-          });
-        }
+        // Commented out for less log noise - uncomment to debug episodic task detection
+        // if (episodicTasks.length > 0) {
+        //   console.warn("[useTaskList] 📋 Episodic tasks detected", {
+        //     totalTasks: items.length,
+        //     episodicCount: episodicTasks.length,
+        //     episodicTasks: episodicTasks.map(t => ({
+        //       id: t.id,
+        //       title: t.title,
+        //       taskType: t.taskType,
+        //       taskTypeStr: String(t.taskType).toUpperCase(),
+        //       expireTimeInMillSec: t.expireTimeInMillSec,
+        //     })),
+        //   });
+        // }
 
         setAllTasks(items);
         setIsSynced(synced);
@@ -157,19 +159,20 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
 
   // Memoize filtered tasks - only recalculates when allTasks or filters change
   const tasks = useMemo(() => {
-    console.warn("[useTaskList] 🔄 Filtering tasks", {
-      totalTasks: allTasks.length,
-      hasFilters: !!filters,
-      episodicCount: allTasks.filter(t => {
-        const taskTypeStr = String(t.taskType).toUpperCase();
-        return taskTypeStr === "EPISODIC" || t.taskType === TaskType.EPISODIC;
-      }).length,
-    });
+    // Commented out for less log noise - uncomment to debug task filtering
+    // console.warn("[useTaskList] 🔄 Filtering tasks", {
+    //   totalTasks: allTasks.length,
+    //   hasFilters: !!filters,
+    //   episodicCount: allTasks.filter(t => {
+    //     const taskTypeStr = String(t.taskType).toUpperCase();
+    //     return taskTypeStr === "EPISODIC" || t.taskType === TaskType.EPISODIC;
+    //   }).length,
+    // });
 
     if (!filters) {
-      console.warn("[useTaskList] ✅ No filters, returning all tasks", {
-        totalTasks: allTasks.length,
-      });
+      // console.warn("[useTaskList] ✅ No filters, returning all tasks", {
+      //   totalTasks: allTasks.length,
+      // });
       return allTasks;
     }
 
@@ -230,18 +233,19 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
       });
     }
 
-    console.warn("[useTaskList] ✅ Filtered tasks result", {
-      beforeFilter: allTasks.length,
-      afterFilter: filtered.length,
-      episodicBefore: allTasks.filter(t => {
-        const taskTypeStr = String(t.taskType).toUpperCase();
-        return taskTypeStr === "EPISODIC" || t.taskType === TaskType.EPISODIC;
-      }).length,
-      episodicAfter: filtered.filter(t => {
-        const taskTypeStr = String(t.taskType).toUpperCase();
-        return taskTypeStr === "EPISODIC" || t.taskType === TaskType.EPISODIC;
-      }).length,
-    });
+    // Commented out for less log noise - uncomment to debug task filtering
+    // console.warn("[useTaskList] ✅ Filtered tasks result", {
+    //   beforeFilter: allTasks.length,
+    //   afterFilter: filtered.length,
+    //   episodicBefore: allTasks.filter(t => {
+    //     const taskTypeStr = String(t.taskType).toUpperCase();
+    //     return taskTypeStr === "EPISODIC" || t.taskType === TaskType.EPISODIC;
+    //   }).length,
+    //   episodicAfter: filtered.filter(t => {
+    //     const taskTypeStr = String(t.taskType).toUpperCase();
+    //     return taskTypeStr === "EPISODIC" || t.taskType === TaskType.EPISODIC;
+    //   }).length,
+    // });
 
     return filtered;
   }, [allTasks, filters]);

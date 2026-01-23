@@ -103,6 +103,85 @@ describe("lxToTaskSystemAdapter", () => {
       expect(fixture.tasks[0].studyVersion).toBe("2.5");
       expect(fixture.tasks[0].studyStatus).toBe("BUILD");
     });
+
+    it("should generate stable pk/sk when LX task does not include them", () => {
+      const lxResponse: LXGetTasksResponse = {
+        data: {
+          getTasks: [
+            {
+              date: "2026-01-23",
+              dayOffset: 0,
+              tasks: [
+                {
+                  // pk/sk intentionally missing (matches LX in-memory task objects)
+                  title: "Episodic Task 01",
+                  taskType: "EPISODIC",
+                  date: "2026-01-23",
+                  taskDefinitionId: "TaskDefinition.abc123",
+                } as unknown as LXTask,
+              ],
+            },
+          ],
+        },
+      };
+
+      const fixture1 = lxToTaskSystemAdapter(lxResponse);
+      const fixture2 = lxToTaskSystemAdapter(lxResponse);
+
+      expect(fixture1.tasks).toHaveLength(1);
+      expect(fixture2.tasks).toHaveLength(1);
+
+      const t1 = fixture1.tasks[0];
+      const t2 = fixture2.tasks[0];
+
+      expect(typeof t1.pk).toBe("string");
+      expect(typeof t1.sk).toBe("string");
+      expect(t1.pk.length).toBeGreaterThan(0);
+      expect(t1.sk.length).toBeGreaterThan(0);
+
+      // Deterministic across calls for same input (so imports update instead of re-creating)
+      expect(t1.pk).toBe(t2.pk);
+      expect(t1.sk).toBe(t2.sk);
+    });
+
+    it("should NOT use taskInstanceId to derive pk/sk when pk/sk are missing", () => {
+      const baseTask: LXTask = {
+        title: "Episodic Task 01",
+        taskType: "EPISODIC",
+        date: "2026-01-23",
+        taskDefinitionId: "TaskDefinition.abc123",
+      };
+
+      const response1: LXGetTasksResponse = {
+        data: {
+          getTasks: [
+            {
+              date: "2026-01-23",
+              dayOffset: 0,
+              tasks: [{ ...baseTask, taskInstanceId: "instance-1" }],
+            },
+          ],
+        },
+      };
+
+      const response2: LXGetTasksResponse = {
+        data: {
+          getTasks: [
+            {
+              date: "2026-01-23",
+              dayOffset: 0,
+              tasks: [{ ...baseTask, taskInstanceId: "instance-2" }],
+            },
+          ],
+        },
+      };
+
+      const f1 = lxToTaskSystemAdapter(response1);
+      const f2 = lxToTaskSystemAdapter(response2);
+
+      expect(f1.tasks[0].pk).toBe(f2.tasks[0].pk);
+      expect(f1.tasks[0].sk).toBe(f2.tasks[0].sk);
+    });
   });
 
   describe("actions transformation", () => {

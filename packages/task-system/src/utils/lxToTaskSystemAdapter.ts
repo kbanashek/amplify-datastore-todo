@@ -26,8 +26,12 @@ export interface LXGetTasksResponse {
  * LX Task structure from GraphQL API
  */
 export interface LXTask {
-  pk: string;
-  sk: string;
+  /**
+   * LX GraphQL tasks have pk/sk, but the LX in-memory task objects (e.g. Redux)
+   * used by the integration harness may not. We generate stable pk/sk when missing.
+   */
+  pk?: string;
+  sk?: string;
   title: string;
   taskType: string;
   status?: string;
@@ -35,6 +39,12 @@ export interface LXTask {
   taskInstanceId?: string | null;
   startTime?: string | null;
   endTime?: string | null;
+  /**
+   * Some LX in-memory task objects include millisecond timestamps directly.
+   * The GraphQL shape uses startTime/endTime strings, but we accept both.
+   */
+  startTimeInMillSec?: number | null;
+  endTimeInMillSec?: number | null;
   dayOffset?: number | null;
   endDayOffset?: number | null;
   showBeforeStart?: boolean | null;
@@ -99,24 +109,7 @@ export interface LXToTaskSystemAdapterOptions {
   fixtureId?: string;
 }
 
-/**
- * Transform LX's GraphQL getTasks response into TaskSystemFixture format.
- *
- * @param lxResponse - The raw GraphQL response from LX's getTasks API
- * @param options - Optional configuration for the transformation
- * @returns A TaskSystemFixture ready for import into task-system
- *
- * @example
- * ```typescript
- * const lxResponse = await APIDataManager.getInstance().getTasks(...);
- * const fixture = lxToTaskSystemAdapter(lxResponse, {
- *   studyVersion: "1.0",
- *   studyStatus: "LIVE",
- *   fixtureId: "lx-production-2025-01-20"
- * });
- * await importTaskSystemFixture(fixture);
- * ```
- */
+/** Transform an LX getTasks response into a TaskSystemFixture for import. */
 export const lxToTaskSystemAdapter = (
   lxResponse: LXGetTasksResponse,
   options: LXToTaskSystemAdapterOptions = {}
@@ -136,15 +129,16 @@ export const lxToTaskSystemAdapter = (
         (lxTask.expireTimeInMillSec === 0 ||
           lxTask.expireTimeInMillSec === null)
       ) {
-        console.warn(
-          `[lxToTaskSystemAdapter] 🚫 Filtering out TIMED task with expireTimeInMillSec=0 (expired)`,
-          {
-            title: lxTask.title,
-            pk: lxTask.pk,
-            taskType: lxTask.taskType,
-            expireTimeInMillSec: lxTask.expireTimeInMillSec,
-          }
-        );
+        // Commented out for less log noise - uncomment to debug expired task filtering
+        // console.warn(
+        //   `[lxToTaskSystemAdapter] 🚫 Filtering out TIMED task with expireTimeInMillSec=0 (expired)`,
+        //   {
+        //     title: lxTask.title,
+        //     pk: lxTask.pk,
+        //     taskType: lxTask.taskType,
+        //     expireTimeInMillSec: lxTask.expireTimeInMillSec,
+        //   }
+        // );
         return; // Skip this task
       }
 
@@ -179,13 +173,14 @@ export const lxToTaskSystemAdapter = (
     }
   );
 
-  console.warn(
-    "[lxToTaskSystemAdapter] ✅ Extracted activities from task entityIds",
-    {
-      totalActivities: activities.length,
-      activityIds: activities.map(a => a.pk),
-    }
-  );
+  // Commented out for less log noise - uncomment to debug activity extraction
+  // console.warn(
+  //   "[lxToTaskSystemAdapter] ✅ Extracted activities from task entityIds",
+  //   {
+  //     totalActivities: activities.length,
+  //     activityIds: activities.map(a => a.pk),
+  //   }
+  // );
 
   return {
     version: 1,
@@ -195,6 +190,66 @@ export const lxToTaskSystemAdapter = (
     questions: [],
     appointments: undefined,
   };
+};
+
+/**
+ * Build a stable, deterministic key for an LX task when pk/sk are not present.
+ *
+ * The intent is "create once, then update": if the LX task content is the same
+ * across reloads, this will produce the same pk, so FixtureImportService will
+ * update the existing DataStore row instead of creating a new one.
+ *
+ * @param lxTask - LX task-like object (may be missing pk/sk)
+ * @returns A stable base identifier string
+ */
+const getStableLxTaskBaseKey = (lxTask: LXTask): string => {
+  // Prefer the most stable identifiers first.
+  const preferredId =
+    lxTask.pk ??
+    lxTask.hashKey ??
+    lxTask.occurrenceHashKey ??
+    lxTask.taskDefinitionId ??
+    lxTask.taskTemplateId ??
+    // IMPORTANT: do NOT use taskInstanceId for identity.
+    // In LX, taskInstanceId can be created/changed when the user starts a task,
+    // which would cause our "stable" pk to change and make progress appear to reset.
+    // Use semantic identifiers instead.
+    lxTask.entityId ??
+    null;
+
+  if (preferredId) {
+    return `lx:${preferredId}`;
+  }
+
+  // Fallback: use a content-derived key.
+  // Keep the set small and stable (avoid including fields that change frequently).
+  const date = lxTask.date ?? "";
+  const title = lxTask.title ?? "";
+  const type = lxTask.taskType ?? "";
+  const start =
+    typeof lxTask.startTimeInMillSec === "number"
+      ? String(lxTask.startTimeInMillSec)
+      : "";
+  const expire =
+    typeof lxTask.expireTimeInMillSec === "number"
+      ? String(lxTask.expireTimeInMillSec)
+      : "";
+
+  return `lx:content:${type}:${date}:${start}:${expire}:${title}`;
+};
+
+/**
+ * Simple stable hash (djb2) to generate compact keys for pk/sk.
+ *
+ * @param input - String to hash
+ * @returns Short base36 hash
+ */
+const hashToBase36 = (input: string): string => {
+  let hash = 5381;
+  for (let i = 0; i < input.length; i++) {
+    hash = (hash << 5) + hash + input.charCodeAt(i);
+  }
+  return Math.abs(hash).toString(36);
 };
 
 /**
@@ -324,22 +379,29 @@ const transformLXTask = (
     taskType === TaskType.EPISODIC ||
     String(taskType).toUpperCase() === "EPISODIC";
 
-  if (isEpisodic) {
-    console.warn("[lxToTaskSystemAdapter] ✅ Episodic task detected", {
-      title: lxTask.title,
-      taskType: lxTask.taskType,
-      normalizedTaskType: taskType,
-      expireTimeInMillSec,
-      pk: lxTask.pk,
-    });
-  }
+  // Commented out for less log noise - uncomment to debug episodic task detection
+  // if (isEpisodic) {
+  //   console.warn("[lxToTaskSystemAdapter] ✅ Episodic task detected", {
+  //     title: lxTask.title,
+  //     taskType: lxTask.taskType,
+  //     normalizedTaskType: taskType,
+  //     expireTimeInMillSec,
+  //     pk: lxTask.pk,
+  //   });
+  // }
 
   // Normalize status
   const status = normalizeTaskStatus(lxTask.status);
 
+  // Ensure pk/sk exist (DataStore requires these for sync + conflict resolution).
+  const baseKey = getStableLxTaskBaseKey(lxTask);
+  const stableId = hashToBase36(baseKey);
+  const pk = lxTask.pk ?? `LX_TASK#${stableId}`;
+  const sk = lxTask.sk ?? `TASK#${pk}`;
+
   return {
-    pk: lxTask.pk,
-    sk: lxTask.sk,
+    pk,
+    sk,
     title: lxTask.title,
     taskType,
     status,

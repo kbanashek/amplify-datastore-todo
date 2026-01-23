@@ -70,7 +70,9 @@ function applyDefined(
  * console.log(`Imported ${result.activitiesCreated} activities`);
  * ```
  */
+/** Service for importing TaskSystemFixture data into DataStore. */
 export class FixtureImportService {
+  /** Import a TaskSystemFixture into DataStore. */
   static async importTaskSystemFixture(
     fixture: TaskSystemFixture,
     options: ImportTaskSystemFixtureOptions = {}
@@ -118,6 +120,80 @@ export class FixtureImportService {
       "STEP-1",
       "✅"
     );
+
+    // CRITICAL: Wait for DataStore's initial sync to complete before querying existing records
+    // If we don't wait, we'll query an empty local store and create duplicates when cloud sync finishes
+    logger.info(
+      "Waiting for DataStore initial sync to complete",
+      {},
+      "STEP-1.5",
+      "⏳"
+    );
+
+    try {
+      const { Hub } = await import("@aws-amplify/core");
+
+      await new Promise<void>((resolve, reject) => {
+        let resolved = false;
+
+        // Timeout after 15 seconds - proceed anyway to avoid blocking indefinitely
+        const timeout = setTimeout(() => {
+          if (!resolved) {
+            resolved = true;
+            logger.info(
+              "DataStore sync timeout (15s) - proceeding with import",
+              {},
+              "STEP-1.5",
+              "⚠️"
+            );
+            resolve();
+          }
+        }, 15000);
+
+        const hubListener = Hub.listen("datastore", data => {
+          const { event } = data.payload;
+
+          // Wait for 'ready' event which indicates initial sync is complete
+          if (event === "ready" && !resolved) {
+            resolved = true;
+            clearTimeout(timeout);
+            hubListener();
+            logger.info(
+              "DataStore initial sync completed - ready to query existing records",
+              {},
+              "STEP-1.5",
+              "✅"
+            );
+            resolve();
+          }
+        });
+
+        // Also resolve if sync fails
+        Hub.listen("datastore", data => {
+          const { event } = data.payload;
+          if (event === "syncQueriesFailed" && !resolved) {
+            resolved = true;
+            clearTimeout(timeout);
+            hubListener();
+            logger.warn(
+              "DataStore sync failed - proceeding with import anyway",
+              {},
+              "STEP-1.5",
+              "⚠️"
+            );
+            resolve();
+          }
+        });
+      });
+    } catch (error) {
+      // If waiting fails, log and continue
+      logger.warn(
+        "Failed to wait for DataStore sync - proceeding anyway",
+        error,
+        "STEP-1.5",
+        "⚠️"
+      );
+    }
 
     /**
      * Helper to select the latest item from an array based on _lastChangedAt timestamp.
@@ -443,7 +519,18 @@ export class FixtureImportService {
       try {
         const updated = await DataStore.save(
           Task.copyOf(existing, draft => {
-            applyDefined(draft, taskInput, ["pk", "sk", "id"]);
+            // Preserve user state fields - only update structural fixture data
+            // DO NOT overwrite: status, startTimeInMillSec, taskInstanceId, parentTaskInstanceId
+            // These represent user progress and should persist across fixture updates
+            applyDefined(draft, taskInput, [
+              "pk",
+              "sk",
+              "id",
+              "status",
+              "startTimeInMillSec",
+              "taskInstanceId",
+              "parentTaskInstanceId",
+            ]);
           })
         );
 

@@ -33,6 +33,8 @@
     "check:circular": "madge --circular --extensions ts,tsx,js,jsx src app",
     "check:types": "tsc --noEmit && yarn build:task-system",
     "check:docstrings": "node scripts/check-docstrings.js",
+    "check:api-key": "node scripts/check-api-key.js",
+    "clear-duplicates": "node scripts/clear-duplicate-tasks.js",
     "prepare": "husky install || true",
     "build:task-system": "yarn --cwd packages/task-system build",
     "apply-native-fixes": "./scripts/apply-native-fixes.sh",

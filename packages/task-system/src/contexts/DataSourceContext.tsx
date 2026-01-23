@@ -8,8 +8,10 @@
 import React, { createContext, useContext, useState, useCallback } from "react";
 import type { TaskSystemFixture } from "@fixtures/TaskSystemFixture";
 
+/** Supported data source types for task-system fixtures. */
 export type DataSourceType = "static" | "lx";
 
+/** State tracked by the DataSource context. */
 export interface DataSourceState {
   /** Current active data source */
   activeSource: DataSourceType;
@@ -25,6 +27,7 @@ export interface DataSourceState {
   };
 }
 
+/** Context value for the DataSource provider. */
 export interface DataSourceContextValue extends DataSourceState {
   /** Switch to a different data source */
   setActiveSource: (source: DataSourceType) => void;
@@ -43,7 +46,7 @@ const DataSourceContext = createContext<DataSourceContextValue | undefined>(
 );
 
 const initialState: DataSourceState = {
-  activeSource: "static",
+  activeSource: "lx",
   fixtures: {
     static: null,
     lx: null,
@@ -142,6 +145,7 @@ export const DataSourceProvider: React.FC<{ children: React.ReactNode }> = ({
  * const fixture = getActiveFixture();
  * ```
  */
+/** Hook to access data source context (static fixtures vs LX data). */
 export const useDataSource = (): DataSourceContextValue => {
   const context = useContext(DataSourceContext);
   if (!context) {

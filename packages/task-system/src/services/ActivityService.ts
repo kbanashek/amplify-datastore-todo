@@ -10,7 +10,14 @@ import { dataSubscriptionLogger } from "@utils/logging/dataSubscriptionLogger";
 
 type ActivityUpdateData = Omit<UpdateActivityInput, "id" | "_version">;
 
+/** Service for managing Activity entities via AWS Amplify DataStore. */
 export class ActivityService {
+  /**
+   * Create a new Activity in DataStore.
+   *
+   * @param input - Activity creation payload
+   * @returns The created Activity model
+   */
   static async createActivity(input: CreateActivityInput): Promise<Activity> {
     try {
       logWithDevice(
@@ -37,6 +44,11 @@ export class ActivityService {
     }
   }
 
+  /**
+   * Get all Activities from DataStore.
+   *
+   * @returns List of all activities
+   */
   static async getActivities(): Promise<Activity[]> {
     try {
       return await DataStore.query(Activity);
@@ -49,6 +61,12 @@ export class ActivityService {
     }
   }
 
+  /**
+   * Get an Activity by its DataStore `id`.
+   *
+   * @param id - Activity DataStore id
+   * @returns The Activity if found, otherwise null
+   */
   static async getActivity(id: string): Promise<Activity | null> {
     try {
       const activity = await DataStore.query(Activity, id);
@@ -89,18 +107,38 @@ export class ActivityService {
   }
 
   static async deleteActivity(id: string): Promise<void> {
+    const logger = getServiceLogger("ActivityService");
     try {
       const toDelete = await DataStore.query(Activity, id);
       if (!toDelete) {
-        throw new Error(`Activity with id ${id} not found`);
+        // In multi-device sync scenarios, activities may be deleted by other devices
+        // This is expected behavior, not an error
+        logger.info(
+          "Activity not found for deletion (likely already deleted by another device)",
+          { id },
+          "DATA",
+          "🔄"
+        );
+        return; // Gracefully handle - activity already gone
       }
 
       await DataStore.delete(toDelete);
     } catch (error) {
-      getServiceLogger("ActivityService").error(
-        "Error deleting activity",
-        error
-      );
+      // Check if this is a ConditionalCheckFailedException (activity already deleted)
+      if (
+        error instanceof Error &&
+        error.message.includes("ConditionalCheckFailedException")
+      ) {
+        logger.info(
+          "Activity deletion conflict - activity already deleted by another device/process",
+          { id, errorType: "ConditionalCheckFailedException" },
+          "DATA",
+          "🔄"
+        );
+        return; // Expected in multi-device sync scenarios
+      }
+
+      logger.error("Error deleting activity", error, "ActivityService", "DATA");
       throw error;
     }
   }

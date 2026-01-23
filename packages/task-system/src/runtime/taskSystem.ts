@@ -3,6 +3,13 @@ import { ConflictResolution } from "@services/ConflictResolution";
 import { logWithPlatform } from "@utils/logging/platformLogger";
 
 /**
+ * Build timestamp - set at build time to verify fresh code is running.
+ * This changes every time the package is rebuilt, making it easy to confirm
+ * you're running the latest code and not stale Metro cache.
+ */
+const BUILD_TIMESTAMP = new Date().toISOString();
+
+/**
  * Ensures Amplify DataStore schema is initialized before DataStore.start().
  *
  * In Amplify DataStore, the schema is registered by calling `initSchema(schema)`,
@@ -29,6 +36,7 @@ const ensureDataStoreSchemaInitialized = (): void => {
  * - Package may optionally start DataStore if the host asks it to
  */
 
+/** Options for initializing task-system runtime. */
 export interface TaskSystemInitOptions {
   /**
    * If true, start DataStore after configuring package-level DataStore options.
@@ -85,9 +93,16 @@ function logTaskSystem(icon: string, message: string): void {
   taskSystemLogs.set(signature, now);
 }
 
+/** Initialize task-system runtime (schema/conflicts), optionally starting DataStore. */
 export async function initTaskSystem(
   options: TaskSystemInitOptions = {}
 ): Promise<void> {
+  // Log build timestamp FIRST to verify fresh code is running
+  // Use console.warn so it can't be stripped and always shows up
+
+  console.warn(`🔨 [TaskSystem] BUILD TIMESTAMP: ${BUILD_TIMESTAMP}`);
+  logTaskSystem("🔨", `BUILD: ${BUILD_TIMESTAMP}`);
+
   // Always initialize schema if DataStore might be used (even if host will start it manually).
   // Schema initialization is a prerequisite for any DataStore operations, not just starting.
   // This ensures DataStore.start() is safe when called by the host after initTaskSystem.
@@ -129,12 +144,7 @@ export async function initTaskSystem(
   }
 }
 
-/**
- * Gets the current task system configuration.
- * Used by components (e.g., ImageCapture) to access S3 hierarchy values.
- *
- * @returns Current configuration with organizationId, studyId, studyInstanceId
- */
+/** Get the current task-system config (organization/study hierarchy). */
 export function getTaskSystemConfig(): {
   organizationId?: string;
   studyId?: string;

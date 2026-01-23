@@ -34,9 +34,10 @@
     "zod": ">=3"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json && node scripts/update-build-timestamp.js",
     "build:watch": "tsc -p tsconfig.build.json --watch",
     "alias:watch": "tsc-alias -p tsconfig.build.json -w",
+    "watch:timestamp": "node scripts/watch-build-timestamp.js",
     "clean": "rm -rf dist",
     "smoke:dist": "node -e \"const fs=require('fs'); const path=require('path'); const pkg=require('./package.json'); const base=process.cwd(); const main=pkg.main; const types=pkg.types; const mainPath=path.resolve(base, main); const typesPath=path.resolve(base, types); if(!main||!types){console.error('Missing main/types in package.json'); process.exit(1);} if(!fs.existsSync(mainPath)){console.error('Missing main file:', main); process.exit(1);} if(!fs.existsSync(typesPath)){console.error('Missing types file:', types); process.exit(1);} console.log('dist entrypoints OK:', main, types);\"",
     "verify:dist": "yarn build && yarn smoke:dist"
@@ -48,5 +49,6 @@
     "@storybook/react-native": "^7.6.20",
     "tsc-alias": "^1.8.10",
     "zod": "^3.24.1"
-  }
+  },
+  "_buildTimestamp": "2026-01-23T17:16:56.011Z"
 }

@@ -22,6 +22,7 @@ import {
 type TaskUpdateData = Omit<UpdateTaskInput, "id" | "_version">;
 type DataStoreTaskInput = ConstructorParameters<typeof DataStoreTask>[0];
 
+/** Service for managing Task entities via AWS Amplify DataStore. */
 export class TaskService {
   /**
    * Create a new Task
@@ -31,14 +32,14 @@ export class TaskService {
    */
   static async createTask(input: CreateTaskInput): Promise<Task> {
     const logger = getServiceLogger("TaskService");
-    try {
-      // Validate input before creating task
-      const validatedInput = validateOrThrow(
-        createTaskSchema,
-        input,
-        "Task creation"
-      );
+    // Validate input before creating task
+    const validatedInput = validateOrThrow(
+      createTaskSchema,
+      input,
+      "Task creation"
+    );
 
+    try {
       logger.info(
         "Creating task via AWS DataStore",
         { title: validatedInput.title },
@@ -58,6 +59,50 @@ export class TaskService {
       );
       return task as Task;
     } catch (error) {
+      // Check if this is a ConditionalCheckFailedException (task already exists)
+      if (
+        error instanceof Error &&
+        error.message.includes("ConditionalCheckFailedException")
+      ) {
+        // In multi-device sync scenarios, tasks may already exist when created concurrently
+        // This is expected behavior, not an error - log as expected sync behavior
+        logger.info(
+          "Task creation skipped (already exists in sync)",
+          {
+            title: validatedInput.title,
+            errorType: "ConditionalCheckFailedException",
+          },
+          "DATA",
+          "🔄"
+        );
+        // Try to query the existing task and return it
+        try {
+          const existingTasks = await DataStore.query(
+            DataStoreTask,
+            t =>
+              t.title.eq(validatedInput.title) &&
+              t.startTimeInMillSec.eq(validatedInput.startTimeInMillSec)
+          );
+          if (existingTasks.length > 0) {
+            logger.info(
+              "Found existing task after ConditionalCheckFailedException",
+              { id: existingTasks[0].id },
+              "DATA",
+              "🔄"
+            );
+            return existingTasks[0] as Task;
+          }
+        } catch (queryError) {
+          logger.warn(
+            "Could not query existing task after ConditionalCheckFailedException",
+            { queryError },
+            "DATA"
+          );
+        }
+        // If we can't find the existing task, re-throw the original error
+        throw error;
+      }
+
       logger.error("Failed to create task in AWS DataStore", error, "DATA");
       throw error;
     }
@@ -238,7 +283,15 @@ export class TaskService {
       logger.info("Deleting task from AWS DataStore", { id }, "DATA", "☁️");
       const toDelete = await DataStore.query(DataStoreTask, id);
       if (!toDelete) {
-        throw new Error(`Task with id ${id} not found`);
+        // In multi-device sync scenarios, tasks may be deleted by other devices
+        // This is expected behavior, not an error
+        logger.info(
+          "Task not found for deletion (likely already deleted by another device)",
+          { id },
+          "DATA",
+          "🔄"
+        );
+        return; // Gracefully handle - task already gone
       }
 
       await DataStore.delete(toDelete);
@@ -249,6 +302,20 @@ export class TaskService {
         "☁️"
       );
     } catch (error) {
+      // Check if this is a ConditionalCheckFailedException (task already deleted)
+      if (
+        error instanceof Error &&
+        error.message.includes("ConditionalCheckFailedException")
+      ) {
+        logger.info(
+          "Task deletion conflict - task already deleted by another device/process",
+          { id, errorType: "ConditionalCheckFailedException" },
+          "DATA",
+          "🔄"
+        );
+        return; // Expected in multi-device sync scenarios
+      }
+
       logger.error("Failed to delete task from AWS DataStore", error, "DATA");
       throw error;
     }
