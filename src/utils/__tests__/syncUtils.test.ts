@@ -17,7 +17,6 @@ jest.mock("@aws-amplify/datastore", () => ({
 
 // Mock deviceLogger from package
 jest.mock("@orion/task-system", () => ({
-  ...jest.requireActual("@orion/task-system"),
   logWithDevice: jest.fn(),
   logErrorWithDevice: jest.fn(),
 }));
@@ -195,7 +194,7 @@ describe("syncUtils", () => {
     it("should log timeout warning when DataStore.stop() times out", async () => {
       // Arrange
       const stopMock = DataStore.stop as jest.Mock;
-      const { logWithDevice } = require("../deviceLogger");
+      const { logWithDevice } = require("@orion/task-system");
 
       // Make stop() never resolve
       stopMock.mockImplementation(() => new Promise(() => {}));

@@ -120,7 +120,10 @@ export class TaskService {
       validateOrThrow(taskFiltersSchema, filters, "Task filters");
     }
     try {
-      let tasks = await DataStore.query(DataStoreTask);
+      const queryResult = await DataStore.query(DataStoreTask);
+      let tasks: Task[] = Array.isArray(queryResult)
+        ? (queryResult as Task[])
+        : [];
 
       // Apply filters
       if (filters) {
@@ -349,12 +352,26 @@ export class TaskService {
           initialTasks.length
         );
         // Call callback with initial data - assume synced if we got data
-        callback(initialTasks as Task[], initialTasks.length > 0);
+        try {
+          callback(initialTasks as Task[], initialTasks.length > 0);
+        } catch (callbackError: unknown) {
+          logger.error(
+            "Task subscription callback crashed (initial query)",
+            callbackError
+          );
+        }
       })
       .catch(err => {
         logger.error("Initial AWS DataStore query failed", err);
         // Still set up subscription even if initial query fails
-        callback([], false);
+        try {
+          callback([], false);
+        } catch (callbackError: unknown) {
+          logger.error(
+            "Task subscription callback crashed (initial query failure)",
+            callbackError
+          );
+        }
       });
 
     // Use observeQuery for the main subscription (filters out deleted items automatically)
@@ -383,12 +400,26 @@ export class TaskService {
           );
         }
 
-        callback(items as Task[], isSynced);
+        try {
+          callback(items as Task[], isSynced);
+        } catch (callbackError: unknown) {
+          logger.error(
+            "Task subscription callback crashed (observeQuery)",
+            callbackError
+          );
+        }
       },
       error => {
         logger.error("AWS DataStore subscription error", error);
         // Provide empty array to prevent app crash
-        callback([], false);
+        try {
+          callback([], false);
+        } catch (callbackError: unknown) {
+          logger.error(
+            "Task subscription callback crashed (observeQuery error)",
+            callbackError
+          );
+        }
       }
     );
 
