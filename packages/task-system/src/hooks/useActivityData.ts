@@ -77,6 +77,9 @@ export const useActivityData = ({
   const taskAnswersRef = useRef(taskAnswers);
   taskAnswersRef.current = taskAnswers;
 
+  // Deduped failure logging so Metro doesn't get spammy.
+  const lastWarnKeyRef = useRef<string | null>(null);
+
   useEffect(() => {
     const fetchActivity = async () => {
       // Wait for activity to load
@@ -85,14 +88,25 @@ export const useActivityData = ({
       }
 
       if (!entityId) {
-        const errorMsg =
-          "This task does not have an associated activity. Please ensure the task has an entityId that links to an Activity.";
-        logger.error("❌ No entityId provided to useActivityData", {
-          taskId,
-          error: errorMsg,
-        });
-        setError(errorMsg);
-        setLoading(false);
+        // Common in LX integrations: route params can be malformed (e.g. "ActivityRef") and we
+        // intentionally fall back to extracting the entityId from the task once the task loads.
+        // Until then, treat this as "not ready" rather than a hard error.
+        //
+        // Only hard-error when there is no task context at all.
+        if (!taskId) {
+          const errorMsg =
+            "This task does not have an associated activity. Please ensure the task has an entityId that links to an Activity.";
+          logger.error("❌ No entityId provided to useActivityData", {
+            taskId,
+            error: errorMsg,
+          });
+          setError(errorMsg);
+          setLoading(false);
+          return;
+        }
+
+        setError(null);
+        setLoading(true);
         return;
       }
 
@@ -108,6 +122,43 @@ export const useActivityData = ({
           }
           setLoading(false);
           return;
+        }
+
+        if (__DEV__) {
+          const key = `${taskId ?? "no-task"}:${entityId ?? "no-entity"}`;
+          const hasLayouts =
+            typeof activity.layouts === "string"
+              ? activity.layouts.trim().length > 2
+              : false;
+          const hasGroups =
+            typeof activity.activityGroups === "string"
+              ? activity.activityGroups.trim().length > 2
+              : false;
+
+          if ((!hasLayouts || !hasGroups) && lastWarnKeyRef.current !== key) {
+            lastWarnKeyRef.current = key;
+            logger.warn(
+              "Questions hydration issue: Activity missing config fields",
+              {
+                taskId: taskId ?? null,
+                entityId: entityId ?? null,
+                activityPk: activity.pk,
+                activitySk: activity.sk,
+                layoutsType: typeof activity.layouts,
+                layoutsLen:
+                  typeof activity.layouts === "string"
+                    ? activity.layouts.length
+                    : null,
+                activityGroupsType: typeof activity.activityGroups,
+                activityGroupsLen:
+                  typeof activity.activityGroups === "string"
+                    ? activity.activityGroups.length
+                    : null,
+              },
+              "DIAG",
+              "⚠️"
+            );
+          }
         }
 
         // Reconstruct the full JSON structure matching the provided format
@@ -265,6 +316,29 @@ export const useActivityData = ({
 
         // Parse activity config
         const parsed = parseActivityConfig(parsedConfig, initialMergedAnswers);
+
+        if (__DEV__ && parsed.screens.length === 0) {
+          const key = `${taskId ?? "no-task"}:${entityId ?? "no-entity"}:0`;
+          if (lastWarnKeyRef.current !== key) {
+            lastWarnKeyRef.current = key;
+            logger.warn(
+              "Questions rendering issue: Parsed 0 screens",
+              {
+                taskId: taskId ?? null,
+                entityId: entityId ?? null,
+                activityPk: activity.pk,
+                activitySk: activity.sk,
+                parsedLayoutsCount: parsedConfig.layouts?.length ?? 0,
+                parsedGroupsCount: parsedConfig.activityGroups?.length ?? 0,
+                rawLayoutsType: typeof activity.layouts,
+                rawActivityGroupsType: typeof activity.activityGroups,
+              },
+              "DIAG",
+              "⚠️"
+            );
+          }
+        }
+
         setActivityData(parsed);
         setActivityConfig(parsedConfig);
         setInitialAnswers(initialMergedAnswers);

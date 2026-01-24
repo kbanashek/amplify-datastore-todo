@@ -1,4 +1,5 @@
 import { Task } from "@task-types/Task";
+import { normalizeActivityLookupId } from "@utils/activities/normalizeActivityLookupId";
 import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 const logger = getServiceLogger("taskUtils");
@@ -8,7 +9,10 @@ const logger = getServiceLogger("taskUtils");
  * Priority:
  * 1. Use task.entityId if present
  * 2. Parse task.actions JSON string to extract entityId from first action
- * 3. Handle format: "Activity.{activityId}" or "Activity.{activityId}#{version}"
+ * 3. Handle formats:
+ *    - UUID or stable id
+ *    - "Activity.{activityId}" or "Activity.{activityId}#{version}"
+ *    - "ActivityRef#...#Activity.{activityId}"
  * 4. Strip version suffix if present
  *
  * @param task - The task to extract activity ID from
@@ -18,8 +22,7 @@ export const extractActivityIdFromTask = (task: Task): string | null => {
   // Priority 1: Use entityId if present
   // Validate that entityId is a string before calling string methods
   if (task.entityId && typeof task.entityId === "string") {
-    // Handle format: "Activity.{activityId}" or "Activity.{activityId}#{version}"
-    const activityId = task.entityId.replace(/^Activity\./, "").split("#")[0];
+    const activityId = normalizeActivityLookupId(task.entityId);
     // Validate that the extracted ID is non-empty before returning
     if (activityId && activityId.trim().length > 0) {
       logger.debug("Extracted activity ID from entityId", {
@@ -38,10 +41,7 @@ export const extractActivityIdFromTask = (task: Task): string | null => {
         const firstAction = actions[0];
         // Validate that entityId exists and is a string before calling string methods
         if (firstAction?.entityId && typeof firstAction.entityId === "string") {
-          // Handle format: "Activity.{activityId}" or "Activity.{activityId}#{version}"
-          const activityId = firstAction.entityId
-            .replace(/^Activity\./, "")
-            .split("#")[0];
+          const activityId = normalizeActivityLookupId(firstAction.entityId);
           // Validate that the extracted ID is non-empty before returning
           if (activityId && activityId.trim().length > 0) {
             logger.debug("Extracted activity ID from actions", {
