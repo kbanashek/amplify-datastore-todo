@@ -73,6 +73,18 @@ describe("useAmplifyState", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    const { Amplify } = require("@aws-amplify/core") as {
+      Amplify: { getConfig: jest.Mock };
+    };
+    Amplify.getConfig.mockReturnValue({
+      API: {
+        GraphQL: {
+          endpoint: "https://example.com/graphql",
+          region: "us-east-1",
+          defaultAuthMode: "userPool",
+        },
+      },
+    });
     mockDataStoreStart.mockResolvedValue(undefined);
     mockNetInfoFetch.mockResolvedValue({ isConnected: true } as any);
     mockNetInfoAddEventListener.mockReturnValue(() => {});
@@ -104,7 +116,9 @@ describe("useAmplifyState", () => {
         Amplify: { getConfig: jest.Mock };
       };
 
-      Amplify.getConfig.mockReturnValueOnce({
+      // useAmplifyState may consult Amplify config more than once during init;
+      // make this sticky for the full test so we don't accidentally consume a single mockReturnValueOnce.
+      Amplify.getConfig.mockReturnValue({
         API: { GraphQL: { endpoint: "" } },
       });
 

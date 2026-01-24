@@ -79,6 +79,12 @@ interface DataStoreHubPayload {
   data: DataStoreEventData;
 }
 
+/**
+ * Return shape for the `useAmplifyState` hook.
+ *
+ * Exposes DataStore/network readiness and high-level sync health metrics
+ * intended for UI affordances and debugging dashboards.
+ */
 export interface AmplifyState {
   isReady: boolean;
   networkStatus: NetworkStatus;
@@ -88,6 +94,14 @@ export interface AmplifyState {
   pendingSyncCount: number;
 }
 
+/**
+ * React hook that monitors AWS Amplify DataStore + network status and exposes a simple "sync health" view.
+ *
+ * In host apps (e.g. LX), `autoStartDataStore` can be disabled so the host controls DataStore lifecycle.
+ *
+ * @param options - Optional configuration for DataStore auto-start behavior
+ * @returns Current amplify/network sync state for UI and debugging
+ */
 export const useAmplifyState = (options?: {
   /**
    * If true, this hook will start DataStore (after host has configured Amplify).
@@ -110,6 +124,7 @@ export const useAmplifyState = (options?: {
     let hubListener: (() => void) | null = null;
     let unsubscribeNetInfo: (() => void) | null = null;
     let amplifyWaitTimer: ReturnType<typeof setTimeout> | null = null;
+    let initDelayTimer: ReturnType<typeof setTimeout> | null = null;
 
     const initializeDataStore = async () => {
       try {
@@ -157,8 +172,12 @@ export const useAmplifyState = (options?: {
         // DO NOT call configureAmplify() again here as it may reset the auth configuration
         // The amplify-init-sync.ts runs synchronously before any components mount
 
-        // Small delay to ensure Amplify configuration is complete
-        await new Promise(resolve => setTimeout(resolve, 100));
+        // Small delay to ensure Amplify configuration is complete.
+        // Must be cancellable so tests/unmounts don't leave timers running after teardown.
+        await new Promise<void>(resolve => {
+          initDelayTimer = setTimeout(() => resolve(), 100);
+        });
+        if (!isMounted) return;
 
         // Subscribe to DataStore events BEFORE starting DataStore so we don't miss early events.
         hubListener = Hub.listen(
@@ -166,7 +185,16 @@ export const useAmplifyState = (options?: {
           async (hubData: { payload: DataStoreHubPayload }) => {
             if (!isMounted) return;
 
-            const { event, data } = hubData.payload;
+            const payload = (hubData as unknown as { payload?: unknown })
+              ?.payload;
+            if (!payload || typeof payload !== "object") {
+              return;
+            }
+
+            const { event, data } = payload as DataStoreHubPayload;
+            if (!event || typeof event !== "string") {
+              return;
+            }
 
             // Log DataStore events with minimal, readable info (not full JSON blobs)
             // Only log essential details - full element objects are too verbose
@@ -507,6 +535,9 @@ export const useAmplifyState = (options?: {
       isMounted = false;
       if (amplifyWaitTimer) {
         clearTimeout(amplifyWaitTimer);
+      }
+      if (initDelayTimer) {
+        clearTimeout(initDelayTimer);
       }
       if (hubListener) {
         hubListener();

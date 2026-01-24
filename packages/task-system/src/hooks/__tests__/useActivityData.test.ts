@@ -160,6 +160,34 @@ describe("useActivityData", () => {
       const { result } = renderHook(() =>
         useActivityData({ entityId: undefined, taskId: "TASK-1" })
       );
+      // When taskId is provided, the hook waits for entityId (task-derived fallback) instead of hard-erroring.
+      expect(result.current.error).toBeNull();
+      expect(result.current.loading).toBe(true);
+    });
+
+    it("sets error when entityId is not provided and taskId is also missing", async () => {
+      mockUseActivity.mockReturnValue({
+        activity: null,
+        loading: false,
+        error: null,
+        refresh: jest.fn(),
+      });
+      mockUseTaskAnswer.mockReturnValue({
+        taskAnswers: [],
+        loading: false,
+        error: null,
+        isCreating: false,
+        isUpdating: false,
+        getAnswersByTaskId: jest.fn(() => []),
+        getAnswerByQuestionId: jest.fn(),
+        createTaskAnswer: jest.fn(),
+        updateTaskAnswer: jest.fn(),
+      });
+
+      const { result } = renderHook(() =>
+        useActivityData({ entityId: undefined, taskId: undefined })
+      );
+
       await waitFor(() => {
         expect(result.current.error).toContain(
           "This task does not have an associated activity"
