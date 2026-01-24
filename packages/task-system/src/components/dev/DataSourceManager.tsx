@@ -15,10 +15,17 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { DataSourceToggle } from "./DataSourceToggle";
+import { AppColors } from "@constants/AppColors";
 
 export interface DataSourceManagerProps {
   /** Show detailed controls and status (currently unused, for future expansion) */
   showDetails?: boolean;
+  /**
+   * Optional right-side accessory element (e.g., dev-only actions like "Clear DataStore").
+   *
+   * The host app provides this element; task-system just lays it out.
+   */
+  rightAccessory?: React.ReactNode;
 }
 
 /**
@@ -35,18 +42,23 @@ export interface DataSourceManagerProps {
  */
 export const DataSourceManager: React.FC<DataSourceManagerProps> = ({
   showDetails = true,
+  rightAccessory,
 }) => {
   return (
     <View style={styles.container}>
-      <DataSourceToggle showCounts={showDetails} />
+      <DataSourceToggle
+        showCounts={showDetails}
+        rightAccessory={rightAccessory}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#f0f0f0",
+    backgroundColor: AppColors.powderGray,
     borderBottomWidth: 1,
-    borderBottomColor: "#e0e0e0",
+    borderBottomColor: AppColors.lightGray,
+    paddingHorizontal: 8,
   },
 });

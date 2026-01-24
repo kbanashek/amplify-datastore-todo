@@ -16,6 +16,8 @@ export interface DataSourceToggleProps {
   showCounts?: boolean;
   /** Custom styles for the container */
   style?: object;
+  /** Optional right-side accessory (e.g., dev-only actions) */
+  rightAccessory?: React.ReactNode;
 }
 
 /**
@@ -32,6 +34,7 @@ export interface DataSourceToggleProps {
 export const DataSourceToggle: React.FC<DataSourceToggleProps> = ({
   showCounts = true,
   style,
+  rightAccessory,
 }) => {
   const { activeSource, setActiveSource, fixtures, hasData } = useDataSource();
 
@@ -55,7 +58,12 @@ export const DataSourceToggle: React.FC<DataSourceToggleProps> = ({
 
   return (
     <View style={[styles.container, style]}>
-      <Text style={styles.label}>Data Source:</Text>
+      <View style={styles.headerRow}>
+        <Text style={styles.label}>Data Source:</Text>
+        {rightAccessory ? (
+          <View style={styles.rightAccessory}>{rightAccessory}</View>
+        ) : null}
+      </View>
 
       <View style={styles.toggleContainer}>
         {/* Static Fixture Button */}
@@ -140,15 +148,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: AppColors.lightGray,
   },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 12,
+  },
   label: {
     fontSize: 14,
     fontWeight: "600",
     color: AppColors.darkGray,
-    marginBottom: 12,
+  },
+  rightAccessory: {
+    alignSelf: "flex-start",
   },
   toggleContainer: {
     flexDirection: "row",
     gap: 12,
+    marginTop: 12,
   },
   button: {
     flex: 1,
