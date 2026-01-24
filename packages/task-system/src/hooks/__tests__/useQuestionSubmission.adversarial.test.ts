@@ -5,10 +5,6 @@
 import { renderHook, act, waitFor } from "@testing-library/react-native";
 import { Alert } from "react-native";
 import { useQuestionSubmission } from "../useQuestionSubmission";
-import { TaskAnswerService } from "@services/TaskAnswerService";
-import { DataPointService } from "@services/DataPointService";
-import { TaskService } from "@services/TaskService";
-
 jest.mock("@services/TaskAnswerService");
 jest.mock("@services/DataPointService");
 jest.mock("@services/TaskService");
@@ -17,15 +13,15 @@ jest.mock("@services/TaskService");
 // This approach avoids conflicts with @testing-library/react-native's own react-native mocks
 
 // Mock hooks as jest.fn() so they can be configured in tests
-jest.mock("../useTaskAnswer", () => ({
+jest.mock("@hooks/useTaskAnswer", () => ({
   useTaskAnswer: jest.fn(),
 }));
 
-jest.mock("../useDataPointInstance", () => ({
+jest.mock("@hooks/useDataPointInstance", () => ({
   useDataPointInstance: jest.fn(),
 }));
 
-jest.mock("../useTaskUpdate", () => ({
+jest.mock("@hooks/useTaskUpdate", () => ({
   useTaskUpdate: jest.fn(),
 }));
 
@@ -33,11 +29,6 @@ jest.mock("../useTaskUpdate", () => ({
 jest.mock("@utils/validation/questionValidation", () => ({
   validateAllScreens: jest.fn(() => ({})), // Return empty object by default (no errors)
 }));
-
-// Import mocked hooks to configure them
-import { useTaskAnswer } from "../useTaskAnswer";
-import { useDataPointInstance } from "../useDataPointInstance";
-import { useTaskUpdate } from "../useTaskUpdate";
 
 describe("useQuestionSubmission - Adversarial Tests", () => {
   const mockActivityData = {
@@ -69,18 +60,24 @@ describe("useQuestionSubmission - Adversarial Tests", () => {
     ],
   };
 
-  const mockUseTaskAnswer = useTaskAnswer as jest.MockedFunction<
-    typeof useTaskAnswer
-  >;
-  const mockUseDataPointInstance = useDataPointInstance as jest.MockedFunction<
-    typeof useDataPointInstance
-  >;
-  const mockUseTaskUpdate = useTaskUpdate as jest.MockedFunction<
-    typeof useTaskUpdate
-  >;
-
   beforeEach(() => {
     jest.clearAllMocks();
+
+    const { useTaskAnswer: mockUseTaskAnswer } = jest.requireMock(
+      "@hooks/useTaskAnswer"
+    ) as {
+      useTaskAnswer: jest.Mock;
+    };
+    const { useDataPointInstance: mockUseDataPointInstance } = jest.requireMock(
+      "@hooks/useDataPointInstance"
+    ) as {
+      useDataPointInstance: jest.Mock;
+    };
+    const { useTaskUpdate: mockUseTaskUpdate } = jest.requireMock(
+      "@hooks/useTaskUpdate"
+    ) as {
+      useTaskUpdate: jest.Mock;
+    };
 
     // Set up hook mocks with proper return values
     mockUseTaskAnswer.mockReturnValue({
@@ -144,23 +141,37 @@ describe("useQuestionSubmission - Adversarial Tests", () => {
   });
 
   it("should prevent double submission (race condition)", async () => {
-    const { TaskAnswerService: MockTaskAnswerService } = jest.requireMock(
-      "@services/TaskAnswerService"
-    );
-    const { TaskService: MockTaskService } = jest.requireMock(
-      "@services/TaskService"
-    );
+    let resolveCreate!: (value: { id: string }) => void;
+    const createDeferred = new Promise<{ id: string }>(resolve => {
+      resolveCreate = resolve;
+    });
+    const createTaskAnswerMock = jest.fn().mockReturnValue(createDeferred);
 
-    let callCount = 0;
-    MockTaskAnswerService.createTaskAnswer = jest
-      .fn()
-      .mockImplementation(async () => {
-        callCount++;
-        await new Promise(resolve => setTimeout(resolve, 100));
-        return { id: `answer-${callCount}` };
-      });
+    // Override hook mocks for this test so we can control createTaskAnswer timing
+    const { useTaskAnswer: mockUseTaskAnswer } = jest.requireMock(
+      "@hooks/useTaskAnswer"
+    ) as { useTaskAnswer: jest.Mock };
+    const { useTaskUpdate: mockUseTaskUpdate } = jest.requireMock(
+      "@hooks/useTaskUpdate"
+    ) as { useTaskUpdate: jest.Mock };
 
-    MockTaskService.updateTask = jest.fn().mockResolvedValue({ id: "task-1" });
+    mockUseTaskAnswer.mockReturnValue({
+      taskAnswers: [],
+      loading: false,
+      error: null,
+      isCreating: false,
+      isUpdating: false,
+      getAnswersByTaskId: jest.fn(() => []),
+      getAnswerByQuestionId: jest.fn(),
+      createTaskAnswer: createTaskAnswerMock,
+      updateTaskAnswer: jest.fn(),
+    });
+
+    mockUseTaskUpdate.mockReturnValue({
+      updateTask: jest.fn().mockResolvedValue({ id: "task-1" }),
+      isUpdating: false,
+      error: null,
+    });
 
     const { result } = renderHook(() =>
       useQuestionSubmission({
@@ -172,34 +183,45 @@ describe("useQuestionSubmission - Adversarial Tests", () => {
       })
     );
 
-    // Try to call submit twice simultaneously
-    const promise1 = act(async () => {
-      await result.current.handleSubmit();
+    // Start first submit (it will hang in createTaskAnswer)
+    let submitPromise: Promise<void> | undefined;
+    act(() => {
+      submitPromise = result.current.handleSubmit();
     });
 
-    const promise2 = act(async () => {
-      await result.current.handleSubmit();
+    // Immediately attempt a second submit while the first is in-flight
+    act(() => {
+      void result.current.handleSubmit();
     });
 
-    await Promise.all([promise1, promise2]);
+    // Should only attempt to create one answer due to guard
+    expect(createTaskAnswerMock).toHaveBeenCalledTimes(1);
 
-    // Should only submit once due to guard
-    expect(callCount).toBeLessThanOrEqual(1);
+    // Unblock the first submit and let it finish
+    resolveCreate({ id: "answer-1" });
+    await act(async () => {
+      await submitPromise;
+    });
   });
 
   it("should handle JSON.stringify failing on circular reference answer", async () => {
+    // Important: do NOT pass a circular object into renderHook directly.
+    // react-test-renderer / RNTL can choke on circular structures during render bookkeeping.
+    // Instead, render with a non-circular object and make it circular right before submit.
     const circularAnswer: any = { value: "test" };
-    circularAnswer.self = circularAnswer;
+    const answers: any = { q1: circularAnswer };
 
     const { result } = renderHook(() =>
       useQuestionSubmission({
         taskId: "task-1",
         entityId: "activity-1",
-        answers: { q1: circularAnswer },
+        answers,
         activityData: mockActivityData as any,
         activityConfig: null,
       })
     );
+
+    circularAnswer.self = circularAnswer;
 
     await act(async () => {
       await result.current.handleSubmit();
