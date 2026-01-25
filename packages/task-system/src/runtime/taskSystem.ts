@@ -7,7 +7,19 @@ import { logWithPlatform } from "@utils/logging/platformLogger";
  * This changes every time the package is rebuilt, making it easy to confirm
  * you're running the latest code and not stale Metro cache.
  */
-const BUILD_TIMESTAMP = new Date().toISOString();
+const BUILD_TIMESTAMP: string = (() => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const raw = require("../../build-timestamp.json") as {
+      buildTimestamp?: unknown;
+    };
+    return typeof raw?.buildTimestamp === "string"
+      ? raw.buildTimestamp
+      : "unknown";
+  } catch {
+    return "unknown";
+  }
+})();
 
 /**
  * Ensures Amplify DataStore schema is initialized before DataStore.start().

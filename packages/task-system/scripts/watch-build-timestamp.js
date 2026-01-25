@@ -1,28 +1,29 @@
 #!/usr/bin/env node
 
 /**
- * Watches dist/ directory and updates package.json timestamp when files change.
- * This forces Metro to re-resolve the package and invalidate its cache.
+ * Watches dist/ directory and writes a build timestamp when files change.
+ *
+ * NOTE: This intentionally does NOT modify tracked files (e.g. package.json),
+ * so contributors don't end up with a perpetually dirty working tree.
  */
 
 const fs = require("fs");
 const path = require("path");
 
 const distPath = path.join(__dirname, "..", "dist");
-const packageJsonPath = path.join(__dirname, "..", "package.json");
+const timestampPath = path.join(distPath, "build-timestamp.json");
 
 let lastUpdate = 0;
 const DEBOUNCE_MS = 2000; // Wait 2 seconds after last change before updating (prevent loops)
 let updateTimeout = null;
 
 function updateTimestamp() {
-  const pkg = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
-  pkg._buildTimestamp = new Date().toISOString();
-  fs.writeFileSync(packageJsonPath, JSON.stringify(pkg, null, 2) + "\n");
-
-  // DON'T touch dist/index.js - it triggers the watcher and creates a loop!
-
-  console.log(`✅ [watch] Updated build timestamp: ${pkg._buildTimestamp}`);
+  const buildTimestamp = new Date().toISOString();
+  fs.writeFileSync(
+    timestampPath,
+    JSON.stringify({ buildTimestamp }, null, 2) + "\n"
+  );
+  console.log(`✅ [watch] Wrote build timestamp: ${buildTimestamp}`);
 }
 
 function checkAndUpdate() {
@@ -56,11 +57,9 @@ function checkAndUpdate() {
 // Watch dist directory recursively
 console.log(`👀 Watching ${distPath} for changes...`);
 fs.watch(distPath, { recursive: true }, (eventType, filename) => {
-  // Ignore package.json changes (we update it, don't react to it)
-  if (filename && filename.includes("package.json")) {
-    return;
-  }
-  // Only react to actual source file changes, not our own touches
+  // Only react to actual build output changes, not our own timestamp file.
+  if (filename && filename.includes("build-timestamp.json")) return;
+
   if (filename && (filename.endsWith(".js") || filename.endsWith(".d.ts"))) {
     // Ignore if it's the index.js we just touched (avoid loop)
     if (filename === "index.js" && eventType === "change") {

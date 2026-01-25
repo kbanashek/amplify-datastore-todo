@@ -1,20 +1,25 @@
 #!/usr/bin/env node
 
 /**
- * Updates package.json with a build timestamp to force Metro cache invalidation.
- * This ensures Metro re-resolves the package when files change.
+ * Writes a build timestamp into dist/ so the host can confirm fresh package output.
+ *
+ * IMPORTANT:
+ * - Do NOT write into tracked files (like package.json) during builds.
+ *   This creates perpetual "dirty working tree" behavior for contributors and CI.
+ * - dist/ is already gitignored, so this stays local/build-output only.
  */
 
 const fs = require("fs");
 const path = require("path");
 
-const packageJsonPath = path.join(__dirname, "..", "package.json");
-const pkg = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+const distDir = path.join(__dirname, "..", "dist");
+const outPath = path.join(distDir, "build-timestamp.json");
 
-// Add/update build timestamp
-pkg._buildTimestamp = new Date().toISOString();
+if (!fs.existsSync(distDir)) {
+  fs.mkdirSync(distDir, { recursive: true });
+}
 
-// Write back with proper formatting
-fs.writeFileSync(packageJsonPath, JSON.stringify(pkg, null, 2) + "\n");
+const buildTimestamp = new Date().toISOString();
+fs.writeFileSync(outPath, JSON.stringify({ buildTimestamp }, null, 2) + "\n");
 
-console.log(`✅ Updated build timestamp: ${pkg._buildTimestamp}`);
+console.log(`✅ Wrote build timestamp: ${buildTimestamp}`);
