@@ -66,9 +66,7 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
   const [isSynced, setIsSynced] = useState<boolean>(false);
   const { networkStatus } = useAmplify();
   const isOnline = networkStatus === NetworkStatus.Online;
-  const [subscription, setSubscription] = useState<{
-    unsubscribe: () => void;
-  } | null>(null);
+  const subscriptionRef = useRef<{ unsubscribe: () => void } | null>(null);
   const lastTaskCountRef = useRef<number>(-1);
   const lastSyncedRef = useRef<boolean | null>(null);
   const hasLoggedInitRef = useRef<boolean>(false);
@@ -131,7 +129,9 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
         setLoading(false);
       });
 
-      setSubscription(sub);
+      // Ensure we can always unsubscribe on unmount, even if the subscription
+      // is created after the first render (avoid stale cleanup closures).
+      subscriptionRef.current = sub;
     } catch (err) {
       logErrorWithPlatform(
         "",
@@ -149,13 +149,10 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
 
     // Cleanup subscription on unmount
     return () => {
-      if (subscription) {
-        subscription.unsubscribe();
-      }
+      subscriptionRef.current?.unsubscribe();
+      subscriptionRef.current = null;
     };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters]);
+  }, []);
 
   // Memoize filtered tasks - only recalculates when allTasks or filters change
   const tasks = useMemo(() => {
@@ -263,9 +260,8 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
   const retryLoading = () => {
     setLoading(true);
     setError(null);
-    if (subscription) {
-      subscription.unsubscribe();
-    }
+    subscriptionRef.current?.unsubscribe();
+    subscriptionRef.current = null;
     initTasks();
   };
 
@@ -288,13 +284,12 @@ export const useTaskList = (filters?: TaskFilters): UseTaskListReturn => {
       setLoading(true);
       setError(null);
 
-      if (subscription) {
-        subscription.unsubscribe();
-      }
+      subscriptionRef.current?.unsubscribe();
+      subscriptionRef.current = null;
 
       await TaskService.clearDataStore();
 
-      initTasks();
+      await initTasks();
     } catch (err) {
       logErrorWithPlatform("", "useTaskList", "Error clearing DataStore", err);
       setError("Failed to clear DataStore. Please try again.");
