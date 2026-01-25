@@ -4,6 +4,10 @@ import { initTaskSystem } from "@runtime/taskSystem";
 import { logWithDevice } from "@utils/logging/deviceLogger";
 import { formatModelSyncLog } from "@utils/logging/logFormatter";
 import { getServiceLogger } from "@utils/logging/serviceLogger";
+import {
+  listenToDataStoreHub,
+  normalizeDataStoreEventName,
+} from "@utils/datastore/dataStoreHub";
 import { installAmplifyDataStoreNoEndpointWarningFilter } from "@utils/system/amplifyDataStoreWarningFilter";
 import { useEffect, useState } from "react";
 
@@ -73,11 +77,6 @@ type DataStoreEventData =
   | ModelSyncData
   | SyncErrorData
   | { [key: string]: unknown };
-
-interface DataStoreHubPayload {
-  event: string;
-  data: DataStoreEventData;
-}
 
 /**
  * Return shape for the `useAmplifyState` hook.
@@ -180,28 +179,19 @@ export const useAmplifyState = (options?: {
         if (!isMounted) return;
 
         // Subscribe to DataStore events BEFORE starting DataStore so we don't miss early events.
-        hubListener = Hub.listen(
-          "datastore",
-          async (hubData: { payload: DataStoreHubPayload }) => {
+        hubListener = listenToDataStoreHub(
+          Hub,
+          async ({ event: rawEvent, data }) => {
             if (!isMounted) return;
-
-            const payload = (hubData as unknown as { payload?: unknown })
-              ?.payload;
-            if (!payload || typeof payload !== "object") {
-              return;
-            }
-
-            const { event, data } = payload as DataStoreHubPayload;
-            if (!event || typeof event !== "string") {
-              return;
-            }
+            const event = normalizeDataStoreEventName(rawEvent);
+            const typedData = data as DataStoreEventData;
 
             // Log DataStore events with minimal, readable info (not full JSON blobs)
             // Only log essential details - full element objects are too verbose
 
             switch (event) {
               case DataStoreEventType.NetworkStatus: {
-                const networkData = data as NetworkStatusData;
+                const networkData = typedData as NetworkStatusData;
                 logger.info(
                   `Network Status Changed: ${networkData.active ? "ONLINE" : "OFFLINE"}`,
                   undefined,
@@ -244,15 +234,15 @@ export const useAmplifyState = (options?: {
                 break;
               case DataStoreEventType.SyncQueriesError: {
                 setSyncState(SyncState.Error);
-                const errorData = data as SyncErrorData;
+                const errorData = typedData as SyncErrorData;
 
                 // Log sync errors for debugging
                 logger.error("DataStore sync error", {
                   event,
                   data,
-                  errorDetails: errorData?.error || data,
+                  errorDetails: errorData?.error || typedData,
                   note: "Check earlier logs for '[Amplify] ✅ Configured' to see API key being used",
-                  error: errorData?.error || data,
+                  error: errorData?.error || typedData,
                 });
 
                 // Check if it's an auth error
@@ -285,7 +275,7 @@ export const useAmplifyState = (options?: {
                       errorMessage: errorData?.error?.message,
                       errorDetails: errorData?.error?.errors,
                       fullError: JSON.stringify(
-                        errorData?.error || data,
+                        errorData?.error || typedData,
                         null,
                         2
                       ),
@@ -299,7 +289,7 @@ export const useAmplifyState = (options?: {
               case DataStoreEventType.OutboxStatus: {
                 // OutboxStatus event indicates if outbox is empty or not
                 // Use this to reset count when explicitly empty
-                const outboxData = data as OutboxStatusData;
+                const outboxData = typedData as OutboxStatusData;
                 if (outboxData?.isEmpty === true) {
                   logger.debug("Outbox is empty - all mutations synced");
                   setPendingSyncCount(0);
@@ -308,7 +298,7 @@ export const useAmplifyState = (options?: {
               }
               case DataStoreEventType.OutboxMutationEnqueued: {
                 // Increment count when new mutation is added to outbox
-                const enqueueData = data as {
+                const enqueueData = typedData as {
                   element?: { id?: string };
                   model?: { name?: string };
                 };
@@ -327,7 +317,7 @@ export const useAmplifyState = (options?: {
               }
               case DataStoreEventType.OutboxMutationProcessed: {
                 // Decrement count when mutation is successfully synced
-                const processedData = data as {
+                const processedData = typedData as {
                   element?: { id?: string };
                   model?: { name?: string };
                 };
@@ -346,7 +336,7 @@ export const useAmplifyState = (options?: {
               }
               case "modelSynced": {
                 // Log model sync details using formatter utility
-                const modelData = data as ModelSyncData;
+                const modelData = typedData as ModelSyncData;
                 const modelName = modelData?.model?.name || "unknown";
                 const syncDetails = formatModelSyncLog(modelName, {
                   isFullSync: modelData?.isFullSync,
@@ -365,7 +355,10 @@ export const useAmplifyState = (options?: {
               default: {
                 // Log unknown events with minimal info (event name only)
                 // Don't log full data object to avoid JSON blobs in logs
-                const dataKeys = Object.keys(data).join(", ");
+                const dataKeys =
+                  typeof typedData === "object" && typedData !== null
+                    ? Object.keys(typedData).join(", ")
+                    : "";
                 logger.debug(`DataStore event: ${event} (keys: ${dataKeys})`);
                 break;
               }

@@ -20,6 +20,7 @@ import { AppointmentService } from "@services/AppointmentService";
 import { QuestionService } from "@services/QuestionService";
 import { TaskService } from "@services/TaskService";
 import { getServiceLogger } from "@utils/logging/serviceLogger";
+import { waitForDataStoreInitialSync } from "@utils/datastore/dataStoreHub";
 
 const logger = getServiceLogger("FixtureImportService");
 
@@ -132,59 +133,32 @@ export class FixtureImportService {
 
     try {
       const { Hub } = await import("@aws-amplify/core");
-
-      await new Promise<void>((resolve, reject) => {
-        let resolved = false;
-
-        // Timeout after 15 seconds - proceed anyway to avoid blocking indefinitely
-        const timeout = setTimeout(() => {
-          if (!resolved) {
-            resolved = true;
-            logger.info(
-              "DataStore sync timeout (15s) - proceeding with import",
-              {},
-              "STEP-1.5",
-              "⚠️"
-            );
-            resolve();
-          }
-        }, 15000);
-
-        const hubListener = Hub.listen("datastore", data => {
-          const { event } = data.payload;
-
-          // Wait for 'ready' event which indicates initial sync is complete
-          if (event === "ready" && !resolved) {
-            resolved = true;
-            clearTimeout(timeout);
-            hubListener();
-            logger.info(
-              "DataStore initial sync completed - ready to query existing records",
-              {},
-              "STEP-1.5",
-              "✅"
-            );
-            resolve();
-          }
-        });
-
-        // Also resolve if sync fails
-        Hub.listen("datastore", data => {
-          const { event } = data.payload;
-          if (event === "syncQueriesFailed" && !resolved) {
-            resolved = true;
-            clearTimeout(timeout);
-            hubListener();
-            logger.warn(
-              "DataStore sync failed - proceeding with import anyway",
-              {},
-              "STEP-1.5",
-              "⚠️"
-            );
-            resolve();
-          }
-        });
+      const result = await waitForDataStoreInitialSync(Hub, {
+        timeoutMs: 15000,
       });
+
+      if (result.outcome === "ready") {
+        logger.info(
+          "DataStore initial sync completed - ready to query existing records",
+          { event: result.event },
+          "STEP-1.5",
+          "✅"
+        );
+      } else if (result.outcome === "failed") {
+        logger.warn(
+          "DataStore sync failed - proceeding with import anyway",
+          { event: result.event },
+          "STEP-1.5",
+          "⚠️"
+        );
+      } else {
+        logger.info(
+          "DataStore sync timeout (15s) - proceeding with import",
+          {},
+          "STEP-1.5",
+          "⚠️"
+        );
+      }
     } catch (error) {
       // If waiting fails, log and continue
       logger.warn(
