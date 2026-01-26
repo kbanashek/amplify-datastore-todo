@@ -18,6 +18,7 @@ export type ServiceName =
   | "App"
   | "AppointmentService"
   | "ConflictResolution"
+  | "DataStoreReset"
   | "DataPointService"
   | "ErrorBoundary"
   | "FixtureImportService"

@@ -14,9 +14,12 @@ export interface HubLike {
    *
    * @param channel - Hub channel name (e.g. "datastore")
    * @param callback - Listener invoked with hub event payloads
-   * @returns Unsubscribe function
+   * @returns Unsubscribe handle (Amplify Hub has varied return shapes across versions)
    */
-  listen: (channel: string, callback: (hubData: unknown) => void) => () => void;
+  listen: (
+    channel: string,
+    callback: (hubData: unknown) => void
+  ) => (() => void) | { remove: () => void } | void;
 }
 
 /** Parsed DataStore Hub event. */
@@ -81,11 +84,27 @@ export const listenToDataStoreHub = (
   hub: HubLike,
   handler: (event: DataStoreHubEvent) => void
 ): (() => void) => {
-  return hub.listen("datastore", hubData => {
+  const unsubscribeHandle = hub.listen("datastore", hubData => {
     const parsed = parseDataStoreHubEvent(hubData);
     if (!parsed) return;
     handler(parsed);
   });
+
+  // Normalize Amplify Hub unsubscribe shapes:
+  // - Some versions return a function
+  // - Some return an object with `remove()`
+  // - Some return void
+  if (typeof unsubscribeHandle === "function") {
+    return unsubscribeHandle;
+  }
+  if (
+    typeof unsubscribeHandle === "object" &&
+    unsubscribeHandle !== null &&
+    typeof (unsubscribeHandle as { remove?: unknown }).remove === "function"
+  ) {
+    return () => (unsubscribeHandle as { remove: () => void }).remove();
+  }
+  return () => {};
 };
 
 export type DataStoreInitialSyncOutcome = "ready" | "failed" | "timeout";

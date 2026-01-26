@@ -1,14 +1,24 @@
+import { Hub } from "@aws-amplify/core";
 import { DataStore, OpType } from "@aws-amplify/datastore";
 // @ts-ignore - Activity is exported from models/index.js at runtime
-import { ModelName } from "@constants/modelNames";
 import { OperationSource } from "@constants/operationSource";
 import { Activity } from "@models/index";
 import { CreateActivityInput, UpdateActivityInput } from "@task-types/Activity";
+import { resetDataStore } from "@utils/datastore/dataStoreReset";
+import { dataSubscriptionLogger } from "@utils/logging/dataSubscriptionLogger";
 import { logWithDevice } from "@utils/logging/deviceLogger";
 import { getServiceLogger } from "@utils/logging/serviceLogger";
-import { dataSubscriptionLogger } from "@utils/logging/dataSubscriptionLogger";
 
 type ActivityUpdateData = Omit<UpdateActivityInput, "id" | "_version">;
+interface LogMetadata {
+  [key: string]: unknown;
+}
+interface ObserveElement {
+  id?: string;
+  name?: string;
+  title?: string;
+  _deleted?: boolean;
+}
 
 /** Service for managing Activity entities via AWS Amplify DataStore. */
 export class ActivityService {
@@ -23,7 +33,7 @@ export class ActivityService {
       logWithDevice(
         "ActivityService",
         "Creating activity with DataStore",
-        input as unknown as Record<string, unknown>
+        input as unknown as LogMetadata
       );
       const activity = await DataStore.save(
         new Activity({
@@ -145,9 +155,27 @@ export class ActivityService {
 
   static subscribeActivities(
     callback: (items: Activity[], isSynced: boolean) => void
+    ,
+    options?: {
+      /**
+       * If true, perform a full DataStore query after DELETE events.
+       * This is a safety-net for cross-device consistency, but can be expensive.
+       *
+       * Default: true (throttled).
+       */
+      refreshOnDelete?: boolean;
+      /** Debounce/throttle window for refresh queries. Default: 500ms. */
+      deleteRefreshThrottleMs?: number;
+      /** Enable verbose debug logging (opt-in). Default: false. */
+      debug?: boolean;
+    }
   ): {
     unsubscribe: () => void;
   } {
+    const refreshOnDelete = options?.refreshOnDelete ?? true;
+    const deleteRefreshThrottleMs = options?.deleteRefreshThrottleMs ?? 500;
+    const debug = options?.debug ?? false;
+
     // Use centralized logger to prevent duplicate subscription setup logs
     dataSubscriptionLogger.logServiceSetup(
       "ActivityService",
@@ -159,19 +187,20 @@ export class ActivityService {
       snapshot => {
         const { items, isSynced } = snapshot;
 
-        // VERBOSE LOGGING FOR DEBUGGING SYNC ISSUES
-        logWithDevice(
-          "ActivityService",
-          `📋 AWS DataStore subscription fired - ${items.length} activities`,
-          {
-            activityCount: items.length,
-            isSynced,
-            syncStatus: isSynced ? "cloud-synced" : "local-only",
-            activityIds: items.map(i => i.id),
-            activityNames: items.map(i => i.name),
-            timestamp: new Date().toISOString(),
-          }
-        );
+        if (debug) {
+          logWithDevice(
+            "ActivityService",
+            `📋 AWS DataStore subscription fired - ${items.length} activities`,
+            {
+              activityCount: items.length,
+              isSynced,
+              syncStatus: isSynced ? "cloud-synced" : "local-only",
+              activityIds: items.map(i => i.id),
+              activityNames: items.map(i => i.name),
+              timestamp: new Date().toISOString(),
+            }
+          );
+        }
 
         callback(items, isSynced);
       },
@@ -187,28 +216,15 @@ export class ActivityService {
     );
 
     // Also observe DELETE operations to ensure deletions trigger updates
-    const deleteObserver = DataStore.observe(Activity).subscribe(
-      msg => {
-        if (msg.opType === OpType.DELETE) {
-          const element = msg.element as any;
-          const isLocalDelete = element?._deleted === true;
-          const source = isLocalDelete
-            ? OperationSource.LOCAL
-            : OperationSource.REMOTE_SYNC;
-
-          logWithDevice(
-            "ActivityService",
-            `DELETE operation detected (${source})`,
-            {
-              activityId: element?.id,
-              activityName: element?.name || element?.title,
-              deleted: element?._deleted,
-              operationType: msg.opType,
-            }
-          );
-
-          DataStore.query(Activity)
-            .then(activities => {
+    let refreshTimer: ReturnType<typeof setTimeout> | null = null;
+    const scheduleRefresh = () => {
+      if (!refreshOnDelete) return;
+      if (refreshTimer) return; // already scheduled
+      refreshTimer = setTimeout(() => {
+        refreshTimer = null;
+        DataStore.query(Activity)
+          .then(activities => {
+            if (debug) {
               logWithDevice(
                 "ActivityService",
                 "Query refresh after DELETE completed",
@@ -217,16 +233,43 @@ export class ActivityService {
                   remainingActivityIds: activities.map(a => a.id),
                 }
               );
-              callback(activities, true);
-            })
-            .catch((err: unknown) => {
-              getServiceLogger("ActivityService").error(
-                "Error refreshing after delete",
-                err instanceof Error ? err : new Error(String(err)),
-                "DATA",
-                "❌"
-              );
-            });
+            }
+            callback(activities, true);
+          })
+          .catch((err: unknown) => {
+            getServiceLogger("ActivityService").error(
+              "Error refreshing after delete",
+              err instanceof Error ? err : new Error(String(err)),
+              "DATA",
+              "❌"
+            );
+          });
+      }, deleteRefreshThrottleMs);
+    };
+
+    const deleteObserver = DataStore.observe(Activity).subscribe(
+      msg => {
+        if (msg.opType === OpType.DELETE) {
+          const element = msg.element as unknown as ObserveElement | undefined;
+          const isLocalDelete = element?._deleted === true;
+          const source = isLocalDelete
+            ? OperationSource.LOCAL
+            : OperationSource.REMOTE_SYNC;
+
+          if (debug) {
+            logWithDevice(
+              "ActivityService",
+              `DELETE operation detected (${source})`,
+              {
+                activityId: element?.id,
+                activityName: element?.name || element?.title,
+                deleted: element?._deleted,
+                operationType: msg.opType,
+              }
+            );
+          }
+
+          scheduleRefresh();
         }
       },
       (error: unknown) => {
@@ -244,13 +287,28 @@ export class ActivityService {
         logWithDevice("ActivityService", "Unsubscribing from DataStore");
         querySubscription.unsubscribe();
         deleteObserver.unsubscribe();
+        if (refreshTimer) {
+          clearTimeout(refreshTimer);
+          refreshTimer = null;
+        }
       },
     };
   }
 
   static async clearDataStore(): Promise<void> {
     try {
-      await DataStore.clear();
+      await resetDataStore(
+        { dataStore: DataStore, hub: Hub },
+        {
+          mode: "clearAndRestart",
+          waitForOutboxEmpty: true,
+          outboxTimeoutMs: 2000,
+          stopTimeoutMs: 5000,
+          clearTimeoutMs: 5000,
+          startTimeoutMs: 5000,
+          proceedOnStopTimeout: true,
+        }
+      );
     } catch (error) {
       getServiceLogger("ActivityService").error(
         "Error clearing DataStore",

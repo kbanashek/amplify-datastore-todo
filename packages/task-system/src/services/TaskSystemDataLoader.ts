@@ -9,14 +9,16 @@
  * This service simplifies the data loading process for host apps.
  */
 
+import { Hub } from "@aws-amplify/core";
 import { DataStore } from "@aws-amplify/datastore";
+import type {
+    ImportTaskSystemFixtureOptions,
+    ImportTaskSystemFixtureResult,
+    TaskSystemFixture,
+} from "@fixtures/TaskSystemFixture";
 import { initTaskSystem } from "@runtime/taskSystem";
 import { FixtureImportService } from "@services/FixtureImportService";
-import type {
-  TaskSystemFixture,
-  ImportTaskSystemFixtureOptions,
-  ImportTaskSystemFixtureResult,
-} from "@fixtures/TaskSystemFixture";
+import { resetDataStore } from "@utils/datastore/dataStoreReset";
 
 export interface LoadTaskSystemDataOptions {
   /** Clear DataStore before importing */
@@ -89,9 +91,18 @@ export class TaskSystemDataLoader {
 
     // Step 2: Clear DataStore if requested
     if (clearBeforeImport) {
-      await DataStore.clear();
-      // Restart DataStore after clearing
-      await DataStore.start();
+      await resetDataStore(
+        { dataStore: DataStore, hub: Hub },
+        {
+          mode: "clearAndRestart",
+          waitForOutboxEmpty: true,
+          outboxTimeoutMs: 2000,
+          stopTimeoutMs: 5000,
+          clearTimeoutMs: 5000,
+          startTimeoutMs: 5000,
+          proceedOnStopTimeout: true,
+        }
+      );
     }
 
     // Step 3: Import fixture data

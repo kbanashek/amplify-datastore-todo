@@ -1,3 +1,4 @@
+import { Hub } from "@aws-amplify/core";
 import { DataStore, OpType } from "@aws-amplify/datastore";
 import { OperationSource } from "@constants/operationSource";
 import { TaskResult } from "@models/index";
@@ -6,6 +7,8 @@ import {
   UpdateTaskResultInput,
 } from "@task-types/TaskResult";
 import { logErrorWithDevice, logWithDevice } from "@utils/logging/deviceLogger";
+import { resetDataStore } from "@utils/datastore/dataStoreReset";
+import { isDataStoreModelDeleted } from "@utils/datastore/isDataStoreModelDeleted";
 import { getServiceLogger } from "@utils/logging/serviceLogger";
 
 type TaskResultUpdateData = Omit<UpdateTaskResultInput, "id" | "_version">;
@@ -109,7 +112,7 @@ export class TaskResultService {
     );
 
     const filterNotDeleted = (items: TaskResult[]): TaskResult[] => {
-      return items.filter(item => (item as any)?._deleted !== true);
+      return items.filter(item => !isDataStoreModelDeleted(item));
     };
 
     const querySubscription = DataStore.observeQuery(TaskResult).subscribe(
@@ -143,8 +146,8 @@ export class TaskResultService {
     const deleteObserver = DataStore.observe(TaskResult).subscribe(
       msg => {
         if (msg.opType === OpType.DELETE) {
-          const element = msg.element as any;
-          const isLocalDelete = element?._deleted === true;
+          const element = msg.element;
+          const isLocalDelete = isDataStoreModelDeleted(element);
           const source = isLocalDelete
             ? OperationSource.LOCAL
             : OperationSource.REMOTE_SYNC;
@@ -153,9 +156,12 @@ export class TaskResultService {
             "TaskResultService",
             `DELETE operation detected (${source})`,
             {
-              taskResultId: element?.id,
-              taskId: element?.taskId,
-              deleted: element?._deleted,
+              taskResultId: element.id,
+              taskInstanceId: element.taskInstanceId,
+              deleted:
+                typeof element === "object" && element !== null
+                  ? Reflect.get(element as object, "_deleted")
+                  : undefined,
               operationType: msg.opType,
             }
           );
@@ -225,7 +231,18 @@ export class TaskResultService {
 
   static async clearDataStore(): Promise<void> {
     try {
-      await DataStore.clear();
+      await resetDataStore(
+        { dataStore: DataStore, hub: Hub },
+        {
+          mode: "clearAndRestart",
+          waitForOutboxEmpty: true,
+          outboxTimeoutMs: 2000,
+          stopTimeoutMs: 5000,
+          clearTimeoutMs: 5000,
+          startTimeoutMs: 5000,
+          proceedOnStopTimeout: true,
+        }
+      );
     } catch (error) {
       getServiceLogger("TaskResultService").error(
         "Error clearing DataStore",

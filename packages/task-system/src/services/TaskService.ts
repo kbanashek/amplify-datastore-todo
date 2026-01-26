@@ -1,22 +1,24 @@
+import { Hub } from "@aws-amplify/core";
 import { DataStore } from "@aws-amplify/datastore";
 import { Task as DataStoreTask } from "@models/index";
 import {
-  CreateTaskInput,
-  Task,
-  TaskFilters,
-  TaskStatus,
-  TaskType,
-  UpdateTaskInput,
+    CreateTaskInput,
+    Task,
+    TaskFilters,
+    TaskStatus,
+    TaskType,
+    UpdateTaskInput,
 } from "@task-types/Task";
+import { resetDataStore } from "@utils/datastore/dataStoreReset";
 import { dataSubscriptionLogger } from "@utils/logging/dataSubscriptionLogger";
 import { logWithDevice } from "@utils/logging/deviceLogger";
 import { getServiceLogger } from "@utils/logging/serviceLogger";
 import {
-  createTaskSchema,
-  taskFiltersSchema,
-  taskIdSchema,
-  updateTaskSchema,
-  validateOrThrow,
+    createTaskSchema,
+    taskFiltersSchema,
+    taskIdSchema,
+    updateTaskSchema,
+    validateOrThrow,
 } from "../schemas/taskSchemas";
 
 type TaskUpdateData = Omit<UpdateTaskInput, "id" | "_version">;
@@ -127,15 +129,18 @@ export class TaskService {
 
       // Apply filters
       if (filters) {
+        const statusFilter = filters.status ?? [];
+        const taskTypeFilter = filters.taskType ?? [];
+
         if (filters.status && filters.status.length > 0) {
           tasks = tasks.filter(task =>
-            filters.status!.includes(task.status as TaskStatus)
+            statusFilter.includes(task.status as TaskStatus)
           );
         }
 
         if (filters.taskType && filters.taskType.length > 0) {
           tasks = tasks.filter(task =>
-            filters.taskType!.includes(task.taskType as TaskType)
+            taskTypeFilter.includes(task.taskType as TaskType)
           );
         }
 
@@ -380,14 +385,6 @@ export class TaskService {
       snapshot => {
         const { items, isSynced } = snapshot;
 
-        // ALWAYS log sync status changes (not just in dev)
-        console.warn(`[TaskService] 🔄 DataStore subscription update`, {
-          taskCount: items.length,
-          isSynced: isSynced,
-          syncStatus: isSynced ? "☁️ CLOUD-SYNCED" : "📱 LOCAL-ONLY",
-          timestamp: new Date().toISOString(),
-        });
-
         // Only log in development to reduce production overhead
         if (__DEV__) {
           logger.debug(
@@ -565,7 +562,18 @@ export class TaskService {
     const logger = getServiceLogger("TaskService");
     try {
       logger.info("Clearing AWS DataStore", undefined, "DATA", "☁️");
-      await DataStore.clear();
+      await resetDataStore(
+        { dataStore: DataStore, hub: Hub },
+        {
+          mode: "clearAndRestart",
+          waitForOutboxEmpty: true,
+          outboxTimeoutMs: 2000,
+          stopTimeoutMs: 5000,
+          clearTimeoutMs: 5000,
+          startTimeoutMs: 5000,
+          proceedOnStopTimeout: true,
+        }
+      );
       logger.info(
         "AWS DataStore cleared successfully",
         undefined,

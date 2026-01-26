@@ -179,6 +179,12 @@ export {
   parseActivityConfig,
 } from "@utils/parsers/activityParser";
 export type { ParsedActivityData } from "@utils/parsers/activityParser";
+export type {
+  DataStoreResetMode,
+  DataStoreResetOptions,
+  DataStoreResetResult,
+} from "@utils/datastore/dataStoreReset";
+export { resetDataStore, waitForOutboxEmpty } from "@utils/datastore/dataStoreReset";
 export {
   getDeviceId,
   getLogPrefix,

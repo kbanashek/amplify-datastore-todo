@@ -1,6 +1,9 @@
+import { Hub } from "@aws-amplify/core";
 import { DataStore } from "@aws-amplify/datastore";
 import { logWithDevice } from "@utils/logging/deviceLogger";
 import { TaskHistory } from "@models/index";
+import { resetDataStore } from "@utils/datastore/dataStoreReset";
+import { isDataStoreModelDeleted } from "@utils/datastore/isDataStoreModelDeleted";
 import { getServiceLogger } from "@utils/logging/serviceLogger";
 import {
   CreateTaskHistoryInput,
@@ -109,7 +112,7 @@ export class TaskHistoryService {
     );
 
     const filterNotDeleted = (items: TaskHistory[]): TaskHistory[] => {
-      return items.filter(item => (item as any)?._deleted !== true);
+      return items.filter(item => !isDataStoreModelDeleted(item));
     };
 
     const querySubscription = DataStore.observeQuery(TaskHistory).subscribe(
@@ -185,7 +188,18 @@ export class TaskHistoryService {
 
   static async clearDataStore(): Promise<void> {
     try {
-      await DataStore.clear();
+      await resetDataStore(
+        { dataStore: DataStore, hub: Hub },
+        {
+          mode: "clearAndRestart",
+          waitForOutboxEmpty: true,
+          outboxTimeoutMs: 2000,
+          stopTimeoutMs: 5000,
+          clearTimeoutMs: 5000,
+          startTimeoutMs: 5000,
+          proceedOnStopTimeout: true,
+        }
+      );
     } catch (error) {
       getServiceLogger("TaskHistoryService").error(
         "Error clearing DataStore",
