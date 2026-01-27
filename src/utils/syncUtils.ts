@@ -5,7 +5,11 @@
 
 import { DataStore } from "@aws-amplify/datastore";
 import { Hub } from "@aws-amplify/core";
-import { logWithDevice, logErrorWithDevice, resetDataStore } from "@orion/task-system";
+import {
+  logWithDevice,
+  logErrorWithDevice,
+  resetDataStore,
+} from "@orion/task-system";
 
 const getResetDeps = () => ({ dataStore: DataStore, hub: Hub });
 

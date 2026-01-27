@@ -15,6 +15,7 @@
 import { AppColors } from "@constants/AppColors";
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { DataSourceToggle } from "./DataSourceToggle";
 
 export interface DataSourceManagerProps {
   /** Show detailed controls and status (currently unused, for future expansion) */
@@ -45,10 +46,10 @@ export const DataSourceManager: React.FC<DataSourceManagerProps> = ({
 }) => {
   return (
     <View style={styles.container}>
-      {/* <DataSourceToggle
+      <DataSourceToggle
         showCounts={showDetails}
         rightAccessory={rightAccessory}
-      /> */}
+      />
     </View>
   );
 };

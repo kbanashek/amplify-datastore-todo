@@ -25,4 +25,3 @@ describe("isDataStoreModelDeleted", () => {
     expect(isDataStoreModelDeleted({ _deleted: 1 })).toBe(false);
   });
 });
-

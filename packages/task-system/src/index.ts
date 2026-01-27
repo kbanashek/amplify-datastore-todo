@@ -184,7 +184,10 @@ export type {
   DataStoreResetOptions,
   DataStoreResetResult,
 } from "@utils/datastore/dataStoreReset";
-export { resetDataStore, waitForOutboxEmpty } from "@utils/datastore/dataStoreReset";
+export {
+  resetDataStore,
+  waitForOutboxEmpty,
+} from "@utils/datastore/dataStoreReset";
 export {
   getDeviceId,
   getLogPrefix,

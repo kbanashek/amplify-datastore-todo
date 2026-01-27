@@ -1,7 +1,7 @@
 import type { HubLike } from "@utils/datastore/dataStoreHub";
 import {
-    listenToDataStoreHub,
-    normalizeDataStoreEventName,
+  listenToDataStoreHub,
+  normalizeDataStoreEventName,
 } from "@utils/datastore/dataStoreHub";
 import { getServiceLogger } from "@utils/logging/serviceLogger";
 
@@ -161,7 +161,7 @@ export async function resetDataStore(
   const debug = options.debug ?? false;
 
   const outboxEmptyObserved =
-    options.waitForOutboxEmpty ?? true
+    (options.waitForOutboxEmpty ?? true)
       ? await waitForOutboxEmpty(deps.hub, {
           timeoutMs: options.outboxTimeoutMs ?? 2000,
           debug,
@@ -172,10 +172,14 @@ export async function resetDataStore(
     logger.info("Reset starting", { mode, outboxEmptyObserved });
   }
 
-  const stop = await withTimeout("DataStore.stop()", () => deps.dataStore.stop(), {
-    timeoutMs: options.stopTimeoutMs ?? 5000,
-    proceedOnTimeout: options.proceedOnStopTimeout ?? true,
-  });
+  const stop = await withTimeout(
+    "DataStore.stop()",
+    () => deps.dataStore.stop(),
+    {
+      timeoutMs: options.stopTimeoutMs ?? 5000,
+      proceedOnTimeout: options.proceedOnStopTimeout ?? true,
+    }
+  );
 
   let clear: "ok" | "timeout" | undefined;
   if (mode === "clearAndRestart") {
@@ -199,9 +203,14 @@ export async function resetDataStore(
   );
 
   if (debug) {
-    logger.info("Reset finished", { mode, outboxEmptyObserved, stop, clear, start });
+    logger.info("Reset finished", {
+      mode,
+      outboxEmptyObserved,
+      stop,
+      clear,
+      start,
+    });
   }
 
   return { outboxEmptyObserved, stop, clear, start };
 }
-

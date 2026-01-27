@@ -12,8 +12,8 @@
  * ```
  */
 
-import { Platform } from "react-native";
 import { getLoggingService } from "@services/LoggingService";
+import { Platform } from "react-native";
 
 /**
  * Get a logger instance for a specific service
@@ -117,7 +117,10 @@ function formatMessage(
     android: "🤖",
     web: "🌐",
   };
-  const platform = platformIcons[Platform.OS] || "❓";
+  // Platform may be undefined during Jest environment teardown; guard access
+  const detectedOs =
+    (typeof Platform !== "undefined" && (Platform as any)?.OS) || "web";
+  const platform = platformIcons[detectedOs] || "❓";
 
   const iconPart = icon ? `${icon} ` : "";
   const messageWithIcon = `${iconPart}${message}`;

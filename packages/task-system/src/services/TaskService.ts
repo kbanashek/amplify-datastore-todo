@@ -2,23 +2,23 @@ import { Hub } from "@aws-amplify/core";
 import { DataStore } from "@aws-amplify/datastore";
 import { Task as DataStoreTask } from "@models/index";
 import {
-    CreateTaskInput,
-    Task,
-    TaskFilters,
-    TaskStatus,
-    TaskType,
-    UpdateTaskInput,
+  CreateTaskInput,
+  Task,
+  TaskFilters,
+  TaskStatus,
+  TaskType,
+  UpdateTaskInput,
 } from "@task-types/Task";
 import { resetDataStore } from "@utils/datastore/dataStoreReset";
 import { dataSubscriptionLogger } from "@utils/logging/dataSubscriptionLogger";
 import { logWithDevice } from "@utils/logging/deviceLogger";
 import { getServiceLogger } from "@utils/logging/serviceLogger";
 import {
-    createTaskSchema,
-    taskFiltersSchema,
-    taskIdSchema,
-    updateTaskSchema,
-    validateOrThrow,
+  createTaskSchema,
+  taskFiltersSchema,
+  taskIdSchema,
+  updateTaskSchema,
+  validateOrThrow,
 } from "../schemas/taskSchemas";
 
 type TaskUpdateData = Omit<UpdateTaskInput, "id" | "_version">;

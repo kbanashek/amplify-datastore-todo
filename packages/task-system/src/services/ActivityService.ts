@@ -154,8 +154,7 @@ export class ActivityService {
   }
 
   static subscribeActivities(
-    callback: (items: Activity[], isSynced: boolean) => void
-    ,
+    callback: (items: Activity[], isSynced: boolean) => void,
     options?: {
       /**
        * If true, perform a full DataStore query after DELETE events.

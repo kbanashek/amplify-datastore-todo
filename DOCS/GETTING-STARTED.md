@@ -504,14 +504,14 @@ DOCS/
 
 ### ❓ How Do I...?
 
-| Question                         | Resource                                                        |
-| -------------------------------- | --------------------------------------------------------------- |
-| How do I create a new component? | [Component Library](architecture/component-library.md)          |
-| How do I write tests?            | [Testing Guide](development/testing.md)                         |
-| How does data sync work?         | [AWS Architecture](architecture/aws-architecture.md)            |
+| Question                         | Resource                                                                        |
+| -------------------------------- | ------------------------------------------------------------------------------- |
+| How do I create a new component? | [Component Library](architecture/component-library.md)                          |
+| How do I write tests?            | [Testing Guide](development/testing.md)                                         |
+| How does data sync work?         | [AWS Architecture](architecture/aws-architecture.md)                            |
 | How do I reset DataStore safely? | [DataStore lifecycle and resets](development/datastore-lifecycle-and-resets.md) |
-| How do I add a new feature?      | [Development Guidelines](development/development-guidelines.md) |
-| What's already implemented?      | [Implementation Status](features/implementation-status.md)      |
+| How do I add a new feature?      | [Development Guidelines](development/development-guidelines.md)                 |
+| What's already implemented?      | [Implementation Status](features/implementation-status.md)                      |
 
 ### 📚 External Resources
 

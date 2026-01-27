@@ -173,7 +173,7 @@ export class DataPointService {
         );
         // Provide empty array to prevent app crash
         callback([], false);
-      }
+      },
     });
 
     // Also observe DELETE operations to ensure deletions trigger updates
@@ -222,7 +222,7 @@ export class DataPointService {
       },
       error: (error: unknown) => {
         logErrorWithDevice("DataPointService", "DELETE observer error", error);
-      }
+      },
     });
 
     return {

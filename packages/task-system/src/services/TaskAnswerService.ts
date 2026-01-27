@@ -149,7 +149,7 @@ export class TaskAnswerService {
           error
         );
         callback([], false);
-      }
+      },
     });
 
     // Also observe DELETE operations to ensure deletions trigger updates
@@ -201,7 +201,7 @@ export class TaskAnswerService {
       },
       error: (error: unknown) => {
         logErrorWithDevice("TaskAnswerService", "DELETE observer error", error);
-      }
+      },
     });
 
     return {

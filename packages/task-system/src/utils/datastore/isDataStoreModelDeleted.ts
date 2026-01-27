@@ -16,4 +16,3 @@ export const isDataStoreModelDeleted = (item: unknown): boolean => {
   const deletedValue = Reflect.get(item as object, "_deleted");
   return deletedValue === true;
 };
-

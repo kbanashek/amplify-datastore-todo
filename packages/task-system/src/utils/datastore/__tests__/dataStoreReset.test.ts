@@ -24,7 +24,9 @@ describe("dataStoreReset", () => {
     };
 
     const promise = waitForOutboxEmpty(hub, { timeoutMs: 1000 });
-    callbacks[0]({ payload: { event: "outboxStatus", data: { isEmpty: true } } });
+    callbacks[0]({
+      payload: { event: "outboxStatus", data: { isEmpty: true } },
+    });
 
     await expect(promise).resolves.toBe(true);
   });
@@ -97,4 +99,3 @@ describe("dataStoreReset", () => {
     expect(ds.start).toHaveBeenCalledTimes(1);
   });
 });
-

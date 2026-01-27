@@ -14,7 +14,23 @@ interface ObserveElement {
   question?: string;
   _deleted?: boolean;
 }
-
+/**
+ * Service: `QuestionService`
+ *
+ * Manages `Question` persistence via AWS DataStore and provides helpers for
+ * common question operations used across the package (create, read, update,
+ * delete, subscribe, and clear DataStore).
+ *
+ * The subscription helpers use `DataStore.observeQuery` for real-time
+ * updates and an additional `DataStore.observe` watcher to ensure deletes
+ * trigger a refresh when necessary.
+ *
+ * @example
+ * ```ts
+ * const question = await QuestionService.createQuestion({ text: 'Why?' });
+ * const all = await QuestionService.getQuestions();
+ * ```
+ */
 export class QuestionService {
   /**
    * Create a new Question
@@ -149,11 +165,15 @@ export class QuestionService {
         const { items, isSynced } = snapshot;
 
         if (debug) {
-          logWithDevice("QuestionService", "Subscription update (observeQuery)", {
-            itemCount: items.length,
-            isSynced,
-            itemIds: items.map(i => i.id),
-          });
+          logWithDevice(
+            "QuestionService",
+            "Subscription update (observeQuery)",
+            {
+              itemCount: items.length,
+              isSynced,
+              itemIds: items.map(i => i.id),
+            }
+          );
         }
 
         callback(items, isSynced);
@@ -189,7 +209,11 @@ export class QuestionService {
             callback(questions, true);
           })
           .catch(err => {
-            logErrorWithDevice("QuestionService", "Error refreshing after delete", err);
+            logErrorWithDevice(
+              "QuestionService",
+              "Error refreshing after delete",
+              err
+            );
           });
       }, deleteRefreshThrottleMs);
     };

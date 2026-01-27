@@ -37,10 +37,7 @@ import { DataStore } from "@aws-amplify/datastore";
 import { Hub } from "@aws-amplify/core";
 import { resetDataStore } from "@orion/task-system";
 
-await resetDataStore(
-  { dataStore: DataStore, hub: Hub },
-  { mode: "restart" }
-);
+await resetDataStore({ dataStore: DataStore, hub: Hub }, { mode: "restart" });
 ```
 
 ### Clear + restart (stop → clear → start)
@@ -62,4 +59,3 @@ await resetDataStore(
 - Prefer **`resetDataStore`** over ad-hoc `DataStore.stop()/clear()/start()` sequences.
 - Prefer **`dataStoreHub`** over raw `Hub.listen("datastore", ...)` to avoid inconsistent event handling.
 - Keep reset logic **out of UI components**; call from hooks/services/dev tooling and keep rendering pure.
-

@@ -12,9 +12,9 @@
 import { Hub } from "@aws-amplify/core";
 import { DataStore } from "@aws-amplify/datastore";
 import type {
-    ImportTaskSystemFixtureOptions,
-    ImportTaskSystemFixtureResult,
-    TaskSystemFixture,
+  ImportTaskSystemFixtureOptions,
+  ImportTaskSystemFixtureResult,
+  TaskSystemFixture,
 } from "@fixtures/TaskSystemFixture";
 import { initTaskSystem } from "@runtime/taskSystem";
 import { FixtureImportService } from "@services/FixtureImportService";
